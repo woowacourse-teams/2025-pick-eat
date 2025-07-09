@@ -1,0 +1,41 @@
+{
+  "name": "2025-pick-eat",
+  "version": "1.0.0",
+  "description": "팀원들의 취향을 기억하는 PickEat",
+  "scripts": {
+    "dev": "webpack serve --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woowacourse-teams/2025-pick-eat.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/woowacourse-teams/2025-pick-eat/issues"
+  },
+  "homepage": "https://github.com/woowacourse-teams/2025-pick-eat#readme",
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@types/node": "^24.0.12",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "babel-loader": "^10.0.0",
+    "html-webpack-plugin": "^5.6.3",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}
