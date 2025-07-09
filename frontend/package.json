@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ./src/**/*.tsx"
   },
   "repository": {
     "type": "git",
@@ -31,8 +32,12 @@
     "@types/node": "^24.0.12",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
+    "@typescript-eslint/eslint-plugin": "^8.36.0",
     "babel-loader": "^10.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.37.5",
     "html-webpack-plugin": "^5.6.3",
+    "prettier": "^3.6.2",
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
