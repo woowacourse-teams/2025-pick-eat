@@ -16,14 +16,34 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint"],
+  "plugins": ["react", "@typescript-eslint", "simple-import-sort"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-unused-vars": "warn"
+    "@typescript-eslint/no-unused-vars": "warn",
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          ["^@components"],
+          ["^@domains"],
+          ["^@shared"],
+          ["^react", "^next"],
+          ["^@hooks"],
+          ["^@utils"],
+          ["^@constants"],
+          ["^@?\\w"],
+          ["^\\.\\./", "^\\./"]
+        ]
+      }
+    ],
+    "simple-import-sort/exports": "error"
   },
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "import/resolver": {
+      "typescript": {}
     }
   }
 }
