@@ -29,7 +29,7 @@
 | Backend | Backend | Backend | Backend |
 |:----:|:----:|:----:|:----:|
 | <img src="https://github.com/user-attachments/assets/ead4bda5-6354-450f-9c48-31dfe336d919" width="120" height="120"> | <img src="https://github.com/user-attachments/assets/b9ce3e53-4b2a-4f43-93ad-d729c7b0a96c" width="120" height="120"> | <img src="https://github.com/user-attachments/assets/cee0b677-dcf7-41ce-ab98-5a344ed07adf" width="120" height="120"> | <img src="https://github.com/user-attachments/assets/7d93584e-1cbc-4f38-8eca-992fe981cf85" width="120" height="120"> |
-| [몽이](https://github.com/wodnd0131) | [슬링키](https://github.com/supernovaMK) | [애드](https://github.com/jinu0328) | [랜디](https://github.com/KJungW) |
+| [몽이](https://github.com/wodnd0131) | [슬링키](https://github.com/supernovaMK) | [에드](https://github.com/jinu0328) | [랜디](https://github.com/KJungW) |
 
 
 <br>
