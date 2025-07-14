@@ -1,0 +1,13 @@
+{
+  "preset": "ts-jest/presets/default-esm",
+  "testEnvironment": "jsdom",
+  "transform": {
+    "^.+\\.[tj]sx?$": ["ts-jest", { "useESM": true }]
+  },
+  "extensionsToTreatAsEsm": [".ts", ".tsx"],
+  "globals": {
+    "ts-jest": {
+      "useESM": true
+    }
+  }
+}

@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack serve --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "eslint ./src/**/*.tsx",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
@@ -23,8 +23,12 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@types/jest": "^30.0.0",
+    "jest": "^30.0.4",
+    "jest-environment-jsdom": "^30.0.4",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "ts-jest": "^29.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
@@ -33,6 +37,8 @@
     "@babel/preset-typescript": "^7.27.1",
     "@storybook/addon-webpack5-compiler-swc": "^3.0.0",
     "@storybook/react-webpack5": "^9.0.16",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.3.0",
     "@types/node": "^24.0.12",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
