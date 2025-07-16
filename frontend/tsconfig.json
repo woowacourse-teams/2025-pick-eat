@@ -19,7 +19,8 @@
       "@pages/*": ["pages/*"],
       "@routes/*": ["src/routes/*"],
       "@apis/*": ["src/apis/*"],
-      "@types/*": ["shared/types/*"]
+      "@types/*": ["shared/types/*"],
+      "@styles/*": ["shared/styles/*"]
     },
     "checkJs": true
   },

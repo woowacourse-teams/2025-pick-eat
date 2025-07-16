@@ -1,6 +1,7 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,7 +36,12 @@ const config = {
       '@pages': path.resolve(__dirname, 'src/pages'),
       '@routes': path.resolve(__dirname, 'src/routes'),
       '@apis': path.resolve(__dirname, 'src/apis'),
+      '@utils': path.resolve(__dirname, 'src/shared/utils'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@routes': path.resolve(__dirname, 'src/routes'),
+      '@apis': path.resolve(__dirname, 'src/apis'),
       '@types': path.resolve(__dirname, 'src/shared/types'),
+      '@styles': path.resolve(__dirname, 'src/shared/styles'),
     },
   },
   plugins: [
