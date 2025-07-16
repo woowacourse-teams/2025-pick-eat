@@ -28,11 +28,14 @@ const config = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
     alias: {
+      '@domains': path.resolve(__dirname, 'src/domains'),
       '@components': path.resolve(__dirname, 'src/shared/components'),
       '@hooks': path.resolve(__dirname, 'src/shared/hooks'),
-      '@types': path.resolve(__dirname, 'src/shared/types'),
       '@utils': path.resolve(__dirname, 'src/shared/utils'),
-      '@domains': path.resolve(__dirname, 'src/domains'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@routes': path.resolve(__dirname, 'src/routes'),
+      '@apis': path.resolve(__dirname, 'src/apis'),
+      '@types': path.resolve(__dirname, 'src/shared/types'),
     },
   },
   plugins: [
