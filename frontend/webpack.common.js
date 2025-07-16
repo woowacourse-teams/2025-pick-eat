@@ -28,7 +28,11 @@ const config = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
     alias: {
-      '@components': path.resolve(__dirname, 'src/components'),
+      '@components': path.resolve(__dirname, 'src/shared/components'),
+      '@hooks': path.resolve(__dirname, 'src/shared/hooks'),
+      '@types': path.resolve(__dirname, 'src/shared/types'),
+      '@utils': path.resolve(__dirname, 'src/shared/utils'),
+      '@domains': path.resolve(__dirname, 'src/domains'),
     },
   },
   plugins: [

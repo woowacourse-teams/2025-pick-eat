@@ -17,28 +17,75 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "simple-import-sort"],
+  "plugins": ["react", "@typescript-eslint", "eslint-plugin-import"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/no-unused-vars": "warn",
-    "simple-import-sort/imports": [
+    "import/order": [
       "error",
       {
         "groups": [
-          ["^@components"],
-          ["^@domains"],
-          ["^@shared"],
-          ["^react", "^next"],
-          ["^@hooks"],
-          ["^@utils"],
-          ["^@constants"],
-          ["^@?\\w"],
-          ["^\\.\\./", "^\\./"]
-        ]
+          "builtin",
+          "internal",
+          "external",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "@domains/**/components/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@components/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@domains/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@domains/**/hooks/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@hooks/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@domains/**/utils/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@utils/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "@styles/**",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
+        "newlines-between": "always"
       }
-    ],
-    "simple-import-sort/exports": "error"
+    ]
   },
+
   "settings": {
     "react": {
       "version": "detect"
