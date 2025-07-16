@@ -76,6 +76,7 @@
             "position": "after"
           }
         ],
+        "import/no-unresolved": "error",
         "pathGroupsExcludedImportTypes": ["builtin"],
         "alphabetize": {
           "order": "asc",

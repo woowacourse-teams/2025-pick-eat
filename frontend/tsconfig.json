@@ -10,14 +10,18 @@
     "forceConsistentCasingInFileNames": true,
     "rootDir": "src",
     "outDir": "dist",
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "paths": {
+      "@domains/*": ["domains/*"],
       "@components/*": ["shared/components/*"],
       "@hooks/*": ["shared/hooks/*"],
-      "@types/*": ["shared/types/*"],
       "@utils/*": ["shared/utils/*"],
-      "@domains/*": ["domains/*"]
-    }
+      "@pages/*": ["pages/*"],
+      "@routes/*": ["src/routes/*"],
+      "@apis/*": ["src/apis/*"],
+      "@types/*": ["shared/types/*"]
+    },
+    "checkJs": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
