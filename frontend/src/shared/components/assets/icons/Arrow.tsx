@@ -16,18 +16,20 @@ const ROTATE_MAP: Record<DirectionType, string> = {
 
 function Arrow({ size, direction }: ArrowProps) {
   return (
-    <Container width={SIZE_MAP[size]} direction={direction}>
-      <img src="./images/arrow.svg" alt="화살표 아이콘" />
+    <Container direction={direction}>
+      <img
+        src="./images/arrow.svg"
+        alt="화살표 아이콘"
+        width={SIZE_MAP[size]}
+      />
     </Container>
   );
 }
 
-const Container = styled.div<{ width: string; direction: DirectionType }>`
+const Container = styled.div<{ direction: DirectionType }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ width }) => `${width}px`};
-  height: ${({ width }) => `${width}px`};
   rotate: ${({ direction }) => ROTATE_MAP[direction]};
 `;
 
