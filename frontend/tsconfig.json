@@ -12,7 +12,11 @@
     "outDir": "dist",
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"]
+      "@components/*": ["shared/components/*"],
+      "@hooks/*": ["shared/hooks/*"],
+      "@types/*": ["shared/types/*"],
+      "@utils/*": ["shared/utils/*"],
+      "@domains/*": ["domains/*"]
     }
   },
   "include": ["src"],
