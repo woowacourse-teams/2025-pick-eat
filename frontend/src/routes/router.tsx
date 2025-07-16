@@ -1,12 +1,12 @@
-import App from 'App';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 
+import App from '../App';
 import { ROUTE_PATH } from './routePath';
 
 const routes = createBrowserRouter([
   {
     path: ROUTE_PATH.HOME,
-    element: <App />,
+    Component: App,
   },
 ]);
 
