@@ -31,6 +31,7 @@ const Container = styled.div<{ direction: DirectionType }>`
   justify-content: center;
   align-items: center;
   rotate: ${({ direction }) => ROTATE_MAP[direction]};
+  transition: 0.3s;
 `;
 
 export default Arrow;

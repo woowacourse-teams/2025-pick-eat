@@ -1,68 +1,131 @@
 import Arrow from '@components/assets/icons/Arrow';
 import styled from '@emotion/styled';
 import { useBoolean } from '@hooks/useBoolean';
+import {
+  ReactNode,
+  useContext,
+  createContext,
+  MouseEvent,
+  useEffect,
+} from 'react';
 
-type Props = {
-  value?: string;
+type BarProps = {
+  selectedValue?: string;
   placeholder?: string;
-  options: string[];
-  onChange: (value: string) => void;
+  onChange: (option: { value: string; label: string }) => void;
+  children: ReactNode;
 };
 
-function Select({
-  value,
+type OptionProps = {
+  value: string;
+  children: ReactNode;
+};
+
+type OptionContextType = (option: { value: string; label: string }) => void;
+
+const selectContext = createContext<OptionContextType | undefined>(undefined);
+
+function Option({ value, children }: OptionProps) {
+  const onChange = useContext(selectContext);
+  const clickOption = (e: MouseEvent<HTMLLIElement>) => {
+    onChange?.({ value: value, label: e.currentTarget.textContent as string });
+  };
+
+  return <S.Option onClick={clickOption}>{children}</S.Option>;
+}
+
+function Bar({
+  selectedValue,
   placeholder = '선택해주세요.',
-  options,
   onChange,
-}: Props) {
+  children,
+}: BarProps) {
   const [open, , closeDropdown, toggleDropdown] = useBoolean(false);
 
-  const changeOption = (option: string) => {
+  const handleChange = (option: { value: string; label: string }) => {
     onChange(option);
     closeDropdown();
   };
 
-  return (
-    <>
-      <S.SelectBar onClick={toggleDropdown}>
-        <S.SelectedValue>{value ?? placeholder}</S.SelectedValue>
-        <Arrow direction="down" size="sm" />
-      </S.SelectBar>
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      closeDropdown();
+    }
+  };
 
-      {open && (
-        <S.OptionList>
-          {/* TODO: key값 설정 */}
-          {options.map(option => (
-            <S.Option onClick={() => changeOption(option)}>{option}</S.Option>
-          ))}
-        </S.OptionList>
-      )}
-    </>
+  useEffect(() => {
+    if (open) {
+      window.addEventListener('click', closeDropdown);
+      window.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('click', closeDropdown);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
+
+  return (
+    <selectContext.Provider value={handleChange}>
+      <S.SelectContainer onClick={e => e.stopPropagation()}>
+        <S.SelectBar
+          onClick={toggleDropdown}
+          isSelected={Boolean(selectedValue)}
+        >
+          <S.SelectedValue>{selectedValue ?? placeholder}</S.SelectedValue>
+          <Arrow direction={open ? 'up' : 'down'} size="sm" />
+        </S.SelectBar>
+
+        {open && <S.OptionList>{children}</S.OptionList>}
+      </S.SelectContainer>
+    </selectContext.Provider>
   );
 }
+
+const Select = { Bar, Option };
+
 export default Select;
 
 const S = {
-  SelectBar: styled.button`
+  SelectContainer: styled.div`
+    width: 100%;
+    position: relative;
+  `,
+
+  SelectBar: styled.button<{ isSelected: boolean }>`
     width: 100%;
     height: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border: 1px solid ${({ theme }) => theme.PALLETE.gray[60]};
+    gap: 5px;
+    border: ${({ theme }) => `1px solid ${theme.PALLETE.gray[60]}`};
     border-radius: 5px;
-    padding: 6px;
+    padding: 8px;
+    color: ${({ isSelected, theme }) =>
+      isSelected ? theme.PALLETE.gray[100] : theme.PALLETE.gray[60]};
+    ${({ theme }) => theme.TYPOGRAPHY.body.medium};
+
+    &:focus {
+      outline: none;
+      border: 2px solid ${({ theme }) => theme.PALLETE.primary[60]};
+    }
   `,
 
   SelectedValue: styled.span``,
 
   OptionList: styled.ul`
+    width: 100%;
     border: 1px solid ${({ theme }) => theme.PALLETE.gray[60]};
+    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+    padding: 8px;
     border-radius: 5px;
+    position: absolute;
+    top: 60px;
   `,
 
   Option: styled.li`
-    padding: 10px 6px;
+    padding: 15px 8px;
     cursor: pointer;
 
     &:hover {
