@@ -20,7 +20,7 @@ public class ParticipantService {
 
     @Transactional
     public ParticipantResponse createParticipant(ParticipantRequest request) {
-        Room room = roomRepository.findRoomByCode(UUID.fromString(request.roomCode()))
+        Room room = roomRepository.findByCode(UUID.fromString(request.roomCode()))
                 .orElseThrow(() -> new IllegalArgumentException("Room not found"));
         room.incrementParticipantCount();
 

@@ -1,9 +1,12 @@
 package com.pickeat.backend.room.ui;
 
 import com.pickeat.backend.room.application.RoomService;
+import com.pickeat.backend.room.application.dto.ParticipantStateResponse;
 import com.pickeat.backend.room.application.dto.RoomRequest;
 import com.pickeat.backend.room.application.dto.RoomResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,4 +24,8 @@ public class RoomController {
         return roomService.createRoom(request);
     }
 
+    @GetMapping("/{roomCode}/participants/state")
+    public ParticipantStateResponse getParticipantStateSummary(@PathVariable String roomCode) {
+        return roomService.getParticipantStateSummary(roomCode);
+    }
 }
