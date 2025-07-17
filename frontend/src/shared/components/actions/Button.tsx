@@ -1,54 +1,28 @@
-import styled from '@emotion/styled';
+/** @jsxImportSource @emotion/react */
+import { css, useTheme } from '@emotion/react';
 import { AppTheme } from '@styles/global';
 
 type Props = {
   text: string;
-  color: 'primary' | 'secondary' | 'gray';
-  size?: keyof typeof SIZE;
+  color?: ColorKeyType;
+  size?: SizeKeyType;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-function Button({ text, color = 'primary', size, ...props }: Props) {
+function Button({ text, color = 'primary', size = 'full', ...props }: Props) {
+  const theme = useTheme() as AppTheme;
+
   return (
-    <S.Container color={color} size={size} {...props}>
+    <button css={getButtonStyle(color, size)(theme)} {...props}>
       {text}
-    </S.Container>
+    </button>
   );
 }
 
 export default Button;
 
+type ColorKeyType = 'primary' | 'secondary' | 'gray';
+type SizeKeyType = keyof typeof SIZE;
 type StateType = 'default' | 'hover' | 'active';
-
-const getColor = (color: Props['color'], theme: AppTheme, state: StateType) => {
-  const palleteMap = {
-    primary: theme.PALLETE.primary,
-    secondary: theme.PALLETE.secondary,
-    gray: theme.PALLETE.gray,
-  };
-
-  const shadeMap: Record<
-    'default' | 'hover' | 'active',
-    keyof typeof theme.PALLETE.primary
-  > = {
-    default: 50,
-    hover: 30,
-    active: 70,
-  };
-
-  if (color === 'gray') {
-    const grayShadeMap: Record<
-      'default' | 'hover' | 'active',
-      keyof typeof theme.PALLETE.gray
-    > = {
-      default: 5,
-      hover: 0,
-      active: 10,
-    };
-    return palleteMap['gray'][grayShadeMap[state]];
-  }
-
-  return palleteMap[color][shadeMap[state]];
-};
 
 const SIZE = {
   xl: { width: '98px', height: '64px', fontSize: '19px' },
@@ -56,35 +30,52 @@ const SIZE = {
   md: { width: '78px', height: '48px', fontSize: '17px' },
   sm: { width: '64px', height: '40px', fontSize: '15px' },
   xs: { width: '60px', height: '32px', fontSize: '15px' },
+  full: { width: '100%', height: '48px', fontSize: '17px' },
 };
 
-const S = {
-  Container: styled.button<Pick<Props, 'color' | 'size'>>`
-    width: ${({ size }) => (size ? SIZE[size].width : `100%`)};
-    height: ${({ size }) => (size ? SIZE[size].height : SIZE['md'].height)};
-    font-size: ${({ size }) =>
-      size ? SIZE[size].fontSize : SIZE['md'].fontSize};
+const getColor = (color: ColorKeyType, theme: AppTheme, state: StateType) => {
+  const SIZE_MAP = {
+    primary: theme.PALLETE.primary,
+    secondary: theme.PALLETE.secondary,
+    gray: theme.PALLETE.gray,
+  };
+
+  const COLOR_MAP: Record<StateType, keyof typeof theme.PALLETE.primary> = {
+    default: 50,
+    hover: 30,
+    active: 70,
+  };
+
+  const GRAY_COLOR_MAP: Record<StateType, keyof typeof theme.PALLETE.gray> = {
+    default: 5,
+    hover: 0,
+    active: 10,
+  };
+
+  const SIZE = color === 'gray' ? GRAY_COLOR_MAP[state] : COLOR_MAP[state];
+  return SIZE_MAP[color][SIZE];
+};
+
+export const getButtonStyle =
+  (color: ColorKeyType, size: SizeKeyType) => (theme: AppTheme) => css`
+    width: ${size ? SIZE[size].width : '100%'};
+    height: ${SIZE[size].height};
+    font-size: ${SIZE[size].fontSize};
     font-weight: 400;
-    color: ${({ color }) => (color === 'primary' ? `white` : `#1E2124`)};
-
-    border-radius: 5px;
-    border: ${({ color }) => (color === 'gray' ? `solid 1px #58616A` : '')};
-
-    background-color: ${({ color, theme }) =>
-      getColor(color, theme, 'default')};
+    border-radius: 8px;
+    color: ${color === 'primary' ? `white` : `#1E2124`};
+    background-color: ${getColor(color, theme, 'default')};
+    border: ${color === 'gray'
+      ? `1px solid ${theme.PALLETE.gray[60]}`
+      : 'none'};
+    cursor: pointer;
 
     &:hover {
-      background-color: ${({ color, theme }) =>
-        color === 'gray'
-          ? theme.PALLETE.gray[0]
-          : getColor(color, theme, 'hover')};
+      background-color: ${getColor(color, theme, 'hover')};
     }
 
     &:active {
-      background-color: ${({ color, theme }) =>
-        color === 'gray'
-          ? theme.PALLETE.gray[10]
-          : getColor(color, theme, 'active')};
+      background-color: ${getColor(color, theme, 'active')};
     }
 
     &:disabled {
@@ -93,5 +84,4 @@ const S = {
       border: none;
       color: #6d7882;
     }
-  `,
-};
+  `;
