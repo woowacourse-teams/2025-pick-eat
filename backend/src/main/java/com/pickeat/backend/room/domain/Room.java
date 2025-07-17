@@ -28,4 +28,11 @@ public class Room extends BaseEntity {
     private int participantCount = 0;
     @Column(nullable = false)
     private boolean isActive = true;
+
+    public Room(String name, Location location, Radius radius) {
+        this.name = name;
+        this.location = location;
+        this.radius = radius;
+        this.code = UUID.randomUUID();
+    }
 }
