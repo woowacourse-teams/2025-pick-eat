@@ -1,7 +1,6 @@
 import type { Preview } from '@storybook/react-webpack5';
 import { ThemeProvider } from '@emotion/react';
 import { THEME } from '../src/shared/styles/global';
-import React from 'react';
 
 const preview: Preview = {
   tags: ['autodocs'],
