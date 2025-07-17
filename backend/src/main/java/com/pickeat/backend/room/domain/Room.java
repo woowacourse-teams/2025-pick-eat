@@ -25,9 +25,9 @@ public class Room extends BaseEntity {
     @Embedded
     private Radius radius;
     @Column(nullable = false)
-    private int participantCount = 0;
+    private Integer participantCount = 0;
     @Column(nullable = false)
-    private boolean isActive = true;
+    private Boolean isActive = true;
 
     public Room(String name, Location location, Radius radius) {
         this.name = name;

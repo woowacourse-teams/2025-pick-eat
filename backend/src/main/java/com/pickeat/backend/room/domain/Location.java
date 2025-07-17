@@ -14,8 +14,8 @@ import lombok.NoArgsConstructor;
 public class Location {
 
     @Column(name = "x", nullable = false)
-    private double x;
+    private Double x;
     @Column(name = "y", nullable = false)
-    private double y;
+    private Double y;
 
 }

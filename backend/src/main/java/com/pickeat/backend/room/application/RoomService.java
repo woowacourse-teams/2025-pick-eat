@@ -1,6 +1,6 @@
 package com.pickeat.backend.room.application;
 
-import com.pickeat.backend.room.application.dto.CreateRoomRequest;
+import com.pickeat.backend.room.application.dto.RoomRequest;
 import com.pickeat.backend.room.application.dto.RoomResponse;
 import com.pickeat.backend.room.domain.Location;
 import com.pickeat.backend.room.domain.Radius;
@@ -15,7 +15,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
 
-    public RoomResponse createRoom(CreateRoomRequest request) {
+    public RoomResponse createRoom(RoomRequest request) {
         Room room = new Room(
                 request.name(),
                 new Location(request.x(), request.y()),

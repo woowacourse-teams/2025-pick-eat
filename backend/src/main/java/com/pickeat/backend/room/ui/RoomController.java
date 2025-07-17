@@ -1,7 +1,7 @@
 package com.pickeat.backend.room.ui;
 
 import com.pickeat.backend.room.application.RoomService;
-import com.pickeat.backend.room.application.dto.CreateRoomRequest;
+import com.pickeat.backend.room.application.dto.RoomRequest;
 import com.pickeat.backend.room.application.dto.RoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,7 +17,7 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping
-    public RoomResponse createRoom(@RequestBody CreateRoomRequest request) {
+    public RoomResponse createRoom(@RequestBody RoomRequest request) {
         return roomService.createRoom(request);
     }
 
