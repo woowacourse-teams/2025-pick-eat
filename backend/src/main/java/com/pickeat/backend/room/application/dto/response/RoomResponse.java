@@ -1,4 +1,4 @@
-package com.pickeat.backend.room.application.dto;
+package com.pickeat.backend.room.application.dto.response;
 
 import com.pickeat.backend.room.domain.Room;
 
