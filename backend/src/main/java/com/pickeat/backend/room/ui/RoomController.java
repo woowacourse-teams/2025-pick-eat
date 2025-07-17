@@ -6,6 +6,7 @@ import com.pickeat.backend.room.application.dto.RoomRequest;
 import com.pickeat.backend.room.application.dto.RoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,5 +28,10 @@ public class RoomController {
     @GetMapping("/{roomCode}/participants/state")
     public ParticipantStateResponse getParticipantStateSummary(@PathVariable String roomCode) {
         return roomService.getParticipantStateSummary(roomCode);
+    }
+
+    @PatchMapping("/{roomCode}/deactivate")
+    public void createRoom(@PathVariable String roomCode) {
+        roomService.deactivateRoom(roomCode);
     }
 }

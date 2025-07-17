@@ -11,6 +11,7 @@ import com.pickeat.backend.room.domain.repository.RoomRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,7 @@ public class RoomService {
     private final RoomRepository roomRepository;
     private final ParticipantRepository participantRepository;
 
+    @Transactional
     public RoomResponse createRoom(RoomRequest request) {
         Room room = new Room(
                 request.name(),
@@ -30,11 +32,19 @@ public class RoomService {
         return RoomResponse.from(saved);
     }
 
+    @Transactional(readOnly = true)
     public ParticipantStateResponse getParticipantStateSummary(String roomCode) {
         Room room = roomRepository.findByCode(UUID.fromString(roomCode))
                 .orElseThrow(() -> new IllegalArgumentException("Room not found"));
         int eliminatedCount = participantRepository.countByRoomIdAndIsEliminationCompletedTrue(
                 room.getId());
         return ParticipantStateResponse.of(room.getParticipantCount(), eliminatedCount);
+    }
+
+    @Transactional
+    public void deactivateRoom(String roomCode) {
+        Room room = roomRepository.findByCode(UUID.fromString(roomCode))
+                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+        room.deactivate();
     }
 }

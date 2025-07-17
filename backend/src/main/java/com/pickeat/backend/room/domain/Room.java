@@ -39,4 +39,8 @@ public class Room extends BaseEntity {
     public void incrementParticipantCount() {
         this.participantCount++;
     }
+
+    public void deactivate() {
+        this.isActive = false;
+    }
 }
