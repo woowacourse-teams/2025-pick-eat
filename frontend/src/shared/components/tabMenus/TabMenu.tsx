@@ -3,21 +3,21 @@ import { useState } from 'react';
 import TabBar from './TabBar';
 import TabContent from './TabContent';
 
-interface Props {
-  tabs?: string[];
-  initialTab?: number;
-  tabContents: React.ReactNode[];
-}
+type TabData = { tab: string; content: React.ReactNode }[];
 
-function TabMenu({ tabs, tabContents, initialTab = 0 }: Props) {
-  const [currentTab, setCurrentTab] = useState(initialTab);
+type Props = {
+  tabData: TabData;
+};
+
+function TabMenu({ tabData }: Props) {
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const tabs = tabData.map(d => d.tab);
+  const tabContents = tabData.map(d => d.content);
+
   return (
     <S.Container>
-      <TabBar
-        tabs={tabs}
-        selectedIndex={currentTab}
-        onTabClick={setCurrentTab}
-      />
+      <TabBar tabs={tabs} selectedIndex={currentTab} onTabClick={setCurrentTab} />
       <TabContent selectedIndex={currentTab} tabContents={tabContents} />
     </S.Container>
   );

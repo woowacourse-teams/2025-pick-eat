@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TabMenu from './TabMenu';
 
-const tabs = ['탭 1', '탭 2', '탭 3'];
-
-const tabContents = [
-  <div>Content for Tab 1</div>,
-  <div>Content for Tab 2</div>,
-  <div>Content for Tab 3</div>,
+const tabData = [
+  { tab: '한식', content: <div>한식 내용</div> },
+  { tab: '중식', content: <div>중식 내용</div> },
+  { tab: '일식', content: <div>일식 내용</div> },
+  { tab: '양식', content: <div>양식 내용</div> },
+  { tab: '기타', content: <div>기타 내용</div> },
 ];
 
 const meta: Meta<typeof TabMenu> = {
@@ -15,16 +15,14 @@ const meta: Meta<typeof TabMenu> = {
   parameters: {
     layout: 'centered',
   },
-} satisfies Meta<typeof TabMenu>;
+};
 export default meta;
 
 type Story = StoryObj<typeof TabMenu>;
 
 export const Default: Story = {
   args: {
-    tabs: tabs,
-    initialTab: 1,
-    tabContents: tabContents,
+    tabData,
   },
   render: args => <TabMenu {...args} />,
 };
