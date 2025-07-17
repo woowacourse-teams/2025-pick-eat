@@ -35,4 +35,8 @@ public class Room extends BaseEntity {
         this.radius = radius;
         this.code = UUID.randomUUID();
     }
+
+    public void incrementParticipantCount() {
+        this.participantCount++;
+    }
 }
