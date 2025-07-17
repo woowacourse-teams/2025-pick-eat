@@ -8,6 +8,9 @@ const meta: Meta<typeof Button> = {
 export default meta;
 
 type Story = StoryObj<typeof Button>;
+const handleGreet = () => {
+  alert('안뇽');
+};
 
 export const Playground = {
   render: () => (
@@ -22,12 +25,14 @@ export const Playground = {
             marginTop: '8px',
           }}
         >
-          <Button text="xs" size="xs" />
-          <Button text="sm" size="sm" />
-          <Button text="md" size="md" />
-          <Button text="lg" size="lg" />
-          <Button text="xl" size="xl" />
-          <Button text="사이즈 지정x" />
+          <Button color="primary" text="xs" size="xs" />
+          <Button color="primary" text="sm" size="sm" />
+          <Button color="primary" text="md" size="md" />
+          <Button color="primary" text="lg" size="lg" />
+          <Button color="primary" text="xl" size="xl" />
+          <Button color="primary" text="disabled" size="xl" disabled={true} />
+          <Button color="primary" text="사이즈 지정x" />
+          <Button color="primary" text="클릭해 보세용" onClick={handleGreet} />
         </div>
       </section>
       <section>
@@ -45,6 +50,7 @@ export const Playground = {
           <Button color="secondary" text="md" size="md" />
           <Button color="secondary" text="lg" size="lg" />
           <Button color="secondary" text="xl" size="xl" />
+          <Button color="secondary" text="disabled" size="xl" disabled={true} />
           <Button color="secondary" text="사이즈 지정x" />
         </div>
       </section>
@@ -63,6 +69,7 @@ export const Playground = {
           <Button color="gray" text="md" size="md" />
           <Button color="gray" text="lg" size="lg" />
           <Button color="gray" text="xl" size="xl" />
+          <Button color="gray" text="disabled" size="xl" disabled={true} />
           <Button color="gray" text="사이즈 지정x" />
         </div>
       </section>
@@ -71,7 +78,7 @@ export const Playground = {
   parameters: {
     docs: {
       description: {
-        story: '버튼을 그룹 형태로 묶어서 보여주는 커스텀 Playground입니다.',
+        story: '예쁜 버튼입니다.',
       },
     },
   },

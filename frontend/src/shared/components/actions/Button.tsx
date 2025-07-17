@@ -5,11 +5,11 @@ type Props = {
   text: string;
   color: 'primary' | 'secondary' | 'gray';
   size?: keyof typeof SIZE;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-function Button({ text, color = 'primary', size }: Props) {
+function Button({ text, color = 'primary', size, ...props }: Props) {
   return (
-    <S.Container color={color} size={size}>
+    <S.Container color={color} size={size} {...props}>
       {text}
     </S.Container>
   );
@@ -85,6 +85,13 @@ const S = {
         color === 'gray'
           ? theme.PALLETE.gray[10]
           : getColor(color, theme, 'active')};
+    }
+
+    &:disabled {
+      background-color: #cdd1d5;
+      cursor: not-allowed;
+      border: none;
+      color: #6d7882;
     }
   `,
 };
