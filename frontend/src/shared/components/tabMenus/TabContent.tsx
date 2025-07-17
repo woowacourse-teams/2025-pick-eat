@@ -8,7 +8,7 @@ interface Props {
 function TabContent({ selectedIndex, tabContents }: Props) {
   return (
     <S.Container>
-      <S.ContentSlider activeIndex={selectedIndex}>
+      <S.ContentSlider selectedIndex={selectedIndex}>
         {tabContents.map((content, tabIndex) => (
           <S.ContentBox key={tabIndex}>{content}</S.ContentBox>
         ))}
@@ -27,12 +27,12 @@ const S = {
     overflow-y: scroll;
     position: relative;
   `,
-  ContentSlider: styled.div<{ activeIndex: number }>`
+  ContentSlider: styled.div<{ selectedIndex: number }>`
     display: flex;
     width: 500%;
     height: 100%;
     transition: transform 0.3s ease;
-    transform: translateX(-${props => props.activeIndex * 20}%);
+    transform: translateX(-${props => props.selectedIndex * 20}%);
   `,
   ContentBox: styled.div`
     width: 20%;
