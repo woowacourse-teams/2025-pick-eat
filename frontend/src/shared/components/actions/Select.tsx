@@ -11,6 +11,7 @@ import {
 
 type BarProps = {
   selectedValue?: string;
+  label?: string;
   placeholder?: string;
   onChange: (option: { value: string; label: string }) => void;
   children: ReactNode;
@@ -36,6 +37,7 @@ function Option({ value, children }: OptionProps) {
 
 function Bar({
   selectedValue,
+  label,
   placeholder = '선택해주세요.',
   onChange,
   children,
@@ -68,6 +70,8 @@ function Bar({
   return (
     <selectContext.Provider value={handleChange}>
       <S.SelectContainer onClick={e => e.stopPropagation()}>
+        {label && <S.Label>{label}</S.Label>}
+
         <S.SelectBar
           onClick={toggleDropdown}
           isSelected={Boolean(selectedValue)}
@@ -89,7 +93,15 @@ export default Select;
 const S = {
   SelectContainer: styled.div`
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     position: relative;
+  `,
+
+  Label: styled.label`
+    color: ${({ theme }) => theme.PALLETE.gray[60]};
+    ${({ theme }) => theme.TYPOGRAPHY.body.small}
   `,
 
   SelectBar: styled.button<{ isSelected: boolean }>`
@@ -121,7 +133,7 @@ const S = {
     padding: 8px;
     border-radius: 5px;
     position: absolute;
-    top: 60px;
+    top: 110%;
   `,
 
   Option: styled.li`
