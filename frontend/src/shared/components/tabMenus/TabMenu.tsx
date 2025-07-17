@@ -17,7 +17,11 @@ function TabMenu({ tabData }: Props) {
 
   return (
     <S.Container>
-      <TabBar tabs={tabs} selectedIndex={currentTab} onTabClick={setCurrentTab} />
+      <TabBar
+        tabs={tabs}
+        selectedIndex={currentTab}
+        onTabClick={setCurrentTab}
+      />
       <TabContent selectedIndex={currentTab} tabContents={tabContents} />
     </S.Container>
   );

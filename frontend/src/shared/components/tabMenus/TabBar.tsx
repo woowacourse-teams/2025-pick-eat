@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
-interface Props {
+type Props = {
   tabs?: string[];
   selectedIndex: number;
   onTabClick: (index: number) => void;
-}
+};
 
 function TabBar({ tabs, selectedIndex, onTabClick }: Props) {
   const tabCount = tabs?.length ?? 0;

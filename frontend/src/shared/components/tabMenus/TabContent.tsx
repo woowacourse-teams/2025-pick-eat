@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 
-interface Props {
+type Props = {
   selectedIndex: number;
   tabContents: React.ReactNode[];
-}
+};
 
 function TabContent({ selectedIndex, tabContents }: Props) {
   return (
