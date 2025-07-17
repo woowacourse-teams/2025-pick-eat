@@ -5,16 +5,20 @@ import TabContent from './TabContent';
 
 interface Props {
   tabs?: string[];
-  activeTab: number;
+  initialTab?: number;
   tabContents: React.ReactNode[];
 }
 
-function TabMenu({ tabs, activeTab, tabContents }: Props) {
-  const [currentTab, setCurrentTab] = useState(activeTab);
+function TabMenu({ tabs, tabContents, initialTab = 0 }: Props) {
+  const [currentTab, setCurrentTab] = useState(initialTab);
   return (
     <S.Container>
-      <TabBar tabs={tabs} />
-      <TabContent activeTab={activeTab} tabContents={tabContents} />
+      <TabBar
+        tabs={tabs}
+        selectedIndex={currentTab}
+        onTabClick={setCurrentTab}
+      />
+      <TabContent selectedIndex={currentTab} tabContents={tabContents} />
     </S.Container>
   );
 }

@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { useState } from 'react';
 
 interface Props {
   tabs?: string[];
+  selectedIndex: number;
+  onTabClick: (index: number) => void;
 }
 
-function TabBar({ tabs }: Props) {
-  const [activeTab, setActiveTab] = useState(0);
+function TabBar({ tabs, selectedIndex, onTabClick }: Props) {
   const tabCount = tabs?.length ?? 0;
 
   return (
@@ -14,12 +14,12 @@ function TabBar({ tabs }: Props) {
       {(tabs ?? []).map((tab, index) => (
         <S.TabItem
           key={index}
-          isActive={index === activeTab}
-          onClick={() => setActiveTab(index)}
+          isActive={index === selectedIndex}
+          onClick={() => onTabClick(index)}
         >
           <S.TabContent>
             <S.TabInner>
-              <S.TabLabel isActive={index === activeTab}>
+              <S.TabLabel isActive={index === selectedIndex}>
                 <p>{tab}</p>
               </S.TabLabel>
             </S.TabInner>
@@ -27,7 +27,7 @@ function TabBar({ tabs }: Props) {
         </S.TabItem>
       ))}
       {tabCount > 0 && (
-        <S.Indicator tabCount={tabCount} activeTab={activeTab} />
+        <S.Indicator tabCount={tabCount} activeTab={selectedIndex} />
       )}
     </S.Container>
   );

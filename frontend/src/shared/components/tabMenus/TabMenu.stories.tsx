@@ -23,7 +23,7 @@ type Story = StoryObj<typeof TabMenu>;
 export const Default: Story = {
   args: {
     tabs: tabs,
-    activeTab: 1,
+    initialTab: 1,
     tabContents: tabContents,
   },
   render: args => <TabMenu {...args} />,

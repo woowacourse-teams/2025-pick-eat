@@ -1,14 +1,14 @@
 import styled from '@emotion/styled';
 
 interface Props {
-  activeTab: number;
+  selectedIndex: number;
   tabContents: React.ReactNode[];
 }
 
-function TabContent({ activeTab, tabContents }: Props) {
+function TabContent({ selectedIndex, tabContents }: Props) {
   return (
     <S.Container>
-      <S.ContentSlider activeIndex={activeTab}>
+      <S.ContentSlider activeIndex={selectedIndex}>
         {tabContents.map((content, tabIndex) => (
           <S.ContentBox key={tabIndex}>{content}</S.ContentBox>
         ))}

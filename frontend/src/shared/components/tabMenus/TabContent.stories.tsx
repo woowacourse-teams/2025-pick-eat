@@ -20,7 +20,7 @@ type Story = StoryObj<typeof TabContent>;
 
 export const Default: Story = {
   args: {
-    activeTab: 1,
+    selectedIndex: 1,
     tabContents: tabContents,
   },
   render: args => <TabContent {...args} />,
