@@ -22,7 +22,7 @@ export default TabContent;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 310px;
+    height: fit-content;
     background-color: ${({ theme }) => theme.PALLETE.gray[5]};
     overflow-y: scroll;
     position: relative;
