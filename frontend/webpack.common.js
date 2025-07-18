@@ -1,6 +1,8 @@
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -27,13 +29,11 @@ const config = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
-    alias: {
-      '@components': path.resolve(__dirname, 'src/shared/components'),
-      '@hooks': path.resolve(__dirname, 'src/shared/hooks'),
-      '@types': path.resolve(__dirname, 'src/shared/types'),
-      '@utils': path.resolve(__dirname, 'src/shared/utils'),
-      '@domains': path.resolve(__dirname, 'src/domains'),
-    },
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, './tsconfig.json'),
+      }),
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({

@@ -1,6 +1,7 @@
 {
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
   },
 
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
@@ -12,5 +13,18 @@
     "typescriptreact"
   ],
 
+  "stylelint.validate": [
+    "css",
+    "scss",
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
+    "postcss"
+  ],
+  "stylelint.configFile": "stylelint.config.js",
+  "stylelint.packageManager": "npm",
+
+  "stylelint.customSyntax": "postcss-styled-syntax",
   "editor.formatOnSave": true
 }
