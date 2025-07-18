@@ -1,15 +1,18 @@
 import type { Preview } from '@storybook/react-webpack5';
-import { ThemeProvider } from '@emotion/react';
+import { Global, ThemeProvider } from '@emotion/react';
 import { THEME } from '../src/shared/styles/global';
-import React from 'react';
+import reset from '../src/shared/styles/reset';
 
 const preview: Preview = {
   tags: ['autodocs'],
   decorators: [
     Story => (
-      <ThemeProvider theme={THEME}>
-        <Story />
-      </ThemeProvider>
+      <>
+        <Global styles={reset} />
+        <ThemeProvider theme={THEME}>
+          <Story />
+        </ThemeProvider>
+      </>
     ),
   ],
 
