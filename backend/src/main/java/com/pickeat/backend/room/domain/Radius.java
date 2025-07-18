@@ -15,14 +15,14 @@ public class Radius {
 
     @Column(name = "radius", nullable = false)
     private Integer distance;
-    
+
     public Radius(Integer distance) {
         validateDistance(distance);
         this.distance = distance;
     }
-    
+
     private void validateDistance(Integer distance) {
-        if (distance == null || distance <= 0) {
+        if (distance == null || distance <= 0 || distance >= 20000) {
             throw new BusinessException(ErrorCode.INVALID_RADIUS);
         }
     }

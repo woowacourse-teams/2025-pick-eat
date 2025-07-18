@@ -16,7 +16,7 @@ public enum ErrorCode {
     PARTICIPANT_ALREADY_ELIMINATED(HttpStatus.BAD_REQUEST, "이미 소거된 참가자입니다."),
 
     // 도메인 검증 에러
-    INVALID_RADIUS(HttpStatus.BAD_REQUEST, "반지름은 양수여야 합니다."),
+    INVALID_RADIUS(HttpStatus.BAD_REQUEST, "반지름은 1 ~ 20000 사이 양수여야 합니다."),
     INVALID_LATITUDE(HttpStatus.BAD_REQUEST, "위도는 -90도에서 90도 사이여야 합니다."),
     INVALID_LONGITUDE(HttpStatus.BAD_REQUEST, "경도는 -180도에서 180도 사이여야 합니다."),
 

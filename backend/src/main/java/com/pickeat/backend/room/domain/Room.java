@@ -4,7 +4,6 @@ import com.pickeat.backend.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,8 +15,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Room extends BaseEntity {
 
-    @Column(nullable = false)
-    private UUID code;
+    @Embedded
+    private RoomCode code;
     @Column(nullable = false)
     private String name;
     @Embedded
@@ -33,7 +32,7 @@ public class Room extends BaseEntity {
         this.name = name;
         this.location = location;
         this.radius = radius;
-        this.code = UUID.randomUUID();
+        this.code = new RoomCode();
     }
 
     public void incrementParticipantCount() {

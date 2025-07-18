@@ -5,13 +5,12 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
-import com.pickeat.backend.room.application.support.RoomCodeParser;
 import com.pickeat.backend.room.domain.Location;
 import com.pickeat.backend.room.domain.Radius;
 import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.room.domain.RoomCode;
 import com.pickeat.backend.room.domain.repository.ParticipantRepository;
 import com.pickeat.backend.room.domain.repository.RoomRepository;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,22 +36,21 @@ public class RoomService {
 
     @Transactional
     public void deactivateRoom(String roomCode) {
-        UUID parsedRoomCode = RoomCodeParser.parseRoomCode(roomCode);
-        Room room = findRoomByCode(parsedRoomCode);
+        Room room = findRoomByCode(roomCode);
         room.deactivate();
     }
 
     @Transactional(readOnly = true)
     public ParticipantStateResponse getParticipantStateSummary(String roomCode) {
-        UUID parsedRoomCode = RoomCodeParser.parseRoomCode(roomCode);
-        Room room = findRoomByCode(parsedRoomCode);
+        Room room = findRoomByCode(roomCode);
         int eliminatedCount = participantRepository.countByRoomIdAndIsEliminationCompletedTrue(
                 room.getId());
         return ParticipantStateResponse.of(room.getParticipantCount(), eliminatedCount);
     }
 
-    private Room findRoomByCode(UUID roomCode) {
-        return roomRepository.findByCode(roomCode)
+    private Room findRoomByCode(String roomCode) {
+        RoomCode code = new RoomCode(roomCode);
+        return roomRepository.findByCode(code)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
     }
 }
