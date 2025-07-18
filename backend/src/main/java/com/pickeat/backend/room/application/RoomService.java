@@ -1,7 +1,9 @@
 package com.pickeat.backend.room.application;
 
-import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
+import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
 import com.pickeat.backend.room.application.support.RoomCodeParser;
 import com.pickeat.backend.room.domain.Location;
@@ -20,7 +22,6 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final ParticipantRepository participantRepository;
-    private final RoomQueryService roomQueryService;
 
     @Transactional
     public RoomResponse createRoom(RoomRequest request) {
@@ -34,19 +35,24 @@ public class RoomService {
         return RoomResponse.from(saved);
     }
 
+    @Transactional
+    public void deactivateRoom(String roomCode) {
+        UUID parsedRoomCode = RoomCodeParser.parseRoomCode(roomCode);
+        Room room = findRoomByCode(parsedRoomCode);
+        room.deactivate();
+    }
+
     @Transactional(readOnly = true)
     public ParticipantStateResponse getParticipantStateSummary(String roomCode) {
         UUID parsedRoomCode = RoomCodeParser.parseRoomCode(roomCode);
-        Room room = roomQueryService.findByCode(parsedRoomCode);
+        Room room = findRoomByCode(parsedRoomCode);
         int eliminatedCount = participantRepository.countByRoomIdAndIsEliminationCompletedTrue(
                 room.getId());
         return ParticipantStateResponse.of(room.getParticipantCount(), eliminatedCount);
     }
 
-    @Transactional
-    public void deactivateRoom(String roomCode) {
-        UUID parsedRoomCode = RoomCodeParser.parseRoomCode(roomCode);
-        Room room = roomQueryService.findByCode(parsedRoomCode);
-        room.deactivate();
+    private Room findRoomByCode(UUID roomCode) {
+        return roomRepository.findByCode(roomCode)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
     }
 }
