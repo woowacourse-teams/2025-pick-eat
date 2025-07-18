@@ -11,7 +11,7 @@ const tabData = [
 ];
 
 const meta: Meta<typeof TabMenu> = {
-  title: 'shared/components/TabMenu',
+  title: 'Tab/TabMenu',
   component: TabMenu,
   parameters: {
     layout: 'centered',

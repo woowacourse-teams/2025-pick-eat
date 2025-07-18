@@ -3,7 +3,7 @@ import TabBar from './TabBar';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof TabBar> = {
-  title: 'shared/components/TabBar',
+  title: 'Tab/TabBar',
   component: TabBar,
   parameters: {
     layout: 'centered',

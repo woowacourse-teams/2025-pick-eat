@@ -9,7 +9,7 @@ const tabContents = [
 ];
 
 const meta: Meta<typeof TabContent> = {
-  title: 'shared/components/TabContent',
+  title: 'Tab/TabContent',
   component: TabContent,
   parameters: {
     layout: 'centered',
