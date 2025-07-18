@@ -29,4 +29,8 @@ public class Participant extends BaseEntity {
         this.room = room;
         isEliminationCompleted = false;
     }
+
+    public void eliminateRestaurants() {
+        this.isEliminationCompleted = true;
+    }
 }
