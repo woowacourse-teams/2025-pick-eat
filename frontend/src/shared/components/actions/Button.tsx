@@ -16,7 +16,7 @@ function Button({ text, color = 'primary', size = 'full', ...props }: Props) {
   const theme: AppTheme = useTheme();
 
   return (
-    <button css={getButtonStyle(color, size)(theme)} {...props}>
+    <button css={getButtonStyle(color, size, theme)} {...props}>
       {text}
     </button>
   );
@@ -56,32 +56,33 @@ const getColor = (color: ColorKeyType, theme: AppTheme, state: StateType) => {
   return SIZE_MAP[color][SIZE];
 };
 
-const getButtonStyle =
-  (color: ColorKeyType, size: SizeKeyType) => (theme: AppTheme) => css`
-    width: ${size ? SIZE[size].width : '100%'};
-    height: ${SIZE[size].height};
-    font-size: ${SIZE[size].fontSize};
-    font-weight: 400;
-    border-radius: 8px;
-    color: ${color === 'primary' ? `white` : `#1E2124`};
-    background-color: ${getColor(color, theme, 'default')};
-    border: ${color === 'gray'
-      ? `1px solid ${theme.PALLETE.gray[60]}`
-      : 'none'};
-    cursor: pointer;
+const getButtonStyle = (
+  color: ColorKeyType,
+  size: SizeKeyType,
+  theme: AppTheme
+) => css`
+  width: ${size ? SIZE[size].width : '100%'};
+  height: ${SIZE[size].height};
+  font-size: ${SIZE[size].fontSize};
+  font-weight: 400;
+  border-radius: 8px;
+  color: ${color === 'primary' ? `white` : `#1E2124`};
+  background-color: ${getColor(color, theme, 'default')};
+  border: ${color === 'gray' ? `1px solid ${theme.PALLETE.gray[60]}` : 'none'};
+  cursor: pointer;
 
-    &:hover {
-      background-color: ${getColor(color, theme, 'hover')};
-    }
+  &:hover {
+    background-color: ${getColor(color, theme, 'hover')};
+  }
 
-    &:active {
-      background-color: ${getColor(color, theme, 'active')};
-    }
+  &:active {
+    background-color: ${getColor(color, theme, 'active')};
+  }
 
-    &:disabled {
-      background-color: #cdd1d5;
-      cursor: not-allowed;
-      border: none;
-      color: #6d7882;
-    }
-  `;
+  &:disabled {
+    background-color: #cdd1d5;
+    cursor: not-allowed;
+    border: none;
+    color: #6d7882;
+  }
+`;
