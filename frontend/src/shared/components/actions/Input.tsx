@@ -24,7 +24,7 @@ const S = {
 
   Label: styled.label`
     color: ${({ theme }) => theme.PALLETE.gray[60]};
-    ${({ theme }) => theme.FONTS.body.small}
+    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
   InputBox: styled.input`
@@ -36,5 +36,5 @@ const S = {
 
     font: ${({ theme }) => theme.FONTS.body.medium};
     border-radius: 5px;
-    `,
+  `,
 };
