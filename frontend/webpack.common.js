@@ -39,7 +39,6 @@ const config = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    'tsconfig-paths-webpack-plugin',
   ],
 };
 
