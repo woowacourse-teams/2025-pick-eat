@@ -1,10 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import TabContent from './TabContent';
 
+import type { Meta, StoryObj } from '@storybook/react';
+
 const tabContents = [
-  <div>Content for Tab 1</div>,
-  <div>Content for Tab 2</div>,
-  <div>Content for Tab 3</div>,
+  <div key="1">Content for Tab 1</div>,
+  <div key="2">Content for Tab 2</div>,
+  <div key="3">Content for Tab 3</div>,
 ];
 
 const meta: Meta<typeof TabContent> = {

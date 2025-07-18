@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { css, useTheme } from '@emotion/react';
-import { AppTheme } from '@styles/global';
+
+import { css, Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 type ColorKeyType = 'primary' | 'secondary' | 'gray';
@@ -24,23 +24,22 @@ function Button({
   rightIcon,
   ...props
 }: Props) {
-  const theme: AppTheme = useTheme();
+  const theme = useTheme();
 
   return (
-    <button css={getButtonStyle(color, size, theme)} {...props}>
+    <S.Button css={getButtonStyle(color, size, theme)} {...props}>
       {leftIcon && <S.Icon src={leftIcon} alt="버튼 아이콘" />}
       {text}
       {rightIcon && <S.Icon src={rightIcon} alt="버튼 아이콘" />}
-    </button>
+    </S.Button>
   );
 }
 
 export default Button;
 
 const S = {
-  Icon: styled.img`
-    src
-  `,
+  Button: styled.button``,
+  Icon: styled.img``,
 };
 
 const SIZE = {
@@ -52,7 +51,7 @@ const SIZE = {
   full: { width: '100%', height: '48px', fontSize: '17px' },
 };
 
-const getColor = (color: ColorKeyType, theme: AppTheme, state: StateType) => {
+const getColor = (color: ColorKeyType, theme: Theme, state: StateType) => {
   const SIZE_MAP = {
     primary: theme.PALLETE.primary,
     secondary: theme.PALLETE.secondary,
@@ -78,7 +77,7 @@ const getColor = (color: ColorKeyType, theme: AppTheme, state: StateType) => {
 const getButtonStyle = (
   color: ColorKeyType,
   size: SizeKeyType,
-  theme: AppTheme
+  theme: Theme
 ) => css`
   width: ${size ? SIZE[size].width : '100%'};
   height: ${SIZE[size].height};

@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import React, { useState } from 'react';
+import React, { ReactNode, useState } from 'react';
+
 import Select from './Select';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Select.Bar> = {
   component: Select.Bar,
@@ -26,7 +28,15 @@ const options = [
   },
 ];
 
-const Template = (args: any) => {
+type ArgsProps = {
+  selectedValue?: string;
+  label?: string;
+  placeholder?: string;
+  onChange: (option: { value: string; label: string }) => void;
+  children: ReactNode;
+};
+
+const Template = (args: ArgsProps) => {
   const [selected, setSelected] = useState<{
     value: string;
     label: string;

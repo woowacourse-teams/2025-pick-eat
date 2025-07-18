@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+
 import { SIZE_MAP, SizeType } from './constants';
 
 interface ArrowProps {

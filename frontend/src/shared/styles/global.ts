@@ -132,4 +132,4 @@ export const THEME = {
   PALLETE,
 };
 
-export type AppTheme = typeof THEME;
+export type CustomTheme = typeof THEME;

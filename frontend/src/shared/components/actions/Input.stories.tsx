@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { ChangeEvent, ComponentProps, useState } from 'react';
+
 import Input from './Input';
-import { ChangeEvent, useState } from 'react';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof Input> = {
   component: Input,
@@ -11,7 +13,11 @@ export default meta;
 
 type Story = StoryObj<typeof Input>;
 
-const Template = (args: any) => {
+type ArgsProps = {
+  label?: string;
+} & ComponentProps<'input'>;
+
+const Template = (args: ArgsProps) => {
   const [state, setState] = useState<string>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);

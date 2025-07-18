@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import TabMenu from './TabMenu';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const tabData = [
   { tab: '한식', content: <div>한식 내용</div> },

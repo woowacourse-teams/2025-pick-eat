@@ -1,5 +1,6 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import TabBar from './TabBar';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof TabBar> = {
   title: 'shared/components/TabBar',
