@@ -6,13 +6,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Participant extends BaseEntity {
 
@@ -20,7 +18,7 @@ public class Participant extends BaseEntity {
     private String nickname;
 
     @Column(nullable = false)
-    private Boolean isEliminationCompleted = false;
+    private Boolean isEliminationCompleted;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
@@ -29,5 +27,6 @@ public class Participant extends BaseEntity {
     public Participant(String nickname, Room room) {
         this.nickname = nickname;
         this.room = room;
+        isEliminationCompleted = false;
     }
 }

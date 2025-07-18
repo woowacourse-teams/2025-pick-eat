@@ -11,6 +11,8 @@ import lombok.Getter;
 @Getter
 public class RoomCode {
 
+    private final static int UUID_LENGTH = 36;
+
     @Column(name = "code", nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID value;
 
@@ -23,7 +25,7 @@ public class RoomCode {
     }
 
     private UUID parseRoomCode(String roomCode) {
-        if (roomCode == null || roomCode.trim().isEmpty()) {
+        if (roomCode == null || roomCode.length() != UUID_LENGTH) {
             throw new BusinessException(ErrorCode.INVALID_ROOM_CODE);
         }
 
