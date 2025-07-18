@@ -6,7 +6,6 @@ import com.pickeat.backend.room.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.room.application.dto.response.ParticipantResponse;
 import com.pickeat.backend.room.domain.Participant;
 import com.pickeat.backend.room.domain.Room;
-import com.pickeat.backend.room.domain.RoomCode;
 import com.pickeat.backend.room.domain.repository.ParticipantRepository;
 import com.pickeat.backend.room.domain.repository.RoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,17 +21,13 @@ public class ParticipantService {
 
     @Transactional
     public ParticipantResponse createParticipant(ParticipantRequest request) {
-        RoomCode code = new RoomCode(request.roomCode());
-        Room room = findRoomByCode(code);
+        Room room = roomRepository.findById(request.roomId()).orElseThrow(
+                () -> new BusinessException(ErrorCode.ROOM_NOT_FOUND)
+        );
         room.incrementParticipantCount();
 
         Participant participant = new Participant(request.nickname(), room);
         Participant saved = participantRepository.save(participant);
         return ParticipantResponse.from(saved);
-    }
-
-    private Room findRoomByCode(RoomCode roomCode) {
-        return roomRepository.findByCode(roomCode)
-                .orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
     }
 }
