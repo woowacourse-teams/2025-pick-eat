@@ -76,7 +76,7 @@
             "position": "after"
           }
         ],
-        "import/no-unresolved": "error",
+
         "pathGroupsExcludedImportTypes": ["builtin"],
         "alphabetize": {
           "order": "asc",
@@ -84,7 +84,8 @@
         },
         "newlines-between": "always"
       }
-    ]
+    ],
+    "import/no-unresolved": "error"
   },
 
   "settings": {
