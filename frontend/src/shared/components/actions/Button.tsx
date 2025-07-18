@@ -2,6 +2,10 @@
 import { css, useTheme } from '@emotion/react';
 import { AppTheme } from '@styles/global';
 
+type ColorKeyType = 'primary' | 'secondary' | 'gray';
+type SizeKeyType = keyof typeof SIZE;
+type StateType = 'default' | 'hover' | 'active';
+
 type Props = {
   text: string;
   color?: ColorKeyType;
@@ -19,10 +23,6 @@ function Button({ text, color = 'primary', size = 'full', ...props }: Props) {
 }
 
 export default Button;
-
-type ColorKeyType = 'primary' | 'secondary' | 'gray';
-type SizeKeyType = keyof typeof SIZE;
-type StateType = 'default' | 'hover' | 'active';
 
 const SIZE = {
   xl: { width: '98px', height: '64px', fontSize: '19px' },
@@ -56,7 +56,7 @@ const getColor = (color: ColorKeyType, theme: AppTheme, state: StateType) => {
   return SIZE_MAP[color][SIZE];
 };
 
-export const getButtonStyle =
+const getButtonStyle =
   (color: ColorKeyType, size: SizeKeyType) => (theme: AppTheme) => css`
     width: ${size ? SIZE[size].width : '100%'};
     height: ${SIZE[size].height};
