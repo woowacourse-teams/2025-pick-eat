@@ -4,6 +4,7 @@ import com.pickeat.backend.restaurant.application.RestaurantService;
 import com.pickeat.backend.restaurant.application.dto.RestaurantExcludeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,9 +17,17 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @PatchMapping("/exclude")
-    public void excludeRestaurants(
-            @RequestBody RestaurantExcludeRequest request
-    ) {
+    public void excludeRestaurants(@RequestBody RestaurantExcludeRequest request) {
         restaurantService.exclude(request);
+    }
+
+    @PatchMapping("/{restaurantId}/like")
+    public void likeRestaurant(@PathVariable("restaurantId") Long restaurantId) {
+        restaurantService.like(restaurantId);
+    }
+
+    @PatchMapping("/{restaurantId}/unlike")
+    public void unlikeRestaurant(@PathVariable("restaurantId") Long restaurantId) {
+        restaurantService.unlike(restaurantId);
     }
 }

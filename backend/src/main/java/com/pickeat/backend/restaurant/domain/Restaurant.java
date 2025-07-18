@@ -58,4 +58,15 @@ public class Restaurant extends BaseEntity {
         //TODO: Room의 활성화 여부에 따른 소거 가능 여부 체크  (2025-07-18, 금, 16:40)
         this.isExcluded = true;
     }
+
+    public void like() {
+        this.likeCount++;
+    }
+
+    public void unlike() {
+        if (this.getLikeCount() <= 0) {
+            throw new IllegalArgumentException("더이상 좋아요 횟수를 줄일 수 없습니다.");
+        }
+        this.likeCount--;
+    }
 }
