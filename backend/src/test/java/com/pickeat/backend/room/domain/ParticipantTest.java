@@ -8,15 +8,18 @@ import org.junit.jupiter.api.Test;
 class ParticipantTest {
 
     @Nested
-    class 성공_케이스 {
+    class 참가자_생성 {
 
         @Test
-        void 유효한_정보로_참가자를_생성한다() {
+        void 유효한_정보로_참가자를_생성() {
+            // given
             String nickname = "테스트유저";
             Room room = createRoom();
 
+            // when
             Participant participant = new Participant(nickname, room);
 
+            // then
             assertThat(participant)
                     .extracting(
                             Participant::getNickname,
