@@ -4,6 +4,7 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
+import PreferRestaurant from '@pages/PreferRestaurant';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 import App from '../App';
@@ -26,7 +27,10 @@ function Wrapper() {
 const routes = createBrowserRouter([
   {
     Component: Wrapper,
-    children: [{ path: ROUTE_PATH.HOME, Component: App }],
+    children: [
+      { path: ROUTE_PATH.HOME, Component: App },
+      { path: ROUTE_PATH.PREFER_RESTAURANT, Component: PreferRestaurant },
+    ],
   },
 ]);
 
