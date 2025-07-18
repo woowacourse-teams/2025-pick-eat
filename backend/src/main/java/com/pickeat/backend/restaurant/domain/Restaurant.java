@@ -7,7 +7,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -53,5 +52,10 @@ public class Restaurant extends BaseEntity {
         this.distance = distance;
         this.roadAddressName = roadAddressName;
         this.placeUrl = placeUrl;
+    }
+
+    public void exclude() {
+        //TODO: Room의 활성화 여부에 따른 소거 가능 여부 체크  (2025-07-18, 금, 16:40)
+        this.isExcluded = true;
     }
 }
