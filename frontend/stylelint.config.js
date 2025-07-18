@@ -161,8 +161,7 @@ export default {
           properties: [],
         },
       ],
-      {
-        unspecified: 'bottomAlphabetical',
+      { unspecified: 'bottomAlphabetical' },
     ],
     'no-descending-specificity': null,
   },
