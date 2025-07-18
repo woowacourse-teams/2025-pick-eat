@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 type Props = {
-  tabs?: string[];
+  tabs: string[];
   selectedIndex: number;
   onTabClick: (index: number) => void;
 };
@@ -11,18 +11,12 @@ function TabBar({ tabs, selectedIndex, onTabClick }: Props) {
 
   return (
     <S.Container>
-      {(tabs ?? []).map((tab, index) => (
-        <S.TabItem
-          key={index}
-          isActive={index === selectedIndex}
-          onClick={() => onTabClick(index)}
-        >
+      {tabs.map((tab, index) => (
+        <S.TabItem key={index} onClick={() => onTabClick(index)}>
           <S.TabContent>
-            <S.TabInner>
-              <S.TabLabel isActive={index === selectedIndex}>
-                <p>{tab}</p>
-              </S.TabLabel>
-            </S.TabInner>
+            <S.TabLabel isActive={index === selectedIndex}>
+              <p>{tab}</p>
+            </S.TabLabel>
           </S.TabContent>
         </S.TabItem>
       ))}
@@ -36,51 +30,34 @@ function TabBar({ tabs, selectedIndex, onTabClick }: Props) {
 export default TabBar;
 
 const S = {
-  Container: styled.div`
+  Container: styled.button`
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
     padding: 0;
     position: relative;
     width: 100%;
     height: 100%;
+    cursor: pointer;
   `,
-  TabItem: styled.button<{ isActive: boolean }>`
+  TabItem: styled.div`
     flex-basis: 0;
     flex-grow: 1;
     height: 56px;
     min-height: 1px;
     min-width: 80px;
-    position: relative;
     flex-shrink: 0;
-    cursor: pointer;
     border-bottom: 2px solid ${({ theme }) => theme.PALLETE.gray[30]};
   `,
   TabContent: styled.div`
     display: flex;
-    flex-direction: row;
     align-items: center;
     justify-content: center;
-    position: relative;
     width: 100%;
     height: 100%;
   `,
-  TabInner: styled.div`
-    display: flex;
-    flex-direction: row;
-    height: 56px;
-    align-items: center;
-    justify-content: center;
-    padding: 0 8px;
-    position: relative;
-    width: 100%;
-  `,
   TabLabel: styled.div<{ isActive: boolean }>`
     ${({ theme }) => theme.TYPOGRAPHY.body.large_bold}
-    color: ${props =>
-      props.isActive
-        ? ({ theme }) => theme.PALLETE.primary[70]
-        : ({ theme }) => theme.PALLETE.gray[40]};
+    color: ${({ isActive, theme }) =>
+      isActive ? theme.PALLETE.primary[70] : theme.PALLETE.gray[40]};
   `,
   Indicator: styled.div<{ tabCount: number; activeTab: number }>`
     position: absolute;

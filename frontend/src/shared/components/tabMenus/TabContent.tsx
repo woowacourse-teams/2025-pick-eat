@@ -32,7 +32,7 @@ const S = {
     width: 500%;
     height: 100%;
     transition: transform 0.3s ease;
-    transform: translateX(-${props => props.selectedIndex * 20}%);
+    transform: translateX(-${({ selectedIndex }) => selectedIndex * 20}%);
   `,
   ContentBox: styled.div`
     width: 20%;
@@ -42,6 +42,5 @@ const S = {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    box-sizing: border-box;
   `,
 };

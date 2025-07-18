@@ -15,12 +15,16 @@ function TabMenu({ tabData }: Props) {
   const tabs = tabData.map(d => d.tab);
   const tabContents = tabData.map(d => d.content);
 
+  const handleTabClick = (index: number) => {
+    setCurrentTab(index);
+  };
+
   return (
     <S.Container>
       <TabBar
         tabs={tabs}
         selectedIndex={currentTab}
-        onTabClick={setCurrentTab}
+        onTabClick={handleTabClick}
       />
       <TabContent selectedIndex={currentTab} tabContents={tabContents} />
     </S.Container>
