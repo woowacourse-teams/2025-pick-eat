@@ -31,39 +31,40 @@ export default TabBar;
 
 const S = {
   Container: styled.button`
-    display: flex;
-    padding: 0;
-    position: relative;
     width: 100%;
     height: 100%;
+    display: flex;
+    position: relative;
+
+    padding: 0;
     cursor: pointer;
   `,
   TabItem: styled.div`
-    flex-basis: 0;
-    flex-grow: 1;
+    min-width: 80px;
     height: 56px;
     min-height: 1px;
-    min-width: 80px;
-    flex-shrink: 0;
+    flex: 1 0 0;
     border-bottom: 2px solid ${({ theme }) => theme.PALLETE.gray[30]};
   `,
   TabContent: styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
     width: 100%;
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   `,
   TabLabel: styled.div<{ isActive: boolean }>`
-    ${({ theme }) => theme.TYPOGRAPHY.body.large_bold}
     color: ${({ isActive, theme }) =>
       isActive ? theme.PALLETE.primary[70] : theme.PALLETE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.large_bold};
   `,
   Indicator: styled.div<{ tabCount: number; activeTab: number }>`
+    height: 4px;
     position: absolute;
     bottom: 0;
-    height: 4px;
+
     background-color: ${({ theme }) => theme.PALLETE.primary[50]};
+
     transition: all 0.2s cubic-bezier(0.19, 0.85, 0.66, 0.99);
     ${({ tabCount, activeTab }) =>
       tabCount > 0 &&

@@ -102,7 +102,7 @@ const S = {
 
   Label: styled.label`
     color: ${({ theme }) => theme.PALLETE.gray[60]};
-    ${({ theme }) => theme.TYPOGRAPHY.body.small}
+    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
   SelectBar: styled.button`
@@ -112,30 +112,33 @@ const S = {
     justify-content: space-between;
     align-items: center;
     gap: 5px;
+
+    padding: 8px;
     border: ${({ theme }) => `1px solid ${theme.PALLETE.gray[60]}`};
     border-radius: 5px;
-    padding: 8px;
 
     &:focus {
-      outline: none;
       border: 2px solid ${({ theme }) => theme.PALLETE.primary[60]};
+      outline: none;
     }
   `,
 
   SelectedValue: styled.span<{ isSelected: boolean }>`
     color: ${({ isSelected, theme }) =>
       isSelected ? theme.PALLETE.gray[100] : theme.PALLETE.gray[60]};
-    ${({ theme }) => theme.TYPOGRAPHY.body.medium};
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 
   OptionList: styled.ul`
     width: 100%;
-    border: 1px solid ${({ theme }) => theme.PALLETE.gray[60]};
-    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
-    padding: 8px;
-    border-radius: 5px;
     position: absolute;
     top: 110%;
+
+    padding: 8px;
+    border: 1px solid ${({ theme }) => theme.PALLETE.gray[60]};
+
+    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+    border-radius: 5px;
   `,
 
   Option: styled.li`

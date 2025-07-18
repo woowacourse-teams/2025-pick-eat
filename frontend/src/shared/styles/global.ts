@@ -1,81 +1,27 @@
-import { css } from '@emotion/react';
 
-const TYPOGRAPHY = {
+const fontFamily =
+  'Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans KR", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+
+const FONTS = {
   display: {
-    large: css`
-      font-size: 60px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
-    medium: css`
-      font-size: 44px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
-    small: css`
-      font-size: 36px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
+    large: `700 60px/150% ${fontFamily}`,
+    medium: `700 44px/150% ${fontFamily}`,
+    small: `700 36px/150% ${fontFamily}`,
   },
   heading: {
-    large: css`
-      font-size: 32px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
-    medium: css`
-      font-size: 24px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
-    small: css`
-      font-size: 19px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
+    large: `700 32px/150% ${fontFamily}`,
+    medium: `700 24px/150% ${fontFamily}`,
+    small: `600 19px/150% ${fontFamily}`,
   },
   body: {
-    large: css`
-      font-size: 19px;
-      line-height: 150%;
-      font-weight: 400;
-    `,
-    large_bold: css`
-      font-size: 19px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
-    medium: css`
-      font-size: 17px;
-      line-height: 150%;
-      font-weight: 400;
-    `,
-    medium_bold: css`
-      font-size: 17px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
-    small: css`
-      font-size: 15px;
-      line-height: 150%;
-      font-weight: 400;
-    `,
-    small_bold: css`
-      font-size: 15px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
-    xsmall: css`
-      font-size: 13px;
-      line-height: 150%;
-      font-weight: 400;
-    `,
-    xsmall_bold: css`
-      font-size: 13px;
-      line-height: 150%;
-      font-weight: 700;
-    `,
+    large: `400 19px/150% ${fontFamily}`,
+    large_bold: `700 19px/150% ${fontFamily}`,
+    medium: `400 17px/150% ${fontFamily}`,
+    medium_bold: `700 17px/150% ${fontFamily}`,
+    small: `400 15px/150% ${fontFamily}`,
+    small_bold: `700 15px/150% ${fontFamily}`,
+    xsmall: `400 13px/150% ${fontFamily}`,
+    xsmall_bold: `700 13px/150% ${fontFamily}`,
   },
 };
 
@@ -128,8 +74,8 @@ const PALLETE = {
 };
 
 export const THEME = {
-  TYPOGRAPHY,
   PALLETE,
+  FONTS
 };
 
 export type CustomTheme = typeof THEME;

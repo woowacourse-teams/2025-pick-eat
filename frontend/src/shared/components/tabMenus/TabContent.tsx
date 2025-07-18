@@ -23,14 +23,16 @@ const S = {
   Container: styled.div`
     width: 100%;
     height: fit-content;
+    position: relative;
+
     background-color: ${({ theme }) => theme.PALLETE.gray[5]};
     overflow-y: scroll;
-    position: relative;
   `,
   ContentSlider: styled.div<{ selectedIndex: number }>`
-    display: flex;
     width: 500%;
     height: 100%;
+    display: flex;
+
     transition: transform 0.3s ease;
     transform: translateX(-${({ selectedIndex }) => selectedIndex * 20}%);
   `,
@@ -39,8 +41,9 @@ const S = {
     height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+
     padding: 20px;
   `,
 };

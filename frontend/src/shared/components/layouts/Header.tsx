@@ -15,12 +15,14 @@ function Header() {
 const Container = styled.div`
   width: 100%;
   height: 72px;
-  position: sticky;
-  top: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: sticky;
+  top: 0;
+
   padding: 16px;
+
   background-color: ${({ theme }) => theme.PALLETE.gray[0]};
   border-bottom: solid 1px ${({ theme }) => theme.PALLETE.gray[20]};
 `;

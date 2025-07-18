@@ -24,15 +24,17 @@ const S = {
 
   Label: styled.label`
     color: ${({ theme }) => theme.PALLETE.gray[60]};
-    ${({ theme }) => theme.TYPOGRAPHY.body.small}
+    ${({ theme }) => theme.FONTS.body.small}
   `,
 
   InputBox: styled.input`
     width: 100%;
     height: 56px;
-    border-radius: 5px;
-    border: 1px solid ${({ theme }) => theme.PALLETE.gray[60]};
+
     padding: 6px;
-    ${({ theme }) => theme.TYPOGRAPHY.body.large};
-  `,
+    border: 1px solid ${({ theme }) => theme.PALLETE.gray[60]};
+
+    font: ${({ theme }) => theme.FONTS.body.medium};
+    border-radius: 5px;
+    `,
 };

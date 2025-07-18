@@ -81,17 +81,20 @@ const getButtonStyle = (
 ) => css`
   width: ${size ? SIZE[size].width : '100%'};
   height: ${SIZE[size].height};
-  font-size: ${SIZE[size].fontSize};
-  font-weight: 400;
-  border-radius: 8px;
-  color: ${color === 'primary' ? `white` : `#1E2124`};
-  background-color: ${getColor(color, theme, 'default')};
-  border: ${color === 'gray' ? `1px solid ${theme.PALLETE.gray[60]}` : 'none'};
-  cursor: pointer;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
+
+  border: ${color === 'gray' ? `1px solid ${theme.PALLETE.gray[60]}` : 'none'};
+
+  background-color: ${getColor(color, theme, 'default')};
+
+  color: ${color === 'primary' ? `white` : `#1E2124`};
+  font-size: ${SIZE[size].fontSize};
+  font-weight: 400;
+  border-radius: 8px;
+  cursor: pointer;
 
   &:hover {
     background-color: ${getColor(color, theme, 'hover')};
@@ -102,9 +105,11 @@ const getButtonStyle = (
   }
 
   &:disabled {
-    background-color: #cdd1d5;
-    cursor: not-allowed;
     border: none;
+
+    background-color: #cdd1d5;
+
     color: #6d7882;
+    cursor: not-allowed;
   }
 `;
