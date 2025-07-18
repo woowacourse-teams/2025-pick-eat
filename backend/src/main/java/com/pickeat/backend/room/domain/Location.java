@@ -17,18 +17,18 @@ public class Location {
     private Double x;
     @Column(name = "y", nullable = false)
     private Double y;
-    
+
     public Location(Double x, Double y) {
         validateCoordinates(x, y);
         this.x = x;
         this.y = y;
     }
-    
+
     private void validateCoordinates(Double x, Double y) {
-        if (x == null || x < -180.0 || x > 180.0) {
+        if (x < -180.0 || x > 180.0) {
             throw new BusinessException(ErrorCode.INVALID_LONGITUDE);
         }
-        if (y == null || y < -90.0 || y > 90.0) {
+        if (y < -90.0 || y > 90.0) {
             throw new BusinessException(ErrorCode.INVALID_LATITUDE);
         }
     }

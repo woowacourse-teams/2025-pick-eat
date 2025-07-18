@@ -25,7 +25,7 @@ public class RoomCode {
     }
 
     private UUID parseRoomCode(String roomCode) {
-        if (roomCode == null || roomCode.length() != UUID_LENGTH) {
+        if (roomCode.length() != UUID_LENGTH) {
             throw new BusinessException(ErrorCode.INVALID_ROOM_CODE);
         }
 

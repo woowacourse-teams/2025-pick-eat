@@ -22,7 +22,7 @@ public class Radius {
     }
 
     private void validateDistance(Integer distance) {
-        if (distance == null || distance <= 0 || distance >= 20000) {
+        if (distance <= 0 || distance >= 20000) {
             throw new BusinessException(ErrorCode.INVALID_RADIUS);
         }
     }

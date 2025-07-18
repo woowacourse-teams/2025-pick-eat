@@ -4,6 +4,7 @@ import com.pickeat.backend.room.application.RoomService;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
+import jakarta.validation.Valid;
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class RoomController {
     private final RoomService roomService;
 
     @PostMapping
-    public ResponseEntity<RoomResponse> createRoom(@RequestBody RoomRequest request) {
+    public ResponseEntity<RoomResponse> createRoom(@Valid @RequestBody RoomRequest request) {
         RoomResponse roomResponse = roomService.createRoom(request);
         String location = "/api/v1/rooms/" + roomResponse.code();
 

@@ -3,6 +3,7 @@ package com.pickeat.backend.room.ui;
 import com.pickeat.backend.room.application.ParticipantService;
 import com.pickeat.backend.room.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.room.application.dto.response.ParticipantResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class ParticipantController {
     private final ParticipantService participantService;
 
     @PostMapping
-    public ResponseEntity<ParticipantResponse> createParticipant(@RequestBody ParticipantRequest request) {
+    public ResponseEntity<ParticipantResponse> createParticipant(@Valid @RequestBody ParticipantRequest request) {
         ParticipantResponse participant = participantService.createParticipant(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
