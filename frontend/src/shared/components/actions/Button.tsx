@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css, useTheme } from '@emotion/react';
 import { AppTheme } from '@styles/global';
+import styled from '@emotion/styled';
 
 type ColorKeyType = 'primary' | 'secondary' | 'gray';
 type SizeKeyType = keyof typeof SIZE;
@@ -10,19 +11,37 @@ type Props = {
   text: string;
   color?: ColorKeyType;
   size?: SizeKeyType;
+  src?: string;
+  leftIcon?: string;
+  rightIcon?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-function Button({ text, color = 'primary', size = 'full', ...props }: Props) {
+function Button({
+  text,
+  color = 'primary',
+  size = 'full',
+  leftIcon,
+  rightIcon,
+  ...props
+}: Props) {
   const theme: AppTheme = useTheme();
 
   return (
     <button css={getButtonStyle(color, size, theme)} {...props}>
+      {leftIcon && <S.Icon src={leftIcon} alt="버튼 아이콘" />}
       {text}
+      {rightIcon && <S.Icon src={rightIcon} alt="버튼 아이콘" />}
     </button>
   );
 }
 
 export default Button;
+
+const S = {
+  Icon: styled.img`
+    src
+  `,
+};
 
 const SIZE = {
   xl: { width: '98px', height: '64px', fontSize: '19px' },
@@ -70,6 +89,10 @@ const getButtonStyle = (
   background-color: ${getColor(color, theme, 'default')};
   border: ${color === 'gray' ? `1px solid ${theme.PALLETE.gray[60]}` : 'none'};
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 
   &:hover {
     background-color: ${getColor(color, theme, 'hover')};

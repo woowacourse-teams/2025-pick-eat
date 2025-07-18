@@ -30,6 +30,7 @@ export const Playground = {
           <Button color="primary" text="md" size="md" />
           <Button color="primary" text="lg" size="lg" />
           <Button color="primary" text="xl" size="xl" />
+          <Button color="primary" text="xl" size="xl" />
           <Button color="primary" text="disabled" size="xl" disabled={true} />
           <Button color="primary" text="사이즈 지정x" />
           <Button color="primary" text="클릭해 보세용" onClick={handleGreet} />
@@ -71,6 +72,60 @@ export const Playground = {
           <Button color="gray" text="xl" size="xl" />
           <Button color="gray" text="disabled" size="xl" disabled={true} />
           <Button color="gray" text="사이즈 지정x" />
+        </div>
+      </section>
+      <section>
+        <h4>Icon Button</h4>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            marginTop: '8px',
+          }}
+        >
+          <Button
+            color="gray"
+            text="xs"
+            size="xs"
+            rightIcon="./images/double-arrow.svg"
+          />
+          <Button
+            color="gray"
+            text="sm"
+            size="sm"
+            rightIcon="./images/double-arrow.svg"
+          />
+          <Button
+            color="gray"
+            text="md"
+            size="md"
+            rightIcon="./images/double-arrow.svg"
+          />
+          <Button
+            color="gray"
+            text="lg"
+            size="lg"
+            rightIcon="./images/double-arrow.svg"
+          />
+          <Button
+            color="gray"
+            text="xl"
+            size="xl"
+            rightIcon="./images/double-arrow.svg"
+          />
+          <Button
+            color="gray"
+            text="dis"
+            size="xl"
+            disabled={true}
+            rightIcon="./images/double-arrow.svg"
+          />
+          <Button
+            color="gray"
+            text="사이즈 지정x"
+            rightIcon="./images/double-arrow.svg"
+          />
         </div>
       </section>
     </div>
