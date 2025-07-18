@@ -12,7 +12,7 @@ export default meta;
 type Story = StoryObj<typeof Input>;
 
 const Template = (args: any) => {
-  const [state, setState] = useState('INPUT');
+  const [state, setState] = useState<string>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);
   };
@@ -20,7 +20,14 @@ const Template = (args: any) => {
   return <Input {...args} value={state} onChange={handleChange} />;
 };
 
-export const Primary: Story = {
+export const Default: Story = {
+  render: args => <Template {...args} />,
+};
+
+export const WithPlaceholder: Story = {
+  args: {
+    placeholder: '입력해주세요.',
+  },
   render: args => <Template {...args} />,
 };
 
