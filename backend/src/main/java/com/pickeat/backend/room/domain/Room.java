@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Room extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "BINARY(16)", unique = true, nullable = false)
     private UUID code;
     @Column(nullable = false)
     private String name;
