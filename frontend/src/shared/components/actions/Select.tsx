@@ -42,7 +42,7 @@ function Bar({
   onChange,
   children,
 }: BarProps) {
-  const [open, , closeDropdown, toggleDropdown] = useBoolean(false);
+  const [opened, , closeDropdown, toggleDropdown] = useBoolean(false);
 
   const handleChange = (option: { value: string; label: string }) => {
     onChange(option);
@@ -56,10 +56,10 @@ function Bar({
   };
 
   useEffect(() => {
-    if (open) {
-      window.addEventListener('click', closeDropdown);
-      window.addEventListener('keydown', handleKeyDown);
-    }
+    if (!opened) return;
+
+    window.addEventListener('click', closeDropdown);
+    window.addEventListener('keydown', handleKeyDown);
 
     return () => {
       window.removeEventListener('click', closeDropdown);
@@ -72,15 +72,14 @@ function Bar({
       <S.SelectContainer onClick={e => e.stopPropagation()}>
         {label && <S.Label>{label}</S.Label>}
 
-        <S.SelectBar
-          onClick={toggleDropdown}
-          isSelected={Boolean(selectedValue)}
-        >
-          <S.SelectedValue>{selectedValue ?? placeholder}</S.SelectedValue>
-          <Arrow direction={open ? 'up' : 'down'} size="sm" />
+        <S.SelectBar onClick={toggleDropdown}>
+          <S.SelectedValue isSelected={Boolean(selectedValue)}>
+            {selectedValue ?? placeholder}
+          </S.SelectedValue>
+          <Arrow direction={opened ? 'up' : 'down'} size="sm" />
         </S.SelectBar>
 
-        {open && <S.OptionList>{children}</S.OptionList>}
+        {opened && <S.OptionList>{children}</S.OptionList>}
       </S.SelectContainer>
     </selectContext.Provider>
   );
@@ -104,7 +103,7 @@ const S = {
     ${({ theme }) => theme.TYPOGRAPHY.body.small}
   `,
 
-  SelectBar: styled.button<{ isSelected: boolean }>`
+  SelectBar: styled.button`
     width: 100%;
     height: 56px;
     display: flex;
@@ -114,9 +113,6 @@ const S = {
     border: ${({ theme }) => `1px solid ${theme.PALLETE.gray[60]}`};
     border-radius: 5px;
     padding: 8px;
-    color: ${({ isSelected, theme }) =>
-      isSelected ? theme.PALLETE.gray[100] : theme.PALLETE.gray[60]};
-    ${({ theme }) => theme.TYPOGRAPHY.body.medium};
 
     &:focus {
       outline: none;
@@ -124,7 +120,11 @@ const S = {
     }
   `,
 
-  SelectedValue: styled.span``,
+  SelectedValue: styled.span<{ isSelected: boolean }>`
+    color: ${({ isSelected, theme }) =>
+      isSelected ? theme.PALLETE.gray[100] : theme.PALLETE.gray[60]};
+    ${({ theme }) => theme.TYPOGRAPHY.body.medium};
+  `,
 
   OptionList: styled.ul`
     width: 100%;
