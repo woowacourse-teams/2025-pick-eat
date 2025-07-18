@@ -14,7 +14,6 @@ public class GlobalExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatus(errorCode.getStatus());
         problemDetail.setTitle(errorCode.name());
         problemDetail.setDetail(e.getMessage());
-        problemDetail.setProperty("errorCode", errorCode.getCode());
 
         return problemDetail;
     }
