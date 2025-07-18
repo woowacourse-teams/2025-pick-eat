@@ -11,7 +11,7 @@ import lombok.Getter;
 @Getter
 public class RoomCode {
 
-    @Column(name = "code", nullable = false, unique = true)
+    @Column(name = "code", nullable = false, unique = true, columnDefinition = "BINARY(16)")
     private UUID value;
 
     public RoomCode() {
