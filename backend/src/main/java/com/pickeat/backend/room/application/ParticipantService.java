@@ -1,11 +1,11 @@
 package com.pickeat.backend.room.application;
 
-import com.pickeat.backend.room.application.dto.ParticipantRequest;
-import com.pickeat.backend.room.application.dto.ParticipantResponse;
+import com.pickeat.backend.room.application.dto.request.ParticipantRequest;
+import com.pickeat.backend.room.application.dto.response.ParticipantResponse;
+import com.pickeat.backend.room.application.support.RoomCodeParser;
 import com.pickeat.backend.room.domain.Participant;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.repository.ParticipantRepository;
-import com.pickeat.backend.room.domain.repository.RoomRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class ParticipantService {
 
     private final ParticipantRepository participantRepository;
-    private final RoomRepository roomRepository;
+    private final RoomQueryService roomQueryService;
 
     @Transactional
     public ParticipantResponse createParticipant(ParticipantRequest request) {
-        Room room = roomRepository.findByCode(UUID.fromString(request.roomCode()))
-                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+        UUID parsedRoomCode = RoomCodeParser.parseRoomCode(request.roomCode());
+        Room room = roomQueryService.findByCode(parsedRoomCode);
         room.incrementParticipantCount();
 
         Participant participant = new Participant(request.nickname(), room);

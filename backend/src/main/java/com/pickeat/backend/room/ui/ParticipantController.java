@@ -1,8 +1,8 @@
 package com.pickeat.backend.room.ui;
 
 import com.pickeat.backend.room.application.ParticipantService;
-import com.pickeat.backend.room.application.dto.ParticipantRequest;
-import com.pickeat.backend.room.application.dto.ParticipantResponse;
+import com.pickeat.backend.room.application.dto.request.ParticipantRequest;
+import com.pickeat.backend.room.application.dto.response.ParticipantResponse;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

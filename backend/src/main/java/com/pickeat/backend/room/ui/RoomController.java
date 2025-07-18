@@ -1,9 +1,9 @@
 package com.pickeat.backend.room.ui;
 
 import com.pickeat.backend.room.application.RoomService;
-import com.pickeat.backend.room.application.dto.ParticipantStateResponse;
-import com.pickeat.backend.room.application.dto.RoomRequest;
-import com.pickeat.backend.room.application.dto.RoomResponse;
+import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
+import com.pickeat.backend.room.application.dto.request.RoomRequest;
+import com.pickeat.backend.room.application.dto.response.RoomResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,7 +31,7 @@ public class RoomController {
     }
 
     @PatchMapping("/{roomCode}/deactivate")
-    public void createRoom(@PathVariable String roomCode) {
+    public void deactivateRoom(@PathVariable String roomCode) {
         roomService.deactivateRoom(roomCode);
     }
 }

@@ -1,8 +1,9 @@
 package com.pickeat.backend.room.application;
 
-import com.pickeat.backend.room.application.dto.ParticipantStateResponse;
-import com.pickeat.backend.room.application.dto.RoomRequest;
-import com.pickeat.backend.room.application.dto.RoomResponse;
+import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
+import com.pickeat.backend.room.application.dto.request.RoomRequest;
+import com.pickeat.backend.room.application.dto.response.RoomResponse;
+import com.pickeat.backend.room.application.support.RoomCodeParser;
 import com.pickeat.backend.room.domain.Location;
 import com.pickeat.backend.room.domain.Radius;
 import com.pickeat.backend.room.domain.Room;
@@ -19,6 +20,7 @@ public class RoomService {
 
     private final RoomRepository roomRepository;
     private final ParticipantRepository participantRepository;
+    private final RoomQueryService roomQueryService;
 
     @Transactional
     public RoomResponse createRoom(RoomRequest request) {
@@ -34,8 +36,8 @@ public class RoomService {
 
     @Transactional(readOnly = true)
     public ParticipantStateResponse getParticipantStateSummary(String roomCode) {
-        Room room = roomRepository.findByCode(UUID.fromString(roomCode))
-                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+        UUID parsedRoomCode = RoomCodeParser.parseRoomCode(roomCode);
+        Room room = roomQueryService.findByCode(parsedRoomCode);
         int eliminatedCount = participantRepository.countByRoomIdAndIsEliminationCompletedTrue(
                 room.getId());
         return ParticipantStateResponse.of(room.getParticipantCount(), eliminatedCount);
@@ -43,8 +45,8 @@ public class RoomService {
 
     @Transactional
     public void deactivateRoom(String roomCode) {
-        Room room = roomRepository.findByCode(UUID.fromString(roomCode))
-                .orElseThrow(() -> new IllegalArgumentException("Room not found"));
+        UUID parsedRoomCode = RoomCodeParser.parseRoomCode(roomCode);
+        Room room = roomQueryService.findByCode(parsedRoomCode);
         room.deactivate();
     }
 }
