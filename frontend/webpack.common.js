@@ -2,6 +2,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,21 +29,11 @@ const config = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', '.jsx'],
-    alias: {
-      '@domains': path.resolve(__dirname, 'src/domains'),
-      '@components': path.resolve(__dirname, 'src/shared/components'),
-      '@hooks': path.resolve(__dirname, 'src/shared/hooks'),
-      '@utils': path.resolve(__dirname, 'src/shared/utils'),
-      '@pages': path.resolve(__dirname, 'src/pages'),
-      '@routes': path.resolve(__dirname, 'src/routes'),
-      '@apis': path.resolve(__dirname, 'src/apis'),
-      '@utils': path.resolve(__dirname, 'src/shared/utils'),
-      '@pages': path.resolve(__dirname, 'src/pages'),
-      '@routes': path.resolve(__dirname, 'src/routes'),
-      '@apis': path.resolve(__dirname, 'src/apis'),
-      '@types': path.resolve(__dirname, 'src/shared/types'),
-      '@styles': path.resolve(__dirname, 'src/shared/styles'),
-    },
+    plugins: [
+      new TsconfigPathsPlugin({
+        configFile: path.resolve(__dirname, './tsconfig.json'),
+      }),
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({

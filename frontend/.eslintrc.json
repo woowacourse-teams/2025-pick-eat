@@ -20,7 +20,7 @@
   "plugins": ["react", "@typescript-eslint", "eslint-plugin-import"],
   "rules": {
     "react/react-in-jsx-scope": "off",
-    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-unused-vars": "error",
     "import/order": [
       "error",
       {
@@ -76,7 +76,7 @@
             "position": "after"
           }
         ],
-        "import/no-unresolved": "error",
+
         "pathGroupsExcludedImportTypes": ["builtin"],
         "alphabetize": {
           "order": "asc",
@@ -84,7 +84,8 @@
         },
         "newlines-between": "always"
       }
-    ]
+    ],
+    "import/no-unresolved": "off"
   },
 
   "settings": {

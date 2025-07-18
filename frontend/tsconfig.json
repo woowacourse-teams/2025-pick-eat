@@ -17,8 +17,8 @@
       "@hooks/*": ["shared/hooks/*"],
       "@utils/*": ["shared/utils/*"],
       "@pages/*": ["pages/*"],
-      "@routes/*": ["src/routes/*"],
-      "@apis/*": ["src/apis/*"],
+      "@routes/*": ["routes/*"],
+      "@apis/*": ["apis/*"],
       "@types/*": ["shared/types/*"],
       "@styles/*": ["shared/styles/*"]
     },

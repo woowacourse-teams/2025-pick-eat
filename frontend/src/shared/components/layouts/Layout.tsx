@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
+
 import Header from './Header';
 
 type Props = {
@@ -24,11 +25,13 @@ const Container = styled.div`
   height: 100vh;
   display: flex;
   justify-content: center;
+
   background-color: ${({ theme }) => theme.PALLETE.gray[5]};
 `;
 
 const Wrapper = styled.div`
-  max-width: 768px;
   width: 100%;
+  max-width: 768px;
+
   background-color: ${({ theme }) => theme.PALLETE.gray[0]};
 `;
