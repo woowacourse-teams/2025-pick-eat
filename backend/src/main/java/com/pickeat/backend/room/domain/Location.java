@@ -1,15 +1,15 @@
 package com.pickeat.backend.room.domain;
 
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @Embeddable
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Location {
 
@@ -17,5 +17,19 @@ public class Location {
     private Double x;
     @Column(name = "y", nullable = false)
     private Double y;
-
+    
+    public Location(Double x, Double y) {
+        validateCoordinates(x, y);
+        this.x = x;
+        this.y = y;
+    }
+    
+    private void validateCoordinates(Double x, Double y) {
+        if (x == null || x < -180.0 || x > 180.0) {
+            throw new BusinessException(ErrorCode.INVALID_LONGITUDE);
+        }
+        if (y == null || y < -90.0 || y > 90.0) {
+            throw new BusinessException(ErrorCode.INVALID_LATITUDE);
+        }
+    }
 }
