@@ -9,7 +9,7 @@ type Props = {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 function Button({ text, color = 'primary', size = 'full', ...props }: Props) {
-  const theme = useTheme() as AppTheme;
+  const theme: AppTheme = useTheme();
 
   return (
     <button css={getButtonStyle(color, size)(theme)} {...props}>
