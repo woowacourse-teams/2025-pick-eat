@@ -21,7 +21,7 @@ public class Participant extends BaseEntity {
     private Boolean isEliminationCompleted = false;
 
     @ManyToOne
-    @JoinColumn(name = "room_id")
+    @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
     public Participant(String nickname, Room room) {
