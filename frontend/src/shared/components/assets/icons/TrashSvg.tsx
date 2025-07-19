@@ -4,7 +4,7 @@ type Props = {
   size: SizeType;
 } & React.ImgHTMLAttributes<HTMLImageElement>;
 
-function Trash({ size, color }: Props) {
+function TrashSvg({ size, color }: Props) {
   return (
     <svg
       width={SIZE_MAP[size]}
@@ -70,4 +70,4 @@ function Trash({ size, color }: Props) {
   );
 }
 
-export default Trash;
+export default TrashSvg;
