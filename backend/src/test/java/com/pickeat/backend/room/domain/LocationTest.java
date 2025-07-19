@@ -2,6 +2,7 @@ package com.pickeat.backend.room.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
@@ -41,13 +42,14 @@ class LocationTest {
             Location location2 = new Location(180.0, 90.0);
 
             // then
-            assertThat(location1)
-                    .extracting(Location::getX, Location::getY)
-                    .containsExactly(-180.0, -90.0);
-
-            assertThat(location2)
-                    .extracting(Location::getX, Location::getY)
-                    .containsExactly(180.0, 90.0);
+            assertAll(
+                    () -> assertThat(location1)
+                            .extracting(Location::getX, Location::getY)
+                            .containsExactly(-180.0, -90.0),
+                    () -> assertThat(location2)
+                            .extracting(Location::getX, Location::getY)
+                            .containsExactly(180.0, 90.0)
+            );
         }
 
         @ParameterizedTest

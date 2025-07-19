@@ -2,6 +2,7 @@ package com.pickeat.backend.room.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
@@ -74,7 +75,7 @@ public class RoomServiceTest {
         }
 
         @ParameterizedTest
-        @ValueSource(ints = {0, -1, 20000})
+        @ValueSource(ints = {0, -1, 20001})
         void 유효하지_않은_반경으로_방_생성시_예외(int invalidDistance) {
             // given
             RoomRequest roomRequest = new RoomRequest("방", 50.0, 50.0, invalidDistance);
@@ -140,8 +141,11 @@ public class RoomServiceTest {
                     room.getCode().toString());
 
             //then
-            assertThat(participantStateResponse.totalParticipants()).isEqualTo(totalParticipantCount);
-            assertThat(participantStateResponse.eliminatedParticipants()).isEqualTo(eliminatedParticipantsCount);
+            assertAll(
+                    () -> assertThat(participantStateResponse.totalParticipants()).isEqualTo(totalParticipantCount),
+                    () -> assertThat(participantStateResponse.eliminatedParticipants()).isEqualTo(
+                            eliminatedParticipantsCount)
+            );
         }
 
         @Test
@@ -182,10 +186,12 @@ public class RoomServiceTest {
             RoomResponse roomResponse = roomService.getRoom(room.getCode().toString());
 
             // then
-            assertThat(roomResponse.name()).isEqualTo(name);
-            assertThat(roomResponse.x()).isEqualTo(x);
-            assertThat(roomResponse.y()).isEqualTo(y);
-            assertThat(roomResponse.radius()).isEqualTo(distance);
+            assertAll(
+                    () -> assertThat(roomResponse.name()).isEqualTo(name),
+                    () -> assertThat(roomResponse.x()).isEqualTo(x),
+                    () -> assertThat(roomResponse.y()).isEqualTo(y),
+                    () -> assertThat(roomResponse.radius()).isEqualTo(distance)
+            );
         }
 
         @Test

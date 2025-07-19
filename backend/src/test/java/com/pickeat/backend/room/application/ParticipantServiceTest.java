@@ -2,6 +2,7 @@ package com.pickeat.backend.room.application;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
@@ -49,8 +50,10 @@ class ParticipantServiceTest {
             // then
             Participant savedParticipant = testEntityManager.find(Participant.class, response.id());
 
-            assertThat(savedParticipant).isNotNull();
-            assertThat(room.getParticipantCount()).isEqualTo(pastCount + 1);
+            assertAll(
+                    () -> assertThat(savedParticipant).isNotNull(),
+                    () -> assertThat(room.getParticipantCount()).isEqualTo(pastCount + 1)
+            );
         }
 
         @Test

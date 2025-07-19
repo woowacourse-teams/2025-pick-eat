@@ -1,6 +1,7 @@
 package com.pickeat.backend.room.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,11 +22,13 @@ class RoomTest {
             Room room = new Room(name, location, radius);
 
             // then
-            assertThat(room)
-                    .extracting(Room::getName, Room::getLocation, Room::getRadius,
-                            Room::getParticipantCount, Room::getIsActive)
-                    .containsExactly(name, location, radius, 0, true);
-            assertThat(room.getCode()).isNotNull();
+            assertAll(
+                    () -> assertThat(room)
+                            .extracting(Room::getName, Room::getLocation, Room::getRadius,
+                                    Room::getParticipantCount, Room::getIsActive)
+                            .containsExactly(name, location, radius, 0, true),
+                    () -> assertThat(room.getCode()).isNotNull()
+            );
         }
     }
 
