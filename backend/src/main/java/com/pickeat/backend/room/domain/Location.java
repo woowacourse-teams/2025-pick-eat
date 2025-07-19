@@ -25,9 +25,17 @@ public class Location {
     }
 
     private void validateCoordinates(Double x, Double y) {
+        validateLongitude(x);
+        validateLatitude(y);
+    }
+
+    private void validateLongitude(Double x) {
         if (x < -180.0 || x > 180.0) {
             throw new BusinessException(ErrorCode.INVALID_LONGITUDE);
         }
+    }
+
+    private void validateLatitude(Double y) {
         if (y < -90.0 || y > 90.0) {
             throw new BusinessException(ErrorCode.INVALID_LATITUDE);
         }
