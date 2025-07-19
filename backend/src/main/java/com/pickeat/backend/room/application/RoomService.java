@@ -43,8 +43,7 @@ public class RoomService {
 
     public ParticipantStateResponse getParticipantStateSummary(String roomCode) {
         Room room = findRoomByCode(roomCode);
-        int eliminatedCount = participantRepository.countByRoomIdAndIsEliminationCompleted(
-                room.getId(), true);
+        int eliminatedCount = participantRepository.countEliminatedByRoom(room.getId(), true);
         return ParticipantStateResponse.of(room.getParticipantCount(), eliminatedCount);
     }
 

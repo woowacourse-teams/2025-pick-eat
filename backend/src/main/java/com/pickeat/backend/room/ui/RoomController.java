@@ -33,19 +33,20 @@ public class RoomController {
     }
 
     @GetMapping("/{roomCode}/participants/state")
-    public ResponseEntity<ParticipantStateResponse> getParticipantStateSummary(@PathVariable String roomCode) {
+    public ResponseEntity<ParticipantStateResponse> getParticipantStateSummary(
+            @PathVariable("roomCode") String roomCode) {
         ParticipantStateResponse response = roomService.getParticipantStateSummary(roomCode);
         return ResponseEntity.ok().body(response);
     }
 
     @PatchMapping("/{roomCode}/deactivate")
-    public ResponseEntity<Void> deactivateRoom(@PathVariable String roomCode) {
+    public ResponseEntity<Void> deactivateRoom(@PathVariable("roomCode") String roomCode) {
         roomService.deactivateRoom(roomCode);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{roomCode}")
-    public ResponseEntity<RoomResponse> getRoom(@PathVariable String roomCode) {
+    public ResponseEntity<RoomResponse> getRoom(@PathVariable("roomCode") String roomCode) {
         RoomResponse response = roomService.getRoom(roomCode);
         return ResponseEntity.ok().body(response);
     }

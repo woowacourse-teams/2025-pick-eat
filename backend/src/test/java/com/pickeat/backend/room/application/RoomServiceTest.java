@@ -40,9 +40,11 @@ public class RoomServiceTest {
         void 방_생성_성공() {
             // given
             RoomRequest roomRequest = new RoomRequest("방", 50.0, 50.0, 100);
+
             // when
             RoomResponse roomResponse = roomService.createRoom(roomRequest);
             Room savedRoom = testEntityManager.find(Room.class, roomResponse.id());
+
             // then
             assertThat(savedRoom).isNotNull();
         }
@@ -52,6 +54,7 @@ public class RoomServiceTest {
         void 범위가_벗어난_경도로_방_생성시_예외(double invalidLongitude) {
             // given
             RoomRequest roomRequest = new RoomRequest("방", invalidLongitude, 50.0, 100);
+
             // when & then
             assertThatThrownBy(() -> roomService.createRoom(roomRequest))
                     .isInstanceOf(BusinessException.class)
@@ -63,6 +66,7 @@ public class RoomServiceTest {
         void 범위가_벗어난_위도로_방_생성시_예외(double invalidLatitude) {
             // given
             RoomRequest roomRequest = new RoomRequest("방", 50.0, invalidLatitude, 100);
+
             // when & then
             assertThatThrownBy(() -> roomService.createRoom(roomRequest))
                     .isInstanceOf(BusinessException.class)
@@ -74,6 +78,7 @@ public class RoomServiceTest {
         void 유효하지_않은_반경으로_방_생성시_예외(int invalidDistance) {
             // given
             RoomRequest roomRequest = new RoomRequest("방", 50.0, 50.0, invalidDistance);
+
             // when & then
             assertThatThrownBy(() -> roomService.createRoom(roomRequest))
                     .isInstanceOf(BusinessException.class)

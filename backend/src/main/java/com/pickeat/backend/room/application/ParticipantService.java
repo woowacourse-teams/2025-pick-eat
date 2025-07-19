@@ -22,13 +22,16 @@ public class ParticipantService {
 
     @Transactional
     public ParticipantResponse createParticipant(ParticipantRequest request) {
-        Room room = roomRepository.findById(request.roomId()).orElseThrow(
-                () -> new BusinessException(ErrorCode.ROOM_NOT_FOUND)
-        );
+        Room room = findRoomById(request.roomId());
         room.incrementParticipantCount();
 
         Participant participant = new Participant(request.nickname(), room);
         Participant saved = participantRepository.save(participant);
         return ParticipantResponse.from(saved);
+    }
+
+    private Room findRoomById(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
     }
 }

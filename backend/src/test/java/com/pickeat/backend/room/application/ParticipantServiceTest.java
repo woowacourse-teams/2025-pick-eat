@@ -39,16 +39,18 @@ class ParticipantServiceTest {
             Radius radius = new Radius(150);
             Room room = new Room(name, location, radius);
             Long roomId = (Long) testEntityManager.persistAndGetId(room);
-            assertThat(room.getParticipantCount()).isEqualTo(0);
+            Integer pastCount = room.getParticipantCount();
 
             ParticipantRequest request = new ParticipantRequest("테스트유저", roomId);
+
             // when
             ParticipantResponse response = participantService.createParticipant(request);
 
-            Participant savedParticipant = testEntityManager.find(Participant.class, response.id());
             // then
+            Participant savedParticipant = testEntityManager.find(Participant.class, response.id());
+
             assertThat(savedParticipant).isNotNull();
-            assertThat(room.getParticipantCount()).isEqualTo(1);
+            assertThat(room.getParticipantCount()).isEqualTo(pastCount + 1);
         }
 
         @Test
