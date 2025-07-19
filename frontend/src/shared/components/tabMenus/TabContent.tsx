@@ -26,7 +26,7 @@ const S = {
     position: relative;
 
     background-color: ${({ theme }) => theme.PALLETE.gray[5]};
-    overflow-y: scroll;
+    overflow-x: hidden;
   `,
   ContentSlider: styled.div<{ selectedIndex: number }>`
     width: 500%;
