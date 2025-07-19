@@ -8,9 +8,7 @@ type Props = {
 function Badge({ children, color = 'gray' }: Props) {
   return (
     <S.Container color={color}>
-      <S.Text>
-        {children}
-      </S.Text>
+      <S.Text>{children}</S.Text>
     </S.Container>
   );
 }
@@ -37,6 +35,6 @@ const S = {
     align-items: center;
 
     color: ${({ theme }) => theme.PALLETE.gray[70]};
-    font: ${({ theme }) => theme.FONTS.body.small};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };
