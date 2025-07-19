@@ -30,7 +30,7 @@ function TabBar({ tabs, selectedIndex, onTabClick }: Props) {
 export default TabBar;
 
 const S = {
-  Container: styled.button`
+  Container: styled.div`
     width: 100%;
     height: 100%;
     display: flex;
@@ -39,7 +39,7 @@ const S = {
     padding: 0;
     cursor: pointer;
   `,
-  TabItem: styled.div`
+  TabItem: styled.button`
     min-width: 80px;
     height: 56px;
     min-height: 1px;
