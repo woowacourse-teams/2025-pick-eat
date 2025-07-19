@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RoomService {
 
     private final RoomRepository roomRepository;
@@ -40,7 +41,6 @@ public class RoomService {
         room.deactivate();
     }
 
-    @Transactional(readOnly = true)
     public ParticipantStateResponse getParticipantStateSummary(String roomCode) {
         Room room = findRoomByCode(roomCode);
         int eliminatedCount = participantRepository.countByRoomIdAndIsEliminationCompletedTrue(
@@ -48,7 +48,6 @@ public class RoomService {
         return ParticipantStateResponse.of(room.getParticipantCount(), eliminatedCount);
     }
 
-    @Transactional(readOnly = true)
     public RoomResponse getRoom(String roomCode) {
         Room room = findRoomByCode(roomCode);
         return RoomResponse.from(room);
