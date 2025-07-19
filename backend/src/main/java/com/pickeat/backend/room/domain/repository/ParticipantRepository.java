@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
-    int countByRoomIdAndIsEliminationCompletedTrue(Long roomId);
+    int countByRoomIdAndIsEliminationCompleted(Long roomId, Boolean completed);
 }
