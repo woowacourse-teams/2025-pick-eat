@@ -26,7 +26,7 @@ const Container = styled.div`
   background-color: ${({ theme }) => theme.PALLETE.gray[0]};
   border-bottom: solid 1px ${({ theme }) => theme.PALLETE.gray[20]};
 
-  z-index: 1000;
+  z-index: 20;
 `;
 
 export default Header;
