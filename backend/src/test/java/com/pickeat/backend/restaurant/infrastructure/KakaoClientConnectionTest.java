@@ -13,14 +13,14 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClient;
 
-@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 @ActiveProfiles("test")
+@Disabled("외부 네트워크 요청이 일어나므로 비활성화")
+@SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class KakaoClientConnectionTest {
 
     @Value("${external.kakao.map.restApiKey}")
     private String kakaoApiKey;
 
-    @Disabled("외부 네트워크 요청이 일어나므로 비활성화")
     @Test
     void 실제_카카오_API_연동_테스트() {
         // given

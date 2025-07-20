@@ -22,9 +22,9 @@ import org.springframework.web.client.RestClient;
 
 class KakaoRestaurantSearchClientTest {
 
-    private final RestClient.Builder testBuilder = RestClient.builder().baseUrl("https://dapi.kakao.com");
-    private final MockRestServiceServer mockServer = MockRestServiceServer.bindTo(testBuilder).build();
-    private final KakaoRestaurantSearchClient kakaoRestaurantSearchClient = new KakaoRestaurantSearchClient(
+    private static final RestClient.Builder testBuilder = RestClient.builder().baseUrl("https://dapi.kakao.com");
+    private static final MockRestServiceServer mockServer = MockRestServiceServer.bindTo(testBuilder).build();
+    private static final KakaoRestaurantSearchClient kakaoRestaurantSearchClient = new KakaoRestaurantSearchClient(
             testBuilder.build(), new ObjectMapper());
 
     @Nested
