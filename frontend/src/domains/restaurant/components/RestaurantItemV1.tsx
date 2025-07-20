@@ -63,6 +63,7 @@ const S = {
     height: fit-content;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     position: relative;
     ${({ pressed }) =>
       pressed
@@ -75,16 +76,15 @@ const S = {
       transform: scale(1);
 
     `}
+    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 10px;
   `,
   CardContainer: styled.div`
     width: 100%;
     height: 120px;
     position: relative;
-    overflow: hidden;
-    border-radius: 10px;
-    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
   `,
   CardContent: styled.div<{ pressed: boolean }>`
     width: 100%;
@@ -114,9 +114,9 @@ const S = {
     justify-content: center;
     align-items: center;
     position: absolute;
-    z-index: 1;
+    z-index: 2;
 
-    background: #2a2f3d8f;
+    background: #ffffff7f;
 
     animation: fadeIn 0.25s;
     inset: 0;
@@ -125,21 +125,17 @@ const S = {
   OverlayText: styled.span`
     padding: 8px 20px;
 
-    color: ${({ theme }) => theme.PALLETE.gray[0]};
+    color: ${({ theme }) => theme.PALLETE.gray[80]};
     font: ${({ theme }) => theme.FONTS.body.small_bold};
     border-radius: 8px;
   `,
   DeleteButton: styled.button<{ pressed: boolean }>`
-    width: 40px;
+    width: 100%;
     height: 40px;
 
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: -16px;
-    right: -16px;
     padding: 0 16px;
+
+    background-color: ${({ theme }) => theme.PALLETE.primary[40]};
 
     color: ${({ theme }) => theme.PALLETE.gray[0]};
     font: ${({ theme }) => theme.FONTS.body.xsmall};
@@ -147,13 +143,12 @@ const S = {
     ${({ pressed, theme }) =>
       pressed
         ? `
+      background-color: ${theme.PALLETE.gray[20]};
       color: ${theme.PALLETE.gray[0]};
     `
         : `
       color: ${theme.PALLETE.gray[0]};
     `}
-
-    z-index: 2;
   `,
   IconContainer: styled.div`
     display: flex;
