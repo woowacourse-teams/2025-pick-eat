@@ -4,6 +4,7 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
+import RestaurantExclude from '@pages/restaurantExclude/RestaurantExclude';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 import App from '../App';
@@ -27,6 +28,12 @@ const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [{ path: ROUTE_PATH.HOME, Component: App }],
+  },
+  {
+    Component: Wrapper,
+    children: [
+      { path: ROUTE_PATH.RESTAURANT_EXCLUDE, Component: RestaurantExclude },
+    ],
   },
 ]);
 
