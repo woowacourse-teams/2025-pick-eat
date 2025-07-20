@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import RestaurantItem from './RestaurantItem';
-import { link } from 'fs';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof RestaurantItem> = {
-  title: 'domains/restaurant/components/RestaurantItem',
+  title: 'RestaurantItem',
   component: RestaurantItem,
   parameters: {
     layout: 'centered',
@@ -13,15 +13,22 @@ export default meta;
 
 type Story = StoryObj<typeof RestaurantItem>;
 
-const defaultTabs = ['탭 1', '탭 2', '탭 3'];
-
 export const Default: Story = {
   args: {
-    name: '피양콩할마니',
-    description: '이 식당은 정말 맛있습니다.',
-    category: 'korean',
-    link: 'https://example.com/restaurant',
-    walkInfo: 5,
+    name: '육회바른연어 잠실점',
+    category: '고기',
+    link: 'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
+    distance: 500,
+  },
+  render: args => <RestaurantItem {...args} />,
+};
+
+export const LongTitle: Story = {
+  args: {
+    name: '일이삼사오육칠팔구십일이삼사오육칠팔',
+    category: '샌드위치',
+    link: 'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
+    distance: 300,
   },
   render: args => <RestaurantItem {...args} />,
 };

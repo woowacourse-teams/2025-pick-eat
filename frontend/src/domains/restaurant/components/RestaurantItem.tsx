@@ -1,65 +1,56 @@
-import { useState } from 'react';
-import styled from '@emotion/styled';
-import Trash from '@components/assets/icons/Trash';
+import CrossSvg from '@components/assets/icons/CrossSvg';
+import RevertSvg from '@components/assets/icons/RevertSvg';
+import Badge from '@components/labels/Badge';
 
-type RestaurantCategory =
-  | 'korean'
-  | 'chinese'
-  | 'japanese'
-  | 'western'
-  | '기타';
+import { useBoolean } from '@hooks/useBoolean';
+
+import styled from '@emotion/styled';
 
 type Props = {
   name: string;
-  description: string;
-  category: RestaurantCategory;
+  category: string;
   link: string;
-  walkInfo?: number;
+  distance: number;
 };
 
-function RestaurantItem({
-  name,
-  description,
-  category,
-  link,
-  walkInfo,
-}: Props) {
-  const [isPressed, setIsPressed] = useState(false);
-
-  const handleClick = () => {
-    setIsPressed(!isPressed);
-  };
+function RestaurantItem({ name, category, link, distance }: Props) {
+  const [pressed, , , togglePressed] = useBoolean(false);
 
   return (
-    <S.Container>
-      <S.CardContainer isPressed={isPressed} onClick={handleClick}>
-        <S.RestaurantName>{name}</S.RestaurantName>
-        <S.CategoryImage
-          src="/images/category/japanese.png"
-          alt="Restaurant"
-          width={100}
-        />
-        {walkInfo && (
-          <S.InfoRow>
-            <span>도보 {walkInfo}분</span>
-          </S.InfoRow>
+    <S.Container pressed={pressed}>
+      <S.DeleteButton type="button" onClick={togglePressed} pressed={pressed}>
+        <S.IconContainer>
+          <S.IconWrapper pressed={pressed}>
+            {pressed ? (
+              <RevertSvg color="white" size="sm" />
+            ) : (
+              <CrossSvg color="white" size="sm" strokeWidth={4} />
+            )}
+          </S.IconWrapper>
+        </S.IconContainer>
+      </S.DeleteButton>
+      <S.CardContainer>
+        <S.CardContent pressed={pressed}>
+          <S.TitleWrapper>
+            <S.RestaurantName>{name}</S.RestaurantName>
+            <Badge>{category}</Badge>
+          </S.TitleWrapper>
+          <span>식당까지 {distance}m</span>
+          <S.LinkButton
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}
+          >
+            식당 상세 정보 보기
+          </S.LinkButton>
+        </S.CardContent>
+        {pressed && (
+          <S.Overlay>
+            <S.OverlayText>제외되었습니다</S.OverlayText>
+          </S.Overlay>
         )}
-        <S.InfoRow>
-          <span>위치 정보</span>
-        </S.InfoRow>
-        <S.LinkButton
-          href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={e => e.stopPropagation()}
-        >
-          상세 정보 보기
-        </S.LinkButton>
       </S.CardContainer>
-      <S.DeleteIcon isPressed={isPressed}>
-        <Trash size="lg" style={{ opacity: 0.7 }} />
-        소거되었습니다.
-      </S.DeleteIcon>
     </S.Container>
   );
 }
@@ -67,128 +58,163 @@ function RestaurantItem({
 export default RestaurantItem;
 
 const S = {
-  Container: styled.div`
-    width: fit-content;
+  Container: styled.div<{ pressed: boolean }>`
+    width: 312px;
     height: fit-content;
-    position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-  `,
-  CardContainer: styled.div<{ isPressed: boolean }>`
-    width: 320px;
-    height: 180px;
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 20px;
-    cursor: pointer;
-    user-select: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
     overflow: hidden;
+    position: relative;
+    ${({ pressed }) =>
+      pressed
+        ? `
+      box-shadow: 0 2px 8px #0000001A;
+      transform: scale(0.95);
+    `
+        : `
+      box-shadow: 0 4px 20px #00000014;
+      transform: scale(1);
+
+    `}
+    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 10px;
+  `,
+  CardContainer: styled.div`
+    width: 100%;
+    height: 120px;
+    position: relative;
+  `,
+  CardContent: styled.div<{ pressed: boolean }>`
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    ${({ isPressed }) =>
-      isPressed
+
+    padding: 20px;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    ${({ pressed }) =>
+      pressed
         ? `
-      transform: scale(0.95);
-      filter: blur(2px);
+      filter: blur(1px) brightness(0.88);
       opacity: 0.6;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      border-color: #cbd5e1;
     `
         : `
-      transform: scale(1);
-      filter: blur(0);
+      filter: none;
       opacity: 1;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    `}
+  `,
+  Overlay: styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 2;
+
+    background: #ffffff7f;
+
+    animation: fadeIn 0.25s;
+    inset: 0;
+    pointer-events: none;
+  `,
+  OverlayText: styled.span`
+    padding: 8px 20px;
+
+    color: ${({ theme }) => theme.PALLETE.gray[80]};
+    font: ${({ theme }) => theme.FONTS.body.small_bold};
+    border-radius: 8px;
+  `,
+  DeleteButton: styled.button<{ pressed: boolean }>`
+    width: 100%;
+    height: 40px;
+
+    padding: 0 16px;
+
+    background-color: ${({ theme }) => theme.PALLETE.primary[40]};
+
+    color: ${({ theme }) => theme.PALLETE.gray[0]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
+
+    ${({ pressed, theme }) =>
+      pressed
+        ? `
+      background-color: ${theme.PALLETE.gray[20]};
+      color: ${theme.PALLETE.gray[0]};
+    `
+        : `
+      color: ${theme.PALLETE.gray[0]};
+    `}
+  `,
+  IconContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+  `,
+  IconWrapper: styled.div<{ pressed: boolean }>`
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 6px;
+
+    border-radius: 1000px;
+
+    ${({ pressed, theme }) =>
+      pressed
+        ? `
+      background-color: ${theme.PALLETE.gray[50]};
+      color: ${theme.PALLETE.gray[0]};
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-        border-color: #cbd5e1;
+        background-color: ${theme.PALLETE.gray[60]};
+      }
+    `
+        : `
+      background-color: ${theme.PALLETE.primary[60]};
+      color: ${theme.PALLETE.gray[0]};
+      &:hover {
+        background-color: ${theme.PALLETE.primary[70]};
       }
     `}
   `,
-  CategoryImage: styled.img`
-    /* width: 24px; */
-    height: auto;
-    border-radius: 12px;
-    margin-bottom: 12px;
-  `,
-  RestaurantName: styled.h2`
-    color: #1e293b;
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0 0 8px 0;
-    line-height: 1.3;
-  `,
-  CategoryBadge: styled.span<{ category: RestaurantCategory }>`
-    display: inline-block;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    margin-bottom: 12px;
-    background: ${({ category }) => {
-      const colors: Record<RestaurantCategory, string> = {
-        korean: '#fef3c7',
-        chinese: '#fecaca',
-        japanese: '#fed7d7',
-        western: '#e0e7ff',
-        기타: '#f3f4f6',
-      };
-      return colors[category] || colors.기타;
-    }};
-    color: ${({ category }) => {
-      const colors: Record<RestaurantCategory, string> = {
-        korean: '#92400e',
-        chinese: '#dc2626',
-        japanese: '#b91c1c',
-        western: '#3730a3',
-        기타: '#374151',
-      };
-      return colors[category] || colors.기타;
-    }};
-  `,
-  InfoRow: styled.div`
+  TitleWrapper: styled.div`
     display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-bottom: 8px;
-    color: #64748b;
-    font-size: 14px;
+    gap: 8px;
+  `,
+  RestaurantName: styled.a`
+    max-width: 180px;
+    overflow: hidden;
+
+    margin: 0 0 8px;
+
+    color: #1e293b;
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    white-space: nowrap;
+    text-overflow: ellipsis;
   `,
   LinkButton: styled.a`
-    display: inline-flex;
     align-items: center;
     gap: 4px;
-    color: #3b82f6;
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 500;
+
     margin-top: 8px;
+
+    color: ${({ theme }) => theme.PALLETE.gray[50]};
+
     &:hover {
-      color: #2563eb;
+      color: ${({ theme }) => theme.PALLETE.gray[70]};
       text-decoration: underline;
     }
-  `,
-  DeleteIcon: styled.div<{ isPressed: boolean }>`
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 8px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    opacity: ${({ isPressed }) => (isPressed ? 1 : 0)};
-    transition: opacity 0.3s ease;
-    z-index: 10;
-    pointer-events: none;
   `,
 };
