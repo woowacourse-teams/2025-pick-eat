@@ -63,8 +63,8 @@ public class Restaurant extends BaseEntity {
         this.likeCount++;
     }
 
-    public void unlike() {
-        if (this.getLikeCount() <= 0) {
+    public void cancelLike() {
+        if (this.likeCount <= 0) {
             throw new IllegalArgumentException("더이상 좋아요 횟수를 줄일 수 없습니다.");
         }
         this.likeCount--;

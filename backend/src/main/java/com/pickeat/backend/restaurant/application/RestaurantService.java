@@ -35,7 +35,7 @@ public class RestaurantService {
     public void unlike(Long restaurantId) {
         //TODO: 동일 참가자의 중복 unlike 방지 (2025-07-18, 금, 18:44)
         Restaurant restaurant = getRestaurantById(restaurantId);
-        restaurant.unlike();
+        restaurant.cancelLike();
     }
 
     private Restaurant getRestaurantById(Long restaurantId) {
