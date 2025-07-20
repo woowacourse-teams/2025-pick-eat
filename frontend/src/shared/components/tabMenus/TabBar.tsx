@@ -32,7 +32,7 @@ export default TabBar;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 100%;
+    height: fit-content;
     display: flex;
     position: relative;
 
