@@ -4,10 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.pickeat.backend.fixture.RestaurantFixture;
+import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.restaurant.application.dto.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.room.domain.Room;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -35,10 +37,11 @@ class RestaurantServiceTest {
         @Test
         void 식당_소거_성공() {
             // given
+            Room room = entityManager.persist(RoomFixture.create());
             List<Restaurant> restaurants = List.of(
-                    entityManager.persist(RestaurantFixture.create()),
-                    entityManager.persist(RestaurantFixture.create()),
-                    entityManager.persist(RestaurantFixture.create()));
+                    entityManager.persist(RestaurantFixture.create(room)),
+                    entityManager.persist(RestaurantFixture.create(room)),
+                    entityManager.persist(RestaurantFixture.create(room)));
             List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
 
             entityManager.flush();
@@ -61,7 +64,8 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호_선택_성공() {
             // given
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(room));
             Integer originCount = restaurant.getLikeCount();
 
             entityManager.flush();
@@ -82,7 +86,8 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호_취소_성공() {
             // given
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(room));
             restaurant.like();
             Integer originCount = restaurant.getLikeCount();
 
@@ -100,7 +105,8 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호수가_0이하일_경우_예외() {
             // given
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(room));
 
             entityManager.flush();
             entityManager.clear();
