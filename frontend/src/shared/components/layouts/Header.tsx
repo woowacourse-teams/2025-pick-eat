@@ -21,12 +21,12 @@ const Container = styled.div`
   position: sticky;
   top: 0;
 
+  z-index: 20;
+
   padding: 16px;
 
   background-color: ${({ theme }) => theme.PALLETE.gray[0]};
   border-bottom: solid 1px ${({ theme }) => theme.PALLETE.gray[20]};
-
-  z-index: 20;
 `;
 
 export default Header;
