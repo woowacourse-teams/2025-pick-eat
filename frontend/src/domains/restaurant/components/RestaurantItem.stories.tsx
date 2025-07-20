@@ -3,7 +3,7 @@ import RestaurantItem from './RestaurantItem';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof RestaurantItem> = {
-  title: 'RestaurantItem',
+  title: 'Restaurant/RestaurantItem',
   component: RestaurantItem,
   parameters: {
     layout: 'centered',
