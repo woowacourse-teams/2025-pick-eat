@@ -2,10 +2,15 @@ package com.pickeat.backend.restaurant.domain;
 
 
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.room.domain.Location;
+import com.pickeat.backend.room.domain.Room;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,21 +42,28 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
-    //TODO: Room 추가하기  (2025-07-18, 금, 15:39)
-    //TODO: Location 추가하기  (2025-07-18, 금, 15:39)
+    @Embedded
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
 
     public Restaurant(
             String name,
             FoodCategory foodCategory,
             Integer distance,
             String roadAddressName,
-            String placeUrl
+            String placeUrl, Location location,
+            Room room
     ) {
         this.name = name;
         this.foodCategory = foodCategory;
         this.distance = distance;
         this.roadAddressName = roadAddressName;
         this.placeUrl = placeUrl;
+        this.location = location;
+        this.room = room;
     }
 
     public void exclude() {
