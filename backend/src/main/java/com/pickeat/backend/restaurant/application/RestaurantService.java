@@ -32,7 +32,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    public void unlike(Long restaurantId) {
+    public void cancelLike(Long restaurantId) {
         //TODO: 동일 참가자의 중복 unlike 방지 (2025-07-18, 금, 18:44)
         Restaurant restaurant = getRestaurantById(restaurantId);
         restaurant.cancelLike();

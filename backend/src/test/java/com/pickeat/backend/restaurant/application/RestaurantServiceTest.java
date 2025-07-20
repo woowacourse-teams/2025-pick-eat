@@ -30,7 +30,7 @@ class RestaurantServiceTest {
     private RestaurantService restaurantService;
 
     @Nested
-    public class 식당_소거_케이스 {
+    class 식당_소거_케이스 {
 
         @Test
         void 식당_소거_성공() {
@@ -51,12 +51,12 @@ class RestaurantServiceTest {
             List<Restaurant> actualRestaurants = restaurantRepository.findAll();
             assertThat(actualRestaurants)
                     .extracting(Restaurant::getIsExcluded)
-                    .containsExactly(true, true, true);
+                    .containsOnly(true);
         }
     }
 
     @Nested
-    public class 식당_선호_선택_케이스 {
+    class 식당_선호_선택_케이스 {
 
         @Test
         void 식당_선호_선택_성공() {
@@ -77,7 +77,7 @@ class RestaurantServiceTest {
     }
 
     @Nested
-    public class 식당_선호_취소_케이스 {
+    class 식당_선호_취소_케이스 {
 
         @Test
         void 식당_선호_취소_성공() {
@@ -90,7 +90,7 @@ class RestaurantServiceTest {
             entityManager.clear();
 
             // when
-            restaurantService.unlike(restaurant.getId());
+            restaurantService.cancelLike(restaurant.getId());
 
             // then
             Restaurant actual = restaurantRepository.findById(restaurant.getId()).get();
@@ -106,7 +106,7 @@ class RestaurantServiceTest {
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> restaurantService.unlike(restaurant.getId()))
+            assertThatThrownBy(() -> restaurantService.cancelLike(restaurant.getId()))
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }

@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class RestaurantTest {
 
     @Nested
-    public class 식당_소거_케이스 {
+    class 식당_소거_케이스 {
 
         @Test
         void 식당_소거_성공() {
@@ -26,7 +26,7 @@ class RestaurantTest {
     }
 
     @Nested
-    public class 식당_선호_선택_케이스 {
+    class 식당_선호_선택_케이스 {
 
         @Test
         void 식당_선호_선택_성공() {
@@ -44,7 +44,7 @@ class RestaurantTest {
     }
 
     @Nested
-    public class 식당_선호_취소_케이스 {
+    class 식당_선호_취소_케이스 {
 
         @Test
         void 식당_선호_취소_성공() {
@@ -54,7 +54,7 @@ class RestaurantTest {
             Integer origin = restaurant.getLikeCount();
 
             // when
-            restaurant.unlike();
+            restaurant.cancelLike();
 
             // then
             Integer actual = restaurant.getLikeCount();
@@ -67,7 +67,7 @@ class RestaurantTest {
             Restaurant restaurant = RestaurantFixture.create();
 
             // when & then
-            assertThatThrownBy(restaurant::unlike)
+            assertThatThrownBy(restaurant::cancelLike)
                     .isInstanceOf(IllegalArgumentException.class);
         }
     }

@@ -28,7 +28,7 @@ class KakaoRestaurantSearchClientTest {
             testBuilder.build(), new ObjectMapper());
 
     @Nested
-    public class 카카오맵_식당_조회_API_호출_케이스 {
+    class 카카오맵_식당_조회_API_호출_케이스 {
 
         @Test
         void 식당_조회_API_호출_파싱_성공() {
