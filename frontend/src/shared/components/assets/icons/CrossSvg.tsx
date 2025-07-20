@@ -3,9 +3,10 @@ import { SIZE_MAP, SizeType } from './constants';
 type Props = {
   size?: SizeType;
   color?: string;
+  strokeWidth?: number;
 };
 
-function CrossSvg({ size, color }: Props) {
+function CrossSvg({ size, color, strokeWidth = 2 }: Props) {
   return (
     <svg
       width={SIZE_MAP[size || 'sm']}
@@ -17,7 +18,7 @@ function CrossSvg({ size, color }: Props) {
       <path
         d="M16.9688 19.0312L7.125 4.96875"
         stroke={color || 'black'}
-        strokeWidth={2}
+        strokeWidth={strokeWidth}
         strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -25,7 +26,7 @@ function CrossSvg({ size, color }: Props) {
       <path
         d="M7.125 19.0312L16.9688 4.96875"
         stroke={color || 'black'}
-        strokeWidth={2}
+        strokeWidth={strokeWidth}
         strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
