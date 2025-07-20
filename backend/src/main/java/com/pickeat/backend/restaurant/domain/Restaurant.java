@@ -67,7 +67,9 @@ public class Restaurant extends BaseEntity {
     }
 
     public void exclude() {
-        //TODO: Room의 활성화 여부에 따른 소거 가능 여부 체크  (2025-07-18, 금, 16:40)
+        if (!room.getIsActive()) {
+            throw new IllegalArgumentException("비활성화된 방의 식당을 소거할 수 없습니다");
+        }
         this.isExcluded = true;
     }
 
@@ -80,5 +82,11 @@ public class Restaurant extends BaseEntity {
             throw new IllegalArgumentException("더이상 좋아요 횟수를 줄일 수 없습니다.");
         }
         this.likeCount--;
+    }
+
+    public void validateRoom(Room room) {
+        if (!this.room.equals(room)) {
+            throw new IllegalArgumentException("식당의 방이 올바르지 않습니다.");
+        }
     }
 }

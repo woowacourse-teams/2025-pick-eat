@@ -26,6 +26,18 @@ class RestaurantTest {
             // then
             assertThat(restaurant.getIsExcluded()).isTrue();
         }
+
+        @Test
+        void 비활성화된_방의_식당을_소거하려고_할_경우_예외() {
+            // given
+            Room room = RoomFixture.create();
+            Restaurant restaurant = RestaurantFixture.create(room);
+            room.deactivate();
+
+            // when & then
+            assertThatThrownBy(restaurant::exclude)
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
     @Nested

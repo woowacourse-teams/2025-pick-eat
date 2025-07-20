@@ -56,6 +56,43 @@ class RestaurantServiceTest {
                     .extracting(Restaurant::getIsExcluded)
                     .containsOnly(true);
         }
+
+        @Test
+        void 조회된_식당의_방이_서로_다를_경우_예외() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            Room otherRoom = entityManager.persist(RoomFixture.create());
+            List<Restaurant> restaurants = List.of(
+                    entityManager.persist(RestaurantFixture.create(room)),
+                    entityManager.persist(RestaurantFixture.create(otherRoom)));
+            List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            assertThatThrownBy(() -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds)))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
+
+        @Test
+        void 비활성화된_방의_식당을_소거하려고_할_경우_예외() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            List<Restaurant> restaurants = List.of(
+                    entityManager.persist(RestaurantFixture.create(room)),
+                    entityManager.persist(RestaurantFixture.create(room)));
+            room.deactivate();
+
+            List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds)))
+                    .isInstanceOf(IllegalArgumentException.class);
+        }
     }
 
     @Nested

@@ -3,6 +3,7 @@ package com.pickeat.backend.restaurant.application;
 import com.pickeat.backend.restaurant.application.dto.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.room.domain.Room;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,10 +18,10 @@ public class RestaurantService {
 
     @Transactional
     public void exclude(RestaurantExcludeRequest request) {
-        //TODO: Room과 연관관계 설정 이후 쿼리 살펴보기 (N+1문제 방지)  (2025-07-18, 금, 16:35)
-        //TODO: 보안 고려 - 모든 식당이 동일 Room에 속하는지 고려  (2025-07-18, 금, 16:37)
+        //TODO: 입력된 식당 개수만큼 UPDATE 쿼리가 발생 -> BULK나 배치사이즈를 활용한 최적화 필요  (2025-07-18, 금, 16:35)
         //TODO: 보안 고려 - 현재 참가자가 현재 Room에 속하는지 고려  (2025-07-18, 금, 16:38)
         List<Restaurant> restaurants = restaurantRepository.findAllById(request.restaurantIds());
+        validateAllRestaurantsHaveSameRoom(restaurants);
         restaurants.forEach(Restaurant::exclude);
     }
 
@@ -42,5 +43,13 @@ public class RestaurantService {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));
 
+    }
+
+    private void validateAllRestaurantsHaveSameRoom(List<Restaurant> restaurants) {
+        if (restaurants.isEmpty()) {
+            return;
+        }
+        Room room = restaurants.getFirst().getRoom();
+        restaurants.forEach(restaurant -> restaurant.validateRoom(room));
     }
 }
