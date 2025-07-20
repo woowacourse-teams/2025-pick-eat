@@ -63,8 +63,6 @@ const S = {
     height: fit-content;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
     overflow: hidden;
     position: relative;
     ${({ pressed }) =>
@@ -93,8 +91,6 @@ const S = {
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
 
     padding: 20px;
 
