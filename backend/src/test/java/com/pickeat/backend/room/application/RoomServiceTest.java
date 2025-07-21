@@ -32,6 +32,49 @@ public class RoomServiceTest {
     @Autowired
     private RoomService roomService;
 
+    private Room createDefaultRoom() {
+        return createRoom("맛집 찾기", 127.123, 37.456, 150);
+    }
+
+    private Room createRoom(String name, double x, double y, int distance) {
+        Location location = new Location(x, y);
+        Radius radius = new Radius(distance);
+        Room room = new Room(name, location, radius);
+        return testEntityManager.persist(room);
+    }
+
+    private List<Participant> createParticipantsInRoom(Room room, int participantCount) {
+        List<Participant> participants = new ArrayList<>();
+        for (int i = 0; i < participantCount; i++) {
+            String nickname = "닉네임" + i;
+            Participant participant = new Participant(nickname, room);
+            participants.add(participant);
+
+            // 짝수 번째 참여자는 소거 완료 상태로 설정
+            if (i % 2 == 0) {
+                participant.eliminateRestaurants();
+            }
+
+            room.incrementParticipantCount();
+            testEntityManager.persist(participant);
+        }
+        return participants;
+    }
+
+    private int countEliminatedParticipants(List<Participant> participants) {
+        return (int) participants.stream()
+                .filter(Participant::getIsEliminationCompleted)
+                .count();
+    }
+
+    private Restaurant createRestaurantInRoom(Room room, int likeCount) {
+        Restaurant restaurant = RestaurantFixture.create(room);
+        for (int i = 0; i < likeCount; i++) {
+            restaurant.like();
+        }
+        return testEntityManager.persist(restaurant);
+    }
+
     @Nested
     class 방_생성_케이스 {
 
@@ -168,48 +211,21 @@ public class RoomServiceTest {
         }
     }
 
-    private Room createDefaultRoom() {
-        return createRoom("맛집 찾기", 127.123, 37.456, 150);
-    }
+    @Nested
+    class 식당_조회_케이스 {
 
+        @Test
+        void 식당_조회_성공() {
+            // given
+            Room room = createDefaultRoom();
+            createRestaurantInRoom(room, 0);
+            createRestaurantInRoom(room, 0);
 
-    private Room createRoom(String name, double x, double y, int distance) {
-        Location location = new Location(x, y);
-        Radius radius = new Radius(distance);
-        Room room = new Room(name, location, radius);
-        return testEntityManager.persist(room);
-    }
+            // when
+            List<RestaurantResponse> result = roomService.getRoomRestaurants(room.getCode().toString());
 
-    private List<Participant> createParticipantsInRoom(Room room, int participantCount) {
-        List<Participant> participants = new ArrayList<>();
-        for (int i = 0; i < participantCount; i++) {
-            String nickname = "닉네임" + i;
-            Participant participant = new Participant(nickname, room);
-            participants.add(participant);
-
-            // 짝수 번째 참여자는 소거 완료 상태로 설정
-            if (i % 2 == 0) {
-                participant.eliminateRestaurants();
-            }
-
-            room.incrementParticipantCount();
-            testEntityManager.persist(participant);
+            // then
+            assertThat(result).hasSize(2);
         }
-        return participants;
-    }
-
-
-    private int countEliminatedParticipants(List<Participant> participants) {
-        return (int) participants.stream()
-                .filter(Participant::getIsEliminationCompleted)
-                .count();
-    }
-
-    private Restaurant createRestaurantInRoom(Room room, int likeCount) {
-        Restaurant restaurant = RestaurantFixture.create(room);
-        for (int i = 0; i < likeCount; i++) {
-            restaurant.like();
-        }
-        return testEntityManager.persist(restaurant);
     }
 }

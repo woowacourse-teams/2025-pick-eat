@@ -68,4 +68,9 @@ public class RoomService {
         return roomRepository.findByCode(code)
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
     }
+
+    public List<RestaurantResponse> getRoomRestaurants(String roomCode) {
+        Room room = findRoomByCode(roomCode);
+        return RestaurantResponse.from(restaurantRepository.findAllByRoom(room));
+    }
 }

@@ -69,21 +69,27 @@ public class Restaurant extends BaseEntity {
     }
 
     public void exclude() {
-        if (!room.getIsActive()) {
-            throw new BusinessException(ErrorCode.ROOM_ALREADY_INACTIVE);
-        }
+        validateRoomState();
         this.isExcluded = true;
     }
 
     public void like() {
+        validateRoomState();
         this.likeCount++;
     }
 
     public void cancelLike() {
+        validateRoomState();
         if (this.likeCount <= 0) {
             throw new BusinessException(ErrorCode.LIKE_ALREADY_CANCELED);
         }
         this.likeCount--;
+    }
+
+    private void validateRoomState() {
+        if (!room.getIsActive()) {
+            throw new BusinessException(ErrorCode.ROOM_ALREADY_INACTIVE);
+        }
     }
 
     public void validateRoom(Room room) {

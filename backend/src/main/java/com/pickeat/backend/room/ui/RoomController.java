@@ -58,4 +58,10 @@ public class RoomController {
         List<RestaurantResponse> response = roomService.getRoomResult(roomCode);
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/{roomCode}/restaurants")
+    public ResponseEntity<List<RestaurantResponse>> getRoomRestaurants(@PathVariable("roomCode") String roomCode) {
+        List<RestaurantResponse> response = roomService.getRoomRestaurants(roomCode);
+        return ResponseEntity.ok().body(response);
+    }
 }
