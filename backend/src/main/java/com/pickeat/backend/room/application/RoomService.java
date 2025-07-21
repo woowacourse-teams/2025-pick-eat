@@ -2,6 +2,9 @@ package com.pickeat.backend.room.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.domain.Restaurants;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
@@ -11,6 +14,7 @@ import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomCode;
 import com.pickeat.backend.room.domain.repository.ParticipantRepository;
 import com.pickeat.backend.room.domain.repository.RoomRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final RestaurantRepository restaurantRepository;
     private final ParticipantRepository participantRepository;
 
     @Transactional
@@ -50,6 +55,12 @@ public class RoomService {
     public RoomResponse getRoom(String roomCode) {
         Room room = findRoomByCode(roomCode);
         return RoomResponse.from(room);
+    }
+
+    public List<RestaurantResponse> getRoomResult(String roomCode) {
+        Room room = findRoomByCode(roomCode);
+        Restaurants restaurants = new Restaurants(restaurantRepository.findAllByRoomAndIsExcluded(room, false));
+        return RestaurantResponse.from(restaurants.getTopRestaurants());
     }
 
     private Room findRoomByCode(String roomCode) {

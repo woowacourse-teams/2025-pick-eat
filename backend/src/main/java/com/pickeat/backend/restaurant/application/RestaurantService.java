@@ -2,7 +2,7 @@ package com.pickeat.backend.restaurant.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.restaurant.application.dto.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.room.domain.Room;

@@ -10,8 +10,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.global.exception.ExternalApiException;
-import com.pickeat.backend.restaurant.application.dto.RestaurantRequest;
-import com.pickeat.backend.restaurant.application.dto.RestaurantSearchRequest;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

@@ -3,7 +3,7 @@ package com.pickeat.backend.restaurant.infrastructure;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pickeat.backend.restaurant.application.dto.RestaurantSearchRequest;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
