@@ -6,6 +6,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.application.dto.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
@@ -70,9 +72,10 @@ class RestaurantServiceTest {
             entityManager.flush();
             entityManager.clear();
 
-            // when
+            // when & then
             assertThatThrownBy(() -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds)))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.FORBIDDEN_ROOM.getMessage());
         }
 
         @Test
@@ -91,7 +94,8 @@ class RestaurantServiceTest {
 
             // when & then
             assertThatThrownBy(() -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds)))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.ROOM_ALREADY_INACTIVE.getMessage());
         }
     }
 
@@ -150,7 +154,8 @@ class RestaurantServiceTest {
 
             // when & then
             assertThatThrownBy(() -> restaurantService.cancelLike(restaurant.getId()))
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.LIKE_ALREADY_CANCELED.getMessage());
         }
     }
 }

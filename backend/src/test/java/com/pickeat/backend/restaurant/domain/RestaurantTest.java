@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.fixture.RoomFixture;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.domain.Room;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -36,7 +38,8 @@ class RestaurantTest {
 
             // when & then
             assertThatThrownBy(restaurant::exclude)
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.ROOM_ALREADY_INACTIVE.getMessage());
         }
     }
 
@@ -86,7 +89,8 @@ class RestaurantTest {
 
             // when & then
             assertThatThrownBy(restaurant::cancelLike)
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.LIKE_ALREADY_CANCELED.getMessage());
         }
     }
 }

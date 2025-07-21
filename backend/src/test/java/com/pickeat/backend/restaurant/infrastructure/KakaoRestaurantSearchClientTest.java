@@ -9,6 +9,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.restaurant.application.dto.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.RestaurantSearchRequest;
 import java.util.List;
@@ -136,7 +137,7 @@ class KakaoRestaurantSearchClientTest {
             assertThatThrownBy(() -> kakaoRestaurantSearchClient.getRestaurants(
                     new RestaurantSearchRequest("패스트푸드", 127.1234874512, 26.1395871235, 200, 2))
             )
-                    .isInstanceOf(IllegalArgumentException.class);
+                    .isInstanceOf(ExternalApiException.class);
         }
     }
 }

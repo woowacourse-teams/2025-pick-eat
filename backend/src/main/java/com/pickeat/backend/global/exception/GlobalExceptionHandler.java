@@ -2,11 +2,13 @@ package com.pickeat.backend.global.exception;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -16,6 +18,16 @@ public class GlobalExceptionHandler {
         ErrorCode errorCode = e.getErrorCode();
         ProblemDetail problemDetail = ProblemDetail.forStatus(errorCode.getStatus());
         problemDetail.setTitle(errorCode.name());
+        problemDetail.setDetail(e.getMessage());
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(ExternalApiException.class)
+    public ProblemDetail handleExternalApiException(ExternalApiException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(e.getHttpStatus());
+        problemDetail.setTitle(e.getHttpStatus().name());
+        //TODO: 사용자 메시지 노출 여부 고민고민  (2025-07-21, 월, 16:47)
         problemDetail.setDetail(e.getMessage());
 
         return problemDetail;
@@ -38,12 +50,14 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ProblemDetail handleIllegalArgumentException(IllegalArgumentException e) {
+    @ExceptionHandler({
+            MethodArgumentTypeMismatchException.class,
+            ConversionFailedException.class
+    })
+    public ProblemDetail handleTypeMismatchException(Exception e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
-        problemDetail.setDetail(e.getMessage());
-
+        problemDetail.setDetail("요청 파라미터 형식이 잘못되었습니다.");
         return problemDetail;
     }
 

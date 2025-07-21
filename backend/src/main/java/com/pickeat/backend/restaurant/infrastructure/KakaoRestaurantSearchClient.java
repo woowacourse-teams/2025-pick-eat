@@ -2,6 +2,9 @@ package com.pickeat.backend.restaurant.infrastructure;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import com.pickeat.backend.restaurant.application.dto.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.RestaurantSearchRequest;
@@ -10,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.RestClient;
@@ -21,6 +25,7 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
     private static final String URI = "v2/local/search/keyword.json";
     private static final String CATEGORY_GROUP_CODE = "FD6"; // 카카오에서 식당을 나타내는 코드
     private static final String SORT = "accuracy"; // 정렬 기준 (distance: 거리, accuracy: 정확도)
+    private static final String PLATFORM_NAME = "kakao";
 
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
@@ -29,7 +34,7 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
         try {
             return callApi(request);
         } catch (RestClientException e) {
-            throw new RestClientException("외부 서버 오류"); //TODO: 커스텀 예외로 포장하기 (2025-07-17, 목, 16:23)
+            throw new ExternalApiException(e.getMessage(), PLATFORM_NAME, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -51,14 +56,13 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
         return parsingResponse(root);
     }
 
-    //TODO: 커스텀 예외로 바꾸기  (2025-07-17, 목, 17:3)
     private void handleError(ClientHttpResponse response) {
         try {
             JsonNode errorRoot = objectMapper.readTree(response.getBody());
             String kakaoErrorMessage = errorRoot.get("message").asText();
-            throw new IllegalArgumentException(kakaoErrorMessage);
+            throw new ExternalApiException(kakaoErrorMessage, PLATFORM_NAME, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IOException e) {
-            throw new IllegalArgumentException();
+            throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
