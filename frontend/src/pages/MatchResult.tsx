@@ -1,8 +1,9 @@
 import Button from '@components/actions/Button';
 
 import styled from '@emotion/styled';
+import { useState, useEffect } from 'react';
 
-const MatchResult = () => {
+const MatchResult = async () => {
   const MOCK_DATA = {
     id: 1,
     name: '스시준',
@@ -13,6 +14,26 @@ const MatchResult = () => {
     x: 127.234124,
     y: 25.3294871,
   };
+
+  const roomCode = '1';
+
+  const [result, setResult] = useState(null);
+
+  useEffect(() => {
+    const fetchResult = async () => {
+      const response = await fetch(`/api/v1/rooms/${roomCode}/result`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+      setResult(data);
+    };
+
+    fetchResult();
+  }, []);
 
   return (
     <S.Container>
