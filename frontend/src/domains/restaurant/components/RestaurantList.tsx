@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import RestaurantItem from './RestaurantItem';
 
 type RestaurantData = {
+  id: string;
   name: string;
   category: string;
   link: string;
@@ -17,7 +18,7 @@ function RestaurantList({ restaurantList }: Props) {
   return (
     <S.Container>
       {restaurantList.map(restaurant => (
-        <RestaurantItem key={restaurant.link} {...restaurant} />
+        <RestaurantItem key={restaurant.id} {...restaurant} />
       ))}
     </S.Container>
   );

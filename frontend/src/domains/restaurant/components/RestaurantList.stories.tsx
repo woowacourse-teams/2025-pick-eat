@@ -4,6 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 const restaurantListData = [
   {
+    id: '1',
     name: '맛있는 한식당',
     category: '한식',
     link: 'https://example.com/restaurant1',
@@ -11,6 +12,7 @@ const restaurantListData = [
     roadAddressName: '서울시 강남구 역삼동 123-45',
   },
   {
+    id: '2',
     name: '피양콩할마니 본점',
     category: '콩국수',
     link: 'https://example.com/restaurant2',
@@ -18,6 +20,7 @@ const restaurantListData = [
     roadAddressName: '서울시 강남구 역삼동 67-89',
   },
   {
+    id: '3',
     name: '강강술래 잠실점',
     category: '소갈비',
     link: 'https://example.com/restaurant1',
@@ -25,6 +28,7 @@ const restaurantListData = [
     roadAddressName: '서울시 강남구 역삼동 123-45',
   },
   {
+    id: '4',
     name: '이태리 부대찌개 잠실점',
     category: '찌개',
     link: 'https://example.com/restaurant2',
@@ -32,6 +36,7 @@ const restaurantListData = [
     roadAddressName: '서울시 강남구 역삼동 67-89',
   },
   {
+    id: '5',
     name: '놀부부대찌개 송파점',
     category: '한식',
     link: 'https://example.com/restaurant1',
@@ -39,6 +44,7 @@ const restaurantListData = [
     roadAddressName: '서울시 강남구 역삼동 123-45',
   },
   {
+    id: '6',
     name: '육회바른연어 잠실점',
     category: '고기',
     link: 'https://example.com/restaurant2',

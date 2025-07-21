@@ -3,37 +3,41 @@ import TabMenu from '@components/tabMenus/TabMenu';
 
 import styled from '@emotion/styled';
 
+import ExcludeSubmitButton from './ExcludeSubmitButton';
+import { RestaurantExcludeProvider } from './RestaurantExcludeProvider';
 import { tabData } from './RestaurantsMockData';
 
 function RestaurantExclude() {
   return (
-    <>
-      <S.Container>
+    <S.Container>
+      <S.TitleWrapper>
         <S.Title>오늘 안 땡기는 식당은?</S.Title>
         <S.Description>
           가고싶지 않은 식당을 X 버튼을 눌러 제외해주세요.
         </S.Description>
+      </S.TitleWrapper>
+      <RestaurantExcludeProvider>
         <TabMenu tabData={tabData} />
-      </S.Container>
-      <S.Footer>
-        <S.ButtonBox>
-          <Button
-            text="이전"
-            color="gray"
-            size="md"
-            leftIcon="./images/arrow.svg"
-          />
-          <S.RightButtonWrapper>
+        <S.Footer>
+          <S.ButtonBox>
             <Button
-              text="건너뛰기"
+              text="이전"
               color="gray"
-              rightIcon="./images/double-arrow.svg"
+              size="md"
+              leftIcon="./images/arrow.svg"
             />
-            <Button text="다음" size="md" rightIcon="./images/arrow.svg" />
-          </S.RightButtonWrapper>
-        </S.ButtonBox>
-      </S.Footer>
-    </>
+            <S.RightButtonWrapper>
+              <Button
+                text="건너뛰기"
+                color="gray"
+                rightIcon="./images/double-arrow.svg"
+              />
+              <ExcludeSubmitButton />
+            </S.RightButtonWrapper>
+          </S.ButtonBox>
+        </S.Footer>
+      </RestaurantExcludeProvider>
+    </S.Container>
   );
 }
 
@@ -41,6 +45,12 @@ export default RestaurantExclude;
 
 const S = {
   Container: styled.div`
+    width: 100%;
+    min-height: calc(100vh - 72px);
+    height: fit-content;
+    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+  `,
+  TitleWrapper: styled.div`
     padding: 16px;
   `,
   Title: styled.h1`

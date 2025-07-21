@@ -2,23 +2,31 @@ import CrossSvg from '@components/assets/icons/CrossSvg';
 import RevertSvg from '@components/assets/icons/RevertSvg';
 import Badge from '@components/labels/Badge';
 
-import { useBoolean } from '@hooks/useBoolean';
-
 import styled from '@emotion/styled';
+import { useRestaurantExcludeContext } from '@pages/restaurantExclude/RestaurantExcludeProvider';
+import { memo } from 'react';
 
 type Props = {
+  id: string;
   name: string;
   category: string;
   link: string;
   distance: number;
 };
 
-function RestaurantItem({ name, category, link, distance }: Props) {
-  const [pressed, , , togglePressed] = useBoolean(false);
+function RestaurantItem({ id, name, category, link, distance }: Props) {
+  const { selectedRestaurantIds, handleRestaurantToggle } =
+    useRestaurantExcludeContext();
+
+  const pressed = selectedRestaurantIds.includes(id);
 
   return (
     <S.Container pressed={pressed}>
-      <S.DeleteButton type="button" onClick={togglePressed} pressed={pressed}>
+      <S.DeleteButton
+        type="button"
+        onClick={() => handleRestaurantToggle(id)}
+        pressed={pressed}
+      >
         <S.IconContainer>
           <S.IconWrapper pressed={pressed}>
             {pressed ? (
@@ -55,7 +63,7 @@ function RestaurantItem({ name, category, link, distance }: Props) {
   );
 }
 
-export default RestaurantItem;
+export default memo(RestaurantItem);
 
 const S = {
   Container: styled.div<{ pressed: boolean }>`
