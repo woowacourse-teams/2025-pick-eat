@@ -11,7 +11,7 @@ type Prop = {
   likeCount: number;
   liked: boolean;
   onLike: (id: number) => void;
-  onCancel: (id: number) => void;
+  onUnlike: (id: number) => void;
 };
 
 function PreferRestaurantItem({
@@ -22,7 +22,7 @@ function PreferRestaurantItem({
   likeCount,
   liked,
   onLike,
-  onCancel,
+  onUnlike,
 }: Prop) {
   return (
     <S.Container liked={liked}>
@@ -45,7 +45,7 @@ function PreferRestaurantItem({
         liked={liked}
         count={likeCount}
         onLike={onLike}
-        onCancel={onCancel}
+        onUnlike={onUnlike}
       />
     </S.Container>
   );
