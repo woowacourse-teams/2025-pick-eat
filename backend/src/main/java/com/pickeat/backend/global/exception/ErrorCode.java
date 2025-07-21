@@ -24,7 +24,14 @@ public enum ErrorCode {
     VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "입력 데이터 검증에 실패했습니다."),
 
     // 시스템 에러
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다.");
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
+
+    // Restaurant 관련 에러
+    LIKE_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "이미 좋아요를 취소한 상태입니다."),
+    FORBIDDEN_ROOM(HttpStatus.UNAUTHORIZED, "식당의 방이 올바르지 않습니다."),
+    RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "식당을 찾을 수 없습니다."),
+    ;
+
     private final HttpStatus status;
     private final String message;
 

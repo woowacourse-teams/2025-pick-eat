@@ -1,6 +1,8 @@
 package com.pickeat.backend.restaurant.application;
 
-import com.pickeat.backend.restaurant.application.dto.RestaurantExcludeRequest;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.room.domain.Room;
@@ -41,7 +43,7 @@ public class RestaurantService {
 
     private Restaurant getRestaurantById(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 식당입니다."));
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
 
     }
 

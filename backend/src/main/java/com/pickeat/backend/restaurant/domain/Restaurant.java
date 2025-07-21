@@ -2,6 +2,8 @@ package com.pickeat.backend.restaurant.domain;
 
 
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.domain.Location;
 import com.pickeat.backend.room.domain.Room;
 import jakarta.persistence.Column;
@@ -68,7 +70,7 @@ public class Restaurant extends BaseEntity {
 
     public void exclude() {
         if (!room.getIsActive()) {
-            throw new IllegalArgumentException("비활성화된 방의 식당을 소거할 수 없습니다");
+            throw new BusinessException(ErrorCode.ROOM_ALREADY_INACTIVE);
         }
         this.isExcluded = true;
     }
@@ -79,14 +81,14 @@ public class Restaurant extends BaseEntity {
 
     public void cancelLike() {
         if (this.likeCount <= 0) {
-            throw new IllegalArgumentException("더이상 좋아요 횟수를 줄일 수 없습니다.");
+            throw new BusinessException(ErrorCode.LIKE_ALREADY_CANCELED);
         }
         this.likeCount--;
     }
 
     public void validateRoom(Room room) {
         if (!this.room.equals(room)) {
-            throw new IllegalArgumentException("식당의 방이 올바르지 않습니다.");
+            throw new BusinessException(ErrorCode.FORBIDDEN_ROOM);
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.pickeat.backend.restaurant.ui;
 
 import com.pickeat.backend.restaurant.application.RestaurantService;
-import com.pickeat.backend.restaurant.application.dto.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
