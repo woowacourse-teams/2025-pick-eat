@@ -39,11 +39,23 @@ const PREFER_RESTAURANT_MOCK_DATA = [
 function PreferRestaurantList() {
   const [likedIds, setLikedIds] = useState<number[]>([]);
 
-  const handleLike = (id: number) => {
+  const handleLike = async (id: number) => {
+    await fetch(`/api/v1/restaurants/${id}/like`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     setLikedIds(pre => [...pre, id]);
   };
 
-  const handleCancel = (id: number) => {
+  const handleUnlike = async (id: number) => {
+    await fetch(`api/v1/restaurants/${id}/unlike `, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
     setLikedIds(pre => pre.filter(likedId => likedId !== id));
   };
 
@@ -59,7 +71,7 @@ function PreferRestaurantList() {
           likeCount={data.likeCount}
           liked={likedIds.some((likedid: number) => likedid === data.id)}
           onLike={handleLike}
-          onCancel={handleCancel}
+          onUnlike={handleUnlike}
         />
       ))}
     </S.Container>
