@@ -5,14 +5,14 @@ type Prop = {
   liked: boolean;
   count: number;
   onLike: (id: number) => void;
-  onCancel: (id: number) => void;
+  onUnlike: (id: number) => void;
 };
 
-function Like({ id, liked, count, onLike, onCancel }: Prop) {
+function Like({ id, liked, count, onLike, onUnlike }: Prop) {
   return (
     <S.Container>
       {liked ? (
-        <S.Heart onClick={() => onCancel(id)}>♥</S.Heart>
+        <S.Heart onClick={() => onUnlike(id)}>♥</S.Heart>
       ) : (
         <S.Heart onClick={() => onLike(id)}>♡</S.Heart>
       )}
