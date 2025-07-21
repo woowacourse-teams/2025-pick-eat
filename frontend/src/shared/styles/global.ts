@@ -1,4 +1,3 @@
-
 const fontFamily =
   'Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans KR", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
@@ -73,9 +72,101 @@ const PALLETE = {
   },
 };
 
+export const Z_INDEX = {
+  base: 0,
+  below: -1,
+  dropdown: 100,
+  sticky: 200,
+  fixed: 300,
+  overlay: 400,
+  sidenav: 500,
+  modal: 1000,
+  popover: 1100,
+  toast: 1200,
+  tooltip: 1300,
+  max: 9999,
+};
+
+export const BOX_SHADOW = {
+  level1: '0 1px 2px #00000014, 0 0.5px 1px #0000000F',
+  level2: '0 2px 8px #0000001A',
+  level3: '0 4px 20px #0000001F',
+  level4: '0 8px 32px #0000002E',
+};
+
+export const RADIUS = {
+  xsmall: '2px',
+  small: '4px',
+  medium: '6px',
+  medium2: '8px',
+  medium3: '10px',
+  large: '12px',
+  xlarge: '14px',
+};
+
+export const GAP = {
+  level1: '2px',
+  level2: '4px',
+  level3: '8px',
+  level4: '12px',
+  level5: '16px',
+  level6: '20px',
+  level7: '24px',
+  level8: '32px',
+  level9: '40px',
+  level10: '48px',
+  level11: '64px',
+  level12: '80px',
+};
+
+export const PADDING = {
+  p1: '2px',
+  p2: '4px',
+  p3: '8px',
+  p4: '12px',
+  p5: '16px',
+  p6: '20px',
+  p7: '24px',
+  p8: '32px',
+  p9: '40px',
+  p10: '48px',
+  p11: '64px',
+  p12: '80px',
+
+  px1: '2px',
+  px2: '4px',
+  px3: '8px',
+  px4: '12px',
+  px5: '16px',
+  px6: '20px',
+  px7: '24px',
+  px8: '32px',
+  px9: '40px',
+  px10: '48px',
+  px11: '64px',
+  px12: '80px',
+
+  py1: '2px',
+  py2: '4px',
+  py3: '8px',
+  py4: '12px',
+  py5: '16px',
+  py6: '20px',
+  py7: '24px',
+  py8: '32px',
+  py9: '40px',
+  py10: '48px',
+  py11: '64px',
+  py12: '80px',
+};
+
 export const THEME = {
   PALLETE,
-  FONTS
+  FONTS,
+  Z_INDEX,
+  BOX_SHADOW,
+  RADIUS,
+  PADDING,
 };
 
 export type CustomTheme = typeof THEME;
