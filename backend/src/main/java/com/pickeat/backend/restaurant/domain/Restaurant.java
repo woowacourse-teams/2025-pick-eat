@@ -2,10 +2,15 @@ package com.pickeat.backend.restaurant.domain;
 
 
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.room.domain.Location;
+import com.pickeat.backend.room.domain.Room;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,25 +42,34 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
-    //TODO: Room 추가하기  (2025-07-18, 금, 15:39)
-    //TODO: Location 추가하기  (2025-07-18, 금, 15:39)
+    @Embedded
+    private Location location;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id", nullable = false)
+    private Room room;
 
     public Restaurant(
             String name,
             FoodCategory foodCategory,
             Integer distance,
             String roadAddressName,
-            String placeUrl
+            String placeUrl, Location location,
+            Room room
     ) {
         this.name = name;
         this.foodCategory = foodCategory;
         this.distance = distance;
         this.roadAddressName = roadAddressName;
         this.placeUrl = placeUrl;
+        this.location = location;
+        this.room = room;
     }
 
     public void exclude() {
-        //TODO: Room의 활성화 여부에 따른 소거 가능 여부 체크  (2025-07-18, 금, 16:40)
+        if (!room.getIsActive()) {
+            throw new IllegalArgumentException("비활성화된 방의 식당을 소거할 수 없습니다");
+        }
         this.isExcluded = true;
     }
 
@@ -68,5 +82,11 @@ public class Restaurant extends BaseEntity {
             throw new IllegalArgumentException("더이상 좋아요 횟수를 줄일 수 없습니다.");
         }
         this.likeCount--;
+    }
+
+    public void validateRoom(Room room) {
+        if (!this.room.equals(room)) {
+            throw new IllegalArgumentException("식당의 방이 올바르지 않습니다.");
+        }
     }
 }
