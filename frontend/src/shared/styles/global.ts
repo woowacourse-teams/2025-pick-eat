@@ -2,7 +2,11 @@ const fontFamily =
   'Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans KR", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
 const FONTS = {
+const FONTS = {
   display: {
+    large: `700 60px/150% ${fontFamily}`,
+    medium: `700 44px/150% ${fontFamily}`,
+    small: `700 36px/150% ${fontFamily}`,
     large: `700 60px/150% ${fontFamily}`,
     medium: `700 44px/150% ${fontFamily}`,
     small: `700 36px/150% ${fontFamily}`,
@@ -11,8 +15,19 @@ const FONTS = {
     large: `700 32px/150% ${fontFamily}`,
     medium: `700 24px/150% ${fontFamily}`,
     small: `600 19px/150% ${fontFamily}`,
+    large: `700 32px/150% ${fontFamily}`,
+    medium: `700 24px/150% ${fontFamily}`,
+    small: `600 19px/150% ${fontFamily}`,
   },
   body: {
+    large: `400 19px/150% ${fontFamily}`,
+    large_bold: `700 19px/150% ${fontFamily}`,
+    medium: `400 17px/150% ${fontFamily}`,
+    medium_bold: `700 17px/150% ${fontFamily}`,
+    small: `400 15px/150% ${fontFamily}`,
+    small_bold: `700 15px/150% ${fontFamily}`,
+    xsmall: `400 13px/150% ${fontFamily}`,
+    xsmall_bold: `700 13px/150% ${fontFamily}`,
     large: `400 19px/150% ${fontFamily}`,
     large_bold: `700 19px/150% ${fontFamily}`,
     medium: `400 17px/150% ${fontFamily}`,
@@ -169,4 +184,5 @@ export const THEME = {
   PADDING,
 };
 
+export type CustomTheme = typeof THEME;
 export type CustomTheme = typeof THEME;
