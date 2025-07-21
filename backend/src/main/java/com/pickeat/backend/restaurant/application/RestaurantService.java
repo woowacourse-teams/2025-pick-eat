@@ -3,9 +3,11 @@ package com.pickeat.backend.restaurant.application;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.room.domain.repository.RoomRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
+    private final RoomRepository roomRepository;
+
+    //TODO: 개선할 여지가 보임  (2025-07-21, 월, 20:43)
+    @Transactional
+    public void create(List<RestaurantRequest> restaurantRequests, Long roomId) {
+        Room room = roomRepository.findById(roomId).orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
+        List<Restaurant> restaurants = restaurantRequests.stream()
+                .map(request -> new Restaurant(
+                        request.name(),
+                        request.category(),
+                        request.distance(),
+                        request.roadAddressName(),
+                        request.placeUrl(),
+                        request.location(),
+                        room))
+                .toList();
+        restaurantRepository.saveAll(restaurants);
+    }
 
     @Transactional
     public void exclude(RestaurantExcludeRequest request) {
@@ -48,6 +68,7 @@ public class RestaurantService {
     }
 
     //TODO: 참가자의 방과 식당의 방이 동일한 지 검증  (2025-07-21, 월, 15:50)
+
     private void validateAllRestaurantsHaveSameRoom(List<Restaurant> restaurants) {
         if (restaurants.isEmpty()) {
             return;
