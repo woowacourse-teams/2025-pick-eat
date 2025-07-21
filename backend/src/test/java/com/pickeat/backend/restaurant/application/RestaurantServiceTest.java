@@ -9,8 +9,11 @@ import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
+import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.room.domain.Location;
 import com.pickeat.backend.room.domain.Room;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -32,6 +35,35 @@ class RestaurantServiceTest {
 
     @Autowired
     private RestaurantService restaurantService;
+
+    @Nested
+    class 식당_생성_케이스 {
+
+        @Test
+        void 식당_생성_성공() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            Long roomId = room.getId();
+            List<RestaurantRequest> restaurantRequests = List.of(createRestaurantRequest(), createRestaurantRequest());
+
+            // when
+            restaurantService.create(restaurantRequests, roomId);
+
+            // then
+            assertThat(restaurantRepository.findAllByRoom(room)).hasSize(2);
+        }
+
+        private RestaurantRequest createRestaurantRequest() {
+            return new RestaurantRequest(
+                    "테스트이름",
+                    FoodCategory.CHINESE,
+                    300,
+                    "테스트도로명주소",
+                    new Location(10.0, 10.0),
+                    "테스트url"
+            );
+        }
+    }
 
     @Nested
     class 식당_소거_케이스 {

@@ -1,5 +1,8 @@
 package com.pickeat.backend.room.ui;
 
+import com.pickeat.backend.restaurant.application.RestaurantSearchService;
+import com.pickeat.backend.restaurant.application.RestaurantService;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.room.application.RoomService;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
@@ -24,10 +27,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoomController {
 
     private final RoomService roomService;
+    private final RestaurantService restaurantService;
+    private final RestaurantSearchService restaurantSearchService;
 
+    //TODO: 비동기 도입 고려  (2025-07-21, 월, 20:43)
     @PostMapping
     public ResponseEntity<RoomResponse> createRoom(@Valid @RequestBody RoomRequest request) {
+        List<RestaurantRequest> restaurantRequests = restaurantSearchService.search(request.x(), request.y(),
+                request.radius());
         RoomResponse response = roomService.createRoom(request);
+        restaurantService.create(restaurantRequests, response.id());
         String location = "/api/v1/rooms/" + response.code();
 
         return ResponseEntity.created(URI.create(location))
@@ -56,6 +65,12 @@ public class RoomController {
     @GetMapping("/{roomCode}/result")
     public ResponseEntity<List<RestaurantResponse>> getRoomResult(@PathVariable("roomCode") String roomCode) {
         List<RestaurantResponse> response = roomService.getRoomResult(roomCode);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @GetMapping("/{roomCode}/restaurants")
+    public ResponseEntity<List<RestaurantResponse>> getRoomRestaurants(@PathVariable("roomCode") String roomCode) {
+        List<RestaurantResponse> response = roomService.getRoomRestaurants(roomCode);
         return ResponseEntity.ok().body(response);
     }
 }
