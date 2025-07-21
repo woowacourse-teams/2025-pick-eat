@@ -21,7 +21,7 @@ public class ParticipantController {
 
     @PostMapping
     public ResponseEntity<ParticipantResponse> createParticipant(@Valid @RequestBody ParticipantRequest request) {
-        ParticipantResponse participant = participantService.createParticipant(request);
+        participantService.createParticipant(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

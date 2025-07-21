@@ -45,6 +45,7 @@ public class RestaurantService {
 
     }
 
+    //TODO: 참가자의 방과 식당의 방이 동일한 지 검증  (2025-07-21, 월, 15:50)
     private void validateAllRestaurantsHaveSameRoom(List<Restaurant> restaurants) {
         if (restaurants.isEmpty()) {
             return;
