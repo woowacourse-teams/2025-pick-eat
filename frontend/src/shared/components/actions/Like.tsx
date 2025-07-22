@@ -1,15 +1,16 @@
+import { usePreferRestaurantContext } from '@domains/restaurant/context/PreferRestaurantProvider';
+
 import styled from '@emotion/styled';
 import { useRef } from 'react';
 
 type Prop = {
   id: number;
-  liked: boolean;
   count: number;
-  onLike: (id: number) => void;
-  onUnlike: (id: number) => void;
 };
 
-function Like({ id, liked, count, onLike, onUnlike }: Prop) {
+function Like({ id, count }: Prop) {
+  const { handleLike, handleUnlike, liked } = usePreferRestaurantContext();
+
   const explosionRef = useRef<HTMLDivElement>(null);
 
   const triggerExplosion = () => {
@@ -33,18 +34,18 @@ function Like({ id, liked, count, onLike, onUnlike }: Prop) {
   };
 
   const handleClick = () => {
-    if (liked) {
-      onUnlike(id);
+    if (liked(id)) {
+      handleUnlike(id);
     } else {
-      onLike(id);
       triggerExplosion();
+      handleLike(id);
     }
   };
 
   return (
     <S.Container>
       <S.HeartWrapper>
-        <S.Heart onClick={handleClick}>{liked ? '❤️' : '♡'}</S.Heart>
+        <S.Heart onClick={handleClick}>{liked(id) ? '❤️' : '♡'}</S.Heart>
         <S.Explosion ref={explosionRef}>
           {Array.from({ length: 5 }).map((_, i) => (
             <S.SmallHeart key={i} />

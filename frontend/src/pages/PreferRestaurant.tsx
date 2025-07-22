@@ -2,6 +2,8 @@ import PreferRestaurantList from '@domains/restaurant/components/PreferRestauran
 
 import Button from '@components/actions/Button';
 
+import { PreferRestaurantProvider } from '@domains/restaurant/context/PreferRestaurantProvider';
+
 import { apiClient } from '@apis/apiClient';
 import { ParticipantsResponse } from '@apis/prefer';
 import styled from '@emotion/styled';
@@ -45,37 +47,39 @@ const PreferRestaurant = () => {
   }, []);
 
   return (
-    <S.Container>
-      <S.TitleArea>
-        <S.Title>선호도 조사</S.Title>
-        <S.Description>선호 식당을 선택해 주세요.</S.Description>
-        <S.ParticipantInfo>
-          <S.Complited>
-            완료자 {participant.eliminatedParticipants}/
-            {participant.totalParticipants}
-          </S.Complited>
-        </S.ParticipantInfo>
-      </S.TitleArea>
+    <PreferRestaurantProvider>
+      <S.Container>
+        <S.TitleArea>
+          <S.Title>선호도 조사</S.Title>
+          <S.Description>선호 식당을 선택해 주세요.</S.Description>
+          <S.ParticipantInfo>
+            <S.Complited>
+              완료자 {participant.eliminatedParticipants}/
+              {participant.totalParticipants}
+            </S.Complited>
+          </S.ParticipantInfo>
+        </S.TitleArea>
 
-      <S.RestaurantListContainer>
-        <PreferRestaurantList />
-      </S.RestaurantListContainer>
+        <S.RestaurantListContainer>
+          <PreferRestaurantList />
+        </S.RestaurantListContainer>
 
-      <S.Footer>
-        <Button text="이전" color="gray" size="md" />
-        <S.ButtonContainer>
-          <Button
-            text="조기 종료"
-            color="gray"
-            onClick={() => handleDeactivate()}
-          />
+        <S.Footer>
+          <Button text="이전" color="gray" size="md" />
+          <S.ButtonContainer>
+            <Button
+              text="조기 종료"
+              color="gray"
+              onClick={() => handleDeactivate()}
+            />
 
-          <S.ResultButtonContainer>
-            <Button text="결과 보기" color="secondary" size="md" />
-          </S.ResultButtonContainer>
-        </S.ButtonContainer>
-      </S.Footer>
-    </S.Container>
+            <S.ResultButtonContainer>
+              <Button text="결과 보기" color="secondary" size="md" />
+            </S.ResultButtonContainer>
+          </S.ButtonContainer>
+        </S.Footer>
+      </S.Container>
+    </PreferRestaurantProvider>
   );
 };
 
