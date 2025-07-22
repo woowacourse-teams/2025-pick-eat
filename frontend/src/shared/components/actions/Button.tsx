@@ -41,10 +41,12 @@ const S = {
   Button: styled.button``,
   LeftIcon: styled.span`
     display: inline-flex;
+
     margin-right: 4px;
   `,
   RightIcon: styled.span`
     display: inline-flex;
+
     margin-left: 4px;
   `,
 };
@@ -113,7 +115,9 @@ const getButtonStyle = (
 
   &:disabled {
     border: none;
+
     background-color: #cdd1d5;
+
     color: #6d7882;
     cursor: not-allowed;
   }
