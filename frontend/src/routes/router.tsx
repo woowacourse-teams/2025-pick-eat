@@ -32,7 +32,10 @@ const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [
-      { path: ROUTE_PATH.RESTAURANT_EXCLUDE, Component: RestaurantExclude },
+      {
+        path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
+        Component: RestaurantExcludePage,
+      },
     ],
   },
 ]);
