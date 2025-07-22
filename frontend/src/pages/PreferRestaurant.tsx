@@ -3,12 +3,78 @@ import PreferRestaurantList from '@domains/restaurant/components/PreferRestauran
 import Button from '@components/actions/Button';
 
 import styled from '@emotion/styled';
+import { useState, useEffect } from 'react';
 
 const PreferRestaurant = () => {
   const PARTICIPANT_MOCK_DATA = {
     totalParticipants: 7,
     completedParticipants: 4,
   };
+
+  const roomCode = '1';
+
+  const [participantState, setParticipantState] = useState({
+    totalParticipants: 0,
+    completedParticipants: 0,
+  });
+
+  const [restaurantList, setRestaurantList] = useState([]);
+
+  const handleDeactivate = async () => {
+    await fetch(`api/v1/rooms/${roomCode}/deactivate`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  };
+
+  useEffect(() => {
+    let isUnmounted = false;
+
+    const fetchParticipantState = async () => {
+      const response = await fetch(
+        `/api/v1/rooms/${roomCode}/participants/state`
+      );
+      const data = await response.json();
+
+      if (!isUnmounted) {
+        setParticipantState(data);
+      }
+    };
+
+    fetchParticipantState();
+
+    const intervalId = setInterval(fetchParticipantState, 10000);
+
+    return () => {
+      isUnmounted = true;
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
+    let isUnmounted = false;
+
+    const fetchRestaurantList = async () => {
+      const response = await fetch(
+        `/api/v1/rooms/${roomCode}/restaurants?isExcluded=false`
+      );
+      const data = await response.json();
+      if (!isUnmounted) {
+        setRestaurantList(data);
+      }
+    };
+
+    fetchRestaurantList();
+
+    const intervalId = setInterval(fetchRestaurantList, 10000);
+
+    return () => {
+      isUnmounted = true;
+      clearInterval(intervalId);
+    };
+  }, []);
 
   return (
     <S.Container>
@@ -31,7 +97,11 @@ const PreferRestaurant = () => {
       <S.Bottom>
         <Button text="이전" color="gray" size="md" />
         <S.ButtonContainer>
-          <Button text="조기 종료" color="gray" />
+          <Button
+            text="조기 종료"
+            color="gray"
+            onClick={() => handleDeactivate()}
+          />
           <Button text="결과 보기" color="secondary" size="md" />
         </S.ButtonContainer>
       </S.Bottom>
