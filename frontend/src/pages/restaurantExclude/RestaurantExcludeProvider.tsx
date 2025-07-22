@@ -8,8 +8,11 @@ import {
 
 interface RestaurantExcludeContextInterface {
   selectedRestaurantIds: string[];
-  handleRestaurantToggle: (restaurant: string) => void;
-  handleRestaurantSelection: (restaurants: string[]) => void;
+  handleRestaurantToggle: (restaurantId: string) => void;
+  handleRestaurantSetPush: (restaurantIds: string[]) => void;
+  handleRestaurantSelection: (restaurantIds: string[]) => void;
+  handleRestaurantSelectionDelete: (restaurantIds: string[]) => void;
+  handleRestaurantSelectionToggle: (restaurantIds: string[]) => void;
 }
 
 const RestaurantExcludeContext =
@@ -33,9 +36,45 @@ export const RestaurantExcludeProvider = ({ children }: PropsWithChildren) => {
     [setSelectedRestaurantIds]
   );
 
+  const handleRestaurantSetPush = useCallback(
+    (restaurantIds: string[]) => {
+      setSelectedRestaurantIds(prev => {
+        const newIds = [...prev, ...restaurantIds];
+        return Array.from(new Set(newIds));
+      });
+    },
+    [setSelectedRestaurantIds]
+  );
+
   const handleRestaurantSelection = useCallback(
-    (restaurants: string[]) => {
-      setSelectedRestaurantIds(restaurants);
+    (restaurantIds: string[]) => {
+      setSelectedRestaurantIds(restaurantIds);
+    },
+    [setSelectedRestaurantIds]
+  );
+
+  const handleRestaurantSelectionDelete = useCallback(
+    (restaurantIds: string[]) => {
+      setSelectedRestaurantIds(prev =>
+        prev.filter(id => !restaurantIds.includes(id))
+      );
+    },
+    [setSelectedRestaurantIds]
+  );
+
+  const handleRestaurantSelectionToggle = useCallback(
+    (restaurantIds: string[]) => {
+      setSelectedRestaurantIds(prev => {
+        const prevSet = new Set(prev);
+        restaurantIds.forEach(id => {
+          if (prevSet.has(id)) {
+            prevSet.delete(id);
+          } else {
+            prevSet.add(id);
+          }
+        });
+        return Array.from(prevSet);
+      });
     },
     [setSelectedRestaurantIds]
   );
@@ -45,7 +84,10 @@ export const RestaurantExcludeProvider = ({ children }: PropsWithChildren) => {
       value={{
         selectedRestaurantIds,
         handleRestaurantToggle,
+        handleRestaurantSetPush,
         handleRestaurantSelection,
+        handleRestaurantSelectionDelete,
+        handleRestaurantSelectionToggle,
       }}
     >
       {children}

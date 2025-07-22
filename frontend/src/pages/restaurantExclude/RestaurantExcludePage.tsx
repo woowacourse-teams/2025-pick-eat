@@ -1,5 +1,5 @@
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-import RestaurantExclude from '@domains/restaurantExclude/RestaurantExclude';
+import RestaurantExcludeWithProvider from '@domains/restaurantExclude/RestaurantExclude';
 
 import { restaurants } from '@apis/restaurant';
 import styled from '@emotion/styled';
@@ -8,14 +8,17 @@ import { Suspense } from 'react';
 import TitleArea from './components/TitleArea';
 
 function RestaurantExcludePage() {
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+
   return (
     <S.Container>
       <TitleArea />
       <ErrorBoundary>
-        <Suspense fallback={<div>Loading...</div>}>
-          <RestaurantExclude
+        <Suspense fallback={<></>}>
+          <RestaurantExcludeWithProvider
             restaurantData={restaurants.get(
-              '05882bbe-93f9-4b5c-8c33-52d9b6732939'
+              code || '36f41043-01a3-401d-bdc6-e984b62722d3'
             )}
           />
         </Suspense>
