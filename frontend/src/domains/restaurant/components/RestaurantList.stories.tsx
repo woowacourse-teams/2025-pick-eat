@@ -1,3 +1,7 @@
+import { Restaurant } from '@apis/restaurant';
+
+import { RestaurantExcludeProvider } from '../context/RestaurantExcludeProvider';
+
 import RestaurantList from './RestaurantList';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -7,7 +11,6 @@ const restaurantListData = [
     id: '1',
     name: '맛있는 한식당',
     category: '한식',
-    link: 'https://example.com/restaurant1',
     distance: 500,
     roadAddressName: '서울시 강남구 역삼동 123-45',
   },
@@ -51,7 +54,7 @@ const restaurantListData = [
     distance: 300,
     roadAddressName: '서울시 강남구 역삼동 67-89',
   },
-];
+] as Restaurant[];
 
 const meta: Meta<typeof RestaurantList> = {
   title: 'Restaurant/RestaurantList',
@@ -59,6 +62,13 @@ const meta: Meta<typeof RestaurantList> = {
   parameters: {
     layout: 'centered',
   },
+  decorators: [
+    Story => (
+      <RestaurantExcludeProvider>
+        <Story />
+      </RestaurantExcludeProvider>
+    ),
+  ],
 } satisfies Meta<typeof RestaurantList>;
 export default meta;
 

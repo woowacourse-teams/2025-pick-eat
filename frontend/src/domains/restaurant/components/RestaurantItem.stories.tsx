@@ -1,3 +1,5 @@
+import { RestaurantExcludeProvider } from '../context/RestaurantExcludeProvider';
+
 import RestaurantItem from './RestaurantItem';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -8,7 +10,15 @@ const meta: Meta<typeof RestaurantItem> = {
   parameters: {
     layout: 'centered',
   },
+  decorators: [
+    Story => (
+      <RestaurantExcludeProvider>
+        <Story />
+      </RestaurantExcludeProvider>
+    ),
+  ],
 } satisfies Meta<typeof RestaurantItem>;
+
 export default meta;
 
 type Story = StoryObj<typeof RestaurantItem>;

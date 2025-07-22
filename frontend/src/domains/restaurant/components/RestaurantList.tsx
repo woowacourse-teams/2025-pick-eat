@@ -1,17 +1,10 @@
+import { Restaurant } from '@apis/restaurant';
 import styled from '@emotion/styled';
 
 import RestaurantItem from './RestaurantItem';
 
-type RestaurantData = {
-  id: string;
-  name: string;
-  category: string;
-  link: string;
-  distance: number;
-};
-
 type Props = {
-  restaurantList: RestaurantData[];
+  restaurantList: Restaurant[];
 };
 
 function RestaurantList({ restaurantList }: Props) {

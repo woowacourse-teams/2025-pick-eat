@@ -10,7 +10,7 @@ type Props = {
   id: string;
   name: string;
   category: string;
-  link: string;
+  link?: string;
   distance: number;
 };
 
@@ -89,10 +89,11 @@ const S = {
   CardContainer: styled.div`
     width: 100%;
     height: 120px;
-    position: relative;
     overflow: hidden;
-    border-radius: 10px;
+    position: relative;
+
     background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+    border-radius: 10px;
   `,
   CardContent: styled.div<{ pressed: boolean }>`
     width: 100%;
@@ -147,6 +148,7 @@ const S = {
     align-items: center;
     top: -16px;
     right: -16px;
+
     padding: 0 16px;
 
     color: ${({ theme }) => theme.PALLETE.gray[0]};
