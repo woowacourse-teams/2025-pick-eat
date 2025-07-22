@@ -1,4 +1,5 @@
 import Button from '@components/actions/Button';
+import Confetti from '@components/Confetti';
 
 import { apiClient } from '@apis/apiClient';
 import styled from '@emotion/styled';
@@ -39,6 +40,7 @@ const MatchResult = () => {
 
   return (
     <S.Container>
+      <Confetti />
       <S.Result>
         <S.TitleContainer>
           <S.Title>결과</S.Title>
