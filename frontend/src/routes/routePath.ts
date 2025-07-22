@@ -1,4 +1,4 @@
 export const ROUTE_PATH = {
   HOME: '/',
-  RESTAURANT_EXCLUDE: '/restaurant-exclude',
+  RESTAURANTS_EXCLUDE: '/restaurants-exclude',
 };
