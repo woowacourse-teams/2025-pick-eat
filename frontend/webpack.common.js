@@ -1,11 +1,19 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import dotenv from 'dotenv';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
+import webpack from 'webpack';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const env = dotenv.config({ path: path.resolve(__dirname, './.env') }).parsed;
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
+
 
 const config = {
   entry: './src/main.tsx',
@@ -39,6 +47,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
+    new webpack.DefinePlugin(envKeys)
   ],
 };
 
