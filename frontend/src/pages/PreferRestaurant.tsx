@@ -2,30 +2,22 @@ import PreferRestaurantList from '@domains/restaurant/components/PreferRestauran
 
 import Button from '@components/actions/Button';
 
+import { apiClient } from '@apis/apiClient';
+import { ParticipantsResponse } from '@apis/prefer';
 import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 
 const PreferRestaurant = () => {
-  const PARTICIPANT_MOCK_DATA = {
-    totalParticipants: 7,
-    completedParticipants: 4,
-  };
+  const roomCode = '42be1480-b8d7-4c3b-8c04-d66c2ed4b6e6';
 
-  const roomCode = '1';
-
-  const [participantState, setParticipantState] = useState({
+  const [participant, setParticipant] = useState<ParticipantsResponse>({
     totalParticipants: 0,
     completedParticipants: 0,
   });
 
-  const [restaurantList, setRestaurantList] = useState([]);
-
   const handleDeactivate = async () => {
-    await fetch(`api/v1/rooms/${roomCode}/deactivate`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined, {
+      'Content-Type': 'application/json',
     });
   };
 
@@ -33,42 +25,18 @@ const PreferRestaurant = () => {
     let isUnmounted = false;
 
     const fetchParticipantState = async () => {
-      const response = await fetch(
-        `/api/v1/rooms/${roomCode}/participants/state`
+      const response = await apiClient.get<ParticipantsResponse>(
+        `rooms/${roomCode}/participants/state`
       );
-      const data = await response.json();
 
-      if (!isUnmounted) {
-        setParticipantState(data);
+      if (!isUnmounted && response) {
+        setParticipant(response);
       }
     };
 
     fetchParticipantState();
 
     const intervalId = setInterval(fetchParticipantState, 10000);
-
-    return () => {
-      isUnmounted = true;
-      clearInterval(intervalId);
-    };
-  }, []);
-
-  useEffect(() => {
-    let isUnmounted = false;
-
-    const fetchRestaurantList = async () => {
-      const response = await fetch(
-        `/api/v1/rooms/${roomCode}/restaurants?isExcluded=false`
-      );
-      const data = await response.json();
-      if (!isUnmounted) {
-        setRestaurantList(data);
-      }
-    };
-
-    fetchRestaurantList();
-
-    const intervalId = setInterval(fetchRestaurantList, 10000);
 
     return () => {
       isUnmounted = true;
@@ -85,8 +53,8 @@ const PreferRestaurant = () => {
 
       <S.ParticipantContainer>
         <S.Complited>
-          완료자 {PARTICIPANT_MOCK_DATA.completedParticipants}/
-          {PARTICIPANT_MOCK_DATA.totalParticipants}
+          완료자 {participant.completedParticipants}/
+          {participant.totalParticipants}
         </S.Complited>
       </S.ParticipantContainer>
 

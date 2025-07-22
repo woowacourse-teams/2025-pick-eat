@@ -1,67 +1,60 @@
+import { apiClient } from '@apis/apiClient';
+import { RestaurantsResponse } from '@apis/prefer';
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
 
-const PREFER_RESTAURANT_MOCK_DATA = [
-  {
-    id: 1,
-    name: '스시준',
-    category: '일식',
-    distance: 30,
-    roadAddressName: '대충 도로명 주소',
-    likeCount: 3,
-    x: 127.234124,
-    y: 25.3294871,
-  },
-  {
-    id: 2,
-    name: '스시준2',
-    category: '양식',
-    distance: 30,
-    roadAddressName: '대충 도로명 주소',
-    likeCount: 3,
-    x: 127.234124,
-    y: 25.3294871,
-  },
-  {
-    id: 3,
-    name: '스시준3',
-    category: '양식',
-    distance: 30,
-    roadAddressName: '대충 도로명 주소',
-    likeCount: 3,
-    x: 127.234124,
-    y: 25.3294871,
-  },
-];
+const roomCode = '42be1480-b8d7-4c3b-8c04-d66c2ed4b6e6';
 
 function PreferRestaurantList() {
   const [likedIds, setLikedIds] = useState<number[]>([]);
 
+  const [restaurantList, setRestaurantList] = useState<RestaurantsResponse[]>(
+    []
+  );
+
   const handleLike = async (id: number) => {
-    await fetch(`/api/v1/restaurants/${id}/like`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    await apiClient.patch(`restaurants/${id}/like`, undefined, {
+      'Content-Type': 'application/json',
     });
+
     setLikedIds(pre => [...pre, id]);
   };
 
   const handleUnlike = async (id: number) => {
-    await fetch(`api/v1/restaurants/${id}/unlike `, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    await apiClient.patch(`restaurants/${id}/unlike `, undefined, {
+      'Content-Type': 'application/json',
     });
     setLikedIds(pre => pre.filter(likedId => likedId !== id));
   };
 
+  useEffect(() => {
+    let isUnmounted = false;
+
+    const fetchRestaurantList = async () => {
+      const response = await apiClient.get<RestaurantsResponse[]>(
+        `rooms/${roomCode}/restaurants?isExcluded=false`
+      );
+
+      if (!isUnmounted && response) {
+        setRestaurantList(response);
+      }
+    };
+
+    fetchRestaurantList();
+
+    const intervalId = setInterval(fetchRestaurantList, 10000);
+
+    return () => {
+      isUnmounted = true;
+      clearInterval(intervalId);
+    };
+  }, []);
+
   return (
     <S.Container>
-      {PREFER_RESTAURANT_MOCK_DATA.map(data => (
+      {restaurantList.map(data => (
         <PreferRestaurantItem
           key={data.id}
           id={data.id}
