@@ -15,18 +15,53 @@ function PreferRestaurantList() {
   );
 
   const handleLike = async (id: number) => {
-    await apiClient.patch(`restaurants/${id}/like`, undefined, {
-      'Content-Type': 'application/json',
-    });
+    setRestaurantList(prev =>
+      prev
+        .map(item =>
+          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
+        )
+        .sort((a, b) => b.likeCount - a.likeCount)
+    );
 
-    setLikedIds(pre => [...pre, id]);
+    try {
+      await apiClient.patch(`restaurants/${id}/like`, undefined, {
+        'Content-Type': 'application/json',
+      });
+      setLikedIds(prev => [...prev, id]);
+    } catch (error) {
+      setLikedIds(prev => prev.filter(likedId => likedId !== id));
+      setRestaurantList(prev =>
+        prev.map(item =>
+          item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
+        )
+      );
+      console.log('좋아요 실패:', error);
+    }
   };
 
   const handleUnlike = async (id: number) => {
-    await apiClient.patch(`restaurants/${id}/unlike `, undefined, {
-      'Content-Type': 'application/json',
-    });
-    setLikedIds(pre => pre.filter(likedId => likedId !== id));
+    setRestaurantList(prev =>
+      prev
+        .map(item =>
+          item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
+        )
+        .sort((a, b) => b.likeCount - a.likeCount)
+    );
+
+    try {
+      await apiClient.patch(`restaurants/${id}/unlike `, undefined, {
+        'Content-Type': 'application/json',
+      });
+      setLikedIds(pre => pre.filter(likedId => likedId !== id));
+    } catch (error) {
+      setLikedIds(prev => [...prev, id]);
+      setRestaurantList(prev =>
+        prev.map(item =>
+          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
+        )
+      );
+      console.log('좋아요 취소 실패:', error);
+    }
   };
 
   useEffect(() => {
