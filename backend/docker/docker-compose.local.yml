@@ -1,15 +1,5 @@
 version: '3.8'
 services:
-  backend:
-    image: pickeat/pickeat:latest
-    restart: always
-    ports:
-      - "8080:8080"
-    depends_on:
-      - mysqldb
-    networks:
-      - app-tier
-
   mysqldb:
     image: mysql:latest
     environment:
