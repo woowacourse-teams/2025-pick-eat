@@ -46,23 +46,22 @@ const PreferRestaurant = () => {
 
   return (
     <S.Container>
-      <S.TitleContainer>
+      <S.TitleArea>
         <S.Title>선호도 조사</S.Title>
         <S.Description>선호 식당을 선택해 주세요.</S.Description>
-      </S.TitleContainer>
+        <S.ParticipantInfo>
+          <S.Complited>
+            완료자 {participant.eliminatedParticipants}/
+            {participant.totalParticipants}
+          </S.Complited>
+        </S.ParticipantInfo>
+      </S.TitleArea>
 
-      <S.ParticipantContainer>
-        <S.Complited>
-          완료자 {participant.eliminatedParticipants}/
-          {participant.totalParticipants}
-        </S.Complited>
-      </S.ParticipantContainer>
-
-      <S.Middle>
+      <S.RestaurantListContainer>
         <PreferRestaurantList />
-      </S.Middle>
+      </S.RestaurantListContainer>
 
-      <S.Bottom>
+      <S.Footer>
         <Button text="이전" color="gray" size="md" />
         <S.ButtonContainer>
           <Button
@@ -70,9 +69,12 @@ const PreferRestaurant = () => {
             color="gray"
             onClick={() => handleDeactivate()}
           />
-          <Button text="결과 보기" color="secondary" size="md" />
+
+          <S.ResultButtonContainer>
+            <Button text="결과 보기" color="secondary" size="md" />
+          </S.ResultButtonContainer>
         </S.ButtonContainer>
-      </S.Bottom>
+      </S.Footer>
     </S.Container>
   );
 };
@@ -84,46 +86,48 @@ const S = {
     height: calc(100vh - 72px);
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
   `,
 
-  TitleContainer: styled.div`
-    width: 95%;
+  TitleArea: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-top: 20px;
+
+    padding: 20px 30px 0 30px;
   `,
 
-  ParticipantContainer: styled.div`
+  ParticipantInfo: styled.div`
     width: 100%;
-    padding-right: 30px;
     text-align: end;
   `,
 
   Complited: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.medium};
     color: ${({ theme }) => theme.PALLETE.gray[60]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 
-  Middle: styled.div`
-    width: 95%;
+  RestaurantListContainer: styled.div`
+    width: 100%;
     height: 78%;
+
     background-color: ${({ theme }) => theme.PALLETE.gray[5]};
 
     overflow-y: auto;
   `,
 
-  Bottom: styled.div`
+  Footer: styled.div`
+    width: 100%;
+    height: 10%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    height: 10%;
     position: sticky;
-    border-top: 1px solid ${({ theme }) => theme.PALLETE.gray[20]};
+
     padding: 0 10px;
+    border-top: 1px solid ${({ theme }) => theme.PALLETE.gray[20]};
   `,
 
   ButtonContainer: styled.div`
@@ -132,14 +136,18 @@ const S = {
     gap: 10px;
   `,
 
+  ResultButtonContainer: styled.div`
+    flex-grow: 1;
+  `,
+
   Title: styled.p`
-    font: ${({ theme }) => theme.FONTS.heading.large};
     color: ${({ theme }) => theme.PALLETE.secondary[60]};
+    font: ${({ theme }) => theme.FONTS.heading.large};
   `,
 
   Description: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.small};
     color: ${({ theme }) => theme.PALLETE.gray[60]};
+    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
   Restaurants: styled.div`
@@ -153,8 +161,9 @@ const S = {
   `,
 
   RestaurantName: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.large};
     width: 150px;
+
+    font: ${({ theme }) => theme.FONTS.body.large};
   `,
 
   Adress: styled.p`
