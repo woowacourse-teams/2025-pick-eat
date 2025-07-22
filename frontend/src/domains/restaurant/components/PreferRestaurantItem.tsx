@@ -58,7 +58,8 @@ const S = {
     width: 312px;
     height: fit-content;
     display: flex;
-    align-items: center;
+
+    align-items: flex-end;
     overflow: hidden;
     position: relative;
     box-shadow: 0 4px 20px #00000014;
