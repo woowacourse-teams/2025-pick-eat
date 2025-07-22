@@ -1,35 +1,37 @@
 import Button from '@components/actions/Button';
 
+import { apiClient } from '@apis/apiClient';
 import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 
-const MatchResult = async () => {
-  const MOCK_DATA = {
-    id: 1,
-    name: '스시준',
-    category: '일식',
-    distance: 30,
-    roadAddressName: '대충 도로명 주소',
-    likeCount: 3,
-    x: 127.234124,
-    y: 25.3294871,
-  };
+type RestaurantResponse = {
+  id: number;
+  name: string;
+  category: '한식' | '중식' | '일식' | '양식' | '기타';
+  distance: number;
+  roadAddressName: string;
+  likeCount: number;
+  x: number;
+  y: number;
+};
 
-  const roomCode = '1';
+const MatchResult = () => {
+  const roomCode = '42be1480-b8d7-4c3b-8c04-d66c2ed4b6e6';
 
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState<RestaurantResponse>();
 
   useEffect(() => {
     const fetchResult = async () => {
-      const response = await fetch(`/api/v1/rooms/${roomCode}/result`, {
-        method: 'GET',
-        headers: {
+      const response = await apiClient.get<RestaurantResponse>(
+        `/rooms/${roomCode}/result`,
+        {
           'Content-Type': 'application/json',
-        },
-      });
+        }
+      );
 
-      const data = await response.json();
-      setResult(data);
+      console.log(response);
+
+      if (response) setResult(response);
     };
 
     fetchResult();
@@ -41,9 +43,11 @@ const MatchResult = async () => {
         <S.TitleContainer>
           <S.Title>결과</S.Title>
         </S.TitleContainer>
-        <S.Restaurant>
-          <S.Name>{MOCK_DATA.name}</S.Name>
-        </S.Restaurant>
+        {result && (
+          <S.Restaurant>
+            <S.Name>{result.name}</S.Name>
+          </S.Restaurant>
+        )}
 
         <S.ButtonContainer>
           <Button color="primary" text="길 찾기" />
@@ -57,21 +61,22 @@ export default MatchResult;
 
 const S = {
   Container: styled.div`
+    height: calc(100vh - 72px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: calc(100vh - 72px);
   `,
 
   Result: styled.div`
+    width: 50%;
+    height: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 20px;
-    width: 50%;
-    height: 500px;
+
     background-color: ${({ theme }) => theme.PALLETE.gray[5]};
   `,
 
