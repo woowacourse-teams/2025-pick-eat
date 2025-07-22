@@ -22,9 +22,10 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
 
-    padding: 8px 12px;
+    padding: ${({ theme }) => theme.PADDING.py3} +
+      ${({ theme }) => theme.PADDING.px4};
 
     background-color: ${({ theme, color }) => theme.PALLETE[color][10]};
     border-radius: 1000px;

@@ -64,7 +64,7 @@ const S = {
     position: sticky;
     bottom: 0;
 
-    padding: 16px 0;
+    padding: ${({ theme }) => theme.PADDING.py4};
 
     background-color: ${({ theme }) => theme.PALLETE.gray[0]};
     border-top: 1px solid ${({ theme }) => theme.PALLETE.gray[20]};

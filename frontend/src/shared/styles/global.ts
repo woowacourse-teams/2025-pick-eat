@@ -103,7 +103,7 @@ export const Z_INDEX = {
 };
 
 export const BOX_SHADOW = {
-  level1: '0 1px 2px #00000014, 0 0.5px 1px #0000000F',
+  level1: '0 1px 2px #00000014',
   level2: '0 2px 8px #0000001A',
   level3: '0 4px 20px #0000001F',
   level4: '0 8px 32px #0000002E',
@@ -181,6 +181,7 @@ export const THEME = {
   Z_INDEX,
   BOX_SHADOW,
   RADIUS,
+  GAP,
   PADDING,
 };
 

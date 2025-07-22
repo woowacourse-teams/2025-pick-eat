@@ -19,7 +19,7 @@ const S = {
   Container: styled.div`
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
 
   Label: styled.label`

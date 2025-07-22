@@ -40,15 +40,15 @@ const S = {
 
     align-items: center;
 
-    padding: 0 8px;
+    padding: 0 ${({ theme }) => theme.PADDING.px3};
   `,
   RightButtonWrapper: styled.div`
     width: 50%;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: ${({ theme }) => theme.GAP.level5};
 
-    padding: 0 16px;
+    padding: 0 ${({ theme }) => theme.PADDING.px5};
   `,
   RightButtonBox: styled.div`
     flex-grow: 1;
