@@ -17,7 +17,7 @@ type RestaurantResponse = {
 };
 
 const MatchResult = () => {
-  const roomCode = '42be1480-b8d7-4c3b-8c04-d66c2ed4b6e6';
+  const roomCode = '05882bbe-93f9-4b5c-8c33-52d9b6732939';
 
   const [result, setResult] = useState<RestaurantResponse>();
 
@@ -43,8 +43,11 @@ const MatchResult = () => {
       <Confetti />
       <S.Result>
         <S.TitleContainer>
-          <S.Title>결과</S.Title>
+          <S.Title>👏 오늘의 메뉴 👏</S.Title>
         </S.TitleContainer>
+        <S.Restaurant>
+          <S.Name>피양콩 할마니</S.Name>
+        </S.Restaurant>
         {result && (
           <S.Restaurant>
             <S.Name>{result.name}</S.Name>
@@ -72,18 +75,24 @@ const S = {
 
   Result: styled.div`
     width: 50%;
-    height: 500px;
+    height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     gap: 20px;
+    padding:30px 0;
 
-    background-color: ${({ theme }) => theme.PALLETE.gray[5]};
+    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+
+    border-radius:20px;
+
+    box-shadow:
+      0 10px 20px ${({ theme }) => theme.PALLETE.gray[20]};,
   `,
 
   ButtonContainer: styled.div`
-    width: 200px;
+    width: 80%;
   `,
 
   TitleContainer: styled.div``,
@@ -96,7 +105,7 @@ const S = {
   Restaurant: styled.div``,
 
   Name: styled.p`
-    color: ${({ theme }) => theme.PALLETE.gray[60]};
+    color: ${({ theme }) => theme.PALLETE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
 };
