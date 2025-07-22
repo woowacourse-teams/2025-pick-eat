@@ -1,43 +1,12 @@
 import Button from '@components/actions/Button';
 import Confetti from '@components/Confetti';
 
-import { apiClient } from '@apis/apiClient';
-import styled from '@emotion/styled';
-import { useState, useEffect } from 'react';
+import useResult from '@domains/matchResult/hooks/useResult';
 
-type RestaurantResponse = {
-  id: number;
-  name: string;
-  category: '한식' | '중식' | '일식' | '양식' | '기타';
-  distance: number;
-  roadAddressName: string;
-  likeCount: number;
-  x: number;
-  y: number;
-};
+import styled from '@emotion/styled';
 
 const MatchResult = () => {
-  const roomCode = '05882bbe-93f9-4b5c-8c33-52d9b6732939';
-
-  const [result, setResult] = useState<RestaurantResponse>();
-
-  useEffect(() => {
-    const fetchResult = async () => {
-      const response = await apiClient.get<RestaurantResponse>(
-        `/rooms/${roomCode}/result`,
-        {
-          'Content-Type': 'application/json',
-        }
-      );
-
-      console.log(response);
-
-      if (response) setResult(response);
-    };
-
-    fetchResult();
-  }, []);
-
+  const { result } = useResult();
   return (
     <S.Container>
       <Confetti />
