@@ -1,12 +1,15 @@
 import Button from '@components/actions/Button';
 
-import { useRestaurantExcludeContext } from './RestaurantExcludeProvider';
+import { restaurants } from '@apis/restaurant';
+
+import { useRestaurantExcludeContext } from '../../context/RestaurantExcludeProvider';
 
 function ExcludeSubmitButton() {
   const { selectedRestaurantIds } = useRestaurantExcludeContext();
 
   const handleSubmit = () => {
-    alert(`선택된 식당 ID: ${selectedRestaurantIds.join(', ')}`);
+    console.log(`선택된 식당 ID: ${selectedRestaurantIds.join(', ')}`);
+    restaurants.patch(selectedRestaurantIds);
   };
 
   return (
