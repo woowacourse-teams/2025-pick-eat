@@ -61,8 +61,8 @@ export default Like;
 const S = {
   Container: styled.div`
     display: flex;
-    gap: 4px;
     align-items: center;
+    gap: 4px;
   `,
 
   HeartWrapper: styled.div`
@@ -70,8 +70,8 @@ const S = {
   `,
 
   Heart: styled.p`
-    cursor: pointer;
     font: ${({ theme }) => theme.FONTS.body.large};
+    cursor: pointer;
     user-select: none;
   `,
 
@@ -87,23 +87,26 @@ const S = {
   `,
 
   SmallHeart: styled.span`
-    position: absolute;
     width: 8px;
     height: 8px;
+    position: absolute;
+
     background: red;
-    transform: rotate(45deg);
-    opacity: 0;
-    border-radius: 50% 50% 0 0;
+
     animation: none;
+    border-radius: 50% 50% 0 0;
+    opacity: 0;
+    transform: rotate(45deg);
 
     &::before,
     &::after {
-      content: '';
-      position: absolute;
       width: 8px;
       height: 8px;
+      position: absolute;
+
       background: red;
       border-radius: 50%;
+      content: '';
     }
 
     &::before {
@@ -112,18 +115,19 @@ const S = {
     }
 
     &::after {
-      left: -4px;
       top: 0;
+      left: -4px;
     }
 
     @keyframes explode {
       0% {
-        transform: translate(0, 0) scale(1) rotate(45deg);
         opacity: 1;
+        transform: translate(0, 0) scale(1) rotate(45deg);
       }
+
       100% {
-        transform: translate(var(--x), var(--y)) scale(0.5) rotate(45deg);
         opacity: 0;
+        transform: translate(var(--x), var(--y)) scale(0.5) rotate(45deg);
       }
     }
   `,

@@ -5,8 +5,7 @@ import styled from '@emotion/styled';
 type Prop = {
   id: number;
   name: string;
-  //   category: '한식' | '중식' | '일식' | '양식' | '기타';
-  category: string;
+  category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
   likeCount: number;
   liked: boolean;
@@ -31,7 +30,7 @@ function PreferRestaurantItem({
           <S.RestaurantName>{name}</S.RestaurantName>
           {/* <Badge>{category}</Badge> */}
         </S.TitleWrapper>
-        <span>식당까지 {distance}m</span>
+        <S.Distance>식당까지 {distance}m</S.Distance>
         <S.LinkButton
           //   href={link}
           target="_blank"
@@ -40,6 +39,7 @@ function PreferRestaurantItem({
           식당 상세 정보 보기
         </S.LinkButton>
       </S.CardContent>
+
       <Like
         id={id}
         liked={liked}
@@ -62,8 +62,7 @@ const S = {
     align-items: flex-end;
     overflow: hidden;
     position: relative;
-    box-shadow: 0 4px 20px #00000014;
-    transform: scale(1);
+
     padding: 20px;
 
     background-color: ${({ theme, liked }) =>
@@ -71,6 +70,8 @@ const S = {
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 10px;
+    box-shadow: 0 4px 20px #00000014;
+    transform: scale(1);
   `,
 
   CardContent: styled.div`
@@ -91,20 +92,23 @@ const S = {
     gap: 8px;
   `,
 
+  Distance: styled.p`
+    font: ${({ theme }) => theme.FONTS.body.medium};
+  `,
+
   RestaurantName: styled.a`
     max-width: 180px;
     overflow: hidden;
 
-    color: #1e293b;
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
     white-space: nowrap;
     text-overflow: ellipsis;
   `,
 
   LinkButton: styled.a`
+    width: fit-content;
     align-items: center;
     gap: 4px;
-    width: fit-content;
 
     color: ${({ theme }) => theme.PALLETE.gray[50]};
     cursor: pointer;
