@@ -1,6 +1,6 @@
 export type ParticipantsResponse = {
   totalParticipants: number;
-  completedParticipants: number;
+  eliminatedParticipants: number;
 };
 
 export type RestaurantsResponse = {

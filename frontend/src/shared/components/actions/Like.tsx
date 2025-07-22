@@ -16,7 +16,7 @@ function Like({ id, liked, count, onLike, onUnlike }: Prop) {
       ) : (
         <S.Heart onClick={() => onLike(id)}>♡</S.Heart>
       )}
-      <p>{count}</p>
+      <S.Heart>{count}</S.Heart>
     </S.Container>
   );
 }
@@ -31,5 +31,6 @@ const S = {
 
   Heart: styled.p`
     cursor: pointer;
+    font: ${({ theme }) => theme.FONTS.body.large};
   `,
 };
