@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
 
-const roomCode = '42be1480-b8d7-4c3b-8c04-d66c2ed4b6e6';
+const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
 
 function PreferRestaurantList() {
   const [likedIds, setLikedIds] = useState<number[]>([]);
@@ -38,6 +38,7 @@ function PreferRestaurantList() {
       );
 
       if (!isUnmounted && response) {
+        response.sort((a, b) => b.likeCount - a.likeCount);
         setRestaurantList(response);
       }
     };

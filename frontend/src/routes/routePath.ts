@@ -1,4 +1,4 @@
 export const ROUTE_PATH = {
   HOME: '/',
-  PREFER_RESTAURANT: '/preferRestaurant',
+  PREFER_RESTAURANT: '/prefer-restaurant',
 };

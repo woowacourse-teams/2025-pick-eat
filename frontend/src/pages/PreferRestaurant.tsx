@@ -8,11 +8,11 @@ import styled from '@emotion/styled';
 import { useState, useEffect } from 'react';
 
 const PreferRestaurant = () => {
-  const roomCode = '42be1480-b8d7-4c3b-8c04-d66c2ed4b6e6';
+  const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
 
   const [participant, setParticipant] = useState<ParticipantsResponse>({
     totalParticipants: 0,
-    completedParticipants: 0,
+    eliminatedParticipants: 0,
   });
 
   const handleDeactivate = async () => {
@@ -53,7 +53,7 @@ const PreferRestaurant = () => {
 
       <S.ParticipantContainer>
         <S.Complited>
-          완료자 {participant.completedParticipants}/
+          완료자 {participant.eliminatedParticipants}/
           {participant.totalParticipants}
         </S.Complited>
       </S.ParticipantContainer>
