@@ -1,7 +1,8 @@
 import { usePreferRestaurantContext } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 
+import { useExplosion } from '@hooks/useExplosion';
+
 import styled from '@emotion/styled';
-import { useRef } from 'react';
 
 type Prop = {
   id: number;
@@ -11,33 +12,13 @@ type Prop = {
 function Like({ id, count }: Prop) {
   const { handleLike, handleUnlike, liked } = usePreferRestaurantContext();
 
-  const explosionRef = useRef<HTMLDivElement>(null);
-
-  const triggerExplosion = () => {
-    const explosion = explosionRef.current;
-    if (!explosion) return;
-
-    const hearts = explosion.querySelectorAll('span');
-    hearts.forEach((heart, i) => {
-      const angle = Math.random() * 2 * Math.PI;
-      const distance = 20 + Math.random() * 20;
-      const x = Math.cos(angle) * distance + 'px';
-      const y = Math.sin(angle) * distance + 'px';
-
-      heart.style.setProperty('--x', x);
-      heart.style.setProperty('--y', y);
-
-      heart.style.animation = 'none';
-      void heart.offsetWidth;
-      heart.style.animation = `explode 1500ms ease-out ${i * 50}ms`;
-    });
-  };
+  const { explosionRef, trigger } = useExplosion();
 
   const handleClick = () => {
     if (liked(id)) {
       handleUnlike(id);
     } else {
-      triggerExplosion();
+      trigger();
       handleLike(id);
     }
   };
