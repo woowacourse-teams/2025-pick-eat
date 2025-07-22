@@ -1,4 +1,4 @@
-import { usePreferRestaurantContext } from '@domains/restaurant/context/PreferRestaurantProvider';
+import { usePreferRestaurantContext } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 
 import styled from '@emotion/styled';
 import { useRef } from 'react';

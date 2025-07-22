@@ -1,9 +1,9 @@
-import PreferRestaurantList from '@domains/restaurant/components/PreferRestaurantList';
+import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 
 import Button from '@components/actions/Button';
 
-import { PreferRestaurantProvider } from '@domains/restaurant/context/PreferRestaurantProvider';
-import useParticipant from '@domains/restaurant/hooks/useParticipant';
+import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
+import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
 import { apiClient } from '@apis/apiClient';
 import styled from '@emotion/styled';
