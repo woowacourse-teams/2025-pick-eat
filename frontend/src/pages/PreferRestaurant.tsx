@@ -7,6 +7,7 @@ import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
 import { apiClient } from '@apis/apiClient';
 import styled from '@emotion/styled';
+import { useState, useEffect } from 'react';
 
 const PreferRestaurant = () => {
   const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
