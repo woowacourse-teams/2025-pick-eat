@@ -21,7 +21,7 @@ const useResult = () => {
   useEffect(() => {
     const fetchResult = async () => {
       const response = await apiClient.get<RestaurantResponse[]>(
-        `/rooms/${roomCode}/result`
+        `rooms/${roomCode}/result`
       );
 
       if (response) setResult(response);
