@@ -1,14 +1,14 @@
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 
 import Button from '@components/actions/Button';
-
-import { apiClient } from '@apis/apiClient';
-import { generateRouterPath } from '@routes/routePath';
+import Arrow from '@components/assets/icons/Arrow';
 
 import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
+import { apiClient } from '@apis/apiClient';
 import styled from '@emotion/styled';
+import { generateRouterPath } from '@routes/routePath';
 import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurant = () => {
@@ -49,6 +49,7 @@ const PreferRestaurant = () => {
             onClick={() =>
               navigate(generateRouterPath.restaurantsExclude(roomCode))
             }
+            leftIcon={<Arrow size="sm" direction="left" />}
           />
           <S.ButtonContainer>
             <Button
@@ -59,12 +60,13 @@ const PreferRestaurant = () => {
 
             <S.ResultButtonContainer>
               <Button
-                text="결과 보기"
+                text="결과"
                 color="secondary"
                 size="md"
                 onClick={() =>
                   navigate(generateRouterPath.matchResult(roomCode))
                 }
+                rightIcon={<Arrow size="sm" direction="right" />}
               />
             </S.ResultButtonContainer>
           </S.ButtonContainer>
