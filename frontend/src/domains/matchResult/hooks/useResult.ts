@@ -14,7 +14,7 @@ type RestaurantResponse = {
 
 const useResult = () => {
   const [result, setResult] = useState<RestaurantResponse>();
-  const roomCode = '05882bbe-93f9-4b5c-8c33-52d9b6732939';
+  const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
 
   useEffect(() => {
     const fetchResult = async () => {
