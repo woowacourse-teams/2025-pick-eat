@@ -4,8 +4,8 @@
   "description": "팀원들의 취향을 기억하는 PickEat",
   "type": "module",
   "scripts": {
-    "dev": "webpack serve --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "dev": "cross-env NODE_ENV=development webpack serve --config webpack.dev.js",
+    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
     "test": "jest",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --fix",
@@ -54,6 +54,7 @@
     "@types/react-dom": "^19.1.6",
     "@typescript-eslint/eslint-plugin": "^8.36.0",
     "babel-loader": "^10.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.1",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
