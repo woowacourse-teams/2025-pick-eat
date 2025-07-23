@@ -27,12 +27,12 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
 
-  background-color: ${({ theme }) => theme.PALLETE.gray[5]};
+  background-color: ${({ theme }) => theme.PALETTE.gray[5]};
 `;
 
 const Wrapper = styled.div`
   width: 100%;
   max-width: 768px;
 
-  background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+  background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 `;

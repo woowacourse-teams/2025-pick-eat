@@ -44,7 +44,7 @@ const S = {
     height: 56px;
     min-height: 1px;
     flex: 1 0 0;
-    border-bottom: 2px solid ${({ theme }) => theme.PALLETE.gray[30]};
+    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[30]};
   `,
   TabContent: styled.div`
     width: 100%;
@@ -55,7 +55,7 @@ const S = {
   `,
   TabLabel: styled.div<{ isActive: boolean }>`
     color: ${({ isActive, theme }) =>
-      isActive ? theme.PALLETE.primary[70] : theme.PALLETE.gray[40]};
+      isActive ? theme.PALETTE.primary[70] : theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.body.large_bold};
   `,
   Indicator: styled.div<{ tabCount: number; activeTab: number }>`
@@ -63,7 +63,7 @@ const S = {
     position: absolute;
     bottom: 0;
 
-    background-color: ${({ theme }) => theme.PALLETE.primary[50]};
+    background-color: ${({ theme }) => theme.PALETTE.primary[50]};
 
     transition: all 0.2s cubic-bezier(0.19, 0.85, 0.66, 0.99);
     ${({ tabCount, activeTab }) =>

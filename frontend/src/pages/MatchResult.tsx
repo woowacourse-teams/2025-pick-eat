@@ -45,11 +45,11 @@ const S = {
 
     padding: 40px 0;
 
-    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 
     border-radius: 20px;
 
-    box-shadow: 0 10px 20px ${({ theme }) => theme.PALLETE.gray[20]};
+    box-shadow: 0 10px 20px ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 
   ButtonContainer: styled.div`
@@ -57,12 +57,12 @@ const S = {
   `,
 
   Title: styled.p`
-    color: ${({ theme }) => theme.PALLETE.gray[60]};
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
 
   Name: styled.p`
-    color: ${({ theme }) => theme.PALLETE.gray[50]};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
 };

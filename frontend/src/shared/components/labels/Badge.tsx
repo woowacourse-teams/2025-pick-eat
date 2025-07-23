@@ -27,7 +27,7 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.py3} +
       ${({ theme }) => theme.PADDING.px4};
 
-    background-color: ${({ theme, color }) => theme.PALLETE[color][10]};
+    background-color: ${({ theme, color }) => theme.PALETTE[color][10]};
     border-radius: 1000px;
   `,
   Text: styled.div`
@@ -35,7 +35,7 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    color: ${({ theme }) => theme.PALLETE.gray[70]};
+    color: ${({ theme }) => theme.PALETTE.gray[70]};
     font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };

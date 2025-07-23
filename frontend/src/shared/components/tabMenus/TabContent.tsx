@@ -52,15 +52,16 @@ export default TabContent;
 const S = {
   Container: styled.div`
     width: 100%;
-    position: relative;
-    background: ${({ theme }) => theme.PALLETE.gray[5]};
     overflow: hidden;
+    position: relative;
+
+    background: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
   ContentBox: styled.div<{ isActive: boolean }>`
-    position: absolute;
-    left: 0;
-    top: 0;
     width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
     will-change: transform, opacity;
   `,
 };

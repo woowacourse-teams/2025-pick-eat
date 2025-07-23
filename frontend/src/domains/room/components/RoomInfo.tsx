@@ -100,7 +100,7 @@ const S = {
 
     padding: 5%;
 
-    border: 2px solid ${({ theme }) => theme.PALLETE.secondary[30]};
+    border: 2px solid ${({ theme }) => theme.PALETTE.secondary[30]};
     border-radius: 10px;
   `,
 

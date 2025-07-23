@@ -51,7 +51,7 @@ const S = {
     padding: 20px;
 
     background-color: ${({ theme, liked }) =>
-      liked ? theme.PALLETE.secondary[5] : theme.PALLETE.secondary[0]};
+      liked ? theme.PALETTE.secondary[5] : theme.PALETTE.secondary[0]};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 10px;
@@ -95,11 +95,11 @@ const S = {
     align-items: center;
     gap: 4px;
 
-    color: ${({ theme }) => theme.PALLETE.gray[50]};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
     cursor: pointer;
 
     &:hover {
-      color: ${({ theme }) => theme.PALLETE.gray[70]};
+      color: ${({ theme }) => theme.PALETTE.gray[70]};
       text-decoration: underline;
     }
   `,

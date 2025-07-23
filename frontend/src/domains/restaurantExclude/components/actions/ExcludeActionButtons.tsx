@@ -1,7 +1,6 @@
 import ExcludeSubmitButton from '@domains/restaurantExclude/components/actions/ExcludeSubmitButton';
 
 import Button from '@components/actions/Button';
-import Arrow from '@components/assets/icons/Arrow';
 import DoubleArrow from '@components/assets/icons/DoubleArrow';
 
 import styled from '@emotion/styled';
@@ -9,12 +8,6 @@ import styled from '@emotion/styled';
 function ExcludeActionButtons() {
   return (
     <S.ButtonBox>
-      <Button
-        text="이전"
-        color="gray"
-        size="md"
-        leftIcon={<Arrow size="sm" direction="left" color="black" />}
-      />
       <S.RightButtonWrapper>
         <S.RightButtonBox>
           <Button
@@ -40,7 +33,7 @@ const S = {
     height: fit-content;
 
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 
     align-items: center;
 

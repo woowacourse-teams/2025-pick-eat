@@ -102,6 +102,6 @@ const S = {
   `,
 
   Description: styled.p`
-    color: ${({ theme }) => theme.PALLETE.gray[60]};
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
   `,
 };

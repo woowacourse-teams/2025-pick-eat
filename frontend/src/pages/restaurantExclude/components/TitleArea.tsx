@@ -18,13 +18,13 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p5};
   `,
   Title: styled.h1`
-    color: ${({ theme }) => theme.PALLETE.primary[50]};
+    color: ${({ theme }) => theme.PALETTE.primary[50]};
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
   Description: styled.p`
     margin-bottom: 16px;
 
-    color: ${({ theme }) => theme.PALLETE.gray[60]};
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 };

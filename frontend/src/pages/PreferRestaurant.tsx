@@ -2,21 +2,26 @@ import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRes
 
 import Button from '@components/actions/Button';
 
+import { apiClient } from '@apis/apiClient';
+import { generateRouterPath } from '@routes/routePath';
+
 import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
-import { apiClient } from '@apis/apiClient';
 import styled from '@emotion/styled';
+import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurant = () => {
-  const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
+  const [searchParams] = useSearchParams();
+  const roomCode = searchParams.get('code') ?? '';
 
   const handleDeactivate = async () => {
     await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined, {
       'Content-Type': 'application/json',
     });
   };
-  const { participant } = useParticipant();
+  const { participant } = useParticipant(roomCode);
+  const navigate = useNavigate();
 
   return (
     <PreferRestaurantProvider>
@@ -25,10 +30,10 @@ const PreferRestaurant = () => {
           <S.Title>선호도 조사</S.Title>
           <S.Description>선호 식당을 선택해 주세요.</S.Description>
           <S.ParticipantInfo>
-            <S.Complited>
+            <S.Completed>
               완료자 {participant.eliminatedParticipants}/
               {participant.totalParticipants}
-            </S.Complited>
+            </S.Completed>
           </S.ParticipantInfo>
         </S.TitleArea>
 
@@ -37,7 +42,14 @@ const PreferRestaurant = () => {
         </S.RestaurantListContainer>
 
         <S.Footer>
-          <Button text="이전" color="gray" size="md" />
+          <Button
+            text="이전"
+            color="gray"
+            size="md"
+            onClick={() =>
+              navigate(generateRouterPath.restaurantsExclude(roomCode))
+            }
+          />
           <S.ButtonContainer>
             <Button
               text="조기 종료"
@@ -46,7 +58,14 @@ const PreferRestaurant = () => {
             />
 
             <S.ResultButtonContainer>
-              <Button text="결과 보기" color="secondary" size="md" />
+              <Button
+                text="결과 보기"
+                color="secondary"
+                size="md"
+                onClick={() =>
+                  navigate(generateRouterPath.matchResult(roomCode))
+                }
+              />
             </S.ResultButtonContainer>
           </S.ButtonContainer>
         </S.Footer>
@@ -81,8 +100,8 @@ const S = {
     text-align: end;
   `,
 
-  Complited: styled.p`
-    color: ${({ theme }) => theme.PALLETE.gray[60]};
+  Completed: styled.p`
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 
@@ -90,7 +109,7 @@ const S = {
     width: 100%;
     height: 78%;
 
-    background-color: ${({ theme }) => theme.PALLETE.gray[5]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
 
     overflow-y: auto;
   `,
@@ -104,7 +123,7 @@ const S = {
     position: sticky;
 
     padding: 0 10px;
-    border-top: 1px solid ${({ theme }) => theme.PALLETE.gray[20]};
+    border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 
   ButtonContainer: styled.div`
@@ -118,12 +137,12 @@ const S = {
   `,
 
   Title: styled.p`
-    color: ${({ theme }) => theme.PALLETE.secondary[60]};
+    color: ${({ theme }) => theme.PALETTE.secondary[60]};
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
 
   Description: styled.p`
-    color: ${({ theme }) => theme.PALLETE.gray[60]};
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 

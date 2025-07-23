@@ -1,10 +1,9 @@
 import { apiClient } from '@apis/apiClient';
 import { ParticipantsResponse } from '@apis/prefer';
+
 import { useState, useEffect } from 'react';
 
-const useParticipant = () => {
-  const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
-
+const useParticipant = (roomCode: string) => {
   const [participant, setParticipant] = useState<ParticipantsResponse>({
     totalParticipants: 0,
     eliminatedParticipants: 0,

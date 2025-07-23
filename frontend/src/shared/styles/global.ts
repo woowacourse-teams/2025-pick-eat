@@ -24,7 +24,7 @@ const FONTS = {
   },
 };
 
-const PALLETE = {
+const PALETTE = {
   gray: {
     0: '#FFFFFF',
     5: '#F4F5F6',
@@ -161,7 +161,7 @@ export const PADDING = {
 };
 
 export const THEME = {
-  PALLETE,
+  PALETTE,
   FONTS,
   Z_INDEX,
   BOX_SHADOW,

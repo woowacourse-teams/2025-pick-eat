@@ -2,14 +2,22 @@ import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
 
 import { restaurants } from '@apis/restaurant';
+import { generateRouterPath } from '@routes/routePath';
+
+import { useNavigate, useSearchParams } from 'react-router';
 
 import { useRestaurantExcludeContext } from '../../context/RestaurantExcludeProvider';
 
 function ExcludeSubmitButton() {
   const { selectedRestaurantIds } = useRestaurantExcludeContext();
 
+  const [searchParams] = useSearchParams();
+  const roomCode = searchParams.get('code') ?? '';
+  const navigate = useNavigate();
+
   const handleSubmit = () => {
     restaurants.patch(selectedRestaurantIds);
+    navigate(generateRouterPath.preferRestaurant(roomCode));
   };
 
   const disabled = selectedRestaurantIds.length === 0;

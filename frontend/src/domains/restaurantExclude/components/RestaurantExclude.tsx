@@ -1,12 +1,13 @@
 import CheckBox from '@components/actions/Checkbox';
 import TabMenu from '@components/tabMenus/TabMenu';
 
+import { Restaurant } from '@apis/restaurant';
+
 import {
   RestaurantExcludeProvider,
   useRestaurantExcludeContext,
 } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
 
-import { Restaurant } from '@apis/restaurant';
 import styled from '@emotion/styled';
 import { use, useMemo } from 'react';
 
@@ -104,12 +105,14 @@ const S = {
   CheckBoxWrapper: styled.div`
     display: flex;
     align-items: center;
+    gap: ${({ theme }) => theme.GAP.level3};
+
     padding: ${({ theme }) => theme.PADDING.py4} +
       ${({ theme }) => theme.PADDING.px6};
-    gap: ${({ theme }) => theme.GAP.level3};
+
     p {
+      color: ${({ theme }) => theme.PALETTE.gray[80]};
       font: ${({ theme }) => theme.FONTS.body.medium};
-      color: ${({ theme }) => theme.PALLETE.gray[80]};
     }
   `,
   SelectAllCheckbox: styled.input`
@@ -126,7 +129,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.py4};
 
-    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
-    border-top: 1px solid ${({ theme }) => theme.PALLETE.gray[20]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 };

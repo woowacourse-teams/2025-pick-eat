@@ -31,13 +31,16 @@ const CheckButton = styled.button<{ checked: boolean }>`
   width: 22px;
   height: 22px;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-color: ${({ checked }) => (checked ? 'black' : 'white')};
+  align-items: center;
+
   border: ${({ checked }) =>
     checked ? 'black solid 1px' : '#BDBDBD solid 1px'};
+
+  background-color: ${({ checked }) => (checked ? 'black' : 'white')};
   border-radius: 6px;
   cursor: pointer;
+
   &:hover {
     border: ${({ checked }) =>
       checked ? 'black solid 1px' : '#BDBDBD solid 1px'};

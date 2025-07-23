@@ -1,8 +1,9 @@
 import RestaurantExcludeWithProvider from '@domains/restaurantExclude/components/RestaurantExclude';
 
+import { restaurants } from '@apis/restaurant';
+
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { restaurants } from '@apis/restaurant';
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
 
@@ -34,6 +35,6 @@ const S = {
     height: fit-content;
     min-height: calc(100vh - 72px);
 
-    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,
 };

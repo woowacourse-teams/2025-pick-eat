@@ -1,17 +1,18 @@
 import Layout from '@components/layouts/Layout';
 
+import CreateRoom from '@pages/CreateRoom';
+import MatchResult from '@pages/MatchResult';
+import PreferRestaurant from '@pages/PreferRestaurant';
+import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
 import RoomDetail from '@pages/RoomDetail';
 
-import CreateRoom from '@pages/CreateRoom';
 
 
 import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
-import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
+
 import { ThemeProvider, Global } from '@emotion/react';
-import PreferRestaurant from '@pages/PreferRestaurant';
-import MatchResult from '@pages/MatchResult';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 import { ROUTE_PATH } from './routePath';

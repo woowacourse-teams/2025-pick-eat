@@ -1,5 +1,7 @@
 import { apiClient } from '@apis/apiClient';
+
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router';
 
 type RestaurantResponse = {
   id: number;
@@ -14,7 +16,8 @@ type RestaurantResponse = {
 
 const useResult = () => {
   const [result, setResult] = useState<RestaurantResponse>();
-  const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
+  const [searchParams] = useSearchParams();
+  const roomCode = searchParams.get('code') ?? '';
 
   useEffect(() => {
     const fetchResult = async () => {

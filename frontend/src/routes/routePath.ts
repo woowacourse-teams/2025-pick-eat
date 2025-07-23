@@ -11,4 +11,8 @@ export const generateRouterPath = {
     `${ROUTE_PATH.ROOM_DETAIL}?code=${roomCode}`,
   restaurantsExclude: (roomCode: string) =>
     `${ROUTE_PATH.RESTAURANTS_EXCLUDE}?code=${roomCode}`,
-}
+  preferRestaurant: (roomCode: string) =>
+    `${ROUTE_PATH.PREFER_RESTAURANT}?code=${roomCode}`,
+  matchResult: (roomCode: string) =>
+    `${ROUTE_PATH.MATCH_RESULT}?code=${roomCode}`,
+};

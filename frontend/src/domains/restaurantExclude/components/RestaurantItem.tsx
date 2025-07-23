@@ -1,9 +1,10 @@
-import CrossSvg from '@components/assets/icons/CrossSvg';
-import RevertSvg from '@components/assets/icons/RevertSvg';
+import Cross from '@components/assets/icons/Cross';
+import Revert from '@components/assets/icons/Revert';
 import Badge from '@components/labels/Badge';
 
-import styled from '@emotion/styled';
 import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
+
+import styled from '@emotion/styled';
 import { memo } from 'react';
 
 type Props = {
@@ -30,9 +31,9 @@ function RestaurantItem({ id, name, category, link, distance }: Props) {
         <S.IconContainer>
           <S.IconWrapper pressed={pressed}>
             {pressed ? (
-              <RevertSvg color="white" size="sm" />
+              <Revert color="white" size="sm" />
             ) : (
-              <CrossSvg color="white" size="sm" strokeWidth={4} />
+              <Cross color="white" size="sm" strokeWidth={4} />
             )}
           </S.IconWrapper>
         </S.IconContainer>
@@ -92,7 +93,7 @@ const S = {
     overflow: hidden;
     position: relative;
 
-    background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: 10px;
   `,
   CardContent: styled.div<{ pressed: boolean }>`
@@ -135,7 +136,7 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.py3} +
       ${({ theme }) => theme.PADDING.px6};
 
-    color: ${({ theme }) => theme.PALLETE.gray[0]};
+    color: ${({ theme }) => theme.PALETTE.gray[0]};
     font: ${({ theme }) => theme.FONTS.body.small_bold};
     border-radius: 8px;
   `,
@@ -143,28 +144,29 @@ const S = {
     width: 40px;
     height: 40px;
 
-    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
     top: -16px;
     right: -16px;
 
+    z-index: ${({ theme }) => theme.Z_INDEX.sticky};
+
     padding: ${({ theme }) => theme.PADDING.px5};
 
-    color: ${({ theme }) => theme.PALLETE.gray[0]};
+    color: ${({ theme }) => theme.PALETTE.gray[0]};
+
     font: ${({ theme }) => theme.FONTS.body.xsmall};
 
     ${({ pressed, theme }) =>
       pressed
         ? `
-      color: ${theme.PALLETE.gray[0]};
+      color: ${theme.PALETTE.gray[0]};
     `
         : `
-      color: ${theme.PALLETE.gray[0]};
+      color: ${theme.PALETTE.gray[0]};
     `}
-
-    z-index: ${({ theme }) => theme.Z_INDEX.sticky};
   `,
   IconContainer: styled.div`
     display: flex;
@@ -187,17 +189,17 @@ const S = {
     ${({ pressed, theme }) =>
       pressed
         ? `
-      background-color: ${theme.PALLETE.gray[50]};
-      color: ${theme.PALLETE.gray[0]};
+      background-color: ${theme.PALETTE.gray[50]};
+      color: ${theme.PALETTE.gray[0]};
       &:hover {
-        background-color: ${theme.PALLETE.gray[60]};
+        background-color: ${theme.PALETTE.gray[60]};
       }
     `
         : `
-      background-color: ${theme.PALLETE.primary[60]};
-      color: ${theme.PALLETE.gray[0]};
+      background-color: ${theme.PALETTE.primary[60]};
+      color: ${theme.PALETTE.gray[0]};
       &:hover {
-        background-color: ${theme.PALLETE.primary[70]};
+        background-color: ${theme.PALETTE.primary[70]};
       }
     `}
   `,
@@ -222,10 +224,10 @@ const S = {
 
     margin-top: 8px;
 
-    color: ${({ theme }) => theme.PALLETE.gray[50]};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
 
     &:hover {
-      color: ${({ theme }) => theme.PALLETE.gray[70]};
+      color: ${({ theme }) => theme.PALETTE.gray[70]};
       text-decoration: underline;
     }
   `,

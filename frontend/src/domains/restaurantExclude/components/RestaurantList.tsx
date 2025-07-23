@@ -1,4 +1,5 @@
 import { Restaurant } from '@apis/restaurant';
+
 import styled from '@emotion/styled';
 
 import RestaurantItem from './RestaurantItem';
