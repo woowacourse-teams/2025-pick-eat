@@ -12,7 +12,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.SUBMODULE_TOKEN }}
+          token: ${{ secrets.SUBMODULE_KEY }}
           submodules: true
 
       - name: Generate short SHA
@@ -51,7 +51,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.SUBMODULE_TOKEN }}
+          token: ${{ secrets.SUBMODULE_KEY }}
           submodules: true
 
       - name: Update Submodule
