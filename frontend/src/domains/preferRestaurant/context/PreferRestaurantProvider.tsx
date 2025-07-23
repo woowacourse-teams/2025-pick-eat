@@ -3,7 +3,6 @@ import { RestaurantsResponse } from '@apis/prefer';
 import {
   createContext,
   PropsWithChildren,
-  useCallback,
   useContext,
   useEffect,
   useState,
@@ -29,16 +28,20 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   const [searchParams] = useSearchParams();
   const roomCode = searchParams.get('code') ?? '';
 
+  const updateSortedRestaurantList = (
+    restaurantList: RestaurantsResponse[]
+  ) => {
+    setRestaurantList(sortByLike(restaurantList));
+  };
+
   const sortByLike = (restaurantList: RestaurantsResponse[]) => {
     return restaurantList.sort((a, b) => b.likeCount - a.likeCount);
   };
 
-  const handleLike = useCallback(async (id: number) => {
-    setRestaurantList(prev =>
-      sortByLike(
-        prev.map(item =>
-          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
-        )
+  const handleLike = async (id: number) => {
+    updateSortedRestaurantList(
+      restaurantList.map(item =>
+        item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
       )
     );
 
@@ -49,23 +52,20 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
       setLikedIds(prev => [...prev, id]);
     } catch (error) {
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
-      setRestaurantList(prev =>
-        sortByLike(
-          prev.map(item =>
-            item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
-          )
-        )
-      );
-      console.log('좋아요 실패:', error);
-    }
-  }, []);
-
-  const handleUnlike = useCallback(async (id: number) => {
-    setRestaurantList(prev =>
-      sortByLike(
-        prev.map(item =>
+      updateSortedRestaurantList(
+        restaurantList.map(item =>
           item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
         )
+      );
+
+      console.log('좋아요 실패:', error);
+    }
+  };
+
+  const handleUnlike = async (id: number) => {
+    updateSortedRestaurantList(
+      restaurantList.map(item =>
+        item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
       )
     );
 
@@ -76,16 +76,21 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
     } catch (error) {
       setLikedIds(prev => [...prev, id]);
-      setRestaurantList(prev =>
-        sortByLike(
-          prev.map(item =>
-            item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
-          )
+      updateSortedRestaurantList(
+        restaurantList.map(item =>
+          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
         )
       );
+
+      updateSortedRestaurantList(
+        restaurantList.map(item =>
+          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
+        )
+      );
+
       console.log('좋아요 취소 실패:', error);
     }
-  }, []);
+  };
 
   const liked = (id: number) => {
     return likedIds.some((likedId: number) => likedId === id);
