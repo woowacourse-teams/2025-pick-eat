@@ -8,7 +8,6 @@ import {
 
 import { Restaurant } from '@apis/restaurant';
 
-
 import styled from '@emotion/styled';
 import { use, useMemo } from 'react';
 
@@ -125,8 +124,9 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: sticky;
+    position: fixed;
     bottom: 0;
+    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
     padding: ${({ theme }) => theme.PADDING.py4};
 
