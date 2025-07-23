@@ -17,9 +17,7 @@ function RestaurantExcludePage() {
       <ErrorBoundary>
         <Suspense fallback={<></>}>
           <RestaurantExcludeWithProvider
-            restaurantData={restaurants.get(
-              code || '36f41043-01a3-401d-bdc6-e984b62722d3'
-            )}
+            restaurantData={restaurants.get(code ?? '')}
           />
         </Suspense>
       </ErrorBoundary>

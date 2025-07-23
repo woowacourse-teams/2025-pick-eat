@@ -8,7 +8,6 @@ function ExcludeSubmitButton() {
   const { selectedRestaurantIds } = useRestaurantExcludeContext();
 
   const handleSubmit = () => {
-    console.log(`선택된 식당 ID: ${selectedRestaurantIds.join(', ')}`);
     restaurants.patch(selectedRestaurantIds);
   };
 

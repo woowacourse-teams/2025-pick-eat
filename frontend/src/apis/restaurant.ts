@@ -1,3 +1,5 @@
+import { convert } from '@utils/convert';
+
 import { apiClient } from './apiClient';
 
 export type RestaurantResponse = {
@@ -22,7 +24,7 @@ export type Restaurant = {
   y: number;
 };
 
-export const convertResponseToRestaurant = ({
+const convertResponseToRestaurant = ({
   id,
   name,
   category,
@@ -42,12 +44,12 @@ export const convertResponseToRestaurant = ({
   y: Number(y),
 });
 
-const restaurantBaseUrl = '/restaurants';
+const restaurantBaseUrl = 'restaurants';
 
 export const restaurants = {
   get: async (roomCode: string): Promise<Restaurant[]> => {
     const data = await apiClient.get<RestaurantResponse[]>(
-      `rooms/${roomCode}${restaurantBaseUrl}`
+      `rooms/${roomCode}/${restaurantBaseUrl}`
     );
     const results = (data ?? []).map(restaurant =>
       convertResponseToRestaurant(restaurant)
@@ -55,12 +57,13 @@ export const restaurants = {
     return results ?? [];
   },
   patch: async (restaurantsIds: string[]) => {
+    const convertedRestaurantsIds =
+      convert.stringArrayToNumberArray(restaurantsIds);
+
     const response = await apiClient.patch<RestaurantResponse>(
       `${restaurantBaseUrl}/exclude`,
       {
-        body: {
-          restaurantIds: restaurantsIds,
-        },
+        restaurantIds: convertedRestaurantsIds,
       }
     );
     if (!response) return [];
