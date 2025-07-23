@@ -6,11 +6,11 @@ import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
 
 import { RoomDetailType } from '@apis/room';
-import { ROUTE_PATH } from '@routes/routePath';
 
 import { copyLink } from '@utils/copyLink';
 
 import styled from '@emotion/styled';
+import { ROUTE_PATH } from '@routes/routePath';
 import { FormEvent, use } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -18,7 +18,7 @@ import { useRoomDetail } from '../hooks/useRoomDetail';
 
 function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
   const roomDetail = use(roomData);
-  const roomLink = `http://localhost:3000/room-detail?id=${roomDetail.code}`;
+  const roomLink = `${process.env.BASE_URL}room-detail?code=${roomDetail.code}`;
   const navigate = useNavigate();
 
   const { joinRoom, error } = useRoomDetail(roomDetail);
@@ -29,7 +29,6 @@ function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
     const nickName = formData.get('nickName') as string;
     joinRoom(nickName);
   };
-
   return (
     <S.Wrapper onSubmit={submitJoinRoomForm}>
       <S.ArrowButton type="button" onClick={() => navigate(ROUTE_PATH.HOME)}>
