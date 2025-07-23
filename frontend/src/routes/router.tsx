@@ -6,6 +6,8 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
+import PreferRestaurant from '@pages/PreferRestaurant';
+import MatchResult from '@pages/MatchResult';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 import { ROUTE_PATH } from './routePath';
@@ -27,6 +29,11 @@ const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [{ path: ROUTE_PATH.HOME, Component: CreateRoom }],
+    children: [
+      { path: ROUTE_PATH.HOME, Component: App },
+      { path: ROUTE_PATH.PREFER_RESTAURANT, Component: PreferRestaurant },
+      { path: ROUTE_PATH.MATCH_RESULT, Component: MatchResult },
+    ],
   },
 ]);
 
