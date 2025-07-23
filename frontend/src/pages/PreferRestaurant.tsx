@@ -13,8 +13,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurant = () => {
   const [searchParams] = useSearchParams();
-  // const roomCode = searchParams.get('code') ?? '';
-  const roomCode = '1dec4a07-ad42-4711-98a4-019a3e0f4089';
+  const roomCode = searchParams.get('code') ?? '';
 
   const handleDeactivate = async () => {
     await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined, {

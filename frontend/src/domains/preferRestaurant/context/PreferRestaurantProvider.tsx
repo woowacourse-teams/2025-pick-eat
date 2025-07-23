@@ -8,6 +8,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import { useSearchParams } from 'react-router';
 
 interface PreferRestaurantContextType {
   restaurantList: RestaurantsResponse[];
@@ -25,11 +26,12 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   );
   const [likedIds, setLikedIds] = useState<number[]>([]);
 
+  const [searchParams] = useSearchParams();
+  const roomCode = searchParams.get('code') ?? '';
+
   const sortByLike = (restaurantList: RestaurantsResponse[]) => {
     return restaurantList.sort((a, b) => b.likeCount - a.likeCount);
   };
-
-  const roomCode = '1dec4a07-ad42-4711-98a4-019a3e0f4089';
 
   const handleLike = useCallback(async (id: number) => {
     setRestaurantList(prev =>
