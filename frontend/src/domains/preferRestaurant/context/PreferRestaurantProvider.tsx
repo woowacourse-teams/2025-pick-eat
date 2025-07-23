@@ -29,12 +29,16 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
 
   const handleLike = useCallback(async (id: number) => {
     setRestaurantList(prev =>
-      prev
-        .map(item =>
-          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
-        )
-        .sort((a, b) => b.likeCount - a.likeCount)
+      prev.map(item =>
+        item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
+      )
     );
+
+    setTimeout(() => {
+      setRestaurantList(prev =>
+        [...prev].sort((a, b) => b.likeCount - a.likeCount)
+      );
+    }, 500);
 
     try {
       await apiClient.patch(`restaurants/${id}/like`, undefined, {
@@ -54,12 +58,16 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
 
   const handleUnlike = useCallback(async (id: number) => {
     setRestaurantList(prev =>
-      prev
-        .map(item =>
-          item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
-        )
-        .sort((a, b) => b.likeCount - a.likeCount)
+      prev.map(item =>
+        item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
+      )
     );
+
+    setTimeout(() => {
+      setRestaurantList(prev =>
+        [...prev].sort((a, b) => b.likeCount - a.likeCount)
+      );
+    }, 500);
 
     try {
       await apiClient.patch(`restaurants/${id}/unlike`, undefined, {
