@@ -28,9 +28,12 @@ const PreferRestaurant = () => {
           <S.Title>선호도 조사</S.Title>
           <S.Description>선호 식당을 선택해 주세요.</S.Description>
           <S.ParticipantInfo>
-            <S.Completed>
+            {/* <S.Completed>
               완료자 {participant.eliminatedParticipants}/
               {participant.totalParticipants}
+            </S.Completed> */}
+            <S.Completed>
+              참여자 총{participant.totalParticipants}명
             </S.Completed>
           </S.ParticipantInfo>
         </S.TitleArea>
