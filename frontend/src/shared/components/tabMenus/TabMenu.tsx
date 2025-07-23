@@ -8,9 +8,10 @@ type TabData = { tab: string; content: React.ReactNode }[];
 
 type Props = {
   tabData: TabData;
+  style?: React.CSSProperties;
 };
 
-function TabMenu({ tabData }: Props) {
+function TabMenu({ tabData, style }: Props) {
   const [currentTab, setCurrentTab] = useState(0);
 
   const tabs = tabData.map(d => d.tab);
@@ -21,7 +22,7 @@ function TabMenu({ tabData }: Props) {
   };
 
   return (
-    <S.Container>
+    <S.Container style={style}>
       <TabBar
         tabs={tabs}
         selectedIndex={currentTab}

@@ -1,4 +1,4 @@
-import { RestaurantExcludeProvider } from '../context/RestaurantExcludeProvider';
+import { RestaurantExcludeProvider } from '../../context/RestaurantExcludeProvider';
 
 import RestaurantItem from './RestaurantItem';
 

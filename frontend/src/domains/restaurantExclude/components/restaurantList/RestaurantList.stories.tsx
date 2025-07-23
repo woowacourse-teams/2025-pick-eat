@@ -1,6 +1,6 @@
 import { Restaurant } from '@apis/restaurant';
 
-import { RestaurantExcludeProvider } from '../context/RestaurantExcludeProvider';
+import { RestaurantExcludeProvider } from '../../context/RestaurantExcludeProvider';
 
 import RestaurantList from './RestaurantList';
 

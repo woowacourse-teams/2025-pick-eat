@@ -12,7 +12,7 @@ import styled from '@emotion/styled';
 import { use, useMemo } from 'react';
 
 import ExcludeActionButtons from './actions/ExcludeActionButtons';
-import RestaurantList from './RestaurantList';
+import RestaurantList from './restaurantList/RestaurantList';
 
 type RestaurantTabCategory = '한식' | '중식' | '일식' | '양식' | '기타';
 
@@ -81,7 +81,7 @@ function RestaurantExclude({ restaurantData }: Props) {
 
   return (
     <>
-      <TabMenu tabData={tabData} />
+      <TabMenu tabData={tabData} style={{ minHeight: '100vh' }} />
       <S.Footer>
         <ExcludeActionButtons />
       </S.Footer>
@@ -124,7 +124,7 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
+    position: sticky;
     bottom: 0;
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
