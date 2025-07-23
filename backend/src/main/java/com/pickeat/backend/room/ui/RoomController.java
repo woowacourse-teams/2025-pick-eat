@@ -8,6 +8,7 @@ import com.pickeat.backend.room.application.RoomService;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -68,9 +70,12 @@ public class RoomController {
         return ResponseEntity.ok().body(response);
     }
 
+    //@Parameter(description = "멤버 ID") @RequestParam(required = false) Long memberId,
     @GetMapping("/{roomCode}/restaurants")
-    public ResponseEntity<List<RestaurantResponse>> getRoomRestaurants(@PathVariable("roomCode") String roomCode) {
-        List<RestaurantResponse> response = roomService.getRoomRestaurants(roomCode);
+    public ResponseEntity<List<RestaurantResponse>> getRoomRestaurants(
+            @PathVariable("roomCode") String roomCode,
+            @Parameter(description = "소거 여부") @RequestParam(required = false) Boolean isExcluded) {
+        List<RestaurantResponse> response = roomService.getRoomRestaurants(roomCode, isExcluded);
         return ResponseEntity.ok().body(response);
     }
 }

@@ -64,6 +64,6 @@ jobs:
       - name: Deploy EC2
         run: |
           cd /home/ubuntu/docker
-          docker-compose down
+          docker-compose pull backend
           docker-compose up -d --build backend
           docker image prune -f

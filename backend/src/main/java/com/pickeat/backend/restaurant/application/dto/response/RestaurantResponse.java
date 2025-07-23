@@ -8,8 +8,10 @@ public record RestaurantResponse(
         String name,
         String category,
         int distance,
+        String placeUrl,
         String roadAddressName,
         int likeCount,
+        boolean isExcluded,
         double x,
         double y) {
 
@@ -19,8 +21,10 @@ public record RestaurantResponse(
                 restaurant.getName(),
                 restaurant.getFoodCategory().getName(),
                 restaurant.getDistance(),
+                restaurant.getPlaceUrl(),
                 restaurant.getRoadAddressName(),
                 restaurant.getLikeCount(),
+                restaurant.getIsExcluded(),
                 restaurant.getLocation().getX(),
                 restaurant.getLocation().getY());
     }

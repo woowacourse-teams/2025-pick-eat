@@ -69,8 +69,8 @@ public class RoomService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
     }
 
-    public List<RestaurantResponse> getRoomRestaurants(String roomCode) {
+    public List<RestaurantResponse> getRoomRestaurants(String roomCode, Boolean isExcluded) {
         Room room = findRoomByCode(roomCode);
-        return RestaurantResponse.from(restaurantRepository.findAllByRoom(room));
+        return RestaurantResponse.from(restaurantRepository.findByRoomAndIsExcludedIfProvided(room, isExcluded));
     }
 }
