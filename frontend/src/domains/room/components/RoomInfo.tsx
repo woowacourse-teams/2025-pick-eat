@@ -9,6 +9,9 @@ import { RoomDetailType } from '@apis/room';
 
 import { copyLink } from '@utils/copyLink';
 
+import { setMobileStyle } from '@styles/mediaQuery';
+
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ROUTE_PATH } from '@routes/routePath';
 import { FormEvent, use } from 'react';
@@ -53,13 +56,15 @@ function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
         color="secondary"
         onClick={() => copyLink(roomLink)}
       />
-      <Input
-        name="nickName"
-        label="닉네임 입력"
-        placeholder="사용하실 닉네임을 입력하세요."
-      />
-      {error && <ErrorMessage message={error} />}
-      <Button text="입장" />
+      <S.FormWrapper>
+        <Input
+          name="nickName"
+          label="닉네임 입력"
+          placeholder="사용하실 닉네임을 입력하세요."
+        />
+        <ErrorMessage message={error} />
+        <Button text="입장" />
+      </S.FormWrapper>
     </S.Wrapper>
   );
 }
@@ -79,12 +84,21 @@ const S = {
 
     border-radius: 30px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
+
+    ${setMobileStyle(css`
+      width: 100%;
+      box-shadow: none;
+    `)}
   `,
 
   ArrowButton: styled.button`
     position: absolute;
     top: 30px;
     left: 20px;
+
+    ${setMobileStyle(css`
+      display: none;
+    `)}
   `,
 
   RoomName: styled.h1`
@@ -113,4 +127,10 @@ const S = {
 
   Location: styled.span``,
   Radius: styled.span``,
+  FormWrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  `,
 };
