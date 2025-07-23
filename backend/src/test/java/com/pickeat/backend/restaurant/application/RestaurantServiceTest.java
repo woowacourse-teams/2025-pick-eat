@@ -50,7 +50,7 @@ class RestaurantServiceTest {
             restaurantService.create(restaurantRequests, roomId);
 
             // then
-            assertThat(restaurantRepository.findAllByRoom(room)).hasSize(2);
+            assertThat(restaurantRepository.findByRoomAndIsExcludedIfProvided(room, false)).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {

@@ -222,7 +222,7 @@ public class RoomServiceTest {
             createRestaurantInRoom(room, 0);
 
             // when
-            List<RestaurantResponse> result = roomService.getRoomRestaurants(room.getCode().toString());
+            List<RestaurantResponse> result = roomService.getRoomRestaurants(room.getCode().toString(), false);
 
             // then
             assertThat(result).hasSize(2);

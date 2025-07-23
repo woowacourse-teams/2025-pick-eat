@@ -15,7 +15,6 @@ public class KakaoMapClientConfig {
 
     @Bean
     public KakaoRestaurantSearchClient kakaoRestaurantSearchClient(KakaoMapApiProperties properties) {
-
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(properties.getConnectTimeout());
         factory.setReadTimeout(properties.getReadTimeout());
@@ -23,7 +22,7 @@ public class KakaoMapClientConfig {
         RestClient restClient = RestClient.builder()
                 .requestFactory(factory)
                 .baseUrl(properties.getBaseUrl())
-                .defaultHeader("Authorization", "KakaoAK " + properties.restApiKey)
+                .defaultHeader("Authorization", "KakaoAK " + properties.getRestApiKey())
                 .defaultHeader("Content-Type", "application/json")
                 .build();
 
