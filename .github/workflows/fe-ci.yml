@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - front/dev
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  build:
+    if: >
+      github.actor == 'minji2219' || 
+      github.actor == 'dev-dino22' || 
+      github.actor == 'shuyeon' || 
+      github.event.pull_request.user.login == 'minji2219' || 
+      github.event.pull_request.user.login == 'dev-dino22' ||
+      github.event.pull_request.user.login == 'shuyeon'
+
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+
+    steps:
+      - name: 코드 가져오기
+        uses: actions/checkout@v3
+
+      - name: Node.js 설정
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: 의존성 설치
+        run: npm ci
+
+      - name: 코드 린트 적용
+        run: npm run lint:fix
+
+      - name: 스타일 린트 적용
+        run: npm run fix:css
+
+      - name: 문법 확인 (컴파일)
+        run: npx tsc --noEmit -p tsconfig.json
+
+      - name: 빌드 실행
+        run: npm run build
