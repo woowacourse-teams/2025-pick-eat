@@ -1,5 +1,7 @@
 import Layout from '@components/layouts/Layout';
 
+import RoomDetail from '@pages/RoomDetail';
+
 import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
@@ -26,7 +28,10 @@ function Wrapper() {
 const routes = createBrowserRouter([
   {
     Component: Wrapper,
-    children: [{ path: ROUTE_PATH.HOME, Component: App }],
+    children: [
+      { path: ROUTE_PATH.HOME, Component: App },
+      { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
+    ],
   },
 ]);
 
