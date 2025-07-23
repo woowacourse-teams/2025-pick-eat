@@ -96,7 +96,7 @@ const S = {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
     position: relative;
   `,
 
@@ -111,9 +111,9 @@ const S = {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 5px;
+    gap: ${({ theme }) => theme.GAP.level2};
 
-    padding: 8px;
+    padding: ${({ theme }) => theme.PADDING.p3};
     border: ${({ theme }) => `1px solid ${theme.PALLETE.gray[60]}`};
     border-radius: 5px;
 
@@ -134,7 +134,7 @@ const S = {
     position: absolute;
     top: 110%;
 
-    padding: 8px;
+    padding: ${({ theme }) => theme.PADDING.p3};
     border: 1px solid ${({ theme }) => theme.PALLETE.gray[60]};
 
     background-color: ${({ theme }) => theme.PALLETE.gray[0]};
@@ -142,7 +142,8 @@ const S = {
   `,
 
   Option: styled.li`
-    padding: 15px 8px;
+    padding: ${({ theme }) => theme.PADDING.p5} +
+      ${({ theme }) => theme.PADDING.px3};
     cursor: pointer;
 
     &:hover {

@@ -20,7 +20,7 @@ const S = {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
 
   Label: styled.label`

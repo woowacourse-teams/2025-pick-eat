@@ -10,6 +10,22 @@ const tabData = [
   { tab: '기타', content: <div>기타 내용</div> },
 ];
 
+const LargeTabData = [
+  {
+    tab: '작은',
+    content: (
+      <div style={{ height: '100px', backgroundColor: '#eeeeee' }}>땅땅</div>
+    ),
+  },
+  {
+    tab: '짱큰',
+    content: (
+      <div style={{ height: '1000px', backgroundColor: '#dddddd' }}>땅땅땅</div>
+    ),
+  },
+  { tab: '글씨', content: <div>땅땅땅땅</div> },
+];
+
 const meta: Meta<typeof TabMenu> = {
   title: 'Tab/TabMenu',
   component: TabMenu,
@@ -24,6 +40,13 @@ type Story = StoryObj<typeof TabMenu>;
 export const Default: Story = {
   args: {
     tabData,
+  },
+  render: args => <TabMenu {...args} />,
+};
+
+export const LargeContent: Story = {
+  args: {
+    tabData: LargeTabData,
   },
   render: args => <TabMenu {...args} />,
 };

@@ -3,6 +3,8 @@ import Logo from '@components/assets/identity/Logo';
 
 import styled from '@emotion/styled';
 
+export const HEADER_HEIGHT = '72px';
+
 function Header() {
   return (
     <Container>
@@ -14,14 +16,16 @@ function Header() {
 
 const Container = styled.div`
   width: 100%;
-  height: 72px;
+  height: ${HEADER_HEIGHT};
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
 
-  padding: 16px;
+  z-index: ${({ theme }) => theme.Z_INDEX.sticky};
+
+  padding: ${({ theme }) => theme.PADDING.p5};
 
   background-color: ${({ theme }) => theme.PALLETE.gray[0]};
   border-bottom: solid 1px ${({ theme }) => theme.PALLETE.gray[20]};
