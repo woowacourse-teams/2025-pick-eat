@@ -16,9 +16,7 @@ const PreferRestaurant = () => {
   const roomCode = searchParams.get('code') ?? '';
 
   const handleDeactivate = async () => {
-    await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined, {
-      'Content-Type': 'application/json',
-    });
+    await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined);
   };
   const { participant } = useParticipant(roomCode);
   const navigate = useNavigate();

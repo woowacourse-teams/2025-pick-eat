@@ -46,9 +46,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     try {
-      await apiClient.patch(`restaurants/${id}/like`, undefined, {
-        'Content-Type': 'application/json',
-      });
+      await apiClient.patch(`restaurants/${id}/like`, undefined, {});
       setLikedIds(prev => [...prev, id]);
     } catch (error) {
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
@@ -70,9 +68,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     try {
-      await apiClient.patch(`restaurants/${id}/unlike`, undefined, {
-        'Content-Type': 'application/json',
-      });
+      await apiClient.patch(`restaurants/${id}/unlike`, undefined, {});
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
     } catch (error) {
       setLikedIds(prev => [...prev, id]);
