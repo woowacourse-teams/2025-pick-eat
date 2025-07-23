@@ -33,14 +33,12 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
 
   const handleLike = useCallback(async (id: number) => {
     setRestaurantList(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
+      sortByLike(
+        prev.map(item =>
+          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
+        )
       )
     );
-
-    setTimeout(() => {
-      setRestaurantList(prev => sortByLike([...prev]));
-    }, 1000);
 
     try {
       await apiClient.patch(`restaurants/${id}/like`, undefined, {
@@ -50,8 +48,10 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     } catch (error) {
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
       setRestaurantList(prev =>
-        prev.map(item =>
-          item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
+        sortByLike(
+          prev.map(item =>
+            item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
+          )
         )
       );
       console.log('좋아요 실패:', error);
@@ -60,14 +60,12 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
 
   const handleUnlike = useCallback(async (id: number) => {
     setRestaurantList(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
+      sortByLike(
+        prev.map(item =>
+          item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
+        )
       )
     );
-
-    setTimeout(() => {
-      setRestaurantList(prev => sortByLike([...prev]));
-    }, 1000);
 
     try {
       await apiClient.patch(`restaurants/${id}/unlike`, undefined, {
@@ -77,8 +75,10 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     } catch (error) {
       setLikedIds(prev => [...prev, id]);
       setRestaurantList(prev =>
-        prev.map(item =>
-          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
+        sortByLike(
+          prev.map(item =>
+            item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
+          )
         )
       );
       console.log('좋아요 취소 실패:', error);
