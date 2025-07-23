@@ -72,11 +72,12 @@ const S = {
     flex-direction: column;
     align-items: flex-start;
 
-    padding: 20px 30px 0 30px;
+    padding: 20px 30px 0;
   `,
 
   ParticipantInfo: styled.div`
     width: 100%;
+
     text-align: end;
   `,
 

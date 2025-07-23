@@ -36,11 +36,11 @@ const fall = keyframes`
 `;
 
 const ConfettiContainer = styled.div`
-  position: fixed;
-  top: 20%;
   width: 50%;
   height: 200px;
   overflow: hidden;
+  position: fixed;
+  top: 20%;
 `;
 
 const Piece = styled.div<{
@@ -48,12 +48,14 @@ const Piece = styled.div<{
   left: string;
   color: string;
 }>`
+  width: 10px;
+  height: 10px;
   position: absolute;
   top: -10px;
   left: ${({ left }) => left};
-  width: 10px;
-  height: 10px;
+
   background-color: ${({ color }) => color};
+
   animation: ${fall} 1s ease-in infinite;
   animation-delay: ${({ delay }) => delay};
 `;

@@ -1,6 +1,5 @@
 import { getAddressByLatLng } from '@domains/room/utils/convertAddress';
 
-
 import { apiClient } from './apiClient';
 
 export type RoomResponse = {
@@ -54,7 +53,7 @@ export const postRoom = async (data: CreateRoomFormData): Promise<string> => {
   const response = await apiClient.post<RoomResponse>(`rooms`, data);
   if (response) return response.code;
   return '';
-
+};
 
 export const getRoom = async (roomId: string) => {
   const response = await apiClient.get<RoomResponse>(`rooms/${roomId}`);

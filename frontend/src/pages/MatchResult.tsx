@@ -42,14 +42,14 @@ const S = {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    padding:40px 0;
+
+    padding: 40px 0;
 
     background-color: ${({ theme }) => theme.PALLETE.gray[0]};
 
-    border-radius:20px;
+    border-radius: 20px;
 
-    box-shadow:
-      0 10px 20px ${({ theme }) => theme.PALLETE.gray[20]};,
+    box-shadow: 0 10px 20px ${({ theme }) => theme.PALLETE.gray[20]};
   `,
 
   ButtonContainer: styled.div`
