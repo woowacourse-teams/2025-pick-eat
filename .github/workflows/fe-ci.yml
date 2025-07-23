@@ -2,9 +2,11 @@ name: CI
 
 on:
   push:
-    branches:
-      - front/dev
+    paths:
+      - 'frontend/**'
   pull_request:
+    paths:
+      - 'frontend/**'
     types: [opened, synchronize, reopened]
 
 jobs:
