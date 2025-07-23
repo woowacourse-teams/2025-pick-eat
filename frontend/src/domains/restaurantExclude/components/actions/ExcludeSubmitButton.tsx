@@ -1,8 +1,10 @@
 import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
 
-import { restaurants } from '@apis/restaurant';
 import { generateRouterPath } from '@routes/routePath';
+
+import { restaurants } from '@apis/restaurant';
+
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { useRestaurantExcludeContext } from '../../context/RestaurantExcludeProvider';

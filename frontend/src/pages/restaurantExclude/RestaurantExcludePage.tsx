@@ -1,8 +1,9 @@
 import RestaurantExcludeWithProvider from '@domains/restaurantExclude/components/RestaurantExclude';
 
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+
 import { restaurants } from '@apis/restaurant';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
