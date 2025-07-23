@@ -40,7 +40,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
 
     setTimeout(() => {
       setRestaurantList(prev => sortByLike([...prev]));
-    }, 500);
+    }, 1000);
 
     try {
       await apiClient.patch(`restaurants/${id}/like`, undefined, {
@@ -67,7 +67,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
 
     setTimeout(() => {
       setRestaurantList(prev => sortByLike([...prev]));
-    }, 500);
+    }, 1000);
 
     try {
       await apiClient.patch(`restaurants/${id}/unlike`, undefined, {
