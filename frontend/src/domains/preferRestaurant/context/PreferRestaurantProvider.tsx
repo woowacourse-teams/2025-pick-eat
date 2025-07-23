@@ -35,7 +35,13 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   };
 
   const sortByLike = (restaurantList: RestaurantsResponse[]) => {
-    return restaurantList.sort((a, b) => b.likeCount - a.likeCount);
+    return restaurantList.sort((a, b) => {
+      if (b.likeCount !== a.likeCount) {
+        return b.likeCount - a.likeCount;
+      }
+
+      return a.name.localeCompare(b.name, 'ko');
+    });
   };
 
   const handleLike = async (id: number) => {
@@ -101,8 +107,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
       );
 
       if (!isUnmounted && response) {
-        sortByLike(response);
-        setRestaurantList(response);
+        updateSortedRestaurantList(response);
       }
     };
 
