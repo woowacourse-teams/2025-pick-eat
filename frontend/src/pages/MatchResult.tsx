@@ -11,17 +11,9 @@ const MatchResult = () => {
     <S.Container>
       <Confetti />
       <S.Result>
-        <S.TitleContainer>
-          <S.Title>👏 오늘의 메뉴 👏</S.Title>
-        </S.TitleContainer>
-        <S.Restaurant>
-          <S.Name>피양콩 할마니</S.Name>
-        </S.Restaurant>
-        {result && (
-          <S.Restaurant>
-            <S.Name>{result.name}</S.Name>
-          </S.Restaurant>
-        )}
+        <S.Title>👏 오늘의 Pick! 👏</S.Title>
+
+        {result && <S.Name>{result.name}</S.Name>}
 
         <S.ButtonContainer>
           <Button color="primary" text="길 찾기" />
@@ -50,7 +42,7 @@ const S = {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    padding:30px 0;
+    padding:40px 0;
 
     background-color: ${({ theme }) => theme.PALLETE.gray[0]};
 
@@ -64,14 +56,10 @@ const S = {
     width: 80%;
   `,
 
-  TitleContainer: styled.div``,
-
   Title: styled.p`
     color: ${({ theme }) => theme.PALLETE.gray[60]};
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
-
-  Restaurant: styled.div``,
 
   Name: styled.p`
     color: ${({ theme }) => theme.PALLETE.gray[50]};
