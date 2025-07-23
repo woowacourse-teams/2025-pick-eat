@@ -25,6 +25,10 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   );
   const [likedIds, setLikedIds] = useState<number[]>([]);
 
+  const sortByLike = (restaurantList: RestaurantsResponse[]) => {
+    return restaurantList.sort((a, b) => b.likeCount - a.likeCount);
+  };
+
   const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
 
   const handleLike = useCallback(async (id: number) => {
@@ -35,9 +39,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     setTimeout(() => {
-      setRestaurantList(prev =>
-        [...prev].sort((a, b) => b.likeCount - a.likeCount)
-      );
+      setRestaurantList(prev => sortByLike([...prev]));
     }, 500);
 
     try {
@@ -64,9 +66,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     setTimeout(() => {
-      setRestaurantList(prev =>
-        [...prev].sort((a, b) => b.likeCount - a.likeCount)
-      );
+      setRestaurantList(prev => sortByLike([...prev]));
     }, 500);
 
     try {
@@ -98,7 +98,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
       );
 
       if (!isUnmounted && response) {
-        response.sort((a, b) => b.likeCount - a.likeCount);
+        sortByLike(response);
         setRestaurantList(response);
       }
     };
