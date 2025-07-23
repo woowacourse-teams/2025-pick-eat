@@ -17,6 +17,7 @@ export default Input;
 
 const S = {
   Container: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
@@ -36,5 +37,10 @@ const S = {
 
     font: ${({ theme }) => theme.FONTS.body.medium};
     border-radius: 5px;
+
+    &:focus {
+      border: 2px solid ${({ theme }) => theme.PALLETE.primary[60]};
+      outline: none;
+    }
   `,
 };
