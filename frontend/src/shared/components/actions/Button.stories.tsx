@@ -89,43 +89,43 @@ export const Playground = {
             color="gray"
             text="xs"
             size="xs"
-            rightIcon="./images/double-arrow.svg"
+            rightIcon={<img src="./images/double-arrow.svg" />}
           />
           <Button
             color="gray"
             text="sm"
             size="sm"
-            rightIcon="./images/double-arrow.svg"
+            rightIcon={<img src="./images/double-arrow.svg" />}
           />
           <Button
             color="gray"
             text="md"
             size="md"
-            rightIcon="./images/double-arrow.svg"
+            rightIcon={<img src="./images/double-arrow.svg" />}
           />
           <Button
             color="gray"
             text="lg"
             size="lg"
-            rightIcon="./images/double-arrow.svg"
+            rightIcon={<img src="./images/double-arrow.svg" />}
           />
           <Button
             color="gray"
             text="xl"
             size="xl"
-            rightIcon="./images/double-arrow.svg"
+            rightIcon={<img src="./images/double-arrow.svg" />}
           />
           <Button
             color="gray"
             text="dis"
             size="xl"
             disabled={true}
-            rightIcon="./images/double-arrow.svg"
+            rightIcon={<img src="./images/double-arrow.svg" />}
           />
           <Button
             color="gray"
             text="사이즈 지정x"
-            rightIcon="./images/double-arrow.svg"
+            rightIcon={<img src="./images/double-arrow.svg" />}
           />
         </div>
       </section>

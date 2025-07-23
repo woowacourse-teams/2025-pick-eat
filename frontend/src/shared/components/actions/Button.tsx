@@ -2,6 +2,7 @@
 
 import { css, Theme, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { ReactNode } from 'react';
 
 type ColorKeyType = 'primary' | 'secondary' | 'gray';
 type SizeKeyType = keyof typeof SIZE;
@@ -11,9 +12,8 @@ type Props = {
   text: string;
   color?: ColorKeyType;
   size?: SizeKeyType;
-  src?: string;
-  leftIcon?: string;
-  rightIcon?: string;
+  leftIcon?: ReactNode;
+  rightIcon?: ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 function Button({
@@ -28,9 +28,9 @@ function Button({
 
   return (
     <S.Button css={getButtonStyle(color, size, theme)} {...props}>
-      {leftIcon && <S.Icon src={leftIcon} alt="버튼 아이콘" />}
-      {text}
-      {rightIcon && <S.Icon src={rightIcon} alt="버튼 아이콘" />}
+      {leftIcon && <S.LeftIcon>{leftIcon}</S.LeftIcon>}
+      <span>{text}</span>
+      {rightIcon && <S.RightIcon>{rightIcon}</S.RightIcon>}
     </S.Button>
   );
 }
@@ -39,7 +39,14 @@ export default Button;
 
 const S = {
   Button: styled.button``,
-  Icon: styled.img``,
+  LeftIcon: styled.span`
+    display: inline-flex;
+    margin-right: 4px;
+  `,
+  RightIcon: styled.span`
+    display: inline-flex;
+    margin-left: 4px;
+  `,
 };
 
 const SIZE = {
@@ -84,7 +91,7 @@ const getButtonStyle = (
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 4px;
 
   border: ${color === 'gray' ? `1px solid ${theme.PALLETE.gray[60]}` : 'none'};
 
@@ -106,9 +113,7 @@ const getButtonStyle = (
 
   &:disabled {
     border: none;
-
     background-color: #cdd1d5;
-
     color: #6d7882;
     cursor: not-allowed;
   }
