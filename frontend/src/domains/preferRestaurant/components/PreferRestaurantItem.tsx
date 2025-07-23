@@ -7,7 +7,8 @@ import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider'
 type Prop = {
   id: number;
   name: string;
-  category: '한식' | '중식' | '일식' | '양식' | '기타';
+  // category: '한식' | '중식' | '일식' | '양식' | '기타';
+  category: string;
   distance: number;
   likeCount: number;
 };

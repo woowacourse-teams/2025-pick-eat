@@ -13,7 +13,8 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurant = () => {
   const [searchParams] = useSearchParams();
-  const roomCode = searchParams.get('code') ?? '';
+  // const roomCode = searchParams.get('code') ?? '';
+  const roomCode = '1dec4a07-ad42-4711-98a4-019a3e0f4089';
 
   const handleDeactivate = async () => {
     await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined, {
@@ -49,7 +50,7 @@ const PreferRestaurant = () => {
             onClick={() =>
               navigate(generateRouterPath.restaurantsExclude(roomCode))
             }
-            leftIcon={<Arrow size="sm" direction="left" />}
+            leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
           />
           <S.ButtonContainer>
             <Button
@@ -66,7 +67,9 @@ const PreferRestaurant = () => {
                 onClick={() =>
                   navigate(generateRouterPath.matchResult(roomCode))
                 }
-                rightIcon={<Arrow size="sm" direction="right" />}
+                rightIcon={
+                  <Arrow size="sm" direction="right" color={'black'} />
+                }
               />
             </S.ResultButtonContainer>
           </S.ButtonContainer>
@@ -80,6 +83,7 @@ export default PreferRestaurant;
 
 const S = {
   Container: styled.div`
+    width: 100%;
     height: calc(100vh - 72px);
     display: flex;
     flex-direction: column;

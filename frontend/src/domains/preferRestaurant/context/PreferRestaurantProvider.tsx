@@ -1,6 +1,5 @@
 import { apiClient } from '@apis/apiClient';
 import { RestaurantsResponse } from '@apis/prefer';
-
 import {
   createContext,
   PropsWithChildren,
@@ -30,7 +29,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     return restaurantList.sort((a, b) => b.likeCount - a.likeCount);
   };
 
-  const roomCode = '36f41043-01a3-401d-bdc6-e984b62722d3';
+  const roomCode = '1dec4a07-ad42-4711-98a4-019a3e0f4089';
 
   const handleLike = useCallback(async (id: number) => {
     setRestaurantList(prev =>

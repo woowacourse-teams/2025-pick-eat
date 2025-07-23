@@ -1,6 +1,5 @@
 import { apiClient } from '@apis/apiClient';
 import { ParticipantsResponse } from '@apis/prefer';
-
 import { useState, useEffect } from 'react';
 
 const useParticipant = (roomCode: string) => {
