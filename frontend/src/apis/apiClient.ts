@@ -17,6 +17,7 @@ const requestApi = async <TResponse = unknown>(
     },
     body: body ? JSON.stringify(body) : undefined,
   });
+
   if (!response.ok) throw new Error('요청 실패');
   if (response.status === 204) return null;
   const text = await response.text();
