@@ -73,4 +73,9 @@ public class RoomController {
         List<RestaurantResponse> response = roomService.getRoomRestaurants(roomCode);
         return ResponseEntity.ok().body(response);
     }
+
+    @GetMapping("/cd")
+    public void cdtest() {
+        
+    }
 }
