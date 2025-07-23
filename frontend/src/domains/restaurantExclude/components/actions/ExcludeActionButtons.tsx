@@ -1,8 +1,10 @@
+import ExcludeSubmitButton from '@domains/restaurantExclude/components/actions/ExcludeSubmitButton';
+
 import Button from '@components/actions/Button';
+import Arrow from '@components/assets/icons/Arrow';
+import DoubleArrow from '@components/assets/icons/DoubleArrow';
 
 import styled from '@emotion/styled';
-
-import ExcludeSubmitButton from './ExcludeSubmitButton';
 
 function ExcludeActionButtons() {
   return (
@@ -11,14 +13,16 @@ function ExcludeActionButtons() {
         text="이전"
         color="gray"
         size="md"
-        leftIcon="./images/arrow.svg"
+        leftIcon={<Arrow size="sm" direction="left" color="black" />}
       />
       <S.RightButtonWrapper>
         <S.RightButtonBox>
           <Button
             text="건너뛰기"
             color="gray"
-            rightIcon="./images/double-arrow.svg"
+            rightIcon={
+              <DoubleArrow size="sm" direction="right" color="black" />
+            }
           />
         </S.RightButtonBox>
 

@@ -1,4 +1,5 @@
 import Button from '@components/actions/Button';
+import Arrow from '@components/assets/icons/Arrow';
 
 import { restaurants } from '@apis/restaurant';
 
@@ -11,13 +12,21 @@ function ExcludeSubmitButton() {
     restaurants.patch(selectedRestaurantIds);
   };
 
+  const disabled = selectedRestaurantIds.length === 0;
+
   return (
     <Button
       text="다음"
       size="md"
-      rightIcon="./images/arrow.svg"
+      rightIcon={
+        <Arrow
+          size="sm"
+          direction="right"
+          color={disabled ? 'gray' : 'white'}
+        />
+      }
       onClick={handleSubmit}
-      disabled={selectedRestaurantIds.length === 0}
+      disabled={disabled}
     />
   );
 }

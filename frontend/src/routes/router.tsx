@@ -3,8 +3,8 @@ import Layout from '@components/layouts/Layout';
 import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
-import { ThemeProvider, Global } from '@emotion/react';
-import RestaurantExclude from '@pages/restaurantExclude/RestaurantExclude';
+import { Global, ThemeProvider } from '@emotion/react';
+import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 import App from '../App';

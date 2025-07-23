@@ -2,23 +2,31 @@ import CrossSvg from '@components/assets/icons/CrossSvg';
 import RevertSvg from '@components/assets/icons/RevertSvg';
 import Badge from '@components/labels/Badge';
 
-import { useBoolean } from '@hooks/useBoolean';
-
 import styled from '@emotion/styled';
+import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
+import { memo } from 'react';
 
 type Props = {
+  id: string;
   name: string;
   category: string;
-  link: string;
+  link?: string;
   distance: number;
 };
 
-function RestaurantItem({ name, category, link, distance }: Props) {
-  const [pressed, , , togglePressed] = useBoolean(false);
+function RestaurantItem({ id, name, category, link, distance }: Props) {
+  const { selectedRestaurantIds, handleRestaurantToggle } =
+    useRestaurantExcludeContext();
+
+  const pressed = selectedRestaurantIds.includes(id);
 
   return (
     <S.Container pressed={pressed}>
-      <S.DeleteButton type="button" onClick={togglePressed} pressed={pressed}>
+      <S.DeleteButton
+        type="button"
+        onClick={() => handleRestaurantToggle(id)}
+        pressed={pressed}
+      >
         <S.IconContainer>
           <S.IconWrapper pressed={pressed}>
             {pressed ? (
@@ -55,7 +63,7 @@ function RestaurantItem({ name, category, link, distance }: Props) {
   );
 }
 
-export default RestaurantItem;
+export default memo(RestaurantItem);
 
 const S = {
   Container: styled.div<{ pressed: boolean }>`
@@ -64,14 +72,14 @@ const S = {
     display: flex;
     flex-direction: column;
     position: relative;
-    ${({ pressed }) =>
+    ${({ pressed, theme }) =>
       pressed
         ? `
-      box-shadow: 0 2px 8px #0000001A;
+      box-shadow: ${theme.BOX_SHADOW.level1};
       transform: scale(0.95);
     `
         : `
-      box-shadow: 0 4px 20px #00000014;
+      box-shadow: ${theme.BOX_SHADOW.level2};
       transform: scale(1);
 
     `}
@@ -81,10 +89,11 @@ const S = {
   CardContainer: styled.div`
     width: 100%;
     height: 120px;
-    position: relative;
     overflow: hidden;
-    border-radius: 10px;
+    position: relative;
+
     background-color: ${({ theme }) => theme.PALLETE.gray[0]};
+    border-radius: 10px;
   `,
   CardContent: styled.div<{ pressed: boolean }>`
     width: 100%;
@@ -92,7 +101,7 @@ const S = {
     display: flex;
     flex-direction: column;
 
-    padding: 20px;
+    padding: ${({ theme }) => theme.PADDING.p6};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -114,7 +123,7 @@ const S = {
     justify-content: center;
     align-items: center;
     position: absolute;
-    z-index: 1;
+    z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
 
     background: #2a2f3d8f;
 
@@ -123,7 +132,8 @@ const S = {
     pointer-events: none;
   `,
   OverlayText: styled.span`
-    padding: 8px 20px;
+    padding: ${({ theme }) => theme.PADDING.py3} +
+      ${({ theme }) => theme.PADDING.px6};
 
     color: ${({ theme }) => theme.PALLETE.gray[0]};
     font: ${({ theme }) => theme.FONTS.body.small_bold};
@@ -139,7 +149,8 @@ const S = {
     align-items: center;
     top: -16px;
     right: -16px;
-    padding: 0 16px;
+
+    padding: ${({ theme }) => theme.PADDING.px5};
 
     color: ${({ theme }) => theme.PALLETE.gray[0]};
     font: ${({ theme }) => theme.FONTS.body.xsmall};
@@ -153,7 +164,7 @@ const S = {
       color: ${theme.PALLETE.gray[0]};
     `}
 
-    z-index: 2;
+    z-index: ${({ theme }) => theme.Z_INDEX.sticky};
   `,
   IconContainer: styled.div`
     display: flex;
@@ -192,7 +203,7 @@ const S = {
   `,
   TitleWrapper: styled.div`
     display: flex;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
   RestaurantName: styled.a`
     max-width: 180px;
@@ -207,7 +218,7 @@ const S = {
   `,
   LinkButton: styled.a`
     align-items: center;
-    gap: 4px;
+    gap: ${({ theme }) => theme.GAP.level2};
 
     margin-top: 8px;
 

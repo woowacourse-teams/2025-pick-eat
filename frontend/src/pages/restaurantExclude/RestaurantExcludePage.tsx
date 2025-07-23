@@ -1,5 +1,6 @@
+import RestaurantExcludeWithProvider from '@domains/restaurantExclude/components/RestaurantExclude';
+
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-import RestaurantExcludeWithProvider from '@domains/restaurantExclude/RestaurantExclude';
 
 import { restaurants } from '@apis/restaurant';
 import styled from '@emotion/styled';
@@ -17,7 +18,9 @@ function RestaurantExcludePage() {
       <ErrorBoundary>
         <Suspense fallback={<></>}>
           <RestaurantExcludeWithProvider
-            restaurantData={restaurants.get(code ?? '')}
+            restaurantData={restaurants.get(
+              code ?? '36f41043-01a3-401d-bdc6-e984b62722d3'
+            )}
           />
         </Suspense>
       </ErrorBoundary>

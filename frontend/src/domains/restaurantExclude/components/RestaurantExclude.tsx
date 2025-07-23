@@ -1,16 +1,17 @@
 import CheckBox from '@components/actions/Checkbox';
 import TabMenu from '@components/tabMenus/TabMenu';
 
+import {
+  RestaurantExcludeProvider,
+  useRestaurantExcludeContext,
+} from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
+
 import { Restaurant } from '@apis/restaurant';
 import styled from '@emotion/styled';
 import { use, useMemo } from 'react';
 
-import ExcludeActionButtons from './components/actions/ExcludeActionButtons';
-import RestaurantList from './components/RestaurantList';
-import {
-  RestaurantExcludeProvider,
-  useRestaurantExcludeContext,
-} from './context/RestaurantExcludeProvider';
+import ExcludeActionButtons from './actions/ExcludeActionButtons';
+import RestaurantList from './RestaurantList';
 
 type RestaurantTabCategory = '한식' | '중식' | '일식' | '양식' | '기타';
 
