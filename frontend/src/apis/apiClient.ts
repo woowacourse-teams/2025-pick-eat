@@ -11,12 +11,13 @@ const requestApi = async <TResponse = unknown>(
   const response = await fetch(`${process.env.BASE_URL}${endPoint}`, {
     method,
     headers: {
-      Authorization: `Basic ${process.env.API_KEY}`,
+      // Authorization: `Basic ${process.env.API_KEY}`,
       'Content-Type': 'application/json',
       ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,
   });
+
   if (!response.ok) throw new Error('요청 실패');
   if (response.status === 204) return null;
   const text = await response.text();
@@ -25,7 +26,7 @@ const requestApi = async <TResponse = unknown>(
 };
 
 export const apiClient = {
-  get: <T = unknown>(endPoint: string, headers?: ApiHeaders) =>
+  get: <T>(endPoint: string, headers?: ApiHeaders) =>
     requestApi<T>('GET', endPoint, undefined, headers),
   post: <T = unknown>(endPoint: string, body?: ApiBody, headers?: ApiHeaders) =>
     requestApi<T>('POST', endPoint, body, headers),

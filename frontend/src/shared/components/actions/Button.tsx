@@ -41,10 +41,12 @@ const S = {
   Button: styled.button``,
   LeftIcon: styled.span`
     display: inline-flex;
+
     margin-right: 4px;
   `,
   RightIcon: styled.span`
     display: inline-flex;
+
     margin-left: 4px;
   `,
 };
@@ -60,18 +62,18 @@ const SIZE = {
 
 const getColor = (color: ColorKeyType, theme: Theme, state: StateType) => {
   const SIZE_MAP = {
-    primary: theme.PALLETE.primary,
-    secondary: theme.PALLETE.secondary,
-    gray: theme.PALLETE.gray,
+    primary: theme.PALETTE.primary,
+    secondary: theme.PALETTE.secondary,
+    gray: theme.PALETTE.gray,
   };
 
-  const COLOR_MAP: Record<StateType, keyof typeof theme.PALLETE.primary> = {
+  const COLOR_MAP: Record<StateType, keyof typeof theme.PALETTE.primary> = {
     default: 50,
     hover: 30,
     active: 70,
   };
 
-  const GRAY_COLOR_MAP: Record<StateType, keyof typeof theme.PALLETE.gray> = {
+  const GRAY_COLOR_MAP: Record<StateType, keyof typeof theme.PALETTE.gray> = {
     default: 5,
     hover: 0,
     active: 10,
@@ -93,7 +95,7 @@ const getButtonStyle = (
   align-items: center;
   gap: 4px;
 
-  border: ${color === 'gray' ? `1px solid ${theme.PALLETE.gray[60]}` : 'none'};
+  border: ${color === 'gray' ? `1px solid ${theme.PALETTE.gray[60]}` : 'none'};
 
   background-color: ${getColor(color, theme, 'default')};
 
@@ -113,7 +115,9 @@ const getButtonStyle = (
 
   &:disabled {
     border: none;
+
     background-color: #cdd1d5;
+
     color: #6d7882;
     cursor: not-allowed;
   }

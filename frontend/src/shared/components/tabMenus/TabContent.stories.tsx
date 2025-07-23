@@ -26,3 +26,11 @@ export const Default: Story = {
   },
   render: args => <TabContent {...args} />,
 };
+
+export const Long: Story = {
+  args: {
+    selectedIndex: 1,
+    tabContents: tabContents,
+  },
+  render: args => <TabContent {...args} />,
+};
