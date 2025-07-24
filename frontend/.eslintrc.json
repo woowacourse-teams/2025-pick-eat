@@ -67,6 +67,11 @@
             "position": "after"
           },
           {
+            "pattern": "@routes/**",
+            "group": "internal",
+            "position": "after"
+          },
+          {
             "pattern": "@domains/**/utils/**",
             "group": "internal",
             "position": "after"
