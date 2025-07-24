@@ -6,7 +6,9 @@ import useResult from '@domains/matchResult/hooks/useResult';
 import styled from '@emotion/styled';
 
 const MatchResult = () => {
-  const { result } = useResult();
+  const { getResult } = useResult();
+  const result = getResult();
+
   return (
     <S.Container>
       <Confetti />

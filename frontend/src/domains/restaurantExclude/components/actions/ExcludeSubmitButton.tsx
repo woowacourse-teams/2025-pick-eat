@@ -3,7 +3,6 @@ import Arrow from '@components/assets/icons/Arrow';
 
 import { restaurants } from '@apis/restaurant';
 import { generateRouterPath } from '@routes/routePath';
-
 import { useNavigate, useSearchParams } from 'react-router';
 
 import { useRestaurantExcludeContext } from '../../context/RestaurantExcludeProvider';

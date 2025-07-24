@@ -1,14 +1,14 @@
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 
 import Button from '@components/actions/Button';
-
-import { apiClient } from '@apis/apiClient';
-import { generateRouterPath } from '@routes/routePath';
+import Arrow from '@components/assets/icons/Arrow';
 
 import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
+import { apiClient } from '@apis/apiClient';
 import styled from '@emotion/styled';
+import { generateRouterPath } from '@routes/routePath';
 import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurant = () => {
@@ -16,9 +16,7 @@ const PreferRestaurant = () => {
   const roomCode = searchParams.get('code') ?? '';
 
   const handleDeactivate = async () => {
-    await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined, {
-      'Content-Type': 'application/json',
-    });
+    await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined);
   };
   const { participant } = useParticipant(roomCode);
   const navigate = useNavigate();
@@ -30,9 +28,12 @@ const PreferRestaurant = () => {
           <S.Title>선호도 조사</S.Title>
           <S.Description>선호 식당을 선택해 주세요.</S.Description>
           <S.ParticipantInfo>
-            <S.Completed>
+            {/* <S.Completed>
               완료자 {participant.eliminatedParticipants}/
               {participant.totalParticipants}
+            </S.Completed> */}
+            <S.Completed>
+              참여자 총{participant.totalParticipants}명
             </S.Completed>
           </S.ParticipantInfo>
         </S.TitleArea>
@@ -49,6 +50,7 @@ const PreferRestaurant = () => {
             onClick={() =>
               navigate(generateRouterPath.restaurantsExclude(roomCode))
             }
+            leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
           />
           <S.ButtonContainer>
             <Button
@@ -59,11 +61,14 @@ const PreferRestaurant = () => {
 
             <S.ResultButtonContainer>
               <Button
-                text="결과 보기"
+                text="결과"
                 color="secondary"
                 size="md"
                 onClick={() =>
                   navigate(generateRouterPath.matchResult(roomCode))
+                }
+                rightIcon={
+                  <Arrow size="sm" direction="right" color={'black'} />
                 }
               />
             </S.ResultButtonContainer>
@@ -78,6 +83,7 @@ export default PreferRestaurant;
 
 const S = {
   Container: styled.div`
+    width: 100%;
     height: calc(100vh - 72px);
     display: flex;
     flex-direction: column;
