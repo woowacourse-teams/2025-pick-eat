@@ -1,14 +1,11 @@
-import { createQueryString, joinAsPath } from '@utils/createUrl';
-
 const KAKAO_REST_API_KEY = process.env.KAKAO_API_KEY;
 const KAKAO_BASE_URL = 'https://dapi.kakao.com/v2/local';
 
 export const getLatLngByAddress = async (
   address: string
 ): Promise<{ x: number; y: number } | null> => {
-  const path = joinAsPath(KAKAO_BASE_URL, 'search', 'keyword.json');
-  const query = createQueryString({ query: encodeURIComponent(address) });
-  const url = `${path}${query}`;
+  const url = `${KAKAO_BASE_URL}/search/keyword.json?query=${address}`;
+
   const headers = {
     Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
   };
@@ -33,9 +30,7 @@ export const getAddressByLatLng = async (
   x: number,
   y: number
 ): Promise<string | null> => {
-  const path = joinAsPath(KAKAO_BASE_URL, 'geo', 'coord2address.json');
-  const query = createQueryString({ x: x.toString(), y: y.toString() });
-  const url = `${path}${query}`;
+  const url = `${KAKAO_BASE_URL}/geo/coord2address.json?x=${x}&y=${y}`;
   const headers = {
     Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
   };

@@ -1,5 +1,5 @@
 export const joinAsPath = (...paths: string[]): string => {
-  const joined = paths.join('/').replace(/\/+/g, '/');
+  const joined = paths.join('/');
   return joined;
 };
 
