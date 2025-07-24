@@ -3,6 +3,9 @@ import Confetti from '@components/Confetti';
 
 import useResult from '@domains/matchResult/hooks/useResult';
 
+import { setMobileStyle } from '@styles/mediaQuery';
+
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const MatchResult = () => {
@@ -52,6 +55,11 @@ const S = {
     border-radius: 20px;
 
     box-shadow: 0 10px 20px ${({ theme }) => theme.PALETTE.gray[20]};
+
+    ${setMobileStyle(css`
+      width: 100%;
+      box-shadow: none;
+    `)}
   `,
 
   ButtonContainer: styled.div`
