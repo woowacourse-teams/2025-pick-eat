@@ -1,5 +1,8 @@
 import { apiClient } from '@apis/apiClient';
 import { ParticipantsResponse } from '@apis/prefer';
+
+import { joinAsPath } from '@utils/createUrl';
+
 import { useState, useEffect } from 'react';
 
 const useParticipant = (roomCode: string) => {
@@ -12,9 +15,8 @@ const useParticipant = (roomCode: string) => {
     let isUnmounted = false;
 
     const fetchParticipantState = async () => {
-      const response = await apiClient.get<ParticipantsResponse>(
-        `rooms/${roomCode}/participants/state`
-      );
+      const getUrl = joinAsPath('rooms', roomCode, 'participants', 'state');
+      const response = await apiClient.get<ParticipantsResponse>(getUrl);
 
       if (!isUnmounted && response) {
         setParticipant(response);

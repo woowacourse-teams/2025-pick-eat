@@ -26,9 +26,6 @@ export default RoomDetail;
 const S = {
   Container: styled.div`
     width: 100%;
-
-    /* TODO: 변수화하기 */
-
     height: calc(100% - 72px);
     display: flex;
     justify-content: center;

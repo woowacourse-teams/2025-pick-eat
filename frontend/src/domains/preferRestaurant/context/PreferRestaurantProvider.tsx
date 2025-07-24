@@ -1,5 +1,8 @@
 import { apiClient } from '@apis/apiClient';
 import { RestaurantsResponse } from '@apis/prefer';
+
+import { createQueryString, joinAsPath } from '@utils/createUrl';
+
 import {
   createContext,
   PropsWithChildren,
@@ -52,7 +55,10 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     try {
-      await apiClient.patch(`restaurants/${id}/like`, undefined, {});
+      const patchUrl = joinAsPath('restaurants', id.toString(), 'like');
+      await apiClient.patch(patchUrl, undefined, {
+        'Content-Type': 'application/json',
+      });
       setLikedIds(prev => [...prev, id]);
     } catch (error) {
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
@@ -74,7 +80,10 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     try {
-      await apiClient.patch(`restaurants/${id}/unlike`, undefined, {});
+      const patchUrl = joinAsPath('restaurants', id.toString(), 'unlike');
+      await apiClient.patch(patchUrl, undefined, {
+        'Content-Type': 'application/json',
+      });
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
     } catch (error) {
       setLikedIds(prev => [...prev, id]);
@@ -89,8 +98,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
           item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
         )
       );
-
-      console.log('좋아요 취소 실패:', error);
+      console.error('좋아요 취소 실패:', error);
     }
   };
 
@@ -102,8 +110,12 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     let isUnmounted = false;
 
     const fetchRestaurantList = async () => {
+      const getUrl = joinAsPath('rooms', roomCode, 'restaurants');
+      const queryString = createQueryString({
+        isExcluded: 'false',
+      });
       const response = await apiClient.get<RestaurantsResponse[]>(
-        `rooms/${roomCode}/restaurants?isExcluded=false`
+        `${getUrl}${queryString}`
       );
 
       if (!isUnmounted && response) {

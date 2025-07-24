@@ -1,4 +1,5 @@
 import { convert } from '@utils/convert';
+import { joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
 
@@ -48,9 +49,8 @@ const restaurantBaseUrl = 'restaurants';
 
 export const restaurants = {
   get: async (roomCode: string): Promise<Restaurant[]> => {
-    const data = await apiClient.get<RestaurantResponse[]>(
-      `rooms/${roomCode}/${restaurantBaseUrl}`
-    );
+    const getUrl = joinAsPath('rooms', roomCode, restaurantBaseUrl);
+    const data = await apiClient.get<RestaurantResponse[]>(getUrl);
     const results = (data ?? []).map(restaurant =>
       convertResponseToRestaurant(restaurant)
     );
@@ -59,13 +59,10 @@ export const restaurants = {
   patch: async (restaurantsIds: string[]) => {
     const convertedRestaurantsIds =
       convert.stringArrayToNumberArray(restaurantsIds);
-
-    const response = await apiClient.patch<RestaurantResponse>(
-      `${restaurantBaseUrl}/exclude`,
-      {
-        restaurantIds: convertedRestaurantsIds,
-      }
-    );
+    const patchUrl = joinAsPath(restaurantBaseUrl, 'exclude');
+    const response = await apiClient.patch<RestaurantResponse>(patchUrl, {
+      restaurantIds: convertedRestaurantsIds,
+    });
     if (!response) return [];
     return convertResponseToRestaurant(response);
   },

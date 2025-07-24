@@ -1,5 +1,7 @@
 import { getAddressByLatLng } from '@domains/room/utils/convertAddress';
 
+import { joinAsPath } from '@utils/createUrl';
+
 import { apiClient } from './apiClient';
 
 export type RoomResponse = {
@@ -56,7 +58,8 @@ export const postRoom = async (data: CreateRoomFormData): Promise<string> => {
 };
 
 export const getRoom = async (roomId: string) => {
-  const response = await apiClient.get<RoomResponse>(`rooms/${roomId}`);
+  const getUrl = joinAsPath('rooms', roomId);
+  const response = await apiClient.get<RoomResponse>(getUrl);
   if (response) return await convertResponseToRoomDetail(response);
   throw new Error('방 정보가 존재하지 않습니다.');
 };
