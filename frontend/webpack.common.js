@@ -8,12 +8,21 @@ import webpack from 'webpack';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const env = dotenv.config({ path: path.resolve(__dirname, './.env') }).parsed;
-const envKeys = Object.keys(env).reduce((prev, next) => {
-  prev[`process.env.${next}`] = JSON.stringify(env[next]);
-  return prev;
-}, {});
 
+const env = dotenv.config({ path: path.resolve(__dirname, './.env') }).parsed;
+const MODE = process.env.NODE_ENV || 'development';
+const BASE_URL = MODE === 'production' ? env.BASE_URL_PROD : env.BASE_URL_DEV;
+
+const envKeys = Object.entries(env).reduce(
+  (acc, [key, value]) => {
+    acc[`process.env.${key}`] = JSON.stringify(value);
+    return acc;
+  },
+  {
+    'process.env.BASE_URL': JSON.stringify(BASE_URL),
+    'process.env.NODE_ENV': JSON.stringify(MODE),
+  }
+);
 
 const config = {
   entry: './src/main.tsx',
@@ -47,7 +56,7 @@ const config = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
-    new webpack.DefinePlugin(envKeys)
+    new webpack.DefinePlugin(envKeys),
   ],
 };
 

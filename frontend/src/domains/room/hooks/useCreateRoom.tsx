@@ -1,5 +1,4 @@
 import { generateRouterPath } from '@routes/routePath';
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -7,7 +6,7 @@ import { createRoomService } from '../services/createRoomService';
 import { validateRoomForms } from '../utils/validateRoomForms';
 
 export const useCreateRoom = () => {
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string>();
   const navigate = useNavigate();
 
   const createRoom = async (
@@ -38,7 +37,7 @@ export const useCreateRoom = () => {
       });
 
       navigate(generateRouterPath.roomDetail(code));
-      setError(null);
+      setError('');
     } catch (e) {
       if (e instanceof Error) {
         setError(() =>

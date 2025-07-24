@@ -74,7 +74,7 @@ function Bar({
       <S.SelectContainer onClick={e => e.stopPropagation()}>
         {label && <S.Label>{label}</S.Label>}
 
-        <S.SelectBar onClick={toggleDropdown}>
+        <S.SelectBar type="button" onClick={toggleDropdown}>
           <S.SelectedValue isSelected={Boolean(selectedValue)}>
             {selectedValue ?? placeholder}
           </S.SelectedValue>

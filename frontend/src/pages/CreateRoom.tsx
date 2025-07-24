@@ -5,6 +5,9 @@ import ErrorMessage from '@components/errors/ErrorMessage';
 
 import { useCreateRoom } from '@domains/room/hooks/useCreateRoom';
 
+import { setMobileStyle } from '@styles/mediaQuery';
+
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FormEvent, useState } from 'react';
 
@@ -34,30 +37,33 @@ function CreateRoom() {
           이미 방이 존재한다면 초대 링크를 통해 입장하세요.
         </S.Description>
 
-        <Input
-          name="roomName"
-          label="방 이름"
-          placeholder="방 이름을 입력해주세요."
-        />
-        <S.LocationWrapper>
+        <S.FormWrapper>
           <Input
-            name="location"
-            label="위치"
-            placeholder="위치를 입력해주세요."
+            name="roomName"
+            label="방 이름"
+            placeholder="방 이름을 입력해주세요."
           />
-          <Select.Bar
-            label="반경"
-            selectedValue={selectedOption?.label}
-            onChange={option => setSelectedOption(option)}
-          >
-            {RADIUS_OPTIONS.map(option => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select.Bar>
-        </S.LocationWrapper>
-        {error && <ErrorMessage message={error} />}
+          <S.LocationWrapper>
+            <Input
+              name="location"
+              label="위치"
+              placeholder="위치를 입력해주세요."
+            />
+            <Select.Bar
+              label="반경"
+              selectedValue={selectedOption?.label}
+              onChange={option => setSelectedOption(option)}
+            >
+              {RADIUS_OPTIONS.map(option => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select.Bar>
+          </S.LocationWrapper>
+        </S.FormWrapper>
+
+        <ErrorMessage message={error} />
         <Button text="방 생성" />
       </S.Wrapper>
     </S.Container>
@@ -83,25 +89,44 @@ const S = {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 30px;
+    gap: 10px;
 
     padding: 10%;
 
     border-radius: 30px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
+
+    ${setMobileStyle(css`
+      width: 100%;
+      box-shadow: none;
+    `)}
   `,
 
   Title: styled.h1`
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
 
+  FormWrapper: styled.div`
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+  `,
+
   LocationWrapper: styled.div`
     width: 100%;
     display: flex;
     gap: 20px;
+
+    ${setMobileStyle(css`
+      flex-direction: column;
+      gap: 30px;
+    `)}
   `,
 
   Description: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[60]};
+    white-space: nowrap;
   `,
 };
