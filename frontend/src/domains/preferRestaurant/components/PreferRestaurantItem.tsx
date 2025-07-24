@@ -11,9 +11,16 @@ type Prop = {
   category: string;
   distance: number;
   likeCount: number;
+  placeUrl: string;
 };
 
-function PreferRestaurantItem({ id, name, distance, likeCount }: Prop) {
+function PreferRestaurantItem({
+  id,
+  name,
+  distance,
+  likeCount,
+  placeUrl,
+}: Prop) {
   const { liked } = usePreferRestaurantContext();
   return (
     <S.Container liked={liked(id)}>
@@ -23,11 +30,7 @@ function PreferRestaurantItem({ id, name, distance, likeCount }: Prop) {
           {/* <Badge>{category}</Badge> */}
         </S.TitleWrapper>
         <S.Distance>식당까지 {distance}m</S.Distance>
-        <S.LinkButton
-          //   href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <S.LinkButton href={placeUrl} target="_blank" rel="noopener noreferrer">
           식당 상세 정보 보기
         </S.LinkButton>
       </S.CardContent>

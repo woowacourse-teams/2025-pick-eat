@@ -1,6 +1,7 @@
 import { postJoinRoom, RoomDetailType } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 

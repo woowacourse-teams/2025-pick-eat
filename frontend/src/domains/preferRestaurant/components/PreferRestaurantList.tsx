@@ -1,4 +1,5 @@
-import { RestaurantResponse } from '@apis/restaurant';
+import { RestaurantsResponse } from '@apis/prefer';
+
 import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
 
@@ -52,7 +53,7 @@ function PreferRestaurantList() {
 
   return (
     <S.Container>
-      {restaurantList.map((item: RestaurantResponse) => (
+      {restaurantList.map((item: RestaurantsResponse) => (
         <S.ItemWrapper
           key={item.id}
           ref={el => {
@@ -65,6 +66,7 @@ function PreferRestaurantList() {
             category={item.category}
             distance={item.distance}
             likeCount={item.likeCount}
+            placeUrl={item.placeUrl}
           />
         </S.ItemWrapper>
       ))}

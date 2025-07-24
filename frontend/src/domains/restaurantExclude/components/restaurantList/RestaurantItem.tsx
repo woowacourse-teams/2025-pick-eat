@@ -11,11 +11,11 @@ type Props = {
   id: string;
   name: string;
   category: string;
-  link?: string;
+  placeUrl?: string;
   distance: number;
 };
 
-function RestaurantItem({ id, name, category, link, distance }: Props) {
+function RestaurantItem({ id, name, category, placeUrl, distance }: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
     useRestaurantExcludeContext();
 
@@ -46,7 +46,7 @@ function RestaurantItem({ id, name, category, link, distance }: Props) {
           </S.TitleWrapper>
           <span>식당까지 {distance}m</span>
           <S.LinkButton
-            href={link}
+            href={placeUrl}
             target="_blank"
             rel="noopener noreferrer"
             onClick={e => e.stopPropagation()}

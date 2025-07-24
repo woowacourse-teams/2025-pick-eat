@@ -8,6 +8,7 @@ export type RestaurantsResponse = {
   name: string;
   category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
+  placeUrl: string;
   roadAddressName: string;
   likeCount: number;
   x: number;

@@ -7,8 +7,10 @@ import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/Pref
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
 import { apiClient } from '@apis/apiClient';
-import styled from '@emotion/styled';
+
 import { generateRouterPath } from '@routes/routePath';
+
+import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurant = () => {

@@ -8,6 +8,7 @@ export type RestaurantResponse = {
   name: string;
   category: string;
   distance: number;
+  placeUrl: string;
   roadAddressName: string;
   likeCount: number;
   x: number;
@@ -19,6 +20,7 @@ export type Restaurant = {
   name: string;
   category: string;
   distance: number;
+  placeUrl: string;
   roadAddressName: string;
   likeCount: number;
   x: number;
@@ -30,6 +32,7 @@ const convertResponseToRestaurant = ({
   name,
   category,
   distance,
+  placeUrl,
   roadAddressName,
   likeCount,
   x,
@@ -39,6 +42,7 @@ const convertResponseToRestaurant = ({
   name: name.toString(),
   category: category.toString(),
   distance: Number(distance),
+  placeUrl: placeUrl.toString(),
   roadAddressName: roadAddressName.toString(),
   likeCount: Number(likeCount),
   x: Number(x),
