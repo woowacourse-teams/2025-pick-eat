@@ -7,7 +7,7 @@ export const getLatLngByAddress = async (
   address: string
 ): Promise<{ x: number; y: number } | null> => {
   const path = joinAsPath(KAKAO_BASE_URL, 'search', 'keyword.json');
-  const query = createQueryString({ query: encodeURIComponent(address) });
+  const query = createQueryString({ query: address });
   const url = `${path}${query}`;
   const headers = {
     Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
