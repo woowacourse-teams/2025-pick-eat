@@ -4,6 +4,7 @@ const KAKAO_BASE_URL = 'https://dapi.kakao.com/v2/local';
 export const getLatLngByAddress = async (
   address: string
 ): Promise<{ x: number; y: number } | null> => {
+
   const url = `${KAKAO_BASE_URL}/search/keyword.json?query=${address}`;
 
   const headers = {

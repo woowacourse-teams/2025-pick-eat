@@ -4,7 +4,6 @@ import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { restaurants } from '@apis/restaurant';
 
-
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
 
