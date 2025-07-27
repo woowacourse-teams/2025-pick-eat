@@ -42,8 +42,11 @@ export default LikeButton;
 const S = {
   Container: styled.div`
     display: flex;
+    justify-content: space-between;
     align-items: center;
+
     gap: 4px;
+    width: 36px;
   `,
 
   HeartWrapper: styled.div`
