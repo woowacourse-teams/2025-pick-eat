@@ -82,6 +82,7 @@ const S = {
     gap: 16px;
     place-items: center;
     grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
+
     padding: 16px;
   `,
   ItemWrapper: styled.div``,

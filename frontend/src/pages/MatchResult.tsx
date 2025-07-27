@@ -73,6 +73,7 @@ const S = {
 
   Name: styled.p`
     padding: 16px;
+
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,

@@ -131,7 +131,7 @@ const S = {
   FormWrapper: styled.div`
     display: flex;
     flex-direction: column;
-    gap: 10px;
     align-items: center;
+    gap: 10px;
   `,
 };

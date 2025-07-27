@@ -1,16 +1,19 @@
 import Layout from '@components/layouts/Layout';
 
+
+
+import CreateRoom from '@pages/CreateRoom';
+import MatchResult from '@pages/MatchResult';
+import PreferRestaurant from '@pages/PreferRestaurant';
+import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
+import RoomDetail from '@pages/RoomDetail';
+
 import { ROUTE_PATH } from '@routes/routePath';
 
 import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
-import CreateRoom from '@pages/CreateRoom';
-import MatchResult from '@pages/MatchResult';
-import PreferRestaurant from '@pages/PreferRestaurant';
-import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-import RoomDetail from '@pages/RoomDetail';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 function Wrapper() {
