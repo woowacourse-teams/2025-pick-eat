@@ -8,7 +8,7 @@ import com.pickeat.backend.room.application.RoomService;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.pickeat.backend.room.ui.api.RoomApiSpec;
 import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -26,13 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/rooms")
 @RequiredArgsConstructor
-public class RoomController {
+public class RoomController implements RoomApiSpec {
 
     private final RoomService roomService;
     private final RestaurantService restaurantService;
     private final RestaurantSearchService restaurantSearchService;
 
-    //TODO: 비동기 도입 고려  (2025-07-21, 월, 20:43)
+    @Override
     @PostMapping
     public ResponseEntity<RoomResponse> createRoom(@Valid @RequestBody RoomRequest request) {
         List<RestaurantRequest> restaurantRequests = restaurantSearchService.search(request.x(), request.y(),
@@ -45,6 +45,7 @@ public class RoomController {
                 .body(response);
     }
 
+    @Override
     @GetMapping("/{roomCode}/participants/state")
     public ResponseEntity<ParticipantStateResponse> getParticipantStateSummary(
             @PathVariable("roomCode") String roomCode) {
@@ -52,29 +53,32 @@ public class RoomController {
         return ResponseEntity.ok().body(response);
     }
 
+    @Override
     @PatchMapping("/{roomCode}/deactivate")
     public ResponseEntity<Void> deactivateRoom(@PathVariable("roomCode") String roomCode) {
         roomService.deactivateRoom(roomCode);
         return ResponseEntity.ok().build();
     }
 
+    @Override
     @GetMapping("/{roomCode}")
     public ResponseEntity<RoomResponse> getRoom(@PathVariable("roomCode") String roomCode) {
         RoomResponse response = roomService.getRoom(roomCode);
         return ResponseEntity.ok().body(response);
     }
 
+    @Override
     @GetMapping("/{roomCode}/result")
     public ResponseEntity<List<RestaurantResponse>> getRoomResult(@PathVariable("roomCode") String roomCode) {
         List<RestaurantResponse> response = roomService.getRoomResult(roomCode);
         return ResponseEntity.ok().body(response);
     }
 
-    //@Parameter(description = "멤버 ID") @RequestParam(required = false) Long memberId,
+    @Override
     @GetMapping("/{roomCode}/restaurants")
     public ResponseEntity<List<RestaurantResponse>> getRoomRestaurants(
             @PathVariable("roomCode") String roomCode,
-            @Parameter(description = "소거 여부") @RequestParam(required = false) Boolean isExcluded) {
+            @RequestParam(required = false) Boolean isExcluded) {
         List<RestaurantResponse> response = roomService.getRoomRestaurants(roomCode, isExcluded);
         return ResponseEntity.ok().body(response);
     }
