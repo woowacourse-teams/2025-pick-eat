@@ -1,25 +1,24 @@
-import { usePreferRestaurantContext } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
-
-import { useExplosion } from '@hooks/useExplosion';
-
 import styled from '@emotion/styled';
+
+import { useExplosion } from './hooks/useExplosion';
 
 type Prop = {
   id: number;
   count: number;
+  onLike: (id: number) => void;
+  onUnlike: (id: number) => void;
+  liked: (id: number) => boolean;
 };
 
-function Like({ id, count }: Prop) {
-  const { handleLike, handleUnlike, liked } = usePreferRestaurantContext();
-
+function LikeButton({ id, count, onLike, onUnlike, liked }: Prop) {
   const { explosionRef, trigger } = useExplosion();
 
   const handleClick = () => {
     if (liked(id)) {
-      handleUnlike(id);
+      onUnlike(id);
     } else {
       trigger();
-      handleLike(id);
+      onLike(id);
     }
   };
 
@@ -38,7 +37,7 @@ function Like({ id, count }: Prop) {
   );
 }
 
-export default Like;
+export default LikeButton;
 
 const S = {
   Container: styled.div`

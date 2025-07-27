@@ -1,4 +1,4 @@
-import Like from '@components/actions/Like';
+import LikeButton from '@components/LikeButton/LikeButton';
 
 import styled from '@emotion/styled';
 
@@ -21,7 +21,7 @@ function PreferRestaurantItem({
   likeCount,
   placeUrl,
 }: Prop) {
-  const { liked } = usePreferRestaurantContext();
+  const { liked, handleLike, handleUnlike } = usePreferRestaurantContext();
   return (
     <S.Container liked={liked(id)}>
       <S.CardContent>
@@ -35,7 +35,13 @@ function PreferRestaurantItem({
         </S.LinkButton>
       </S.CardContent>
 
-      <Like id={id} count={likeCount} />
+      <LikeButton
+        id={id}
+        count={likeCount}
+        onLike={handleLike}
+        onUnlike={handleUnlike}
+        liked={liked}
+      />
     </S.Container>
   );
 }
