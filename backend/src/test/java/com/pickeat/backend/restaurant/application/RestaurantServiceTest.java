@@ -60,7 +60,8 @@ class RestaurantServiceTest {
                     300,
                     "테스트도로명주소",
                     new Location(10.0, 10.0),
-                    "테스트url"
+                    "테스트url",
+                    "테스트태그"
             );
         }
     }

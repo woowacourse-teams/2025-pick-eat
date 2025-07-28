@@ -98,6 +98,7 @@ class KakaoRestaurantSearchClientTest {
             assertThat(first.location().getY()).isEqualTo(37.51516331584118);
             assertThat(first.placeUrl()).isEqualTo("http://place.map.kakao.com/193686497");
             assertThat(first.category().getName()).isEqualTo("기타");
+            assertThat(first.tags()).contains("패스트푸드", "샌드위치", "써브웨이");
 
             RestaurantRequest second = response.get(1);
             assertThat(second.name()).isEqualTo("오호이 홈플러스 잠실점");
@@ -107,6 +108,8 @@ class KakaoRestaurantSearchClientTest {
             assertThat(second.location().getY()).isEqualTo(37.5162513485861);
             assertThat(second.placeUrl()).isEqualTo("http://place.map.kakao.com/1580595199");
             assertThat(second.category().getName()).isEqualTo("한식");
+            assertThat(second.tags()).isBlank();
+
         }
 
         @Test

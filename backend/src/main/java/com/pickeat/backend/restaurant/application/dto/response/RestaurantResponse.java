@@ -1,6 +1,7 @@
 package com.pickeat.backend.restaurant.application.dto.response;
 
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import java.util.Arrays;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
@@ -14,6 +15,9 @@ public record RestaurantResponse(
 
         @Schema(description = "음식 카테고리", example = "한식")
         String category,
+  
+        @Schema(description = "식당 태그", example = "해물, 생선")
+        List<String> tags,
 
         @Schema(description = "중심지로부터의 거리 (미터)", example = "150")
         int distance,
@@ -42,6 +46,7 @@ public record RestaurantResponse(
                 restaurant.getId(),
                 restaurant.getName(),
                 restaurant.getFoodCategory().getName(),
+                parseTags(restaurant.getTags()),
                 restaurant.getDistance(),
                 restaurant.getPlaceUrl(),
                 restaurant.getRoadAddressName(),
@@ -54,6 +59,16 @@ public record RestaurantResponse(
     public static List<RestaurantResponse> from(List<Restaurant> restaurants) {
         return restaurants.stream()
                 .map(RestaurantResponse::from)
+                .toList();
+    }
+
+    private static List<String> parseTags(String tags) {
+        if (tags == null || tags.isBlank()) {
+            return List.of();
+        }
+        return Arrays.stream(tags.split(","))
+                .map(String::trim)
+                .filter(tag -> !tag.isEmpty())
                 .toList();
     }
 }

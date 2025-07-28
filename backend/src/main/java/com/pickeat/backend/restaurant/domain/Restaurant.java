@@ -44,6 +44,9 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
+    @Column(nullable = false)
+    private String tags;
+
     @Embedded
     private Location location;
 
@@ -56,7 +59,9 @@ public class Restaurant extends BaseEntity {
             FoodCategory foodCategory,
             Integer distance,
             String roadAddressName,
-            String placeUrl, Location location,
+            String placeUrl,
+            String tags,
+            Location location,
             Room room
     ) {
         this.name = name;
@@ -65,6 +70,7 @@ public class Restaurant extends BaseEntity {
         this.roadAddressName = roadAddressName;
         this.placeUrl = placeUrl;
         this.location = location;
+        this.tags = tags;
         this.room = room;
     }
 
