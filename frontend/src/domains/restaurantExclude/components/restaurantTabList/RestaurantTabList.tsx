@@ -46,14 +46,13 @@ function RestaurantTabList({ restaurants }: Props) {
     tab,
     content: (
       <S.Container>
-        <S.CheckBoxWrapper>
+        <S.CheckBoxWrapper onClick={() => handleRestaurantAllSelectionToggle(tab)}>
           <CheckBox
             checked={restaurantsByCategory[tab]
               .map(r => r.id)
               .every(id => selectedRestaurantIds.includes(id))}
-            onToggle={() => handleRestaurantAllSelectionToggle(tab)}
           />
-          <p> {tab} 식당 전체 선택</p>
+          <S.CheckLabelText> {tab} 식당 전체 선택</S.CheckLabelText>
         </S.CheckBoxWrapper>
         <RestaurantList restaurantList={restaurantsByCategory[tab]} />
       </S.Container>
@@ -73,6 +72,7 @@ const S = {
     flex-direction: column;
   `,
   CheckBoxWrapper: styled.div`
+    width: fit-content;
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level3};
@@ -80,12 +80,13 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.py4} +
       ${({ theme }) => theme.PADDING.px6};
 
-    p {
-      color: ${({ theme }) => theme.PALETTE.gray[80]};
-      font: ${({ theme }) => theme.FONTS.body.medium};
-    }
+    cursor: pointer;
   `,
   SelectAllCheckbox: styled.input`
     width: 100%;
   `,
+  CheckLabelText: styled.span`
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
+  `
 };
