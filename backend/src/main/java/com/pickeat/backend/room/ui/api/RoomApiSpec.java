@@ -27,10 +27,25 @@ public interface RoomApiSpec {
 
     @Operation(
             summary = "새 방 생성",
-            operationId = "createRoom"
+            operationId = "createRoom",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "방 생성 정보",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RoomRequest.class)
+                    )
+            )
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "방 생성 성공"),
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "방 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RoomResponse.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "400",
                     description = "잘못된 요청 데이터",
@@ -78,7 +93,14 @@ public interface RoomApiSpec {
             operationId = "getParticipantStateSummary"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "참여자 상태 조회 성공"),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "참여자 상태 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipantStateResponse.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "404",
                     description = "존재하지 않는 방",
@@ -162,7 +184,14 @@ public interface RoomApiSpec {
             operationId = "getRoom"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "방 정보 조회 성공"),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "방 정보 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RoomResponse.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "404",
                     description = "존재하지 않는 방",
@@ -194,7 +223,14 @@ public interface RoomApiSpec {
             operationId = "getRoomResult"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "결과 조회 성공"),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "결과 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RestaurantResponse[].class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "404",
                     description = "존재하지 않는 방",
@@ -226,7 +262,14 @@ public interface RoomApiSpec {
             operationId = "getRoomRestaurants"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "식당 목록 조회 성공"),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "식당 목록 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RestaurantResponse[].class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "404",
                     description = "존재하지 않는 방",

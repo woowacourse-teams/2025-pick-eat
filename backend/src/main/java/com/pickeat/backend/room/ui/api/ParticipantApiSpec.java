@@ -19,10 +19,25 @@ public interface ParticipantApiSpec {
 
     @Operation(
             summary = "새 참여자 생성",
-            operationId = "createParticipant"
+            operationId = "createParticipant",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "참여자 생성 정보",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipantRequest.class)
+                    )
+            )
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "참여자 생성 성공"),
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "참여자 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipantResponse.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "400",
                     description = "잘못된 요청 데이터 (검증 실패)",

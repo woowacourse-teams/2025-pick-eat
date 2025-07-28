@@ -19,7 +19,15 @@ public interface RestaurantApiSpec {
 
     @Operation(
             summary = "식당 소거",
-            operationId = "excludeRestaurants"
+            operationId = "excludeRestaurants",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "소거할 식당 ID 목록",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RestaurantExcludeRequest.class)
+                    )
+            )
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "식당 소거 성공"),
