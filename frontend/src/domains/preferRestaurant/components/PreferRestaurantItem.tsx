@@ -1,4 +1,4 @@
-import LikeButton from '@components/LikeButton/LikeButton';
+import LikeButton from '@components/actions/LikeButton/LikeButton';
 
 import styled from '@emotion/styled';
 
