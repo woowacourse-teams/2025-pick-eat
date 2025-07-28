@@ -40,20 +40,24 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
       <S.CardContainer>
         <S.CardContent pressed={pressed}>
           <S.TitleWrapper>
+            <S.TagBox>
+              {(tags ?? []).map((tag, index) => (
+                <Badge key={index}>{tag}</Badge>
+              ))}
+            </S.TagBox>
             <S.RestaurantName>{name}</S.RestaurantName>
-            {tags ?? [].map((tag, index) => (
-              <Badge key={index}>{tag}</Badge>
-            ))}
           </S.TitleWrapper>
-          <span>식당까지 {distance}m</span>
-          <S.LinkButton
-            href={placeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={e => e.stopPropagation()}
-          >
-            식당 상세 정보 보기
-          </S.LinkButton>
+          <S.DetailBox>
+            <S.DetailText>식당까지 {distance}m</S.DetailText>
+            <S.LinkButton
+              href={placeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={e => e.stopPropagation()}
+            >
+              식당 상세 정보 보기
+            </S.LinkButton>
+          </S.DetailBox>
         </S.CardContent>
         {pressed && (
           <S.Overlay>
@@ -103,7 +107,7 @@ const S = {
     display: flex;
     flex-direction: column;
 
-    padding: ${({ theme }) => theme.PADDING.p6};
+    padding: ${({ theme }) => theme.PADDING.p5};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -206,26 +210,40 @@ const S = {
   `,
   TitleWrapper: styled.div`
     display: flex;
-    gap: ${({ theme }) => theme.GAP.level3};
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level1};
+  `,
+  TagBox: styled.div`
+    display: flex;
+    gap: ${({ theme }) => theme.GAP.level2};
   `,
   RestaurantName: styled.a`
     max-width: 180px;
     overflow: hidden;
 
-    margin: 0 0 8px;
+    padding-left: ${({ theme }) => theme.PADDING.px2};
 
     color: #1e293b;
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
     white-space: nowrap;
     text-overflow: ellipsis;
   `,
+  DetailBox: styled.div`
+    display: flex;
+    flex-direction: column;
+
+    padding-left: ${({ theme }) => theme.PADDING.px2};
+  `,
+  DetailText: styled.span`
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
+  `,
   LinkButton: styled.a`
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
 
-    margin-top: 8px;
-
     color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
 
     &:hover {
       color: ${({ theme }) => theme.PALETTE.gray[70]};
