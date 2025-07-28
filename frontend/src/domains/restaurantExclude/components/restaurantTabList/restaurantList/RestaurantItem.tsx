@@ -5,17 +5,16 @@ import Badge from '@components/labels/Badge';
 import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
 
 import styled from '@emotion/styled';
-import { memo } from 'react';
 
 type Props = {
   id: string;
   name: string;
-  category: string;
+  tags: string[];
   placeUrl?: string;
   distance: number;
 };
 
-function RestaurantItem({ id, name, category, placeUrl, distance }: Props) {
+function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
     useRestaurantExcludeContext();
 
@@ -42,7 +41,9 @@ function RestaurantItem({ id, name, category, placeUrl, distance }: Props) {
         <S.CardContent pressed={pressed}>
           <S.TitleWrapper>
             <S.RestaurantName>{name}</S.RestaurantName>
-            <Badge>{category}</Badge>
+            {tags ?? [].map((tag, index) => (
+              <Badge key={index}>{tag}</Badge>
+            ))}
           </S.TitleWrapper>
           <span>식당까지 {distance}m</span>
           <S.LinkButton
@@ -64,7 +65,7 @@ function RestaurantItem({ id, name, category, placeUrl, distance }: Props) {
   );
 }
 
-export default memo(RestaurantItem);
+export default RestaurantItem;
 
 const S = {
   Container: styled.div<{ pressed: boolean }>`

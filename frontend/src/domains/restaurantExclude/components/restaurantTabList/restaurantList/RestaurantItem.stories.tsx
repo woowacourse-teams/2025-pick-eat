@@ -1,4 +1,4 @@
-import { RestaurantExcludeProvider } from '../../context/RestaurantExcludeProvider';
+import { RestaurantExcludeProvider } from '../../../context/RestaurantExcludeProvider';
 
 import RestaurantItem from './RestaurantItem';
 
@@ -27,7 +27,7 @@ export const Default: Story = {
   args: {
     id: '1',
     name: '육회바른연어 잠실점',
-    category: '고기',
+    tags: ['고기', '연어', '일식'],
     placeUrl:
       'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
     distance: 500,
@@ -39,7 +39,7 @@ export const LongTitle: Story = {
   args: {
     id: '2',
     name: '일이삼사오육칠팔구십일이삼사오육칠팔',
-    category: '샌드위치',
+    tags: ['샌드위치'],
     placeUrl:
       'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
     distance: 300,

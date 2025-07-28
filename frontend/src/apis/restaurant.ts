@@ -5,13 +5,15 @@ import { apiClient } from './apiClient';
 
 export type RestaurantResponse = {
   id: number;
-  name: string;
-  category: string;
+  name: string; 
+  category: string; 
+  tags: string[]; 
   distance: number;
-  placeUrl: string;
-  roadAddressName: string;
-  likeCount: number;
-  x: number;
+  placeUrl: string; 
+  roadAddressName: string; 
+  likeCount: number; 
+  isExcluded: boolean; 
+  x: number; 
   y: number;
 };
 
@@ -19,10 +21,12 @@ export type Restaurant = {
   id: string;
   name: string;
   category: string;
+  tags: string[];
   distance: number;
   placeUrl: string;
   roadAddressName: string;
   likeCount: number;
+  isExcluded?: boolean;
   x: number;
   y: number;
 };
@@ -31,20 +35,24 @@ const convertResponseToRestaurant = ({
   id,
   name,
   category,
+  tags,
   distance,
   placeUrl,
   roadAddressName,
   likeCount,
+  isExcluded,
   x,
   y,
 }: RestaurantResponse): Restaurant => ({
   id: id.toString(),
   name: name.toString(),
   category: category.toString(),
+  tags: tags.map(tag => tag.toString()),
   distance: Number(distance),
   placeUrl: placeUrl.toString(),
   roadAddressName: roadAddressName.toString(),
   likeCount: Number(likeCount),
+  isExcluded: isExcluded ? Boolean(isExcluded) : false,
   x: Number(x),
   y: Number(y),
 });
