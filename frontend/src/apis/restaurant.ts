@@ -6,7 +6,7 @@ import { apiClient } from './apiClient';
 export type RestaurantResponse = {
   id: number;
   name: string;
-  category: string;
+  category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
   placeUrl: string;
   roadAddressName: string;
@@ -18,7 +18,7 @@ export type RestaurantResponse = {
 export type Restaurant = {
   id: string;
   name: string;
-  category: string;
+  category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
   placeUrl: string;
   roadAddressName: string;
@@ -40,7 +40,7 @@ const convertResponseToRestaurant = ({
 }: RestaurantResponse): Restaurant => ({
   id: id.toString(),
   name: name.toString(),
-  category: category.toString(),
+  category: category,
   distance: Number(distance),
   placeUrl: placeUrl.toString(),
   roadAddressName: roadAddressName.toString(),
