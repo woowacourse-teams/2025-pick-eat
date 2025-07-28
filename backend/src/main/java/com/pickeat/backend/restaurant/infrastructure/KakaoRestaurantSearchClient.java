@@ -12,6 +12,7 @@ import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.room.domain.Location;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -78,7 +79,8 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
                             document.path("distance").asInt(),
                             document.path("road_address_name").asText(),
                             new Location(document.path("x").asDouble(), document.path("y").asDouble()),
-                            document.path("place_url").asText()
+                            document.path("place_url").asText(),
+                            extractTags(document.path("category_name").asText())
                     )
             );
         }
@@ -88,4 +90,28 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
     private FoodCategory parseCategory(String categoryName) {
         return FoodCategory.getCategoryNameBy(categoryName);
     }
+
+    private String extractTags(String categoryFullPath) {
+        String[] parts = categoryFullPath.split(" > ");
+        List<String> tags = new ArrayList<>();
+
+        for (String part : parts) {
+            if ("음식점".equals(part)) {
+                continue; // 최상위 카테고리 제거
+            }
+            if (isFoodCategory(part)) {
+                continue; // KOREAN, JAPANESE 등은 제외
+            }
+            tags.add(part);
+        }
+
+        return String.join(",", tags); // 쉼표로 join
+    }
+
+    private boolean isFoodCategory(String categoryPart) {
+        return Arrays.stream(FoodCategory.values())
+                .anyMatch(fc -> categoryPart.contains(fc.getName()));
+    }
+
+
 }

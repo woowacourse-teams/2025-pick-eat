@@ -32,6 +32,7 @@ public class RestaurantService {
                         request.distance(),
                         request.roadAddressName(),
                         request.placeUrl(),
+                        request.tags(),
                         request.location(),
                         room))
                 .toList();

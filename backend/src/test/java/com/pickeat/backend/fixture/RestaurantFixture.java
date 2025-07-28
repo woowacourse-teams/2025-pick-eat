@@ -14,6 +14,7 @@ public class RestaurantFixture {
                 10,
                 "도로명 주소",
                 "URL",
+                "태그1,태그2",
                 new Location(127.103068896795, 37.5152535228382),
                 room
         );
