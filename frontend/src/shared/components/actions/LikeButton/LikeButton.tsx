@@ -4,11 +4,11 @@ import { useEffect } from 'react';
 import { useExplosion } from './hooks/useExplosion';
 
 type Prop = {
-  id: number;
+  id: string;
   count: number;
-  onLike: (id: number) => void;
-  onUnlike: (id: number) => void;
-  liked: (id: number) => boolean;
+  onLike: (id: string) => void;
+  onUnlike: (id: string) => void;
+  liked: (id: string) => boolean;
 };
 
 function LikeButton({ id, count, onLike, onUnlike, liked }: Prop) {
@@ -56,6 +56,7 @@ const S = {
 
   HeartWrapper: styled.div`
     position: relative;
+    cursor: pointer;
   `,
 
   Heart: styled.p`

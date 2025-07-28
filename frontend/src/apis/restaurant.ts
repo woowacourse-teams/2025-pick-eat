@@ -1,5 +1,5 @@
 import { convert } from '@utils/convert';
-import { joinAsPath } from '@utils/createUrl';
+import { joinAsPath, createQueryString } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
 
@@ -69,5 +69,51 @@ export const restaurants = {
     });
     if (!response) return [];
     return convertResponseToRestaurant(response);
+  },
+};
+
+export const includedRestaurants = {
+  get: async (roomCode: string): Promise<Restaurant[]> => {
+    const getUrl = joinAsPath('rooms', roomCode, 'restaurants');
+    const queryString = createQueryString({
+      isExcluded: 'false',
+    });
+    const response = await apiClient.get<RestaurantResponse[]>(
+      `${getUrl}${queryString}`
+    );
+    const results = (response ?? []).map(restaurant =>
+      convertResponseToRestaurant(restaurant)
+    );
+    return results ?? [];
+  },
+};
+
+export const like = {
+  patch: async (restaurantId: string) => {
+    const patchUrl = joinAsPath('restaurants', restaurantId.toString(), 'like');
+    await apiClient.patch(patchUrl, undefined, {
+      'Content-Type': 'application/json',
+    });
+  },
+};
+
+export const unlike = {
+  patch: async (restaurantId: string) => {
+    const patchUrl = joinAsPath(
+      'restaurants',
+      restaurantId.toString(),
+      'unlike'
+    );
+    await apiClient.patch(patchUrl, undefined, {
+      'Content-Type': 'application/json',
+    });
+  },
+};
+
+export const matchResult = {
+  get: async (roomCode: string): Promise<RestaurantResponse[] | null> => {
+    const getUrl = joinAsPath('rooms', roomCode, 'result');
+    const response = await apiClient.get<RestaurantResponse[]>(`${getUrl}`);
+    return response ?? null;
   },
 };

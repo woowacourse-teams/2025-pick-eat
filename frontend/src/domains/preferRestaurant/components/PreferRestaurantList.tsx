@@ -1,4 +1,4 @@
-import { RestaurantsResponse } from '@apis/prefer';
+import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 import { useEffect, useRef } from 'react';
@@ -9,8 +9,8 @@ import PreferRestaurantItem from './PreferRestaurantItem';
 
 function PreferRestaurantList() {
   const { restaurantList } = usePreferRestaurantContext();
-  const itemRefs = useRef(new Map<number, HTMLDivElement>());
-  const prevRects = useRef(new Map<number, DOMRect>());
+  const itemRefs = useRef(new Map<string, HTMLDivElement>());
+  const prevRects = useRef(new Map<string, DOMRect>());
 
   const recordPositions = () => {
     restaurantList.forEach(item => {
@@ -53,7 +53,7 @@ function PreferRestaurantList() {
 
   return (
     <S.Container>
-      {restaurantList.map((item: RestaurantsResponse) => (
+      {restaurantList.map((item: Restaurant) => (
         <S.ItemWrapper
           key={item.id}
           ref={el => {

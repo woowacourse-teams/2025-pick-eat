@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider';
 
 type Prop = {
-  id: number;
+  id: string;
   name: string;
   // category: '한식' | '중식' | '일식' | '양식' | '기타';
   category: string;

@@ -1,7 +1,9 @@
-import { apiClient } from '@apis/apiClient';
-import { RestaurantsResponse } from '@apis/prefer';
-
-import { createQueryString, joinAsPath } from '@utils/createUrl';
+import {
+  includedRestaurants,
+  Restaurant,
+  like,
+  unlike,
+} from '@apis/restaurant';
 
 import {
   createContext,
@@ -13,31 +15,27 @@ import {
 import { useSearchParams } from 'react-router';
 
 interface PreferRestaurantContextType {
-  restaurantList: RestaurantsResponse[];
-  handleLike: (id: number) => void;
-  handleUnlike: (id: number) => void;
-  liked: (id: number) => boolean;
+  restaurantList: Restaurant[];
+  handleLike: (id: string) => void;
+  handleUnlike: (id: string) => void;
+  liked: (id: string) => boolean;
 }
 
 const PreferRestaurantContext =
   createContext<PreferRestaurantContextType | null>(null);
 
 export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
-  const [restaurantList, setRestaurantList] = useState<RestaurantsResponse[]>(
-    []
-  );
-  const [likedIds, setLikedIds] = useState<number[]>([]);
+  const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
+  const [likedIds, setLikedIds] = useState<string[]>([]);
 
   const [searchParams] = useSearchParams();
   const roomCode = searchParams.get('code') ?? '';
 
-  const updateSortedRestaurantList = (
-    restaurantList: RestaurantsResponse[]
-  ) => {
+  const updateSortedRestaurantList = (restaurantList: Restaurant[]) => {
     setRestaurantList(sortByLike(restaurantList));
   };
 
-  const sortByLike = (restaurantList: RestaurantsResponse[]) => {
+  const sortByLike = (restaurantList: Restaurant[]) => {
     return restaurantList.sort((a, b) => {
       if (b.likeCount !== a.likeCount) {
         return b.likeCount - a.likeCount;
@@ -47,7 +45,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     });
   };
 
-  const handleLike = async (id: number) => {
+  const handleLike = async (id: string) => {
     updateSortedRestaurantList(
       restaurantList.map(item =>
         item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
@@ -55,10 +53,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     try {
-      const patchUrl = joinAsPath('restaurants', id.toString(), 'like');
-      await apiClient.patch(patchUrl, undefined, {
-        'Content-Type': 'application/json',
-      });
+      like.patch(id);
       setLikedIds(prev => [...prev, id]);
     } catch (error) {
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
@@ -72,7 +67,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const handleUnlike = async (id: number) => {
+  const handleUnlike = async (id: string) => {
     updateSortedRestaurantList(
       restaurantList.map(item =>
         item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
@@ -80,10 +75,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     try {
-      const patchUrl = joinAsPath('restaurants', id.toString(), 'unlike');
-      await apiClient.patch(patchUrl, undefined, {
-        'Content-Type': 'application/json',
-      });
+      unlike.patch(id);
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
     } catch (error) {
       setLikedIds(prev => [...prev, id]);
@@ -102,22 +94,15 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const liked = (id: number) => {
-    return likedIds.some((likedId: number) => likedId === id);
+  const liked = (id: string) => {
+    return likedIds.some((likedId: string) => likedId === id);
   };
 
   useEffect(() => {
     let isUnmounted = false;
 
     const fetchRestaurantList = async () => {
-      const getUrl = joinAsPath('rooms', roomCode, 'restaurants');
-      const queryString = createQueryString({
-        isExcluded: 'false',
-      });
-      const response = await apiClient.get<RestaurantsResponse[]>(
-        `${getUrl}${queryString}`
-      );
-
+      const response = await includedRestaurants.get(roomCode);
       if (!isUnmounted && response) {
         updateSortedRestaurantList(response);
       }
