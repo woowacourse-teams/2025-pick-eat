@@ -3,6 +3,7 @@ package com.pickeat.backend.room.ui;
 import com.pickeat.backend.room.application.ParticipantService;
 import com.pickeat.backend.room.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.room.application.dto.response.ParticipantResponse;
+import com.pickeat.backend.room.ui.api.ParticipantApiSpec;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,10 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/v1/participants")
 @RequiredArgsConstructor
-public class ParticipantController {
+public class ParticipantController implements ParticipantApiSpec {
 
     private final ParticipantService participantService;
 
+    @Override
     @PostMapping
     public ResponseEntity<ParticipantResponse> createParticipant(@Valid @RequestBody ParticipantRequest request) {
         participantService.createParticipant(request);

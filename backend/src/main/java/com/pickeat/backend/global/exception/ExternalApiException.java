@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 public class ExternalApiException extends RuntimeException {
+
     private final String message;
     private final String platformName;
     private final HttpStatus httpStatus;

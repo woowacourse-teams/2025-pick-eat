@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class Restaurants {
+
     private final List<Restaurant> restaurants;
 
     public List<Restaurant> getTopRestaurants() {
