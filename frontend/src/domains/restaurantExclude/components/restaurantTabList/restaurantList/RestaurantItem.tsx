@@ -4,15 +4,13 @@ import Badge from '@components/labels/Badge';
 
 import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
 
+import { Restaurant } from '@apis/restaurant';
+
 import styled from '@emotion/styled';
 
-type Props = {
-  id: string;
-  name: string;
-  tags: string[];
-  placeUrl?: string;
-  distance: number;
-};
+type Props = Pick<Restaurant,
+  'id' | 'name' | 'tags' | 'placeUrl' | 'distance' | 'isExcluded'
+>;
 
 function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
