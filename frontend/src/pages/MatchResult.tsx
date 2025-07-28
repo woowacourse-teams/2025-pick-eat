@@ -14,8 +14,8 @@ const MatchResult = () => {
 
   return (
     <S.Container>
-      <Confetti />
       <S.Result>
+        <Confetti />
         <S.Title>👏 오늘의 Pick! 👏</S.Title>
 
         {result && <S.Name>{result.name}</S.Name>}
@@ -47,6 +47,8 @@ const S = {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
+
+    position: relative;
 
     padding: 40px 0;
 

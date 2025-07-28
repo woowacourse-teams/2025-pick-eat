@@ -16,7 +16,6 @@ export const useExplosion = () => {
   const trigger = () => {
     const explosion = explosionRef.current;
     if (!explosion) return;
-    console.log('hi');
 
     const hearts = explosion.querySelectorAll('span');
     hearts.forEach((heart, i) => {
