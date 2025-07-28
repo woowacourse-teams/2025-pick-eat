@@ -19,6 +19,7 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
     useRestaurantExcludeContext();
 
   const pressed = selectedRestaurantIds.includes(id);
+  const menuUrl = `${placeUrl}#menuInfo`
 
   return (
     <S.Container pressed={pressed}>
@@ -50,12 +51,12 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
           <S.DetailBox>
             <S.DetailText>식당까지 {distance}m</S.DetailText>
             <S.LinkButton
-              href={placeUrl}
+              href={menuUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={e => e.stopPropagation()}
             >
-              식당 상세 정보 보기
+              메뉴 보러가기
             </S.LinkButton>
           </S.DetailBox>
         </S.CardContent>
