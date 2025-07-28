@@ -12,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "external.kakao.map")
 public class KakaoMapApiProperties {
+
     @NotBlank(message = "baseUrl이 누락되었습니다.")
     private String baseUrl;
     @NotBlank(message = "restApiKey가 누락되었습니다.")

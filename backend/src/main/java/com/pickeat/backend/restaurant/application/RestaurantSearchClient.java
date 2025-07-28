@@ -5,5 +5,6 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRe
 import java.util.List;
 
 public interface RestaurantSearchClient {
+
     List<RestaurantRequest> getRestaurants(RestaurantSearchRequest request);
 }

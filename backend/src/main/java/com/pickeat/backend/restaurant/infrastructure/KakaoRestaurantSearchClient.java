@@ -24,6 +24,7 @@ import org.springframework.web.client.RestClientException;
 //TODO: size 따라서 api 요청 여러번 보내는 로직 구현하기  (2025-07-18, 금, 14:52)
 @RequiredArgsConstructor
 public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
+
     private static final String URI = "v2/local/search/keyword.json";
     private static final String CATEGORY_GROUP_CODE = "FD6"; // 카카오에서 식당을 나타내는 코드
     private static final String SORT = "accuracy"; // 정렬 기준 (distance: 거리, accuracy: 정확도)
