@@ -1,4 +1,5 @@
 import LikeButton from '@components/actions/LikeButton/LikeButton';
+import Badge from '@components/labels/Badge';
 
 import styled from '@emotion/styled';
 
@@ -7,6 +8,7 @@ import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider'
 type Prop = {
   id: string;
   name: string;
+  tags: string[];
   category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
   likeCount: number;
@@ -16,6 +18,7 @@ type Prop = {
 function PreferRestaurantItem({
   id,
   name,
+  tags,
   distance,
   likeCount,
   placeUrl,
@@ -24,9 +27,14 @@ function PreferRestaurantItem({
   return (
     <S.Container liked={liked(id)}>
       <S.CardContent>
+        <S.TagBox>
+          {tags.map(tag => (
+            <Badge key={tag}>{tag}</Badge>
+          ))}
+        </S.TagBox>
+
         <S.TitleWrapper>
           <S.RestaurantName>{name}</S.RestaurantName>
-          {/* <Badge>{category}</Badge> */}
         </S.TitleWrapper>
         <S.Distance>식당까지 {distance}m</S.Distance>
         <S.LinkButton href={placeUrl} target="_blank" rel="noopener noreferrer">
@@ -79,6 +87,11 @@ const S = {
 
     filter: none;
     opacity: 1;
+  `,
+
+  TagBox: styled.div`
+    display: flex;
+    gap: ${({ theme }) => theme.GAP.level2};
   `,
 
   TitleWrapper: styled.div`

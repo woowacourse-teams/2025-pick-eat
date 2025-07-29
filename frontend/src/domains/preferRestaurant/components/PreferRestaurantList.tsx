@@ -25,6 +25,7 @@ function PreferRestaurantList() {
           <PreferRestaurantItem
             id={item.id}
             name={item.name}
+            tags={item.tags}
             category={item.category}
             distance={item.distance}
             likeCount={item.likeCount}
