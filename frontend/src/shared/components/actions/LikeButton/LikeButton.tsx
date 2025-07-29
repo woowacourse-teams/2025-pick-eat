@@ -1,27 +1,31 @@
-import { usePreferRestaurantContext } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
-
-import { useExplosion } from '@hooks/useExplosion';
-
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
+
+import { useExplosion } from './hooks/useExplosion';
 
 type Prop = {
-  id: number;
+  id: string;
   count: number;
+  onLike: (id: string) => void;
+  onUnlike: (id: string) => void;
+  liked: (id: string) => boolean;
 };
 
-function Like({ id, count }: Prop) {
-  const { handleLike, handleUnlike, liked } = usePreferRestaurantContext();
-
-  const { explosionRef, trigger } = useExplosion();
+function LikeButton({ id, count, onLike, onUnlike, liked }: Prop) {
+  const { explosionRef, trigger, removeAnimation } = useExplosion();
 
   const handleClick = () => {
     if (liked(id)) {
-      handleUnlike(id);
+      onUnlike(id);
     } else {
       trigger();
-      handleLike(id);
+      onLike(id);
     }
   };
+
+  useEffect(() => {
+    removeAnimation();
+  }, []);
 
   return (
     <S.Container>
@@ -38,17 +42,21 @@ function Like({ id, count }: Prop) {
   );
 }
 
-export default Like;
+export default LikeButton;
 
 const S = {
   Container: styled.div`
+    width: 36px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
+
     gap: 4px;
   `,
 
   HeartWrapper: styled.div`
     position: relative;
+    cursor: pointer;
   `,
 
   Heart: styled.p`

@@ -14,8 +14,8 @@ const MatchResult = () => {
 
   return (
     <S.Container>
-      <Confetti />
       <S.Result>
+        <Confetti />
         <S.Title>👏 오늘의 Pick! 👏</S.Title>
 
         {result && <S.Name>{result.name}</S.Name>}
@@ -48,6 +48,8 @@ const S = {
     align-items: center;
     gap: 20px;
 
+    position: relative;
+
     padding: 40px 0;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
@@ -73,6 +75,7 @@ const S = {
 
   Name: styled.p`
     padding: 16px;
+
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,

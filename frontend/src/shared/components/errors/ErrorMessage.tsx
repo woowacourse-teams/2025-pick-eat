@@ -13,6 +13,7 @@ export default ErrorMessage;
 const S = {
   Wrapper: styled.span`
     height: 25px;
+
     color: ${({ theme }) => theme.PALETTE.primary[70]};
     font: ${({ theme }) => theme.FONTS.body.small_bold};
   `,

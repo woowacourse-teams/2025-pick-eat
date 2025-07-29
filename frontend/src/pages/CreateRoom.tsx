@@ -105,11 +105,12 @@ const S = {
   `,
 
   FormWrapper: styled.div`
-    padding-top: 20px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 30px;
-    width: 100%;
+
+    padding-top: 20px;
   `,
 
   LocationWrapper: styled.div`
