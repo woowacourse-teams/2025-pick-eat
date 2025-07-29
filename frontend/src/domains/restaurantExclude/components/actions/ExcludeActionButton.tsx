@@ -26,8 +26,6 @@ function ExcludeActionButton() {
     navigateToPrefer();
   };
 
-  const disabled = selectedRestaurantIds.length === 0;
-
   return (
     <S.ButtonBox>
         <Button
@@ -37,11 +35,10 @@ function ExcludeActionButton() {
             <Arrow
               size="sm"
               direction="right"
-              color={disabled ? 'gray' : 'white'}
+              color='white'
             />
           }
           onClick={submitExcludeRestaurants}
-          disabled={disabled}
         />
     </S.ButtonBox>
   );
