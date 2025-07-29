@@ -2,6 +2,7 @@ const KAKAO_REST_API_KEY = process.env.KAKAO_API_KEY;
 const KAKAO_BASE_URL = 'https://dapi.kakao.com/v2/local';
 
 export type AddressType = {
+  id: string;
   addressName: string;
   placeName: string;
 };
@@ -35,6 +36,7 @@ export const getAddressByKeyword = async (keyword: string) => {
     if (data.documents.length > 0) {
       return data.documents.map((doc: DocumentType) => {
         return {
+          id: doc.id,
           placeName: doc.place_name,
           addressName: doc.address_name,
         };

@@ -5,11 +5,16 @@ import { useEffect, useState } from 'react';
 import { AddressType, getAddressByKeyword } from '../utils/convertAddress';
 
 export const useFindAddress = () => {
-  const [location, setLocation] = useState<string>();
-  const [addressList, setAddressList] = useState<AddressType[] | null>();
+  const [location, setLocation] = useState<string>('');
+  const [addressList, setAddressList] = useState<AddressType[] | null>(null);
+
+  const [query, setQuery] = useState<string>('');
+
+  const debouncedQuery = useDebounce(query, 500);
 
   const handleChangeInput = (value: string) => {
     setLocation(value);
+    setQuery(value);
   };
 
   const handleClickAddress = (value: string) => {
@@ -17,17 +22,16 @@ export const useFindAddress = () => {
     setAddressList(null);
   };
 
-  const debouncedQuery = useDebounce(location, 500);
-
   useEffect(() => {
     const findAddress = async () => {
-      if (!location) return;
-      const data = await getAddressByKeyword(location);
+      if (!debouncedQuery) {
+        setAddressList(null);
+        return;
+      }
+      const data = await getAddressByKeyword(debouncedQuery);
       setAddressList(data);
     };
-    if (debouncedQuery) {
-      findAddress();
-    }
+    findAddress();
   }, [debouncedQuery]);
 
   return { location, handleChangeInput, addressList, handleClickAddress };
