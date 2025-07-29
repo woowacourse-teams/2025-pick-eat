@@ -1,9 +1,12 @@
+import AddressList from '@domains/room/components/AddressList';
+
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
 import Select from '@components/actions/Select';
 import ErrorMessage from '@components/errors/ErrorMessage';
 
 import { useCreateRoom } from '@domains/room/hooks/useCreateRoom';
+import { useFindAddress } from '@domains/room/hooks/useFindAddress';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
@@ -22,6 +25,8 @@ function CreateRoom() {
     value: string;
     label: string;
   }>();
+  const { location, handleChangeInput, addressList, handleClickAddress } =
+    useFindAddress();
   const { createRoom, error } = useCreateRoom();
 
   const submitRoomForm = async (e: FormEvent<HTMLFormElement>) => {
@@ -43,24 +48,33 @@ function CreateRoom() {
             label="방 이름"
             placeholder="방 이름을 입력해주세요."
           />
-          <S.LocationWrapper>
+
+          <S.AddressWrapper>
             <Input
+              value={location}
+              onChange={e => handleChangeInput(e.target.value)}
               name="location"
               label="위치"
               placeholder="위치를 입력해주세요."
             />
-            <Select.Bar
-              label="반경"
-              selectedValue={selectedOption?.label}
-              onChange={option => setSelectedOption(option)}
-            >
-              {RADIUS_OPTIONS.map(option => (
-                <Select.Option key={option.value} value={option.value}>
-                  {option.label}
-                </Select.Option>
-              ))}
-            </Select.Bar>
-          </S.LocationWrapper>
+            {addressList && (
+              <AddressList
+                addressList={addressList}
+                onClick={handleClickAddress}
+              />
+            )}
+          </S.AddressWrapper>
+          <Select.Bar
+            label="반경"
+            selectedValue={selectedOption?.label}
+            onChange={option => setSelectedOption(option)}
+          >
+            {RADIUS_OPTIONS.map(option => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select.Bar>
         </S.FormWrapper>
 
         <ErrorMessage message={error} />
@@ -113,17 +127,9 @@ const S = {
     padding-top: 20px;
   `,
 
-  LocationWrapper: styled.div`
-    width: 100%;
-    display: flex;
-    gap: 20px;
-
-    ${setMobileStyle(css`
-      flex-direction: column;
-      gap: 30px;
-    `)}
+  AddressWrapper: styled.div`
+    position: relative;
   `,
-
   Description: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[60]};
     white-space: nowrap;

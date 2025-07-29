@@ -15,7 +15,6 @@ export const useCreateRoom = () => {
     radiusValue: string | undefined
   ) => {
     const data = Object.fromEntries(formData.entries());
-
     try {
       validateRoomForms({
         name: data.roomName as string,
