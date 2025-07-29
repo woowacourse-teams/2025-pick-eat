@@ -1,18 +1,8 @@
-import { apiClient } from '@apis/apiClient';
+import { matchResult } from '@apis/restaurant';
+import { RestaurantResponse } from '@apis/restaurant';
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
-
-type RestaurantResponse = {
-  id: number;
-  name: string;
-  category: '한식' | '중식' | '일식' | '양식' | '기타';
-  distance: number;
-  roadAddressName: string;
-  likeCount: number;
-  x: number;
-  y: number;
-};
 
 const useResult = () => {
   const [result, setResult] = useState<RestaurantResponse[]>();
@@ -21,9 +11,7 @@ const useResult = () => {
 
   useEffect(() => {
     const fetchResult = async () => {
-      const response = await apiClient.get<RestaurantResponse[]>(
-        `rooms/${roomCode}/result`
-      );
+      const response = await matchResult.get(roomCode);
 
       if (response) setResult(response);
     };

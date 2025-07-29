@@ -1,14 +1,13 @@
-import Like from '@components/actions/Like';
+import LikeButton from '@components/actions/LikeButton/LikeButton';
 
 import styled from '@emotion/styled';
 
 import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider';
 
 type Prop = {
-  id: number;
+  id: string;
   name: string;
-  // category: '한식' | '중식' | '일식' | '양식' | '기타';
-  category: string;
+  category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
   likeCount: number;
   placeUrl: string;
@@ -21,7 +20,7 @@ function PreferRestaurantItem({
   likeCount,
   placeUrl,
 }: Prop) {
-  const { liked } = usePreferRestaurantContext();
+  const { liked, handleLike, handleUnlike } = usePreferRestaurantContext();
   return (
     <S.Container liked={liked(id)}>
       <S.CardContent>
@@ -35,7 +34,13 @@ function PreferRestaurantItem({
         </S.LinkButton>
       </S.CardContent>
 
-      <Like id={id} count={likeCount} />
+      <LikeButton
+        id={id}
+        count={likeCount}
+        onLike={handleLike}
+        onUnlike={handleUnlike}
+        liked={liked}
+      />
     </S.Container>
   );
 }

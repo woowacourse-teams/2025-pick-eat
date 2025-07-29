@@ -6,7 +6,7 @@ import Arrow from '@components/assets/icons/Arrow';
 import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
-import { apiClient } from '@apis/apiClient';
+import { postDeactivateRoom } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -18,7 +18,7 @@ const PreferRestaurant = () => {
   const roomCode = searchParams.get('code') ?? '';
 
   const handleDeactivate = async () => {
-    await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined);
+    await postDeactivateRoom(roomCode);
   };
   const { participant } = useParticipant(roomCode);
   const navigate = useNavigate();

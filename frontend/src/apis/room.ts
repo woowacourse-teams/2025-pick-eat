@@ -67,3 +67,8 @@ export const getRoom = async (roomId: string) => {
 export const postJoinRoom = async (data: JoinRoomFormData) => {
   await apiClient.post<JoinRoomResponse>(`participants`, data);
 };
+
+export const postDeactivateRoom = async (roomCode: string) => {
+  const getUrl = joinAsPath('rooms', roomCode, 'deactivate');
+  await apiClient.patch(getUrl);
+};
