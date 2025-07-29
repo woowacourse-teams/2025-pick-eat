@@ -42,7 +42,7 @@ function ExcludeActionButtons() {
             />
           </S.SkipButtonBox>
         <Button
-          text="다음"
+          text="제출"
           size="md"
           rightIcon={
             <Arrow
