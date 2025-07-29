@@ -46,7 +46,7 @@ const convertResponseToRestaurant = ({
 }: RestaurantResponse): Restaurant => ({
   id: id.toString(),
   name: name.toString(),
-  category: category.toString(),
+  category: category,
   tags: tags.map(tag => tag.toString()),
   distance: Number(distance),
   placeUrl: placeUrl.toString(),
