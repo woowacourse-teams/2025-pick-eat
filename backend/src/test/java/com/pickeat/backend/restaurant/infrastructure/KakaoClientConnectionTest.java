@@ -42,6 +42,4 @@ class KakaoClientConnectionTest {
                 new RestaurantSearchRequest("패스트푸드", 127.103068896795, 37.5152535228382, 200, 10)))
                 .doesNotThrowAnyException();
     }
-
-
 }

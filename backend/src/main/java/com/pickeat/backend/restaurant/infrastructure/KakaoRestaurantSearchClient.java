@@ -113,6 +113,4 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
         return Arrays.stream(FoodCategory.values())
                 .anyMatch(fc -> categoryPart.contains(fc.getName()));
     }
-
-
 }
