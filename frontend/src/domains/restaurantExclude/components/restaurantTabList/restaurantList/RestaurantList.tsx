@@ -2,6 +2,7 @@ import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
+import ExcludedRestaurantItem from './ExcludedRestaurantItem';
 import RestaurantItem from './RestaurantItem';
 
 type Props = {
@@ -12,7 +13,9 @@ function RestaurantList({ restaurantList }: Props) {
   return (
     <S.Container>
       {restaurantList.map(restaurant => (
-        <RestaurantItem key={restaurant.id} {...restaurant} />
+        restaurant.isExcluded ? (
+          <ExcludedRestaurantItem key={restaurant.id} {...restaurant} />
+        ) : <RestaurantItem key={restaurant.id} {...restaurant} />
       ))}
     </S.Container>
   );

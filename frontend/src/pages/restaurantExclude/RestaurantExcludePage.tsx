@@ -3,26 +3,18 @@ import RestaurantExclude from '@domains/restaurantExclude/components/RestaurantE
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { restaurants } from '@apis/restaurant';
-
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
 
 import TitleArea from './components/TitleArea';
 
 function RestaurantExcludePage() {
-  const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
-  const restaurantPromiseData = restaurants.get(code ?? '') ?? Promise.resolve([]);
-
   return (
     <S.Container>
       <TitleArea />
       <ErrorBoundary>
         <Suspense fallback={<></>}>
-          <RestaurantExclude
-            restaurantPromiseData={restaurantPromiseData}
-          />
+          <RestaurantExclude />
         </Suspense>
       </ErrorBoundary>
     </S.Container>

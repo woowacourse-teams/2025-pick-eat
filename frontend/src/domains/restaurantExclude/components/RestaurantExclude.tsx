@@ -3,25 +3,16 @@ import {
   RestaurantExcludeProvider
 } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
 
-import { Restaurant } from '@apis/restaurant';
-
 import styled from '@emotion/styled';
-import { use } from 'react';
 
 import ExcludeActionButtons from './actions/ExcludeActionButtons';
 import RestaurantTabList from './restaurantTabList/RestaurantTabList';
 
 
-type Props = {
-  restaurantPromiseData: Promise<Restaurant[]>;
-};
-
-function RestaurantExclude({ restaurantPromiseData }: Props) {
-  const restaurants = use(restaurantPromiseData);
-
+function RestaurantExclude() {
   return (
     <RestaurantExcludeProvider>
-      <RestaurantTabList restaurants={restaurants} />
+      <RestaurantTabList />
       <S.Footer>
         <ExcludeActionButtons />
       </S.Footer>

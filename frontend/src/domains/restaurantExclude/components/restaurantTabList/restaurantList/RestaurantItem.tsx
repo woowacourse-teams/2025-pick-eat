@@ -9,7 +9,7 @@ import { Restaurant } from '@apis/restaurant';
 import styled from '@emotion/styled';
 
 type Props = Pick<Restaurant,
-  'id' | 'name' | 'tags' | 'placeUrl' | 'distance' | 'isExcluded'
+  'id' | 'name' | 'tags' | 'placeUrl' | 'distance'
 >;
 
 function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
