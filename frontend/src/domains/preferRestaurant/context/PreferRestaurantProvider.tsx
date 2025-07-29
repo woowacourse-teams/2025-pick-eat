@@ -8,9 +8,9 @@ import {
 import {
   createContext,
   PropsWithChildren,
-  useContext,
   useEffect,
   useState,
+  useContext,
 } from 'react';
 import { useSearchParams } from 'react-router';
 
@@ -31,8 +31,10 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   const [searchParams] = useSearchParams();
   const roomCode = searchParams.get('code') ?? '';
 
-  const updateSortedRestaurantList = (restaurantList: Restaurant[]) => {
-    setRestaurantList(sortByLike(restaurantList));
+  const updateSortedRestaurantList = (
+    content: (prev: Restaurant[]) => Restaurant[]
+  ) => {
+    setRestaurantList(prev => sortByLike(content(prev)));
   };
 
   const sortByLike = (restaurantList: Restaurant[]) => {
@@ -46,8 +48,8 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handleLike = async (id: string) => {
-    updateSortedRestaurantList(
-      restaurantList.map(item =>
+    updateSortedRestaurantList(prev =>
+      prev.map(item =>
         item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
       )
     );
@@ -57,8 +59,8 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
       setLikedIds(prev => [...prev, id]);
     } catch (error) {
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
-      updateSortedRestaurantList(
-        restaurantList.map(item =>
+      updateSortedRestaurantList(prev =>
+        prev.map(item =>
           item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
         )
       );
@@ -68,25 +70,24 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handleUnlike = async (id: string) => {
-    updateSortedRestaurantList(
-      restaurantList.map(item =>
+    updateSortedRestaurantList(prev =>
+      prev.map(item =>
         item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
       )
     );
-
     try {
       unlike.patch(id);
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
     } catch (error) {
       setLikedIds(prev => [...prev, id]);
-      updateSortedRestaurantList(
-        restaurantList.map(item =>
+      updateSortedRestaurantList(prev =>
+        prev.map(item =>
           item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
         )
       );
 
-      updateSortedRestaurantList(
-        restaurantList.map(item =>
+      updateSortedRestaurantList(prev =>
+        prev.map(item =>
           item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
         )
       );
@@ -104,7 +105,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     const fetchRestaurantList = async () => {
       const response = await includedRestaurants.get(roomCode);
       if (!isUnmounted && response) {
-        updateSortedRestaurantList(response);
+        setRestaurantList(sortByLike(response));
       }
     };
 
