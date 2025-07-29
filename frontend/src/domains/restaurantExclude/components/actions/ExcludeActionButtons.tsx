@@ -31,19 +31,18 @@ function ExcludeActionButtons() {
 
   return (
     <S.ButtonBox>
-      <S.RightButtonWrapper>
-        <S.RightButtonBox>
-          <Button
-            text="건너뛰기"
-            color="gray"
-            rightIcon={
-              <DoubleArrow size="sm" direction="right" color="black" />
-            }
-            onClick={navigateToPrefer}
-          />
-        </S.RightButtonBox>
+          <S.SkipButtonBox>
+            <Button
+              text="건너뛰기"
+              color="gray"
+              rightIcon={
+                <DoubleArrow size="sm" direction="right" color="black" />
+              }
+              onClick={navigateToPrefer}
+            />
+          </S.SkipButtonBox>
         <Button
-          text="다음"
+          text="제출"
           size="md"
           rightIcon={
             <Arrow
@@ -55,7 +54,6 @@ function ExcludeActionButtons() {
           onClick={submitExcludeRestaurants}
           disabled={disabled}
         />
-      </S.RightButtonWrapper>
     </S.ButtonBox>
   );
 }
@@ -71,18 +69,12 @@ const S = {
     justify-content: flex-end;
 
     align-items: center;
-
-    padding: 0 ${({ theme }) => theme.PADDING.px3};
+    gap: ${({ theme }) => theme.GAP.level6};
   `,
-  RightButtonWrapper: styled.div`
-    width: 50%;
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level5};
-
-    padding: 0 ${({ theme }) => theme.PADDING.px5};
+  SkipButtonBox: styled.div`
+    width: 150px;
+    height: fit-content;
   `,
   RightButtonBox: styled.div`
-    flex-grow: 1;
   `,
 };

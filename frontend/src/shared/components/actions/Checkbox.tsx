@@ -3,10 +3,10 @@ import { ButtonHTMLAttributes } from 'react';
 
 interface CheckBoxProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   checked: boolean;
-  onToggle: () => void;
+  onToggle?: () => void;
 }
 
-const CheckBox = ({ checked, onToggle, ...props }: CheckBoxProps) => {
+const CheckBox = ({ checked, onToggle = () => {}, ...props }: CheckBoxProps) => {
   return (
     <CheckButton checked={checked} onClick={onToggle} {...props}>
       <svg

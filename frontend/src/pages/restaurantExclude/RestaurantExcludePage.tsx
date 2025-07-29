@@ -1,4 +1,5 @@
-import RestaurantExcludeWithProvider from '@domains/restaurantExclude/components/RestaurantExclude';
+
+import RestaurantExclude from '@domains/restaurantExclude/components/RestaurantExclude';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
@@ -11,16 +12,14 @@ import TitleArea from './components/TitleArea';
 
 function RestaurantExcludePage() {
   const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
+    const code = params.get('code') ?? '';
 
   return (
     <S.Container>
       <TitleArea />
       <ErrorBoundary>
         <Suspense fallback={<></>}>
-          <RestaurantExcludeWithProvider
-            restaurantData={restaurants.get(code ?? '')}
-          />
+          <RestaurantExclude restaurantsPromise={restaurants.get(code)}/>
         </Suspense>
       </ErrorBoundary>
     </S.Container>

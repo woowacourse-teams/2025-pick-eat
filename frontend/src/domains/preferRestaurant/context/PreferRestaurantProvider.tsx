@@ -111,7 +111,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
 
     fetchRestaurantList();
 
-    const intervalId = setInterval(fetchRestaurantList, 10000);
+    const intervalId = setInterval(fetchRestaurantList, 3000);
 
     return () => {
       isUnmounted = true;
