@@ -109,7 +109,6 @@ class KakaoRestaurantSearchClientTest {
             assertThat(second.placeUrl()).isEqualTo("http://place.map.kakao.com/1580595199");
             assertThat(second.category().getName()).isEqualTo("한식");
             assertThat(second.tags()).isBlank();
-
         }
 
         @Test
