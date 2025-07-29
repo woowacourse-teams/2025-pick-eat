@@ -19,6 +19,7 @@ import { FormEvent, use } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useRoomDetail } from '../hooks/useRoomDetail';
+import { makeNickName } from '../utils/makeNickName';
 
 function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
   const roomDetail = use(roomData);
@@ -59,6 +60,7 @@ function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
       />
       <S.FormWrapper>
         <Input
+          defaultValue={makeNickName()}
           name="nickName"
           label="닉네임 입력"
           placeholder="사용하실 닉네임을 입력하세요."
