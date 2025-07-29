@@ -65,14 +65,14 @@ const S = {
     overflow: hidden;
     position: relative;
 
-    padding: 20px;
+    padding: ${({ theme }) => theme.PADDING.p6};
 
     background-color: ${({ theme, liked }) =>
       liked ? theme.PALETTE.secondary[5] : theme.PALETTE.secondary[0]};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 10px;
-    box-shadow: 0 4px 20px #00000014;
+    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
     transform: scale(1);
   `,
 
@@ -81,7 +81,7 @@ const S = {
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -96,7 +96,7 @@ const S = {
 
   TitleWrapper: styled.div`
     display: flex;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
 
   Distance: styled.p`
@@ -115,7 +115,7 @@ const S = {
   LinkButton: styled.a`
     width: fit-content;
     align-items: center;
-    gap: 4px;
+    gap: ${({ theme }) => theme.GAP.level2};
 
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     cursor: pointer;

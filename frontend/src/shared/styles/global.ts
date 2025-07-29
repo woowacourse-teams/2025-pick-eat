@@ -102,6 +102,7 @@ export const RADIUS = {
   medium3: '10px',
   large: '12px',
   xlarge: '14px',
+  half: '50%',
 };
 
 export const GAP = {

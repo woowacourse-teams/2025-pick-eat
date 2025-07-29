@@ -46,17 +46,17 @@ const S = {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    gap: ${({ theme }) => theme.GAP.level6};
 
     position: relative;
 
-    padding: 40px 0;
+    padding: ${({ theme }) => theme.PADDING.p9} 0;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
 
-    box-shadow: 0 10px 20px ${({ theme }) => theme.PALETTE.gray[20]};
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
 
     ${setMobileStyle(css`
       width: 100%;
@@ -74,7 +74,7 @@ const S = {
   `,
 
   Name: styled.p`
-    padding: 16px;
+    padding: ${({ theme }) => theme.PADDING.p5};
 
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.medium};

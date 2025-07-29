@@ -99,7 +99,8 @@ const S = {
     flex-direction: column;
     align-items: flex-start;
 
-    padding: 20px 30px 0;
+    padding: ${({ theme }) => theme.PADDING.p6};
+    ${({ theme }) => theme.PADDING.p7} 0;
   `,
 
   ParticipantInfo: styled.div`
@@ -137,7 +138,7 @@ const S = {
   ButtonContainer: styled.div`
     width: 50%;
     display: flex;
-    gap: 10px;
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
 
   ResultButtonContainer: styled.div`

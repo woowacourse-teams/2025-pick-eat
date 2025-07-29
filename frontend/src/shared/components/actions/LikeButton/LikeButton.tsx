@@ -51,7 +51,7 @@ const S = {
     justify-content: space-between;
     align-items: center;
 
-    gap: 4px;
+    gap: ${({ theme }) => theme.GAP.level2};
   `,
 
   HeartWrapper: styled.div`
@@ -84,7 +84,8 @@ const S = {
     background: red;
 
     animation: none;
-    border-radius: 50% 50% 0 0;
+    border-radius: ${({ theme }) => theme.RADIUS.half}
+      ${({ theme }) => theme.RADIUS.half} 0 0;
     opacity: 0;
     transform: rotate(45deg);
 
@@ -95,7 +96,7 @@ const S = {
       position: absolute;
 
       background: red;
-      border-radius: 50%;
+      border-radius: ${({ theme }) => theme.RADIUS.half};
       content: '';
     }
 

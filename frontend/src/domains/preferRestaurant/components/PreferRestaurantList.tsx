@@ -42,11 +42,11 @@ export default PreferRestaurantList;
 const S = {
   Container: styled.div`
     display: grid;
-    gap: 16px;
+    gap: ${({ theme }) => theme.GAP.level5};
     place-items: center;
     grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
 
-    padding: 16px;
+    padding: ${({ theme }) => theme.PADDING.p5};
   `,
   ItemWrapper: styled.div``,
 };
