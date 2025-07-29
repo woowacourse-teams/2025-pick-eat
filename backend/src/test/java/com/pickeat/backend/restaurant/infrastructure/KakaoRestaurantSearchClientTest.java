@@ -3,7 +3,6 @@ package com.pickeat.backend.restaurant.infrastructure;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.hamcrest.Matchers.startsWith;
-import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
@@ -92,26 +91,24 @@ class KakaoRestaurantSearchClientTest {
             assertThat(response).hasSize(2);
 
             RestaurantRequest first = response.get(0);
-            RestaurantRequest second = response.get(1);
-            assertAll(
-                    () -> assertThat(first.name()).isEqualTo("써브웨이 잠실역점"),
-                    () -> assertThat(first.distance()).isEqualTo(45),
-                    () -> assertThat(first.roadAddressName()).isEqualTo("서울 송파구 올림픽로 293-19"),
-                    () -> assertThat(first.location().getX()).isEqualTo(127.10257039927868),
-                    () -> assertThat(first.location().getY()).isEqualTo(37.51516331584118),
-                    () -> assertThat(first.placeUrl()).isEqualTo("http://place.map.kakao.com/193686497"),
-                    () -> assertThat(first.category().getName()).isEqualTo("기타"),
-                    () -> assertThat(first.tags()).contains("패스트푸드", "샌드위치", "써브웨이"),
-                    () -> assertThat(second.name()).isEqualTo("오호이 홈플러스 잠실점"),
-                    () -> assertThat(second.distance()).isEqualTo(110),
-                    () -> assertThat(second.roadAddressName()).isEqualTo("서울 송파구 올림픽로35가길 16"),
-                    () -> assertThat(second.location().getX()).isEqualTo(127.103006246532),
-                    () -> assertThat(second.location().getY()).isEqualTo(37.5162513485861),
-                    () -> assertThat(second.placeUrl()).isEqualTo("http://place.map.kakao.com/1580595199"),
-                    () -> assertThat(second.category().getName()).isEqualTo("한식"),
-                    () -> assertThat(second.tags()).isBlank()
-            );
+            assertThat(first.name()).isEqualTo("써브웨이 잠실역점");
+            assertThat(first.distance()).isEqualTo(45);
+            assertThat(first.roadAddressName()).isEqualTo("서울 송파구 올림픽로 293-19");
+            assertThat(first.location().getX()).isEqualTo(127.10257039927868);
+            assertThat(first.location().getY()).isEqualTo(37.51516331584118);
+            assertThat(first.placeUrl()).isEqualTo("http://place.map.kakao.com/193686497");
+            assertThat(first.category().getName()).isEqualTo("기타");
+            assertThat(first.tags()).contains("패스트푸드", "샌드위치", "써브웨이");
 
+            RestaurantRequest second = response.get(1);
+            assertThat(second.name()).isEqualTo("오호이 홈플러스 잠실점");
+            assertThat(second.distance()).isEqualTo(110);
+            assertThat(second.roadAddressName()).isEqualTo("서울 송파구 올림픽로35가길 16");
+            assertThat(second.location().getX()).isEqualTo(127.103006246532);
+            assertThat(second.location().getY()).isEqualTo(37.5162513485861);
+            assertThat(second.placeUrl()).isEqualTo("http://place.map.kakao.com/1580595199");
+            assertThat(second.category().getName()).isEqualTo("한식");
+            assertThat(second.tags()).isBlank();
 
         }
 
