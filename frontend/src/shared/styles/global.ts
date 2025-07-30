@@ -1,6 +1,8 @@
 const fontFamily =
   'Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans KR", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
 
+const fontFamilyStyle = 'BM Kkubulim, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif';
+
 const FONTS = {
   display: {
     large: `700 60px/150% ${fontFamily}`,
@@ -9,8 +11,11 @@ const FONTS = {
   },
   heading: {
     large: `700 32px/150% ${fontFamily}`,
+    large_style: `700 36px/150% ${fontFamilyStyle}`,
     medium: `700 24px/150% ${fontFamily}`,
+    medium_style: `700 28px/150% ${fontFamilyStyle}`,
     small: `600 19px/150% ${fontFamily}`,
+    small_style: `600 22px/150% ${fontFamilyStyle}`,
   },
   body: {
     large: `400 19px/150% ${fontFamily}`,

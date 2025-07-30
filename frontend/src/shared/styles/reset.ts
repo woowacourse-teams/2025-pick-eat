@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 
 const reset = css`
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
+  @import url('https://cdn.jsdelivr.net/gh/fonts-archive/BMKkubulim/BMKkubulim.css');
 
   html,
   body,
