@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
 
 export const useFlip = <T extends { id: string }>(arr: T[]) => {
   const itemRefs = useRef(new Map<string, HTMLDivElement>());
@@ -12,8 +12,6 @@ export const useFlip = <T extends { id: string }>(arr: T[]) => {
       }
     });
   };
-
-  recordPositions();
 
   const playFlip = () => {
     arr.forEach(item => {
@@ -37,11 +35,11 @@ export const useFlip = <T extends { id: string }>(arr: T[]) => {
     });
   };
 
-  useEffect(() => {
-    requestAnimationFrame(() => {
-      playFlip();
-    });
-  }, [arr]);
+  recordPositions();
+
+  requestAnimationFrame(() => {
+    playFlip();
+  });
 
   return { itemRefs };
 };

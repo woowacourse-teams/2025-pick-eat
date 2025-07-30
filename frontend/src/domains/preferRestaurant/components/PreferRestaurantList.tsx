@@ -48,5 +48,8 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p5};
   `,
-  ItemWrapper: styled.div``,
+
+  ItemWrapper: styled.div`
+    overflow-anchor: none;
+  `,
 };
