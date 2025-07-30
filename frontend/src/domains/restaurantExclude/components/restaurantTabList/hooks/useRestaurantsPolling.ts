@@ -22,8 +22,6 @@ export function useRestaurantsPolling(initialData: Restaurant[] = []) {
         }
         };
 
-        fetchRestaurantList();
-
         const intervalId = setInterval(fetchRestaurantList, 3000);
 
         return () => {
