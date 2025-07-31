@@ -8,27 +8,25 @@ import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
-type Props = Pick<Restaurant,
-  'id' | 'name' | 'tags' | 'placeUrl' | 'distance'
->;
+type Props = Pick<Restaurant, 'id' | 'name' | 'tags' | 'placeUrl' | 'distance'>;
 
 function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
     useRestaurantExcludeContext();
 
-  const pressed = selectedRestaurantIds.includes(id);
-  const menuUrl = `${placeUrl}#menuInfo`
+  const excluded = selectedRestaurantIds.includes(id);
+  const menuUrl = `${placeUrl}#menuInfo`;
 
   return (
-    <S.Container pressed={pressed}>
+    <S.Container excluded={excluded}>
       <S.DeleteButton
         type="button"
         onClick={() => handleRestaurantToggle(id)}
-        pressed={pressed}
+        excluded={excluded}
       >
         <S.IconContainer>
-          <S.IconWrapper pressed={pressed}>
-            {pressed ? (
+          <S.IconWrapper excluded={excluded}>
+            {excluded ? (
               <Revert color="white" size="sm" />
             ) : (
               <Cross color="white" size="sm" strokeWidth={4} />
@@ -37,7 +35,7 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
         </S.IconContainer>
       </S.DeleteButton>
       <S.CardContainer>
-        <S.CardContent pressed={pressed}>
+        <S.CardContent excluded={excluded}>
           <S.TitleWrapper>
             <S.TagBox>
               {(tags ?? []).map((tag, index) => (
@@ -58,7 +56,7 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
             </S.LinkButton>
           </S.DetailBox>
         </S.CardContent>
-        {pressed && (
+        {excluded && (
           <S.Overlay>
             <S.OverlayText>제외되었습니다</S.OverlayText>
           </S.Overlay>
@@ -71,14 +69,14 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
 export default RestaurantItem;
 
 const S = {
-  Container: styled.div<{ pressed: boolean }>`
+  Container: styled.div<{ excluded: boolean }>`
     width: 312px;
     height: fit-content;
     display: flex;
     flex-direction: column;
     position: relative;
-    ${({ pressed, theme }) =>
-      pressed
+    ${({ excluded, theme }) =>
+      excluded
         ? `
       box-shadow: ${theme.BOX_SHADOW.level1};
       transform: scale(0.95);
@@ -100,7 +98,7 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: 10px;
   `,
-  CardContent: styled.div<{ pressed: boolean }>`
+  CardContent: styled.div<{ excluded: boolean }>`
     width: 100%;
     height: 100%;
     display: flex;
@@ -110,8 +108,8 @@ const S = {
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    ${({ pressed }) =>
-      pressed
+    ${({ excluded }) =>
+      excluded
         ? `
       filter: blur(1px) brightness(0.88);
       opacity: 0.6;
@@ -144,7 +142,7 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small_bold};
     border-radius: 8px;
   `,
-  DeleteButton: styled.button<{ pressed: boolean }>`
+  DeleteButton: styled.button<{ excluded: boolean }>`
     width: 40px;
     height: 40px;
 
@@ -163,8 +161,8 @@ const S = {
 
     font: ${({ theme }) => theme.FONTS.body.xsmall};
 
-    ${({ pressed, theme }) =>
-      pressed
+    ${({ excluded, theme }) =>
+      excluded
         ? `
       color: ${theme.PALETTE.gray[0]};
     `
@@ -178,7 +176,7 @@ const S = {
     justify-content: center;
     align-items: flex-end;
   `,
-  IconWrapper: styled.div<{ pressed: boolean }>`
+  IconWrapper: styled.div<{ excluded: boolean }>`
     width: 28px;
     height: 28px;
 
@@ -190,8 +188,8 @@ const S = {
 
     border-radius: 1000px;
 
-    ${({ pressed, theme }) =>
-      pressed
+    ${({ excluded, theme }) =>
+      excluded
         ? `
       background-color: ${theme.PALETTE.gray[50]};
       color: ${theme.PALETTE.gray[0]};

@@ -17,8 +17,8 @@ function TitleArea() {
             </S.IconWrapper>
           </S.IconContainer>
           <S.TitleText>
-            <S.TitlePointText>버튼</S.TitlePointText>을{' '}
-            <S.TitlePointText>눌러 제외</S.TitlePointText>해주세요
+            <S.TitlePointText>버튼</S.TitlePointText>을&nbsp;
+            <S.TitlePointText>눌러 제외</S.TitlePointText>해 주세요
           </S.TitleText>
         </S.IconTextBox>
       </S.Title>

@@ -2,6 +2,7 @@ import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRes
 
 import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
+import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
@@ -64,7 +65,7 @@ export default PreferRestaurant;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100vh - 72px);
+    height: calc(100vh - ${HEADER_HEIGHT});
     display: flex;
     flex-direction: column;
     justify-content: space-between;

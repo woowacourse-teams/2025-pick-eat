@@ -1,7 +1,4 @@
-
-import {
-  RestaurantExcludeProvider
-} from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
+import { RestaurantExcludeProvider } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
 
 import { Restaurant } from '@apis/restaurant';
 
@@ -12,14 +9,14 @@ import ExcludeActionButton from './actions/ExcludeActionButton';
 import RestaurantTabList from './restaurantTabList/RestaurantTabList';
 
 type Props = {
-  restaurantsPromise?: Promise<Restaurant[]>;
-}
+  restaurantsPromise: Promise<Restaurant[]>;
+};
 
-function RestaurantExclude({restaurantsPromise = Promise.resolve([])}: Props) {
-  const restaurantsData = use(restaurantsPromise)
+function RestaurantExclude({ restaurantsPromise }: Props) {
+  const restaurantsData = use(restaurantsPromise);
   return (
     <RestaurantExcludeProvider>
-      <RestaurantTabList initialData={restaurantsData} />
+      <RestaurantTabList restaurantList={restaurantsData} />
       <S.Footer>
         <ExcludeActionButton />
       </S.Footer>

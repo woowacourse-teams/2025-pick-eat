@@ -1,5 +1,7 @@
 import PickeatInfo from '@domains/pickeat/components/PickeatInfo';
 
+import { HEADER_HEIGHT } from '@components/layouts/Header';
+
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { pickeat } from '@apis/pickeat';
@@ -26,7 +28,7 @@ export default PickeatDetail;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - 72px);
+    height: calc(100% - ${HEADER_HEIGHT});
     display: flex;
     justify-content: center;
     align-items: center;

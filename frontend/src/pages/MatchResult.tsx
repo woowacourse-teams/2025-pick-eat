@@ -1,5 +1,6 @@
 import Button from '@components/actions/Button';
 import Confetti from '@components/Confetti';
+import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import useResult from '@domains/matchResult/hooks/useResult';
 
@@ -32,7 +33,7 @@ export default MatchResult;
 
 const S = {
   Container: styled.div`
-    height: calc(100vh - 72px);
+    height: calc(100vh - ${HEADER_HEIGHT});
     display: flex;
     flex-direction: column;
     justify-content: center;
