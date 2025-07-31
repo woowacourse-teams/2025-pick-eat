@@ -16,5 +16,6 @@ const S = {
 
     color: ${({ theme }) => theme.PALETTE.primary[70]};
     font: ${({ theme }) => theme.FONTS.body.small_bold};
+    text-align: center;
   `,
 };

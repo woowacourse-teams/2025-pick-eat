@@ -4,8 +4,9 @@ import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
 import Select from '@components/actions/Select';
 import ErrorMessage from '@components/errors/ErrorMessage';
+import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import { useCreateRoom } from '@domains/room/hooks/useCreateRoom';
+import { useCreatePickeat } from '@domains/room/hooks/useCreatePickeat';
 import { useFindAddress } from '@domains/room/hooks/useFindAddress';
 
 import { setMobileStyle } from '@styles/mediaQuery';
@@ -25,13 +26,13 @@ function CreateRoom() {
     value: string;
     label: string;
   }>();
-  const { location, handleChangeInput, addressList, handleClickAddress } =
+  const { address, handleInputChange, addressList, handleAddressClick } =
     useFindAddress();
-  const { createRoom, error } = useCreateRoom();
+  const { createPickeat, error } = useCreatePickeat();
 
   const submitRoomForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createRoom(new FormData(e.currentTarget), selectedOption?.value);
+    createPickeat(new FormData(e.currentTarget), selectedOption?.value);
   };
 
   return (
@@ -50,16 +51,16 @@ function CreateRoom() {
 
           <S.AddressWrapper>
             <Input
-              value={location}
-              onChange={e => handleChangeInput(e.target.value)}
-              name="location"
+              value={address}
+              onChange={e => handleInputChange(e.target.value)}
+              name="address"
               label="식당 탐색 위치"
               placeholder="식당 탐색 위치 검색"
             />
             {addressList && (
               <AddressList
                 addressList={addressList}
-                onClick={handleClickAddress}
+                onClick={handleAddressClick}
               />
             )}
           </S.AddressWrapper>
@@ -88,7 +89,7 @@ export default CreateRoom;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - 72px);
+    height: calc(100% - ${HEADER_HEIGHT});
     display: flex;
     justify-content: center;
     align-items: center;
@@ -98,11 +99,11 @@ const S = {
     width: 70%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: ${({ theme }) => theme.GAP.level5};
 
     padding: ${({ theme }) => theme.PADDING.p11};
 
-    border-radius: 30px;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
 
     ${setMobileStyle(css`

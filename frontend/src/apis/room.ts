@@ -1,4 +1,7 @@
-import { getAddressByLatLng } from '@domains/room/utils/convertAddress';
+import {
+  getAddressByLatLng,
+  getLatLngByAddress,
+} from '@domains/room/utils/convertAddress';
 
 import { joinAsPath } from '@utils/createUrl';
 
@@ -25,8 +28,7 @@ export type RoomDetailType = {
 
 type CreateRoomFormData = {
   name: string;
-  x: number;
-  y: number;
+  address: string;
   radius: number;
 };
 
@@ -51,8 +53,18 @@ const convertResponseToRoomDetail = async (
   location: await getAddressByLatLng(data.x, data.y),
 });
 
-export const postRoom = async (data: CreateRoomFormData): Promise<string> => {
-  const response = await apiClient.post<RoomResponse>(`rooms`, data);
+export const postPickeat = async (
+  data: CreateRoomFormData
+): Promise<string> => {
+  const coords = await getLatLngByAddress(data.address);
+  if (!coords) throw new Error('INVALID_ADDRESS');
+
+  const response = await apiClient.post<RoomResponse>(`rooms`, {
+    name: data.name,
+    x: coords.x,
+    y: coords.y,
+    radius: data.radius,
+  });
   if (response) return response.code;
   return '';
 };
@@ -66,9 +78,4 @@ export const getRoom = async (roomId: string) => {
 
 export const postJoinRoom = async (data: JoinRoomFormData) => {
   await apiClient.post<JoinRoomResponse>(`participants`, data);
-};
-
-export const postDeactivateRoom = async (roomCode: string) => {
-  const getUrl = joinAsPath('rooms', roomCode, 'deactivate');
-  await apiClient.patch(getUrl);
 };

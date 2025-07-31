@@ -6,8 +6,6 @@ import Arrow from '@components/assets/icons/Arrow';
 import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
-import { postDeactivateRoom } from '@apis/room';
-
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
@@ -17,9 +15,6 @@ const PreferRestaurant = () => {
   const [searchParams] = useSearchParams();
   const roomCode = searchParams.get('code') ?? '';
 
-  const handleDeactivate = async () => {
-    await postDeactivateRoom(roomCode);
-  };
   const { participant } = useParticipant(roomCode);
   const navigate = useNavigate();
 
@@ -55,12 +50,6 @@ const PreferRestaurant = () => {
             leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
           />
           <S.ButtonContainer>
-            <Button
-              text="조기 종료"
-              color="gray"
-              onClick={() => handleDeactivate()}
-            />
-
             <S.ResultButtonContainer>
               <Button
                 text="결과"

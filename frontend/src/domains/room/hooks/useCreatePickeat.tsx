@@ -1,16 +1,17 @@
+import { postPickeat } from '@apis/room';
+
 import { generateRouterPath } from '@routes/routePath';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { createRoomService } from '../services/createRoomService';
-import { validateRoomForms } from '../utils/validateRoomForms';
+import { validateRoomForms } from '../services/validateRoomForms';
 
-export const useCreateRoom = () => {
+export const useCreatePickeat = () => {
   const [error, setError] = useState<string>();
   const navigate = useNavigate();
 
-  const createRoom = async (
+  const createPickeat = async (
     formData: FormData,
     radiusValue: string | undefined
   ) => {
@@ -18,7 +19,7 @@ export const useCreateRoom = () => {
     try {
       validateRoomForms({
         name: data.roomName as string,
-        location: data.location as string,
+        address: data.address as string,
         radius: radiusValue,
       });
     } catch (e) {
@@ -30,9 +31,9 @@ export const useCreateRoom = () => {
 
     try {
       const radius = parseInt(radiusValue as string);
-      const code = await createRoomService({
+      const code = await postPickeat({
         name: data.roomName as string,
-        location: data.location as string,
+        address: data.address as string,
         radius,
       });
 
@@ -41,7 +42,7 @@ export const useCreateRoom = () => {
     } catch (e) {
       if (e instanceof Error) {
         setError(() =>
-          e.message === 'INVALID_LOCATION'
+          e.message === 'INVALID_ADDRESS'
             ? '잘못된 위치입니다.'
             : '방 생성에 실패했습니다.'
         );
@@ -49,5 +50,5 @@ export const useCreateRoom = () => {
     }
   };
 
-  return { createRoom, error };
+  return { createPickeat, error };
 };
