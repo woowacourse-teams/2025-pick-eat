@@ -1,4 +1,4 @@
-import { postJoinRoom, RoomDetailType } from '@apis/room';
+import { pickeat, PickeatDetailType } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 
 import { validateJoinRoom } from '../utils/validateJoinRoom';
 
-export const useRoomDetail = (roomDetail: RoomDetailType) => {
+export const useRoomDetail = (roomDetail: PickeatDetailType) => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>();
 
@@ -25,9 +25,9 @@ export const useRoomDetail = (roomDetail: RoomDetailType) => {
     }
 
     try {
-      await postJoinRoom({
+      await pickeat.postJoin({
         nickname: nickName,
-        roomId: roomDetail!.id,
+        pickeatId: roomDetail!.id,
       });
       navigate(generateRouterPath.restaurantsExclude(roomDetail.code));
     } catch (e) {

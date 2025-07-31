@@ -1,4 +1,4 @@
-import { matchResult } from '@apis/restaurant';
+import { pickeat } from '@apis/pickeat';
 import { RestaurantResponse } from '@apis/restaurant';
 
 import { useState, useEffect } from 'react';
@@ -11,7 +11,7 @@ const useResult = () => {
 
   useEffect(() => {
     const fetchResult = async () => {
-      const response = await matchResult.get(roomCode);
+      const response = await pickeat.getResult(roomCode);
 
       if (response) setResult(response);
     };

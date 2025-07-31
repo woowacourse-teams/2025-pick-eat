@@ -1,10 +1,9 @@
-import { ParticipantsResponse } from '@apis/participant';
-import { participants } from '@apis/participant';
+import { pickeat } from '@apis/pickeat';
 
 import { useState, useEffect } from 'react';
 
 const useParticipant = (roomCode: string) => {
-  const [participant, setParticipant] = useState<ParticipantsResponse>({
+  const [participant, setParticipant] = useState({
     totalParticipants: 0,
     eliminatedParticipants: 0,
   });
@@ -13,7 +12,7 @@ const useParticipant = (roomCode: string) => {
     let isUnmounted = false;
 
     const fetchParticipantState = async () => {
-      const response = await participants.get(roomCode);
+      const response = await pickeat.getParticipantsCount(roomCode);
       if (!isUnmounted && response) {
         setParticipant(response);
       }

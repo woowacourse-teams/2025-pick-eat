@@ -1,9 +1,5 @@
-import {
-  includedRestaurants,
-  Restaurant,
-  like,
-  unlike,
-} from '@apis/restaurant';
+import { restaurant, Restaurant } from '@apis/restaurant';
+import { restaurants } from '@apis/restaurants';
 
 import {
   createContext,
@@ -55,7 +51,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     );
 
     try {
-      like.patch(id);
+      restaurant.patchLike(id);
       setLikedIds(prev => [...prev, id]);
     } catch (error) {
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
@@ -76,7 +72,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
       )
     );
     try {
-      unlike.patch(id);
+      restaurant.patchUnlike(id);
       setLikedIds(prev => prev.filter(likedId => likedId !== id));
     } catch (error) {
       setLikedIds(prev => [...prev, id]);
@@ -103,7 +99,9 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     let isUnmounted = false;
 
     const fetchRestaurantList = async () => {
-      const response = await includedRestaurants.get(roomCode);
+      const response = await restaurants.get(roomCode, {
+        isExcluded: 'false',
+      });
       if (!isUnmounted && response) {
         setRestaurantList(sortByLike(response));
       }

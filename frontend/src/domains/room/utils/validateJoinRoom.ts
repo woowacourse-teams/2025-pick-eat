@@ -1,4 +1,4 @@
-import { RoomDetailType } from '@apis/room';
+import { RoomDetailType } from '@apis/pickeat';
 
 type ValidateType = {
   nickName: string | undefined;

@@ -2,7 +2,7 @@ import RoomInfo from '@domains/room/components/RoomInfo';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { getRoom } from '@apis/room';
+import { getRoom } from '@apis/pickeat';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';

@@ -5,7 +5,7 @@ import Location from '@components/assets/icons/Location';
 import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
 
-import { RoomDetailType } from '@apis/room';
+import { RoomDetailType } from '@apis/pickeat';
 
 import { ROUTE_PATH } from '@routes/routePath';
 

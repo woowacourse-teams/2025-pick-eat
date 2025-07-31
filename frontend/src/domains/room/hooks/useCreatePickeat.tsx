@@ -1,4 +1,4 @@
-import { postPickeat } from '@apis/room';
+import { pickeat } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -31,7 +31,7 @@ export const useCreatePickeat = () => {
 
     try {
       const radius = parseInt(radiusValue as string);
-      const code = await postPickeat({
+      const code = await pickeat.post({
         name: data.roomName as string,
         address: data.address as string,
         radius,
