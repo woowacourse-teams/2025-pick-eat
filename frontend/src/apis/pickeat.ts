@@ -1,7 +1,7 @@
 import {
   getAddressByLatLng,
   getLatLngByAddress,
-} from '@domains/room/utils/convertAddress';
+} from '@domains/pickeat/utils/convertAddress';
 
 import { joinAsPath } from '@utils/createUrl';
 
@@ -35,13 +35,13 @@ type CreatePickeatFormData = {
 
 type JoinPickeatFormData = {
   nickname: string;
-  pickeatId: number;
+  roomId: number;
 };
 
 type JoinPickeatResponse = {
   id: number;
   nickname: string;
-  pickeatCode: string;
+  roomCode: string;
 };
 
 type ParticipantsResponse = {
@@ -59,12 +59,13 @@ const convertResponseToPickeatDetail = async (
   location: await getAddressByLatLng(data.x, data.y),
 });
 
+const basePath = 'rooms';
+
 export const pickeat = {
   post: async (data: CreatePickeatFormData): Promise<string> => {
     const coords = await getLatLngByAddress(data.address);
     if (!coords) throw new Error('INVALID_ADDRESS');
-
-    const response = await apiClient.post<PickeatResponse>(`pickeats`, {
+    const response = await apiClient.post<PickeatResponse>(basePath, {
       name: data.name,
       x: coords.x,
       y: coords.y,
@@ -74,8 +75,8 @@ export const pickeat = {
     return '';
   },
 
-  get: async (pickeatId: string) => {
-    const getUrl = joinAsPath('pickeats', pickeatId);
+  get: async (roomId: string) => {
+    const getUrl = joinAsPath(basePath, roomId);
     const response = await apiClient.get<PickeatResponse>(getUrl);
     if (response) return await convertResponseToPickeatDetail(response);
     throw new Error('방 정보가 존재하지 않습니다.');
@@ -86,18 +87,16 @@ export const pickeat = {
   },
 
   getParticipantsCount: async (
-    pickeatCode: string
+    roomCode: string
   ): Promise<ParticipantsResponse | null> => {
-    const getUrl = joinAsPath('pickeats', pickeatCode, 'participants', 'state');
+    const getUrl = joinAsPath(basePath, roomCode, 'participants', 'state');
     const data = await apiClient.get<ParticipantsResponse>(getUrl);
 
     return data ?? null;
   },
 
-  getResult: async (
-    pickeatCode: string
-  ): Promise<RestaurantResponse[] | null> => {
-    const getUrl = joinAsPath('pickeats', pickeatCode, 'result');
+  getResult: async (roomCode: string): Promise<RestaurantResponse[] | null> => {
+    const getUrl = joinAsPath(basePath, roomCode, 'result');
     const response = await apiClient.get<RestaurantResponse[]>(`${getUrl}`);
     return response ?? null;
   },

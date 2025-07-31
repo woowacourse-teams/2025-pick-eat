@@ -5,7 +5,7 @@ import Location from '@components/assets/icons/Location';
 import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
 
-import { RoomDetailType } from '@apis/pickeat';
+import { PickeatDetailType } from '@apis/pickeat';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
@@ -18,28 +18,32 @@ import styled from '@emotion/styled';
 import { FormEvent, use } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useRoomDetail } from '../hooks/useRoomDetail';
+import { usePickeatDetail } from '../hooks/usePickeatDetail';
 import { makeNickName } from '../utils/makeNickName';
 
-function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
-  const roomDetail = use(roomData);
-  const roomLink = `${process.env.BASE_URL}room-detail?code=${roomDetail.code}`;
+function PickeatInfo({
+  pickeatData,
+}: {
+  pickeatData: Promise<PickeatDetailType>;
+}) {
+  const pickeatDetail = use(pickeatData);
+  const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
   const navigate = useNavigate();
 
-  const { joinRoom, error } = useRoomDetail(roomDetail);
+  const { joinPickeat, error } = usePickeatDetail(pickeatDetail);
 
-  const submitJoinRoomForm = (e: FormEvent<HTMLFormElement>) => {
+  const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const nickName = formData.get('nickName') as string;
-    joinRoom(nickName);
+    joinPickeat(nickName);
   };
   return (
-    <S.Wrapper onSubmit={submitJoinRoomForm}>
+    <S.Wrapper onSubmit={submitJoinPickeatForm}>
       <S.ArrowButton type="button" onClick={() => navigate(ROUTE_PATH.HOME)}>
         <Arrow size="lg" direction="left" />
       </S.ArrowButton>
-      <S.RoomName>{roomDetail.name}</S.RoomName>
+      <S.PickeatName>{pickeatDetail.name}</S.PickeatName>
 
       <S.LocationInfo>
         <S.TitleWrapper>
@@ -47,8 +51,8 @@ function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
           위치정보
         </S.TitleWrapper>
 
-        <S.Location>설정 위치: {roomDetail.location} </S.Location>
-        <S.Radius>반경: {roomDetail.radius}미터 이내</S.Radius>
+        <S.Location>설정 위치: {pickeatDetail.location} </S.Location>
+        <S.Radius>반경: {pickeatDetail.radius}미터 이내</S.Radius>
       </S.LocationInfo>
 
       <Button
@@ -56,7 +60,7 @@ function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
         leftIcon={<Share size="sm" />}
         text="링크공유"
         color="secondary"
-        onClick={() => copyLink(roomLink)}
+        onClick={() => copyLink(pickeatLink)}
       />
       <S.FormWrapper>
         <Input
@@ -72,7 +76,7 @@ function RoomInfo({ roomData }: { roomData: Promise<RoomDetailType> }) {
   );
 }
 
-export default RoomInfo;
+export default PickeatInfo;
 
 const S = {
   Wrapper: styled.form`
@@ -104,7 +108,7 @@ const S = {
     `)}
   `,
 
-  RoomName: styled.h1`
+  PickeatName: styled.h1`
     font: ${({ theme }) => theme.FONTS.heading.large};
     text-align: center;
   `,

@@ -5,17 +5,17 @@ import { generateRouterPath } from '@routes/routePath';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { validateJoinRoom } from '../utils/validateJoinRoom';
+import { validateJoinPickeat } from '../utils/validateJoinPickeat';
 
-export const useRoomDetail = (roomDetail: PickeatDetailType) => {
+export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>();
 
-  const joinRoom = async (nickName: string) => {
+  const joinPickeat = async (nickName: string) => {
     try {
-      validateJoinRoom({
+      validateJoinPickeat({
         nickName,
-        roomDetail,
+        pickeatDetail,
       });
     } catch (e) {
       if (e instanceof Error) {
@@ -27,9 +27,9 @@ export const useRoomDetail = (roomDetail: PickeatDetailType) => {
     try {
       await pickeat.postJoin({
         nickname: nickName,
-        pickeatId: roomDetail!.id,
+        roomId: pickeatDetail!.id,
       });
-      navigate(generateRouterPath.restaurantsExclude(roomDetail.code));
+      navigate(generateRouterPath.restaurantsExclude(pickeatDetail.code));
     } catch (e) {
       if (e instanceof Error) {
         setError(e.message);
@@ -38,5 +38,5 @@ export const useRoomDetail = (roomDetail: PickeatDetailType) => {
     }
   };
 
-  return { joinRoom, error };
+  return { joinPickeat, error };
 };

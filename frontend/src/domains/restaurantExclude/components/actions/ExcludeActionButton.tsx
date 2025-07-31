@@ -3,7 +3,7 @@ import Arrow from '@components/assets/icons/Arrow';
 
 import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
 
-import { restaurants } from '@apis/restaurant';
+import { restaurants } from '@apis/restaurants';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -28,18 +28,12 @@ function ExcludeActionButton() {
 
   return (
     <S.ButtonBox>
-        <Button
-          text="다음"
-          size="md"
-          rightIcon={
-            <Arrow
-              size="sm"
-              direction="right"
-              color='white'
-            />
-          }
-          onClick={submitExcludeRestaurants}
-        />
+      <Button
+        text="다음"
+        size="md"
+        rightIcon={<Arrow size="sm" direction="right" color="white" />}
+        onClick={submitExcludeRestaurants}
+      />
     </S.ButtonBox>
   );
 }

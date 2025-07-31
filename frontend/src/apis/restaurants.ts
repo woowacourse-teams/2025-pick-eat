@@ -18,6 +18,7 @@ const initialOption = {};
 
 export const restaurants = {
   get: async (roomCode: string, option?: Option): Promise<Restaurant[]> => {
+    //Todo : rooms=>pickeats
     const getUrl = joinAsPath('rooms', roomCode, 'restaurants');
     const queryString = createQueryString(option ?? initialOption);
     const response = await apiClient.get<RestaurantResponse[]>(

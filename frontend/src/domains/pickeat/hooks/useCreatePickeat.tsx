@@ -5,7 +5,7 @@ import { generateRouterPath } from '@routes/routePath';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { validateRoomForms } from '../services/validateRoomForms';
+import { validatePickeatForms } from '../services/validatePickeatForms';
 
 export const useCreatePickeat = () => {
   const [error, setError] = useState<string>();
@@ -17,8 +17,8 @@ export const useCreatePickeat = () => {
   ) => {
     const data = Object.fromEntries(formData.entries());
     try {
-      validateRoomForms({
-        name: data.roomName as string,
+      validatePickeatForms({
+        name: data.pickeatName as string,
         address: data.address as string,
         radius: radiusValue,
       });
@@ -32,12 +32,12 @@ export const useCreatePickeat = () => {
     try {
       const radius = parseInt(radiusValue as string);
       const code = await pickeat.post({
-        name: data.roomName as string,
+        name: data.pickeatName as string,
         address: data.address as string,
         radius,
       });
 
-      navigate(generateRouterPath.roomDetail(code));
+      navigate(generateRouterPath.pickeatDetail(code));
       setError('');
     } catch (e) {
       if (e instanceof Error) {

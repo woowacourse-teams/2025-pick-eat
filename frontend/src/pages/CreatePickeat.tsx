@@ -1,4 +1,4 @@
-import AddressList from '@domains/room/components/AddressList';
+import AddressList from '@domains/pickeat/components/AddressList';
 
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
@@ -6,8 +6,8 @@ import Select from '@components/actions/Select';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import { useCreatePickeat } from '@domains/room/hooks/useCreatePickeat';
-import { useFindAddress } from '@domains/room/hooks/useFindAddress';
+import { useCreatePickeat } from '@domains/pickeat/hooks/useCreatePickeat';
+import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
@@ -21,7 +21,7 @@ const RADIUS_OPTIONS = [
   { value: '500', label: '15분 이내' },
 ];
 
-function CreateRoom() {
+function CreatePickeat() {
   const [selectedOption, setSelectedOption] = useState<{
     value: string;
     label: string;
@@ -30,14 +30,14 @@ function CreateRoom() {
     useFindAddress();
   const { createPickeat, error } = useCreatePickeat();
 
-  const submitRoomForm = async (e: FormEvent<HTMLFormElement>) => {
+  const submitPickeatForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createPickeat(new FormData(e.currentTarget), selectedOption?.value);
   };
 
   return (
     <S.Container>
-      <S.Wrapper onSubmit={submitRoomForm}>
+      <S.Wrapper onSubmit={submitPickeatForm}>
         <S.Title>
           함께 식사할 멤버를 소환하고,
           <br /> 식당을 정해봐요.
@@ -47,7 +47,7 @@ function CreateRoom() {
         </S.Description>
 
         <S.FormWrapper>
-          <Input name="roomName" label="투표명" placeholder="레전드 점심" />
+          <Input name="pickeatName" label="투표명" placeholder="레전드 점심" />
 
           <S.AddressWrapper>
             <Input
@@ -84,7 +84,7 @@ function CreateRoom() {
   );
 }
 
-export default CreateRoom;
+export default CreatePickeat;
 
 const S = {
   Container: styled.div`

@@ -1,27 +1,27 @@
-import RoomInfo from '@domains/room/components/RoomInfo';
+import PickeatInfo from '@domains/pickeat/components/PickeatInfo';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { getRoom } from '@apis/pickeat';
+import { pickeat } from '@apis/pickeat';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
-function RoomDetail() {
+function PickeatDetail() {
   const [searchParams] = useSearchParams();
   const roomCode = searchParams.get('code') ?? '';
   return (
     <S.Container>
       <ErrorBoundary>
         <Suspense>
-          <RoomInfo roomData={getRoom(roomCode)} />
+          <PickeatInfo pickeatData={pickeat.get(roomCode)} />
         </Suspense>
       </ErrorBoundary>
     </S.Container>
   );
 }
-export default RoomDetail;
+export default PickeatDetail;
 
 const S = {
   Container: styled.div`
