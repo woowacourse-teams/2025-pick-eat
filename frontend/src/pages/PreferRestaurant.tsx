@@ -99,8 +99,8 @@ const S = {
     flex-direction: column;
     align-items: flex-start;
 
-    padding: ${({ theme }) => theme.PADDING.p6};
-    ${({ theme }) => theme.PADDING.p7} 0;
+    padding: ${({ theme }) => theme.PADDING.p6}
+      ${({ theme }) => theme.PADDING.p7} 0;
   `,
 
   ParticipantInfo: styled.div`
