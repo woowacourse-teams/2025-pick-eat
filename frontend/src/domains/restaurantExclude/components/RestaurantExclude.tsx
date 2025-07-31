@@ -8,7 +8,7 @@ import { Restaurant } from '@apis/restaurant';
 import styled from '@emotion/styled';
 import { use } from 'react';
 
-import ExcludeActionButtons from './actions/ExcludeActionButtons';
+import ExcludeActionButton from './actions/ExcludeActionButton';
 import RestaurantTabList from './restaurantTabList/RestaurantTabList';
 
 type Props = {
@@ -21,7 +21,7 @@ function RestaurantExclude({restaurantsPromise = Promise.resolve([])}: Props) {
     <RestaurantExcludeProvider>
       <RestaurantTabList initialData={restaurantsData} />
       <S.Footer>
-        <ExcludeActionButtons />
+        <ExcludeActionButton />
       </S.Footer>
     </RestaurantExcludeProvider>
   );

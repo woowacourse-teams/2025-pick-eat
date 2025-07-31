@@ -64,7 +64,7 @@ export function useRestaurantTabsContext(restaurantsData: Restaurant[]) {
                 ?.map(r => r.id)
                 .every(id => selectedRestaurantIds.includes(id)) ?? false}
             />
-            <S.CheckLabelText> {tab} 식당 전체 선택</S.CheckLabelText>
+            <S.CheckLabelText> {tab} 식당 전체 소거</S.CheckLabelText>
             </S.CheckBoxWrapper>
             <RestaurantList restaurantList={restaurantsByCategory[tab] ?? []} />
         </S.Container>

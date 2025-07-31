@@ -1,6 +1,5 @@
 import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
-import DoubleArrow from '@components/assets/icons/DoubleArrow';
 
 import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
 
@@ -11,7 +10,7 @@ import { generateRouterPath } from '@routes/routePath';
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
-function ExcludeActionButtons() {
+function ExcludeActionButton() {
   const { selectedRestaurantIds } = useRestaurantExcludeContext();
 
   const [searchParams] = useSearchParams();
@@ -27,38 +26,25 @@ function ExcludeActionButtons() {
     navigateToPrefer();
   };
 
-  const disabled = selectedRestaurantIds.length === 0;
-
   return (
     <S.ButtonBox>
-          <S.SkipButtonBox>
-            <Button
-              text="건너뛰기"
-              color="gray"
-              rightIcon={
-                <DoubleArrow size="sm" direction="right" color="black" />
-              }
-              onClick={navigateToPrefer}
-            />
-          </S.SkipButtonBox>
         <Button
-          text="제출"
+          text="다음"
           size="md"
           rightIcon={
             <Arrow
               size="sm"
               direction="right"
-              color={disabled ? 'gray' : 'white'}
+              color='white'
             />
           }
           onClick={submitExcludeRestaurants}
-          disabled={disabled}
         />
     </S.ButtonBox>
   );
 }
 
-export default ExcludeActionButtons;
+export default ExcludeActionButton;
 
 const S = {
   ButtonBox: styled.div`
@@ -70,11 +56,5 @@ const S = {
 
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level6};
-  `,
-  SkipButtonBox: styled.div`
-    width: 150px;
-    height: fit-content;
-  `,
-  RightButtonBox: styled.div`
   `,
 };

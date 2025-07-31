@@ -6,22 +6,19 @@ function TitleArea() {
   return (
     <S.Container>
       <S.Title>
-        제외하고 싶은 식당은?
-        <S.Imoji src='/images/dislikeImoji.png' alt='싫어요 이모지' />
-      </S.Title>
-      <S.Description>
-        <S.DescriptionText>가고싶지 않은 식당을</S.DescriptionText>
-        <S.DescriptionText>
-          <S.DeleteButton>
+        <S.TitleText>
+          <S.TitlePointText>안 땡기는 식당</S.TitlePointText>을 
+          <S.Imoji src='/images/dislikeImoji.png' alt='싫어요 이모지' />
+        </S.TitleText>
+        <S.IconTextBox>
             <S.IconContainer>
               <S.IconWrapper>
                 <Cross color="white" size="sm" strokeWidth={4} />
               </S.IconWrapper>
             </S.IconContainer>
-          </S.DeleteButton>
-        </S.DescriptionText>
-        <S.DescriptionText>버튼을 눌러 제외해주세요.</S.DescriptionText>
-      </S.Description>
+          <S.TitleText><S.TitlePointText>버튼</S.TitlePointText>을 <S.TitlePointText>눌러 제외</S.TitlePointText>해주세요</S.TitleText>
+        </S.IconTextBox>
+      </S.Title>
     </S.Container>
   );
 }
@@ -31,6 +28,7 @@ export default TitleArea;
 const S = {
   Container: styled.div`
     padding: ${({ theme }) => theme.PADDING.p5};
+    padding-left: ${({ theme }) => theme.PADDING.px6};
   `,
   Imoji: styled.img`
     width: 48px;
@@ -38,25 +36,32 @@ const S = {
   `,
   Title: styled.h1`
     display: flex;
-    gap: 8px;
+    flex-direction: column;
 
     margin-top: 12px;
 
     color: ${({ theme }) => theme.PALETTE.primary[50]};
-    font: ${({ theme }) => theme.FONTS.heading.large};
+    font: ${({ theme }) => theme.FONTS.heading.medium_style};
   `,
-  Description: styled.div`
+  TitleText: styled.span`
+    display: flex;
+    align-items: center;
+
+    color: ${({ theme }) => theme.PALETTE.gray[30]};
+
+    font: ${({ theme }) => theme.FONTS.heading.medium_style};
+
+  `,
+  TitlePointText: styled.span`
+    color: ${({ theme }) => theme.PALETTE.primary[50]};
+    font: ${({ theme }) => theme.FONTS.heading.medium_style};
+
+  `,
+  IconTextBox: styled.div`
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
 
-    margin-bottom: 16px;
-
-    color: ${({ theme }) => theme.PALETTE.gray[60]};
-    font: ${({ theme }) => theme.FONTS.body.small};
-  `,
-  DescriptionText: styled.span`
-    
   `,
   DeleteButton: styled.div`
     width: 20px;
@@ -75,8 +80,8 @@ const S = {
     align-items: flex-end;
   `,
   IconWrapper: styled.div`
-    width: 16px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
 
     display: flex;
     justify-content: center;
@@ -89,3 +94,4 @@ const S = {
     border-radius: 1000px;
   `,
 };
+
