@@ -11,10 +11,7 @@ function AddressList({ addressList, onClick }: Props) {
   return (
     <S.List>
       {addressList.map(address => (
-        <S.Address
-          key={address.addressName}
-          onClick={() => onClick(address.placeName)}
-        >
+        <S.Address key={address.id} onClick={() => onClick(address.placeName)}>
           <S.PlaceName>{address.placeName}</S.PlaceName>
           <S.AddressName>{address.addressName}</S.AddressName>
         </S.Address>
@@ -28,7 +25,7 @@ export default AddressList;
 const S = {
   List: styled.ul`
     width: 100%;
-    height: 300px;
+    max-height: 300px;
     position: absolute;
     top: 110%;
     z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
