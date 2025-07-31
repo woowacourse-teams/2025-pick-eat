@@ -22,8 +22,9 @@ const PreferRestaurant = () => {
     <PreferRestaurantProvider>
       <S.Container>
         <S.TitleArea>
-          <S.Title>선호도 조사</S.Title>
-          <S.Description>선호 식당을 선택해 주세요.</S.Description>
+          <S.Title>
+            가고 싶은 식당에 <br /> ❤️를 눌러 투표해 주세요.
+          </S.Title>
           <S.ParticipantInfo>
             {/* <S.Completed>
               완료자 {participant.eliminatedParticipants}/
@@ -49,21 +50,13 @@ const PreferRestaurant = () => {
             }
             leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
           />
-          <S.ButtonContainer>
-            <S.ResultButtonContainer>
-              <Button
-                text="결과"
-                color="secondary"
-                size="md"
-                onClick={() =>
-                  navigate(generateRouterPath.matchResult(roomCode))
-                }
-                rightIcon={
-                  <Arrow size="sm" direction="right" color={'black'} />
-                }
-              />
-            </S.ResultButtonContainer>
-          </S.ButtonContainer>
+          <Button
+            text="결과"
+            color="secondary"
+            size="md"
+            onClick={() => navigate(generateRouterPath.matchResult(roomCode))}
+            rightIcon={<Arrow size="sm" direction="right" color={'black'} />}
+          />
         </S.Footer>
       </S.Container>
     </PreferRestaurantProvider>
@@ -88,8 +81,8 @@ const S = {
     flex-direction: column;
     align-items: flex-start;
 
-    padding: ${({ theme }) => theme.PADDING.p6}
-      ${({ theme }) => theme.PADDING.p7} 0;
+    padding: ${({ theme }) => theme.PADDING.p7}
+      ${({ theme }) => theme.PADDING.p6} 0;
   `,
 
   ParticipantInfo: styled.div`
@@ -124,19 +117,9 @@ const S = {
     border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 
-  ButtonContainer: styled.div`
-    width: 50%;
-    display: flex;
-    gap: ${({ theme }) => theme.GAP.level4};
-  `,
-
-  ResultButtonContainer: styled.div`
-    flex-grow: 1;
-  `,
-
   Title: styled.p`
     color: ${({ theme }) => theme.PALETTE.secondary[60]};
-    font: ${({ theme }) => theme.FONTS.heading.large};
+    font: ${({ theme }) => theme.FONTS.heading.medium_style};
   `,
 
   Description: styled.p`
