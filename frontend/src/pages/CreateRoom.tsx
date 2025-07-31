@@ -15,9 +15,9 @@ import styled from '@emotion/styled';
 import { FormEvent, useState } from 'react';
 
 const RADIUS_OPTIONS = [
-  { value: '150', label: '150미터 이내' },
-  { value: '300', label: '300미터 이내' },
-  { value: '500', label: '500미터 이내' },
+  { value: '150', label: '5분 이내' },
+  { value: '300', label: '10분 이내' },
+  { value: '500', label: '15분 이내' },
 ];
 
 function CreateRoom() {
@@ -37,25 +37,24 @@ function CreateRoom() {
   return (
     <S.Container>
       <S.Wrapper onSubmit={submitRoomForm}>
-        <S.Title>방 만들기</S.Title>
+        <S.Title>
+          함께 식사할 멤버를 소환하고,
+          <br /> 식당을 정해봐요.
+        </S.Title>
         <S.Description>
-          이미 방이 존재한다면 초대 링크를 통해 입장하세요.
+          이미 투표가 존재한다면 초대 링크를 통해 입장하세요.
         </S.Description>
 
         <S.FormWrapper>
-          <Input
-            name="roomName"
-            label="방 이름"
-            placeholder="방 이름을 입력해주세요."
-          />
+          <Input name="roomName" label="투표명" placeholder="레전드 점심" />
 
           <S.AddressWrapper>
             <Input
               value={location}
               onChange={e => handleChangeInput(e.target.value)}
               name="location"
-              label="위치"
-              placeholder="위치를 입력해주세요."
+              label="식당 탐색 위치"
+              placeholder="식당 탐색 위치 검색"
             />
             {addressList && (
               <AddressList
@@ -78,7 +77,7 @@ function CreateRoom() {
         </S.FormWrapper>
 
         <ErrorMessage message={error} />
-        <Button text="방 생성" />
+        <Button text="시작하기" />
       </S.Wrapper>
     </S.Container>
   );
@@ -99,11 +98,9 @@ const S = {
     width: 70%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+    gap: 15px;
 
-    padding: 10%;
+    padding: ${({ theme }) => theme.PADDING.p11};
 
     border-radius: 30px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
@@ -115,7 +112,7 @@ const S = {
   `,
 
   Title: styled.h1`
-    font: ${({ theme }) => theme.FONTS.heading.large};
+    font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
 
   FormWrapper: styled.div`
@@ -124,7 +121,7 @@ const S = {
     flex-direction: column;
     gap: 30px;
 
-    padding-top: 20px;
+    padding-top: ${({ theme }) => theme.PADDING.p6};
   `,
 
   AddressWrapper: styled.div`

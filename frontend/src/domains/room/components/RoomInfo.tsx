@@ -83,7 +83,7 @@ const S = {
     gap: 30px;
     position: relative;
 
-    padding: 10%;
+    padding: ${({ theme }) => theme.PADDING.p11};
 
     border-radius: 30px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
