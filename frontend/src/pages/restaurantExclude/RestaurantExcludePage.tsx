@@ -17,7 +17,7 @@ function RestaurantExcludePage() {
     <S.Container>
       <TitleArea />
       <ErrorBoundary>
-        <Suspense fallback={<></>}>
+        <Suspense>
           <RestaurantExclude restaurantsPromise={restaurants.get(code)} />
         </Suspense>
       </ErrorBoundary>

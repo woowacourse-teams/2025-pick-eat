@@ -19,6 +19,7 @@ const useResult = () => {
     fetchResult();
   }, []);
 
+  //Todo 랜덤은 백엔드에서
   const getResult = () => {
     if (!result) return null;
     const randomIndex = Math.floor(Math.random() * result.length);

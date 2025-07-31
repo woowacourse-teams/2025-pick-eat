@@ -15,21 +15,21 @@ function PreferRestaurantList() {
 
   return (
     <S.Container>
-      {restaurantList.map((item: Restaurant) => (
+      {restaurantList.map((restaurant: Restaurant) => (
         <S.ItemWrapper
-          key={item.id}
+          key={restaurant.id}
           ref={el => {
-            if (el) itemRefs.current.set(item.id, el);
+            if (el) itemRefs.current.set(restaurant.id, el);
           }}
         >
           <PreferRestaurantItem
-            id={item.id}
-            name={item.name}
-            tags={item.tags}
-            category={item.category}
-            distance={item.distance}
-            likeCount={item.likeCount}
-            placeUrl={item.placeUrl}
+            id={restaurant.id}
+            name={restaurant.name}
+            tags={restaurant.tags}
+            category={restaurant.category}
+            distance={restaurant.distance}
+            likeCount={restaurant.likeCount}
+            placeUrl={restaurant.placeUrl}
           />
         </S.ItemWrapper>
       ))}

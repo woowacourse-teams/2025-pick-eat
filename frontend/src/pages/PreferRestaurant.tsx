@@ -26,10 +26,6 @@ const PreferRestaurant = () => {
             가고 싶은 식당에 <br /> ❤️를 눌러 투표해 주세요.
           </S.Title>
           <S.ParticipantInfo>
-            {/* <S.Completed>
-              완료자 {participant.eliminatedParticipants}/
-              {participant.totalParticipants}
-            </S.Completed> */}
             <S.Completed>
               참여자 총{participant.totalParticipants}명
             </S.Completed>
