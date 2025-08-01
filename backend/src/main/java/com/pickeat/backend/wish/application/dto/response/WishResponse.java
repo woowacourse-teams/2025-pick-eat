@@ -2,16 +2,25 @@ package com.pickeat.backend.wish.application.dto.response;
 
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.wish.domain.Wish;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.List;
 
+@Schema(description = "위시 응답")
 public record WishResponse(
+        @Schema(description = "위시 ID", example = "1")
         Long id,
+        @Schema(description = "위시 이름", example = "맛있는 떡볶이")
         String name,
+        @Schema(description = "카테고리", example = "KOREAN")
         FoodCategory category,
+        @Schema(description = "위시 이미지 URL 목록", example = "[\"https://example.com/image1.jpg\", \"https://example.com/image2.jpg\"]")
         List<String> pictureUrl,
+        @Schema(description = "도로명 주소", example = "서울특별시 강남구 테헤란로 123")
         String roadAddressName,
+        @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
         List<String> tags,
+        @Schema(description = "위시리스트 ID", example = "1")
         Long wishListId
 ) {
 

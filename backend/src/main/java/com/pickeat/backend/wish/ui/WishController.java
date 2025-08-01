@@ -11,16 +11,18 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import com.pickeat.backend.wish.ui.api.WishApiSpec;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1")
 @RequiredArgsConstructor
-public class WishController {
+public class WishController implements WishApiSpec {
 
     private final WishService wishService;
 
+    @Override
     @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createWish(
             @PathVariable("wishListId") Long wishListId,
@@ -32,6 +34,7 @@ public class WishController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Override
     @DeleteMapping("/wishes/{wishId}")
     public ResponseEntity<Void> deleteWish(@PathVariable("wishId") Long wishId) {
         wishService.deleteWish(wishId);
