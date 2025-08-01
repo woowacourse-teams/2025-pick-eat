@@ -19,11 +19,20 @@ const MatchResult = () => {
         <Confetti />
         <S.Title>👏 오늘의 Pick! 👏</S.Title>
 
-        {result && <S.Name>{result.name}</S.Name>}
-
-        <S.ButtonContainer>
-          <Button color="primary" text="길 찾기" />
-        </S.ButtonContainer>
+        {result && (
+          <>
+            <S.Name>{result.name}</S.Name>{' '}
+            <S.ButtonContainer>
+              <Button
+                color="primary"
+                text="식당 싱세 정보"
+                onClick={() =>
+                  window.open(result.placeUrl, '_blank', 'noopener,noreferrer')
+                }
+              />
+            </S.ButtonContainer>
+          </>
+        )}
       </S.Result>
     </S.Container>
   );
