@@ -81,9 +81,9 @@ class WishListServiceTest {
             // given
             WishList wishList = entityManager.persist(new WishList("방의 위시리스트1", 2L, false));
             List<Wish> wishes = List.of(
-                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList.getId())),
-                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList.getId())),
-                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList.getId())));
+                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList)),
+                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList)),
+                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList)));
 
             entityManager.flush();
             entityManager.clear();

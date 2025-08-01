@@ -4,6 +4,9 @@ import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,14 +27,15 @@ public class Wish extends BaseEntity {
 
     String tags;
 
-    @Column(nullable = false)
-    Long wishListId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "wish_list_id", nullable = false)
+    WishList wishList;
 
-    public Wish(String name, FoodCategory foodCategory, String roadAddressName, String tags, Long wishListId) {
+    public Wish(String name, FoodCategory foodCategory, String roadAddressName, String tags, WishList wishList) {
         this.name = name;
         this.foodCategory = foodCategory;
         this.roadAddressName = roadAddressName;
         this.tags = tags;
-        this.wishListId = wishListId;
+        this.wishList = wishList;
     }
 }

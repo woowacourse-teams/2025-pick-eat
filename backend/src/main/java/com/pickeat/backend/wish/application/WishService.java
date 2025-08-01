@@ -33,7 +33,7 @@ public class WishService {
                 FoodCategory.getCategoryNameBy(request.category()),
                 request.roadAddressName(),
                 String.join(",", request.tags()),
-                wishList.getId());
+                wishList);
         Wish saved = wishRepository.save(wish);
         return WishResponse.from(saved);
     }
@@ -41,7 +41,6 @@ public class WishService {
     @Transactional
     public void deleteWish(Long wishId) {
         Wish wish = getWish(wishId);
-        WishList wishList = getWishList(wish.getWishListId());
         //TODO: 방 도메인이 완성되면 현재 요청자가 현재 위시 리스트가 포함된 방의 참가지인지 검증 필요(2025-08-1, 금, 16:15)
         wishRepository.delete(wish);
     }

@@ -23,7 +23,7 @@ public record WishResponse(
                 List.of(),
                 wish.getRoadAddressName(),
                 Arrays.stream(wish.getTags().split(",")).toList(),
-                wish.getWishListId()
+                wish.getWishList().getId()
         );
     }
 

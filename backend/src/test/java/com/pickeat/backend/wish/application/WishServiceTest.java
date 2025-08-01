@@ -58,7 +58,7 @@ class WishServiceTest {
             // given
             WishList wishList = entityManager.persist(new WishList("위시 리스트", 2L, false));
             Wish wish = entityManager.persist(
-                    new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList.getId()));
+                    new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList));
 
             entityManager.flush();
             entityManager.clear();
