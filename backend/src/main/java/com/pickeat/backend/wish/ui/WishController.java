@@ -24,6 +24,7 @@ public class WishController {
     @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createWish(
             @PathVariable("wishListId") Long wishListId,
+            //TODO: S3 이미지 저장 로직을 추가할때 이미지가 없을 경우 Bad Request가 뜨는 문제 처리하기
             @Valid @ModelAttribute WishRequest request
     ) {
         //TODO: s3 이미지 저장 로직 추가  (2025-08-1, 금, 15:57)

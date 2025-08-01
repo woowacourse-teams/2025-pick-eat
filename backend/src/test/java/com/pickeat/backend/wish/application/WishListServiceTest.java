@@ -44,7 +44,7 @@ class WishListServiceTest {
             WishListResponse expectedResponse = wishListService.createWishList(roomId, request);
 
             // then
-            assertThat(wishListRepository.findById(expectedResponse.id())).isNotNull();
+            assertThat(entityManager.find(WishList.class, expectedResponse.id())).isNotNull();
         }
     }
 
