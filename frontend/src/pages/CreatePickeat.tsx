@@ -9,6 +9,9 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 import { useCreatePickeat } from '@domains/pickeat/hooks/useCreatePickeat';
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 
+
+import { useGA } from '@hooks/useGA';
+
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
@@ -33,6 +36,7 @@ function CreatePickeat() {
   const submitPickeatForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createPickeat(new FormData(e.currentTarget), selectedOption?.value);
+    useGA().useGAEventTrigger({ action: 'click', category: 'form_button', label: '픽잇 생성 버튼', value: 1 });
   };
 
   return (

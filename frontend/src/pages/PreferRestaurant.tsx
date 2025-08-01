@@ -7,6 +7,8 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
+import { useGA } from '@hooks/useGA';
+
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
@@ -14,10 +16,15 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurant = () => {
   const [searchParams] = useSearchParams();
-  const roomCode = searchParams.get('code') ?? '';
+  const pickeatCode = searchParams.get('code') ?? '';
 
-  const { participant } = useParticipant(roomCode);
+  const { participant } = useParticipant(pickeatCode);
   const navigate = useNavigate();
+  
+  const handleResultClick = () => {
+    navigate(generateRouterPath.matchResult(pickeatCode));
+    useGA().useGAEventTrigger({ action: 'click', category: 'button', label: '결과 페이지 이동 버튼', value: 1 });
+  }
 
   return (
     <PreferRestaurantProvider>
@@ -43,7 +50,7 @@ const PreferRestaurant = () => {
             color="gray"
             size="md"
             onClick={() =>
-              navigate(generateRouterPath.restaurantsExclude(roomCode))
+              navigate(generateRouterPath.restaurantsExclude(pickeatCode))
             }
             leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
           />
@@ -51,7 +58,7 @@ const PreferRestaurant = () => {
             text="결과"
             color="secondary"
             size="md"
-            onClick={() => navigate(generateRouterPath.matchResult(roomCode))}
+            onClick={handleResultClick}
             rightIcon={<Arrow size="sm" direction="right" color={'black'} />}
           />
         </S.Footer>

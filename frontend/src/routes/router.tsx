@@ -2,9 +2,14 @@ import Layout from '@components/layouts/Layout';
 
 import CreatePickeat from '@pages/CreatePickeat';
 import MatchResult from '@pages/MatchResult';
+import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-import PickeatDetail from '@pages/PickeatDetail';
+
+
+
+
+import { useGA } from '@hooks/useGA';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
@@ -15,6 +20,7 @@ import { ThemeProvider, Global } from '@emotion/react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 function Wrapper() {
+  useGA().useRouteChangeTracker();
   return (
     <>
       <Global styles={reset} />

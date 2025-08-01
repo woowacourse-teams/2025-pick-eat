@@ -1,6 +1,8 @@
 import Hamburger from '@components/assets/icons/Hamburger';
 import Logo from '@components/assets/identity/Logo';
 
+import { useGA } from '@hooks/useGA';
+
 import { ROUTE_PATH } from '@routes/routePath';
 
 import styled from '@emotion/styled';
@@ -10,9 +12,13 @@ export const HEADER_HEIGHT = '72px';
 
 function Header() {
   const navigate = useNavigate();
+  const handleLogoClick = () => {
+    useGA().useGAEventTrigger({ action: 'click', category: 'button', label: '로고 클릭', value: 1 });
+    navigate(ROUTE_PATH.HOME);  
+  }
   return (
     <S.Container>
-      <S.LogoWrapper onClick={() => navigate(ROUTE_PATH.HOME)}>
+      <S.LogoWrapper onClick={handleLogoClick}>
         <Logo />
       </S.LogoWrapper>
       <Hamburger size="lg" />

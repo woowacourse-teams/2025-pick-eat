@@ -7,6 +7,8 @@ import ErrorMessage from '@components/errors/ErrorMessage';
 
 import { PickeatDetailType } from '@apis/pickeat';
 
+import { useGA } from '@hooks/useGA';
+
 import { ROUTE_PATH } from '@routes/routePath';
 
 import { copyLink } from '@utils/copyLink';
@@ -37,7 +39,13 @@ function PickeatInfo({
     const formData = new FormData(e.currentTarget);
     const nickName = formData.get('nickName') as string;
     joinPickeat(nickName);
+    useGA().useGAEventTrigger({ action: 'click', category: 'form_button', label: '픽잇 입장 버튼', value: 1 });
   };
+
+  const handleLinkShareClick = () => {
+    copyLink(pickeatLink);
+    useGA().useGAEventTrigger({ action: 'click', category: 'button', label: '픽잇 링크 공유 버튼', value: 1 });
+  }
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
       <S.ArrowButton type="button" onClick={() => navigate(ROUTE_PATH.HOME)}>
@@ -60,7 +68,7 @@ function PickeatInfo({
         leftIcon={<Share size="sm" />}
         text="링크공유"
         color="secondary"
-        onClick={() => copyLink(pickeatLink)}
+        onClick={handleLinkShareClick}
       />
       <S.FormWrapper>
         <Input
@@ -70,7 +78,7 @@ function PickeatInfo({
           placeholder="사용하실 닉네임을 입력하세요."
         />
         <ErrorMessage message={error} />
-        <Button text="입장" />
+        <Button text="입장"/>
       </S.FormWrapper>
     </S.Wrapper>
   );
