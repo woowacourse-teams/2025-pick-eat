@@ -14,7 +14,7 @@ interface PreferRestaurantContextType {
   restaurantList: Restaurant[];
   handleLike: (id: string) => void;
   handleUnlike: (id: string) => void;
-  liked: (id: string) => boolean;
+  isLiked: (id: string) => boolean;
 }
 
 const PreferRestaurantContext =
@@ -91,7 +91,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const liked = (id: string) => {
+  const isLiked = (id: string) => {
     return likedIds.some((likedId: string) => likedId === id);
   };
 
@@ -123,7 +123,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
         restaurantList,
         handleLike,
         handleUnlike,
-        liked,
+        isLiked,
       }}
     >
       {children}

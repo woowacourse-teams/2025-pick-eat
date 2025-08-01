@@ -24,9 +24,9 @@ function PreferRestaurantItem({
   category,
   placeUrl,
 }: Prop) {
-  const { liked, handleLike, handleUnlike } = usePreferRestaurantContext();
+  const { isLiked, handleLike, handleUnlike } = usePreferRestaurantContext();
   return (
-    <S.Container liked={liked(id)}>
+    <S.Container liked={isLiked(id)}>
       <S.CardContent>
         <S.TagBox>
           {tags.length === 0 && <Badge>{category}</Badge>}
@@ -49,7 +49,7 @@ function PreferRestaurantItem({
         count={likeCount}
         onLike={handleLike}
         onUnlike={handleUnlike}
-        liked={liked}
+        liked={isLiked}
       />
     </S.Container>
   );
