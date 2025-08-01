@@ -27,6 +27,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@microsoft/clarity": "^1.0.0",
     "@storybook/addon-docs": "^9.0.17",
     "@types/jest": "^30.0.0",
     "dotenv": "^17.2.0",
