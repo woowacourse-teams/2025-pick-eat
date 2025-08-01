@@ -49,11 +49,12 @@ const S = {
   `,
   Footer: styled.footer`
     width: 100%;
+    max-width: 768px;
     height: fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: sticky;
+  position: fixed;
     bottom: 0;
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 

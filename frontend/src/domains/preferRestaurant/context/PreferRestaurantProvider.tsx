@@ -25,7 +25,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   const [likedIds, setLikedIds] = useState<string[]>([]);
 
   const [searchParams] = useSearchParams();
-  const roomCode = searchParams.get('code') ?? '';
+  const pickeatCode = searchParams.get('code') ?? '';
 
   const updateSortedRestaurantList = (
     content: (prev: Restaurant[]) => Restaurant[]
@@ -99,7 +99,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     let isUnmounted = false;
 
     const fetchRestaurantList = async () => {
-      const response = await restaurants.get(roomCode, {
+      const response = await restaurants.get(pickeatCode, {
         isExcluded: 'false',
       });
       if (!isUnmounted && response) {

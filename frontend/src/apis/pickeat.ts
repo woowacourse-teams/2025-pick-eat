@@ -35,13 +35,13 @@ type CreatePickeatFormData = {
 
 type JoinPickeatFormData = {
   nickname: string;
-  roomId: number;
+  pickeatId: number;
 };
 
 type JoinPickeatResponse = {
   id: number;
   nickname: string;
-  roomCode: string;
+  pickeatCode: string;
 };
 
 type ParticipantsResponse = {
@@ -59,7 +59,7 @@ const convertResponseToPickeatDetail = async (
   location: await getAddressByLatLng(data.x, data.y),
 });
 
-const basePath = 'rooms';
+const basePath = 'pickeats';
 
 export const pickeat = {
   post: async (data: CreatePickeatFormData): Promise<string> => {
@@ -75,8 +75,8 @@ export const pickeat = {
     return '';
   },
 
-  get: async (roomId: string) => {
-    const getUrl = joinAsPath(basePath, roomId);
+  get: async (pickeatId: string) => {
+    const getUrl = joinAsPath(basePath, pickeatId);
     const response = await apiClient.get<PickeatResponse>(getUrl);
     if (response) return await convertResponseToPickeatDetail(response);
     throw new Error('방 정보가 존재하지 않습니다.');
@@ -87,16 +87,16 @@ export const pickeat = {
   },
 
   getParticipantsCount: async (
-    roomCode: string
+    pickeatCode: string
   ): Promise<ParticipantsResponse | null> => {
-    const getUrl = joinAsPath(basePath, roomCode, 'participants', 'state');
+    const getUrl = joinAsPath(basePath, pickeatCode, 'participants', 'state');
     const data = await apiClient.get<ParticipantsResponse>(getUrl);
 
     return data ?? null;
   },
 
-  getResult: async (roomCode: string): Promise<RestaurantResponse[] | null> => {
-    const getUrl = joinAsPath(basePath, roomCode, 'result');
+  getResult: async (pickeatCode: string): Promise<RestaurantResponse[] | null> => {
+    const getUrl = joinAsPath(basePath, pickeatCode, 'result');
     const response = await apiClient.get<RestaurantResponse[]>(`${getUrl}`);
     return response ?? null;
   },

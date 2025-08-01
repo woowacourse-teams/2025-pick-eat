@@ -14,11 +14,11 @@ function ExcludeActionButton() {
   const { selectedRestaurantIds } = useRestaurantExcludeContext();
 
   const [searchParams] = useSearchParams();
-  const roomCode = searchParams.get('code') ?? '';
+  const pickeatCode = searchParams.get('code') ?? '';
 
   const navigate = useNavigate();
   const navigateToPrefer = () => {
-    navigate(generateRouterPath.preferRestaurant(roomCode));
+    navigate(generateRouterPath.preferRestaurant(pickeatCode));
   };
 
   const submitExcludeRestaurants = () => {

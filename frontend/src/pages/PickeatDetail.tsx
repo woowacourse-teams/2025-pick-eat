@@ -12,12 +12,12 @@ import { useSearchParams } from 'react-router';
 
 function PickeatDetail() {
   const [searchParams] = useSearchParams();
-  const roomCode = searchParams.get('code') ?? '';
+  const pickeatCode = searchParams.get('code') ?? '';
   return (
     <S.Container>
       <ErrorBoundary>
         <Suspense>
-          <PickeatInfo pickeatData={pickeat.get(roomCode)} />
+          <PickeatInfo pickeatData={pickeat.get(pickeatCode)} />
         </Suspense>
       </ErrorBoundary>
     </S.Container>

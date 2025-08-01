@@ -27,7 +27,7 @@ export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
     try {
       await pickeat.postJoin({
         nickname: nickName,
-        roomId: pickeatDetail!.id,
+        pickeatId: pickeatDetail!.id,
       });
       navigate(generateRouterPath.restaurantsExclude(pickeatDetail.code));
     } catch (e) {

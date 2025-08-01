@@ -7,12 +7,12 @@ export const ROUTE_PATH = {
 };
 
 export const generateRouterPath = {
-  pickeatDetail: (roomCode: string) =>
-    `${ROUTE_PATH.PICKEAT_DETAIL}?code=${roomCode}`,
-  restaurantsExclude: (roomCode: string) =>
-    `${ROUTE_PATH.RESTAURANTS_EXCLUDE}?code=${roomCode}`,
-  preferRestaurant: (roomCode: string) =>
-    `${ROUTE_PATH.PREFER_RESTAURANT}?code=${roomCode}`,
-  matchResult: (roomCode: string) =>
-    `${ROUTE_PATH.MATCH_RESULT}?code=${roomCode}`,
+  pickeatDetail: (pickeatCode: string) =>
+    `${ROUTE_PATH.PICKEAT_DETAIL}?code=${pickeatCode}`,
+  restaurantsExclude: (pickeatCode: string) =>
+    `${ROUTE_PATH.RESTAURANTS_EXCLUDE}?code=${pickeatCode}`,
+  preferRestaurant: (pickeatCode: string) =>
+    `${ROUTE_PATH.PREFER_RESTAURANT}?code=${pickeatCode}`,
+  matchResult: (pickeatCode: string) =>
+    `${ROUTE_PATH.MATCH_RESULT}?code=${pickeatCode}`,
 };

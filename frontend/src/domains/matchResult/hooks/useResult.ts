@@ -7,11 +7,11 @@ import { useSearchParams } from 'react-router';
 const useResult = () => {
   const [result, setResult] = useState<RestaurantResponse[]>();
   const [searchParams] = useSearchParams();
-  const roomCode = searchParams.get('code') ?? '';
+  const pickeatCode = searchParams.get('code') ?? '';
 
   useEffect(() => {
     const fetchResult = async () => {
-      const response = await pickeat.getResult(roomCode);
+      const response = await pickeat.getResult(pickeatCode);
 
       if (response) setResult(response);
     };

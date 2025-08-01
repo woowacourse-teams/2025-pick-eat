@@ -2,7 +2,7 @@ import { pickeat } from '@apis/pickeat';
 
 import { useState, useEffect } from 'react';
 
-const useParticipant = (roomCode: string) => {
+const useParticipant = (pickeatCode: string) => {
   const [participant, setParticipant] = useState({
     totalParticipants: 0,
     eliminatedParticipants: 0,
@@ -12,7 +12,7 @@ const useParticipant = (roomCode: string) => {
     let isUnmounted = false;
 
     const fetchParticipantState = async () => {
-      const response = await pickeat.getParticipantsCount(roomCode);
+      const response = await pickeat.getParticipantsCount(pickeatCode);
       if (!isUnmounted && response) {
         setParticipant(response);
       }
