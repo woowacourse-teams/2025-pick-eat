@@ -1,13 +1,13 @@
 package com.pickeat.backend.fixture;
 
+import com.pickeat.backend.pickeat.domain.Location;
+import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
-import com.pickeat.backend.room.domain.Location;
-import com.pickeat.backend.room.domain.Room;
 
 public class RestaurantFixture {
 
-    public static Restaurant create(Room room) {
+    public static Restaurant create(Pickeat pickeat) {
         return new Restaurant(
                 "식당",
                 FoodCategory.KOREAN,
@@ -16,7 +16,7 @@ public class RestaurantFixture {
                 "URL",
                 "태그1,태그2",
                 new Location(127.103068896795, 37.5152535228382),
-                room
+                pickeat
         );
     }
 }

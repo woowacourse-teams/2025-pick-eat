@@ -3,11 +3,11 @@ package com.pickeat.backend.restaurant.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
-import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.pickeat.domain.Pickeat;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +19,8 @@ class RestaurantTest {
         @Test
         void 식당_소거_성공() {
             // given
-            Room room = RoomFixture.create();
-            Restaurant restaurant = RestaurantFixture.create(room);
+            Pickeat pickeat = PickeatFixture.create();
+            Restaurant restaurant = RestaurantFixture.create(pickeat);
 
             // when
             restaurant.exclude();
@@ -30,16 +30,16 @@ class RestaurantTest {
         }
 
         @Test
-        void 비활성화된_방의_식당을_소거하려고_할_경우_예외() {
+        void 비활성화된_픽잇의_식당을_소거하려고_할_경우_예외() {
             // given
-            Room room = RoomFixture.create();
-            Restaurant restaurant = RestaurantFixture.create(room);
-            room.deactivate();
+            Pickeat pickeat = PickeatFixture.create();
+            Restaurant restaurant = RestaurantFixture.create(pickeat);
+            pickeat.deactivate();
 
             // when & then
             assertThatThrownBy(restaurant::exclude)
                     .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.ROOM_ALREADY_INACTIVE.getMessage());
+                    .hasMessage(ErrorCode.PICKEAT_ALREADY_INACTIVE.getMessage());
         }
     }
 
@@ -49,8 +49,8 @@ class RestaurantTest {
         @Test
         void 식당_선호_선택_성공() {
             // given
-            Room room = RoomFixture.create();
-            Restaurant restaurant = RestaurantFixture.create(room);
+            Pickeat pickeat = PickeatFixture.create();
+            Restaurant restaurant = RestaurantFixture.create(pickeat);
             Integer origin = restaurant.getLikeCount();
 
             // when
@@ -68,8 +68,8 @@ class RestaurantTest {
         @Test
         void 식당_선호_취소_성공() {
             // given
-            Room room = RoomFixture.create();
-            Restaurant restaurant = RestaurantFixture.create(room);
+            Pickeat pickeat = PickeatFixture.create();
+            Restaurant restaurant = RestaurantFixture.create(pickeat);
             restaurant.like();
             Integer origin = restaurant.getLikeCount();
 
@@ -84,8 +84,8 @@ class RestaurantTest {
         @Test
         void 선호수가_0이하일_경우_예외() {
             // given
-            Room room = RoomFixture.create();
-            Restaurant restaurant = RestaurantFixture.create(room);
+            Pickeat pickeat = PickeatFixture.create();
+            Restaurant restaurant = RestaurantFixture.create(pickeat);
 
             // when & then
             assertThatThrownBy(restaurant::cancelLike)

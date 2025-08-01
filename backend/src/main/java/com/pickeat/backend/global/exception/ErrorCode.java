@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
 
-    // Room 관련 에러
-    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "방을 찾을 수 없습니다."),
-    ROOM_ALREADY_INACTIVE(HttpStatus.BAD_REQUEST, "이미 비활성화된 방입니다."),
-    INVALID_ROOM_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 방 코드입니다."),
+    // Pickeat 관련 에러
+    PICKEAT_NOT_FOUND(HttpStatus.NOT_FOUND, "픽잇을 찾을 수 없습니다."),
+    PICKEAT_ALREADY_INACTIVE(HttpStatus.BAD_REQUEST, "이미 비활성화된 픽잇입니다."),
+    INVALID_PICKEAT_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 픽잇 코드입니다."),
 
     // Participant 관련 에러
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "참가자를 찾을 수 없습니다."),
@@ -28,7 +28,8 @@ public enum ErrorCode {
 
     // Restaurant 관련 에러
     LIKE_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "이미 좋아요를 취소한 상태입니다."),
-    FORBIDDEN_ROOM(HttpStatus.UNAUTHORIZED, "식당의 방이 올바르지 않습니다."),
+    //todo: 참가자 기능 추가 후 대체 예정
+    FORBIDDEN_PICKEAT(HttpStatus.UNAUTHORIZED, "식당의 픽잇이 올바르지 않습니다."),
     RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "식당을 찾을 수 없습니다."),
     ;
 
