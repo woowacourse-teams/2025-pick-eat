@@ -17,4 +17,8 @@ public class WishPicture extends BaseEntity {
 
     @Column(nullable = false)
     private Long wishId;
+
+    public WishPicture(String downloadUrl) {
+        this.downloadUrl = downloadUrl;
+    }
 }

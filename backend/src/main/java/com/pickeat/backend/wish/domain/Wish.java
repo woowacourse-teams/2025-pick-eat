@@ -26,4 +26,12 @@ public class Wish extends BaseEntity {
 
     @Column(nullable = false)
     Long wishListId;
+
+    public Wish(String name, FoodCategory foodCategory, String roadAddressName, String tags, Long wishListId) {
+        this.name = name;
+        this.foodCategory = foodCategory;
+        this.roadAddressName = roadAddressName;
+        this.tags = tags;
+        this.wishListId = wishListId;
+    }
 }

@@ -15,6 +15,12 @@ public enum ErrorCode {
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "참가자를 찾을 수 없습니다."),
     PARTICIPANT_ALREADY_ELIMINATED(HttpStatus.BAD_REQUEST, "이미 소거된 참가자입니다."),
 
+    // WishList 관련 에러
+    WISHLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "위시리스트를 찾을 수 없습니다."),
+
+    // Wish 관련 에러
+    WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "위시를 찾을 수 없습니다."),
+
     // 도메인 검증 에러
     INVALID_RADIUS(HttpStatus.BAD_REQUEST, "반지름은 1 ~ 20000 사이 양수여야 합니다."),
     INVALID_LATITUDE(HttpStatus.BAD_REQUEST, "위도는 -90도에서 90도 사이여야 합니다."),

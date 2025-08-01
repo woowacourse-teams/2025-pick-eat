@@ -15,7 +15,7 @@ public record WishListResponse(
                 wishList.getId(),
                 wishList.getName(),
                 wishList.getRoomId(),
-                wishList.isPublic()
+                wishList.getIsPublic()
         );
     }
 
