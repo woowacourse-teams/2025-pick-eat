@@ -13,9 +13,14 @@ export const HEADER_HEIGHT = '72px';
 function Header() {
   const navigate = useNavigate();
   const handleLogoClick = () => {
-    useGA().useGAEventTrigger({ action: 'click', category: 'button', label: '로고 클릭', value: 1 });
-    navigate(ROUTE_PATH.HOME);  
-  }
+    useGA().useGAEventTrigger({
+      action: 'click',
+      category: 'button',
+      label: '로고 클릭',
+      value: 1,
+    });
+    navigate(ROUTE_PATH.HOME);
+  };
   return (
     <S.Container>
       <S.LogoWrapper onClick={handleLogoClick}>
