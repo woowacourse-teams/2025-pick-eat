@@ -20,4 +20,10 @@ public class WishList extends BaseEntity {
 
     @Column(nullable = false)
     private boolean isPublic;
+
+    public WishList(String name, Long roomId, boolean isPublic) {
+        this.name = name;
+        this.roomId = roomId;
+        this.isPublic = isPublic;
+    }
 }
