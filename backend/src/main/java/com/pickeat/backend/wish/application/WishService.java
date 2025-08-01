@@ -8,7 +8,6 @@ import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
-import com.pickeat.backend.wish.domain.repository.WishPictureRepository;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,6 @@ public class WishService {
 
     private final WishListRepository wishListRepository;
     private final WishRepository wishRepository;
-    private final WishPictureRepository wishPictureRepository;
 
     @Transactional
     public WishResponse createWish(
