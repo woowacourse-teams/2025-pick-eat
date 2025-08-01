@@ -14,7 +14,6 @@ if (!window.location.href.includes('localhost')) {
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: 'production',
-  replaysOnErrorSampleRate: 1.0,
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
