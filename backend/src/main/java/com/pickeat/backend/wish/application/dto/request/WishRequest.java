@@ -8,7 +8,7 @@ public record WishRequest(
 
         @NotBlank(message = "위시 이름은 공백을 허용하지 않습니다.")
         String name,
-        @NotBlank(message = "위시 이름은 공백을 허용하지 않습니다.")
+        @NotBlank(message = "카테고리는 공백을 허용하지 않습니다.")
         String category,
         List<MultipartFile> pictures,
         @NotBlank(message = "도로명주소는 공백을 허용하지 않습니다.")

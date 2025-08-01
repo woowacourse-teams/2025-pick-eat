@@ -26,4 +26,8 @@ public record WishResponse(
                 wish.getWishListId()
         );
     }
+
+    public static List<WishResponse> from(List<Wish> wishes) {
+        return wishes.stream().map(WishResponse::from).toList();
+    }
 }
