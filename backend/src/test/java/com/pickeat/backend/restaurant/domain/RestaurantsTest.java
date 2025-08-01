@@ -3,9 +3,9 @@ package com.pickeat.backend.restaurant.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
-import com.pickeat.backend.fixture.RoomFixture;
-import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.pickeat.domain.Pickeat;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,9 +30,9 @@ class RestaurantsTest {
         @Test
         void 모든_식당의_선호도가_0일_때_빈_리스트_반환() {
             // given
-            Room room = RoomFixture.create();
-            Restaurant restaurant1 = RestaurantFixture.create(room);
-            Restaurant restaurant2 = RestaurantFixture.create(room);
+            Pickeat pickeat = PickeatFixture.create();
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat);
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when
@@ -45,9 +45,9 @@ class RestaurantsTest {
         @Test
         void 최고_선호도_식당_1개일_때_해당_식당_반환() {
             // given
-            Room room = RoomFixture.create();
-            Restaurant restaurant1 = RestaurantFixture.create(room);
-            Restaurant restaurant2 = RestaurantFixture.create(room);
+            Pickeat pickeat = PickeatFixture.create();
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat);
             restaurant1.like();
             restaurant1.like();
             restaurant2.like();
@@ -66,10 +66,10 @@ class RestaurantsTest {
         @Test
         void 최고_선호도_식당_여러개일_때_모든_해당_식당_반환() {
             // given
-            Room room = RoomFixture.create();
-            Restaurant restaurant1 = RestaurantFixture.create(room);
-            Restaurant restaurant2 = RestaurantFixture.create(room);
-            Restaurant restaurant3 = RestaurantFixture.create(room);
+            Pickeat pickeat = PickeatFixture.create();
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant3 = RestaurantFixture.create(pickeat);
             restaurant1.like();
             restaurant1.like();
             restaurant2.like();

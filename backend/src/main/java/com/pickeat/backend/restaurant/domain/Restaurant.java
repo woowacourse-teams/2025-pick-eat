@@ -4,8 +4,8 @@ package com.pickeat.backend.restaurant.domain;
 import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.room.domain.Location;
-import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.pickeat.domain.Location;
+import com.pickeat.backend.pickeat.domain.Pickeat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -51,8 +51,8 @@ public class Restaurant extends BaseEntity {
     private Location location;
 
     @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    @JoinColumn(name = "pickeat_id", nullable = false)
+    private Pickeat pickeat;
 
     public Restaurant(
             String name,
@@ -62,7 +62,7 @@ public class Restaurant extends BaseEntity {
             String placeUrl,
             String tags,
             Location location,
-            Room room
+            Pickeat pickeat
     ) {
         this.name = name;
         this.foodCategory = foodCategory;
@@ -71,36 +71,36 @@ public class Restaurant extends BaseEntity {
         this.placeUrl = placeUrl;
         this.location = location;
         this.tags = tags;
-        this.room = room;
+        this.pickeat = pickeat;
     }
 
     public void exclude() {
-        validateRoomState();
+        validatePickeatState();
         this.isExcluded = true;
     }
 
     public void like() {
-        validateRoomState();
+        validatePickeatState();
         this.likeCount++;
     }
 
     public void cancelLike() {
-        validateRoomState();
+        validatePickeatState();
         if (this.likeCount <= 0) {
             throw new BusinessException(ErrorCode.LIKE_ALREADY_CANCELED);
         }
         this.likeCount--;
     }
 
-    private void validateRoomState() {
-        if (!room.getIsActive()) {
-            throw new BusinessException(ErrorCode.ROOM_ALREADY_INACTIVE);
+    private void validatePickeatState() {
+        if (!pickeat.getIsActive()) {
+            throw new BusinessException(ErrorCode.PICKEAT_ALREADY_INACTIVE);
         }
     }
 
-    public void validateRoom(Room room) {
-        if (!this.room.equals(room)) {
-            throw new BusinessException(ErrorCode.FORBIDDEN_ROOM);
+    public void validatePickeat(Pickeat pickeat) {
+        if (!this.pickeat.equals(pickeat)) {
+            throw new BusinessException(ErrorCode.FORBIDDEN_PICKEAT);
         }
     }
 }

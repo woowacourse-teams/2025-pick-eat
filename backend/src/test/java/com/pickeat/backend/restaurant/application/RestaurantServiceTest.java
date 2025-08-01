@@ -3,18 +3,18 @@ package com.pickeat.backend.restaurant.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
-import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.pickeat.domain.Location;
+import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
-import com.pickeat.backend.room.domain.Location;
-import com.pickeat.backend.room.domain.Room;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -42,15 +42,15 @@ class RestaurantServiceTest {
         @Test
         void 식당_생성_성공() {
             // given
-            Room room = entityManager.persist(RoomFixture.create());
-            Long roomId = room.getId();
+            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Long pickeatId = pickeat.getId();
             List<RestaurantRequest> restaurantRequests = List.of(createRestaurantRequest(), createRestaurantRequest());
 
             // when
-            restaurantService.create(restaurantRequests, roomId);
+            restaurantService.create(restaurantRequests, pickeatId);
 
             // then
-            assertThat(restaurantRepository.findByRoomAndIsExcludedIfProvided(room, false)).hasSize(2);
+            assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false)).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {
@@ -72,11 +72,11 @@ class RestaurantServiceTest {
         @Test
         void 식당_소거_성공() {
             // given
-            Room room = entityManager.persist(RoomFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
             List<Restaurant> restaurants = List.of(
-                    entityManager.persist(RestaurantFixture.create(room)),
-                    entityManager.persist(RestaurantFixture.create(room)),
-                    entityManager.persist(RestaurantFixture.create(room)));
+                    entityManager.persist(RestaurantFixture.create(pickeat)),
+                    entityManager.persist(RestaurantFixture.create(pickeat)),
+                    entityManager.persist(RestaurantFixture.create(pickeat)));
             List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
 
             entityManager.flush();
@@ -93,13 +93,13 @@ class RestaurantServiceTest {
         }
 
         @Test
-        void 조회된_식당의_방이_서로_다를_경우_예외() {
+        void 조회된_식당의_픽잇이_서로_다를_경우_예외() {
             // given
-            Room room = entityManager.persist(RoomFixture.create());
-            Room otherRoom = entityManager.persist(RoomFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Pickeat otherPickeat = entityManager.persist(PickeatFixture.create());
             List<Restaurant> restaurants = List.of(
-                    entityManager.persist(RestaurantFixture.create(room)),
-                    entityManager.persist(RestaurantFixture.create(otherRoom)));
+                    entityManager.persist(RestaurantFixture.create(pickeat)),
+                    entityManager.persist(RestaurantFixture.create(otherPickeat)));
             List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
 
             entityManager.flush();
@@ -108,17 +108,17 @@ class RestaurantServiceTest {
             // when & then
             assertThatThrownBy(() -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds)))
                     .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.FORBIDDEN_ROOM.getMessage());
+                    .hasMessage(ErrorCode.FORBIDDEN_PICKEAT.getMessage());
         }
 
         @Test
-        void 비활성화된_방의_식당을_소거하려고_할_경우_예외() {
+        void 비활성화된_픽잇의_식당을_소거하려고_할_경우_예외() {
             // given
-            Room room = entityManager.persist(RoomFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
             List<Restaurant> restaurants = List.of(
-                    entityManager.persist(RestaurantFixture.create(room)),
-                    entityManager.persist(RestaurantFixture.create(room)));
-            room.deactivate();
+                    entityManager.persist(RestaurantFixture.create(pickeat)),
+                    entityManager.persist(RestaurantFixture.create(pickeat)));
+            pickeat.deactivate();
 
             List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
 
@@ -128,7 +128,7 @@ class RestaurantServiceTest {
             // when & then
             assertThatThrownBy(() -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds)))
                     .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.ROOM_ALREADY_INACTIVE.getMessage());
+                    .hasMessage(ErrorCode.PICKEAT_ALREADY_INACTIVE.getMessage());
         }
     }
 
@@ -138,8 +138,8 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호_선택_성공() {
             // given
-            Room room = entityManager.persist(RoomFixture.create());
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(room));
+            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             Integer originCount = restaurant.getLikeCount();
 
             entityManager.flush();
@@ -160,8 +160,8 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호_취소_성공() {
             // given
-            Room room = entityManager.persist(RoomFixture.create());
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(room));
+            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             restaurant.like();
             Integer originCount = restaurant.getLikeCount();
 
@@ -179,8 +179,8 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호수가_0이하일_경우_예외() {
             // given
-            Room room = entityManager.persist(RoomFixture.create());
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(room));
+            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
 
             entityManager.flush();
             entityManager.clear();
