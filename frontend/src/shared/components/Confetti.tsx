@@ -5,24 +5,22 @@ import styled from '@emotion/styled';
 const Confetti = () => {
   return (
     <ConfettiContainer>
-      <Piece delay="0s" left="30%" color="#ff4d4f" />
+      <Piece delay="0s" left="10%" color="#ff4d4f" />
       <Piece delay="0.2s" left="40%" color="#40a9ff" />
       <Piece delay="0.4s" left="50%" color="#ffc53d" />
       <Piece delay="0.6s" left="65%" color="#73d13d" />
-      <Piece delay="0.8s" left="70%" color="#9254de" />
+      <Piece delay="0.8s" left="80%" color="#9254de" />
 
-      <Piece delay="0.6s" left="35%" color="#ff4d4f" />
-      <Piece delay="0s" left="75%" color="#40a9ff" />
-      <Piece delay="0.8s" left="50%" color="#ffc53d" />
-      <Piece delay="0.2s" left="15%" color="#73d13d" />
-      <Piece delay="0.4s" left="55%" color="#9254de" />
+      <Piece delay="0.3s" left="70%" color="#ff4d4f" />
+      <Piece delay="0s" left="96%" color="#40a9ff" />
+      <Piece delay="0.6s" left="20%" color="#ffc53d" />
+      <Piece delay="0.2s" left="0%" color="#73d13d" />
+      <Piece delay="0.5s" left="40%" color="#9254de" />
     </ConfettiContainer>
   );
 };
 
 export default Confetti;
-
-// =========================== styled ===========================
 
 const fall = keyframes`
   0% {
@@ -36,11 +34,11 @@ const fall = keyframes`
 `;
 
 const ConfettiContainer = styled.div`
-  width: 50%;
+  width: 100%;
   height: 200px;
   overflow: hidden;
-  position: fixed;
-  top: 20%;
+  position: absolute;
+  top: -20%;
 `;
 
 const Piece = styled.div<{

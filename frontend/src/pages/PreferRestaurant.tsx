@@ -1,38 +1,41 @@
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 
 import Button from '@components/actions/Button';
-
-import { apiClient } from '@apis/apiClient';
-import { generateRouterPath } from '@routes/routePath';
+import Arrow from '@components/assets/icons/Arrow';
+import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
+
+import { useGA } from '@hooks/useGA';
+
+import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurant = () => {
   const [searchParams] = useSearchParams();
-  const roomCode = searchParams.get('code') ?? '';
+  const pickeatCode = searchParams.get('code') ?? '';
 
-  const handleDeactivate = async () => {
-    await apiClient.patch(`rooms/${roomCode}/deactivate`, undefined, {
-      'Content-Type': 'application/json',
-    });
-  };
-  const { participant } = useParticipant(roomCode);
+  const { participant } = useParticipant(pickeatCode);
   const navigate = useNavigate();
+  
+  const handleResultClick = () => {
+    navigate(generateRouterPath.matchResult(pickeatCode));
+    useGA().useGAEventTrigger({ action: 'click', category: 'button', label: '결과 페이지 이동 버튼', value: 1 });
+  }
 
   return (
     <PreferRestaurantProvider>
       <S.Container>
         <S.TitleArea>
-          <S.Title>선호도 조사</S.Title>
-          <S.Description>선호 식당을 선택해 주세요.</S.Description>
+          <S.Title>
+            가고 싶은 식당에 <br /> ❤️를 눌러 투표해 주세요.
+          </S.Title>
           <S.ParticipantInfo>
             <S.Completed>
-              완료자 {participant.eliminatedParticipants}/
-              {participant.totalParticipants}
+              참여자 총{participant.totalParticipants}명
             </S.Completed>
           </S.ParticipantInfo>
         </S.TitleArea>
@@ -47,27 +50,17 @@ const PreferRestaurant = () => {
             color="gray"
             size="md"
             onClick={() =>
-              navigate(generateRouterPath.restaurantsExclude(roomCode))
+              navigate(generateRouterPath.restaurantsExclude(pickeatCode))
             }
+            leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
           />
-          <S.ButtonContainer>
-            <Button
-              text="조기 종료"
-              color="gray"
-              onClick={() => handleDeactivate()}
-            />
-
-            <S.ResultButtonContainer>
-              <Button
-                text="결과 보기"
-                color="secondary"
-                size="md"
-                onClick={() =>
-                  navigate(generateRouterPath.matchResult(roomCode))
-                }
-              />
-            </S.ResultButtonContainer>
-          </S.ButtonContainer>
+          <Button
+            text="결과"
+            color="secondary"
+            size="md"
+            onClick={handleResultClick}
+            rightIcon={<Arrow size="sm" direction="right" color={'black'} />}
+          />
         </S.Footer>
       </S.Container>
     </PreferRestaurantProvider>
@@ -78,7 +71,8 @@ export default PreferRestaurant;
 
 const S = {
   Container: styled.div`
-    height: calc(100vh - 72px);
+    width: 100%;
+    height: calc(100vh - ${HEADER_HEIGHT});
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -91,7 +85,8 @@ const S = {
     flex-direction: column;
     align-items: flex-start;
 
-    padding: 20px 30px 0;
+    padding: ${({ theme }) => theme.PADDING.p7}
+      ${({ theme }) => theme.PADDING.p6} 0;
   `,
 
   ParticipantInfo: styled.div`
@@ -126,19 +121,9 @@ const S = {
     border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 
-  ButtonContainer: styled.div`
-    width: 50%;
-    display: flex;
-    gap: 10px;
-  `,
-
-  ResultButtonContainer: styled.div`
-    flex-grow: 1;
-  `,
-
   Title: styled.p`
     color: ${({ theme }) => theme.PALETTE.secondary[60]};
-    font: ${({ theme }) => theme.FONTS.heading.large};
+    font: ${({ theme }) => theme.FONTS.heading.medium_style};
   `,
 
   Description: styled.p`

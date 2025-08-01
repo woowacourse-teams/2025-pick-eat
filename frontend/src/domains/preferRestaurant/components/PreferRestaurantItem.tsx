@@ -1,37 +1,56 @@
-import Like from '@components/actions/Like';
+import LikeButton from '@components/actions/LikeButton/LikeButton';
+import Badge from '@components/labels/Badge';
 
 import styled from '@emotion/styled';
 
 import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider';
 
 type Prop = {
-  id: number;
+  id: string;
   name: string;
+  tags: string[];
   category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
   likeCount: number;
+  placeUrl: string;
 };
 
-function PreferRestaurantItem({ id, name, distance, likeCount }: Prop) {
-  const { liked } = usePreferRestaurantContext();
+function PreferRestaurantItem({
+  id,
+  name,
+  tags,
+  distance,
+  likeCount,
+  category,
+  placeUrl,
+}: Prop) {
+  const { liked, handleLike, handleUnlike } = usePreferRestaurantContext();
   return (
     <S.Container liked={liked(id)}>
       <S.CardContent>
+        <S.TagBox>
+          {tags.length === 0 && <Badge>{category}</Badge>}
+          {tags.map(tag => (
+            <Badge key={tag}>{tag}</Badge>
+          ))}
+        </S.TagBox>
+
         <S.TitleWrapper>
           <S.RestaurantName>{name}</S.RestaurantName>
-          {/* <Badge>{category}</Badge> */}
         </S.TitleWrapper>
         <S.Distance>식당까지 {distance}m</S.Distance>
-        <S.LinkButton
-          //   href={link}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <S.LinkButton href={placeUrl} target="_blank" rel="noopener noreferrer">
           식당 상세 정보 보기
         </S.LinkButton>
       </S.CardContent>
 
-      <Like id={id} count={likeCount} />
+      <LikeButton
+        id={id}
+        count={likeCount}
+        onLike={handleLike}
+        onUnlike={handleUnlike}
+        liked={liked}
+      />
     </S.Container>
   );
 }
@@ -48,14 +67,14 @@ const S = {
     overflow: hidden;
     position: relative;
 
-    padding: 20px;
+    padding: ${({ theme }) => theme.PADDING.p6};
 
     background-color: ${({ theme, liked }) =>
       liked ? theme.PALETTE.secondary[5] : theme.PALETTE.secondary[0]};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: 10px;
-    box-shadow: 0 4px 20px #00000014;
+    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
     transform: scale(1);
   `,
 
@@ -64,7 +83,7 @@ const S = {
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -72,9 +91,14 @@ const S = {
     opacity: 1;
   `,
 
+  TagBox: styled.div`
+    display: flex;
+    gap: ${({ theme }) => theme.GAP.level2};
+  `,
+
   TitleWrapper: styled.div`
     display: flex;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
 
   Distance: styled.p`
@@ -93,7 +117,7 @@ const S = {
   LinkButton: styled.a`
     width: fit-content;
     align-items: center;
-    gap: 4px;
+    gap: ${({ theme }) => theme.GAP.level2};
 
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     cursor: pointer;

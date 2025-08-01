@@ -2,20 +2,16 @@ name: CI
 
 on:
   push:
-    branches:
-      - front/dev
+    paths:
+      - 'frontend/**'
   pull_request:
+    paths:
+      - 'frontend/**'
     types: [opened, synchronize, reopened]
 
 jobs:
   build:
-    if: >
-      github.actor == 'minji2219' || 
-      github.actor == 'dev-dino22' || 
-      github.actor == 'shuyeon' || 
-      github.event.pull_request.user.login == 'minji2219' || 
-      github.event.pull_request.user.login == 'dev-dino22' ||
-      github.event.pull_request.user.login == 'shuyeon'
+    if: github.actor == 'minji2219' || github.actor == 'dev-dino22' || github.actor == 'shuyeon' || github.event.pull_request.user.login == 'minji2219' || github.event.pull_request.user.login == 'dev-dino22' || github.event.pull_request.user.login == 'shuyeon'
 
     runs-on: ubuntu-latest
     defaults:

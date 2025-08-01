@@ -1,32 +1,17 @@
-import { apiClient } from '@apis/apiClient';
+import { pickeat } from '@apis/pickeat';
+import { RestaurantResponse } from '@apis/restaurant';
 
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
-type RestaurantResponse = {
-  id: number;
-  name: string;
-  category: '한식' | '중식' | '일식' | '양식' | '기타';
-  distance: number;
-  roadAddressName: string;
-  likeCount: number;
-  x: number;
-  y: number;
-};
-
 const useResult = () => {
-  const [result, setResult] = useState<RestaurantResponse>();
+  const [result, setResult] = useState<RestaurantResponse[]>();
   const [searchParams] = useSearchParams();
-  const roomCode = searchParams.get('code') ?? '';
+  const pickeatCode = searchParams.get('code') ?? '';
 
   useEffect(() => {
     const fetchResult = async () => {
-      const response = await apiClient.get<RestaurantResponse>(
-        `/rooms/${roomCode}/result`,
-        {
-          'Content-Type': 'application/json',
-        }
-      );
+      const response = await pickeat.getResult(pickeatCode);
 
       if (response) setResult(response);
     };
@@ -34,7 +19,15 @@ const useResult = () => {
     fetchResult();
   }, []);
 
-  return { result };
+  //Todo 랜덤은 백엔드에서
+  const getResult = () => {
+    if (!result) return null;
+    const randomIndex = Math.floor(Math.random() * result.length);
+
+    return result[randomIndex];
+  };
+
+  return { getResult };
 };
 
 export default useResult;

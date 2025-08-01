@@ -8,7 +8,7 @@ const requestApi = async <TResponse = unknown>(
   body?: ApiBody,
   headers?: ApiHeaders
 ): Promise<TResponse | null> => {
-  const response = await fetch(`${process.env.BASE_URL}${endPoint}`, {
+  const response = await fetch(`${process.env.API_BASE_URL}${endPoint}`, {
     method,
     headers: {
       // Authorization: `Basic ${process.env.API_KEY}`,

@@ -93,7 +93,7 @@ const getButtonStyle = (
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: ${theme.GAP.level2};
 
   border: ${color === 'gray' ? `1px solid ${theme.PALETTE.gray[60]}` : 'none'};
 
@@ -102,7 +102,7 @@ const getButtonStyle = (
   color: ${color === 'primary' ? `white` : `#1E2124`};
   font-size: ${SIZE[size].fontSize};
   font-weight: 400;
-  border-radius: 8px;
+  border-radius: ${theme.RADIUS.medium2};
   cursor: pointer;
 
   &:hover {

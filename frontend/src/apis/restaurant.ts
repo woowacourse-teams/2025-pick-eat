@@ -1,14 +1,17 @@
-import { convert } from '@utils/convert';
+import { joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
 
 export type RestaurantResponse = {
   id: number;
   name: string;
-  category: string;
+  tags: string[];
+  category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
+  placeUrl: string;
   roadAddressName: string;
   likeCount: number;
+  isExcluded: boolean;
   x: number;
   y: number;
 };
@@ -16,57 +19,58 @@ export type RestaurantResponse = {
 export type Restaurant = {
   id: string;
   name: string;
-  category: string;
+  tags: string[];
+  category: '한식' | '중식' | '일식' | '양식' | '기타';
   distance: number;
+  placeUrl: string;
   roadAddressName: string;
   likeCount: number;
+  isExcluded?: boolean;
   x: number;
   y: number;
 };
 
-const convertResponseToRestaurant = ({
+export const convertResponseToRestaurant = ({
   id,
   name,
   category,
+  tags,
   distance,
+  placeUrl,
   roadAddressName,
   likeCount,
+  isExcluded,
   x,
   y,
 }: RestaurantResponse): Restaurant => ({
   id: id.toString(),
   name: name.toString(),
-  category: category.toString(),
+  category: category,
+  tags: tags.map(tag => tag.toString()),
   distance: Number(distance),
+  placeUrl: placeUrl.toString(),
   roadAddressName: roadAddressName.toString(),
   likeCount: Number(likeCount),
+  isExcluded: isExcluded ? Boolean(isExcluded) : false,
   x: Number(x),
   y: Number(y),
 });
 
-const restaurantBaseUrl = 'restaurants';
+export const restaurantBaseUrl = 'restaurants';
 
-export const restaurants = {
-  get: async (roomCode: string): Promise<Restaurant[]> => {
-    const data = await apiClient.get<RestaurantResponse[]>(
-      `rooms/${roomCode}/${restaurantBaseUrl}`
-    );
-    const results = (data ?? []).map(restaurant =>
-      convertResponseToRestaurant(restaurant)
-    );
-    return results ?? [];
+export const restaurant = {
+  patchLike: async (restaurantId: string) => {
+    const patchUrl = joinAsPath('restaurants', restaurantId.toString(), 'like');
+    await apiClient.patch(patchUrl, undefined, {
+      'Content-Type': 'application/json',
+    });
   },
-  patch: async (restaurantsIds: string[]) => {
-    const convertedRestaurantsIds =
-      convert.stringArrayToNumberArray(restaurantsIds);
-
-    const response = await apiClient.patch<RestaurantResponse>(
-      `${restaurantBaseUrl}/exclude`,
-      {
-        restaurantIds: convertedRestaurantsIds,
-      }
+  patchUnlike: async (restaurantId: string) => {
+    const patchUrl = joinAsPath(
+      'restaurants',
+      restaurantId.toString(),
+      'unlike'
     );
-    if (!response) return [];
-    return convertResponseToRestaurant(response);
+    await apiClient.patch(patchUrl);
   },
 };

@@ -16,13 +16,7 @@ function TabContent({ selectedIndex, tabContents }: Props) {
   );
 
   return (
-    <S.Container
-      ref={containerRef}
-      style={{
-        height: height !== null ? height : undefined,
-        transition: 'height 0.3s cubic-bezier(0.4,0,0.2,1)',
-      }}
-    >
+    <S.Container ref={containerRef} height={height}>
       {tabContents.map((content, idx) => {
         const offset = idx - selectedIndex;
         return (
@@ -31,13 +25,7 @@ function TabContent({ selectedIndex, tabContents }: Props) {
             ref={el => {
               contentRefs.current[idx] = el!;
             }}
-            isActive={selectedIndex === idx}
-            style={{
-              transform: `translateX(${offset * 100}%)`,
-              opacity: Math.abs(offset) > 1 ? 0 : 1,
-              transition:
-                'transform 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.3s',
-            }}
+            offset={offset}
           >
             {content}
           </S.ContentBox>
@@ -50,18 +38,22 @@ function TabContent({ selectedIndex, tabContents }: Props) {
 export default TabContent;
 
 const S = {
-  Container: styled.div`
+  Container: styled.div<{ height: number | null }>`
     width: 100%;
+    ${({ height }) =>
+      `height: ${height}px;
+       transition: ${height} 0.3s cubic-bezier(0.4,0,0.2,1)`};
     overflow: hidden;
     position: relative;
 
     background: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
-  ContentBox: styled.div<{ isActive: boolean }>`
+  ContentBox: styled.div<{ offset: number }>`
     width: 100%;
     position: absolute;
     top: 0;
     left: 0;
-    will-change: transform, opacity;
+    transform: translateX(${({ offset }) => offset * 100}%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   `,
 };

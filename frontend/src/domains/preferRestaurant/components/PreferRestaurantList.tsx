@@ -1,3 +1,7 @@
+import { Restaurant } from '@apis/restaurant';
+
+import { useFlip } from '@hooks/useFlip';
+
 import styled from '@emotion/styled';
 
 import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider';
@@ -7,17 +11,27 @@ import PreferRestaurantItem from './PreferRestaurantItem';
 function PreferRestaurantList() {
   const { restaurantList } = usePreferRestaurantContext();
 
+  const { itemRefs } = useFlip(restaurantList);
+
   return (
     <S.Container>
-      {restaurantList.map(data => (
-        <PreferRestaurantItem
-          key={data.id}
-          id={data.id}
-          name={data.name}
-          category={data.category}
-          distance={data.distance}
-          likeCount={data.likeCount}
-        />
+      {restaurantList.map((restaurant: Restaurant) => (
+        <S.ItemWrapper
+          key={restaurant.id}
+          ref={el => {
+            if (el) itemRefs.current.set(restaurant.id, el);
+          }}
+        >
+          <PreferRestaurantItem
+            id={restaurant.id}
+            name={restaurant.name}
+            tags={restaurant.tags}
+            category={restaurant.category}
+            distance={restaurant.distance}
+            likeCount={restaurant.likeCount}
+            placeUrl={restaurant.placeUrl}
+          />
+        </S.ItemWrapper>
       ))}
     </S.Container>
   );
@@ -27,12 +41,15 @@ export default PreferRestaurantList;
 
 const S = {
   Container: styled.div`
-    width: 100%;
     display: grid;
-    gap: 16px;
+    gap: ${({ theme }) => theme.GAP.level5};
     place-items: center;
     grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
 
-    padding: 16px;
+    padding: ${({ theme }) => theme.PADDING.p5};
+  `,
+
+  ItemWrapper: styled.div`
+    overflow-anchor: none;
   `,
 };

@@ -1,0 +1,42 @@
+import { pickeat, PickeatDetailType } from '@apis/pickeat';
+
+import { generateRouterPath } from '@routes/routePath';
+
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+
+import { validateJoinPickeat } from '../utils/validateJoinPickeat';
+
+export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
+  const navigate = useNavigate();
+  const [error, setError] = useState<string>();
+
+  const joinPickeat = async (nickName: string) => {
+    try {
+      validateJoinPickeat({
+        nickName,
+        pickeatDetail,
+      });
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      }
+      return;
+    }
+
+    try {
+      await pickeat.postJoin({
+        nickname: nickName,
+        pickeatId: pickeatDetail!.id,
+      });
+      navigate(generateRouterPath.restaurantsExclude(pickeatDetail.code));
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      }
+      return;
+    }
+  };
+
+  return { joinPickeat, error };
+};
