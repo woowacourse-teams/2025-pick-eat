@@ -24,6 +24,7 @@ public class WishListService {
     private final WishRepository wishRepository;
 
     //TODO: 현재 요청자가 room에 참가중인 참가지인지 권한 체크 필요  (2025-08-1, 금, 14:20)
+    @Transactional
     public WishListResponse createWishList(Long roomId, WishListRequest request) {
         WishList wishList = new WishList(request.name(), roomId, false);
         WishList saved = wishListRepository.save(wishList);
