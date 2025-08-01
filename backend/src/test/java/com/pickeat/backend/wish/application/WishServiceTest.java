@@ -2,7 +2,8 @@ package com.pickeat.backend.wish.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.fixture.WishFixture;
+import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.Wish;
@@ -36,7 +37,7 @@ class WishServiceTest {
         @Test
         void 위시_생성_성공() {
             // given
-            WishList wishList = entityManager.persist(new WishList("위시 리스트", 2L, false));
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(1L));
             WishRequest wishRequest = new WishRequest("위시1", "일식", List.of(), "도로명주소1", List.of("태그1", "태그2"));
 
             entityManager.flush();
@@ -56,9 +57,8 @@ class WishServiceTest {
         @Test
         void 위시_삭제_성공() {
             // given
-            WishList wishList = entityManager.persist(new WishList("위시 리스트", 2L, false));
-            Wish wish = entityManager.persist(
-                    new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList));
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(1L));
+            Wish wish = entityManager.persist(WishFixture.create(wishList));
 
             entityManager.flush();
             entityManager.clear();

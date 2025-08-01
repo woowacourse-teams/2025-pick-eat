@@ -2,7 +2,8 @@ package com.pickeat.backend.wish.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.fixture.WishFixture;
+import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
@@ -54,10 +55,10 @@ class WishListServiceTest {
         void 위시리스트_조회_성공() {
             // given
             List<WishList> wishLists = List.of(
-                    entityManager.persist(new WishList("방의 위시리스트1", 2L, false)),
-                    entityManager.persist(new WishList("방의 위시리스트2", 2L, false)),
-                    entityManager.persist(new WishList("공통 위시리스트1", 1L, true)),
-                    entityManager.persist(new WishList("공통 위시리스트2", 1L, true)));
+                    entityManager.persist(WishListFixture.createPrivate(2L)),
+                    entityManager.persist(WishListFixture.createPrivate(2L)),
+                    entityManager.persist(WishListFixture.createPublic(1L)),
+                    entityManager.persist(WishListFixture.createPublic(1L)));
 
             entityManager.flush();
             entityManager.clear();
@@ -79,11 +80,11 @@ class WishListServiceTest {
         @Test
         void 위시리스트의_위시_조회_성공() {
             // given
-            WishList wishList = entityManager.persist(new WishList("방의 위시리스트1", 2L, false));
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(2L));
             List<Wish> wishes = List.of(
-                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList)),
-                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList)),
-                    entityManager.persist(new Wish("위시", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", wishList)));
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)));
 
             entityManager.flush();
             entityManager.clear();
