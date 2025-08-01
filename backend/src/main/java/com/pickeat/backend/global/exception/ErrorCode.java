@@ -20,17 +20,20 @@ public enum ErrorCode {
     INVALID_LATITUDE(HttpStatus.BAD_REQUEST, "위도는 -90도에서 90도 사이여야 합니다."),
     INVALID_LONGITUDE(HttpStatus.BAD_REQUEST, "경도는 -180도에서 180도 사이여야 합니다."),
 
-    //입력 검증 에러
-    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "입력 데이터 검증에 실패했습니다."),
-
-    // 시스템 에러
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
-
     // Restaurant 관련 에러
     LIKE_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "이미 좋아요를 취소한 상태입니다."),
     //todo: 참가자 기능 추가 후 대체 예정
     FORBIDDEN_PICKEAT(HttpStatus.UNAUTHORIZED, "식당의 픽잇이 올바르지 않습니다."),
     RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "식당을 찾을 수 없습니다."),
+
+    // Room 관련 에러
+    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "방을 찾을 없습니다."),
+
+    //입력 검증 에러
+    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "입력 데이터 검증에 실패했습니다."),
+
+    // 시스템 에러
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
     ;
 
     private final HttpStatus status;

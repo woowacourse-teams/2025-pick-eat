@@ -1,0 +1,4 @@
+package com.pickeat.backend.room.application.dto.request;
+
+public record RoomRequest(String name) {
+}
