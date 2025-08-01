@@ -38,7 +38,7 @@ public class WishListController {
         return ResponseEntity.ok(wishLists);
     }
 
-    @GetMapping("/room/wishList/{wishListId}/wishes")
+    @GetMapping("/wishLists/{wishListId}/wishes")
     public ResponseEntity<List<WishResponse>> getWishesInWishList(@PathVariable("wishListId") Long wishListId) {
         List<WishResponse> wishes = wishListService.getWishes(wishListId);
         return ResponseEntity.ok(wishes);

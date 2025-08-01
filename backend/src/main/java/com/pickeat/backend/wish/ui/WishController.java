@@ -21,7 +21,7 @@ public class WishController {
 
     private final WishService wishService;
 
-    @PostMapping(value = "/room/wishList/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> createWish(
             @PathVariable("wishListId") Long wishListId,
             @Valid @ModelAttribute WishRequest request
@@ -31,7 +31,7 @@ public class WishController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @DeleteMapping("/room/wishList/wishes/{wishId}")
+    @DeleteMapping("/wishes/{wishId}")
     public ResponseEntity<Void> deleteWish(@PathVariable("wishId") Long wishId) {
         wishService.deleteWish(wishId);
         return ResponseEntity.noContent().build();
