@@ -4,7 +4,7 @@ import { restaurants } from '@apis/restaurants';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
-const usePreferRestaurant = () => {
+const usePreferRestaurant = (initialData: Restaurant[]) => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
@@ -18,7 +18,9 @@ const usePreferRestaurant = () => {
     });
   };
 
-  const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
+  const [restaurantList, setRestaurantList] = useState<Restaurant[]>(
+    sortByLike(initialData)
+  );
 
   const updateSortedRestaurantList = (
     content: (prev: Restaurant[]) => Restaurant[]

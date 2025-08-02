@@ -4,13 +4,17 @@ import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
+
+import { restaurants } from '@apis/restaurants';
 
 import { useGA } from '@hooks/useGA';
 
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
+import { Suspense } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 const PreferRestaurantPage = () => {
@@ -41,9 +45,17 @@ const PreferRestaurantPage = () => {
         </S.ParticipantInfo>
       </S.TitleArea>
 
-      <S.RestaurantListContainer>
-        <PreferRestaurantList />
-      </S.RestaurantListContainer>
+      <ErrorBoundary>
+        <Suspense fallback={<div>로딩 중</div>}>
+          <S.RestaurantListContainer>
+            <PreferRestaurantList
+              preferRestaurantListPromise={restaurants.get(pickeatCode, {
+                isExcluded: 'false',
+              })}
+            />
+          </S.RestaurantListContainer>
+        </Suspense>
+      </ErrorBoundary>
 
       <S.Footer>
         <Button
