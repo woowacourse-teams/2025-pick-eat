@@ -1,8 +1,8 @@
 package com.pickeat.backend.wish.application.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
-import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.web.multipart.MultipartFile;
 
 @Schema(description = "위시 생성 요청")
@@ -19,7 +19,7 @@ public record WishRequest(
         @Schema(description = "도로명 주소", example = "서울특별시 강남구 테헤란로 123")
         @NotBlank(message = "도로명주소는 공백을 허용하지 않습니다.")
         String roadAddressName,
-        @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
+        @Schema(description = "태그 목록", example = "[매운맛, 치즈추가]")
         List<String> tags
 ) {
 
