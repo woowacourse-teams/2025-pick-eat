@@ -22,17 +22,19 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 
 class S3ImageUploadClientTest {
 
+    private S3Client s3Client;
     private String bucketName;
     private Region region;
-    private S3Client s3Client;
+    private String keyPrefix;
     private S3ImageUploadClient uploadClient;
 
     @BeforeEach
     public void beforeEach() {
         s3Client = mock(S3Client.class);
         bucketName = "test_bucket";
+        keyPrefix = "dir1/dir2/";
         region = Region.AP_NORTHEAST_2;
-        uploadClient = new S3ImageUploadClient(s3Client, bucketName, region);
+        uploadClient = new S3ImageUploadClient(s3Client, bucketName, region, keyPrefix);
     }
 
     @Nested
@@ -46,17 +48,16 @@ class S3ImageUploadClientTest {
                     "test.jpg",
                     "image/jpeg",
                     "dummy image content".getBytes());
-            String uploadKey = "ROOM-14/WHISHLIST-13/WISH-10/uuid.png";
 
             when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
                     .thenReturn(null);
 
             // when
-            String result = uploadClient.uploadImage(multipartFile, uploadKey);
+            String result = uploadClient.uploadImage(multipartFile);
 
             // then
             assertThat(result)
-                    .isEqualTo("https://" + bucketName + ".s3." + region.id() + ".amazonaws.com/" + uploadKey);
+                    .startsWith("https://" + bucketName + ".s3." + region.id() + ".amazonaws.com/" + keyPrefix);
         }
 
         @Test
@@ -67,13 +68,12 @@ class S3ImageUploadClientTest {
                     "test.jpg",
                     "image/jpeg",
                     "dummy image content".getBytes());
-            String uploadKey = "ROOM-14/WHISHLIST-13/WISH-10/uuid.png";
 
             when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
                     .thenThrow(S3Exception.builder().message("sever error").build());
 
             // when & then
-            assertThatThrownBy(() -> uploadClient.uploadImage(multipartFile, uploadKey))
+            assertThatThrownBy(() -> uploadClient.uploadImage(multipartFile))
                     .isInstanceOf(ExternalApiException.class);
         }
 
@@ -85,13 +85,12 @@ class S3ImageUploadClientTest {
                     "test.jpg",
                     "image/jpeg",
                     "dummy image content".getBytes());
-            String uploadKey = "ROOM-14/WHISHLIST-13/WISH-10/uuid.png";
 
             when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
                     .thenThrow(SdkClientException.builder().message("client error").build());
 
             // when & then
-            assertThatThrownBy(() -> uploadClient.uploadImage(multipartFile, uploadKey))
+            assertThatThrownBy(() -> uploadClient.uploadImage(multipartFile))
                     .isInstanceOf(ExternalApiException.class);
         }
 
@@ -103,13 +102,12 @@ class S3ImageUploadClientTest {
                     "test.jpg",
                     "image/jpeg",
                     "dummy image content".getBytes());
-            String uploadKey = "ROOM-14/WHISHLIST-13/WISH-10/uuid.png";
 
             when(s3Client.putObject(any(PutObjectRequest.class), any(RequestBody.class)))
                     .thenThrow(new IllegalArgumentException("unexpected error"));
 
             // when & then
-            assertThatThrownBy(() -> uploadClient.uploadImage(multipartFile, uploadKey))
+            assertThatThrownBy(() -> uploadClient.uploadImage(multipartFile))
                     .isInstanceOf(BusinessException.class);
         }
     }

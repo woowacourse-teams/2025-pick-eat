@@ -21,13 +21,14 @@ public class ImageUploadClientConfiguration {
     @Bean
     @Profile({"dev", "prod"})
     public ImageUploadClient s3ImageUploadClient(
-            @Value("${external.s3.wish.image.bucket.name}") String bucketName
+            @Value("${external.s3.wish.image.bucket.name}") String bucketName,
+            @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
     ) {
         Region region = Region.AP_NORTHEAST_2;
         S3Client s3Client = S3Client.builder()
                 .region(region)
                 .credentialsProvider(DefaultCredentialsProvider.create())
                 .build();
-        return new S3ImageUploadClient(s3Client, bucketName, region);
+        return new S3ImageUploadClient(s3Client, bucketName, region, keyPrefix);
     }
 }
