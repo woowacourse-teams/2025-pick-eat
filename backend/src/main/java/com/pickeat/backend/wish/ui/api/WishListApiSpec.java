@@ -37,7 +37,14 @@ public interface WishListApiSpec {
             )
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "위시리스트 생성 성공"),
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "위시리스트 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = WishListResponse.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "400",
                     description = "잘못된 요청 데이터 (검증 실패)",
@@ -60,7 +67,7 @@ public interface WishListApiSpec {
             )
     })
     @PostMapping("/room/{roomId}/wishLists")
-    ResponseEntity<Void> createWishList(
+    ResponseEntity<WishListResponse> createWishList(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
             @Valid @RequestBody WishListRequest request

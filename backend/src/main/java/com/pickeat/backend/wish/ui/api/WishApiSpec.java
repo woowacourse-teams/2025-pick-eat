@@ -1,6 +1,7 @@
 package com.pickeat.backend.wish.ui.api;
 
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -34,7 +35,14 @@ public interface WishApiSpec {
             )
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "위시 생성 성공"),
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "위시 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = WishResponse.class)
+                    )
+            ),
             @ApiResponse(
                     responseCode = "400",
                     description = "잘못된 요청 데이터 (검증 실패)",
@@ -57,7 +65,7 @@ public interface WishApiSpec {
             )
     })
     @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<Void> createWish(
+    ResponseEntity<WishResponse> createWish(
             @Parameter(description = "위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,
             @Valid @ModelAttribute WishRequest request
