@@ -17,7 +17,7 @@ import styled from '@emotion/styled';
 import { Suspense } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
-const PreferRestaurantPage = () => {
+function PreferRestaurantPage() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
@@ -77,7 +77,7 @@ const PreferRestaurantPage = () => {
       </S.Footer>
     </S.Container>
   );
-};
+}
 
 export default PreferRestaurantPage;
 
