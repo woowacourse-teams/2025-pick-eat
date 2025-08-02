@@ -2,7 +2,7 @@ import useDebounce from '@hooks/useDebounce';
 
 import { useEffect, useState } from 'react';
 
-import { AddressType, getAddressByKeyword } from '../utils/convertAddress';
+import { AddressType, getAddressListByKeyword } from '../utils/convertAddress';
 
 export const useFindAddress = () => {
   const [address, setAddress] = useState<string>('');
@@ -28,7 +28,7 @@ export const useFindAddress = () => {
         setAddressList(null);
         return;
       }
-      const data = await getAddressByKeyword(debouncedQuery);
+      const data = await getAddressListByKeyword(debouncedQuery);
       setAddressList(data);
     };
     findAddress();
