@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface WishListRepository extends JpaRepository<WishList, Long> {
 
-    List<WishList> findAllByIsPublicFalseAndRoomId(Long roomId);
+    List<WishList> findAllByRoomIdAndIsPublic(Long roomId, Boolean isPublic);
 
     List<WishList> findAllByIsPublicTrue();
 }
