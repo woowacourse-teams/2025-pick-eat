@@ -8,6 +8,7 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
+import ChooseWishlist from '@pages/ChooseWishList';
 import CreatePickeat from '@pages/CreatePickeat';
 import MatchResult from '@pages/MatchResult';
 import PickeatDetail from '@pages/PickeatDetail';
@@ -40,6 +41,10 @@ const routes = createBrowserRouter([
       {
         path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
         Component: RestaurantExcludePage,
+      },
+      {
+        path: ROUTE_PATH.CHOOSE_WISHLIST,
+        Component: ChooseWishlist,
       },
     ],
   },
