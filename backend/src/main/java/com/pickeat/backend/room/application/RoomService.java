@@ -40,6 +40,7 @@ public class RoomService {
         return RoomResponse.from(rooms);
     }
 
+    @Transactional
     public void inviteUsers(Long roomId, RoomInvitationRequest request) {
         Room room = getRoomByRoomId(roomId);
         //TODO: User 객체로 변환 작업하기  (2025-08-1, 금, 15:45)
