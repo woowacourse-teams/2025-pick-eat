@@ -1,9 +1,11 @@
 import LikeButton from '@components/actions/LikeButton/LikeButton';
 import Badge from '@components/labels/Badge';
 
+import { Restaurant } from '@apis/restaurant';
+
 import styled from '@emotion/styled';
 
-import { useLikeContext } from '../context/LikeProvider';
+import useLike from '../hooks/useLike';
 
 type Prop = {
   id: string;
@@ -13,6 +15,7 @@ type Prop = {
   distance: number;
   likeCount: number;
   placeUrl: string;
+  onUpdateRestaurant: (content: (prev: Restaurant[]) => Restaurant[]) => void;
 };
 
 function PreferRestaurantItem({
@@ -23,8 +26,9 @@ function PreferRestaurantItem({
   likeCount,
   category,
   placeUrl,
+  onUpdateRestaurant,
 }: Prop) {
-  const { isLiked, handleLike, handleUnlike } = useLikeContext();
+  const { isLiked, handleLike, handleUnlike } = useLike(onUpdateRestaurant);
   return (
     <S.Container liked={isLiked(id)}>
       <S.CardContent>

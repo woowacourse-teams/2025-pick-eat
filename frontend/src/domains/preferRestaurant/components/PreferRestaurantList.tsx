@@ -4,17 +4,13 @@ import { useFlip } from '@hooks/useFlip';
 
 import styled from '@emotion/styled';
 
-import { LikeProvider } from '../context/LikeProvider';
-import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider';
+import usePreferRestaurant from '../hooks/usePreferRestaurant';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
 
 function PreferRestaurantList() {
-  const { restaurantList } = usePreferRestaurantContext();
-
+  const { restaurantList, updateSortedRestaurantList } = usePreferRestaurant();
   const { itemRefs } = useFlip(restaurantList);
-
-  const { updateSortedRestaurantList } = usePreferRestaurantContext();
 
   return (
     <S.Container>
@@ -25,17 +21,16 @@ function PreferRestaurantList() {
             if (el) itemRefs.current.set(restaurant.id, el);
           }}
         >
-          <LikeProvider updateSortedRestaurantList={updateSortedRestaurantList}>
-            <PreferRestaurantItem
-              id={restaurant.id}
-              name={restaurant.name}
-              tags={restaurant.tags}
-              category={restaurant.category}
-              distance={restaurant.distance}
-              likeCount={restaurant.likeCount}
-              placeUrl={restaurant.placeUrl}
-            />
-          </LikeProvider>
+          <PreferRestaurantItem
+            id={restaurant.id}
+            name={restaurant.name}
+            tags={restaurant.tags}
+            category={restaurant.category}
+            distance={restaurant.distance}
+            likeCount={restaurant.likeCount}
+            placeUrl={restaurant.placeUrl}
+            onUpdateRestaurant={updateSortedRestaurantList}
+          />
         </S.ItemWrapper>
       ))}
     </S.Container>

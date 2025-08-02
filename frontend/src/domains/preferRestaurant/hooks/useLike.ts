@@ -1,25 +1,13 @@
-import { restaurant, Restaurant } from '@apis/restaurant';
+import { Restaurant } from '@apis/restaurant';
+import { restaurant } from '@apis/restaurant';
 
-import { createContext, PropsWithChildren, useState, useContext } from 'react';
+import { useState } from 'react';
 
-interface LikeContextType {
-  handleLike: (id: string) => void;
-  handleUnlike: (id: string) => void;
-  isLiked: (id: string) => boolean;
-}
-
-const LikeContext = createContext<LikeContextType | null>(null);
-
-type Props = PropsWithChildren<{
+const useLike = (
   updateSortedRestaurantList: (
     content: (prev: Restaurant[]) => Restaurant[]
-  ) => void;
-}>;
-
-export const LikeProvider = ({
-  children,
-  updateSortedRestaurantList,
-}: Props) => {
+  ) => void
+) => {
   const [likedIds, setLikedIds] = useState<string[]>([]);
 
   const isLiked = (id: string) => {
@@ -74,23 +62,7 @@ export const LikeProvider = ({
     }
   };
 
-  return (
-    <LikeContext.Provider
-      value={{
-        handleLike,
-        handleUnlike,
-        isLiked,
-      }}
-    >
-      {children}
-    </LikeContext.Provider>
-  );
+  return { isLiked, handleLike, handleUnlike };
 };
 
-export const useLikeContext = () => {
-  const context = useContext(LikeContext);
-  if (!context) {
-    throw new Error('useLikeContext는 LikeProvider 안에서 사용해야 합니다.');
-  }
-  return context;
-};
+export default useLike;

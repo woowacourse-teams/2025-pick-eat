@@ -4,7 +4,6 @@ import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import { PreferRestaurantProvider } from '@domains/preferRestaurant/context/PreferRestaurantProvider';
 import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
 import { useGA } from '@hooks/useGA';
@@ -14,7 +13,7 @@ import { generateRouterPath } from '@routes/routePath';
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
-const PreferRestaurant = () => {
+const PreferRestaurantPage = () => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
@@ -32,47 +31,43 @@ const PreferRestaurant = () => {
   };
 
   return (
-    <PreferRestaurantProvider>
-      <S.Container>
-        <S.TitleArea>
-          <S.Title>
-            가고 싶은 식당에 <br /> ❤️를 눌러 투표해 주세요.
-          </S.Title>
-          <S.ParticipantInfo>
-            <S.Completed>
-              참여자 총{participant.totalParticipants}명
-            </S.Completed>
-          </S.ParticipantInfo>
-        </S.TitleArea>
+    <S.Container>
+      <S.TitleArea>
+        <S.Title>
+          가고 싶은 식당에 <br /> ❤️를 눌러 투표해 주세요.
+        </S.Title>
+        <S.ParticipantInfo>
+          <S.Completed>참여자 총{participant.totalParticipants}명</S.Completed>
+        </S.ParticipantInfo>
+      </S.TitleArea>
 
-        <S.RestaurantListContainer>
-          <PreferRestaurantList />
-        </S.RestaurantListContainer>
+      <S.RestaurantListContainer>
+        <PreferRestaurantList />
+      </S.RestaurantListContainer>
 
-        <S.Footer>
-          <Button
-            text="이전"
-            color="gray"
-            size="md"
-            onClick={() =>
-              navigate(generateRouterPath.restaurantsExclude(pickeatCode))
-            }
-            leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
-          />
-          <Button
-            text="결과"
-            color="secondary"
-            size="md"
-            onClick={handleResultClick}
-            rightIcon={<Arrow size="sm" direction="right" color={'black'} />}
-          />
-        </S.Footer>
-      </S.Container>
-    </PreferRestaurantProvider>
+      <S.Footer>
+        <Button
+          text="이전"
+          color="gray"
+          size="md"
+          onClick={() =>
+            navigate(generateRouterPath.restaurantsExclude(pickeatCode))
+          }
+          leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
+        />
+        <Button
+          text="결과"
+          color="secondary"
+          size="md"
+          onClick={handleResultClick}
+          rightIcon={<Arrow size="sm" direction="right" color={'black'} />}
+        />
+      </S.Footer>
+    </S.Container>
   );
 };
 
-export default PreferRestaurant;
+export default PreferRestaurantPage;
 
 const S = {
   Container: styled.div`
@@ -82,6 +77,15 @@ const S = {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+  `,
+
+  RestaurantListContainer: styled.div`
+    width: 100%;
+    height: 78%;
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+
+    overflow-y: auto;
   `,
 
   TitleArea: styled.div`
@@ -103,15 +107,6 @@ const S = {
   Completed: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.body.medium};
-  `,
-
-  RestaurantListContainer: styled.div`
-    width: 100%;
-    height: 78%;
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-
-    overflow-y: auto;
   `,
 
   Footer: styled.div`
