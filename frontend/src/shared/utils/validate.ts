@@ -1,5 +1,5 @@
 export const validate = {
-  isEmpty: (value: string | undefined) => {
+  isEmpty: <T>(value: T) => {
     if (!value) return true;
   },
 };
