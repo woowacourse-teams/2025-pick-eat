@@ -5,6 +5,7 @@ import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
 import com.pickeat.backend.room.ui.api.RoomApiSpec;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class RoomController implements RoomApiSpec {
     //TODO: [P0] 토큰 받아서 RoomUser에 방 만든 회원 추가하기  (2025-08-1, 금, 13:32)
     @Override
     @PostMapping
-    public ResponseEntity<RoomResponse> create(@RequestBody RoomRequest request, Long userId) {
+    public ResponseEntity<RoomResponse> create(@Valid @RequestBody RoomRequest request, Long userId) {
         RoomResponse response = roomService.createRoom(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -49,7 +50,7 @@ public class RoomController implements RoomApiSpec {
     @Override
     @PostMapping("/{roomId}/invite")
     public ResponseEntity<Void> invite(@PathVariable("roomId") Long roomId,
-                                       @RequestBody RoomInvitationRequest request) {
+                                       @Valid @RequestBody RoomInvitationRequest request) {
         roomService.inviteUsers(roomId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
