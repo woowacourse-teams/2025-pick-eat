@@ -40,9 +40,6 @@ class WishServiceTest {
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(1L));
             WishRequest wishRequest = new WishRequest("위시1", "일식", List.of(), "도로명주소1", List.of("태그1", "태그2"));
 
-            entityManager.flush();
-            entityManager.clear();
-
             // when
             WishResponse response = wishService.createWish(wishList.getId(), wishRequest);
 
@@ -59,9 +56,6 @@ class WishServiceTest {
             // given
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(1L));
             Wish wish = entityManager.persist(WishFixture.create(wishList));
-
-            entityManager.flush();
-            entityManager.clear();
 
             // when
             wishService.deleteWish(wish.getId());
