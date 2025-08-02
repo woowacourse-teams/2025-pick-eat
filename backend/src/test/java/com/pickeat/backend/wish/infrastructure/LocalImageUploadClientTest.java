@@ -17,7 +17,7 @@ class LocalImageUploadClientTest {
         MultipartFile image = mock(MultipartFile.class);
 
         // when
-        String imageUrl = localImageUploadClient.uploadImage(image);
+        String imageUrl = localImageUploadClient.uploadImage(image, "ROOM-14/WHISHLIST-13/WISH-10/uuid.png");
 
         // then
         assertThat(imageUrl).isEqualTo(defaultImageUrl);

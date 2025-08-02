@@ -12,7 +12,7 @@ public class LocalImageUploadClient implements ImageUploadClient {
     }
 
     @Override
-    public String uploadImage(MultipartFile multipartFile) {
+    public String uploadImage(MultipartFile multipartFile, String uploadKey) {
         return DEFAULT_IMAGE_URL;
     }
 }
