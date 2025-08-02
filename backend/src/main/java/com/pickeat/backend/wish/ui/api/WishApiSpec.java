@@ -1,0 +1,106 @@
+package com.pickeat.backend.wish.ui.api;
+
+import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.response.WishResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+
+@Tag(name = "위시", description = "위시 관련 API")
+public interface WishApiSpec {
+
+    @Operation(
+            summary = "위시 생성",
+            operationId = "createWish",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "생성할 위시 정보",
+                    required = true,
+                    content = @Content(
+                            mediaType = "multipart/form-data",
+                            schema = @Schema(implementation = WishRequest.class)
+                    )
+            )
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "위시 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = WishResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청 데이터 (검증 실패)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "유효성 검사 실패",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Bad Request",
+                                              "status": 400,
+                                              "detail": "위시 이름은 공백을 허용하지 않습니다.",
+                                              "instance": "/api/v1/wishLists/1/wishes"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<WishResponse> createWish(
+            @Parameter(description = "위시리스트 ID", example = "1")
+            @PathVariable("wishListId") Long wishListId,
+            @Valid @ModelAttribute WishRequest request
+    );
+
+    @Operation(
+            summary = "위시 삭제",
+            operationId = "deleteWish"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "위시 삭제 성공"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "위시를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "위시를 찾을 수 없음",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Not Found",
+                                              "status": 404,
+                                              "detail": "위시를 찾을 수 없습니다.",
+                                              "instance": "/api/v1/wishes/1"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    @DeleteMapping("/wishes/{wishId}")
+    ResponseEntity<Void> deleteWish(
+            @Parameter(description = "위시 ID", example = "1")
+            @PathVariable("wishId") Long wishId
+    );
+}
