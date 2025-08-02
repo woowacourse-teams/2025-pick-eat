@@ -4,6 +4,7 @@ export const ROUTE_PATH = {
   PREFER_RESTAURANT: '/prefer-restaurant',
   MATCH_RESULT: '/match-result',
   RESTAURANTS_EXCLUDE: '/restaurants-exclude',
+  CREATE_ROOM: '/create-room',
 };
 
 export const generateRouterPath = {
