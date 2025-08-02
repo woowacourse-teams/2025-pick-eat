@@ -3,7 +3,7 @@ import Badge from '@components/labels/Badge';
 
 import styled from '@emotion/styled';
 
-import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider';
+import { useLikeContext } from '../context/LikeProvider';
 
 type Prop = {
   id: string;
@@ -24,7 +24,7 @@ function PreferRestaurantItem({
   category,
   placeUrl,
 }: Prop) {
-  const { isLiked, handleLike, handleUnlike } = usePreferRestaurantContext();
+  const { isLiked, handleLike, handleUnlike } = useLikeContext();
   return (
     <S.Container liked={isLiked(id)}>
       <S.CardContent>

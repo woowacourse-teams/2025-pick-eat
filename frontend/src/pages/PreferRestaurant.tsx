@@ -20,11 +20,16 @@ const PreferRestaurant = () => {
 
   const { participant } = useParticipant(pickeatCode);
   const navigate = useNavigate();
-  
+
   const handleResultClick = () => {
     navigate(generateRouterPath.matchResult(pickeatCode));
-    useGA().useGAEventTrigger({ action: 'click', category: 'button', label: '결과 페이지 이동 버튼', value: 1 });
-  }
+    useGA().useGAEventTrigger({
+      action: 'click',
+      category: 'button',
+      label: '결과 페이지 이동 버튼',
+      value: 1,
+    });
+  };
 
   return (
     <PreferRestaurantProvider>

@@ -1,4 +1,4 @@
-import { restaurant, Restaurant } from '@apis/restaurant';
+import { Restaurant } from '@apis/restaurant';
 import { restaurants } from '@apis/restaurants';
 
 import {
@@ -12,9 +12,9 @@ import { useSearchParams } from 'react-router';
 
 interface PreferRestaurantContextType {
   restaurantList: Restaurant[];
-  handleLike: (id: string) => void;
-  handleUnlike: (id: string) => void;
-  isLiked: (id: string) => boolean;
+  updateSortedRestaurantList: (
+    content: (prev: Restaurant[]) => Restaurant[]
+  ) => void;
 }
 
 const PreferRestaurantContext =
@@ -22,7 +22,6 @@ const PreferRestaurantContext =
 
 export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
   const [restaurantList, setRestaurantList] = useState<Restaurant[]>([]);
-  const [likedIds, setLikedIds] = useState<string[]>([]);
 
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
@@ -41,58 +40,6 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
 
       return a.name.localeCompare(b.name, 'ko');
     });
-  };
-
-  const handleLike = async (id: string) => {
-    updateSortedRestaurantList(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
-      )
-    );
-
-    try {
-      restaurant.patchLike(id);
-      setLikedIds(prev => [...prev, id]);
-    } catch (error) {
-      setLikedIds(prev => prev.filter(likedId => likedId !== id));
-      updateSortedRestaurantList(prev =>
-        prev.map(item =>
-          item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
-        )
-      );
-
-      console.log('좋아요 실패:', error);
-    }
-  };
-
-  const handleUnlike = async (id: string) => {
-    updateSortedRestaurantList(prev =>
-      prev.map(item =>
-        item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item
-      )
-    );
-    try {
-      restaurant.patchUnlike(id);
-      setLikedIds(prev => prev.filter(likedId => likedId !== id));
-    } catch (error) {
-      setLikedIds(prev => [...prev, id]);
-      updateSortedRestaurantList(prev =>
-        prev.map(item =>
-          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
-        )
-      );
-
-      updateSortedRestaurantList(prev =>
-        prev.map(item =>
-          item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
-        )
-      );
-      console.error('좋아요 취소 실패:', error);
-    }
-  };
-
-  const isLiked = (id: string) => {
-    return likedIds.some((likedId: string) => likedId === id);
   };
 
   useEffect(() => {
@@ -121,9 +68,7 @@ export const PreferRestaurantProvider = ({ children }: PropsWithChildren) => {
     <PreferRestaurantContext.Provider
       value={{
         restaurantList,
-        handleLike,
-        handleUnlike,
-        isLiked,
+        updateSortedRestaurantList,
       }}
     >
       {children}
