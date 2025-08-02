@@ -31,6 +31,10 @@ public enum ErrorCode {
     //todo: 참가자 기능 추가 후 대체 예정
     FORBIDDEN_PICKEAT(HttpStatus.UNAUTHORIZED, "식당의 픽잇이 올바르지 않습니다."),
     RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "식당을 찾을 수 없습니다."),
+
+    // User 관련 에러
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
+    ALREADY_NICKNAME_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다."),
     ;
 
     private final HttpStatus status;
