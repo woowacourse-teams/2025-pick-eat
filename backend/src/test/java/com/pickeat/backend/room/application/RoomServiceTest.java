@@ -62,6 +62,8 @@ class RoomServiceTest {
             // given
             Long userId = 1L;
             Room room = createRoom(userId);
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             RoomResponse response = roomService.getRoom(room.getId());
@@ -82,6 +84,8 @@ class RoomServiceTest {
             Room room2 = createRoom(userId);
             Room room3 = createRoom(otherUserId);
 
+            testEntityManager.flush();
+            testEntityManager.clear();
             // when
             List<RoomResponse> response = roomService.getAllRoom(userId);
 
@@ -100,6 +104,9 @@ class RoomServiceTest {
             Room room = createRoom(userId);
             List<Long> userIdsForInvitation = List.of(2L, 3L, 4L);
             RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             roomService.inviteUsers(room.getId(), request);
