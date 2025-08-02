@@ -1,14 +1,5 @@
 import Layout from '@components/layouts/Layout';
 
-import CreatePickeat from '@pages/CreatePickeat';
-import MatchResult from '@pages/MatchResult';
-import PickeatDetail from '@pages/PickeatDetail';
-import PreferRestaurant from '@pages/PreferRestaurant';
-import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-
-
-
-
 import { useGA } from '@hooks/useGA';
 
 import { ROUTE_PATH } from '@routes/routePath';
@@ -17,6 +8,12 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
+import CreatePickeat from '@pages/CreatePickeat';
+import MatchResult from '@pages/MatchResult';
+import MyPage from '@pages/MyPage';
+import PickeatDetail from '@pages/PickeatDetail';
+import PreferRestaurant from '@pages/PreferRestaurant';
+import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 function Wrapper() {
@@ -44,6 +41,10 @@ const routes = createBrowserRouter([
       {
         path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
         Component: RestaurantExcludePage,
+      },
+      {
+        path: ROUTE_PATH.MY_PAGE,
+        Component: MyPage,
       },
     ],
   },
