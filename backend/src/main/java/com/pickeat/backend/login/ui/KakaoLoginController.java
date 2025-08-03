@@ -48,6 +48,8 @@ public class KakaoLoginController implements KakaoLoginApiSpec {
         String provider = (String) session.getAttribute("loginReadyProvider");
 
         String token = kakaoLoginService.login(providerId);
+        session.invalidate();
+        
         return ResponseEntity.ok()
                 .header("Authorization", "Bearer", token)
                 .build();
