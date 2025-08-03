@@ -3,6 +3,7 @@ package com.pickeat.backend.user.application;
 import static com.pickeat.backend.global.exception.ErrorCode.ALREADY_NICKNAME_EXISTS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.login.application.dto.SignupRequest;
@@ -63,10 +64,10 @@ class UserServiceTest {
             UserResponse savedUser = userService.createUser(request, providerId, provider);
 
             // then
-            assertThat(savedUser.id()).isNotNull();
-            assertThat(savedUser.nickname()).isEqualTo("nickname");
-            assertThat(savedUser.providerId()).isEqualTo(2L);
-            assertThat(savedUser.provider()).isEqualTo("kakao");
+            assertAll(() -> assertThat(savedUser.id()).isNotNull(),
+                    () -> assertThat(savedUser.nickname()).isEqualTo("nickname"),
+                    () -> assertThat(savedUser.providerId()).isEqualTo(2L),
+                    () -> assertThat(savedUser.provider()).isEqualTo("kakao"));
         }
 
         @Test
