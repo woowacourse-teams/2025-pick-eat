@@ -14,8 +14,11 @@ public class ImageUploadClientConfiguration {
 
     @Bean
     @Profile({"local", "test"})
-    public ImageUploadClient localImageUploadClient(@Value("${default.wish.image.url}") String defaultImageUrl) {
-        return new LocalImageUploadClient(defaultImageUrl);
+    public ImageUploadClient localImageUploadClient(
+            @Value("${default.wish.image.url}") String defaultImageUrl,
+            @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
+    ) {
+        return new LocalImageUploadClient(defaultImageUrl, keyPrefix);
     }
 
     @Bean

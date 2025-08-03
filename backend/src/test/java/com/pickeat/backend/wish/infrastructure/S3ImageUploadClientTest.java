@@ -2,12 +2,14 @@ package com.pickeat.backend.wish.infrastructure;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ExternalApiException;
+import com.pickeat.backend.wish.domain.ImageUploadResult;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -53,11 +55,14 @@ class S3ImageUploadClientTest {
                     .thenReturn(null);
 
             // when
-            String result = uploadClient.uploadImage(multipartFile);
+            ImageUploadResult imageUploadResult = uploadClient.uploadImage(multipartFile);
 
             // then
-            assertThat(result)
-                    .startsWith("https://" + bucketName + ".s3." + region.id() + ".amazonaws.com/" + keyPrefix);
+            String expectedDownloadUrl = "https://" + bucketName + ".s3." + region.id() + ".amazonaws.com/" + keyPrefix;
+            assertAll(
+                    () -> assertThat(imageUploadResult.getKey()).startsWith(keyPrefix),
+                    () -> assertThat(imageUploadResult.getDownloadUrl()).startsWith(expectedDownloadUrl)
+            );
         }
 
         @Test
