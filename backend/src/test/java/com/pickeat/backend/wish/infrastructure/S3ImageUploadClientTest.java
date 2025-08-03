@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ExternalApiException;
-import com.pickeat.backend.wish.domain.ImageUploadResult;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -55,13 +55,13 @@ class S3ImageUploadClientTest {
                     .thenReturn(null);
 
             // when
-            ImageUploadResult imageUploadResult = uploadClient.uploadImage(multipartFile);
+            ImageRequest imageRequest = uploadClient.uploadImage(multipartFile);
 
             // then
             String expectedDownloadUrl = "https://" + bucketName + ".s3." + region.id() + ".amazonaws.com/" + keyPrefix;
             assertAll(
-                    () -> assertThat(imageUploadResult.key()).startsWith(keyPrefix),
-                    () -> assertThat(imageUploadResult.downloadUrl()).startsWith(expectedDownloadUrl)
+                    () -> assertThat(imageRequest.key()).startsWith(keyPrefix),
+                    () -> assertThat(imageRequest.downloadUrl()).startsWith(expectedDownloadUrl)
             );
         }
 

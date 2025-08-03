@@ -4,7 +4,7 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.wish.application.ImageUploadClient;
-import com.pickeat.backend.wish.domain.ImageUploadResult;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,7 +35,7 @@ public class S3ImageUploadClient implements ImageUploadClient {
     }
 
     @Override
-    public ImageUploadResult uploadImage(MultipartFile file) {
+    public ImageRequest uploadImage(MultipartFile file) {
         try {
             String key = keyPrefix + UUID.randomUUID();
             PutObjectRequest putObj = PutObjectRequest.builder()
@@ -45,7 +45,7 @@ public class S3ImageUploadClient implements ImageUploadClient {
                     .build();
             s3Client.putObject(putObj, RequestBody.fromBytes(file.getBytes()));
             String downloadUrl = "https://" + bucketName + ".s3." + region.id() + ".amazonaws.com/" + key;
-            return new ImageUploadResult(key, downloadUrl);
+            return new ImageRequest(key, downloadUrl);
         } catch (S3Exception e) { // S3 API 서버 측 오류
             throw new ExternalApiException(e.getMessage(), "AWS-S3", HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (SdkClientException e) { // 클라이언트 측에서 발생한 오류

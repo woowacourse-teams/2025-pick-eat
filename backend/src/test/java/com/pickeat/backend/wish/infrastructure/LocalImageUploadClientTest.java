@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-import com.pickeat.backend.wish.domain.ImageUploadResult;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,12 +20,12 @@ class LocalImageUploadClientTest {
         MultipartFile image = mock(MultipartFile.class);
 
         // when
-        ImageUploadResult imageUploadResult = localImageUploadClient.uploadImage(image);
+        ImageRequest imageRequest = localImageUploadClient.uploadImage(image);
 
         // then
         assertAll(
-                () -> assertThat(imageUploadResult.key()).startsWith(keyPrefix),
-                () -> assertThat(imageUploadResult.downloadUrl()).isEqualTo(defaultImageUrl)
+                () -> assertThat(imageRequest.key()).startsWith(keyPrefix),
+                () -> assertThat(imageRequest.downloadUrl()).isEqualTo(defaultImageUrl)
         );
     }
 }

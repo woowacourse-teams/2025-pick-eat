@@ -1,9 +1,9 @@
 package com.pickeat.backend.wish.application;
 
-import com.pickeat.backend.wish.domain.ImageUploadResult;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface ImageUploadClient {
 
-    ImageUploadResult uploadImage(MultipartFile multipartFile);
+    ImageRequest uploadImage(MultipartFile multipartFile);
 }

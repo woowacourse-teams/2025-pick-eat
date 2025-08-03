@@ -1,7 +1,7 @@
 package com.pickeat.backend.wish.infrastructure;
 
 import com.pickeat.backend.wish.application.ImageUploadClient;
-import com.pickeat.backend.wish.domain.ImageUploadResult;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import java.util.UUID;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,8 +16,8 @@ public class LocalImageUploadClient implements ImageUploadClient {
     }
 
     @Override
-    public ImageUploadResult uploadImage(MultipartFile multipartFile) {
+    public ImageRequest uploadImage(MultipartFile multipartFile) {
         String key = keyPrefix + UUID.randomUUID();
-        return new ImageUploadResult(key, defaultImageUrl);
+        return new ImageRequest(key, defaultImageUrl);
     }
 }

@@ -2,8 +2,8 @@ package com.pickeat.backend.wish.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
-import com.pickeat.backend.wish.domain.ImageUploadResult;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishPicture;
 import com.pickeat.backend.wish.domain.repository.WishPictureRepository;
@@ -37,7 +37,7 @@ public class WishPictureService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
     }
 
-    private Optional<ImageUploadResult> tryWishImageUpload(MultipartFile image) {
+    private Optional<ImageRequest> tryWishImageUpload(MultipartFile image) {
         try {
             return Optional.of(imageUploadClient.uploadImage(image));
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class WishPictureService {
         }
     }
 
-    private WishPicture saveWishPicture(Wish wish, ImageUploadResult uploadResult) {
+    private WishPicture saveWishPicture(Wish wish, ImageRequest uploadResult) {
         WishPicture wishPicture = new WishPicture(wish, uploadResult.key(), uploadResult.downloadUrl());
         return wishPictureRepository.save(wishPicture);
     }

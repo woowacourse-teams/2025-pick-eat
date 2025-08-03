@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
-import com.pickeat.backend.wish.domain.ImageUploadResult;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishPictureRepository;
@@ -75,7 +75,7 @@ class WishPictureServiceTest {
             ImageUploadClient imageUploadClient = mock(ImageUploadClient.class);
             when(imageUploadClient.uploadImage(any()))
                     .thenThrow(S3Exception.builder().message("첫번째 업로드는 실패").build())
-                    .thenReturn(new ImageUploadResult("test_key", "test_downloadUrl"));
+                    .thenReturn(new ImageRequest("test_key", "test_downloadUrl"));
             wishPictureService = new WishPictureService(wishRepository, wishPictureRepository, imageUploadClient);
 
             Wish wish = makeWish();
