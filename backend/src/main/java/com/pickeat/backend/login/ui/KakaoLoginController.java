@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/oauth/kakao")
+@RequestMapping("api/v1/oauth/kakao")
 public class KakaoLoginController implements KakaoLoginApiSpec {
 
     public final KakaoLoginService kakaoLoginService;
     public final UserService userService;
 
     @Override
-    @PostMapping("code")
+    @PostMapping("/code")
     public ResponseEntity<Void> processKakaoCode(@Valid @RequestBody KakaoAuthCodeRequest request,
                                                  HttpSession session) {
         Long providerId = kakaoLoginService.getProviderIdFromIdToken(request.code());
@@ -41,7 +41,7 @@ public class KakaoLoginController implements KakaoLoginApiSpec {
     }
 
     @Override
-    @PostMapping("login")
+    @PostMapping("/login")
     public ResponseEntity<String> login(HttpSession session) {
         //TODO: 보안 필요 null check 및 provider 검증 여부.
         Long providerId = (Long) session.getAttribute("loginReadyProviderId");
@@ -54,7 +54,7 @@ public class KakaoLoginController implements KakaoLoginApiSpec {
     }
 
     @Override
-    @PostMapping("signup")
+    @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupRequest request, HttpSession session) {
         //TODO: 보안 필요 null check
         String provider = (String) session.getAttribute("pendingProvider");
