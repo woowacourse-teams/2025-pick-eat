@@ -8,7 +8,7 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
-import ChooseWishlist from '@pages/ChooseWishList';
+import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeat from '@pages/CreatePickeat';
 import MatchResult from '@pages/MatchResult';
 import PickeatDetail from '@pages/PickeatDetail';

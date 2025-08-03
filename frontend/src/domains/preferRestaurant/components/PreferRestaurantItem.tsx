@@ -8,27 +8,15 @@ import styled from '@emotion/styled';
 import useLike from '../hooks/useLike';
 
 type Prop = {
-  id: string;
-  name: string;
-  tags: string[];
-  category: '한식' | '중식' | '일식' | '양식' | '기타';
-  distance: number;
-  likeCount: number;
-  placeUrl: string;
+  restaurant: Restaurant;
   onUpdateRestaurant: (content: (prev: Restaurant[]) => Restaurant[]) => void;
 };
 
-function PreferRestaurantItem({
-  id,
-  name,
-  tags,
-  distance,
-  likeCount,
-  category,
-  placeUrl,
-  onUpdateRestaurant,
-}: Prop) {
+function PreferRestaurantItem({ restaurant, onUpdateRestaurant }: Prop) {
   const { isLiked, handleLike, handleUnlike } = useLike(onUpdateRestaurant);
+  const { id, name, tags, distance, likeCount, category, placeUrl } =
+    restaurant;
+
   return (
     <S.Container liked={isLiked(id)}>
       <S.CardContent>

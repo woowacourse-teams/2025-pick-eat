@@ -1,0 +1,54 @@
+import Button from '@components/actions/Button';
+
+import styled from '@emotion/styled';
+import { Wishlist } from '@pages/ChooseWishlist';
+
+type Prop = {
+  wishlist: Wishlist;
+  selected: boolean;
+  onSelect: (id: string) => void;
+};
+
+function Wishlist({ wishlist, selected, onSelect }: Prop) {
+  const { id, name } = wishlist;
+
+  return (
+    <S.Container selected={selected} onClick={() => onSelect(id)}>
+      <S.Name>{name}</S.Name>
+      <Button text={'상세'} color={selected ? 'primary' : 'gray'} size="sm" />
+    </S.Container>
+  );
+}
+
+export default Wishlist;
+
+const S = {
+  Container: styled.div<{ selected: boolean }>`
+    height: 90px;
+    border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: ${({ theme }) => theme.PADDING.p7};
+    background-color: ${({ selected, theme }) =>
+      selected && theme.PALETTE.secondary[10]};
+
+    ${({ selected, theme }) =>
+      !selected &&
+      `cursor: pointer;
+
+       &:hover {
+         background-color: ${theme.PALETTE.secondary[5]};
+        }
+
+      &:active {
+        background-color: ${theme.PALETTE.secondary[20]};
+        }
+    `};
+  `,
+
+  Name: styled.span`
+    font: ${({ theme }) => theme.FONTS.heading.small};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+  `,
+};

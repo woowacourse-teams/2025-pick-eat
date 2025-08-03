@@ -29,13 +29,7 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Prop) {
           }}
         >
           <PreferRestaurantItem
-            id={restaurant.id}
-            name={restaurant.name}
-            tags={restaurant.tags}
-            category={restaurant.category}
-            distance={restaurant.distance}
-            likeCount={restaurant.likeCount}
-            placeUrl={restaurant.placeUrl}
+            restaurant={restaurant}
             onUpdateRestaurant={updateSortedRestaurantList}
           />
         </S.ItemWrapper>
