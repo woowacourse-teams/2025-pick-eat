@@ -1,6 +1,7 @@
 import Layout from '@components/layouts/Layout';
 
 import CreatePickeat from '@pages/CreatePickeat';
+import Login from '@pages/Login';
 import MatchResult from '@pages/MatchResult';
 import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
@@ -45,6 +46,7 @@ const routes = createBrowserRouter([
         path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
         Component: RestaurantExcludePage,
       },
+      { path: ROUTE_PATH.LOGIN, Component: Login }
     ],
   },
 ]);
