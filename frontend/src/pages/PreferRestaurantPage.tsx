@@ -84,11 +84,12 @@ export default PreferRestaurantPage;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100vh - ${HEADER_HEIGHT});
+    min-height: calc(100vh - ${HEADER_HEIGHT});
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    position: relative;
   `,
 
   RestaurantListContainer: styled.div`
@@ -96,8 +97,6 @@ const S = {
     height: 78%;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-
-    overflow-y: auto;
   `,
 
   TitleArea: styled.div`
@@ -123,13 +122,14 @@ const S = {
 
   Footer: styled.div`
     width: 100%;
-    height: 10%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: sticky;
+    bottom: 0;
+    background-color: white;
 
-    padding: 0 10px;
+    padding: ${({ theme }) => theme.PADDING.p4};
     border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 
