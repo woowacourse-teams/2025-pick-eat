@@ -8,9 +8,9 @@ const kakaoDesignGuide = {
     borderRadius: "12px",
 }
 
-function KakaoLoginButton() {
+function KakaoLoginButton(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
     return (
-        <S.Container>
+        <S.Container {...props}>
             <KakaoLogo width={18} />
             카카오로 3초만에 로그인
         </S.Container>
