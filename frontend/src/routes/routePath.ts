@@ -5,6 +5,7 @@ export const ROUTE_PATH = {
   MATCH_RESULT: '/match-result',
   RESTAURANTS_EXCLUDE: '/restaurants-exclude',
   LOGIN: '/login',
+  QUICK_SIGNUP: '/quick-signup',
 };
 
 export const generateRouterPath = {

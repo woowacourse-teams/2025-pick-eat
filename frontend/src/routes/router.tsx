@@ -5,10 +5,8 @@ import Login from '@pages/Login';
 import MatchResult from '@pages/MatchResult';
 import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
+import QuickSignup from '@pages/QuickSignup';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-
-
-
 
 import { useGA } from '@hooks/useGA';
 
@@ -46,7 +44,8 @@ const routes = createBrowserRouter([
         path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
         Component: RestaurantExcludePage,
       },
-      { path: ROUTE_PATH.LOGIN, Component: Login }
+      { path: ROUTE_PATH.LOGIN, Component: Login },
+      { path: ROUTE_PATH.QUICK_SIGNUP, Component: QuickSignup },
     ],
   },
 ]);
