@@ -2,11 +2,15 @@ package com.pickeat.backend.wish.domain;
 
 import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,21 +21,30 @@ import lombok.NoArgsConstructor;
 public class Wish extends BaseEntity {
 
     @Column(nullable = false)
-    String name;
+    private String name;
 
     @Column(nullable = false)
-    FoodCategory foodCategory;
+    private FoodCategory foodCategory;
 
     @Column(nullable = false)
-    String roadAddressName;
+    private String roadAddressName;
 
-    String tags;
+    private String tags;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wish_list_id", nullable = false)
-    WishList wishList;
+    private WishList wishList;
 
-    public Wish(String name, FoodCategory foodCategory, String roadAddressName, String tags, WishList wishList) {
+    @OneToMany(mappedBy = "wish", cascade = CascadeType.REMOVE)
+    private List<WishPicture> wishPictures = new ArrayList<>();
+
+    public Wish(
+            String name,
+            FoodCategory foodCategory,
+            String roadAddressName,
+            String tags,
+            WishList wishList
+    ) {
         this.name = name;
         this.foodCategory = foodCategory;
         this.roadAddressName = roadAddressName;

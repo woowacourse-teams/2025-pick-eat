@@ -1,10 +1,13 @@
 package com.pickeat.backend.wish.ui;
 
+import com.pickeat.backend.wish.application.WishPictureService;
 import com.pickeat.backend.wish.application.WishService;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.ui.api.WishApiSpec;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class WishController implements WishApiSpec {
 
     private final WishService wishService;
+    private final WishPictureService wishPictureService;
 
     @Override
     @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -30,9 +34,12 @@ public class WishController implements WishApiSpec {
             //TODO: S3 이미지 저장 로직을 추가할때 이미지가 없을 경우 Bad Request가 뜨는 문제 처리하기
             @Valid @ModelAttribute WishRequest request
     ) {
-        //TODO: s3 이미지 저장 로직 추가  (2025-08-1, 금, 15:57)
         WishResponse wishResponse = wishService.createWish(wishListId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(wishResponse);
+        List<WishPictureResponse> wishPictureResponses =
+                wishPictureService.createWishPicture(wishResponse.id(), request.pictures());
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(WishResponse.from(wishResponse, wishPictureResponses));
     }
 
     @Override

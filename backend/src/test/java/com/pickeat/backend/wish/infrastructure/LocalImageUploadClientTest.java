@@ -24,8 +24,8 @@ class LocalImageUploadClientTest {
 
         // then
         assertAll(
-                () -> assertThat(imageUploadResult.getKey()).startsWith(keyPrefix),
-                () -> assertThat(imageUploadResult.getDownloadUrl()).isEqualTo(defaultImageUrl)
+                () -> assertThat(imageUploadResult.key()).startsWith(keyPrefix),
+                () -> assertThat(imageUploadResult.downloadUrl()).isEqualTo(defaultImageUrl)
         );
     }
 }

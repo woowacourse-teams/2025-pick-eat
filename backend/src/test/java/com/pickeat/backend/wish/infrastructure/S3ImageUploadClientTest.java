@@ -60,8 +60,8 @@ class S3ImageUploadClientTest {
             // then
             String expectedDownloadUrl = "https://" + bucketName + ".s3." + region.id() + ".amazonaws.com/" + keyPrefix;
             assertAll(
-                    () -> assertThat(imageUploadResult.getKey()).startsWith(keyPrefix),
-                    () -> assertThat(imageUploadResult.getDownloadUrl()).startsWith(expectedDownloadUrl)
+                    () -> assertThat(imageUploadResult.key()).startsWith(keyPrefix),
+                    () -> assertThat(imageUploadResult.downloadUrl()).startsWith(expectedDownloadUrl)
             );
         }
 
