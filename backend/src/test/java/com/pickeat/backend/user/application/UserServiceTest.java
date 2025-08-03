@@ -34,6 +34,8 @@ class UserServiceTest {
             String provider = "kakao";
             User user = new User("유저", providerId, provider);
             entityManager.persist(user);
+            entityManager.flush();
+            entityManager.clear();
 
             // when & then
             assertThat(userService.isUserExist(providerId, provider)).isTrue();
