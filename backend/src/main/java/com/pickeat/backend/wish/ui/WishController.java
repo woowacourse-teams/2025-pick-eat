@@ -31,7 +31,8 @@ public class WishController implements WishApiSpec {
     @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WishResponse> createWish(
             @PathVariable("wishListId") Long wishListId,
-            //TODO: S3 이미지 저장 로직을 추가할때 이미지가 없을 경우 Bad Request가 뜨는 문제 처리하기
+            //TODO: 이미지가 없을 경우 발생하는 바인딩 예외를 해결하기 위해 리펙토링 필요
+            // (@RequestPart 활용하면 해결이 가능하지만 API 요청 명세를 수정해야함)  (2025-08-3, 일, 17:52)
             @Valid @ModelAttribute WishRequest request
     ) {
         WishResponse wishResponse = wishService.createWish(wishListId, request);
