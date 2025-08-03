@@ -5,9 +5,6 @@ import { ROUTE_PATH } from '@routes/routePath';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
-// TODO : 로그인 대기 로딩 처리 해두기
-// TODO : 서버에서 받은 accessToken 을 로컬스토리지에 저장~
-
 const OauthCallback = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,21 +28,19 @@ const OauthCallback = () => {
           { code }
         );
 
-        if (response?.accessToken) {
+        if (response) {
           localStorage.setItem('accessToken', response.accessToken);
         }
-
-        if (response) {
-          navigate(ROUTE_PATH.HOME, { replace: true });
-        } else {
-          navigate(ROUTE_PATH.QUICK_SIGNUP, { replace: true });
-        }
+        
+        navigate(ROUTE_PATH.HOME, { replace: true });
+      
       } catch (err) {
         if (err instanceof Error && err.message.includes('401')) {
           navigate(ROUTE_PATH.QUICK_SIGNUP, { replace: true });
         } else {
           setError('로그인 중 오류가 발생했습니다.');
           console.error(err);
+          navigate(ROUTE_PATH.LOGIN, { replace: true });
         }
       } finally {
         setLoading(false);
