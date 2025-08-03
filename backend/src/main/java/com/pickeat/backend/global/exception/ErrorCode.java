@@ -15,16 +15,16 @@ public enum ErrorCode {
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "참가자를 찾을 수 없습니다."),
     PARTICIPANT_ALREADY_ELIMINATED(HttpStatus.BAD_REQUEST, "이미 소거된 참가자입니다."),
 
+    // WishList 관련 에러
+    WISHLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "위시리스트를 찾을 수 없습니다."),
+
+    // Wish 관련 에러
+    WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "위시를 찾을 수 없습니다."),
+
     // 도메인 검증 에러
     INVALID_RADIUS(HttpStatus.BAD_REQUEST, "반지름은 1 ~ 20000 사이 양수여야 합니다."),
     INVALID_LATITUDE(HttpStatus.BAD_REQUEST, "위도는 -90도에서 90도 사이여야 합니다."),
     INVALID_LONGITUDE(HttpStatus.BAD_REQUEST, "경도는 -180도에서 180도 사이여야 합니다."),
-
-    //입력 검증 에러
-    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "입력 데이터 검증에 실패했습니다."),
-
-    // 시스템 에러
-    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
 
     // Restaurant 관련 에러
     LIKE_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "이미 좋아요를 취소한 상태입니다."),
@@ -35,6 +35,14 @@ public enum ErrorCode {
     // User 관련 에러
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
     ALREADY_NICKNAME_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다."),
+    // Room 관련 에러
+    ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "방을 찾을 없습니다."),
+
+    //입력 검증 에러
+    VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "입력 데이터 검증에 실패했습니다."),
+
+    // 시스템 에러
+    INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
     ;
 
     private final HttpStatus status;
