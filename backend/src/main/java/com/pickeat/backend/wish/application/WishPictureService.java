@@ -25,7 +25,7 @@ public class WishPictureService {
     public List<WishPictureResponse> createWishPicture(Long wishId, List<MultipartFile> pictures) {
         Wish wish = getWish(wishId);
         List<WishPicture> wishPictures = pictures.stream()
-                .map(this::tryWishImageUpload)
+                .map(this::tryPictureUpload)
                 .filter(Optional::isPresent)
                 .map(uploadResult -> saveWishPicture(wish, uploadResult.get()))
                 .toList();
@@ -37,7 +37,7 @@ public class WishPictureService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
     }
 
-    private Optional<ImageRequest> tryWishImageUpload(MultipartFile image) {
+    private Optional<ImageRequest> tryPictureUpload(MultipartFile image) {
         try {
             return Optional.of(imageUploadClient.uploadImage(image));
         } catch (Exception e) {
