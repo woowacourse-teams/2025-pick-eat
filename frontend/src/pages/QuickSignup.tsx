@@ -6,6 +6,7 @@ import styled from "@emotion/styled";
 
 function QuickSignup() {
     // TODO : 닉네임 입력 후 가입하기 버튼 클릭 시, 서버에 닉네임 전송 및 회원가입 처리
+    // TODO : 로그인 없이 해당 페이지 접속 불가 / 로그인 시에도 기존 닉네임이 있으면 해당 페이지 접속 불가
     return (
         <S.Container>
             <S.Title>닉네임을 짓고<br /> 가입을 완료하세요</S.Title>

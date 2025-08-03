@@ -6,6 +6,7 @@ export const ROUTE_PATH = {
   RESTAURANTS_EXCLUDE: '/restaurants-exclude',
   LOGIN: '/login',
   QUICK_SIGNUP: '/quick-signup',
+  OAUTH_CALLBACK: '/oauth/callback',
 };
 
 export const generateRouterPath = {

@@ -5,12 +5,17 @@ import styled from "@emotion/styled";
 
 // TODO : 추후 .env 에 있는 슬링키한테 받은 REST API 키로 연결해둘것임
 const REST_API_KEY = process.env.KAKAO_API_KEY;
+
 // TODO : 최초 로그인 시 닉네임 리다이렉트, 닉네임있으면 메인으로 리다이렉트
-const redirectUri = "https://pickeat.io.kr";
+
+const kauthUrl = 'https://kauth.kakao.com/oauth/authorize?response_type=code&';
+
+const baseRedirectUrl = process.env.BASE_URL;
+const redirectPath = 'oauth/callback';
 
 function Login() {
     const handleKakaoLoginCLick = () => {
-        window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${redirectUri}`;
+        window.location.href = `${kauthUrl}client_id=${REST_API_KEY}&redirect_uri=${baseRedirectUrl}${redirectPath}`;
     }
     return (
         <S.Container>
