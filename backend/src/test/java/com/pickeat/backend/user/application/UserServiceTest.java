@@ -6,6 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.login.application.dto.SignupRequest;
+import com.pickeat.backend.user.application.dto.UserResponse;
 import com.pickeat.backend.user.domain.User;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -59,13 +60,13 @@ class UserServiceTest {
             String provider = "kakao";
 
             // when
-            User saved = userService.createUser(request, providerId, provider);
+            UserResponse savedUser = userService.createUser(request, providerId, provider);
 
             // then
-            assertThat(saved.getId()).isNotNull();
-            assertThat(saved.getNickname()).isEqualTo("nickname");
-            assertThat(saved.getProviderId()).isEqualTo(2L);
-            assertThat(saved.getProvider()).isEqualTo("kakao");
+            assertThat(savedUser.id()).isNotNull();
+            assertThat(savedUser.nickname()).isEqualTo("nickname");
+            assertThat(savedUser.providerId()).isEqualTo(2L);
+            assertThat(savedUser.provider()).isEqualTo("kakao");
         }
 
         @Test

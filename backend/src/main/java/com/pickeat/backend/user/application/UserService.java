@@ -5,6 +5,7 @@ import static com.pickeat.backend.global.exception.ErrorCode.USER_NOT_FOUND;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.login.application.dto.SignupRequest;
+import com.pickeat.backend.user.application.dto.UserResponse;
 import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +24,11 @@ public class UserService {
     }
 
     @Transactional
-    public User createUser(SignupRequest request, Long providerId, String provider) {
+    public UserResponse createUser(SignupRequest request, Long providerId, String provider) {
         validateDuplicateNickname(request.nickname());
         User user = new User(request.nickname(), providerId, provider);
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return UserResponse.from(savedUser);
     }
 
     private void validateDuplicateNickname(String nickname) {
@@ -35,8 +37,10 @@ public class UserService {
         }
     }
 
-    public User findByNickName(String nickname) {
-        return userRepository.findByNickname(nickname)
+    public UserResponse findByNickName(String nickname) {
+        User user = userRepository.findByNickname(nickname)
                 .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+
+        return UserResponse.from(user);
     }
 }
