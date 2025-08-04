@@ -5,12 +5,12 @@ import { Restaurant } from '@apis/restaurant';
 import styled from '@emotion/styled';
 import { use } from 'react';
 
-type Prop = {
+type Props = {
   //TODO: 백엔드에서 이제 하나로
   resultPromise: Promise<Restaurant[]>;
 };
 
-function Result({ resultPromise }: Prop) {
+function Result({ resultPromise }: Props) {
   const result = use(resultPromise)[0];
 
   return (

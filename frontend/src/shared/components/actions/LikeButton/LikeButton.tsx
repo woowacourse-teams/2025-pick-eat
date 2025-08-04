@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { useExplosion } from './hooks/useExplosion';
 
-type Prop = {
+type Props = {
   id: string;
   count: number;
   onLike: (id: string) => void;
@@ -11,7 +11,7 @@ type Prop = {
   liked: (id: string) => boolean;
 };
 
-function LikeButton({ id, count, onLike, onUnlike, liked }: Prop) {
+function LikeButton({ id, count, onLike, onUnlike, liked }: Props) {
   const { explosionRef, trigger, removeAnimation } = useExplosion();
 
   const handleClick = () => {

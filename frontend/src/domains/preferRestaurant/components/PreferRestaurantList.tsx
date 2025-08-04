@@ -9,11 +9,11 @@ import usePreferRestaurant from '../hooks/usePreferRestaurant';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
 
-type Prop = {
+type Props = {
   preferRestaurantListPromise: Promise<Restaurant[]>;
 };
 
-function PreferRestaurantList({ preferRestaurantListPromise }: Prop) {
+function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
   const initialData = use(preferRestaurantListPromise);
   const { restaurantList, updateSortedRestaurantList } =
     usePreferRestaurant(initialData);

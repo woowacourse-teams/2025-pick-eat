@@ -7,12 +7,12 @@ import styled from '@emotion/styled';
 
 import useLike from '../hooks/useLike';
 
-type Prop = {
+type Props = {
   restaurant: Restaurant;
   onUpdateRestaurant: (content: (prev: Restaurant[]) => Restaurant[]) => void;
 };
 
-function PreferRestaurantItem({ restaurant, onUpdateRestaurant }: Prop) {
+function PreferRestaurantItem({ restaurant, onUpdateRestaurant }: Props) {
   const { isLiked, handleLike, handleUnlike } = useLike(onUpdateRestaurant);
   const { id, name, tags, distance, likeCount, category, placeUrl } =
     restaurant;
