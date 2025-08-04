@@ -1,6 +1,7 @@
 package com.pickeat.backend.login.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.user.domain.User;
 import io.jsonwebtoken.Claims;
@@ -28,14 +29,10 @@ class JwtTokenProviderTest {
 
         // then
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        Claims claims = Jwts.parser()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims = Jwts.parser().setSigningKey(key).build().parseClaimsJws(token).getBody();
 
-        assertThat(claims.getSubject()).isEqualTo("nickname");
-        assertThat(claims.getIssuedAt()).isBeforeOrEqualsTo(new Date());
-        assertThat(claims.getExpiration()).isAfter(new Date());
+        assertAll(() -> assertThat(claims.getSubject()).isEqualTo("nickname"),
+                () -> assertThat(claims.getIssuedAt()).isBeforeOrEqualsTo(new Date()),
+                () -> assertThat(claims.getExpiration()).isAfter(new Date()));
     }
 }
