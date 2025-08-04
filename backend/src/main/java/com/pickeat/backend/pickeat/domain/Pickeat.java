@@ -19,23 +19,27 @@ public class Pickeat extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Embedded
-    private Location location;
-
-    @Embedded
-    private Radius radius;
-
     @Column(nullable = false)
     private Integer participantCount = 0;
 
     @Column(nullable = false)
     private Boolean isActive = true;
 
-    public Pickeat(String name, Location location, Radius radius) {
+    //TODO: 의도적으로 roomId 필드를 nullable하게 두는 것이 최선일지 의심이 드네요..  (2025-08-5, 화, 2:23)
+    private Long roomId;
+
+    private Pickeat(String name, Long roomId) {
         this.name = name;
-        this.location = location;
-        this.radius = radius;
+        this.roomId = roomId;
         this.code = new PickeatCode();
+    }
+
+    public static Pickeat createExternal(String name) {
+        return new Pickeat(name, null);
+    }
+
+    public static Pickeat createInRoom(String name, Long roomId) {
+        return new Pickeat(name, roomId);
     }
 
     public void incrementParticipantCount() {

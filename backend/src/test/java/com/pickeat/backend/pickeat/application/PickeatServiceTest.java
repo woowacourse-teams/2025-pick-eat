@@ -3,14 +3,13 @@ package com.pickeat.backend.pickeat.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
-import com.pickeat.backend.pickeat.domain.Radius;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import java.util.ArrayList;
@@ -32,14 +31,8 @@ public class PickeatServiceTest {
     @Autowired
     private PickeatService pickeatService;
 
-    private Pickeat createDefaultPickeat() {
-        return createPickeat("맛집 찾기", 127.123, 37.456, 150);
-    }
-
-    private Pickeat createPickeat(String name, double x, double y, int distance) {
-        Location location = new Location(x, y);
-        Radius radius = new Radius(distance);
-        Pickeat pickeat = new Pickeat(name, location, radius);
+    private Pickeat createExternalPickeat() {
+        Pickeat pickeat = PickeatFixture.createExternal();
         return testEntityManager.persist(pickeat);
     }
 
@@ -81,10 +74,10 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_생성_성공() {
             // given
-            PickeatRequest pickeatRequest = new PickeatRequest("픽잇", 50.0, 50.0, 100);
+            PickeatRequest pickeatRequest = new PickeatRequest("픽잇");
 
             // when
-            PickeatResponse pickeatResponse = pickeatService.createPickeat(pickeatRequest);
+            PickeatResponse pickeatResponse = pickeatService.createExternalPickeat(pickeatRequest);
             Pickeat savedPickeat = testEntityManager.find(Pickeat.class, pickeatResponse.id());
 
             // then
@@ -98,7 +91,7 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_비활성화_성공() {
             // given
-            Pickeat pickeat = createDefaultPickeat();
+            Pickeat pickeat = createExternalPickeat();
             assertThat(pickeat.getIsActive()).isTrue();
 
             //when
@@ -115,7 +108,7 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_전체_참여자_수와_소거완료_여부_확인_성공() {
             //given
-            Pickeat pickeat = createDefaultPickeat();
+            Pickeat pickeat = createExternalPickeat();
             int totalParticipantCount = 5;
             List<Participant> participants = createParticipantsInPickeat(pickeat, totalParticipantCount);
             int eliminatedParticipantsCount = countEliminatedParticipants(participants);
@@ -139,22 +132,16 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_조회_성공() {
             // given
-            String name = "맛집 찾기";
-            double x = 127.123;
-            double y = 37.456;
-            int distance = 150;
-            Pickeat pickeat = createPickeat(name, x, y, distance);
+            Pickeat pickeat = testEntityManager.persist(createExternalPickeat());
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             PickeatResponse pickeatResponse = pickeatService.getPickeat(pickeat.getCode().toString());
 
             // then
-            assertAll(
-                    () -> assertThat(pickeatResponse.name()).isEqualTo(name),
-                    () -> assertThat(pickeatResponse.x()).isEqualTo(x),
-                    () -> assertThat(pickeatResponse.y()).isEqualTo(y),
-                    () -> assertThat(pickeatResponse.radius()).isEqualTo(distance)
-            );
+            assertThat(pickeatResponse.id()).isEqualTo(pickeat.getId());
+
         }
     }
 
@@ -164,7 +151,7 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_결과_조회_성공() {
             // given
-            Pickeat pickeat = createDefaultPickeat();
+            Pickeat pickeat = createExternalPickeat();
             Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 0);
             Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
             Restaurant restaurant3 = createRestaurantInPickeat(pickeat, 3);
@@ -183,7 +170,7 @@ public class PickeatServiceTest {
         @Test
         void 모든_식당이_소거된_경우_빈_리스트_반환() {
             // given
-            Pickeat pickeat = createDefaultPickeat();
+            Pickeat pickeat = createExternalPickeat();
             Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 2);
             Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 1);
             restaurant1.exclude();
@@ -199,7 +186,7 @@ public class PickeatServiceTest {
         @Test
         void 선호도가_0인_식당만_있을_경우_빈_리스트_반환() {
             // given
-            Pickeat pickeat = createDefaultPickeat();
+            Pickeat pickeat = createExternalPickeat();
             createRestaurantInPickeat(pickeat, 0);
             createRestaurantInPickeat(pickeat, 0);
 
@@ -217,7 +204,7 @@ public class PickeatServiceTest {
         @Test
         void 식당_조회_성공() {
             // given
-            Pickeat pickeat = createDefaultPickeat();
+            Pickeat pickeat = createExternalPickeat();
             createRestaurantInPickeat(pickeat, 0);
             createRestaurantInPickeat(pickeat, 0);
 

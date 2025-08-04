@@ -24,11 +24,11 @@ public class ParticipantService {
     public String createParticipant(ParticipantRequest request) {
         Pickeat pickeat = findPickeatById(request.pickeatId());
         pickeat.incrementParticipantCount();
-
+        
         Participant participant = new Participant(request.nickname(), pickeat);
-        Participant saved = participantRepository.save(participant);
+        participantRepository.save(participant);
 
-        return participantTokenProvider.createToken(saved.getId());
+        return participantTokenProvider.createToken(participant.getId());
     }
 
     private Pickeat findPickeatById(Long pickeatId) {
