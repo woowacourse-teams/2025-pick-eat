@@ -8,6 +8,7 @@ import com.pickeat.backend.user.application.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -61,6 +62,6 @@ public class LoginController implements LoginApiSpec {
 
         String accessToken = loginService.login(providerId, provider);
 
-        return ResponseEntity.ok().body(accessToken);
+        return ResponseEntity.status(HttpStatus.CREATED).body(accessToken);
     }
 }
