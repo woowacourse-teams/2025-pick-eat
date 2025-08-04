@@ -3,7 +3,6 @@ package com.pickeat.backend.wish.ui;
 import com.pickeat.backend.wish.application.WishPictureService;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.wish.ui.api.WishPictureApiSpec;
-import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +25,7 @@ public class WishPictureController implements WishPictureApiSpec {
     @PostMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<WishPictureResponse>> createWishPictures(
             @PathVariable("wishId") Long wishId,
-            @RequestPart("wishPictures") @NotEmpty List<MultipartFile> wishPictures
+            @RequestPart("wishPictures") List<MultipartFile> wishPictures
     ) {
         List<WishPictureResponse> wishPictureResponses = wishPictureService.createWishPicture(wishId, wishPictures);
         return ResponseEntity.status(HttpStatus.CREATED).body(wishPictureResponses);
