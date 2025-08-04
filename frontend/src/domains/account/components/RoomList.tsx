@@ -12,6 +12,8 @@ const MOCK_ROOM_LIST = [
   { roomName: 'Random', memberCount: 5 },
   { roomName: 'Design Team', memberCount: 7 },
   { roomName: 'Developers', memberCount: 10 },
+  { roomName: 'Developers', memberCount: 10 },
+  { roomName: 'Developers', memberCount: 10 },
 ];
 
 function RoomList() {
@@ -19,23 +21,27 @@ function RoomList() {
     <S.Container>
       <S.Description>참여 중인 방</S.Description>
       <S.ListWrapper>
-        {MOCK_ROOM_LIST.map(room => (
-          <S.List key={room.roomName}>
-            <S.RoomInfo>
-              <S.Name>{room.roomName}</S.Name>
-              <S.MemberCount>
-                <People size="xs" color={THEME.PALETTE.gray[60]} />
-                {room.memberCount}명
-              </S.MemberCount>
-            </S.RoomInfo>
+        {MOCK_ROOM_LIST.length > 0 ? (
+          MOCK_ROOM_LIST.map(room => (
+            <S.List key={room.roomName}>
+              <S.RoomInfo>
+                <S.Name>{room.roomName}</S.Name>
+                <S.MemberCount>
+                  <People size="xs" color={THEME.PALETTE.gray[60]} />
+                  {room.memberCount}명
+                </S.MemberCount>
+              </S.RoomInfo>
 
-            <Button
-              text="입장"
-              size="sm"
-              leftIcon={<Enter size="xs" color="white" />}
-            />
-          </S.List>
-        ))}
+              <Button
+                text="입장"
+                size="sm"
+                leftIcon={<Enter size="xs" color="white" />}
+              />
+            </S.List>
+          ))
+        ) : (
+          <S.EmptyDescription>현재 참여 중인 방이 없습니다.</S.EmptyDescription>
+        )}
       </S.ListWrapper>
     </S.Container>
   );
@@ -58,7 +64,6 @@ const S = {
   `,
 
   ListWrapper: styled.ul`
-    height: 80%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
@@ -78,6 +83,11 @@ const S = {
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
+  `,
+
+  EmptyDescription: styled.span`
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    text-align: center;
   `,
 
   RoomInfo: styled.div`
