@@ -19,12 +19,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional(readOnly = true)
 public class WishPictureService {
 
+    private static final List<String> ALLOWED_IMAGE_TYPE = List.of("image/jpeg", "image/png", "image/webp");
+
     private final WishRepository wishRepository;
     private final WishPictureRepository wishPictureRepository;
     private final ImageUploadClient imageUploadClient;
 
     @Transactional
     public List<WishPictureResponse> createWishPicture(Long wishId, List<MultipartFile> pictures) {
+        validateWishPictureFormat(pictures);
         Wish wish = getWish(wishId);
         //TODO: 이미지 업로드 실패시 이미 업로드된 이미지 제거 필요 (2025-08-4, 월, 17:46)
         List<WishPicture> wishPictures = pictures.stream()
@@ -39,9 +42,16 @@ public class WishPictureService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
     }
 
-
     private WishPicture saveWishPicture(Wish wish, ImageRequest uploadResult) {
         WishPicture wishPicture = new WishPicture(wish, uploadResult.key(), uploadResult.downloadUrl());
         return wishPictureRepository.save(wishPicture);
+    }
+
+    private void validateWishPictureFormat(List<MultipartFile> pictures) {
+        for (MultipartFile picture : pictures) {
+            if (!ALLOWED_IMAGE_TYPE.contains(picture.getContentType())) {
+                throw new BusinessException(ErrorCode.NOT_ALLOWED_CONTENT_TYPE);
+            }
+        }
     }
 }

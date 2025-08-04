@@ -32,6 +32,18 @@ public interface WishPictureApiSpec {
                             mediaType = "application/json",
                             schema = @Schema(implementation = WishPictureResponse.class)
                     )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청 데이터 (부적절한 이미지 타입)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = org.springframework.http.ProblemDetail.class),
+                            examples = @io.swagger.v3.oas.annotations.media.ExampleObject(
+                                    name = "부적절한 이미지 타입",
+                                    value = "{\"type\":\"about:blank\",\"title\":\"Bad Request\",\"status\":400,\"detail\":\"이미지 파일만 업로드할 수 있습니다.\",\"instance\":\"/api/v1/wish/1/wishpictures\"}"
+                            )
+                    )
             )
     })
     @PostMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
