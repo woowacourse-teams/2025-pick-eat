@@ -31,7 +31,7 @@ function WishlistGroup() {
     setSelectedWishlistId(id);
   };
 
-  const getSelectedWishlist = WISH_MOCK_DATA.find(
+  const selectedWishlist = WISH_MOCK_DATA.find(
     wishlist => wishlist.id === selectedWishlistId
   );
 
@@ -50,7 +50,7 @@ function WishlistGroup() {
       <Button
         text={
           selectedWishlistId
-            ? `${getSelectedWishlist?.name}으로 픽잇 시작`
+            ? `${selectedWishlist?.name}으로 픽잇 시작`
             : '픽잇 시작하기'
         }
         color="primary"
