@@ -6,7 +6,9 @@ export function usePolling<T>(
     setData,
     interval = 3000,
     enabled = true,
-    errorHandler = (error: Error) => { console.error('Polling error:', error.message); }
+    errorHandler = (error: Error) => {
+      console.error('Polling error:', error.message);
+    },
   }: {
     setData: (data: T) => void;
     interval?: number;
@@ -28,8 +30,8 @@ export function usePolling<T>(
       } catch (err) {
         if (isUnmounted.current) return;
         if (err instanceof Error) {
-            errorHandler(err);
-            return;
+          errorHandler(err);
+          return;
         }
         errorHandler(new Error(String(err)));
       }
