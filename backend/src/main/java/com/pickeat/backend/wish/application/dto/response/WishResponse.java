@@ -36,18 +36,6 @@ public record WishResponse(
         );
     }
 
-    public static WishResponse from(WishResponse wishResponse, List<WishPictureResponse> wishPictureResponses) {
-        return new WishResponse(
-                wishResponse.id(),
-                wishResponse.name(),
-                wishResponse.category(),
-                wishPictureResponses.stream().map(WishPictureResponse::imageDownloadUrl).toList(),
-                wishResponse.roadAddressName(),
-                wishResponse.tags(),
-                wishResponse.wishListId()
-        );
-    }
-
     public static List<WishResponse> from(List<Wish> wishes) {
         return wishes.stream().map(WishResponse::from).toList();
     }

@@ -1,6 +1,7 @@
 package com.pickeat.backend.wish.ui.api;
 
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.request.WishRequests;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,13 +12,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "위시", description = "위시 관련 API")
 public interface WishApiSpec {
@@ -29,8 +31,8 @@ public interface WishApiSpec {
                     description = "생성할 위시 정보",
                     required = true,
                     content = @Content(
-                            mediaType = "multipart/form-data",
-                            schema = @Schema(implementation = WishRequest.class)
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = WishRequests.class)
                     )
             )
     )
@@ -65,10 +67,10 @@ public interface WishApiSpec {
             )
     })
     @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<WishResponse> createWish(
+    ResponseEntity<List<WishResponse>> createWishes(
             @Parameter(description = "위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,
-            @Valid @ModelAttribute WishRequest request
+            @Valid @RequestBody WishRequests requests
     );
 
     @Operation(

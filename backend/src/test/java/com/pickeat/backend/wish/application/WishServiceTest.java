@@ -1,10 +1,12 @@
 package com.pickeat.backend.wish.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.request.WishRequests;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
@@ -38,13 +40,19 @@ class WishServiceTest {
         void 위시_생성_성공() {
             // given
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(1L));
-            WishRequest wishRequest = new WishRequest("위시1", "일식", List.of(), "도로명주소1", List.of("태그1", "태그2"));
+            List<WishRequest> requests = List.of(
+                    new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2")),
+                    new WishRequest("위시2", "일식", "도로명주소2", List.of("태그1", "태그2")));
+            WishRequests wishRequests = new WishRequests(requests);
 
             // when
-            WishResponse response = wishService.createWish(wishList.getId(), wishRequest);
+            List<WishResponse> wishes = wishService.createWishes(wishList.getId(), wishRequests);
 
             // then
-            assertThat(entityManager.find(Wish.class, response.id())).isNotNull();
+            assertAll(
+                    () -> assertThat(wishes).hasSize(2),
+                    () -> assertThat(wishRepository.findAll()).hasSize(2)
+            );
         }
     }
 
