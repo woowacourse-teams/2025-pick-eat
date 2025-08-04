@@ -1,3 +1,4 @@
+import Participant from '@domains/preferRestaurant/components/Participant';
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 
 import Button from '@components/actions/Button';
@@ -5,7 +6,6 @@ import Arrow from '@components/assets/icons/Arrow';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-import useParticipant from '@domains/preferRestaurant/hooks/useParticipant';
 
 import { restaurants } from '@apis/restaurants';
 
@@ -21,7 +21,6 @@ function PreferRestaurantPage() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
-  const { participant } = useParticipant(pickeatCode);
   const navigate = useNavigate();
 
   const handleResultClick = () => {
@@ -40,9 +39,7 @@ function PreferRestaurantPage() {
         <S.Title>
           가고 싶은 식당에 <br /> ❤️를 눌러 투표해 주세요.
         </S.Title>
-        <S.ParticipantInfo>
-          <S.Completed>참여자 총{participant.totalParticipants}명</S.Completed>
-        </S.ParticipantInfo>
+        <Participant pickeatCode={pickeatCode} />
       </S.TitleArea>
 
       <ErrorBoundary>
@@ -107,17 +104,6 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p7}
       ${({ theme }) => theme.PADDING.p6} 0;
-  `,
-
-  ParticipantInfo: styled.div`
-    width: 100%;
-
-    text-align: end;
-  `,
-
-  Completed: styled.p`
-    color: ${({ theme }) => theme.PALETTE.gray[60]};
-    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 
   Footer: styled.div`
