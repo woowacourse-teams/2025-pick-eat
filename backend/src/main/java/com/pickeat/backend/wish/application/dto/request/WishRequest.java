@@ -16,8 +16,9 @@ public record WishRequest(
         @Schema(description = "도로명 주소", example = "서울특별시 강남구 테헤란로 123")
         @NotBlank(message = "도로명주소는 공백을 허용하지 않습니다.")
         String roadAddressName,
-        @Schema(description = "태그 목록", example = "[매운맛, 치즈추가]")
+        @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
         List<String> tags
+        //TODO: 요청 메세지에 tags가 존재하지 않을 경우 500 예외 발생  (2025-08-4, 월, 17:2)
 ) {
 
 }

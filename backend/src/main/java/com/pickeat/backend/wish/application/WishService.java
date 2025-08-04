@@ -30,7 +30,7 @@ public class WishService {
     ) {
         //TODO: 방 도메인이 완성되면 현재 요청자가 현재 위시 리스트가 포함된 방의 참가지인지 검증 필요(2025-08-1, 금, 16:15)
         WishList wishList = getWishList(wishListId);
-        List<Wish> wishes = requests.request().stream()
+        List<Wish> wishes = requests.requests().stream()
                 .map(request -> saveWish(request, wishList))
                 .toList();
         return WishResponse.from(wishes);
