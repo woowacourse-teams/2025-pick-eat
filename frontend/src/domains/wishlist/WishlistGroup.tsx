@@ -23,10 +23,6 @@ function WishlistGroup() {
 
   const [selectedWishlistId, setSelectedWishlistId] = useState('');
 
-  const isSelected = (id: string) => {
-    return selectedWishlistId === id;
-  };
-
   const handleSelectWishlist = (id: string) => {
     setSelectedWishlistId(id);
   };
@@ -42,7 +38,7 @@ function WishlistGroup() {
           <Wishlist
             key={wishlist.id}
             wishlist={wishlist}
-            selected={isSelected(wishlist.id)}
+            selected={selectedWishlistId === wishlist.id}
             onSelect={handleSelectWishlist}
           />
         ))}
