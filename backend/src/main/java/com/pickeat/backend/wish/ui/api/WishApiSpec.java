@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -67,10 +66,10 @@ public interface WishApiSpec {
             )
     })
     @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<List<WishResponse>> createWishes(
+    ResponseEntity<WishResponse> createWish(
             @Parameter(description = "위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,
-            @Valid @RequestBody WishRequests requests
+            @Valid @RequestBody WishRequest request
     );
 
     @Operation(

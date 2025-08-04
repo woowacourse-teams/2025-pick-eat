@@ -1,12 +1,10 @@
 package com.pickeat.backend.wish.ui;
 
-import com.pickeat.backend.wish.application.WishPictureService;
 import com.pickeat.backend.wish.application.WishService;
-import com.pickeat.backend.wish.application.dto.request.WishRequests;
+import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.ui.api.WishApiSpec;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,17 +21,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class WishController implements WishApiSpec {
 
     private final WishService wishService;
-    private final WishPictureService wishPictureService;
 
     @PostMapping(value = "/wishLists/{wishListId}/wishes")
-    public ResponseEntity<List<WishResponse>> createWishes(
+    public ResponseEntity<WishResponse> createWish(
             @PathVariable("wishListId") Long wishListId,
-            @Valid @RequestBody WishRequests requests
+            @Valid @RequestBody WishRequest request
     ) {
-        List<WishResponse> wishResponses = wishService.createWishes(wishListId, requests);
+        WishResponse wishResponse = wishService.createWish(wishListId, request);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(wishResponses);
+                .body(wishResponse);
     }
 
     @Override
