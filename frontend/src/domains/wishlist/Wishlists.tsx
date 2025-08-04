@@ -49,12 +49,12 @@ function Wishlists() {
       </S.WishlistWrapper>
       <Button
         text={
-          selectedWishlistId === ''
-            ? '시작하기'
-            : `${getSelectedWishlist?.name}으로 시작하기`
+          selectedWishlistId
+            ? `${getSelectedWishlist?.name}으로 픽잇 시작`
+            : '픽잇 시작하기'
         }
         color="primary"
-        disabled={selectedWishlistId === ''}
+        disabled={!selectedWishlistId}
       />
     </>
   );
