@@ -6,13 +6,13 @@ import styled from '@emotion/styled';
 import { use } from 'react';
 
 type Prop = {
-  //백엔드에서 이제 하나로
+  //TODO: 백엔드에서 이제 하나로
   resultPromise: Promise<Restaurant[]>;
 };
 
 function Result({ resultPromise }: Prop) {
   const result = use(resultPromise)[0];
-  console.log(result);
+
   return (
     <>
       <S.Name>{result.name}</S.Name>{' '}
