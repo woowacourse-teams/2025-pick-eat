@@ -1,0 +1,29 @@
+import { SIZE_MAP, SizeType } from './constants';
+
+type Props = {
+  size: SizeType;
+  color?: string;
+};
+
+function Person({ size, color = 'black' }: Props) {
+  return (
+    <svg
+      width={SIZE_MAP[size]}
+      height={SIZE_MAP[size]}
+      id="glyph"
+      viewBox="0 0 32 32"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="m16 15.36c3.68 0 6.67-2.99 6.67-6.67s-2.99-6.66-6.67-6.66-6.67 2.99-6.67 6.66 2.99 6.67 6.67 6.67z"
+        fill={color}
+      />
+      <path
+        d="m4.68 29.97h22.64c.55 0 1-.45 1-1v-3.09c0-5.09-4.14-9.23-9.22-9.23h-6.2c-5.08 0-9.22 4.14-9.22 9.23v3.09c0 .55.45 1 1 1z"
+        fill={color}
+      />
+    </svg>
+  );
+}
+
+export default Person;
