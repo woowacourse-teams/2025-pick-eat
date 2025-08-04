@@ -8,7 +8,7 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
-  const sortByLike = (restaurantList: Restaurant[]) => {
+  const sortRestaurants = (restaurantList: Restaurant[]) => {
     return restaurantList.sort((a, b) => {
       if (b.likeCount !== a.likeCount) {
         return b.likeCount - a.likeCount;
@@ -19,13 +19,13 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
   };
 
   const [restaurantList, setRestaurantList] = useState<Restaurant[]>(() =>
-    sortByLike(initialData)
+    sortRestaurants(initialData)
   );
 
   const updateSortedRestaurantList = (
     content: (prev: Restaurant[]) => Restaurant[]
   ) => {
-    setRestaurantList(prev => sortByLike(content(prev)));
+    setRestaurantList(prev => sortRestaurants(content(prev)));
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
         isExcluded: 'false',
       });
       if (!isUnmounted && response) {
-        setRestaurantList(sortByLike(response));
+        setRestaurantList(sortRestaurants(response));
       }
     };
 
