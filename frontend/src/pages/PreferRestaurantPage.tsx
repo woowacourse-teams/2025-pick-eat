@@ -127,9 +127,10 @@ const S = {
     align-items: center;
     position: sticky;
     bottom: 0;
-    background-color: white;
 
     padding: ${({ theme }) => theme.PADDING.p4};
+
+    background-color: white;
     border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 

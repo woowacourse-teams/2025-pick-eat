@@ -26,10 +26,13 @@ const S = {
   Container: styled.div<{ selected: boolean }>`
     height: 90px;
     border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
+
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     padding: ${({ theme }) => theme.PADDING.p7};
+
     background-color: ${({ selected, theme }) =>
       selected && theme.PALETTE.secondary[10]};
 
@@ -48,7 +51,7 @@ const S = {
   `,
 
   Name: styled.span`
-    font: ${({ theme }) => theme.FONTS.heading.small};
     color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.heading.small};
   `,
 };
