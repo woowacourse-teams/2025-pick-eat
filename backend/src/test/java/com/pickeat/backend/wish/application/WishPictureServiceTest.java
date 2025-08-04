@@ -1,6 +1,7 @@
 package com.pickeat.backend.wish.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -81,14 +82,9 @@ class WishPictureServiceTest {
             Wish wish = makeWish();
             List<MultipartFile> pictures = List.of(mock(MultipartFile.class), mock(MultipartFile.class));
 
-            // when
-            List<WishPictureResponse> responses = wishPictureService.createWishPicture(wish.getId(), pictures);
-
-            // then
-            assertAll(
-                    () -> assertThat(responses).hasSize(1),
-                    () -> assertThat(wishPictureRepository.findAll()).hasSize(1)
-            );
+            // when & then
+            assertThatThrownBy(() -> wishPictureService.createWishPicture(wish.getId(), pictures))
+                    .isInstanceOf(S3Exception.class);
         }
     }
 }

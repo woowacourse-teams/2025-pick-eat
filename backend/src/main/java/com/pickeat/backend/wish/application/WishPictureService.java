@@ -9,25 +9,26 @@ import com.pickeat.backend.wish.domain.WishPicture;
 import com.pickeat.backend.wish.domain.repository.WishPictureRepository;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
 import java.util.List;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class WishPictureService {
 
     private final WishRepository wishRepository;
     private final WishPictureRepository wishPictureRepository;
     private final ImageUploadClient imageUploadClient;
 
+    @Transactional
     public List<WishPictureResponse> createWishPicture(Long wishId, List<MultipartFile> pictures) {
         Wish wish = getWish(wishId);
         List<WishPicture> wishPictures = pictures.stream()
-                .map(this::tryPictureUpload)
-                .filter(Optional::isPresent)
-                .map(uploadResult -> saveWishPicture(wish, uploadResult.get()))
+                .map(imageUploadClient::uploadImage)
+                .map(uploadResult -> saveWishPicture(wish, uploadResult))
                 .toList();
         return WishPictureResponse.from(wishPictures);
     }
@@ -37,13 +38,6 @@ public class WishPictureService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
     }
 
-    private Optional<ImageRequest> tryPictureUpload(MultipartFile image) {
-        try {
-            return Optional.of(imageUploadClient.uploadImage(image));
-        } catch (Exception e) {
-            return Optional.empty();
-        }
-    }
 
     private WishPicture saveWishPicture(Wish wish, ImageRequest uploadResult) {
         WishPicture wishPicture = new WishPicture(wish, uploadResult.key(), uploadResult.downloadUrl());
