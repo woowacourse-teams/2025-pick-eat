@@ -1,7 +1,6 @@
 package com.pickeat.backend.wish.ui.api;
 
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
-import com.pickeat.backend.wish.application.dto.request.WishRequests;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -31,7 +30,7 @@ public interface WishApiSpec {
                     required = true,
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = WishRequests.class)
+                            schema = @Schema(implementation = WishRequest.class)
                     )
             )
     )
@@ -65,7 +64,7 @@ public interface WishApiSpec {
                     )
             )
     })
-    @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/wishLists/{wishListId}/wishes")
     ResponseEntity<WishResponse> createWish(
             @Parameter(description = "위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,

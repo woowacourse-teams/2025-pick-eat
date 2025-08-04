@@ -26,6 +26,7 @@ public class WishPictureService {
     @Transactional
     public List<WishPictureResponse> createWishPicture(Long wishId, List<MultipartFile> pictures) {
         Wish wish = getWish(wishId);
+        //TODO: 이미지 업로드 실패시 이미 업로드된 이미지 제거 필요 (2025-08-4, 월, 17:46)
         List<WishPicture> wishPictures = pictures.stream()
                 .map(imageUploadClient::uploadImage)
                 .map(uploadResult -> saveWishPicture(wish, uploadResult))

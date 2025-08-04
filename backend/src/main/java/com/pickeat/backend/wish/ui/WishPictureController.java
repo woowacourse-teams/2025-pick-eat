@@ -2,6 +2,7 @@ package com.pickeat.backend.wish.ui;
 
 import com.pickeat.backend.wish.application.WishPictureService;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
+import com.pickeat.backend.wish.ui.api.WishPictureApiSpec;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("api/v1")
 @RequiredArgsConstructor
-public class WishPictureController {
+public class WishPictureController implements WishPictureApiSpec {
 
     private final WishPictureService wishPictureService;
 
