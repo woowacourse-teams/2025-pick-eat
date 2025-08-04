@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +18,6 @@ import java.util.List;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "픽잇 관리", description = "식당 선택 픽잇 관리 API")
@@ -26,9 +26,10 @@ public interface PickeatApiSpec {
     String 픽잇_코드_UUID_형식 = "픽잇 코드 (UUID 형식)";
 
     @Operation(
-            summary = "새 픽잇 생성",
-            operationId = "createPickeat",
-            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            summary = "외부용 새 픽잇 생성",
+            description = "로그인 없이 외부 사용자를 위해 새로운 픽잇을 생성합니다.",
+            operationId = "createExternalPickeat",
+            requestBody = @RequestBody(
                     description = "픽잇 생성 정보",
                     required = true,
                     content = @Content(
@@ -86,7 +87,65 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<PickeatResponse> createPickeat(@Valid @RequestBody PickeatRequest request);
+    ResponseEntity<PickeatResponse> createExternalPickeat(@Valid @org.springframework.web.bind.annotation.RequestBody PickeatRequest request);
+
+
+    @Operation(
+            summary = "방 내부용 새 픽잇 생성",
+            description = "특정 방(Room) 내에서 사용자를 위해 새로운 픽잇을 생성합니다. (로그인 필요)",
+            operationId = "createPickeatInRoom",
+            requestBody = @RequestBody(
+                    description = "픽잇 생성 정보",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PickeatRequest.class)
+                    )
+            )
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "픽잇 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PickeatResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "존재하지 않는 방",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "ROOM_NOT_FOUND",
+                                              "status": 404,
+                                              "detail": "방을 찾을 수 없습니다.",
+                                              "instance": "/api/v1/rooms/1/pickeats"
+                                            }
+                                            """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청 데이터",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class)
+                    )
+            )
+    })
+    ResponseEntity<PickeatResponse> createPickeatInRoom(
+            @Parameter(description = "방 ID") @PathVariable("roomId") Long roomId,
+            @Parameter(hidden = true) Long userId,
+            @Valid @org.springframework.web.bind.annotation.RequestBody PickeatRequest request
+    );
+
 
     @Operation(
             summary = "참여자 상태 요약 조회",

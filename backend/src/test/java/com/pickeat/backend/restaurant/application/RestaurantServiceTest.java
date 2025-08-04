@@ -42,7 +42,7 @@ class RestaurantServiceTest {
         @Test
         void 식당_생성_성공() {
             // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createExternal());
             Long pickeatId = pickeat.getId();
             List<RestaurantRequest> restaurantRequests = List.of(createRestaurantRequest(), createRestaurantRequest());
 
@@ -72,7 +72,7 @@ class RestaurantServiceTest {
         @Test
         void 식당_소거_성공() {
             // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createExternal());
             List<Restaurant> restaurants = List.of(
                     entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(pickeat)),
@@ -95,8 +95,8 @@ class RestaurantServiceTest {
         @Test
         void 조회된_식당의_픽잇이_서로_다를_경우_예외() {
             // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
-            Pickeat otherPickeat = entityManager.persist(PickeatFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createExternal());
+            Pickeat otherPickeat = entityManager.persist(PickeatFixture.createExternal());
             List<Restaurant> restaurants = List.of(
                     entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(otherPickeat)));
@@ -114,7 +114,7 @@ class RestaurantServiceTest {
         @Test
         void 비활성화된_픽잇의_식당을_소거하려고_할_경우_예외() {
             // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createExternal());
             List<Restaurant> restaurants = List.of(
                     entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(pickeat)));
@@ -138,7 +138,7 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호_선택_성공() {
             // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createExternal());
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             Integer originCount = restaurant.getLikeCount();
 
@@ -160,7 +160,7 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호_취소_성공() {
             // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createExternal());
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             restaurant.like();
             Integer originCount = restaurant.getLikeCount();
@@ -179,7 +179,7 @@ class RestaurantServiceTest {
         @Test
         void 식당_선호수가_0이하일_경우_예외() {
             // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createExternal());
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
 
             entityManager.flush();
