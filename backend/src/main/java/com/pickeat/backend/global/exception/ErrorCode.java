@@ -35,11 +35,23 @@ public enum ErrorCode {
     FORBIDDEN_PICKEAT(HttpStatus.UNAUTHORIZED, "식당의 픽잇이 올바르지 않습니다."),
     RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "식당을 찾을 수 없습니다."),
 
+    // User 관련 에러
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
+    ALREADY_NICKNAME_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다."),
+    SIGN_UP_REQUIRED(HttpStatus.UNAUTHORIZED, "회원가입이 필요한 계정입니다."),
+
     // Room 관련 에러
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "방을 찾을 없습니다."),
 
     //입력 검증 에러
     VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "입력 데이터 검증에 실패했습니다."),
+
+    // 헤더 관련 에러
+    HEADER_IS_EMPTY(HttpStatus.UNAUTHORIZED, "인증 헤더가 존재하지 않습니다."),
+
+    // Jwt 관련 에러
+    TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."),
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 인증 정보입니다."),
 
     // 시스템 에러
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
