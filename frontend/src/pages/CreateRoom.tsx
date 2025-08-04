@@ -32,9 +32,9 @@ export type Member = {
 function CreateRoom() {
   const [inviteMembers, setInviteMembers] = useState<Member[]>(MOCK_DATA);
 
-  const handleAddMember = (member: Member) => {
-    setInviteMembers(prev => [...prev, member]);
-  };
+  // const handleAddMember = (member: Member) => {
+  //   setInviteMembers(prev => [...prev, member]);
+  // };
 
   const handleDeleteMember = (id: number) => {
     setInviteMembers(prev => prev.filter(member => member.id !== id));
