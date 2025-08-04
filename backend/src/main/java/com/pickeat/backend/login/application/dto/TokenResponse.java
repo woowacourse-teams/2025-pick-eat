@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record KakaoTokenResponse(
+public record TokenResponse(
 
         @JsonProperty("token_type")
         String tokenType,

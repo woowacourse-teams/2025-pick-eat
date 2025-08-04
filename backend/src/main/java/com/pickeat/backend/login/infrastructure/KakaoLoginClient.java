@@ -5,7 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.global.exception.ExternalApiException;
-import com.pickeat.backend.login.application.dto.KakaoTokenResponse;
+import com.pickeat.backend.login.application.LoginClient;
+import com.pickeat.backend.login.application.dto.TokenResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.web.client.RestClientException;
 
 
 @RequiredArgsConstructor
-public class KakaoLoginClient {
+public class KakaoLoginClient implements LoginClient {
 
     private static final String URI = "/oauth/token?grant_type=authorization_code&client_id=%s&redirect_uri=%s&code=%s";
     private static final String PLATFORM_NAME = "kakao";
@@ -26,7 +27,8 @@ public class KakaoLoginClient {
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
-    public String getIdTokenFromKakao(String code) {
+    @Override
+    public String getIdToken(String code) {
         String uri = String.format(URI, clientId, redirectUrl, code);
 
         try {
@@ -36,11 +38,11 @@ public class KakaoLoginClient {
         }
     }
 
-    private KakaoTokenResponse callApi(String uri) {
+    private TokenResponse callApi(String uri) {
 
         return restClient.post().uri(uri).retrieve()
                 .onStatus(HttpStatusCode::isError, (request, response) -> handleError(response))
-                .body(KakaoTokenResponse.class);
+                .body(TokenResponse.class);
     }
 
     private void handleError(ClientHttpResponse response) {

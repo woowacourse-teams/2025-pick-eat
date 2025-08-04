@@ -1,6 +1,6 @@
 package com.pickeat.backend.login.ui.api;
 
-import com.pickeat.backend.login.application.dto.KakaoAuthCodeRequest;
+import com.pickeat.backend.login.application.dto.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.SignupRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,18 +13,18 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 
-@Tag(name = "카카오 로그인", description = "카카오 OAuth 기반 인증 및 회원가입 API")
-public interface KakaoLoginApiSpec {
+@Tag(name = "로그인", description = "OAuth 기반 인증 및 회원가입 API")
+public interface LoginApiSpec {
 
     @Operation(
-            summary = "카카오 인증 코드 처리",
+            summary = "인증 코드 처리",
             operationId = "processKakaoCode",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "카카오 인가 코드",
+                    description = "인가 코드",
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = KakaoAuthCodeRequest.class),
+                            schema = @Schema(implementation = AuthCodeRequest.class),
                             examples = @ExampleObject(value = "{\"code\": \"abc123\"}")
                     )
             )
@@ -51,10 +51,10 @@ public interface KakaoLoginApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> processKakaoCode(KakaoAuthCodeRequest request, HttpSession session);
+    ResponseEntity<Void> processKakaoCode(AuthCodeRequest request, HttpSession session);
 
     @Operation(
-            summary = "카카오 로그인 처리",
+            summary = "로그인 처리",
             operationId = "kakaoLogin"
     )
     //TODO: 현재 헤더를 통해서 JWT를 보내고 있으므로 명확한 API SPEC 수정 필요
@@ -93,7 +93,7 @@ public interface KakaoLoginApiSpec {
     ResponseEntity<String> login(HttpSession session);
 
     @Operation(
-            summary = "카카오 회원가입",
+            summary = "회원가입",
             operationId = "signup",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "회원가입 요청 정보",
