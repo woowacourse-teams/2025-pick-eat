@@ -1,8 +1,7 @@
 import Button from '@components/actions/Button';
 
-import { Wishlist } from '@pages/ChooseWishlist';
-
 import styled from '@emotion/styled';
+import { Wishlist } from '@pages/ChooseWishlist';
 
 type Prop = {
   wishlist: Wishlist;
@@ -26,11 +25,10 @@ export default Wishlist;
 const S = {
   Container: styled.div<{ selected: boolean }>`
     height: 90px;
-    border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
 
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
 
     padding: ${({ theme }) => theme.PADDING.p7};
 
@@ -49,6 +47,8 @@ const S = {
         background-color: ${theme.PALETTE.secondary[20]};
         }
     `};
+
+    border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 
   Name: styled.span`
