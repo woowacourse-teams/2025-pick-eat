@@ -31,16 +31,16 @@ public class UserService {
         return UserResponse.from(savedUser);
     }
 
-    private void validateDuplicateNickname(String nickname) {
-        if (userRepository.existsByNickname(nickname)) {
-            throw new BusinessException(ALREADY_NICKNAME_EXISTS);
-        }
-    }
-
     public UserResponse findByNickName(String nickname) {
         User user = userRepository.findByNickname(nickname)
                 .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
 
         return UserResponse.from(user);
+    }
+
+    private void validateDuplicateNickname(String nickname) {
+        if (userRepository.existsByNickname(nickname)) {
+            throw new BusinessException(ALREADY_NICKNAME_EXISTS);
+        }
     }
 }
