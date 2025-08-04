@@ -21,4 +21,6 @@ public class KakaoLoginApiProperties {
     private Integer readTimeout;
     @NotNull(message = "connectTimeout이 누락되었습니다.")
     private Integer connectTimeout;
+    @NotBlank(message = "redirectUrl이 누락되었습니다.")
+    private String redirectUrl;
 }

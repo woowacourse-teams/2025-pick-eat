@@ -20,15 +20,14 @@ public class KakaoLoginClient {
 
     private static final String URI = "/oauth/token?grant_type=authorization_code&client_id=%s&redirect_uri=%s&code=%s";
     private static final String PLATFORM_NAME = "kakao";
-    //TODO: 프론트에서 URI가 설정되면 수정될 내용. applicaiton.properties에서 관리 예정
-    private static final String REDIRECT_URI = "http://localhost:8080/callback";
 
     private final String clientId;
+    private final String redirectUrl;
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
     public String getIdTokenFromKakao(String code) {
-        String uri = String.format(URI, clientId, REDIRECT_URI, code);
+        String uri = String.format(URI, clientId, redirectUrl, code);
 
         try {
             return callApi(uri).idToken();

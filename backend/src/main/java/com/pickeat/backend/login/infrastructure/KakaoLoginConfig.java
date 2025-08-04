@@ -14,15 +14,15 @@ public class KakaoLoginConfig {
     private final ObjectMapper objectMapper;
 
     @Bean
-    public KakaoLoginClient kakaoLoginClient(KakaoLoginApiProperties kakaoLoginApiProperties) {
+    public KakaoLoginClient kakaoLoginClient(KakaoLoginApiProperties properties) {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(kakaoLoginApiProperties.getConnectTimeout());
-        factory.setReadTimeout(kakaoLoginApiProperties.getReadTimeout());
+        factory.setConnectTimeout(properties.getConnectTimeout());
+        factory.setReadTimeout(properties.getReadTimeout());
 
         RestClient restClient = RestClient.builder().requestFactory(factory)
-                .baseUrl(kakaoLoginApiProperties.getBaseUrl())
+                .baseUrl(properties.getBaseUrl())
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8").build();
 
-        return new KakaoLoginClient(kakaoLoginApiProperties.getRestApiKey(), restClient, objectMapper);
+        return new KakaoLoginClient(properties.getRestApiKey(), properties.getRedirectUrl(), restClient, objectMapper);
     }
 }
