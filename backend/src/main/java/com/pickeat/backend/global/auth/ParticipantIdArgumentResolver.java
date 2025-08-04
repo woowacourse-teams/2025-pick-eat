@@ -15,6 +15,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResolver {
 
+    private static final String PREFIX = "Bearer ";
     private final ParticipantTokenProvider participantTokenProvider;
 
     @Override
@@ -30,11 +31,11 @@ public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResol
         String authHeader = webRequest.getHeader("Pickeat-Participant-Token");
 
         //TODO: return null 방식 추가 고려
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(PREFIX)) {
             throw new BusinessException(ErrorCode.HEADER_IS_EMPTY);
         }
 
-        String token = authHeader.substring(7);
+        String token = authHeader.substring(PREFIX.length());
 
         return participantTokenProvider.getParticipantId(token);
     }
