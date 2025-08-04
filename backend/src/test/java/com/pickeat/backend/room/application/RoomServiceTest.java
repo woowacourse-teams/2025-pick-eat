@@ -1,15 +1,20 @@
 package com.pickeat.backend.room.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.RoomFixture;
+import com.pickeat.backend.fixture.UserFixture;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
+import com.pickeat.backend.user.domain.User;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -30,9 +35,9 @@ class RoomServiceTest {
     @Autowired
     private RoomUserRepository roomUserRepository;
 
-    private Room createRoom(Long userId) {
+    private Room createRoom(User user) {
         Room room = testEntityManager.persist(RoomFixture.create());
-        testEntityManager.persist(new RoomUser(room, userId));
+        testEntityManager.persist(new RoomUser(room, user));
         return room;
     }
 
@@ -42,11 +47,13 @@ class RoomServiceTest {
         @Test
         void 방_생성_성공() {
             // given
-            Long userId = 1L;
+            User user = testEntityManager.persist(UserFixture.create());
             RoomRequest request = new RoomRequest("테스트");
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
-            RoomResponse response = roomService.createRoom(request, userId);
+            RoomResponse response = roomService.createRoom(request, user.getId());
 
             // then
             Room savedRoom = testEntityManager.find(Room.class, response.id());
@@ -58,15 +65,15 @@ class RoomServiceTest {
     class 방_조회_케이스 {
 
         @Test
-        void 방_단일_조회() {
+        void 방_단일_조회_성공() {
             // given
-            Long userId = 1L;
-            Room room = createRoom(userId);
+            User user = testEntityManager.persist(UserFixture.create());
+            Room room = createRoom(user);
             testEntityManager.flush();
             testEntityManager.clear();
 
             // when
-            RoomResponse response = roomService.getRoom(room.getId());
+            RoomResponse response = roomService.getRoom(room.getId(), user.getId());
 
             // then
             assertAll(
@@ -76,18 +83,34 @@ class RoomServiceTest {
         }
 
         @Test
+        void 속하지_않은_방_조회시_예외() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            User otherUser = testEntityManager.persist(UserFixture.create());
+            Room room = createRoom(otherUser);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when && then
+            assertThatThrownBy(() -> roomService.getRoom(room.getId(), user.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.ROOM_ACCESS_DENIED.getMessage());
+        }
+
+        @Test
         void 유저가_속한_방_조회() {
             // given
-            Long userId = 1L;
-            Long otherUserId = 2L;
-            Room room1 = createRoom(userId);
-            Room room2 = createRoom(userId);
-            Room room3 = createRoom(otherUserId);
+            User user = testEntityManager.persist(UserFixture.create());
+            User otherUser = testEntityManager.persist(UserFixture.create());
+            Room room1 = createRoom(user);
+            Room room2 = createRoom(user);
+            Room room3 = createRoom(otherUser);
 
             testEntityManager.flush();
             testEntityManager.clear();
             // when
-            List<RoomResponse> response = roomService.getAllRoom(userId);
+            List<RoomResponse> response = roomService.getAllRoom(user.getId());
 
             // then
             assertThat(response).hasSize(2);
@@ -100,20 +123,45 @@ class RoomServiceTest {
         @Test
         void 방_초대_성공() {
             // given
-            Long userId = 1L;
-            Room room = createRoom(userId);
-            List<Long> userIdsForInvitation = List.of(2L, 3L, 4L);
+            User user = testEntityManager.persist(UserFixture.create());
+            User invitedUser1 = testEntityManager.persist(UserFixture.create());
+            User invitedUser2 = testEntityManager.persist(UserFixture.create());
+            User invitedUser3 = testEntityManager.persist(UserFixture.create());
+
+            Room room = createRoom(user);
+            List<Long> userIdsForInvitation = List.of(invitedUser1.getId(), invitedUser2.getId(), invitedUser3.getId());
             RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
 
             testEntityManager.flush();
             testEntityManager.clear();
 
             // when
-            roomService.inviteUsers(room.getId(), request);
+            roomService.inviteUsers(room.getId(), user.getId(), request);
 
             // then
             List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
             assertThat(roomUsers).hasSize(4);
+        }
+
+        @Test
+        void 속하지_않은_방에_초대시_예외() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            User otherUser = testEntityManager.persist(UserFixture.create());
+            User invitedUser = testEntityManager.persist(UserFixture.create());
+
+            Room room = createRoom(otherUser);
+            List<Long> userIdsForInvitation = List.of(invitedUser.getId());
+            RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when && then
+            assertThatThrownBy(() -> roomService.inviteUsers(room.getId(), user.getId(), request))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.ROOM_ACCESS_DENIED.getMessage());
+
         }
     }
 }

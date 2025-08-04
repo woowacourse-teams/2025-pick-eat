@@ -1,6 +1,7 @@
 package com.pickeat.backend.room.domain;
 
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.user.domain.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -17,11 +18,12 @@ public class RoomUser extends BaseEntity {
     @JoinColumn(name = "room_id", nullable = false)
     private Room room;
 
-    //TODO: [P0] User 생긴 이후 직접 참조로 바꾸기  (2025-08-1, 금, 13:58)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public RoomUser(Room room, Long userId) {
+    public RoomUser(Room room, User user) {
         this.room = room;
-        this.userId = userId;
+        this.user = user;
     }
 }
