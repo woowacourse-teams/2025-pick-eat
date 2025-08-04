@@ -14,6 +14,7 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeR
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -43,11 +44,10 @@ class RestaurantServiceTest {
         void 식당_생성_성공() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createExternal());
-            Long pickeatId = pickeat.getId();
             List<RestaurantRequest> restaurantRequests = List.of(createRestaurantRequest(), createRestaurantRequest());
 
             // when
-            restaurantService.create(restaurantRequests, pickeatId);
+            restaurantService.create(restaurantRequests, pickeat.getCode().toString());
 
             // then
             assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false)).hasSize(2);
@@ -61,7 +61,9 @@ class RestaurantServiceTest {
                     "테스트도로명주소",
                     new Location(10.0, 10.0),
                     "테스트url",
-                    "테스트태그"
+                    "테스트태그",
+                    null,
+                    RestaurantType.LOCATION
             );
         }
     }

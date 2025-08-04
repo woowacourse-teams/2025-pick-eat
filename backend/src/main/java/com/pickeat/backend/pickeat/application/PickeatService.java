@@ -75,11 +75,6 @@ public class PickeatService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
     }
 
-    public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded) {
-        Pickeat pickeat = findPickeatByCode(pickeatCode);
-        return RestaurantResponse.from(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, isExcluded));
-    }
-
     private void validateUserAccessToRoom(Long roomId, Long userId) {
         if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
             throw new BusinessException(ErrorCode.ROOM_ACCESS_DENIED);

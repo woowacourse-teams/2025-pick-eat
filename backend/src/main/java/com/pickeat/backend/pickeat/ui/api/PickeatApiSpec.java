@@ -18,7 +18,6 @@ import java.util.List;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Tag(name = "픽잇 관리", description = "식당 선택 픽잇 관리 API")
 public interface PickeatApiSpec {
@@ -87,7 +86,8 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<PickeatResponse> createExternalPickeat(@Valid @org.springframework.web.bind.annotation.RequestBody PickeatRequest request);
+    ResponseEntity<PickeatResponse> createExternalPickeat(
+            @Valid @org.springframework.web.bind.annotation.RequestBody PickeatRequest request);
 
 
     @Operation(
@@ -314,47 +314,5 @@ public interface PickeatApiSpec {
     ResponseEntity<List<RestaurantResponse>> getPickeatResult(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode
-    );
-
-    @Operation(
-            summary = "픽잇 식당 목록 조회",
-            operationId = "getPickeatRestaurants"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "식당 목록 조회 성공",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = RestaurantResponse[].class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "존재하지 않는 픽잇",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "픽잇 없음",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "PICKEAT_NOT_FOUND",
-                                              "status": 404,
-                                              "detail": "픽잇을 찾을 수 없습니다.",
-                                              "instance": "/api/v1/pickeats/ABC123/restaurants"
-                                            }
-                                            """
-                            )
-                    )
-            )
-    })
-    ResponseEntity<List<RestaurantResponse>> getPickeatRestaurants(
-            @Parameter(description = 픽잇_코드_UUID_형식)
-            @PathVariable("pickeatCode") String pickeatCode,
-
-            @Parameter(description = "소거 여부 필터 ( --: 전체 식당 조회, true: 소거된 식당만, false: 소거되지 않은 식당만)")
-            @RequestParam(required = false) Boolean isExcluded
     );
 }

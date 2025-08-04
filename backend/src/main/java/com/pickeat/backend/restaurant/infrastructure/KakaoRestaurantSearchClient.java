@@ -10,6 +10,7 @@ import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.restaurant.domain.RestaurantType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,7 +82,9 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
                             document.path("road_address_name").asText(),
                             new Location(document.path("x").asDouble(), document.path("y").asDouble()),
                             document.path("place_url").asText(),
-                            extractTags(document.path("category_name").asText())
+                            extractTags(document.path("category_name").asText()),
+                            null,
+                            RestaurantType.LOCATION
                     )
             );
         }
