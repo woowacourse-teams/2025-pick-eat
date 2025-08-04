@@ -10,9 +10,8 @@ const useLike = (
 ) => {
   const [likedIds, setLikedIds] = useState<string[]>([]);
 
-  const isLiked = (id: string) => {
-    return likedIds.some((likedId: string) => likedId === id);
-  };
+  const isLiked = (id: string) =>
+    likedIds.some((likedId: string) => likedId === id);
 
   const handleLike = async (id: string) => {
     updateSortedRestaurantList(prev =>
