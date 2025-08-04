@@ -1,3 +1,5 @@
+import Search from '@components/assets/icons/Search';
+
 import styled from '@emotion/styled';
 import { ComponentProps, ReactNode } from 'react';
 
@@ -13,8 +15,9 @@ function SearchBar({ children, ...props }: Props) {
     <S.Container>
       <S.InputWrapper>
         <Input {...props} />
-        {/* TODO: SVG 아이콘으로 변경 */}
-        <S.SearchIcon>🔍</S.SearchIcon>
+        <S.SearchIcon>
+          <Search size="sm" />
+        </S.SearchIcon>
       </S.InputWrapper>
       {children && <S.ListSection>{children}</S.ListSection>}
     </S.Container>
@@ -34,7 +37,7 @@ const S = {
   SearchIcon: styled.div`
     position: absolute;
     right: 10px;
-    bottom: 20px;
+    bottom: 15px;
   `,
 
   ListSection: styled.ul`
