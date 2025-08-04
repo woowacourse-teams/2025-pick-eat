@@ -29,13 +29,11 @@ public class Restaurant extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private FoodCategory foodCategory;
 
-    @Column(nullable = false)
     private Integer distance;
 
     @Column(nullable = false)
     private String roadAddressName;
 
-    @Column(nullable = false)
     private String placeUrl;
 
     @Column(nullable = false)
@@ -50,27 +48,27 @@ public class Restaurant extends BaseEntity {
     @Embedded
     private Location location;
 
+    private String pictureUrls;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RestaurantType type;
+
     @ManyToOne
     @JoinColumn(name = "pickeat_id", nullable = false)
     private Pickeat pickeat;
 
-    public Restaurant(
-            String name,
-            FoodCategory foodCategory,
-            Integer distance,
-            String roadAddressName,
-            String placeUrl,
-            String tags,
-            Location location,
-            Pickeat pickeat
-    ) {
+    public Restaurant(String name, FoodCategory foodCategory, Integer distance, String roadAddressName, String placeUrl,
+                      String tags, Location location, String pictureUrls, RestaurantType type, Pickeat pickeat) {
         this.name = name;
         this.foodCategory = foodCategory;
         this.distance = distance;
         this.roadAddressName = roadAddressName;
         this.placeUrl = placeUrl;
-        this.location = location;
         this.tags = tags;
+        this.location = location;
+        this.type = type;
+        this.pictureUrls = pictureUrls;
         this.pickeat = pickeat;
     }
 
