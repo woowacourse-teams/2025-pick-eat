@@ -38,7 +38,7 @@ class WishServiceTest {
         void 위시_생성_성공() {
             // given
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(1L));
-            WishRequest wishRequest = new WishRequest("위시1", "일식", List.of(), "도로명주소1", List.of("태그1", "태그2"));
+            WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"));
 
             // when
             WishResponse response = wishService.createWish(wishList.getId(), wishRequest);

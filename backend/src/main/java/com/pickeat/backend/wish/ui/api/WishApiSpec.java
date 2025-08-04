@@ -15,9 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "위시", description = "위시 관련 API")
 public interface WishApiSpec {
@@ -29,7 +29,7 @@ public interface WishApiSpec {
                     description = "생성할 위시 정보",
                     required = true,
                     content = @Content(
-                            mediaType = "multipart/form-data",
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = WishRequest.class)
                     )
             )
@@ -64,11 +64,11 @@ public interface WishApiSpec {
                     )
             )
     })
-    @PostMapping(value = "/wishLists/{wishListId}/wishes", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/wishLists/{wishListId}/wishes")
     ResponseEntity<WishResponse> createWish(
             @Parameter(description = "위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,
-            @Valid @ModelAttribute WishRequest request
+            @Valid @RequestBody WishRequest request
     );
 
     @Operation(

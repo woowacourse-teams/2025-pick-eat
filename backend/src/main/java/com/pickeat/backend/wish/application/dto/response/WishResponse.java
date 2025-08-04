@@ -14,8 +14,9 @@ public record WishResponse(
         String name,
         @Schema(description = "카테고리", example = "KOREAN")
         FoodCategory category,
-        @Schema(description = "위시 이미지 URL 목록", example = "[\"https://example.com/image1.jpg\", \"https://example.com/image2.jpg\"]")
-        List<String> pictureUrl,
+        @Schema(description = "위시 이미지",
+                example = "[{\"id\":1,\"imageUrl\":\"https://example.com/image1.jpg\"},{\"id\":2,\"imageUrl\":\"https://example.com/image2.jpg\"}]")
+        List<WishPictureResponse> pictures,
         @Schema(description = "도로명 주소", example = "서울특별시 강남구 테헤란로 123")
         String roadAddressName,
         @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
@@ -25,11 +26,12 @@ public record WishResponse(
 ) {
 
     public static WishResponse from(Wish wish) {
+        List<WishPictureResponse> wishPictureResponses = WishPictureResponse.from(wish.getWishPictures());
         return new WishResponse(
                 wish.getId(),
                 wish.getName(),
                 wish.getFoodCategory(),
-                List.of(),
+                wishPictureResponses,
                 wish.getRoadAddressName(),
                 Arrays.stream(wish.getTags().split(",")).toList(),
                 wish.getWishList().getId()
