@@ -35,6 +35,8 @@ public enum ErrorCode {
     // User 관련 에러
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
     ALREADY_NICKNAME_EXISTS(HttpStatus.BAD_REQUEST, "이미 존재하는 닉네임 입니다."),
+    SIGN_UP_REQUIRED(HttpStatus.UNAUTHORIZED, "회원가입이 필요한 계정입니다."),
+
     // Room 관련 에러
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "방을 찾을 없습니다."),
 

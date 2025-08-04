@@ -2,7 +2,6 @@ package com.pickeat.backend.login.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.user.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
@@ -26,12 +25,12 @@ public class JwtTokenProvider {
         this.expirationMillis = expirationMillis;
     }
 
-    public String createToken(User user) {
+    public String createToken(Long userId) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMillis);
 
         return Jwts.builder()
-                .subject(String.valueOf(user.getId()))
+                .subject(String.valueOf(userId))
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey)

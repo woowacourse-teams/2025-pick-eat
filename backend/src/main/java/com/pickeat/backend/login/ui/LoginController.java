@@ -8,7 +8,6 @@ import com.pickeat.backend.user.application.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,19 +24,15 @@ public class LoginController implements LoginApiSpec {
 
     @Override
     @PostMapping("/code")
-    public ResponseEntity<Void> processKakaoCode(@Valid @RequestBody AuthCodeRequest request,
-                                                 HttpSession session) {
-        Long providerId = loginService.getProviderIdFromIdToken(request.code());
+    public ResponseEntity<Void> processCode(@Valid @RequestBody AuthCodeRequest request,
+                                            HttpSession session) {
+        Long providerId = loginService.getProviderIdFromIdToken(request);
 
-        if (userService.isUserExist(providerId, "kakao")) {
-            session.setAttribute("loginReadyProviderId", providerId);
-            session.setAttribute("loginReadyProvider", "kakao");
-            return ResponseEntity.ok().build();
-        }
+        session.setAttribute("providerId", providerId);
+        session.setAttribute("provider", request.provider());
+        return ResponseEntity.ok().build();
 
-        session.setAttribute("pendingProvider", "kakao");
-        session.setAttribute("pendingProviderId", providerId);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
     }
 
     @Override

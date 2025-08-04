@@ -51,7 +51,7 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> processKakaoCode(AuthCodeRequest request, HttpSession session);
+    ResponseEntity<Void> processCode(AuthCodeRequest request, HttpSession session);
 
     @Operation(
             summary = "로그인 처리",
