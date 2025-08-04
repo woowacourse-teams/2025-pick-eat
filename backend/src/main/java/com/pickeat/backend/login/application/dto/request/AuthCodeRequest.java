@@ -1,4 +1,4 @@
-package com.pickeat.backend.login.application.dto;
+package com.pickeat.backend.login.application.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 

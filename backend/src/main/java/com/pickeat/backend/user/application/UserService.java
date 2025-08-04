@@ -4,7 +4,7 @@ import static com.pickeat.backend.global.exception.ErrorCode.ALREADY_NICKNAME_EX
 import static com.pickeat.backend.global.exception.ErrorCode.USER_NOT_FOUND;
 
 import com.pickeat.backend.global.exception.BusinessException;
-import com.pickeat.backend.login.application.dto.SignupRequest;
+import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.user.application.dto.UserResponse;
 import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.user.domain.repository.UserRepository;

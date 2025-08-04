@@ -1,8 +1,8 @@
 package com.pickeat.backend.login.ui;
 
 import com.pickeat.backend.login.application.LoginService;
-import com.pickeat.backend.login.application.dto.AuthCodeRequest;
-import com.pickeat.backend.login.application.dto.SignupRequest;
+import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
+import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.login.ui.api.LoginApiSpec;
 import com.pickeat.backend.user.application.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -32,6 +32,9 @@ public class LoginController implements LoginApiSpec {
         session.setAttribute("providerId", providerId);
         session.setAttribute("provider", request.provider());
 
+        if (!userService.isUserExist(providerId, request.provider())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         return ResponseEntity.ok().build();
     }
 

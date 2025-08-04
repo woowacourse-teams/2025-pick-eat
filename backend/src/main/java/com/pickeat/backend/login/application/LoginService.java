@@ -3,8 +3,7 @@ package com.pickeat.backend.login.application;
 import static com.pickeat.backend.global.exception.ErrorCode.USER_NOT_FOUND;
 
 import com.pickeat.backend.global.exception.BusinessException;
-import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.login.application.dto.AuthCodeRequest;
+import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,15 +22,7 @@ public class LoginService {
         String idTokenJwt = loginClient.getIdToken(request.code());
         Long providerId = jwtOIDProvider.extractProviderIdFromIdToken(idTokenJwt);
 
-        validateUser(request, providerId);
-
         return providerId;
-    }
-
-    private void validateUser(AuthCodeRequest request, Long providerId) {
-        if (!userRepository.existsByProviderIdAndProvider(providerId, request.provider())) {
-            throw new BusinessException(ErrorCode.SIGN_UP_REQUIRED);
-        }
     }
 
     public String login(Long providerId, String provider) {
@@ -41,4 +32,6 @@ public class LoginService {
 
         return accessToken;
     }
+
+
 }

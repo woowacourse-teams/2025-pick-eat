@@ -1,7 +1,7 @@
 package com.pickeat.backend.login.ui.api;
 
-import com.pickeat.backend.login.application.dto.AuthCodeRequest;
-import com.pickeat.backend.login.application.dto.SignupRequest;
+import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
+import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;

@@ -6,7 +6,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.global.exception.BusinessException;
-import com.pickeat.backend.login.application.dto.SignupRequest;
+import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.user.application.dto.UserResponse;
 import com.pickeat.backend.user.domain.User;
 import org.junit.jupiter.api.Nested;

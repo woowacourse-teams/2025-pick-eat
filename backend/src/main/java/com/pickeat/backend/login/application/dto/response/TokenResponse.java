@@ -1,4 +1,4 @@
-package com.pickeat.backend.login.application.dto;
+package com.pickeat.backend.login.application.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

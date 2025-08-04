@@ -6,7 +6,7 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.login.application.LoginClient;
-import com.pickeat.backend.login.application.dto.TokenResponse;
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
