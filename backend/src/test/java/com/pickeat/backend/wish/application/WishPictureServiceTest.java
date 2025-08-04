@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
+import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.wish.domain.Wish;
@@ -58,7 +59,7 @@ class WishPictureServiceTest {
         void 위시_사진_생성_성공() {
             // given
             Wish wish = makeWish();
-            List<MultipartFile> pictures = List.of(mock(MultipartFile.class), mock(MultipartFile.class));
+            List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
 
             // when
             List<WishPictureResponse> responses = wishPictureService.createWishPicture(wish.getId(), pictures);
@@ -71,7 +72,7 @@ class WishPictureServiceTest {
         }
 
         @Test
-        void 업로드되지_않은_사진은_위시_사진으로_생성하지_않음() {
+        void 업로드에_실패할_경우_예외_발생() {
             // given
             ImageUploadClient imageUploadClient = mock(ImageUploadClient.class);
             when(imageUploadClient.uploadImage(any()))
@@ -80,11 +81,31 @@ class WishPictureServiceTest {
             wishPictureService = new WishPictureService(wishRepository, wishPictureRepository, imageUploadClient);
 
             Wish wish = makeWish();
-            List<MultipartFile> pictures = List.of(mock(MultipartFile.class), mock(MultipartFile.class));
+            List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
 
             // when & then
             assertThatThrownBy(() -> wishPictureService.createWishPicture(wish.getId(), pictures))
                     .isInstanceOf(S3Exception.class);
         }
+
+        @Test
+        void 허용하지_않는_형식이_입력될_경우() {
+            // given
+            MultipartFile mockFile = mock(MultipartFile.class);
+            when(mockFile.getContentType()).thenReturn("image/gif");
+
+            Wish wish = makeWish();
+            List<MultipartFile> pictures = List.of(mockFile);
+
+            // when & then
+            assertThatThrownBy(() -> wishPictureService.createWishPicture(wish.getId(), pictures))
+                    .isInstanceOf(BusinessException.class);
+        }
+    }
+
+    MultipartFile makeMockImageFile() {
+        MultipartFile mockFile = mock(MultipartFile.class);
+        when(mockFile.getContentType()).thenReturn("image/jpeg");
+        return mockFile;
     }
 }
