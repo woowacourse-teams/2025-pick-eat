@@ -27,4 +27,3 @@ public class UserTokenProvider {
         return Long.parseLong(claims.getSubject());
     }
 }
-

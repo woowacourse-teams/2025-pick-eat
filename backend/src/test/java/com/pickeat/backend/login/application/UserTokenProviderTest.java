@@ -99,7 +99,7 @@ class UserTokenProviderTest {
             BusinessException exception = assertThrows(BusinessException.class, () -> {
                 userTokenProvider.getUserId(expiredToken);
             });
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALID_TOKEN);
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.EXPIRED_TOKEM);
         }
     }
 }
