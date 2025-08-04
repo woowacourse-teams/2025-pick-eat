@@ -45,7 +45,7 @@ public class LoginController implements LoginApiSpec {
         session.invalidate();
 
         return ResponseEntity.ok()
-                .header("Authorization", "Bearer", token)
+                .header("Authorization", "Bearer" + token)
                 .build();
     }
 
