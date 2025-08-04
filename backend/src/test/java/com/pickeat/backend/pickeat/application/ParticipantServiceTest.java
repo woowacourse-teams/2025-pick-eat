@@ -4,12 +4,11 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.pickeat.backend.global.auth.JwtProvider;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
-import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
 import com.pickeat.backend.pickeat.domain.Location;
-import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.Radius;
 import org.junit.jupiter.api.Nested;
@@ -20,7 +19,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(ParticipantService.class)
+@Import({ParticipantService.class, ParticipantTokenProvider.class, JwtProvider.class})
 class ParticipantServiceTest {
 
     @Autowired
@@ -45,13 +44,11 @@ class ParticipantServiceTest {
             ParticipantRequest request = new ParticipantRequest("테스트유저", pickeatId);
 
             // when
-            ParticipantResponse response = participantService.createParticipant(request);
+            String response = participantService.createParticipant(request);
 
             // then
-            Participant savedParticipant = testEntityManager.find(Participant.class, response.id());
-
             assertAll(
-                    () -> assertThat(savedParticipant).isNotNull(),
+                    () -> assertThat(response).isNotEmpty(),
                     () -> assertThat(pickeat.getParticipantCount()).isEqualTo(pastCount + 1)
             );
         }

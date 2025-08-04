@@ -1,7 +1,6 @@
 package com.pickeat.backend.pickeat.ui.api;
 
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
-import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -32,11 +31,7 @@ public interface ParticipantApiSpec {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "참여자 생성 성공",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ParticipantResponse.class)
-                    )
+                    description = "참여자 생성 성공"
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -83,5 +78,5 @@ public interface ParticipantApiSpec {
                     )
             )
     })
-    ResponseEntity<ParticipantResponse> createParticipant(@Valid @RequestBody ParticipantRequest request);
+    ResponseEntity<Void> createParticipant(@Valid @RequestBody ParticipantRequest request);
 }

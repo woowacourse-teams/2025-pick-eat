@@ -1,6 +1,7 @@
 package com.pickeat.backend.global;
 
-import com.pickeat.backend.global.auth.LoginUserArgumentResolver;
+import com.pickeat.backend.global.auth.LoginUserIdArgumentResolver;
+import com.pickeat.backend.global.auth.ParticipantIdArgumentResolver;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private final LoginUserArgumentResolver loginUserArgumentResolver;
+    private final LoginUserIdArgumentResolver loginUserIdArgumentResolver;
+    private final ParticipantIdArgumentResolver participantIdArgumentResolver;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -26,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(loginUserArgumentResolver);
+        resolvers.add(loginUserIdArgumentResolver);
+        resolvers.add(participantIdArgumentResolver);
     }
 }

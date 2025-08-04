@@ -30,17 +30,16 @@ public class LoginController implements LoginApiSpec {
 
         session.setAttribute("providerId", providerId);
         session.setAttribute("provider", request.provider());
+
         return ResponseEntity.ok().build();
-
-
     }
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<String> login(HttpSession session) {
+    public ResponseEntity<Void> login(HttpSession session) {
         //TODO: 보안 필요 null check 및 provider 검증 여부.
-        Long providerId = (Long) session.getAttribute("loginReadyProviderId");
-        String provider = (String) session.getAttribute("loginReadyProvider");
+        Long providerId = (Long) session.getAttribute("providerId");
+        String provider = (String) session.getAttribute("provider");
 
         String token = loginService.login(providerId, provider);
         session.invalidate();
@@ -54,8 +53,8 @@ public class LoginController implements LoginApiSpec {
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupRequest request, HttpSession session) {
         //TODO: 보안 필요 null check
-        Long providerId = (Long) session.getAttribute("pendingProviderId");
-        String provider = (String) session.getAttribute("pendingProvider");
+        Long providerId = (Long) session.getAttribute("providerId");
+        String provider = (String) session.getAttribute("provider");
 
         userService.createUser(request, providerId, provider);
         session.invalidate();
