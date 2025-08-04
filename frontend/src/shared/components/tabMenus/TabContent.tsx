@@ -53,7 +53,8 @@ const S = {
     position: absolute;
     top: 0;
     left: 0;
-    transform: translateX(${({ offset }) => offset * 100}%);
+
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateX(${({ offset }) => offset * 100}%);
   `,
 };

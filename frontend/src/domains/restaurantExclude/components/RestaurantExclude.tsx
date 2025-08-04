@@ -12,11 +12,15 @@ type Props = {
   restaurantsPromise: Promise<Restaurant[]>;
 };
 
+const footerHeight = 74;
+
 function RestaurantExclude({ restaurantsPromise }: Props) {
   const restaurantsData = use(restaurantsPromise);
   return (
     <RestaurantExcludeProvider>
-      <RestaurantTabList restaurantList={restaurantsData} />
+      <S.RestaurantTabContainer>
+        <RestaurantTabList restaurantList={restaurantsData} />
+      </S.RestaurantTabContainer>
       <S.Footer>
         <ExcludeActionButton />
       </S.Footer>
@@ -31,30 +35,17 @@ const S = {
     display: flex;
     flex-direction: column;
   `,
-  CheckBoxWrapper: styled.div`
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level3};
-
-    padding: ${({ theme }) => theme.PADDING.py4} +
-      ${({ theme }) => theme.PADDING.px6};
-
-    p {
-      color: ${({ theme }) => theme.PALETTE.gray[80]};
-      font: ${({ theme }) => theme.FONTS.body.medium};
-    }
-  `,
-  SelectAllCheckbox: styled.input`
-    width: 100%;
+  RestaurantTabContainer: styled.div`
+    margin-bottom: ${footerHeight}px;
   `,
   Footer: styled.footer`
     width: 100%;
     max-width: 768px;
-    height: fit-content;
+    height: ${footerHeight}px;
     display: flex;
     justify-content: center;
     align-items: center;
-  position: fixed;
+    position: fixed;
     bottom: 0;
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
