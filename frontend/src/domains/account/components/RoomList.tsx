@@ -1,4 +1,8 @@
 import Button from '@components/actions/Button';
+import Enter from '@components/assets/icons/Enter';
+import People from '@components/assets/icons/People';
+
+import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
 
@@ -19,10 +23,17 @@ function RoomList() {
           <S.List key={room.roomName}>
             <S.RoomInfo>
               <S.Name>{room.roomName}</S.Name>
-              <S.MemberCount>{room.memberCount}명</S.MemberCount>
+              <S.MemberCount>
+                <People size="xs" color={THEME.PALETTE.gray[60]} />
+                {room.memberCount}명
+              </S.MemberCount>
             </S.RoomInfo>
 
-            <Button text="입장" size="sm" />
+            <Button
+              text="입장"
+              size="sm"
+              leftIcon={<Enter size="xs" color="white" />}
+            />
           </S.List>
         ))}
       </S.ListWrapper>
@@ -48,21 +59,25 @@ const S = {
 
   ListWrapper: styled.ul`
     height: 80%;
-    overflow: scroll;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
-    border-radius: ${({ theme }) => theme.RADIUS.large};
+    overflow: scroll;
+
     padding: ${({ theme }) => theme.PADDING.p5};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 
   List: styled.li`
     display: flex;
     justify-content: space-between;
-    border-radius: ${({ theme }) => theme.RADIUS.large};
+
     padding: ${({ theme }) => theme.PADDING.p5};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 
   RoomInfo: styled.div`
@@ -74,7 +89,11 @@ const S = {
   Name: styled.span``,
 
   MemberCount: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.small};
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level2};
+
     color: ${({ theme }) => theme.PALETTE.gray[60]};
+    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 };

@@ -9,14 +9,9 @@ import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
 import CreatePickeat from '@pages/CreatePickeat';
-import MatchResult from '@pages/MatchResult';
-import MyPage from '@pages/MyPage';
-import PickeatDetail from '@pages/PickeatDetail';
-import PreferRestaurant from '@pages/PreferRestaurant';
-import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-import CreatePickeat from '@pages/CreatePickeat';
 import CreateRoom from '@pages/CreateRoom';
 import MatchResult from '@pages/MatchResult';
+import MyPage from '@pages/MyPage';
 import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
