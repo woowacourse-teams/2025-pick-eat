@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 import Wishlist from './Wishlist';
 
-function Wishlists() {
+function WishlistGroup() {
   const WISH_MOCK_DATA = [
     {
       id: '1',
@@ -60,7 +60,7 @@ function Wishlists() {
   );
 }
 
-export default Wishlists;
+export default WishlistGroup;
 
 const S = {
   WishlistWrapper: styled.div`

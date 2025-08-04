@@ -1,7 +1,7 @@
 import Input from '@components/actions/Input';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import Wishlists from '@domains/wishlist/Wishlists';
+import WishlistGroup from '@domains/wishlist/WishlistGroup';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
@@ -29,7 +29,7 @@ function ChooseWishlist() {
 
         <Input name="pickeatName" label="픽잇 이름" placeholder="레전드 점심" />
 
-        <Wishlists />
+        <WishlistGroup />
       </S.Wrapper>
     </S.Container>
   );
