@@ -52,6 +52,7 @@ public enum ErrorCode {
     // Jwt 관련 에러
     TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."),
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 인증 정보입니다."),
+    EXPIRED_TOKEM(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
 
     // 시스템 에러
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),

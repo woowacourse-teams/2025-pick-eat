@@ -90,7 +90,7 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<String> login(HttpSession session);
+    ResponseEntity<Void> login(HttpSession session);
 
     @Operation(
             summary = "회원가입",

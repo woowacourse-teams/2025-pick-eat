@@ -2,7 +2,7 @@ package com.pickeat.backend.global.auth;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.login.application.JwtTokenProvider;
+import com.pickeat.backend.pickeat.application.ParticipantTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -13,13 +13,14 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
 @RequiredArgsConstructor
-public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver {
+public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    private static final String PREFIX = "Bearer ";
+    private final ParticipantTokenProvider participantTokenProvider;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(LoginUserId.class)
+        return parameter.hasParameterAnnotation(ParticipantId.class)
                 && parameter.getParameterType().equals(Long.class);
     }
 
@@ -27,15 +28,15 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 
-        String authHeader = webRequest.getHeader("Authorization");
+        String authHeader = webRequest.getHeader("Pickeat-Participant-Token");
 
         //TODO: return null 방식 추가 고려
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        if (authHeader == null || !authHeader.startsWith(PREFIX)) {
             throw new BusinessException(ErrorCode.HEADER_IS_EMPTY);
         }
 
-        String token = authHeader.substring(7);
+        String token = authHeader.substring(PREFIX.length());
 
-        return jwtTokenProvider.getUserId(token);
+        return participantTokenProvider.getParticipantId(token);
     }
 }

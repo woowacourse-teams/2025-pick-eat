@@ -2,7 +2,6 @@ package com.pickeat.backend.pickeat.ui;
 
 import com.pickeat.backend.pickeat.application.ParticipantService;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
-import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
 import com.pickeat.backend.pickeat.ui.api.ParticipantApiSpec;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +21,11 @@ public class ParticipantController implements ParticipantApiSpec {
 
     @Override
     @PostMapping
-    public ResponseEntity<ParticipantResponse> createParticipant(@Valid @RequestBody ParticipantRequest request) {
-        participantService.createParticipant(request);
+    public ResponseEntity<Void> createParticipant(@Valid @RequestBody ParticipantRequest request) {
+        String token = participantService.createParticipant(request);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .header("Pickeat-Participant-Token", "Bearer" + token)
+                .build();
     }
 }

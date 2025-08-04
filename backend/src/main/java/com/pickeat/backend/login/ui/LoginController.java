@@ -8,6 +8,7 @@ import com.pickeat.backend.user.application.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,23 +31,22 @@ public class LoginController implements LoginApiSpec {
 
         session.setAttribute("providerId", providerId);
         session.setAttribute("provider", request.provider());
+
         return ResponseEntity.ok().build();
-
-
     }
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<String> login(HttpSession session) {
+    public ResponseEntity<Void> login(HttpSession session) {
         //TODO: 보안 필요 null check 및 provider 검증 여부.
-        Long providerId = (Long) session.getAttribute("loginReadyProviderId");
-        String provider = (String) session.getAttribute("loginReadyProvider");
+        Long providerId = (Long) session.getAttribute("providerId");
+        String provider = (String) session.getAttribute("provider");
 
         String token = loginService.login(providerId, provider);
         session.invalidate();
 
         return ResponseEntity.ok()
-                .header("Authorization", "Bearer", token)
+                .header("Authorization", "Bearer" + token)
                 .build();
     }
 
@@ -54,14 +54,14 @@ public class LoginController implements LoginApiSpec {
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@Valid @RequestBody SignupRequest request, HttpSession session) {
         //TODO: 보안 필요 null check
-        Long providerId = (Long) session.getAttribute("pendingProviderId");
-        String provider = (String) session.getAttribute("pendingProvider");
+        Long providerId = (Long) session.getAttribute("providerId");
+        String provider = (String) session.getAttribute("provider");
 
         userService.createUser(request, providerId, provider);
         session.invalidate();
 
         String accessToken = loginService.login(providerId, provider);
 
-        return ResponseEntity.ok().body(accessToken);
+        return ResponseEntity.status(HttpStatus.CREATED).body(accessToken);
     }
 }
