@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -74,15 +73,6 @@ public class PickeatController implements PickeatApiSpec {
     @GetMapping("/pickeats/{pickeatCode}/result")
     public ResponseEntity<List<RestaurantResponse>> getPickeatResult(@PathVariable("pickeatCode") String pickeatCode) {
         List<RestaurantResponse> response = pickeatService.getPickeatResult(pickeatCode);
-        return ResponseEntity.ok().body(response);
-    }
-
-    @Override
-    @GetMapping("/pickeats/{pickeatCode}/restaurants")
-    public ResponseEntity<List<RestaurantResponse>> getPickeatRestaurants(
-            @PathVariable("pickeatCode") String pickeatCode,
-            @RequestParam(required = false) Boolean isExcluded) {
-        List<RestaurantResponse> response = pickeatService.getPickeatRestaurants(pickeatCode, isExcluded);
         return ResponseEntity.ok().body(response);
     }
 }

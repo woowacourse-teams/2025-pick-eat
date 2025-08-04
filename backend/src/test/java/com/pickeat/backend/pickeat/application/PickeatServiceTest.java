@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
+import com.pickeat.backend.fixture.RoomFixture;
+import com.pickeat.backend.fixture.UserFixture;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
@@ -12,6 +14,9 @@ import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.room.domain.RoomUser;
+import com.pickeat.backend.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -72,7 +77,7 @@ public class PickeatServiceTest {
     class 픽잇_생성_케이스 {
 
         @Test
-        void 픽잇_생성_성공() {
+        void 외부용_픽잇_생성_성공() {
             // given
             PickeatRequest pickeatRequest = new PickeatRequest("픽잇");
 
@@ -82,6 +87,24 @@ public class PickeatServiceTest {
 
             // then
             assertThat(savedPickeat).isNotNull();
+        }
+
+        @Test
+        void 방_내부용_픽잇_생성_성공() {
+            // given
+            Room room = testEntityManager.persist(RoomFixture.create());
+            User user = testEntityManager.persist(UserFixture.create());
+            testEntityManager.persist(new RoomUser(room, user.getId()));
+            PickeatRequest pickeatRequest = new PickeatRequest("픽잇");
+
+            // when
+            PickeatResponse pickeatResponse = pickeatService.createPickeatInRoom(room.getId(), user.getId(),
+                    pickeatRequest);
+            Pickeat savedPickeat = testEntityManager.find(Pickeat.class, pickeatResponse.id());
+
+            // then
+            assertThat(savedPickeat).isNotNull();
+            assertThat(savedPickeat.getRoomId()).isEqualTo(room.getId());
         }
     }
 
@@ -195,24 +218,6 @@ public class PickeatServiceTest {
 
             // then
             assertThat(result).isEmpty();
-        }
-    }
-
-    @Nested
-    class 식당_조회_케이스 {
-
-        @Test
-        void 식당_조회_성공() {
-            // given
-            Pickeat pickeat = createExternalPickeat();
-            createRestaurantInPickeat(pickeat, 0);
-            createRestaurantInPickeat(pickeat, 0);
-
-            // when
-            List<RestaurantResponse> result = pickeatService.getPickeatRestaurants(pickeat.getCode().toString(), false);
-
-            // then
-            assertThat(result).hasSize(2);
         }
     }
 }
