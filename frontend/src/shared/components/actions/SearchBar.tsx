@@ -43,6 +43,7 @@ const S = {
   ListSection: styled.ul`
     width: 100%;
     max-height: 300px;
+    overflow: scroll;
     position: absolute;
     top: 110%;
     z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
@@ -52,6 +53,6 @@ const S = {
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: ${({ theme }) => theme.RADIUS.medium};
-    overflow-x: scroll;
+    scrollbar-width: none;
   `,
 };
