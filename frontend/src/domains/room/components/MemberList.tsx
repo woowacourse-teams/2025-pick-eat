@@ -43,6 +43,7 @@ const S = {
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
+    scrollbar-width: none;
   `,
 
   Member: styled.div`
