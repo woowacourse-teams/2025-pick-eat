@@ -43,6 +43,7 @@ public class WishService {
     public void deleteWish(Long wishId) {
         Wish wish = getWish(wishId);
         //TODO: 방 도메인이 완성되면 현재 요청자가 현재 위시 리스트가 포함된 방의 참가지인지 검증 필요(2025-08-1, 금, 16:15)
+        //TODO: 위시 삭제시 위시 이미지 제거  (2025-08-4, 월, 17:59)
         wishRepository.delete(wish);
     }
 
