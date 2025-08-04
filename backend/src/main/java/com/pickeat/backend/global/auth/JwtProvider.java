@@ -1,4 +1,4 @@
-package com.pickeat.backend.login.application;
+package com.pickeat.backend.global.auth;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
@@ -13,36 +13,28 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JwtTokenProvider {
+
+public class JwtProvider {
 
     private final SecretKey secretKey;
-    private final long expirationMillis;
 
-    public JwtTokenProvider(@Value("${jwt.secretKey}") String secret,
-                            @Value("${jwt.expiration}") Long expirationMillis) {
-
+    public JwtProvider(@Value("${jwt.secretKey}") String secret) {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        this.expirationMillis = expirationMillis;
     }
 
-    public String createToken(Long userId) {
+    public String createToken(Long id, long expirationMillis) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMillis);
 
         return Jwts.builder()
-                .subject(String.valueOf(userId))
+                .subject(String.valueOf(id))
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey)
                 .compact();
     }
 
-    public Long getUserId(String token) {
-        Claims claims = getClaims(token);
-        return Long.parseLong(claims.getSubject());
-    }
-
-    private Claims getClaims(String token) {
+    public Claims getClaims(String token) {
         if (token == null || token.isEmpty()) {
             throw new BusinessException(ErrorCode.TOKEN_IS_EMPTY);
         }
