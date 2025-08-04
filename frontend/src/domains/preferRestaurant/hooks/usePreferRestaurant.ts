@@ -18,7 +18,7 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
     });
   };
 
-  const [restaurantList, setRestaurantList] = useState<Restaurant[]>(
+  const [restaurantList, setRestaurantList] = useState<Restaurant[]>(() =>
     sortByLike(initialData)
   );
 
