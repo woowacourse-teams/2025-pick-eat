@@ -1,12 +1,16 @@
 package com.pickeat.backend.pickeat.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.pickeat.backend.fixture.ParticipantFixture;
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
@@ -37,8 +41,11 @@ public class PickeatServiceTest {
     private PickeatService pickeatService;
 
     private Pickeat createWithoutRoomPickeat() {
-        Pickeat pickeat = PickeatFixture.createWithoutRoom();
-        return testEntityManager.persist(pickeat);
+        return testEntityManager.persist(PickeatFixture.createWithoutRoom());
+    }
+
+    private Participant createParticipant(Pickeat pickeat) {
+        return testEntityManager.persist(ParticipantFixture.create(pickeat));
     }
 
     private List<Participant> createParticipantsInPickeat(Pickeat pickeat, int participantCount) {
@@ -108,6 +115,7 @@ public class PickeatServiceTest {
             assertThat(savedPickeat).isNotNull();
             assertThat(savedPickeat.getRoomId()).isEqualTo(room.getId());
         }
+
     }
 
     @Nested
@@ -117,14 +125,29 @@ public class PickeatServiceTest {
         void 픽잇_비활성화_성공() {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
-            assertThat(pickeat.getIsActive()).isTrue();
+            Participant participant = createParticipant(pickeat);
 
             //when
-            pickeatService.deactivatePickeat(pickeat.getCode().toString());
+            pickeatService.deactivatePickeat(pickeat.getCode().toString(), participant.getId());
 
             //then
             assertThat(pickeat.getIsActive()).isFalse();
         }
+
+        @Test
+        void 픽잇에_속하지_않은_참여자가_비활성화시_예외() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            Pickeat otherPickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(otherPickeat);
+
+            //when & then
+            assertThatThrownBy(
+                    () -> pickeatService.deactivatePickeat(pickeat.getCode().toString(), participant.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.PICKEAT_ACCESS_DENIED.getMessage());
+        }
+
     }
 
     @Nested
@@ -176,12 +199,14 @@ public class PickeatServiceTest {
         void 픽잇_결과_조회_성공() {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(pickeat);
             Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 0);
             Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
             Restaurant restaurant3 = createRestaurantInPickeat(pickeat, 3);
 
             // when
-            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString(),
+                    participant.getId());
 
             // then
             assertAll(
@@ -192,16 +217,35 @@ public class PickeatServiceTest {
         }
 
         @Test
+        void 픽잇에_속하지_않은_참여가자_결과_조회시_예외() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            Pickeat otherPickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(otherPickeat);
+
+            Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 3);
+            Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
+
+            // when & then
+            assertThatThrownBy(() -> pickeatService.getPickeatResult(pickeat.getCode().toString(),
+                    participant.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.PICKEAT_ACCESS_DENIED.getMessage());
+        }
+
+        @Test
         void 모든_식당이_소거된_경우_빈_리스트_반환() {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(pickeat);
             Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 2);
             Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 1);
             restaurant1.exclude();
             restaurant2.exclude();
 
             // when
-            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString(),
+                    participant.getId());
 
             // then
             assertThat(result).isEmpty();
@@ -211,11 +255,13 @@ public class PickeatServiceTest {
         void 선호도가_0인_식당만_있을_경우_빈_리스트_반환() {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(pickeat);
             createRestaurantInPickeat(pickeat, 0);
             createRestaurantInPickeat(pickeat, 0);
 
             // when
-            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString(),
+                    participant.getId());
 
             // then
             assertThat(result).isEmpty();

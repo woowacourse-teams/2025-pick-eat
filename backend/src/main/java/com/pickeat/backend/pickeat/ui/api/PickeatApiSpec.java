@@ -235,7 +235,8 @@ public interface PickeatApiSpec {
     })
     ResponseEntity<Void> deactivatePickeat(
             @Parameter(description = 픽잇_코드_UUID_형식)
-            @PathVariable("pickeatCode") String pickeatCode
+            @PathVariable("pickeatCode") String pickeatCode,
+            @Parameter(hidden = true) Long participantId
     );
 
     @Operation(
@@ -313,6 +314,7 @@ public interface PickeatApiSpec {
     })
     ResponseEntity<List<RestaurantResultResponse>> getPickeatResult(
             @Parameter(description = 픽잇_코드_UUID_형식)
-            @PathVariable("pickeatCode") String pickeatCode
+            @PathVariable("pickeatCode") String pickeatCode,
+            @Parameter(hidden = true) Long participantId
     );
 }

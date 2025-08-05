@@ -1,6 +1,7 @@
 package com.pickeat.backend.pickeat.ui;
 
 import com.pickeat.backend.global.auth.LoginUserId;
+import com.pickeat.backend.global.auth.ParticipantId;
 import com.pickeat.backend.pickeat.application.PickeatService;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
@@ -57,8 +58,11 @@ public class PickeatController implements PickeatApiSpec {
 
     @Override
     @PatchMapping("/pickeats/{pickeatCode}/deactivate")
-    public ResponseEntity<Void> deactivatePickeat(@PathVariable("pickeatCode") String pickeatCode) {
-        pickeatService.deactivatePickeat(pickeatCode);
+    public ResponseEntity<Void> deactivatePickeat(
+            @PathVariable("pickeatCode") String pickeatCode,
+            @ParticipantId Long participantId
+    ) {
+        pickeatService.deactivatePickeat(pickeatCode, participantId);
         return ResponseEntity.ok().build();
     }
 
@@ -72,8 +76,10 @@ public class PickeatController implements PickeatApiSpec {
     @Override
     @GetMapping("/pickeats/{pickeatCode}/result")
     public ResponseEntity<List<RestaurantResultResponse>> getPickeatResult(
-            @PathVariable("pickeatCode") String pickeatCode) {
-        List<RestaurantResultResponse> response = pickeatService.getPickeatResult(pickeatCode);
+            @PathVariable("pickeatCode") String pickeatCode,
+            @ParticipantId Long participantId
+    ) {
+        List<RestaurantResultResponse> response = pickeatService.getPickeatResult(pickeatCode, participantId);
         return ResponseEntity.ok().body(response);
     }
 }
