@@ -1,5 +1,7 @@
 package com.pickeat.backend.wish.ui.api;
 
+import com.pickeat.backend.global.auth.LoginUserId;
+import com.pickeat.backend.global.auth.ParticipantId;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
@@ -70,7 +72,8 @@ public interface WishListApiSpec {
     ResponseEntity<WishListResponse> createWishList(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
-            @Valid @RequestBody WishListRequest request
+            @Valid @RequestBody WishListRequest request,
+            @Parameter(hidden = true) @LoginUserId Long userId
     );
 
     @Operation(
@@ -109,7 +112,8 @@ public interface WishListApiSpec {
     @GetMapping("/room/{roomId}/wishLists")
     ResponseEntity<List<WishListResponse>> getWishLists(
             @Parameter(description = "방 ID", example = "1")
-            @PathVariable("roomId") Long roomId
+            @PathVariable("roomId") Long roomId,
+            @Parameter(hidden = true) @ParticipantId Long participantId
     );
 
     @Operation(
@@ -145,9 +149,10 @@ public interface WishListApiSpec {
                     )
             )
     })
-    @GetMapping("/wishLists/{wishListId}")
+    @GetMapping("/wishLists/{wishListId}/wishes")
     ResponseEntity<List<WishResponse>> getWishesInWishList(
             @Parameter(description = "위시리스트 ID", example = "1")
-            @PathVariable("wishListId") Long wishListId
+            @PathVariable("wishListId") Long wishListId,
+            @Parameter(hidden = true) @ParticipantId Long participantId
     );
 }

@@ -1,5 +1,6 @@
 package com.pickeat.backend.wish.ui;
 
+import com.pickeat.backend.global.auth.LoginUserId;
 import com.pickeat.backend.wish.application.WishPictureService;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.wish.ui.api.WishPictureApiSpec;
@@ -25,9 +26,11 @@ public class WishPictureController implements WishPictureApiSpec {
     @PostMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<WishPictureResponse>> createWishPictures(
             @PathVariable("wishId") Long wishId,
-            @RequestPart("wishPictures") List<MultipartFile> wishPictures
+            @RequestPart("wishPictures") List<MultipartFile> wishPictures,
+            @LoginUserId Long userId
     ) {
-        List<WishPictureResponse> wishPictureResponses = wishPictureService.createWishPicture(wishId, wishPictures);
+        List<WishPictureResponse> wishPictureResponses =
+                wishPictureService.createWishPicture(wishId, userId, wishPictures);
         return ResponseEntity.status(HttpStatus.CREATED).body(wishPictureResponses);
     }
 }

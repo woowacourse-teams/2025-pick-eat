@@ -7,9 +7,16 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.pickeat.backend.fixture.RoomFixture;
+import com.pickeat.backend.fixture.UserFixture;
 import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.room.domain.RoomUser;
+import com.pickeat.backend.room.domain.repository.RoomUserRepository;
+import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.wish.domain.Wish;
@@ -39,30 +46,34 @@ class WishPictureServiceTest {
     @Autowired
     private WishPictureRepository wishPictureRepository;
 
+    @Autowired
+    private RoomUserRepository roomUserRepository;
+
     private WishPictureService wishPictureService;
 
     @BeforeEach
     void setup() {
         ImageUploadClient imageUploadClient = new LocalImageUploadClient("test_defaultUrl", "keyPrefix");
-        wishPictureService = new WishPictureService(wishRepository, wishPictureRepository, imageUploadClient);
+        wishPictureService = setupWishPictureService(imageUploadClient);
     }
 
     @Nested
     class 위시_사진_생성_케이스 {
 
-        Wish makeWish() {
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(1L));
-            return entityManager.persist(WishFixture.create(wishList));
-        }
-
         @Test
         void 위시_사진_생성_성공() {
             // given
-            Wish wish = makeWish();
+            RoomUser roomUser = makeRoomUser();
+            Wish wish = makeWish(roomUser.getRoom());
+
             List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
 
             // when
-            List<WishPictureResponse> responses = wishPictureService.createWishPicture(wish.getId(), pictures);
+            List<WishPictureResponse> responses = wishPictureService.createWishPicture(
+                    wish.getId(),
+                    roomUser.getUser().getId(),
+                    pictures
+            );
 
             // then
             assertAll(
@@ -78,34 +89,78 @@ class WishPictureServiceTest {
             when(imageUploadClient.uploadImage(any()))
                     .thenThrow(S3Exception.builder().message("첫번째 업로드는 실패").build())
                     .thenReturn(new ImageRequest("test_key", "test_downloadUrl"));
-            wishPictureService = new WishPictureService(wishRepository, wishPictureRepository, imageUploadClient);
+            wishPictureService = setupWishPictureService(imageUploadClient);
 
-            Wish wish = makeWish();
+            RoomUser roomUser = makeRoomUser();
+            Wish wish = makeWish(roomUser.getRoom());
             List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
 
             // when & then
-            assertThatThrownBy(() -> wishPictureService.createWishPicture(wish.getId(), pictures))
+            assertThatThrownBy(
+                    () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUser().getId(), pictures))
                     .isInstanceOf(S3Exception.class);
         }
 
         @Test
         void 허용하지_않는_형식이_입력될_경우() {
             // given
+            RoomUser roomUser = makeRoomUser();
+            Wish wish = makeWish(roomUser.getRoom());
+
             MultipartFile mockFile = mock(MultipartFile.class);
             when(mockFile.getContentType()).thenReturn("image/gif");
-
-            Wish wish = makeWish();
             List<MultipartFile> pictures = List.of(mockFile);
 
             // when & then
-            assertThatThrownBy(() -> wishPictureService.createWishPicture(wish.getId(), pictures))
+            assertThatThrownBy(
+                    () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUser().getId(), pictures))
                     .isInstanceOf(BusinessException.class);
         }
+
+        @Test
+        void 방에_참가하지_않은_회원이_위시이미지를_생성할_경우_예외_발생() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            User user = entityManager.persist(UserFixture.create());
+            Wish wish = makeWish(room);
+
+            List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
+
+            // when & then
+            assertThatThrownBy(
+                    () -> wishPictureService.createWishPicture(
+                            wish.getId(),
+                            user.getId(),
+                            pictures
+                    ))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISH_PICTURE_ACCESS_DENIED.getMessage());
+        }
+    }
+
+    WishPictureService setupWishPictureService(ImageUploadClient imageUploadClient) {
+        return new WishPictureService(
+                wishRepository,
+                wishPictureRepository,
+                roomUserRepository,
+                imageUploadClient
+        );
     }
 
     MultipartFile makeMockImageFile() {
         MultipartFile mockFile = mock(MultipartFile.class);
         when(mockFile.getContentType()).thenReturn("image/jpeg");
         return mockFile;
+    }
+
+    RoomUser makeRoomUser() {
+        Room room = entityManager.persist(RoomFixture.create());
+        User user = entityManager.persist(UserFixture.create());
+        return entityManager.persist(new RoomUser(room, user));
+    }
+
+    Wish makeWish(Room room) {
+        WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+        return entityManager.persist(WishFixture.create(wishList));
     }
 }

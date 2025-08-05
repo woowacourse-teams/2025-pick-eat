@@ -1,5 +1,6 @@
 package com.pickeat.backend.wish.ui.api;
 
+import com.pickeat.backend.global.auth.LoginUserId;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -68,7 +69,8 @@ public interface WishApiSpec {
     ResponseEntity<WishResponse> createWish(
             @Parameter(description = "위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,
-            @Valid @RequestBody WishRequest request
+            @Valid @RequestBody WishRequest request,
+            @Parameter(hidden = true) @LoginUserId Long userId
     );
 
     @Operation(
@@ -101,6 +103,7 @@ public interface WishApiSpec {
     @DeleteMapping("/wishes/{wishId}")
     ResponseEntity<Void> deleteWish(
             @Parameter(description = "위시 ID", example = "1")
-            @PathVariable("wishId") Long wishId
+            @PathVariable("wishId") Long wishId,
+            @Parameter(hidden = true) @LoginUserId Long userId
     );
 }

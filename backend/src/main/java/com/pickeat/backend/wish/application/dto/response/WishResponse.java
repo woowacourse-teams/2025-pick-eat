@@ -1,6 +1,5 @@
 package com.pickeat.backend.wish.application.dto.response;
 
-import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.wish.domain.Wish;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
@@ -12,8 +11,8 @@ public record WishResponse(
         Long id,
         @Schema(description = "위시 이름", example = "맛있는 떡볶이")
         String name,
-        @Schema(description = "카테고리", example = "KOREAN")
-        FoodCategory category,
+        @Schema(description = "카테고리", example = "한식")
+        String category,
         @Schema(description = "위시 이미지",
                 example = "[{\"id\":1,\"imageUrl\":\"https://example.com/image1.jpg\"},{\"id\":2,\"imageUrl\":\"https://example.com/image2.jpg\"}]")
         List<WishPictureResponse> pictures,
@@ -30,7 +29,7 @@ public record WishResponse(
         return new WishResponse(
                 wish.getId(),
                 wish.getName(),
-                wish.getFoodCategory(),
+                wish.getFoodCategory().getName(),
                 wishPictureResponses,
                 wish.getRoadAddressName(),
                 Arrays.stream(wish.getTags().split(",")).toList(),
