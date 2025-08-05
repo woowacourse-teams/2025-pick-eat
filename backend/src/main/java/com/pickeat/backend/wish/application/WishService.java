@@ -71,7 +71,7 @@ public class WishService {
 
     private WishList getWishList(Long wishListId) {
         return wishListRepository.findById(wishListId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.WISHLIST_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(ErrorCode.WISH_LIST_NOT_FOUND));
     }
 
     private Wish getWish(Long wishId) {

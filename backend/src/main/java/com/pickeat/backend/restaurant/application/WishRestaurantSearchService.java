@@ -37,7 +37,7 @@ public class WishRestaurantSearchService {
 
     private WishList getWishList(WishRestaurantRequest request) {
         return wishListRepository.findById(request.wishListId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.WISHLIST_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(ErrorCode.WISH_LIST_NOT_FOUND));
     }
 
     private String getPictureUrls(Wish wish) {

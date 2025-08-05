@@ -17,7 +17,7 @@ public enum ErrorCode {
     PARTICIPANT_ALREADY_ELIMINATED(HttpStatus.BAD_REQUEST, "이미 소거된 참가자입니다."),
 
     // WishList 관련 에러
-    WISHLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "위시리스트를 찾을 수 없습니다."),
+    WISH_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "위시리스트를 찾을 수 없습니다."),
     WISH_LIST_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 위시리스트에 접근할 권한이 없습니다."),
     NOT_PUBLIC_WISH_LIST(HttpStatus.BAD_REQUEST, "공용 위시리스트가 아닙니다."),
 

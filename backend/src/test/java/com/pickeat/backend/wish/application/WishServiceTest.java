@@ -205,7 +205,7 @@ class WishServiceTest {
             // when & then
             assertThatThrownBy(() -> wishService.getWishesFromPublicWishList(1L))
                     .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.WISHLIST_NOT_FOUND.getMessage());
+                    .hasMessage(ErrorCode.WISH_LIST_NOT_FOUND.getMessage());
         }
 
         @Test
