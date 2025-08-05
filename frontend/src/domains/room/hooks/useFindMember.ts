@@ -17,9 +17,9 @@ export const useFindMember = () => {
     setQuery(value);
   };
 
-  const handleMemberClick = (fn: () => void) => {
+  const handleMemberClick = (onClick: () => void) => {
     setNickName('');
-    fn();
+    onClick();
     setMemberList(null);
     setQuery('');
   };
