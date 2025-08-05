@@ -80,6 +80,14 @@ public class PickeatServiceTest {
         return testEntityManager.persist(restaurant);
     }
 
+    private Restaurant createRestaurantInPickeat(Pickeat pickeat, String restaurantName, int likeCount) {
+        Restaurant restaurant = RestaurantFixture.create(pickeat, restaurantName);
+        for (int i = 0; i < likeCount; i++) {
+            restaurant.like();
+        }
+        return testEntityManager.persist(restaurant);
+    }
+
     @Nested
     class 픽잇_생성_케이스 {
 
@@ -193,6 +201,67 @@ public class PickeatServiceTest {
     }
 
     @Nested
+    class 픽잇_결과_단건_조회_케이스 {
+
+        @Test
+        void 픽잇_결과_조회_성공() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(pickeat);
+            Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 0);
+            Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            RestaurantResultResponse result =
+                    pickeatService.getPickeatResult(pickeat.getCode().toString(), participant.getId());
+
+            // then
+            assertThat(result.id()).isEqualTo(restaurant2.getId());
+        }
+
+        @Test
+        void 픽잇_결과가_여러개일_경우_이름순으로_정렬해서_첫번째_식당_선택() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(pickeat);
+            Restaurant restaurant1 = createRestaurantInPickeat(pickeat, "백반집", 3);
+            Restaurant restaurant2 = createRestaurantInPickeat(pickeat, "치킨집", 3);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            RestaurantResultResponse result =
+                    pickeatService.getPickeatResult(pickeat.getCode().toString(), participant.getId());
+
+            // then
+            assertThat(result.id()).isEqualTo(restaurant1.getId());
+        }
+
+        @Test
+        void 픽잇에_속하지_않은_참여가자_결과_조회시_예외() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            Pickeat otherPickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(otherPickeat);
+
+            Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 3);
+            Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> pickeatService.getPickeatResult(pickeat.getCode().toString(), participant.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.PICKEAT_ACCESS_DENIED.getMessage());
+        }
+    }
+
+    @Nested
     class 픽잇_결과_조회_케이스 {
 
         @Test
@@ -205,7 +274,7 @@ public class PickeatServiceTest {
             Restaurant restaurant3 = createRestaurantInPickeat(pickeat, 3);
 
             // when
-            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString(),
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResults(pickeat.getCode().toString(),
                     participant.getId());
 
             // then
@@ -227,7 +296,7 @@ public class PickeatServiceTest {
             Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
 
             // when & then
-            assertThatThrownBy(() -> pickeatService.getPickeatResult(pickeat.getCode().toString(),
+            assertThatThrownBy(() -> pickeatService.getPickeatResults(pickeat.getCode().toString(),
                     participant.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.PICKEAT_ACCESS_DENIED.getMessage());
@@ -244,7 +313,7 @@ public class PickeatServiceTest {
             restaurant2.exclude();
 
             // when
-            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString(),
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResults(pickeat.getCode().toString(),
                     participant.getId());
 
             // then
@@ -260,7 +329,7 @@ public class PickeatServiceTest {
             createRestaurantInPickeat(pickeat, 0);
 
             // when
-            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString(),
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResults(pickeat.getCode().toString(),
                     participant.getId());
 
             // then
