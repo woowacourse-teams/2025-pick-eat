@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 type Props = {
   opened: boolean;
   onClose: () => void;
+  children?: ReactNode;
 };
 
-function Modal({ opened, onClose }: Props) {
+function Modal({ opened, onClose, children }: Props) {
   const modalRoot = document.querySelector('#modal') as HTMLElement;
   if (!opened) return null;
 
@@ -27,7 +28,7 @@ function Modal({ opened, onClose }: Props) {
     opened && (
       <>
         <S.BackDrop onClick={() => onClose()} />
-        <S.Container></S.Container>
+        <S.Container>{children}</S.Container>
       </>
     ),
     modalRoot
