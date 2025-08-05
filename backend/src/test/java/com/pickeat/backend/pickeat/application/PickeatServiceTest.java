@@ -36,8 +36,8 @@ public class PickeatServiceTest {
     @Autowired
     private PickeatService pickeatService;
 
-    private Pickeat createExternalPickeat() {
-        Pickeat pickeat = PickeatFixture.createExternal();
+    private Pickeat createWithoutRoomPickeat() {
+        Pickeat pickeat = PickeatFixture.createWithoutRoom();
         return testEntityManager.persist(pickeat);
     }
 
@@ -82,10 +82,10 @@ public class PickeatServiceTest {
             PickeatRequest pickeatRequest = new PickeatRequest("픽잇");
 
             // when
-            PickeatResponse pickeatResponse = pickeatService.createExternalPickeat(pickeatRequest);
-            Pickeat savedPickeat = testEntityManager.find(Pickeat.class, pickeatResponse.id());
+            PickeatResponse pickeatResponse = pickeatService.createPickeatWithoutRoom(pickeatRequest);
 
             // then
+            Pickeat savedPickeat = testEntityManager.find(Pickeat.class, pickeatResponse.id());
             assertThat(savedPickeat).isNotNull();
         }
 
@@ -98,11 +98,11 @@ public class PickeatServiceTest {
             PickeatRequest pickeatRequest = new PickeatRequest("픽잇");
 
             // when
-            PickeatResponse pickeatResponse = pickeatService.createPickeatInRoom(room.getId(), user.getId(),
+            PickeatResponse pickeatResponse = pickeatService.createPickeatWithRoom(room.getId(), user.getId(),
                     pickeatRequest);
-            Pickeat savedPickeat = testEntityManager.find(Pickeat.class, pickeatResponse.id());
 
             // then
+            Pickeat savedPickeat = testEntityManager.find(Pickeat.class, pickeatResponse.id());
             assertThat(savedPickeat).isNotNull();
             assertThat(savedPickeat.getRoomId()).isEqualTo(room.getId());
         }
@@ -114,7 +114,7 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_비활성화_성공() {
             // given
-            Pickeat pickeat = createExternalPickeat();
+            Pickeat pickeat = createWithoutRoomPickeat();
             assertThat(pickeat.getIsActive()).isTrue();
 
             //when
@@ -131,7 +131,7 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_전체_참여자_수와_소거완료_여부_확인_성공() {
             //given
-            Pickeat pickeat = createExternalPickeat();
+            Pickeat pickeat = createWithoutRoomPickeat();
             int totalParticipantCount = 5;
             List<Participant> participants = createParticipantsInPickeat(pickeat, totalParticipantCount);
             int eliminatedParticipantsCount = countEliminatedParticipants(participants);
@@ -155,7 +155,7 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_조회_성공() {
             // given
-            Pickeat pickeat = testEntityManager.persist(createExternalPickeat());
+            Pickeat pickeat = testEntityManager.persist(createWithoutRoomPickeat());
             testEntityManager.flush();
             testEntityManager.clear();
 
@@ -164,7 +164,6 @@ public class PickeatServiceTest {
 
             // then
             assertThat(pickeatResponse.id()).isEqualTo(pickeat.getId());
-
         }
     }
 
@@ -174,7 +173,7 @@ public class PickeatServiceTest {
         @Test
         void 픽잇_결과_조회_성공() {
             // given
-            Pickeat pickeat = createExternalPickeat();
+            Pickeat pickeat = createWithoutRoomPickeat();
             Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 0);
             Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
             Restaurant restaurant3 = createRestaurantInPickeat(pickeat, 3);
@@ -193,7 +192,7 @@ public class PickeatServiceTest {
         @Test
         void 모든_식당이_소거된_경우_빈_리스트_반환() {
             // given
-            Pickeat pickeat = createExternalPickeat();
+            Pickeat pickeat = createWithoutRoomPickeat();
             Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 2);
             Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 1);
             restaurant1.exclude();
@@ -209,7 +208,7 @@ public class PickeatServiceTest {
         @Test
         void 선호도가_0인_식당만_있을_경우_빈_리스트_반환() {
             // given
-            Pickeat pickeat = createExternalPickeat();
+            Pickeat pickeat = createWithoutRoomPickeat();
             createRestaurantInPickeat(pickeat, 0);
             createRestaurantInPickeat(pickeat, 0);
 

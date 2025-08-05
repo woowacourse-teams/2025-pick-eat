@@ -49,7 +49,7 @@ public interface RestaurantApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> createRestaurantsByLocaion(
+    ResponseEntity<Void> createRestaurantsByLocation(
             @Parameter(description = 픽잇_코드_UUID_형식) @PathVariable("pickeatCode") String pickeatCode,
             @Valid @org.springframework.web.bind.annotation.RequestBody LocationRestaurantRequest request);
 
@@ -78,7 +78,7 @@ public interface RestaurantApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> createRestaurantsByLocaion(
+    ResponseEntity<Void> createRestaurantsByWish(
             @Parameter(description = 픽잇_코드_UUID_형식) @PathVariable("pickeatCode") String pickeatCode,
             @Valid @org.springframework.web.bind.annotation.RequestBody WishRestaurantRequest request);
 

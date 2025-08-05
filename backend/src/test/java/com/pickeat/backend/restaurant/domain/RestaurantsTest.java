@@ -30,7 +30,7 @@ class RestaurantsTest {
         @Test
         void 모든_식당의_선호도가_0일_때_빈_리스트_반환() {
             // given
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
             Restaurant restaurant1 = RestaurantFixture.create(pickeat);
             Restaurant restaurant2 = RestaurantFixture.create(pickeat);
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
@@ -45,7 +45,7 @@ class RestaurantsTest {
         @Test
         void 최고_선호도_식당_1개일_때_해당_식당_반환() {
             // given
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
             Restaurant restaurant1 = RestaurantFixture.create(pickeat);
             Restaurant restaurant2 = RestaurantFixture.create(pickeat);
             restaurant1.like();
@@ -66,7 +66,7 @@ class RestaurantsTest {
         @Test
         void 최고_선호도_식당_여러개일_때_모든_해당_식당_반환() {
             // given
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
             Restaurant restaurant1 = RestaurantFixture.create(pickeat);
             Restaurant restaurant2 = RestaurantFixture.create(pickeat);
             Restaurant restaurant3 = RestaurantFixture.create(pickeat);

@@ -44,11 +44,10 @@ public class RestaurantService {
     }
 
     public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded) {
-        Pickeat pickeat = findPickeatByCode(pickeatCode);
+        Pickeat pickeat = getPickeatByCode(pickeatCode);
         List<Restaurant> restaurants = restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, isExcluded);
         return RestaurantResponse.from(restaurants);
     }
-
 
     @Transactional
     public void exclude(RestaurantExcludeRequest request) {
@@ -92,11 +91,5 @@ public class RestaurantService {
         Pickeat pickeat = pickeatRepository.findByCode(new PickeatCode(pickeatCode))
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
         return pickeat;
-    }
-
-    private Pickeat findPickeatByCode(String pickeatCode) {
-        PickeatCode code = new PickeatCode(pickeatCode);
-        return pickeatRepository.findByCode(code)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
     }
 }

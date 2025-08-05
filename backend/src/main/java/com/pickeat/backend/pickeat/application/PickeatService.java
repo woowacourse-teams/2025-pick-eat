@@ -29,18 +29,18 @@ public class PickeatService {
     private final RoomUserRepository roomUserRepository;
 
     @Transactional
-    public PickeatResponse createExternalPickeat(PickeatRequest request) {
-        Pickeat pickeat = Pickeat.createExternal(request.name());
+    public PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
+        Pickeat pickeat = Pickeat.createWithoutRoom(request.name());
 
         pickeatRepository.save(pickeat);
         return PickeatResponse.from(pickeat);
     }
 
     @Transactional
-    public PickeatResponse createPickeatInRoom(Long roomId, Long userId, PickeatRequest request) {
+    public PickeatResponse createPickeatWithRoom(Long roomId, Long userId, PickeatRequest request) {
         validateUserAccessToRoom(roomId, userId);
 
-        Pickeat pickeat = Pickeat.createInRoom(request.name(), roomId);
+        Pickeat pickeat = Pickeat.createWithRoom(request.name(), roomId);
 
         pickeatRepository.save(pickeat);
         return PickeatResponse.from(pickeat);

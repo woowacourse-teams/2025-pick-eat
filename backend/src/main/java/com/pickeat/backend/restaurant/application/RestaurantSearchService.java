@@ -56,15 +56,19 @@ public class RestaurantSearchService {
     }
 
     public List<RestaurantRequest> searchByWish(WishRestaurantRequest request) {
-        WishList wishList = wishListRepository.findById(request.wishListId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.WISHLIST_NOT_FOUND));
+        WishList wishList = getWishList(request);
 
         List<Wish> wishes = wishRepository.findAllByWishList(wishList);
         List<RestaurantRequest> requests = wishes.stream()
-                .map(wish -> RestaurantRequest.of(wish, getPictureUrls(wish)))
+                .map(wish -> RestaurantRequest.fromWish(wish, getPictureUrls(wish)))
                 .toList();
 
         return requests;
+    }
+
+    private WishList getWishList(WishRestaurantRequest request) {
+        return wishListRepository.findById(request.wishListId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.WISHLIST_NOT_FOUND));
     }
 
     private String getPictureUrls(Wish wish) {

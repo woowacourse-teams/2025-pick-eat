@@ -86,7 +86,7 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<PickeatResponse> createExternalPickeat(
+    ResponseEntity<PickeatResponse> createPickeatWithoutRoom(
             @Valid @org.springframework.web.bind.annotation.RequestBody PickeatRequest request);
 
 
@@ -140,7 +140,7 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<PickeatResponse> createPickeatInRoom(
+    ResponseEntity<PickeatResponse> createPickeatWithRoom(
             @Parameter(description = "방 ID") @PathVariable("roomId") Long roomId,
             @Parameter(hidden = true) Long userId,
             @Valid @org.springframework.web.bind.annotation.RequestBody PickeatRequest request

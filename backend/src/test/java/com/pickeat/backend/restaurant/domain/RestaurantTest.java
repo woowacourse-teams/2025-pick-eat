@@ -19,7 +19,7 @@ class RestaurantTest {
         @Test
         void 식당_소거_성공() {
             // given
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
             Restaurant restaurant = RestaurantFixture.create(pickeat);
 
             // when
@@ -32,7 +32,7 @@ class RestaurantTest {
         @Test
         void 비활성화된_픽잇의_식당을_소거하려고_할_경우_예외() {
             // given
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
             Restaurant restaurant = RestaurantFixture.create(pickeat);
             pickeat.deactivate();
 
@@ -49,7 +49,7 @@ class RestaurantTest {
         @Test
         void 식당_선호_선택_성공() {
             // given
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
             Restaurant restaurant = RestaurantFixture.create(pickeat);
             Integer origin = restaurant.getLikeCount();
 
@@ -68,7 +68,7 @@ class RestaurantTest {
         @Test
         void 식당_선호_취소_성공() {
             // given
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
             Restaurant restaurant = RestaurantFixture.create(pickeat);
             restaurant.like();
             Integer origin = restaurant.getLikeCount();
@@ -84,7 +84,7 @@ class RestaurantTest {
         @Test
         void 선호수가_0이하일_경우_예외() {
             // given
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
             Restaurant restaurant = RestaurantFixture.create(pickeat);
 
             // when & then

@@ -33,7 +33,7 @@ class ParticipantServiceTest {
         @Test
         void 참가자_생성_성공() {
             // given
-            Pickeat pickeat = testEntityManager.persist(PickeatFixture.createExternal());
+            Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
             Integer pastCount = pickeat.getParticipantCount();
 
             ParticipantRequest request = new ParticipantRequest("테스트유저", pickeat.getId());

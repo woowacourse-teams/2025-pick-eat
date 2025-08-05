@@ -17,7 +17,7 @@ class PickeatTest {
             String name = "맛집 찾기";
 
             // when
-            Pickeat pickeat = Pickeat.createExternal(name);
+            Pickeat pickeat = Pickeat.createWithoutRoom(name);
 
             // then
             assertAll(
@@ -36,7 +36,7 @@ class PickeatTest {
         void 참가자_수_증가() {
             // given
             String name = "맛집 찾기";
-            Pickeat pickeat = Pickeat.createExternal(name);
+            Pickeat pickeat = Pickeat.createWithoutRoom(name);
 
             // when
             pickeat.incrementParticipantCount();
@@ -53,7 +53,7 @@ class PickeatTest {
         void 픽잇_비활성화() {
             // given
             String name = "맛집 찾기";
-            Pickeat pickeat = Pickeat.createExternal(name);
+            Pickeat pickeat = Pickeat.createWithoutRoom(name);
 
             // when
             pickeat.deactivate();
