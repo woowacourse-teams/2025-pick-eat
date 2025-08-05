@@ -12,7 +12,7 @@ import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResp
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
@@ -181,12 +181,12 @@ public class PickeatServiceTest {
             Restaurant restaurant3 = createRestaurantInPickeat(pickeat, 3);
 
             // when
-            List<RestaurantResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
 
             // then
             assertAll(
                     () -> assertThat(result).hasSize(2),
-                    () -> assertThat(result.stream().map(RestaurantResponse::id))
+                    () -> assertThat(result.stream().map(RestaurantResultResponse::id))
                             .containsExactlyInAnyOrder(restaurant2.getId(), restaurant3.getId())
             );
         }
@@ -201,7 +201,7 @@ public class PickeatServiceTest {
             restaurant2.exclude();
 
             // when
-            List<RestaurantResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
 
             // then
             assertThat(result).isEmpty();
@@ -215,7 +215,7 @@ public class PickeatServiceTest {
             createRestaurantInPickeat(pickeat, 0);
 
             // when
-            List<RestaurantResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
+            List<RestaurantResultResponse> result = pickeatService.getPickeatResult(pickeat.getCode().toString());
 
             // then
             assertThat(result).isEmpty();

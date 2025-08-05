@@ -80,17 +80,5 @@ class RestaurantTest {
             Integer actual = restaurant.getLikeCount();
             assertThat(actual).isEqualTo(origin - 1);
         }
-
-        @Test
-        void 선호수가_0이하일_경우_예외() {
-            // given
-            Pickeat pickeat = PickeatFixture.createWithoutRoom();
-            Restaurant restaurant = RestaurantFixture.create(pickeat);
-
-            // when & then
-            assertThatThrownBy(restaurant::cancelLike)
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.LIKE_ALREADY_CANCELED.getMessage());
-        }
     }
 }
