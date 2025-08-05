@@ -19,6 +19,7 @@ public enum ErrorCode {
     // WishList 관련 에러
     WISHLIST_NOT_FOUND(HttpStatus.NOT_FOUND, "위시리스트를 찾을 수 없습니다."),
     WISH_LIST_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 위시리스트에 접근할 권한이 없습니다."),
+    NOT_PUBLIC_WISH_LIST(HttpStatus.BAD_REQUEST, "공용 위시리스트가 아닙니다."),
 
     // Wish 관련 에러
     WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "위시를 찾을 수 없습니다."),
@@ -61,10 +62,10 @@ public enum ErrorCode {
 
     // 시스템 에러
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
-    
+
     INVALID_REDIRECT_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "잘못된 리다이렉트 주소입니다."),
     ;
-  
+
     private final HttpStatus status;
     private final String message;
 

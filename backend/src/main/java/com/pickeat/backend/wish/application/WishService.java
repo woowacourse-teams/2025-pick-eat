@@ -63,6 +63,12 @@ public class WishService {
         return WishResponse.from(wishList.getWishes());
     }
 
+    public List<WishResponse> getWishesFromPublicWishList(Long wishListId) {
+        WishList wishList = getWishList(wishListId);
+        validateIsPublicWishList(wishList);
+        return WishResponse.from(wishList.getWishes());
+    }
+
     private WishList getWishList(Long wishListId) {
         return wishListRepository.findById(wishListId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISHLIST_NOT_FOUND));
@@ -76,6 +82,12 @@ public class WishService {
     private Participant getParticipant(Long participantId) {
         return participantRepository.findById(participantId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
+    }
+
+    private void validateIsPublicWishList(WishList wishList) {
+        if (!wishList.getIsPublic()) {
+            throw new BusinessException(ErrorCode.NOT_PUBLIC_WISH_LIST);
+        }
     }
 
     private void validateUserAccessToRoom(Long roomId, Long userId) {

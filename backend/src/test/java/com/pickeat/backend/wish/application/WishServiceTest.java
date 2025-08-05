@@ -173,4 +173,55 @@ class WishServiceTest {
                     .hasMessage(ErrorCode.WISH_LIST_ACCESS_DENIED.getMessage());
         }
     }
+
+    @Nested
+    class 공용_위시리스트의_위시_조회_케이스 {
+
+        @Test
+        void 위시리스트의_위시_조회_성공() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            WishList wishList = entityManager.persist(WishListFixture.createPublic(room.getId()));
+            List<Wish> wishes = List.of(
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            List<WishResponse> responses = wishService.getWishesFromPublicWishList(wishList.getId());
+
+            // then
+            List<Long> wishIds = wishes.stream().map(Wish::getId).toList();
+            assertThat(responses)
+                    .extracting(WishResponse::id)
+                    .containsExactlyInAnyOrderElementsOf(wishIds);
+        }
+
+        @Test
+        void 위시리스트가_존재하지_않는_경우_예외_발생() {
+            // when & then
+            assertThatThrownBy(() -> wishService.getWishesFromPublicWishList(1L))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISHLIST_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        void 공용_위시리스트가_아닌_경우_예외_발생() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+            List<Wish> wishes = List.of(entityManager.persist(WishFixture.create(wishList)));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> wishService.getWishesFromPublicWishList(wishList.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.NOT_PUBLIC_WISH_LIST.getMessage());
+        }
+    }
 }

@@ -152,4 +152,43 @@ public interface WishApiSpec {
             @PathVariable("wishListId") Long wishListId,
             @Parameter(hidden = true) @ParticipantId Long participantId
     );
+
+    @Operation(
+            summary = "공개 위시리스트의 위시 조회",
+            operationId = "getWishesInPublicWishList"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "공개 위시리스트의 위시 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = WishResponse.class)))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "위시리스트를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "위시리스트를 찾을 수 없음",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Not Found",
+                                              "status": 404,
+                                              "detail": "위시리스트를 찾을 수 없습니다.",
+                                              "instance": "/api/v1/wishLists/public/1/wishes"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    @GetMapping("/wishLists/public/{wishListId}/wishes")
+    ResponseEntity<List<WishResponse>> getWishesInPublicWishList(
+            @Parameter(description = "공개 위시리스트 ID", example = "1")
+            @PathVariable("wishListId") Long wishListId
+    );
 }

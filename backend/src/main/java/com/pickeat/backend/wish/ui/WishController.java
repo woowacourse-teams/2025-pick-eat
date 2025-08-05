@@ -54,4 +54,13 @@ public class WishController implements WishApiSpec {
         List<WishResponse> wishes = wishService.getWishes(wishListId, participantId);
         return ResponseEntity.ok(wishes);
     }
+
+    @Override
+    @GetMapping("/wishLists/public/{wishListId}/wishes")
+    public ResponseEntity<List<WishResponse>> getWishesInPublicWishList(
+            @PathVariable("wishListId") Long wishListId
+    ) {
+        List<WishResponse> wishes = wishService.getWishesFromPublicWishList(wishListId);
+        return ResponseEntity.ok(wishes);
+    }
 }
