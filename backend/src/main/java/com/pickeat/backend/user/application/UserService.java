@@ -31,8 +31,8 @@ public class UserService {
     public UserResponse createUser(SignupRequest request, Long providerId, String provider) {
         validateDuplicateNickname(request.nickname());
         User user = new User(request.nickname(), providerId, provider);
-        User savedUser = userRepository.save(user);
-        return UserResponse.from(savedUser);
+        userRepository.save(user);
+        return UserResponse.from(user);
     }
 
     public UserResponse findByNickName(String nickname) {
