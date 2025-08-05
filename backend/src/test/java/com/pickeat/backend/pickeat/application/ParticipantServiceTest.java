@@ -4,13 +4,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.global.auth.JwtProvider;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.pickeat.domain.Pickeat;
-import com.pickeat.backend.pickeat.domain.Radius;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,14 +33,10 @@ class ParticipantServiceTest {
         @Test
         void 참가자_생성_성공() {
             // given
-            String name = "맛집 찾기";
-            Location location = new Location(127.123, 37.456);
-            Radius radius = new Radius(150);
-            Pickeat pickeat = new Pickeat(name, location, radius);
-            Long pickeatId = (Long) testEntityManager.persistAndGetId(pickeat);
+            Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
             Integer pastCount = pickeat.getParticipantCount();
 
-            ParticipantRequest request = new ParticipantRequest("테스트유저", pickeatId);
+            ParticipantRequest request = new ParticipantRequest("테스트유저", pickeat.getId());
 
             // when
             String response = participantService.createParticipant(request);

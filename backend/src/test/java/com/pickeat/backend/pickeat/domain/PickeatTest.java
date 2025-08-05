@@ -15,18 +15,15 @@ class PickeatTest {
         void 유효한_정보로_픽잇을_생성() {
             // given
             String name = "맛집 찾기";
-            Location location = new Location(127.123, 37.456);
-            Radius radius = new Radius(150);
 
             // when
-            Pickeat pickeat = new Pickeat(name, location, radius);
+            Pickeat pickeat = Pickeat.createWithoutRoom(name);
 
             // then
             assertAll(
-                    () -> assertThat(pickeat)
-                            .extracting(Pickeat::getName, Pickeat::getLocation, Pickeat::getRadius,
-                                    Pickeat::getParticipantCount, Pickeat::getIsActive)
-                            .containsExactly(name, location, radius, 0, true),
+                    () -> assertThat(pickeat.getName()).isEqualTo(name),
+                    () -> assertThat(pickeat.getParticipantCount()).isEqualTo(0),
+                    () -> assertThat(pickeat.getIsActive()).isTrue(),
                     () -> assertThat(pickeat.getCode()).isNotNull()
             );
         }
@@ -39,9 +36,7 @@ class PickeatTest {
         void 참가자_수_증가() {
             // given
             String name = "맛집 찾기";
-            Location location = new Location(127.123, 37.456);
-            Radius radius = new Radius(150);
-            Pickeat pickeat = new Pickeat(name, location, radius);
+            Pickeat pickeat = Pickeat.createWithoutRoom(name);
 
             // when
             pickeat.incrementParticipantCount();
@@ -58,9 +53,7 @@ class PickeatTest {
         void 픽잇_비활성화() {
             // given
             String name = "맛집 찾기";
-            Location location = new Location(127.123, 37.456);
-            Radius radius = new Radius(150);
-            Pickeat pickeat = new Pickeat(name, location, radius);
+            Pickeat pickeat = Pickeat.createWithoutRoom(name);
 
             // when
             pickeat.deactivate();

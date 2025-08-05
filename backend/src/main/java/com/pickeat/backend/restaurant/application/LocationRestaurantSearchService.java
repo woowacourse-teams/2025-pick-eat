@@ -1,21 +1,25 @@
 package com.pickeat.backend.restaurant.application;
 
+import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 @RequiredArgsConstructor
-public class RestaurantSearchService {
+public class LocationRestaurantSearchService {
 
     private static final int RESTAURANT_SEARCH_SIZE = 10;
     private final RestaurantSearchClient restaurantSearchClient;
 
     //TODO: 분명 개선 여지가 있을텐데... + 테스트 (2025-07-21, 월, 20:32)
-    public List<RestaurantRequest> search(Double x, Double y, Integer radius) {
+    public List<RestaurantRequest> searchByLocation(LocationRestaurantRequest request) {
+        Double x = request.x();
+        Double y = request.y();
+        int radius = request.radius();
 
         List<RestaurantRequest> requests = new ArrayList<>();
         requests.addAll(restaurantSearchClient.getRestaurants(

@@ -3,9 +3,11 @@ package com.pickeat.backend.restaurant.application;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.List;
@@ -23,9 +25,8 @@ public class RestaurantService {
 
     //TODO: 개선할 여지가 보임  (2025-07-21, 월, 20:43)
     @Transactional
-    public void create(List<RestaurantRequest> restaurantRequests, Long pickeatId) {
-        Pickeat pickeat = pickeatRepository.findById(pickeatId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
+    public void create(List<RestaurantRequest> restaurantRequests, String pickeatCode) {
+        Pickeat pickeat = getPickeatByCode(pickeatCode);
         List<Restaurant> restaurants = restaurantRequests.stream()
                 .map(request -> new Restaurant(
                         request.name(),
@@ -35,9 +36,17 @@ public class RestaurantService {
                         request.placeUrl(),
                         request.tags(),
                         request.location(),
+                        request.pictureUrls(),
+                        request.type(),
                         pickeat))
                 .toList();
         restaurantRepository.saveAll(restaurants);
+    }
+
+    public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded) {
+        Pickeat pickeat = getPickeatByCode(pickeatCode);
+        List<Restaurant> restaurants = restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, isExcluded);
+        return RestaurantResponse.from(restaurants);
     }
 
     @Transactional
@@ -70,12 +79,17 @@ public class RestaurantService {
     }
 
     //TODO: 참가자의 픽잇과 식당의 픽잇이 동일한 지 검증  (2025-07-21, 월, 15:50)
-
     private void validateAllRestaurantsHaveSamePickeat(List<Restaurant> restaurants) {
         if (restaurants.isEmpty()) {
             return;
         }
         Pickeat pickeat = restaurants.getFirst().getPickeat();
         restaurants.forEach(restaurant -> restaurant.validatePickeat(pickeat));
+    }
+
+    private Pickeat getPickeatByCode(String pickeatCode) {
+        Pickeat pickeat = pickeatRepository.findByCode(new PickeatCode(pickeatCode))
+                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
+        return pickeat;
     }
 }

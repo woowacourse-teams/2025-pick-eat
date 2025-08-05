@@ -1,18 +1,16 @@
 package com.pickeat.backend.pickeat.ui;
 
+import com.pickeat.backend.global.auth.LoginUserId;
 import com.pickeat.backend.pickeat.application.PickeatService;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
-import com.pickeat.backend.restaurant.application.RestaurantSearchService;
-import com.pickeat.backend.restaurant.application.RestaurantService;
-import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import jakarta.validation.Valid;
-import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -20,33 +18,37 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/pickeats")
+@RequestMapping("api/v1")
 @RequiredArgsConstructor
 public class PickeatController implements PickeatApiSpec {
 
     private final PickeatService pickeatService;
-    private final RestaurantService restaurantService;
-    private final RestaurantSearchService restaurantSearchService;
 
     @Override
-    @PostMapping
-    public ResponseEntity<PickeatResponse> createPickeat(@Valid @RequestBody PickeatRequest request) {
-        List<RestaurantRequest> restaurantRequests = restaurantSearchService.search(request.x(), request.y(),
-                request.radius());
-        PickeatResponse response = pickeatService.createPickeat(request);
-        restaurantService.create(restaurantRequests, response.id());
-        String location = "/api/v1/pickeats/" + response.code();
+    @PostMapping("/pickeats")
+    public ResponseEntity<PickeatResponse> createPickeatWithoutRoom(@Valid @RequestBody PickeatRequest request) {
+        PickeatResponse response = pickeatService.createPickeatWithoutRoom(request);
 
-        return ResponseEntity.created(URI.create(location))
-                .body(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    //TODO: 유저 권한이 필요한 API에 대해 인터셉터 혹은 필터단에서 early return 하게 하기  (2025-08-5, 화, 2:35)
+    @Override
+    @PostMapping("/rooms/{roomId}/pickeats")
+    public ResponseEntity<PickeatResponse> createPickeatWithRoom(
+            @PathVariable("roomId") Long roomId,
+            @LoginUserId Long userId,
+            @Valid @RequestBody PickeatRequest request) {
+        PickeatResponse response = pickeatService.createPickeatWithRoom(roomId, userId, request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
-    @GetMapping("/{pickeatCode}/participants/state")
+    @GetMapping("/pickeats/{pickeatCode}/participants/state")
     public ResponseEntity<ParticipantStateResponse> getParticipantStateSummary(
             @PathVariable("pickeatCode") String pickeatCode) {
         ParticipantStateResponse response = pickeatService.getParticipantStateSummary(pickeatCode);
@@ -54,32 +56,23 @@ public class PickeatController implements PickeatApiSpec {
     }
 
     @Override
-    @PatchMapping("/{pickeatCode}/deactivate")
+    @PatchMapping("/pickeats/{pickeatCode}/deactivate")
     public ResponseEntity<Void> deactivatePickeat(@PathVariable("pickeatCode") String pickeatCode) {
         pickeatService.deactivatePickeat(pickeatCode);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    @GetMapping("/{pickeatCode}")
+    @GetMapping("/pickeats/{pickeatCode}")
     public ResponseEntity<PickeatResponse> getPickeat(@PathVariable("pickeatCode") String pickeatCode) {
         PickeatResponse response = pickeatService.getPickeat(pickeatCode);
         return ResponseEntity.ok().body(response);
     }
 
     @Override
-    @GetMapping("/{pickeatCode}/result")
+    @GetMapping("/pickeats/{pickeatCode}/result")
     public ResponseEntity<List<RestaurantResponse>> getPickeatResult(@PathVariable("pickeatCode") String pickeatCode) {
         List<RestaurantResponse> response = pickeatService.getPickeatResult(pickeatCode);
-        return ResponseEntity.ok().body(response);
-    }
-
-    @Override
-    @GetMapping("/{pickeatCode}/restaurants")
-    public ResponseEntity<List<RestaurantResponse>> getPickeatRestaurants(
-            @PathVariable("pickeatCode") String pickeatCode,
-            @RequestParam(required = false) Boolean isExcluded) {
-        List<RestaurantResponse> response = pickeatService.getPickeatRestaurants(pickeatCode, isExcluded);
         return ResponseEntity.ok().body(response);
     }
 }

@@ -5,15 +5,14 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
-import com.pickeat.backend.pickeat.domain.Radius;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurants;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,17 +26,24 @@ public class PickeatService {
     private final PickeatRepository pickeatRepository;
     private final RestaurantRepository restaurantRepository;
     private final ParticipantRepository participantRepository;
+    private final RoomUserRepository roomUserRepository;
 
     @Transactional
-    public PickeatResponse createPickeat(PickeatRequest request) {
-        Pickeat pickeat = new Pickeat(
-                request.name(),
-                new Location(request.x(), request.y()),
-                new Radius(request.radius())
-        );
+    public PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
+        Pickeat pickeat = Pickeat.createWithoutRoom(request.name());
 
-        Pickeat saved = pickeatRepository.save(pickeat);
-        return PickeatResponse.from(saved);
+        pickeatRepository.save(pickeat);
+        return PickeatResponse.from(pickeat);
+    }
+
+    @Transactional
+    public PickeatResponse createPickeatWithRoom(Long roomId, Long userId, PickeatRequest request) {
+        validateUserAccessToRoom(roomId, userId);
+
+        Pickeat pickeat = Pickeat.createWithRoom(request.name(), roomId);
+
+        pickeatRepository.save(pickeat);
+        return PickeatResponse.from(pickeat);
     }
 
     @Transactional
@@ -69,8 +75,9 @@ public class PickeatService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
     }
 
-    public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded) {
-        Pickeat pickeat = findPickeatByCode(pickeatCode);
-        return RestaurantResponse.from(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, isExcluded));
+    private void validateUserAccessToRoom(Long roomId, Long userId) {
+        if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
+            throw new BusinessException(ErrorCode.ROOM_ACCESS_DENIED);
+        }
     }
 }

@@ -74,7 +74,7 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
         List<RestaurantRequest> restaurantRequests = new ArrayList<>();
         for (JsonNode document : documents) {
             restaurantRequests.add(
-                    new RestaurantRequest(
+                    RestaurantRequest.fromLocation(
                             document.path("place_name").asText(),
                             parseCategory(document.path("category_name").asText()),
                             document.path("distance").asInt(),
