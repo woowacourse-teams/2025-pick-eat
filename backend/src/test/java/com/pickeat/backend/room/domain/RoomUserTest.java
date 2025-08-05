@@ -3,6 +3,8 @@ package com.pickeat.backend.room.domain;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
 import com.pickeat.backend.fixture.RoomFixture;
+import com.pickeat.backend.fixture.UserFixture;
+import com.pickeat.backend.user.domain.User;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -15,10 +17,10 @@ class RoomUserTest {
         void 룸과_유저로_룸유저_생성() {
             // given
             Room room = RoomFixture.create();
-            Long userId = 1L;
+            User user = UserFixture.create();
 
             // when & then
-            assertThatCode(() -> new RoomUser(room, userId))
+            assertThatCode(() -> new RoomUser(room, user))
                     .doesNotThrowAnyException();
         }
     }

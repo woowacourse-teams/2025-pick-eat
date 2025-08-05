@@ -9,7 +9,11 @@ import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
+import com.pickeat.backend.user.domain.User;
+import com.pickeat.backend.user.domain.repository.UserRepository;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,18 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoomService {
 
     private final RoomRepository roomRepository;
+    private final UserRepository userRepository;
     private final RoomUserRepository roomUserRepository;
 
     @Transactional
     public RoomResponse createRoom(RoomRequest request, Long userId) {
         Room room = new Room(request.name());
+        User user = getUserById(userId);
         roomRepository.save(room);
-        roomUserRepository.save(new RoomUser(room, userId));
+        roomUserRepository.save(new RoomUser(room, user));
         return RoomResponse.from(room);
     }
 
-    public RoomResponse getRoom(Long roomId) {
-        Room room = getRoomByRoomId(roomId);
+    public RoomResponse getRoom(Long roomId, Long userId) {
+        validateUserAccessToRoom(roomId, userId);
+
+        Room room = getRoomById(roomId);
         return RoomResponse.from(room);
     }
 
@@ -41,19 +49,36 @@ public class RoomService {
     }
 
     @Transactional
-    public void inviteUsers(Long roomId, RoomInvitationRequest request) {
-        Room room = getRoomByRoomId(roomId);
-        //TODO: User 객체로 변환 작업하기  (2025-08-1, 금, 15:45)
-        List<Long> userIds = request.userIds();
+    public void inviteUsers(Long roomId, Long userId, RoomInvitationRequest request) {
+        validateUserAccessToRoom(roomId, userId);
 
-        List<RoomUser> roomUsers = userIds.stream()
-                .map(userId -> new RoomUser(room, userId))
+        Room room = getRoomById(roomId);
+        Set<Long> userIds = new HashSet<>(request.userIds());
+        List<User> users = userIds
+                .stream()
+                .map(this::getUserById)
+                .toList();
+
+        List<RoomUser> roomUsers = users.stream()
+                .map(user -> new RoomUser(room, user))
+                .filter(roomUser -> !roomUserRepository.existsByRoomIdAndUserId(roomUser.getRoom().getId(),
+                        roomUser.getUser().getId()))
                 .toList();
 
         roomUserRepository.saveAll(roomUsers);
     }
 
-    private Room getRoomByRoomId(Long roomId) {
+    private Room getRoomById(Long roomId) {
         return roomRepository.findById(roomId).orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
+    }
+
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private void validateUserAccessToRoom(Long roomId, Long userId) {
+        if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
+            throw new BusinessException(ErrorCode.ROOM_ACCESS_DENIED);
+        }
     }
 }
