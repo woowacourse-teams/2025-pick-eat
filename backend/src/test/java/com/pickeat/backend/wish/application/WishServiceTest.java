@@ -141,11 +141,11 @@ class WishServiceTest {
             entityManager.clear();
 
             // when
-            List<WishResponse> expectedResponse = wishService.getWishes(wishList.getId(), participant.getId());
+            List<WishResponse> response = wishService.getWishes(wishList.getId(), participant.getId());
 
             // then
             List<Long> actualWishIds = wishes.stream().map(Wish::getId).toList();
-            assertThat(expectedResponse)
+            assertThat(response)
                     .extracting(WishResponse::id)
                     .containsExactlyInAnyOrderElementsOf(actualWishIds);
         }

@@ -53,10 +53,10 @@ class WishListServiceTest {
             WishListRequest request = new WishListRequest("위시리스트");
 
             // when
-            WishListResponse expectedResponse = wishListService.createWishList(room.getId(), user.getId(), request);
+            WishListResponse response = wishListService.createWishList(room.getId(), user.getId(), request);
 
             // then
-            assertThat(entityManager.find(WishList.class, expectedResponse.id())).isNotNull();
+            assertThat(entityManager.find(WishList.class, response.id())).isNotNull();
         }
 
         @Test
@@ -95,11 +95,11 @@ class WishListServiceTest {
             entityManager.clear();
 
             // when
-            List<WishListResponse> expectedResponse = wishListService.getWishLists(room.getId(), participant.getId());
+            List<WishListResponse> response = wishListService.getWishLists(room.getId(), participant.getId());
 
             // then
             List<Long> actualWishListIds = wishLists.stream().map(WishList::getId).toList();
-            assertThat(expectedResponse)
+            assertThat(response)
                     .extracting(WishListResponse::id)
                     .containsExactlyInAnyOrderElementsOf(actualWishListIds);
         }
@@ -146,11 +146,11 @@ class WishListServiceTest {
             entityManager.clear();
 
             // when
-            List<WishListResponse> expectedResponse = wishListService.getPublicWishLists();
+            List<WishListResponse> response = wishListService.getPublicWishLists();
 
             // then
             List<Long> publicWishListIds = publicWishLists.stream().map(WishList::getId).toList();
-            assertThat(expectedResponse)
+            assertThat(response)
                     .extracting(WishListResponse::id)
                     .containsExactlyInAnyOrderElementsOf(publicWishListIds);
 
