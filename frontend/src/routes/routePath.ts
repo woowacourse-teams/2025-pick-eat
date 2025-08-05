@@ -6,7 +6,7 @@ export const ROUTE_PATH = {
   RESTAURANTS_EXCLUDE: '/restaurants-exclude',
   CHOOSE_WISHLIST: '/choose-wishlist',
   LOGIN: '/login',
-  QUICK_SIGNUP: '/quick-signup',
+  PROFILE_INIT: '/profile-init',
   OAUTH_CALLBACK: '/oauth/callback',
   MY_PAGE: '/my-page',
 };
