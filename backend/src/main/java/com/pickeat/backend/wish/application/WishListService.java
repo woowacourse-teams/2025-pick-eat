@@ -43,6 +43,11 @@ public class WishListService {
         return WishListResponse.from(wishLists);
     }
 
+    public List<WishListResponse> getPublicWishLists() {
+        List<WishList> publicWishList = wishListRepository.findAllByIsPublicTrue();
+        return WishListResponse.from(publicWishList);
+    }
+
     public List<WishResponse> getWishes(Long wishListId, Long participantId) {
         WishList wishList = getWishList(wishListId);
         Participant participant = getParticipant(participantId);

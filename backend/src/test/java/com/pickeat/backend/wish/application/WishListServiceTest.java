@@ -130,6 +130,37 @@ class WishListServiceTest {
     }
 
     @Nested
+    class 공용_위시리스트_목록_조회_케이스 {
+
+        @Test
+        void 공용_위시리스트_목록_조회_성공() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            List<WishList> privateWishLists = List.of(
+                    entityManager.persist(WishListFixture.createPrivate(room.getId())),
+                    entityManager.persist(WishListFixture.createPrivate(room.getId())));
+
+            Room templateRoom = entityManager.persist(RoomFixture.create());
+            List<WishList> publicWishLists = List.of(
+                    entityManager.persist(WishListFixture.createPublic(templateRoom.getId())),
+                    entityManager.persist(WishListFixture.createPublic(templateRoom.getId())));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            List<WishListResponse> expectedResponse = wishListService.getPublicWishLists();
+
+            // then
+            List<Long> publicWishListIds = publicWishLists.stream().map(WishList::getId).toList();
+            assertThat(expectedResponse)
+                    .extracting(WishListResponse::id)
+                    .containsExactlyInAnyOrderElementsOf(publicWishListIds);
+
+        }
+    }
+
+    @Nested
     class 위시리스트의_위시_조회_케이스 {
 
         @Test

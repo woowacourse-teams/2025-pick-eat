@@ -158,4 +158,20 @@ public interface WishListApiSpec {
             @PathVariable("wishListId") Long wishListId,
             @Parameter(hidden = true) @ParticipantId Long participantId
     );
+
+    @Operation(
+            summary = "공용 위시리스트 목록 조회",
+            operationId = "getPublicWishLists"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "공용 위시리스트 목록 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = WishListResponse.class)))
+            )
+    })
+    @GetMapping("/wishLists")
+    ResponseEntity<List<WishListResponse>> getPublicWishLists();
 }

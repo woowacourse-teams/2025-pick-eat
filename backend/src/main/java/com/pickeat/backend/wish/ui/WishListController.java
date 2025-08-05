@@ -48,6 +48,13 @@ public class WishListController implements WishListApiSpec {
     }
 
     @Override
+    @GetMapping("/wishLists")
+    public ResponseEntity<List<WishListResponse>> getPublicWishLists() {
+        List<WishListResponse> wishLists = wishListService.getPublicWishLists();
+        return ResponseEntity.ok(wishLists);
+    }
+
+    @Override
     @GetMapping("/wishLists/{wishListId}/wishes")
     public ResponseEntity<List<WishResponse>> getWishesInWishList(
             @PathVariable("wishListId") Long wishListId,
