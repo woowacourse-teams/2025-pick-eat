@@ -18,7 +18,6 @@ public record WishRequest(
         String roadAddressName,
         @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
         List<String> tags
-        //TODO: 요청 메세지에 tags가 존재하지 않을 경우 500 예외 발생  (2025-08-4, 월, 17:2)
 ) {
 
 }

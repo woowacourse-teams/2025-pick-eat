@@ -2,6 +2,9 @@ package com.pickeat.backend.wish.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.pickeat.domain.Participant;
+import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
+import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
@@ -19,31 +22,54 @@ import org.springframework.transaction.annotation.Transactional;
 public class WishListService {
 
     private final WishListRepository wishListRepository;
+    private final RoomUserRepository roomUserRepository;
+    private final ParticipantRepository participantRepository;
 
-    //TODO: 현재 요청자가 room에 참가중인 참가지인지 권한 체크 필요  (2025-08-1, 금, 14:20)
     @Transactional
-    public WishListResponse createWishList(Long roomId, WishListRequest request) {
+    public WishListResponse createWishList(Long roomId, Long userId, WishListRequest request) {
         WishList wishList = new WishList(request.name(), roomId, false);
+        validateUserAccessToRoom(wishList.getRoomId(), userId);
         WishList saved = wishListRepository.save(wishList);
         return WishListResponse.from(saved);
     }
 
-    //TODO: 현재 요청자가 room에 참가중인 참가지인지 권한 체크 필요  (2025-08-1, 금, 14:20)
-    public List<WishListResponse> getWishLists(Long roomId) {
+    public List<WishListResponse> getWishLists(Long roomId, Long participantId) {
+        Participant participant = getParticipant(participantId);
+        validateParticipantAccessToRoom(roomId, participant);
+
         List<WishList> wishLists = new ArrayList<>();
         wishLists.addAll(wishListRepository.findAllByRoomIdAndIsPublic(roomId, false));
         wishLists.addAll(wishListRepository.findAllByIsPublicTrue());
         return WishListResponse.from(wishLists);
     }
 
-    public List<WishResponse> getWishes(Long wishListId) {
+    public List<WishResponse> getWishes(Long wishListId, Long participantId) {
         WishList wishList = getWishList(wishListId);
-        //TODO: 방 도메인이 완성되면 현재 요청자가 현재 위시 리스트가 포함된 방의 참가지인지 검증 필요(2025-08-1, 금, 16:15)
+        Participant participant = getParticipant(participantId);
+        validateParticipantAccessToRoom(wishList.getRoomId(), participant);
+
         return WishResponse.from(wishList.getWishes());
     }
 
     private WishList getWishList(Long wishListId) {
         return wishListRepository.findById(wishListId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISHLIST_NOT_FOUND));
+    }
+
+    private Participant getParticipant(Long participantId) {
+        return participantRepository.findById(participantId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
+    }
+
+    private void validateUserAccessToRoom(Long roomId, Long userId) {
+        if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
+            throw new BusinessException(ErrorCode.WISH_LIST_ACCESS_DENIED);
+        }
+    }
+
+    private void validateParticipantAccessToRoom(Long roomId, Participant participant) {
+        if (!participant.getPickeat().getRoomId().equals(roomId)) {
+            throw new BusinessException(ErrorCode.WISH_LIST_ACCESS_DENIED);
+        }
     }
 }
