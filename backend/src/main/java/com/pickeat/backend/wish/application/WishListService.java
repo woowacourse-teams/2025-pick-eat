@@ -7,7 +7,6 @@ import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
-import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
 import java.util.ArrayList;
@@ -46,19 +45,6 @@ public class WishListService {
     public List<WishListResponse> getPublicWishLists() {
         List<WishList> publicWishList = wishListRepository.findAllByIsPublicTrue();
         return WishListResponse.from(publicWishList);
-    }
-
-    public List<WishResponse> getWishes(Long wishListId, Long participantId) {
-        WishList wishList = getWishList(wishListId);
-        Participant participant = getParticipant(participantId);
-        validateParticipantAccessToRoom(wishList.getRoomId(), participant);
-
-        return WishResponse.from(wishList.getWishes());
-    }
-
-    private WishList getWishList(Long wishListId) {
-        return wishListRepository.findById(wishListId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.WISHLIST_NOT_FOUND));
     }
 
     private Participant getParticipant(Long participantId) {

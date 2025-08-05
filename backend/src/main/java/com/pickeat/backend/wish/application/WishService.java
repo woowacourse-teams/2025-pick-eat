@@ -2,6 +2,8 @@ package com.pickeat.backend.wish.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.pickeat.domain.Participant;
+import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
@@ -10,6 +12,7 @@ import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,7 @@ public class WishService {
     private final WishListRepository wishListRepository;
     private final WishRepository wishRepository;
     private final RoomUserRepository roomUserRepository;
+    private final ParticipantRepository participantRepository;
 
     @Transactional
     public WishResponse createWish(
@@ -51,6 +55,14 @@ public class WishService {
         wishRepository.delete(wish);
     }
 
+    public List<WishResponse> getWishes(Long wishListId, Long participantId) {
+        WishList wishList = getWishList(wishListId);
+        Participant participant = getParticipant(participantId);
+        validateParticipantAccessToRoom(wishList.getRoomId(), participant);
+
+        return WishResponse.from(wishList.getWishes());
+    }
+
     private WishList getWishList(Long wishListId) {
         return wishListRepository.findById(wishListId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISHLIST_NOT_FOUND));
@@ -61,9 +73,20 @@ public class WishService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
     }
 
+    private Participant getParticipant(Long participantId) {
+        return participantRepository.findById(participantId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
+    }
+
     private void validateUserAccessToRoom(Long roomId, Long userId) {
         if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
             throw new BusinessException(ErrorCode.WISH_ACCESS_DENIED);
+        }
+    }
+
+    private void validateParticipantAccessToRoom(Long roomId, Participant participant) {
+        if (!participant.getPickeat().getRoomId().equals(roomId)) {
+            throw new BusinessException(ErrorCode.WISH_LIST_ACCESS_DENIED);
         }
     }
 }

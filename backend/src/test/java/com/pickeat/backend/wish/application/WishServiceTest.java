@@ -3,12 +3,16 @@ package com.pickeat.backend.wish.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
+import com.pickeat.backend.fixture.ParticipantFixture;
+import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
 import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.pickeat.domain.Participant;
+import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.user.domain.User;
@@ -114,6 +118,59 @@ class WishServiceTest {
             assertThatThrownBy(() -> wishService.deleteWish(wish.getId(), otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
+        }
+    }
+
+    @Nested
+    class 위시리스트의_위시_조회_케이스 {
+
+        @Test
+        void 위시리스트의_위시_조회_성공() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createWithRoom(room.getId()));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+            List<Wish> wishes = List.of(
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            List<WishResponse> expectedResponse = wishService.getWishes(wishList.getId(), participant.getId());
+
+            // then
+            List<Long> actualWishIds = wishes.stream().map(Wish::getId).toList();
+            assertThat(expectedResponse)
+                    .extracting(WishResponse::id)
+                    .containsExactlyInAnyOrderElementsOf(actualWishIds);
+        }
+
+        @Test
+        void 방의_참가자가_아닌_경우_예외_발생() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createWithRoom(room.getId()));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+
+            Room otherRoom = entityManager.persist(RoomFixture.create());
+            WishList otherRoomWishList = entityManager.persist(WishListFixture.createPrivate(otherRoom.getId()));
+            List<Wish> otherRoomWishes = List.of(
+                    entityManager.persist(WishFixture.create(otherRoomWishList)),
+                    entityManager.persist(WishFixture.create(otherRoomWishList)),
+                    entityManager.persist(WishFixture.create(otherRoomWishList)));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> wishService.getWishes(otherRoomWishList.getId(), participant.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISH_LIST_ACCESS_DENIED.getMessage());
         }
     }
 }
