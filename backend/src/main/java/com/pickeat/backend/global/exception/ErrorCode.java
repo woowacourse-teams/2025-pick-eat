@@ -20,6 +20,7 @@ public enum ErrorCode {
 
     // Wish 관련 에러
     WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "위시를 찾을 수 없습니다."),
+    WISH_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 위시에 접근할 권한이 없습니다."),
 
     // WishPicture 관련 에러
     NOT_ALLOWED_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "허용하지 않은 위시 사진 타입입니다"),

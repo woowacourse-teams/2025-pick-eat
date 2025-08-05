@@ -1,5 +1,6 @@
 package com.pickeat.backend.wish.ui;
 
+import com.pickeat.backend.global.auth.LoginUserId;
 import com.pickeat.backend.wish.application.WishService;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
@@ -25,9 +26,10 @@ public class WishController implements WishApiSpec {
     @PostMapping(value = "/wishLists/{wishListId}/wishes")
     public ResponseEntity<WishResponse> createWish(
             @PathVariable("wishListId") Long wishListId,
-            @Valid @RequestBody WishRequest request
+            @Valid @RequestBody WishRequest request,
+            @LoginUserId Long userId
     ) {
-        WishResponse wishResponse = wishService.createWish(wishListId, request);
+        WishResponse wishResponse = wishService.createWish(wishListId, request, userId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(wishResponse);
@@ -35,8 +37,8 @@ public class WishController implements WishApiSpec {
 
     @Override
     @DeleteMapping("/wishes/{wishId}")
-    public ResponseEntity<Void> deleteWish(@PathVariable("wishId") Long wishId) {
-        wishService.deleteWish(wishId);
+    public ResponseEntity<Void> deleteWish(@PathVariable("wishId") Long wishId, @LoginUserId Long userId) {
+        wishService.deleteWish(wishId, userId);
         return ResponseEntity.noContent().build();
     }
 }
