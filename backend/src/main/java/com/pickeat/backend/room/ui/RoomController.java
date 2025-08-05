@@ -29,7 +29,8 @@ public class RoomController implements RoomApiSpec {
     @PostMapping
     public ResponseEntity<RoomResponse> create(
             @Valid @RequestBody RoomRequest request,
-            @LoginUserId Long userId) {
+            @LoginUserId Long userId
+    ) {
         RoomResponse response = roomService.createRoom(request, userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -38,7 +39,8 @@ public class RoomController implements RoomApiSpec {
     @GetMapping("/{roomId}")
     public ResponseEntity<RoomResponse> get(
             @PathVariable("roomId") Long roomId,
-            @LoginUserId Long userId) {
+            @LoginUserId Long userId
+    ) {
         RoomResponse response = roomService.getRoom(roomId, userId);
         return ResponseEntity.ok(response);
     }
@@ -54,7 +56,8 @@ public class RoomController implements RoomApiSpec {
     @PostMapping("/{roomId}/invite")
     public ResponseEntity<Void> invite(@PathVariable("roomId") Long roomId,
                                        @LoginUserId Long userId,
-                                       @Valid @RequestBody RoomInvitationRequest request) {
+                                       @Valid @RequestBody RoomInvitationRequest request
+    ) {
         roomService.inviteUsers(roomId, userId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
