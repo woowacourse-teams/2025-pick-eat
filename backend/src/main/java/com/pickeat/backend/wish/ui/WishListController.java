@@ -1,5 +1,7 @@
 package com.pickeat.backend.wish.ui;
 
+import com.pickeat.backend.global.auth.LoginUserId;
+import com.pickeat.backend.global.auth.ParticipantId;
 import com.pickeat.backend.wish.application.WishListService;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
@@ -28,23 +30,31 @@ public class WishListController implements WishListApiSpec {
     @PostMapping("/room/{roomId}/wishLists")
     public ResponseEntity<WishListResponse> createWishList(
             @PathVariable("roomId") Long roomId,
-            @Valid @RequestBody WishListRequest request
+            @Valid @RequestBody WishListRequest request,
+            @LoginUserId Long userId
     ) {
-        WishListResponse wishListResponse = wishListService.createWishList(roomId, request);
+        WishListResponse wishListResponse = wishListService.createWishList(roomId, userId, request);
         return ResponseEntity.status(HttpStatus.CREATED).body(wishListResponse);
     }
 
     @Override
     @GetMapping("/room/{roomId}/wishLists")
-    public ResponseEntity<List<WishListResponse>> getWishLists(@PathVariable("roomId") Long roomId) {
-        List<WishListResponse> wishLists = wishListService.getWishLists(roomId);
+    public ResponseEntity<List<WishListResponse>> getWishLists(
+            @PathVariable("roomId") Long roomId,
+            @ParticipantId Long participantId
+
+    ) {
+        List<WishListResponse> wishLists = wishListService.getWishLists(roomId, participantId);
         return ResponseEntity.ok(wishLists);
     }
 
     @Override
     @GetMapping("/wishLists/{wishListId}/wishes")
-    public ResponseEntity<List<WishResponse>> getWishesInWishList(@PathVariable("wishListId") Long wishListId) {
-        List<WishResponse> wishes = wishListService.getWishes(wishListId);
+    public ResponseEntity<List<WishResponse>> getWishesInWishList(
+            @PathVariable("wishListId") Long wishListId,
+            @ParticipantId Long participantId
+    ) {
+        List<WishResponse> wishes = wishListService.getWishes(wishListId, participantId);
         return ResponseEntity.ok(wishes);
     }
 }
