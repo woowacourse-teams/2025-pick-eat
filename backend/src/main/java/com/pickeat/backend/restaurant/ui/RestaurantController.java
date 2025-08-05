@@ -1,10 +1,9 @@
 package com.pickeat.backend.restaurant.ui;
 
-import com.pickeat.backend.restaurant.application.RestaurantSearchService;
+import com.pickeat.backend.restaurant.application.RestaurantSearchFacade;
 import com.pickeat.backend.restaurant.application.RestaurantService;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
-import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.ui.api.RestaurantApiSpec;
@@ -28,15 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestaurantController implements RestaurantApiSpec {
 
     private final RestaurantService restaurantService;
-    private final RestaurantSearchService restaurantSearchService;
+    private final RestaurantSearchFacade restaurantSearchFacade;
 
     @Override
     @PostMapping("/pickeats/{pickeatCode}/restaurants/location")
     public ResponseEntity<Void> createRestaurantsByLocation(
             @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody LocationRestaurantRequest request) {
-        List<RestaurantRequest> restaurantRequests = restaurantSearchService.searchByLocation(request);
-        restaurantService.create(restaurantRequests, pickeatCode);
+        restaurantSearchFacade.searchByLocation(request, pickeatCode);
 
         URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
         return ResponseEntity.created(location).build();
@@ -47,8 +45,7 @@ public class RestaurantController implements RestaurantApiSpec {
     public ResponseEntity<Void> createRestaurantsByWish(
             @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody WishRestaurantRequest request) {
-        List<RestaurantRequest> restaurantRequests = restaurantSearchService.searchByWish(request);
-        restaurantService.create(restaurantRequests, pickeatCode);
+        restaurantSearchFacade.searchByWish(request, pickeatCode);
 
         URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
         return ResponseEntity.created(location).build();
