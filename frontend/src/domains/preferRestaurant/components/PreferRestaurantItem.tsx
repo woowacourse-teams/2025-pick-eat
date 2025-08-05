@@ -1,32 +1,24 @@
 import LikeButton from '@components/actions/LikeButton/LikeButton';
 import Badge from '@components/labels/Badge';
 
+import { Restaurant } from '@apis/restaurant';
+
 import styled from '@emotion/styled';
 
-import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider';
+import useLike from '../hooks/useLike';
 
-type Prop = {
-  id: string;
-  name: string;
-  tags: string[];
-  category: '한식' | '중식' | '일식' | '양식' | '기타';
-  distance: number;
-  likeCount: number;
-  placeUrl: string;
+type Props = {
+  restaurant: Restaurant;
+  onUpdateRestaurant: (content: (prev: Restaurant[]) => Restaurant[]) => void;
 };
 
-function PreferRestaurantItem({
-  id,
-  name,
-  tags,
-  distance,
-  likeCount,
-  category,
-  placeUrl,
-}: Prop) {
-  const { liked, handleLike, handleUnlike } = usePreferRestaurantContext();
+function PreferRestaurantItem({ restaurant, onUpdateRestaurant }: Props) {
+  const { isLiked, handleLike, handleUnlike } = useLike(onUpdateRestaurant);
+  const { id, name, tags, distance, likeCount, category, placeUrl } =
+    restaurant;
+
   return (
-    <S.Container liked={liked(id)}>
+    <S.Container liked={isLiked(id)}>
       <S.CardContent>
         <S.TagBox>
           {tags.length === 0 && <Badge>{category}</Badge>}
@@ -49,7 +41,7 @@ function PreferRestaurantItem({
         count={likeCount}
         onLike={handleLike}
         onUnlike={handleUnlike}
-        liked={liked}
+        liked={isLiked}
       />
     </S.Container>
   );

@@ -4,6 +4,7 @@ export const ROUTE_PATH = {
   PREFER_RESTAURANT: '/prefer-restaurant',
   MATCH_RESULT: '/match-result',
   RESTAURANTS_EXCLUDE: '/restaurants-exclude',
+  CHOOSE_WISHLIST: '/choose-wishlist',
   LOGIN: '/login',
   QUICK_SIGNUP: '/quick-signup',
   OAUTH_CALLBACK: '/oauth/callback',
@@ -19,4 +20,5 @@ export const generateRouterPath = {
     `${ROUTE_PATH.PREFER_RESTAURANT}?code=${pickeatCode}`,
   matchResult: (pickeatCode: string) =>
     `${ROUTE_PATH.MATCH_RESULT}?code=${pickeatCode}`,
+  chooseWishlist: ROUTE_PATH.CHOOSE_WISHLIST,
 };

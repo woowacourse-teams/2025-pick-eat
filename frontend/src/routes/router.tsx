@@ -8,6 +8,12 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
+
+import ChooseWishlist from '@pages/ChooseWishlist';
+import CreatePickeat from '@pages/CreatePickeat';
+import MatchResult from '@pages/MatchResult';
+import PickeatDetail from '@pages/PickeatDetail';
+import PreferRestaurant from '@pages/PreferRestaurant';
 import CreatePickeat from '@pages/CreatePickeat';
 import Login from '@pages/Login';
 import MatchResult from '@pages/MatchResult';
@@ -45,6 +51,9 @@ const routes = createBrowserRouter([
         path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
         Component: RestaurantExcludePage,
       },
+      {
+        path: ROUTE_PATH.CHOOSE_WISHLIST,
+        Component: ChooseWishlist,
       { path: ROUTE_PATH.LOGIN, Component: Login },
       { path: ROUTE_PATH.QUICK_SIGNUP, Component: QuickSignup },
       { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
