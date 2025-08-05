@@ -103,9 +103,9 @@ class RoomServiceTest {
             // given
             User user = testEntityManager.persist(UserFixture.create());
             User otherUser = testEntityManager.persist(UserFixture.create());
-            Room room1 = createRoom(user);
-            Room room2 = createRoom(user);
-            Room room3 = createRoom(otherUser);
+            createRoom(user);
+            createRoom(user);
+            createRoom(otherUser);
 
             testEntityManager.flush();
             testEntityManager.clear();
@@ -141,6 +141,54 @@ class RoomServiceTest {
             // then
             List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
             assertThat(roomUsers).hasSize(4);
+        }
+
+        @Test
+        void 중복_초대시_중복_제거하여_초대() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            User invitedUser1 = testEntityManager.persist(UserFixture.create());
+            User invitedUser2 = testEntityManager.persist(UserFixture.create());
+
+            Room room = createRoom(user);
+
+            // invitedUser1의 id가 2번 들어감
+            List<Long> userIdsForInvitation = List.of(invitedUser1.getId(), invitedUser1.getId(), invitedUser2.getId());
+            RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            roomService.inviteUsers(room.getId(), user.getId(), request);
+
+            // then
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            assertThat(roomUsers).hasSize(3);
+        }
+
+        @Test
+        void 이미_초대된_유저를_초대시_무시하고_성공_처리() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            User invitedUser = testEntityManager.persist(UserFixture.create());
+
+            Room room = createRoom(user);
+
+            List<Long> userIdsForInvitation = List.of(invitedUser.getId());
+            RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            // 2번 초대
+            roomService.inviteUsers(room.getId(), user.getId(), request);
+            roomService.inviteUsers(room.getId(), user.getId(), request);
+
+            // then
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            assertThat(roomUsers).hasSize(2);
         }
 
         @Test

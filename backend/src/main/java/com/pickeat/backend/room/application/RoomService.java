@@ -11,7 +11,9 @@ import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.user.domain.repository.UserRepository;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,13 +53,16 @@ public class RoomService {
         validateUserAccessToRoom(roomId, userId);
 
         Room room = getRoomById(roomId);
-        List<User> users = request.userIds()
+        Set<Long> userIds = new HashSet<>(request.userIds());
+        List<User> users = userIds
                 .stream()
                 .map(this::getUserById)
                 .toList();
 
         List<RoomUser> roomUsers = users.stream()
                 .map(user -> new RoomUser(room, user))
+                .filter(roomUser -> !roomUserRepository.existsByRoomIdAndUserId(roomUser.getRoom().getId(),
+                        roomUser.getUser().getId()))
                 .toList();
 
         roomUserRepository.saveAll(roomUsers);
