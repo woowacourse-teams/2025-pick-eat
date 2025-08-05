@@ -20,12 +20,20 @@ public interface LoginApiSpec {
             summary = "인증 코드 처리",
             operationId = "processKakaoCode",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
-                    description = "인가 코드",
+                    description = "인가 코드, 제공자, 리다이렉트 URL 타입",
                     required = true,
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = AuthCodeRequest.class),
-                            examples = @ExampleObject(value = "{\"code\": \"abc123\"}")
+                            examples = @ExampleObject(
+                                    value = """
+                                            {
+                                              "code": "abc123",
+                                              "provider": "kakao",
+                                              "redirectUrlType": "development"
+                                            }
+                                            """
+                            )
                     )
             )
     )
