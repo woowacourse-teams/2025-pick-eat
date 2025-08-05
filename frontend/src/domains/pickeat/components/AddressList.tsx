@@ -34,17 +34,16 @@ const S = {
     border: 1px solid ${({ theme }) => theme.PALETTE.gray[60]};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: 5px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     overflow-x: scroll;
   `,
 
   Address: styled.li`
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: ${({ theme }) => theme.GAP.level1};
 
-    padding: ${({ theme }) => theme.PADDING.p5} +
-      ${({ theme }) => theme.PADDING.px3};
+    padding: ${({ theme }) => theme.PADDING.px3};
     cursor: pointer;
 
     &:hover {

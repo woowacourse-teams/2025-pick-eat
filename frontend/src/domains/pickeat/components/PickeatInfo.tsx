@@ -39,13 +39,23 @@ function PickeatInfo({
     const formData = new FormData(e.currentTarget);
     const nickName = formData.get('nickName') as string;
     joinPickeat(nickName);
-    useGA().useGAEventTrigger({ action: 'click', category: 'form_button', label: '픽잇 입장 버튼', value: 1 });
+    useGA().useGAEventTrigger({
+      action: 'click',
+      category: 'form_button',
+      label: '픽잇 입장 버튼',
+      value: 1,
+    });
   };
 
   const handleLinkShareClick = () => {
     copyLink(pickeatLink);
-    useGA().useGAEventTrigger({ action: 'click', category: 'button', label: '픽잇 링크 공유 버튼', value: 1 });
-  }
+    useGA().useGAEventTrigger({
+      action: 'click',
+      category: 'button',
+      label: '픽잇 링크 공유 버튼',
+      value: 1,
+    });
+  };
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
       <S.ArrowButton type="button" onClick={() => navigate(ROUTE_PATH.HOME)}>
@@ -78,7 +88,7 @@ function PickeatInfo({
           placeholder="사용하실 닉네임을 입력하세요."
         />
         <ErrorMessage message={error} />
-        <Button text="입장"/>
+        <Button text="입장" />
       </S.FormWrapper>
     </S.Wrapper>
   );
@@ -92,12 +102,12 @@ const S = {
     display: flex;
     flex-direction: column;
 
-    gap: 30px;
+    gap: ${({ theme }) => theme.GAP.level8};
     position: relative;
 
-    padding: ${({ theme }) => theme.PADDING.p11};
+    padding: ${({ theme }) => theme.PADDING.p10};
 
-    border-radius: 30px;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
 
     ${setMobileStyle(css`
@@ -124,12 +134,12 @@ const S = {
   LocationInfo: styled.div`
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: ${({ theme }) => theme.GAP.level3};
 
     padding: 5%;
 
     border: 2px solid ${({ theme }) => theme.PALETTE.secondary[30]};
-    border-radius: 10px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium3};
   `,
 
   TitleWrapper: styled.div`
@@ -142,10 +152,11 @@ const S = {
 
   Location: styled.span``,
   Radius: styled.span``,
+
   FormWrapper: styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
 };

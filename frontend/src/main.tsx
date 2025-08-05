@@ -1,3 +1,5 @@
+import Clarity from '@microsoft/clarity';
+import * as Sentry from '@sentry/react';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ReactGA from 'react-ga4';
@@ -6,7 +8,13 @@ import Router from './routes/router';
 
 if (!window.location.href.includes('localhost')) {
   ReactGA.initialize(process.env.GOOGLE_ANALYTICS_ID as string);
+  Clarity.init(process.env.CLARITY_ID as string);
 }
+
+Sentry.init({
+  dsn: process.env.SENTRY_DSN,
+  environment: 'production',
+});
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
