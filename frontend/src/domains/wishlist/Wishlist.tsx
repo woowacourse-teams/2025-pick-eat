@@ -6,7 +6,7 @@ import { Wishlist } from '@pages/ChooseWishlist';
 type Prop = {
   wishlist: Wishlist;
   selected: boolean;
-  onSelect: (id: string) => void;
+  onSelect: (id: number) => void;
 };
 
 function Wishlist({ wishlist, selected, onSelect }: Prop) {

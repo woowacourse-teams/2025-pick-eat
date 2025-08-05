@@ -1,17 +1,20 @@
 import Input from '@components/actions/Input';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import WishlistGroup from '@domains/wishlist/WishlistGroup';
+
+import { wishlist } from '@apis/wishlist';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { Suspense } from 'react';
 
 export type Wishlist = {
-  id: string;
+  id: number;
   name: string;
-  pickeatId: string;
   isPublic: boolean;
 };
 
@@ -29,7 +32,11 @@ function ChooseWishlist() {
 
         <Input name="pickeatName" label="픽잇 이름" placeholder="레전드 점심" />
 
-        <WishlistGroup />
+        <ErrorBoundary>
+          <Suspense fallback={<div>로딩 중</div>}>
+            <WishlistGroup wishlistGroupPromise={wishlist.get('1')} />
+          </Suspense>
+        </ErrorBoundary>
       </S.Wrapper>
     </S.Container>
   );
@@ -48,6 +55,7 @@ const S = {
 
   Wrapper: styled.form`
     width: 70%;
+    height: 650px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level6};

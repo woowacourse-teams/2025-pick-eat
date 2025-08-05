@@ -1,40 +1,32 @@
 import Button from '@components/actions/Button';
 
+import { WishlistResponse } from '@apis/wishlist';
+
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { use, useState } from 'react';
 
 import Wishlist from './Wishlist';
 
-function WishlistGroup() {
-  const WISH_MOCK_DATA = [
-    {
-      id: '1',
-      name: '잠실 루터회관',
-      pickeatId: '10',
-      isPublic: true,
-    },
-    {
-      id: '2',
-      name: '선릉 성담빌딩',
-      pickeatId: '11',
-      isPublic: true,
-    },
-  ];
+type Props = {
+  wishlistGroupPromise: Promise<WishlistResponse[]>;
+};
 
-  const [selectedWishlistId, setSelectedWishlistId] = useState('');
+function WishlistGroup({ wishlistGroupPromise }: Props) {
+  const initialData = use(wishlistGroupPromise);
+  const [selectedWishlistId, setSelectedWishlistId] = useState(0);
 
-  const handleSelectWishlist = (id: string) => {
+  const handleSelectWishlist = (id: number) => {
     setSelectedWishlistId(id);
   };
 
-  const selectedWishlist = WISH_MOCK_DATA.find(
+  const selectedWishlist = initialData.find(
     wishlist => wishlist.id === selectedWishlistId
   );
 
   return (
     <>
       <S.WishlistWrapper>
-        {WISH_MOCK_DATA.map(wishlist => (
+        {initialData.map(wishlist => (
           <Wishlist
             key={wishlist.id}
             wishlist={wishlist}
