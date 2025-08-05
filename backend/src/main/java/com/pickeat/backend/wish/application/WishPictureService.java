@@ -2,6 +2,7 @@ package com.pickeat.backend.wish.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.wish.domain.Wish;
@@ -23,12 +24,16 @@ public class WishPictureService {
 
     private final WishRepository wishRepository;
     private final WishPictureRepository wishPictureRepository;
+    private final RoomUserRepository roomUserRepository;
     private final ImageUploadClient imageUploadClient;
 
     @Transactional
-    public List<WishPictureResponse> createWishPicture(Long wishId, List<MultipartFile> pictures) {
+    public List<WishPictureResponse> createWishPicture(Long wishId, Long userId, List<MultipartFile> pictures) {
         validateWishPictureFormat(pictures);
+
         Wish wish = getWish(wishId);
+        validateUserAccessToWish(wish, userId);
+
         //TODO: 이미지 업로드 실패시 이미 업로드된 이미지 제거 필요 (2025-08-4, 월, 17:46)
         List<WishPicture> wishPictures = pictures.stream()
                 .map(imageUploadClient::uploadImage)
@@ -52,6 +57,13 @@ public class WishPictureService {
             if (!ALLOWED_IMAGE_TYPE.contains(picture.getContentType())) {
                 throw new BusinessException(ErrorCode.NOT_ALLOWED_CONTENT_TYPE);
             }
+        }
+    }
+
+    private void validateUserAccessToWish(Wish wish, Long userId) {
+        Long roomId = wish.getWishList().getRoomId();
+        if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
+            throw new BusinessException(ErrorCode.WISH_ACCESS_DENIED);
         }
     }
 }
