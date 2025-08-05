@@ -94,7 +94,9 @@ public class PickeatServiceTest {
             // given
             Room room = testEntityManager.persist(RoomFixture.create());
             User user = testEntityManager.persist(UserFixture.create());
+
             testEntityManager.persist(new RoomUser(room, user));
+
             PickeatRequest pickeatRequest = new PickeatRequest("픽잇");
 
             // when
