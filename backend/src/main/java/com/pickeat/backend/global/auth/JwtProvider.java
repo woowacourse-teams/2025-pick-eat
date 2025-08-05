@@ -47,7 +47,7 @@ public class JwtProvider {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (ExpiredJwtException e) {
-            throw new BusinessException(ErrorCode.EXPIRED_TOKEM);
+            throw new BusinessException(ErrorCode.EXPIRED_TOKEN);
         } catch (JwtException e) {
             throw new BusinessException(ErrorCode.INVALID_TOKEN);
         }
