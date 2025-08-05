@@ -1,14 +1,21 @@
 import styled from '@emotion/styled';
 import ReactDOM from 'react-dom';
 
-function Modal() {
+type Props = {
+  opened: boolean;
+  onClose: () => void;
+};
+
+function Modal({ opened, onClose }: Props) {
   const modalRoot = document.querySelector('#modal') as HTMLElement;
 
   return ReactDOM.createPortal(
-    <>
-      <S.BackDrop />
-      <S.Container />
-    </>,
+    opened && (
+      <>
+        <S.BackDrop onClick={() => onClose()} />
+        <S.Container />
+      </>
+    ),
     modalRoot
   );
 }
