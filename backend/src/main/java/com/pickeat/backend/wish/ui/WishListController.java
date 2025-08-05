@@ -42,7 +42,6 @@ public class WishListController implements WishListApiSpec {
     public ResponseEntity<List<WishListResponse>> getWishLists(
             @PathVariable("roomId") Long roomId,
             @ParticipantId Long participantId
-
     ) {
         List<WishListResponse> wishLists = wishListService.getWishLists(roomId, participantId);
         return ResponseEntity.ok(wishLists);
