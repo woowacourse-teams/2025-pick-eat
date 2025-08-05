@@ -1,44 +1,35 @@
-import { apiClient } from '@apis/apiClient';
+import { login } from '@apis/login';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
+// TODO : 추후 URL 직접 접근못하게
+
 const OauthCallback = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const query = new URLSearchParams(location.search);
   const code = query.get('code');
 
   useEffect(() => {
     if (!code) {
-      setError('인증 코드가 없습니다.');
       setLoading(false);
       return;
     }
 
     const fetchAccessToken = async () => {
       try {
-        const response = await apiClient.post<{ accessToken: string }>(
-          '/api/v1/oauth/kakao/code',
-          { code }
-        );
-
-        if (response) {
-          localStorage.setItem('accessToken', response.accessToken);
-        }
-
+        const data = await login.post(code);
+        localStorage.setItem('accessToken', data.accessToken);
         navigate(ROUTE_PATH.HOME, { replace: true });
-      } catch (err) {
-        if (err instanceof Error && err.message.includes('401')) {
-          navigate(ROUTE_PATH.QUICK_SIGNUP, { replace: true });
+      } catch (error) {
+        if ((error as Error & { status?: number }).status === 401) {
+          navigate(ROUTE_PATH.PROFILE_INIT, { replace: true });
         } else {
-          setError('로그인 중 오류가 발생했습니다.');
-          console.error(err);
+          alert('인증에 실패했습니다. 다시 로그인해주세요.');
           navigate(ROUTE_PATH.LOGIN, { replace: true });
         }
       } finally {
@@ -50,8 +41,6 @@ const OauthCallback = () => {
   }, [code, navigate]);
 
   if (loading) return <div>로그인 처리 중입니다...</div>;
-  if (error) return <div>오류: {error}</div>;
-
   return null;
 };
 
