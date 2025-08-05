@@ -3,7 +3,7 @@ package com.pickeat.backend.pickeat.ui.api;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -235,7 +235,8 @@ public interface PickeatApiSpec {
     })
     ResponseEntity<Void> deactivatePickeat(
             @Parameter(description = 픽잇_코드_UUID_형식)
-            @PathVariable("pickeatCode") String pickeatCode
+            @PathVariable("pickeatCode") String pickeatCode,
+            @Parameter(hidden = true) Long participantId
     );
 
     @Operation(
@@ -287,7 +288,7 @@ public interface PickeatApiSpec {
                     description = "결과 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = RestaurantResponse[].class)
+                            schema = @Schema(implementation = RestaurantResultResponse[].class)
                     )
             ),
             @ApiResponse(
@@ -311,8 +312,9 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<List<RestaurantResponse>> getPickeatResult(
+    ResponseEntity<List<RestaurantResultResponse>> getPickeatResult(
             @Parameter(description = 픽잇_코드_UUID_형식)
-            @PathVariable("pickeatCode") String pickeatCode
+            @PathVariable("pickeatCode") String pickeatCode,
+            @Parameter(hidden = true) Long participantId
     );
 }

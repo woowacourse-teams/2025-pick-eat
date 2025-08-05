@@ -10,6 +10,7 @@ public enum ErrorCode {
     PICKEAT_NOT_FOUND(HttpStatus.NOT_FOUND, "픽잇을 찾을 수 없습니다."),
     PICKEAT_ALREADY_INACTIVE(HttpStatus.BAD_REQUEST, "이미 비활성화된 픽잇입니다."),
     INVALID_PICKEAT_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 픽잇 코드입니다."),
+    PICKEAT_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 픽잇에 접근 권한이 없습니다."),
 
     // Participant 관련 에러
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "참가자를 찾을 수 없습니다."),
@@ -33,10 +34,10 @@ public enum ErrorCode {
     INVALID_LONGITUDE(HttpStatus.BAD_REQUEST, "경도는 -180도에서 180도 사이여야 합니다."),
 
     // Restaurant 관련 에러
-    LIKE_ALREADY_CANCELED(HttpStatus.BAD_REQUEST, "이미 좋아요를 취소한 상태입니다."),
-    //todo: 참가자 기능 추가 후 대체 예정
-    FORBIDDEN_PICKEAT(HttpStatus.UNAUTHORIZED, "식당의 픽잇이 올바르지 않습니다."),
+    RESTAURANT_ELIMINATION_FORBIDDEN(HttpStatus.FORBIDDEN, "식당 소거 권한이 없습니다."),
     RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "식당을 찾을 수 없습니다."),
+    PARTICIPANT_RESTAURANT_ALREADY_LIKED(HttpStatus.BAD_REQUEST, "이미 좋아요를 누른 식당입니다."),
+    PARTICIPANT_RESTAURANT_NOT_LIKED(HttpStatus.BAD_REQUEST, "좋아요 기록이 없습니다."),
 
     // User 관련 에러
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
@@ -60,8 +61,10 @@ public enum ErrorCode {
 
     // 시스템 에러
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
-    INVALID_REDIRECT_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "잘못된 리다이렉트 주소입니다.");
-
+    
+    INVALID_REDIRECT_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "잘못된 리다이렉트 주소입니다."),
+    ;
+  
     private final HttpStatus status;
     private final String message;
 
