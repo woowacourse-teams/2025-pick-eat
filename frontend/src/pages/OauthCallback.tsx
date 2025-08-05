@@ -21,7 +21,7 @@ const OauthCallback = () => {
       return;
     }
 
-    (async () => {
+    const fetchAccessToken = async () => {
       try {
         const response = await apiClient.post<{ accessToken: string }>(
           '/api/v1/oauth/kakao/code',
@@ -31,9 +31,8 @@ const OauthCallback = () => {
         if (response) {
           localStorage.setItem('accessToken', response.accessToken);
         }
-        
+
         navigate(ROUTE_PATH.HOME, { replace: true });
-      
       } catch (err) {
         if (err instanceof Error && err.message.includes('401')) {
           navigate(ROUTE_PATH.QUICK_SIGNUP, { replace: true });
@@ -45,7 +44,9 @@ const OauthCallback = () => {
       } finally {
         setLoading(false);
       }
-    })();
+    };
+
+    fetchAccessToken();
   }, [code, navigate]);
 
   if (loading) return <div>로그인 처리 중입니다...</div>;
