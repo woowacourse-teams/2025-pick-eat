@@ -57,7 +57,7 @@ public enum ErrorCode {
 
     // 시스템 에러
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 오류가 발생했습니다."),
-    ;
+    INVALID_REDIRECT_TYPE(HttpStatus.INTERNAL_SERVER_ERROR, "잘못된 리다이렉트 주소입니다.");
 
     private final HttpStatus status;
     private final String message;

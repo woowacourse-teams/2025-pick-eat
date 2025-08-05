@@ -19,7 +19,7 @@ public class LoginService {
     private final UserTokenProvider userTokenProvider;
 
     public Long getProviderIdFromIdToken(AuthCodeRequest request) {
-        String idTokenJwt = loginClient.getIdToken(request.code());
+        String idTokenJwt = loginClient.getIdToken(request.code(), request.redirectUrlType());
         Long providerId = jwtOIDProvider.extractProviderIdFromIdToken(idTokenJwt);
 
         return providerId;
