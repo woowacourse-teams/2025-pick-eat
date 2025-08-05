@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 type Props = {
@@ -8,12 +9,25 @@ type Props = {
 
 function Modal({ opened, onClose }: Props) {
   const modalRoot = document.querySelector('#modal') as HTMLElement;
+  if (!opened) return null;
+
+  useEffect(() => {
+    if (opened) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [opened]);
 
   return ReactDOM.createPortal(
     opened && (
       <>
         <S.BackDrop onClick={() => onClose()} />
-        <S.Container />
+        <S.Container></S.Container>
       </>
     ),
     modalRoot
@@ -27,7 +41,10 @@ const S = {
     height: 100vh;
     width: 100%;
     background-color: rgba(1, 1, 1, 0.2);
+    top: 0;
+    left: 0;
     position: fixed;
+    z-index: ${({ theme }) => theme.Z_INDEX.overlay};
   `,
 
   Container: styled.div`
@@ -39,5 +56,6 @@ const S = {
     left: 50%;
     transform: translate(-50%, -50%);
     padding: ${({ theme }) => theme.PADDING.p10};
+    z-index: ${({ theme }) => theme.Z_INDEX.modal};
   `,
 };
