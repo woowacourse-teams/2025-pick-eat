@@ -7,6 +7,7 @@ export const ROUTE_PATH = {
   LOGIN: '/login',
   QUICK_SIGNUP: '/quick-signup',
   OAUTH_CALLBACK: '/oauth/callback',
+  MY_PAGE: '/my-page',
 };
 
 export const generateRouterPath = {

@@ -115,7 +115,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p3};
     border: ${({ theme }) => `1px solid ${theme.PALETTE.gray[60]}`};
-    border-radius: 5px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
 
     &:focus {
       border: 2px solid ${({ theme }) => theme.PALETTE.primary[60]};
@@ -138,7 +138,7 @@ const S = {
     border: 1px solid ${({ theme }) => theme.PALETTE.gray[60]};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: 5px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
   `,
 
   Option: styled.li`

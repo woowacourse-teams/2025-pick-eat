@@ -2,7 +2,7 @@ import TabMenu from '@components/tabMenus/TabMenu';
 
 import { Restaurant } from '@apis/restaurant';
 
-import { useRestaurantsPolling } from './hooks/useRestaurantsPolling';
+import { useRestaurantsData } from './hooks/useRestaurantsData';
 import { useRestaurantTabs } from './hooks/useRestaurantTabs';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 };
 
 function RestaurantTabList({ restaurantList }: Props) {
-  const restaurantsData = useRestaurantsPolling(restaurantList);
+  const restaurantsData = useRestaurantsData(restaurantList);
   const tabData = useRestaurantTabs(restaurantsData);
 
   return <TabMenu tabData={tabData} />;

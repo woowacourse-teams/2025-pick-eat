@@ -9,7 +9,6 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 import { useCreatePickeat } from '@domains/pickeat/hooks/useCreatePickeat';
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 
-
 import { useGA } from '@hooks/useGA';
 
 import { setMobileStyle } from '@styles/mediaQuery';
@@ -36,7 +35,12 @@ function CreatePickeat() {
   const submitPickeatForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createPickeat(new FormData(e.currentTarget), selectedOption?.value);
-    useGA().useGAEventTrigger({ action: 'click', category: 'form_button', label: '픽잇 생성 버튼', value: 1 });
+    useGA().useGAEventTrigger({
+      action: 'click',
+      category: 'form_button',
+      label: '픽잇 생성 버튼',
+      value: 1,
+    });
   };
 
   return (
@@ -103,9 +107,9 @@ const S = {
     width: 70%;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level5};
+    gap: ${({ theme }) => theme.GAP.level4};
 
-    padding: ${({ theme }) => theme.PADDING.p11};
+    padding: ${({ theme }) => theme.PADDING.p10};
 
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
@@ -124,7 +128,7 @@ const S = {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: ${({ theme }) => theme.GAP.level8};
 
     padding-top: ${({ theme }) => theme.PADDING.p6};
   `,

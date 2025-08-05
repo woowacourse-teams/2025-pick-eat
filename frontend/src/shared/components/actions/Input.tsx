@@ -32,11 +32,11 @@ const S = {
     width: 100%;
     height: 56px;
 
-    padding: 6px;
+    padding: ${({ theme }) => theme.PADDING.p3};
     border: 1px solid ${({ theme }) => theme.PALETTE.gray[60]};
 
     font: ${({ theme }) => theme.FONTS.body.medium};
-    border-radius: 5px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
 
     &:focus {
       border: 2px solid ${({ theme }) => theme.PALETTE.primary[60]};

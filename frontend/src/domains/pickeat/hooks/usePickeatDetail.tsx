@@ -5,7 +5,7 @@ import { generateRouterPath } from '@routes/routePath';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { validateJoinPickeat } from '../utils/validateJoinPickeat';
+import { validateJoinPickeat } from '../services/validateJoinPickeat';
 
 export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
   const navigate = useNavigate();
