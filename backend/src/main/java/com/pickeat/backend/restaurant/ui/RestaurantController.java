@@ -9,9 +9,9 @@ import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequ
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.ui.api.RestaurantApiSpec;
 import jakarta.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -32,26 +32,27 @@ public class RestaurantController implements RestaurantApiSpec {
 
     @Override
     @PostMapping("/pickeats/{pickeatCode}/restaurants/location")
-    public ResponseEntity<Void> createRestaurantsByLocaion(
+    public ResponseEntity<Void> createRestaurantsByLocation(
             @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody LocationRestaurantRequest request) {
         List<RestaurantRequest> restaurantRequests = restaurantSearchService.searchByLocation(request);
         restaurantService.create(restaurantRequests, pickeatCode);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
+        return ResponseEntity.created(location).build();
     }
 
     @Override
     @PostMapping("/pickeats/{pickeatCode}/restaurants/wish")
-    public ResponseEntity<Void> createRestaurantsByLocaion(
+    public ResponseEntity<Void> createRestaurantsByWish(
             @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody WishRestaurantRequest request) {
         List<RestaurantRequest> restaurantRequests = restaurantSearchService.searchByWish(request);
         restaurantService.create(restaurantRequests, pickeatCode);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
+        return ResponseEntity.created(location).build();
     }
-
 
     @Override
     @PatchMapping("/restaurants/exclude")

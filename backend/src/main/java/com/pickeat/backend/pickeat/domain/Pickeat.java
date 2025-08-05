@@ -34,11 +34,11 @@ public class Pickeat extends BaseEntity {
         this.code = new PickeatCode();
     }
 
-    public static Pickeat createExternal(String name) {
+    public static Pickeat createWithoutRoom(String name) {
         return new Pickeat(name, null);
     }
 
-    public static Pickeat createInRoom(String name, Long roomId) {
+    public static Pickeat createWithRoom(String name, Long roomId) {
         return new Pickeat(name, roomId);
     }
 

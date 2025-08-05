@@ -26,7 +26,7 @@ class RestaurantRepositoryTest {
     @Test
     void 식당_조회() {
         // given
-        Pickeat pickeat = testEntityManager.persist(PickeatFixture.createExternal());
+        Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
         Restaurant restaurant1 = testEntityManager.persist(RestaurantFixture.create(pickeat));
         Restaurant restaurant2 = testEntityManager.persist(RestaurantFixture.create(pickeat));
         Restaurant restaurant3 = testEntityManager.persist(RestaurantFixture.create(pickeat));

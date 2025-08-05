@@ -15,7 +15,7 @@ class ParticipantTest {
         void 유효한_정보로_참가자를_생성() {
             // given
             String nickname = "테스트유저";
-            Pickeat pickeat = PickeatFixture.createExternal();
+            Pickeat pickeat = PickeatFixture.createWithoutRoom();
 
             // when
             Participant participant = new Participant(nickname, pickeat);

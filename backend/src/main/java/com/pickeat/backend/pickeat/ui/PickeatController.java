@@ -29,8 +29,8 @@ public class PickeatController implements PickeatApiSpec {
 
     @Override
     @PostMapping("/pickeats")
-    public ResponseEntity<PickeatResponse> createExternalPickeat(@Valid @RequestBody PickeatRequest request) {
-        PickeatResponse response = pickeatService.createExternalPickeat(request);
+    public ResponseEntity<PickeatResponse> createPickeatWithoutRoom(@Valid @RequestBody PickeatRequest request) {
+        PickeatResponse response = pickeatService.createPickeatWithoutRoom(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -38,11 +38,11 @@ public class PickeatController implements PickeatApiSpec {
     //TODO: 유저 권한이 필요한 API에 대해 인터셉터 혹은 필터단에서 early return 하게 하기  (2025-08-5, 화, 2:35)
     @Override
     @PostMapping("/rooms/{roomId}/pickeats")
-    public ResponseEntity<PickeatResponse> createPickeatInRoom(
+    public ResponseEntity<PickeatResponse> createPickeatWithRoom(
             @PathVariable("roomId") Long roomId,
             @LoginUserId Long userId,
             @Valid @RequestBody PickeatRequest request) {
-        PickeatResponse response = pickeatService.createPickeatInRoom(roomId, userId, request);
+        PickeatResponse response = pickeatService.createPickeatWithRoom(roomId, userId, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
