@@ -4,6 +4,9 @@ export const ROUTE_PATH = {
   PREFER_RESTAURANT: '/prefer-restaurant',
   MATCH_RESULT: '/match-result',
   RESTAURANTS_EXCLUDE: '/restaurants-exclude',
+  LOGIN: '/login',
+  QUICK_SIGNUP: '/quick-signup',
+  OAUTH_CALLBACK: '/oauth/callback',
   MY_PAGE: '/my-page',
 };
 
