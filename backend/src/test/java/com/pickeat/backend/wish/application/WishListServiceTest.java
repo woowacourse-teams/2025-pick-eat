@@ -110,11 +110,11 @@ class WishListServiceTest {
         @Test
         void 방의_참가자가_아닌_경우_예외_발생() {
             // given
-            Room otherRoom = entityManager.persist(RoomFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithRoom(room.getId()));
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
 
+            Room otherRoom = entityManager.persist(RoomFixture.create());
             List<WishList> otherRoomWishLists = List.of(
                     entityManager.persist(WishListFixture.createPrivate(otherRoom.getId())),
                     entityManager.persist(WishListFixture.createPrivate(otherRoom.getId())));
@@ -161,11 +161,11 @@ class WishListServiceTest {
         @Test
         void 방의_참가자가_아닌_경우_예외_발생() {
             // given
-            Room otherRoom = entityManager.persist(RoomFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithRoom(room.getId()));
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
 
+            Room otherRoom = entityManager.persist(RoomFixture.create());
             WishList otherRoomWishList = entityManager.persist(WishListFixture.createPrivate(otherRoom.getId()));
             List<Wish> otherRoomWishes = List.of(
                     entityManager.persist(WishFixture.create(otherRoomWishList)),

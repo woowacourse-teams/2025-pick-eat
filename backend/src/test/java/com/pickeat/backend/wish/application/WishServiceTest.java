@@ -46,7 +46,6 @@ class WishServiceTest {
         void 위시_생성_성공() {
             // given
             User user = entityManager.persist(UserFixture.create());
-
             Room room = entityManager.persist(RoomFixture.create());
             RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
@@ -64,16 +63,16 @@ class WishServiceTest {
         void 방의_참가하지_않은_회원이_요청할_경우_예외발생() {
             // given
             User user = entityManager.persist(UserFixture.create());
-            User otherUser = entityManager.persist(UserFixture.create());
-
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, otherUser));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"));
 
+            User otherUser = entityManager.persist(UserFixture.create());
+
             // when & then
-            assertThatThrownBy(() -> wishService.createWish(wishList.getId(), wishRequest, user.getId()))
+            assertThatThrownBy(() -> wishService.createWish(wishList.getId(), wishRequest, otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
         }
@@ -86,7 +85,6 @@ class WishServiceTest {
         void 위시_삭제_성공() {
             // given
             User user = entityManager.persist(UserFixture.create());
-
             Room room = entityManager.persist(RoomFixture.create());
             RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
@@ -104,16 +102,16 @@ class WishServiceTest {
         void 방의_참가하지_않은_회원이_요청할_경우_예외발생() {
             // given
             User user = entityManager.persist(UserFixture.create());
-            User otherUser = entityManager.persist(UserFixture.create());
-
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, otherUser));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             Wish wish = entityManager.persist(WishFixture.create(wishList));
 
+            User otherUser = entityManager.persist(UserFixture.create());
+
             // when & then
-            assertThatThrownBy(() -> wishService.deleteWish(wish.getId(), user.getId()))
+            assertThatThrownBy(() -> wishService.deleteWish(wish.getId(), otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
         }

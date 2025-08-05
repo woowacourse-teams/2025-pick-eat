@@ -64,6 +64,7 @@ class WishPictureServiceTest {
             // given
             RoomUser roomUser = makeRoomUser();
             Wish wish = makeWish(roomUser.getRoom());
+            
             List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
 
             // when
@@ -102,11 +103,11 @@ class WishPictureServiceTest {
         @Test
         void 허용하지_않는_형식이_입력될_경우() {
             // given
-            MultipartFile mockFile = mock(MultipartFile.class);
-            when(mockFile.getContentType()).thenReturn("image/gif");
-
             RoomUser roomUser = makeRoomUser();
             Wish wish = makeWish(roomUser.getRoom());
+
+            MultipartFile mockFile = mock(MultipartFile.class);
+            when(mockFile.getContentType()).thenReturn("image/gif");
             List<MultipartFile> pictures = List.of(mockFile);
 
             // when & then
