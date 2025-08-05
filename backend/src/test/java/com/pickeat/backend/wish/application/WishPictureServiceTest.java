@@ -12,6 +12,7 @@ import com.pickeat.backend.fixture.UserFixture;
 import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
@@ -64,7 +65,7 @@ class WishPictureServiceTest {
             // given
             RoomUser roomUser = makeRoomUser();
             Wish wish = makeWish(roomUser.getRoom());
-            
+
             List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
 
             // when
@@ -114,6 +115,26 @@ class WishPictureServiceTest {
             assertThatThrownBy(
                     () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUser().getId(), pictures))
                     .isInstanceOf(BusinessException.class);
+        }
+
+        @Test
+        void 방에_참가하지_않은_회원이_위시이미지를_생성할_경우_예외_발생() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            User user = entityManager.persist(UserFixture.create());
+            Wish wish = makeWish(room);
+
+            List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
+
+            // when & then
+            assertThatThrownBy(
+                    () -> wishPictureService.createWishPicture(
+                            wish.getId(),
+                            user.getId(),
+                            pictures
+                    ))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISH_PICTURE_ACCESS_DENIED.getMessage());
         }
     }
 

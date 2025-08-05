@@ -25,6 +25,7 @@ public enum ErrorCode {
 
     // WishPicture 관련 에러
     NOT_ALLOWED_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "허용하지 않은 위시 사진 타입입니다"),
+    WISH_PICTURE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 위시 이미지에 접근할 권한이 없습니다."),
 
     // 도메인 검증 에러
     INVALID_RADIUS(HttpStatus.BAD_REQUEST, "반지름은 1 ~ 20000 사이 양수여야 합니다."),

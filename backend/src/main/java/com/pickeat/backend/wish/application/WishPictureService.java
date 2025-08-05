@@ -63,7 +63,7 @@ public class WishPictureService {
     private void validateUserAccessToWish(Wish wish, Long userId) {
         Long roomId = wish.getWishList().getRoomId();
         if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
-            throw new BusinessException(ErrorCode.WISH_ACCESS_DENIED);
+            throw new BusinessException(ErrorCode.WISH_PICTURE_ACCESS_DENIED);
         }
     }
 }
