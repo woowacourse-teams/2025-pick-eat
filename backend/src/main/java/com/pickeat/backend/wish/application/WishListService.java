@@ -3,7 +3,6 @@ package com.pickeat.backend.wish.application;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.domain.Participant;
-import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
@@ -69,8 +68,7 @@ public class WishListService {
     }
 
     private void validateParticipantAccessToRoom(Long roomId, Participant participant) {
-        Pickeat pickeat = participant.getPickeat();
-        if (!pickeat.getRoomId().equals(roomId)) {
+        if (!participant.getPickeat().getRoomId().equals(roomId)) {
             throw new BusinessException(ErrorCode.WISH_LIST_ACCESS_DENIED);
         }
     }
