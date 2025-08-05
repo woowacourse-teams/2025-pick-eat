@@ -6,7 +6,7 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -71,8 +71,9 @@ public class PickeatController implements PickeatApiSpec {
 
     @Override
     @GetMapping("/pickeats/{pickeatCode}/result")
-    public ResponseEntity<List<RestaurantResponse>> getPickeatResult(@PathVariable("pickeatCode") String pickeatCode) {
-        List<RestaurantResponse> response = pickeatService.getPickeatResult(pickeatCode);
+    public ResponseEntity<List<RestaurantResultResponse>> getPickeatResult(
+            @PathVariable("pickeatCode") String pickeatCode) {
+        List<RestaurantResultResponse> response = pickeatService.getPickeatResult(pickeatCode);
         return ResponseEntity.ok().body(response);
     }
 }

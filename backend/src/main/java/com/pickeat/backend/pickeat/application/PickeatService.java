@@ -9,7 +9,7 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.Restaurants;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
@@ -63,10 +63,10 @@ public class PickeatService {
         return PickeatResponse.from(pickeat);
     }
 
-    public List<RestaurantResponse> getPickeatResult(String pickeatCode) {
+    public List<RestaurantResultResponse> getPickeatResult(String pickeatCode) {
         Pickeat pickeat = findPickeatByCode(pickeatCode);
         Restaurants restaurants = new Restaurants(restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false));
-        return RestaurantResponse.from(restaurants.getTopRestaurants());
+        return RestaurantResultResponse.from(restaurants.getTopRestaurants());
     }
 
     private Pickeat findPickeatByCode(String pickeatCode) {

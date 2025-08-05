@@ -2,14 +2,19 @@ package com.pickeat.backend.restaurant.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
+import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,6 +27,8 @@ public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final PickeatRepository pickeatRepository;
+    private final ParticipantRepository participantRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
 
     //TODO: 개선할 여지가 보임  (2025-07-21, 월, 20:43)
     @Transactional
@@ -43,34 +50,59 @@ public class RestaurantService {
         restaurantRepository.saveAll(restaurants);
     }
 
-    public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded) {
+    public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded, Long participantId) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         List<Restaurant> restaurants = restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, isExcluded);
-        return RestaurantResponse.from(restaurants);
+        List<RestaurantResponse> response = new ArrayList<>();
+
+        for (Restaurant restaurant : restaurants) {
+            boolean isLiked = existsLike(participantId, restaurant.getId());
+            response.add(RestaurantResponse.of(restaurant, isLiked));
+        }
+        return response;
     }
 
     @Transactional
-    public void exclude(RestaurantExcludeRequest request) {
+    public void exclude(RestaurantExcludeRequest request, Long participantId) {
         //TODO: 입력된 식당 개수만큼 UPDATE 쿼리가 발생 -> BULK나 배치사이즈를 활용한 최적화 필요  (2025-07-18, 금, 16:35)
-        //TODO: 보안 고려 - 현재 참가자가 현재 Pickeat에 속하는지 고려  (2025-07-18, 금, 16:38)
+        //TODO: (필요하다면) 누가 소거한 식당인지 저장하는 중간 테이블 구현 필요
+        Participant participant = getParticipant(participantId);
+
         List<Restaurant> restaurants = restaurantRepository.findAllById(request.restaurantIds());
-        validateAllRestaurantsHaveSamePickeat(restaurants);
+        validateParticipantAccessToRestaurants(restaurants, participant);
         restaurants.forEach(Restaurant::exclude);
     }
 
     @Transactional
-    public void like(Long restaurantId) {
-        //TODO: 동일 참가자의 중복 like 픽잇지 (2025-07-18, 금, 18:44)
+    public void like(Long restaurantId, Long participantId) {
+        if (existsLike(restaurantId, participantId)) {
+            throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_ALREADY_LIKED);
+        }
+
+        Participant participant = getParticipant(participantId);
         Restaurant restaurant = getRestaurantById(restaurantId);
+        validateParticipantAccessToRestaurants(List.of(restaurant), participant);
+        restaurantLikeRepository.save(new RestaurantLike(participant, restaurant));
         restaurant.like();
     }
 
     @Transactional
-    public void cancelLike(Long restaurantId) {
-        //TODO: 동일 참가자의 중복 unlike 픽잇지 (2025-07-18, 금, 18:44)
+    public void cancelLike(Long restaurantId, Long participantId) {
+        if (!existsLike(restaurantId, participantId)) {
+            throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_NOT_LIKED);
+        }
+
+        restaurantLikeRepository.deleteByParticipantIdAndRestaurantId(participantId, restaurantId);
+
         Restaurant restaurant = getRestaurantById(restaurantId);
         restaurant.cancelLike();
     }
+
+    private Participant getParticipant(Long participantId) {
+        return participantRepository.findById(participantId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
+    }
+
 
     private Restaurant getRestaurantById(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
@@ -78,13 +110,18 @@ public class RestaurantService {
 
     }
 
-    //TODO: 참가자의 픽잇과 식당의 픽잇이 동일한 지 검증  (2025-07-21, 월, 15:50)
-    private void validateAllRestaurantsHaveSamePickeat(List<Restaurant> restaurants) {
+    private boolean existsLike(Long restaurantId, Long participantId) {
+        return restaurantLikeRepository.existsByParticipantIdAndRestaurantId(participantId, restaurantId);
+    }
+
+    private void validateParticipantAccessToRestaurants(List<Restaurant> restaurants, Participant participant) {
         if (restaurants.isEmpty()) {
             return;
         }
-        Pickeat pickeat = restaurants.getFirst().getPickeat();
-        restaurants.forEach(restaurant -> restaurant.validatePickeat(pickeat));
+
+        if (restaurants.stream().anyMatch((r -> !r.getPickeat().equals(participant.getPickeat())))) {
+            throw new BusinessException(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN);
+        }
     }
 
     private Pickeat getPickeatByCode(String pickeatCode) {

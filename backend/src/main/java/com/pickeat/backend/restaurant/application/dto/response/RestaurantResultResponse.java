@@ -6,8 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.List;
 
-@Schema(description = "식당 응답")
-public record RestaurantResponse(
+public record RestaurantResultResponse(
         @Schema(description = "식당 ID", example = "1")
         long id,
 
@@ -32,9 +31,6 @@ public record RestaurantResponse(
         @Schema(description = "좋아요 수", example = "3")
         int likeCount,
 
-        @Schema(description = "소거 여부", example = "false")
-        boolean isExcluded,
-
         @Schema(description = "식당 위치의 x 좌표 (경도)", example = "37.5670")
         double x,
 
@@ -45,14 +41,12 @@ public record RestaurantResponse(
         List<String> pictureUrls,
 
         @Schema(description = "식당 타입", example = "WISH / LOCATION")
-        RestaurantType type,
-
-        @Schema(description = "현재 참여자의 좋아요 여부", example = "true")
-        boolean isLiked
+        RestaurantType type
 ) {
 
-    public static RestaurantResponse of(Restaurant restaurant, boolean isLiked) {
-        return new RestaurantResponse(
+
+    public static RestaurantResultResponse from(Restaurant restaurant) {
+        return new RestaurantResultResponse(
                 restaurant.getId(),
                 restaurant.getName(),
                 restaurant.getFoodCategory().getName(),
@@ -61,13 +55,18 @@ public record RestaurantResponse(
                 restaurant.getPlaceUrl(),
                 restaurant.getRoadAddressName(),
                 restaurant.getLikeCount(),
-                restaurant.getIsExcluded(),
                 restaurant.getLocation().getX(),
                 restaurant.getLocation().getY(),
                 parsePictureUrls(restaurant.getPictureUrls()),
-                restaurant.getType(),
-                isLiked);
+                restaurant.getType());
     }
+
+    public static List<RestaurantResultResponse> from(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .map(RestaurantResultResponse::from)
+                .toList();
+    }
+
 
     private static List<String> parseTags(String tags) {
         if (tags == null || tags.isBlank()) {

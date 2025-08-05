@@ -84,21 +84,12 @@ public class Restaurant extends BaseEntity {
 
     public void cancelLike() {
         validatePickeatState();
-        if (this.likeCount <= 0) {
-            throw new BusinessException(ErrorCode.LIKE_ALREADY_CANCELED);
-        }
         this.likeCount--;
     }
 
     private void validatePickeatState() {
         if (!pickeat.getIsActive()) {
             throw new BusinessException(ErrorCode.PICKEAT_ALREADY_INACTIVE);
-        }
-    }
-
-    public void validatePickeat(Pickeat pickeat) {
-        if (!this.pickeat.equals(pickeat)) {
-            throw new BusinessException(ErrorCode.FORBIDDEN_PICKEAT);
         }
     }
 }

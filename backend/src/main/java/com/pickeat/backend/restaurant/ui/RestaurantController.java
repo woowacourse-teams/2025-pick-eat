@@ -1,5 +1,6 @@
 package com.pickeat.backend.restaurant.ui;
 
+import com.pickeat.backend.global.auth.ParticipantId;
 import com.pickeat.backend.restaurant.application.RestaurantSearchFacade;
 import com.pickeat.backend.restaurant.application.RestaurantService;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
@@ -53,22 +54,31 @@ public class RestaurantController implements RestaurantApiSpec {
 
     @Override
     @PatchMapping("/restaurants/exclude")
-    public ResponseEntity<Void> excludeRestaurants(@RequestBody RestaurantExcludeRequest request) {
-        restaurantService.exclude(request);
+    public ResponseEntity<Void> excludeRestaurants(
+            @RequestBody RestaurantExcludeRequest request,
+            @ParticipantId Long participantId
+    ) {
+        restaurantService.exclude(request, participantId);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     @PatchMapping("/restaurants/{restaurantId}/like")
-    public ResponseEntity<Void> likeRestaurant(@PathVariable("restaurantId") Long restaurantId) {
-        restaurantService.like(restaurantId);
+    public ResponseEntity<Void> likeRestaurant(
+            @PathVariable("restaurantId") Long restaurantId,
+            @ParticipantId Long participantId
+    ) {
+        restaurantService.like(restaurantId, participantId);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     @PatchMapping("/restaurants/{restaurantId}/unlike")
-    public ResponseEntity<Void> cancelLikeRestaurant(@PathVariable("restaurantId") Long restaurantId) {
-        restaurantService.cancelLike(restaurantId);
+    public ResponseEntity<Void> cancelLikeRestaurant(
+            @PathVariable("restaurantId") Long restaurantId,
+            @ParticipantId Long participantId
+    ) {
+        restaurantService.cancelLike(restaurantId, participantId);
         return ResponseEntity.noContent().build();
     }
 
@@ -77,8 +87,11 @@ public class RestaurantController implements RestaurantApiSpec {
     @GetMapping("/pickeats/{pickeatCode}/restaurants")
     public ResponseEntity<List<RestaurantResponse>> getPickeatRestaurants(
             @PathVariable("pickeatCode") String pickeatCode,
-            @RequestParam(required = false) Boolean isExcluded) {
-        List<RestaurantResponse> response = restaurantService.getPickeatRestaurants(pickeatCode, isExcluded);
+            @RequestParam(required = false) Boolean isExcluded,
+            @ParticipantId Long participantId
+    ) {
+        List<RestaurantResponse> response = restaurantService.getPickeatRestaurants(pickeatCode, isExcluded,
+                participantId);
         return ResponseEntity.ok().body(response);
     }
 }
