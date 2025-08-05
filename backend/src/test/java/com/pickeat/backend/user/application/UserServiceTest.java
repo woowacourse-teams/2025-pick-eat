@@ -163,9 +163,11 @@ class UserServiceTest {
             List<UserResponse> results = userService.searchByNickname("유저");
 
             // then
-            assertThat(results).hasSize(4);
-            assertThat(results.stream().map(UserResponse::nickname).toList())
-                    .containsExactlyInAnyOrder("유저", "테스트유저1", "테스트유저2", "테스트유저3");
+            assertAll(
+                    () -> assertThat(results).hasSize(4),
+                    () -> assertThat(results.stream().map(UserResponse::nickname).toList())
+                            .containsExactlyInAnyOrder("유저", "테스트유저1", "테스트유저2", "테스트유저3")
+            );
         }
 
         @Test
@@ -182,8 +184,10 @@ class UserServiceTest {
             List<UserResponse> results = userService.searchByNickname("유저");
 
             // then
-            assertThat(results).hasSize(3);
-            assertThat(results.get(0).nickname()).isEqualTo("유저");
+            assertAll(
+                    () -> assertThat(results).hasSize(3),
+                    () -> assertThat(results.getFirst().nickname()).isEqualTo("유저")
+            );
         }
 
         @Test
