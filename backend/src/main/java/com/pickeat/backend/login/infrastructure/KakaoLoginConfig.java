@@ -23,6 +23,7 @@ public class KakaoLoginConfig {
                 .baseUrl(properties.getBaseUrl())
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8").build();
 
-        return new KakaoLoginClient(properties.getRestApiKey(), properties.getRedirectUrl(), restClient, objectMapper);
+        return new KakaoLoginClient(properties.getRestApiKey(), properties.redirectUrlMap(), restClient,
+                objectMapper);
     }
 }
