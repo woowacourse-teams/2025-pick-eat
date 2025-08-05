@@ -35,6 +35,7 @@ public class UserService {
         return UserResponse.from(user);
     }
 
+    //TODO: 이미 방에 참여중인지 구분이 필요할지.. (2025-08-5, 화, 17:44)
     public UserResponse findByNickName(String nickname) {
         User user = userRepository.findByNickname(nickname)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
