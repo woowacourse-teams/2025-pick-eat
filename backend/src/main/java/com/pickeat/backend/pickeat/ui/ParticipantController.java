@@ -25,7 +25,7 @@ public class ParticipantController implements ParticipantApiSpec {
         String token = participantService.createParticipant(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .header("Pickeat-Participant-Token", "Bearer" + token)
+                .header("Pickeat-Participant-Token", "Bearer " + token)
                 .build();
     }
 }

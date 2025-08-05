@@ -20,7 +20,8 @@ public interface UserApiSpec {
     @Operation(
             summary = "내 정보 조회",
             description = "로그인된 사용자의 정보를 조회합니다. (로그인 필요)",
-            operationId = "getMyInfo"
+            operationId = "getMyInfo",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(

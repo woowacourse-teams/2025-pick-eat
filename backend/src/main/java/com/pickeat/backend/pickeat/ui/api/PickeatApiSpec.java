@@ -94,6 +94,7 @@ public interface PickeatApiSpec {
             summary = "방 내부용 새 픽잇 생성",
             description = "특정 방(Room) 내에서 사용자를 위해 새로운 픽잇을 생성합니다. (로그인 필요)",
             operationId = "createPickeatInRoom",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth"),
             requestBody = @RequestBody(
                     description = "픽잇 생성 정보",
                     required = true,
@@ -188,7 +189,8 @@ public interface PickeatApiSpec {
 
     @Operation(
             summary = "픽잇 비활성화",
-            operationId = "deactivatePickeat"
+            operationId = "deactivatePickeat",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "픽잇 비활성화 성공"),
@@ -280,7 +282,8 @@ public interface PickeatApiSpec {
 
     @Operation(
             summary = "픽잇 결과 조회",
-            operationId = "getPickeatResult"
+            operationId = "getPickeatResult",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(

@@ -29,6 +29,7 @@ public interface WishListApiSpec {
     @Operation(
             summary = "위시리스트 생성",
             operationId = "createWishList",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth"),
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "생성할 위시리스트 정보",
                     required = true,
@@ -78,7 +79,8 @@ public interface WishListApiSpec {
 
     @Operation(
             summary = "위시리스트 목록 조회",
-            operationId = "getWishLists"
+            operationId = "getWishLists",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -118,7 +120,8 @@ public interface WishListApiSpec {
 
     @Operation(
             summary = "위시리스트의 위시 조회",
-            operationId = "getWishesInWishList"
+            operationId = "getWishesInWishList",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(

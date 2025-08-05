@@ -85,6 +85,7 @@ public interface RestaurantApiSpec {
     @Operation(
             summary = "식당 소거",
             operationId = "excludeRestaurants",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth"),
             requestBody = @RequestBody(
                     description = "소거할 식당 ID 목록",
                     required = true,
@@ -146,7 +147,8 @@ public interface RestaurantApiSpec {
 
     @Operation(
             summary = "식당 좋아요",
-            operationId = "likeRestaurant"
+            operationId = "likeRestaurant",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "좋아요 추가 성공"),
@@ -179,7 +181,8 @@ public interface RestaurantApiSpec {
 
     @Operation(
             summary = "식당 좋아요 취소",
-            operationId = "cancelLikeRestaurant"
+            operationId = "cancelLikeRestaurant",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "좋아요 취소 성공"),
@@ -232,7 +235,8 @@ public interface RestaurantApiSpec {
 
     @Operation(
             summary = "픽잇 식당 목록 조회",
-            operationId = "getPickeatRestaurants"
+            operationId = "getPickeatRestaurants",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
