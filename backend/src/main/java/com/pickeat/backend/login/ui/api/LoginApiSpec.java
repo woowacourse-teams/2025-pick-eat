@@ -25,7 +25,14 @@ public interface LoginApiSpec {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = AuthCodeRequest.class),
-                            examples = @ExampleObject(value = "{\"code\": \"abc123\"}")
+                            examples = @ExampleObject(
+                                    value = """
+                                            {
+                                              "code": "",
+                                              "provider": "kakao"
+                                            }
+                                            """
+                            )
                     )
             )
     )

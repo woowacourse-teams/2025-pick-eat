@@ -33,19 +33,21 @@ public class RoomService {
         User user = getUserById(userId);
         roomRepository.save(room);
         roomUserRepository.save(new RoomUser(room, user));
-        return RoomResponse.from(room);
+        return RoomResponse.of(room, getRoomUserCount(room));
     }
 
     public RoomResponse getRoom(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
 
         Room room = getRoomById(roomId);
-        return RoomResponse.from(room);
+        return RoomResponse.of(room, getRoomUserCount(room));
     }
 
     public List<RoomResponse> getAllRoom(Long userId) {
         List<Room> rooms = roomUserRepository.getAllRoomByUserId(userId);
-        return RoomResponse.from(rooms);
+        return rooms.stream()
+                .map(room -> RoomResponse.of(room, getRoomUserCount(room)))
+                .toList();
     }
 
     @Transactional
@@ -66,6 +68,10 @@ public class RoomService {
                 .toList();
 
         roomUserRepository.saveAll(roomUsers);
+    }
+
+    private int getRoomUserCount(Room room) {
+        return roomUserRepository.findAllByRoom(room).size();
     }
 
     private Room getRoomById(Long roomId) {
