@@ -48,21 +48,25 @@ const S = {
 
   ListWrapper: styled.ul`
     height: 80%;
-    overflow: scroll;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
-    border-radius: ${({ theme }) => theme.RADIUS.large};
+    overflow: scroll;
+
     padding: ${({ theme }) => theme.PADDING.p5};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 
   List: styled.li`
     display: flex;
     justify-content: space-between;
-    border-radius: ${({ theme }) => theme.RADIUS.large};
+
     padding: ${({ theme }) => theme.PADDING.p5};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 
   RoomInfo: styled.div`
@@ -74,7 +78,7 @@ const S = {
   Name: styled.span``,
 
   MemberCount: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.small};
     color: ${({ theme }) => theme.PALETTE.gray[60]};
+    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 };

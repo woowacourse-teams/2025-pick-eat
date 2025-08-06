@@ -23,8 +23,9 @@ const S = {
   ProfileImage: styled.div`
     width: 150px;
     height: 150px;
-    border-radius: ${({ theme }) => theme.RADIUS.half};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[30]};
+    border-radius: ${({ theme }) => theme.RADIUS.half};
   `,
 
   NickName: styled.span`
