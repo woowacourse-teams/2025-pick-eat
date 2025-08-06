@@ -3,14 +3,20 @@ import { Restaurant } from '@apis/restaurant';
 import { useFlip } from '@hooks/useFlip';
 
 import styled from '@emotion/styled';
+import { use } from 'react';
 
-import { usePreferRestaurantContext } from '../context/PreferRestaurantProvider';
+import usePreferRestaurant from '../hooks/usePreferRestaurant';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
 
-function PreferRestaurantList() {
-  const { restaurantList } = usePreferRestaurantContext();
+type Props = {
+  preferRestaurantListPromise: Promise<Restaurant[]>;
+};
 
+function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
+  const initialData = use(preferRestaurantListPromise);
+  const { restaurantList, updateSortedRestaurantList } =
+    usePreferRestaurant(initialData);
   const { itemRefs } = useFlip(restaurantList);
 
   return (
@@ -23,13 +29,8 @@ function PreferRestaurantList() {
           }}
         >
           <PreferRestaurantItem
-            id={restaurant.id}
-            name={restaurant.name}
-            tags={restaurant.tags}
-            category={restaurant.category}
-            distance={restaurant.distance}
-            likeCount={restaurant.likeCount}
-            placeUrl={restaurant.placeUrl}
+            restaurant={restaurant}
+            onUpdateRestaurant={updateSortedRestaurantList}
           />
         </S.ItemWrapper>
       ))}

@@ -6,7 +6,8 @@ import {
 import { joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
-import { RestaurantResponse } from './restaurant';
+import { convertResponseToRestaurant, RestaurantResponse } from './restaurant';
+import { Restaurant } from './restaurant';
 
 export type PickeatResponse = {
   id: number;
@@ -95,11 +96,12 @@ export const pickeat = {
     return data ?? null;
   },
 
-  getResult: async (
-    pickeatCode: string
-  ): Promise<RestaurantResponse[] | null> => {
+  getResult: async (pickeatCode: string): Promise<Restaurant[]> => {
     const getUrl = joinAsPath(basePath, pickeatCode, 'result');
     const response = await apiClient.get<RestaurantResponse[]>(`${getUrl}`);
-    return response ?? null;
+    const results = (response ?? []).map(restaurant =>
+      convertResponseToRestaurant(restaurant)
+    );
+    return results;
   },
 };

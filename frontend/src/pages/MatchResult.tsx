@@ -1,33 +1,38 @@
-import Button from '@components/actions/Button';
+import Result from '@domains/matchResult/components/Result';
+
 import Confetti from '@components/Confetti';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import useResult from '@domains/matchResult/hooks/useResult';
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+
+import { pickeat } from '@apis/pickeat';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { Suspense } from 'react';
+import { useSearchParams } from 'react-router';
 
-const MatchResult = () => {
-  const { getResult } = useResult();
-  const result = getResult();
+function MatchResult() {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
 
   return (
     <S.Container>
-      <S.Result>
+      <S.ResultContainer>
         <Confetti />
         <S.Title>👏 오늘의 Pick! 👏</S.Title>
 
-        {result && <S.Name>{result.name}</S.Name>}
-
-        <S.ButtonContainer>
-          <Button color="primary" text="길 찾기" />
-        </S.ButtonContainer>
-      </S.Result>
+        <ErrorBoundary>
+          <Suspense fallback={<div>로딩중</div>}>
+            <Result resultPromise={pickeat.getResult(pickeatCode)} />
+          </Suspense>
+        </ErrorBoundary>
+      </S.ResultContainer>
     </S.Container>
   );
-};
+}
 
 export default MatchResult;
 
@@ -40,7 +45,7 @@ const S = {
     align-items: center;
   `,
 
-  Result: styled.div`
+  ResultContainer: styled.div`
     width: 50%;
     height: 400px;
     display: flex;
@@ -65,19 +70,8 @@ const S = {
     `)}
   `,
 
-  ButtonContainer: styled.div`
-    width: 80%;
-  `,
-
   Title: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.heading.large};
-  `,
-
-  Name: styled.p`
-    padding: ${({ theme }) => theme.PADDING.p5};
-
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
 };
