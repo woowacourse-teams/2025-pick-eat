@@ -27,39 +27,8 @@ function Modal({
   closeButton = true,
   onUnmount,
 }: Props) {
+  if (!mounted) return;
   const modalRoot = document.querySelector('#modal') as HTMLElement;
-
-  return ReactDOM.createPortal(
-    <>
-      {mounted && (
-        <>
-          <Inner
-            opened={opened}
-            onClose={onClose}
-            size={size}
-            closeButton={closeButton}
-            onUnmount={onUnmount}
-          >
-            {children}
-          </Inner>
-        </>
-      )}
-    </>,
-    modalRoot
-  );
-}
-
-export default Modal;
-
-function Inner({
-  opened,
-  onClose,
-  children,
-  onUnmount,
-  size = 'md',
-  closeButton = true,
-}: Omit<Props, 'mounted'>) {
-  const [text, setText] = useState(0);
 
   useEffect(() => {
     if (!opened) return;
@@ -79,9 +48,37 @@ function Inner({
     };
   }, [opened]);
 
+  return ReactDOM.createPortal(
+    <>
+      <Inner
+        opened={opened}
+        onClose={onClose}
+        size={size}
+        closeButton={closeButton}
+        onUnmount={onUnmount}
+      >
+        {children}
+      </Inner>
+    </>,
+    modalRoot
+  );
+}
+
+export default Modal;
+
+function Inner({
+  opened,
+  onClose,
+  children,
+  onUnmount,
+  size = 'md',
+  closeButton = true,
+}: Omit<Props, 'mounted'>) {
+  const [text, setText] = useState(0);
+
   if (!opened) return null;
 
-  return opened ? (
+  return (
     <>
       <S.BackDrop onClick={() => onClose()} />
       <S.Container size={size}>
@@ -95,7 +92,7 @@ function Inner({
         {children}
       </S.Container>
     </>
-  ) : null;
+  );
 }
 
 const S = {
