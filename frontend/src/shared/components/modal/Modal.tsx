@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 
 import Inner from './Inner';
 
-export type ModalProps = {
+export type ModalType = {
   opened: boolean;
   mounted: boolean;
   onClose: () => void;
@@ -26,7 +26,7 @@ function Modal({
   size = 'md',
   closeButton = true,
   onUnmount,
-}: ModalProps) {
+}: ModalType) {
   if (!mounted) return;
   const modalRoot = document.querySelector('#modal') as HTMLElement;
 
@@ -51,7 +51,7 @@ function Modal({
   return ReactDOM.createPortal(
     <>
       {mounted && !opened && (
-        <S.Mini onClick={() => onOpen()}>
+        <S.Mini onClick={onOpen}>
           <S.IconWrapper onClick={onUnmount}>
             <Cross color="white" size="sm" strokeWidth={4} />
           </S.IconWrapper>
@@ -80,8 +80,10 @@ const S = {
     position: fixed;
     top: 10px;
     right: 30px;
-    background-color: white;
+
     border: solid 3px ${({ theme }) => theme.PALETTE.primary[50]};
+
+    background-color: white;
     border-radius: ${({ theme }) => theme.RADIUS.half};
     cursor: pointer;
   `,
@@ -100,7 +102,7 @@ const S = {
 
     margin-left: auto;
 
-    padding: 2px;
+    padding: ${({ theme }) => theme.PADDING.p1};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
 

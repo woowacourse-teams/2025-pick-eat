@@ -1,8 +1,7 @@
 import Button from '@components/actions/Button';
 
-import { Wishlist } from '@pages/ChooseWishlist';
-
 import styled from '@emotion/styled';
+import { Wishlist } from '@pages/ChooseWishlist';
 
 type Prop = {
   wishlist: Wishlist;

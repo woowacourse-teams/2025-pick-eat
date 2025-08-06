@@ -5,7 +5,7 @@ import { setMobileStyle } from '@styles/mediaQuery';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { ModalProps } from './Modal';
+import { ModalType } from './Modal';
 
 function Inner({
   opened,
@@ -14,12 +14,12 @@ function Inner({
   onUnmount,
   size = 'md',
   closeButton = true,
-}: Omit<ModalProps, 'mounted' | 'onOpen'>) {
+}: Omit<ModalType, 'mounted' | 'onOpen'>) {
   if (!opened) return null;
 
   return (
     <>
-      <S.BackDrop onClick={() => onClose()} />
+      <S.BackDrop onClick={onClose} />
       <S.Container size={size}>
         {closeButton && (
           <S.IconWrapper onClick={onUnmount}>
@@ -62,10 +62,10 @@ const S = {
 
     animation: slide-up 0.3s ease-out forwards;
 
+    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+
     opacity: 0;
     transform: translate(-50%, 40%);
-
-    border-radius: ${({ theme }) => theme.RADIUS.medium3};
 
     ${setMobileStyle(css`
       width: 90%;
@@ -93,7 +93,7 @@ const S = {
 
     margin-left: auto;
 
-    padding: 2px;
+    padding: ${({ theme }) => theme.PADDING.p1};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
 
