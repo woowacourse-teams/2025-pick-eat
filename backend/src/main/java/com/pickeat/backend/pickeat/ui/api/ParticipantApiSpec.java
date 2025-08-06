@@ -1,5 +1,6 @@
 package com.pickeat.backend.pickeat.ui.api;
 
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -78,5 +79,5 @@ public interface ParticipantApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> createParticipant(@Valid @RequestBody ParticipantRequest request);
+    ResponseEntity<TokenResponse> createParticipant(@Valid @RequestBody ParticipantRequest request);
 }

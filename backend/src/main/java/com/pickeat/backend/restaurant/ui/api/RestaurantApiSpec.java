@@ -55,7 +55,7 @@ public interface RestaurantApiSpec {
 
 
     @Operation(
-            summary = "위 목록 기반 식당 목록 생성",
+            summary = "위시 목록 기반 식당 목록 생성",
             description = "사용자의 위 목록에 있는 식당들을 기반으로 식당 목록을 생성하여 픽잇에 추가합니다.",
             operationId = "createRestaurantsByWish",
             requestBody = @RequestBody(

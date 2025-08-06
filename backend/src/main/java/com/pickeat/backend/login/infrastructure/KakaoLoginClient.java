@@ -6,7 +6,7 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.login.application.LoginClient;
-import com.pickeat.backend.login.application.dto.response.TokenResponse;
+import com.pickeat.backend.login.application.dto.response.OAuthTokenResponse;
 import java.io.IOException;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -41,11 +41,11 @@ public class KakaoLoginClient implements LoginClient {
         }
     }
 
-    private TokenResponse callApi(String uri) {
+    private OAuthTokenResponse callApi(String uri) {
 
         return restClient.post().uri(uri).retrieve()
                 .onStatus(HttpStatusCode::isError, (request, response) -> handleError(response))
-                .body(TokenResponse.class);
+                .body(OAuthTokenResponse.class);
     }
 
     private void handleError(ClientHttpResponse response) {

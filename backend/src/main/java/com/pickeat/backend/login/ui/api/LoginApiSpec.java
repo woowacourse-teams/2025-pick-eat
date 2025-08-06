@@ -3,6 +3,7 @@ package com.pickeat.backend.login.ui.api;
 import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -60,7 +61,7 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> processCode(AuthCodeRequest request);
+    ResponseEntity<TokenResponse> processCode(AuthCodeRequest request);
 
     @Operation(
             summary = "로그인 처리",
@@ -100,7 +101,7 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> login(@Parameter(hidden = true) ProviderInfo providerInfo);
+    ResponseEntity<TokenResponse> login(@Parameter(hidden = true) ProviderInfo providerInfo);
 
     @Operation(
             summary = "회원가입",
@@ -156,5 +157,5 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<String> signup(SignupRequest request, @Parameter(hidden = true) ProviderInfo providerInfo);
+    ResponseEntity<TokenResponse> signup(SignupRequest request, @Parameter(hidden = true) ProviderInfo providerInfo);
 }

@@ -2,6 +2,7 @@ package com.pickeat.backend.global.auth;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -23,25 +24,29 @@ public class JwtProvider {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String createToken(Long id, long expirationMillis) {
+    public TokenResponse createToken(Long id, long expirationMillis) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMillis);
 
-        return Jwts.builder()
-                .subject(String.valueOf(id))
-                .issuedAt(now)
-                .expiration(expiryDate)
-                .signWith(secretKey)
-                .compact();
+        return TokenResponse.from(
+                Jwts.builder()
+                        .subject(String.valueOf(id))
+                        .issuedAt(now)
+                        .expiration(expiryDate)
+                        .signWith(secretKey)
+                        .compact()
+        );
     }
 
-    public String createProviderToken(Long providerId, String provider) {
-        return Jwts.builder()
-                .subject(String.valueOf(providerId))
-                .claim("provider", provider)
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5)) // 5분
-                .signWith(secretKey)
-                .compact();
+    public TokenResponse createProviderToken(Long providerId, String provider) {
+        return TokenResponse.from(
+                Jwts.builder()
+                        .subject(String.valueOf(providerId))
+                        .claim("provider", provider)
+                        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5)) // 5분
+                        .signWith(secretKey)
+                        .compact()
+        );
     }
 
     public Claims getClaims(String token) {

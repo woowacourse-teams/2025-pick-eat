@@ -5,6 +5,7 @@ import static com.pickeat.backend.global.exception.ErrorCode.USER_NOT_FOUND;
 import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +27,12 @@ public class LoginService {
         return providerId;
     }
 
-    public String login(ProviderInfo providerInfo) {
+    public TokenResponse login(ProviderInfo providerInfo) {
         User user = userRepository.findByProviderIdAndProvider(providerInfo.providerId(), providerInfo.provider())
                 .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
-        String accessToken = userTokenProvider.createToken(user.getId());
+        TokenResponse response = userTokenProvider.createToken(user.getId());
 
-        return accessToken;
+        return response;
     }
 
 

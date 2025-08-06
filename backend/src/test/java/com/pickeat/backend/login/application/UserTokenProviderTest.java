@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.pickeat.backend.global.auth.JwtProvider;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -32,11 +33,11 @@ class UserTokenProviderTest {
         Long userId = 1L;
 
         // when
-        String token = userTokenProvider.createToken(userId);
+        TokenResponse response = userTokenProvider.createToken(userId);
 
         // then
         SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
-        Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+        Claims claims = Jwts.parser().verifyWith(key).build().parseSignedClaims(response.token()).getPayload();
 
         assertAll(() -> assertThat(claims.getSubject()).isEqualTo(userId.toString()),
                 () -> assertThat(claims.getExpiration()).isAfter(new Date()));
@@ -50,10 +51,10 @@ class UserTokenProviderTest {
         void 유효한_토큰() {
             // given
             Long userId = 1L;
-            String token = userTokenProvider.createToken(userId);
+            TokenResponse response = userTokenProvider.createToken(userId);
 
             // when
-            Long extractedUserId = userTokenProvider.getUserId(token);
+            Long extractedUserId = userTokenProvider.getUserId(response.token());
 
             // then
             assertThat(extractedUserId).isEqualTo(userId);
@@ -93,11 +94,11 @@ class UserTokenProviderTest {
         void 만료된_토큰() {
             // given
             UserTokenProvider expiredTokenProvider = new UserTokenProvider(new JwtProvider(secret), -1L);
-            String expiredToken = expiredTokenProvider.createToken(1L);
+            TokenResponse response = expiredTokenProvider.createToken(1L);
 
             // when & then
             BusinessException exception = assertThrows(BusinessException.class, () -> {
-                userTokenProvider.getUserId(expiredToken);
+                userTokenProvider.getUserId(response.token());
             });
             assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.EXPIRED_TOKEN);
         }
