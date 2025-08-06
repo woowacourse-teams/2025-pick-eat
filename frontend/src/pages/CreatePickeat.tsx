@@ -2,6 +2,7 @@ import AddressList from '@domains/pickeat/components/AddressList';
 
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
+import SearchBar from '@components/actions/SearchBar';
 import Select from '@components/actions/Select';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
@@ -57,21 +58,21 @@ function CreatePickeat() {
         <S.FormWrapper>
           <Input name="pickeatName" label="투표명" placeholder="레전드 점심" />
 
-          <S.AddressWrapper>
-            <Input
-              value={address}
-              onChange={e => handleInputChange(e.target.value)}
-              name="address"
-              label="식당 탐색 위치"
-              placeholder="식당 탐색 위치 검색"
-            />
+          <SearchBar
+            value={address}
+            onChange={e => handleInputChange(e.target.value)}
+            name="address"
+            label="식당 탐색 위치"
+            placeholder="식당 탐색 위치 검색"
+          >
             {addressList && (
               <AddressList
                 addressList={addressList}
                 onClick={handleAddressClick}
               />
             )}
-          </S.AddressWrapper>
+          </SearchBar>
+
           <Select.Bar
             label="반경"
             selectedValue={selectedOption?.label}
@@ -133,9 +134,6 @@ const S = {
     padding-top: ${({ theme }) => theme.PADDING.p6};
   `,
 
-  AddressWrapper: styled.div`
-    position: relative;
-  `,
   Description: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[60]};
     white-space: nowrap;

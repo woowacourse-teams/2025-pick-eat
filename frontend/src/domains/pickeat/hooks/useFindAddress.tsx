@@ -20,6 +20,7 @@ export const useFindAddress = () => {
   const handleAddressClick = (value: string) => {
     setAddress(value);
     setAddressList(null);
+    setQuery('');
   };
 
   useEffect(() => {

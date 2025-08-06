@@ -9,14 +9,14 @@ type Props = {
 
 function AddressList({ addressList, onClick }: Props) {
   return (
-    <S.List>
+    <>
       {addressList.map(address => (
         <S.Address key={address.id} onClick={() => onClick(address.placeName)}>
           <S.PlaceName>{address.placeName}</S.PlaceName>
           <S.AddressName>{address.addressName}</S.AddressName>
         </S.Address>
       ))}
-    </S.List>
+    </>
   );
 }
 
