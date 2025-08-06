@@ -1,3 +1,6 @@
+import { setMobileStyle } from '@styles/mediaQuery';
+
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
@@ -65,5 +68,9 @@ const S = {
     transform: translate(-50%, -50%);
     padding: ${({ theme }) => theme.PADDING.p10};
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
+
+    ${setMobileStyle(css`
+      width: 90%;
+    `)}
   `,
 };
