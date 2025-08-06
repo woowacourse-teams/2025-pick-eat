@@ -11,7 +11,7 @@ const requestApi = async <TResponse = unknown>(
   const response = await fetch(`${process.env.API_BASE_URL}${endPoint}`, {
     method,
     headers: {
-      Authorization: `Basic ${process.env.API_KEY}`,
+      Authorization: `${process.env.API_KEY}`,
       'Content-Type': 'application/json',
       ...headers,
     },

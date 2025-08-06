@@ -12,12 +12,9 @@ import { Restaurant } from './restaurant';
 export type PickeatResponse = {
   id: number;
   name: string;
-  isActive: boolean;
   code: string;
-  x: number;
-  y: number;
   radius: number;
-  participantCount: number;
+  location: string | null;
 };
 
 export type PickeatDetailType = {
@@ -57,12 +54,31 @@ const convertResponseToPickeatDetail = async (
   name: data.name,
   code: data.code,
   radius: data.radius,
-  location: await getAddressByLatLng(data.x, data.y),
+  location: data.location,
 });
 
 const basePath = 'pickeats';
 
 export const pickeat = {
+  postRoomPickeat: async (roomId: string, name: string): Promise<string> => {
+    const getUrl = joinAsPath('rooms', roomId, 'pickeats');
+    const response = await apiClient.post<PickeatResponse>(getUrl, {
+      name,
+    });
+    if (response) return response.code;
+    return '';
+  },
+
+  postLocation: async (data: CreatePickeatFormData, pickeatCode: string) => {
+    const coords = await getLatLngByAddress(data.address);
+    if (!coords) throw new Error('INVALID_ADDRESS');
+    const getUrl = joinAsPath(basePath, pickeatCode, 'restaurants', 'location');
+    await apiClient.post<PickeatResponse>(getUrl, {
+      x: coords.x,
+      y: coords.y,
+      radius: data.radius,
+    });
+  },
   post: async (data: CreatePickeatFormData): Promise<string> => {
     const coords = await getLatLngByAddress(data.address);
     if (!coords) throw new Error('INVALID_ADDRESS');
