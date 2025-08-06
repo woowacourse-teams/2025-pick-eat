@@ -56,7 +56,7 @@ public class RestaurantService {
         List<RestaurantResponse> response = new ArrayList<>();
 
         for (Restaurant restaurant : restaurants) {
-            boolean isLiked = existsLike(participantId, restaurant.getId());
+            boolean isLiked = existsLike(restaurant.getId(), participantId);
             response.add(RestaurantResponse.of(restaurant, isLiked));
         }
         return response;
@@ -75,7 +75,7 @@ public class RestaurantService {
 
     @Transactional
     public void like(Long restaurantId, Long participantId) {
-        if (existsLike(participantId, restaurantId)) {
+        if (existsLike(restaurantId, participantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_ALREADY_LIKED);
         }
 
@@ -88,11 +88,11 @@ public class RestaurantService {
 
     @Transactional
     public void cancelLike(Long restaurantId, Long participantId) {
-        if (!existsLike(participantId, restaurantId)) {
+        if (!existsLike(restaurantId, participantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_NOT_LIKED);
         }
 
-        restaurantLikeRepository.deleteByParticipantIdAndRestaurantId(participantId, restaurantId);
+        restaurantLikeRepository.deleteByRestaurantIdAndParticipantId(restaurantId, participantId);
 
         Restaurant restaurant = getRestaurantById(restaurantId);
         restaurant.cancelLike();
@@ -110,8 +110,8 @@ public class RestaurantService {
 
     }
 
-    private boolean existsLike(Long participantId, Long restaurantId) {
-        return restaurantLikeRepository.existsByParticipantIdAndRestaurantId(participantId, restaurantId);
+    private boolean existsLike(Long restaurantId, Long participantId) {
+        return restaurantLikeRepository.existsByRestaurantIdAndParticipantId(restaurantId, participantId);
     }
 
     private void validateParticipantAccessToRestaurants(List<Restaurant> restaurants, Participant participant) {
