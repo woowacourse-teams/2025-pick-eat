@@ -1,10 +1,12 @@
 package com.pickeat.backend.wish.ui.api;
 
 import com.pickeat.backend.global.auth.LoginUserId;
+import com.pickeat.backend.global.auth.ParticipantId;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,10 +14,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -107,5 +111,85 @@ public interface WishApiSpec {
             @Parameter(description = "위시 ID", example = "1")
             @PathVariable("wishId") Long wishId,
             @Parameter(hidden = true) @LoginUserId Long userId
+    );
+
+    @Operation(
+            summary = "위시리스트의 위시 조회",
+            operationId = "getWishesInWishList",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "위시리스트의 위시 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = WishResponse.class)))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "위시리스트를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "위시리스트를 찾을 수 없음",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Not Found",
+                                              "status": 404,
+                                              "detail": "위시리스트를 찾을 수 없습니다.",
+                                              "instance": "/api/v1/wishLists/1"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    @GetMapping("/wishLists/{wishListId}/wishes")
+    ResponseEntity<List<WishResponse>> getWishesInWishList(
+            @Parameter(description = "위시리스트 ID", example = "1")
+            @PathVariable("wishListId") Long wishListId,
+            @Parameter(hidden = true) @ParticipantId Long participantId
+    );
+
+    @Operation(
+            summary = "공개 위시리스트의 위시 조회",
+            operationId = "getWishesInPublicWishList"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "공개 위시리스트의 위시 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = WishResponse.class)))
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "위시리스트를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "위시리스트를 찾을 수 없음",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Not Found",
+                                              "status": 404,
+                                              "detail": "위시리스트를 찾을 수 없습니다.",
+                                              "instance": "/api/v1/wishLists/public/1/wishes"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    @GetMapping("/wishLists/public/{wishListId}/wishes")
+    ResponseEntity<List<WishResponse>> getWishesInPublicWishList(
+            @Parameter(description = "공개 위시리스트 ID", example = "1")
+            @PathVariable("wishListId") Long wishListId
     );
 }

@@ -5,7 +5,6 @@ import com.pickeat.backend.global.auth.ParticipantId;
 import com.pickeat.backend.wish.application.WishListService;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
-import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.ui.api.WishListApiSpec;
 import jakarta.validation.Valid;
 import java.util.List;
@@ -48,12 +47,9 @@ public class WishListController implements WishListApiSpec {
     }
 
     @Override
-    @GetMapping("/wishLists/{wishListId}/wishes")
-    public ResponseEntity<List<WishResponse>> getWishesInWishList(
-            @PathVariable("wishListId") Long wishListId,
-            @ParticipantId Long participantId
-    ) {
-        List<WishResponse> wishes = wishListService.getWishes(wishListId, participantId);
-        return ResponseEntity.ok(wishes);
+    @GetMapping("/wishLists")
+    public ResponseEntity<List<WishListResponse>> getPublicWishLists() {
+        List<WishListResponse> wishLists = wishListService.getPublicWishLists();
+        return ResponseEntity.ok(wishLists);
     }
 }
