@@ -10,7 +10,14 @@ export type WishlistResponse = {
 };
 
 export const wishlist = {
-  get: async (roomId: string) => {
+  getPublic: async () => {
+    const getUrl = joinAsPath('wishLists');
+    const response = await apiClient.get<WishlistResponse[]>(`${getUrl}`);
+
+    return response ?? [];
+  },
+
+  getRoom: async (roomId: string) => {
     const getUrl = joinAsPath('room', roomId, 'wishLists');
     const response = await apiClient.get<WishlistResponse[]>(`${getUrl}`);
 

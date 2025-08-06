@@ -1,10 +1,12 @@
 import Button from '@components/actions/Button';
 
+import { WishlistResponse } from '@apis/wishlist';
+
 import styled from '@emotion/styled';
 import { Wishlist } from '@pages/ChooseWishlist';
 
 type Prop = {
-  wishlist: Wishlist;
+  wishlist: WishlistResponse;
   selected: boolean;
   onSelect: (id: number) => void;
 };

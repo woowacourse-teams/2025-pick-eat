@@ -20,5 +20,4 @@ export const generateRouterPath = {
     `${ROUTE_PATH.PREFER_RESTAURANT}?code=${pickeatCode}`,
   matchResult: (pickeatCode: string) =>
     `${ROUTE_PATH.MATCH_RESULT}?code=${pickeatCode}`,
-  chooseWishlist: ROUTE_PATH.CHOOSE_WISHLIST,
 };

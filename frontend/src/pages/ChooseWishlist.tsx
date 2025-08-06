@@ -1,7 +1,6 @@
 import Input from '@components/actions/Input';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import WishlistGroup from '@domains/wishlist/WishlistGroup';
 
 import { wishlist } from '@apis/wishlist';
@@ -10,15 +9,21 @@ import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { ErrorBoundary } from '@sentry/react';
 import { Suspense } from 'react';
+import { useSearchParams } from 'react-router';
 
 export type Wishlist = {
-  id: number;
+  id: string;
   name: string;
+  // pickeatId: string;
   isPublic: boolean;
 };
 
 function ChooseWishlist() {
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get('roomId') ?? '';
+
   return (
     <S.Container>
       <S.Wrapper>
@@ -34,7 +39,11 @@ function ChooseWishlist() {
 
         <ErrorBoundary>
           <Suspense fallback={<div>로딩 중</div>}>
-            <WishlistGroup wishlistGroupPromise={wishlist.get('1')} />
+            <WishlistGroup
+              wishlistGroupPromise={
+                roomId ? wishlist.getRoom(roomId) : wishlist.getPublic()
+              }
+            />
           </Suspense>
         </ErrorBoundary>
       </S.Wrapper>
@@ -55,7 +64,6 @@ const S = {
 
   Wrapper: styled.form`
     width: 70%;
-    height: 650px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level6};
