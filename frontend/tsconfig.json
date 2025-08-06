@@ -22,8 +22,9 @@
       "@types/*": ["shared/types/*"],
       "@styles/*": ["shared/styles/*"]
     },
-    "checkJs": true
+    "checkJs": true,
+    "types": ["node", "jest", "@testing-library/jest-dom"]
   },
-  "include": ["src"],
+  "include": ["src", "jest.setup.ts"],
   "exclude": ["node_modules", "dist"]
 }
