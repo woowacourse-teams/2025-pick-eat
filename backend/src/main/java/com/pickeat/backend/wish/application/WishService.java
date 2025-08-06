@@ -59,13 +59,14 @@ public class WishService {
         WishList wishList = getWishList(wishListId);
         Participant participant = getParticipant(participantId);
         validateParticipantAccessToRoom(wishList.getRoomId(), participant);
-
+        //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
         return WishResponse.from(wishList.getWishes());
     }
 
     public List<WishResponse> getWishesFromPublicWishList(Long wishListId) {
         WishList wishList = getWishList(wishListId);
         validateIsPublicWishList(wishList);
+        //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
         return WishResponse.from(wishList.getWishes());
     }
 
