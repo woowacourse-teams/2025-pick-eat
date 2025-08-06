@@ -22,4 +22,19 @@ public class RestaurantFixture {
                 pickeat
         );
     }
+
+    public static Restaurant create(Pickeat pickeat, String name) {
+        return new Restaurant(
+                name,
+                FoodCategory.KOREAN,
+                10,
+                "도로명 주소",
+                "URL",
+                "태그1,태그2",
+                new Location(127.103068896795, 37.5152535228382),
+                null,
+                RestaurantType.LOCATION,
+                pickeat
+        );
+    }
 }

@@ -291,7 +291,7 @@ public interface PickeatApiSpec {
                     description = "결과 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = RestaurantResultResponse[].class)
+                            schema = @Schema(implementation = RestaurantResultResponse.class)
                     )
             ),
             @ApiResponse(
@@ -315,7 +315,7 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<List<RestaurantResultResponse>> getPickeatResult(
+    ResponseEntity<RestaurantResultResponse> getPickeatResult(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode,
             @Parameter(hidden = true) Long participantId

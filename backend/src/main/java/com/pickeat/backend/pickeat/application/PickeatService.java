@@ -65,7 +65,14 @@ public class PickeatService {
         return PickeatResponse.from(pickeat);
     }
 
-    public List<RestaurantResultResponse> getPickeatResult(String pickeatCode, Long participantId) {
+    public RestaurantResultResponse getPickeatResult(String pickeatCode, Long participantId) {
+        validateParticipantAccessToPickeat(participantId, pickeatCode);
+        Pickeat pickeat = getPickeatByCode(pickeatCode);
+        Restaurants restaurants = new Restaurants(restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false));
+        return RestaurantResultResponse.from(restaurants.getTopRestaurantByName());
+    }
+
+    public List<RestaurantResultResponse> getPickeatResults(String pickeatCode, Long participantId) {
         validateParticipantAccessToPickeat(participantId, pickeatCode);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         Restaurants restaurants = new Restaurants(restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false));
