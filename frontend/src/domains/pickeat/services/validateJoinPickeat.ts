@@ -3,7 +3,7 @@ import { PickeatDetailType } from '@apis/pickeat';
 import { validate } from '@utils/validate';
 
 type ValidateType = {
-  nickName: string | undefined;
+  nickname: string | undefined;
   pickeatDetail: PickeatDetailType | undefined;
 };
 
@@ -13,9 +13,9 @@ const ERROR_MESSAGE = {
 };
 
 export const validateJoinPickeat = ({
-  nickName,
+  nickname,
   pickeatDetail,
 }: ValidateType) => {
-  if (validate.isEmpty(nickName)) throw new Error(ERROR_MESSAGE.NICKNAME);
+  if (validate.isEmpty(nickname)) throw new Error(ERROR_MESSAGE.NICKNAME);
   if (validate.isEmpty(pickeatDetail)) throw new Error(ERROR_MESSAGE.DETAIL);
 };
