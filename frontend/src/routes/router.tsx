@@ -8,6 +8,7 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
+import Choosetype from '@pages/ChooseType';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeat from '@pages/CreatePickeat';
 import Login from '@pages/Login';
@@ -57,6 +58,7 @@ const routes = createBrowserRouter([
         path: ROUTE_PATH.MY_PAGE,
         Component: MyPage,
       },
+      { path: ROUTE_PATH.CHOOSE_TYPE, Component: Choosetype },
     ],
   },
 ]);
