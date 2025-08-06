@@ -51,17 +51,17 @@ const S = {
     width: ${({ size }) =>
       size === 'sm' ? '500px' : size === 'md' ? '600px' : '700px'};
 
-    background-color: white;
-    border-radius: ${({ theme }) => theme.RADIUS.medium3};
-
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    z-index: ${({ theme }) => theme.Z_INDEX.modal};
 
     padding: ${({ theme }) => theme.PADDING.p10};
 
-    z-index: ${({ theme }) => theme.Z_INDEX.modal};
+    background-color: white;
+    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+
+    transform: translate(-50%, -50%);
 
     ${setMobileStyle(css`
       width: 90%;
