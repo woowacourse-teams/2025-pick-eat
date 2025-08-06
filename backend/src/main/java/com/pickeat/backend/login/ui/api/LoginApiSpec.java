@@ -1,15 +1,16 @@
 package com.pickeat.backend.login.ui.api;
 
+import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 
@@ -59,11 +60,12 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> processCode(AuthCodeRequest request, HttpSession session);
+    ResponseEntity<Void> processCode(AuthCodeRequest request);
 
     @Operation(
             summary = "로그인 처리",
-            operationId = "kakaoLogin"
+            operationId = "kakaoLogin",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     //TODO: 현재 헤더를 통해서 JWT를 보내고 있으므로 명확한 API SPEC 수정 필요
     @ApiResponses(value = {
@@ -98,11 +100,12 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> login(HttpSession session);
+    ResponseEntity<Void> login(@Parameter(hidden = true) ProviderInfo providerInfo);
 
     @Operation(
             summary = "회원가입",
             operationId = "signup",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth"),
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "회원가입 요청 정보",
                     required = true,
@@ -153,5 +156,5 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<String> signup(SignupRequest request, HttpSession session);
+    ResponseEntity<String> signup(SignupRequest request, @Parameter(hidden = true) ProviderInfo providerInfo);
 }

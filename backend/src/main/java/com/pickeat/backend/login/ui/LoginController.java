@@ -1,11 +1,13 @@
 package com.pickeat.backend.login.ui;
 
+import com.pickeat.backend.global.auth.JwtProvider;
+import com.pickeat.backend.global.auth.ProviderInfo;
+import com.pickeat.backend.global.auth.annotation.Provider;
 import com.pickeat.backend.login.application.LoginService;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.login.ui.api.LoginApiSpec;
 import com.pickeat.backend.user.application.UserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,36 +19,35 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/oauth")
+@RequestMapping("api/v1/auth")
 public class LoginController implements LoginApiSpec {
 
-    public final LoginService loginService;
-    public final UserService userService;
+    private final LoginService loginService;
+    private final UserService userService;
+    private final JwtProvider jwtProvider;
 
     @Override
     @PostMapping("/code")
-    public ResponseEntity<Void> processCode(@Valid @RequestBody AuthCodeRequest request,
-                                            HttpSession session) {
+    public ResponseEntity<Void> processCode(@Valid @RequestBody AuthCodeRequest request) {
         Long providerId = loginService.getProviderIdFromIdToken(request);
 
-        session.setAttribute("providerId", providerId);
-        session.setAttribute("provider", request.provider());
+        String providerToken = jwtProvider.createProviderToken(providerId, request.provider());
 
         if (!userService.isUserExist(providerId, request.provider())) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .header("Authorization", "Bearer " + providerToken)
+                    .build();
         }
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok()
+                .header("Authorization", "Bearer " + providerToken)
+                .build();
     }
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<Void> login(HttpSession session) {
-        //TODO: 보안 필요 null check 및 provider 검증 여부.
-        Long providerId = (Long) session.getAttribute("providerId");
-        String provider = (String) session.getAttribute("provider");
-
-        String token = loginService.login(providerId, provider);
-        session.invalidate();
+    public ResponseEntity<Void> login(@Provider ProviderInfo providerInfo) {
+        String token = loginService.login(providerInfo);
 
         return ResponseEntity.ok()
                 .header("Authorization", "Bearer " + token)
@@ -55,15 +56,11 @@ public class LoginController implements LoginApiSpec {
 
     @Override
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequest request, HttpSession session) {
-        //TODO: 보안 필요 null check
-        Long providerId = (Long) session.getAttribute("providerId");
-        String provider = (String) session.getAttribute("provider");
+    public ResponseEntity<String> signup(@Valid @RequestBody SignupRequest request,
+                                         @Provider ProviderInfo providerInfo) {
+        userService.createUser(request, providerInfo);
 
-        userService.createUser(request, providerId, provider);
-        session.invalidate();
-
-        String accessToken = loginService.login(providerId, provider);
+        String accessToken = loginService.login(providerInfo);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(accessToken);
     }

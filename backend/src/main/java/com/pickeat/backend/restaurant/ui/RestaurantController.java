@@ -1,6 +1,6 @@
 package com.pickeat.backend.restaurant.ui;
 
-import com.pickeat.backend.global.auth.ParticipantId;
+import com.pickeat.backend.global.auth.annotation.ParticipantId;
 import com.pickeat.backend.restaurant.application.RestaurantSearchFacade;
 import com.pickeat.backend.restaurant.application.RestaurantService;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;

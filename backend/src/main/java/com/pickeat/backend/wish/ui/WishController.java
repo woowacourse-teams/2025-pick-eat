@@ -1,7 +1,7 @@
 package com.pickeat.backend.wish.ui;
 
-import com.pickeat.backend.global.auth.LoginUserId;
-import com.pickeat.backend.global.auth.ParticipantId;
+import com.pickeat.backend.global.auth.annotation.LoginUserId;
+import com.pickeat.backend.global.auth.annotation.ParticipantId;
 import com.pickeat.backend.wish.application.WishService;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;

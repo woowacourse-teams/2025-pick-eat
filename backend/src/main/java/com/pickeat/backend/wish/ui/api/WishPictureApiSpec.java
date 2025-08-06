@@ -1,6 +1,6 @@
 package com.pickeat.backend.wish.ui.api;
 
-import com.pickeat.backend.global.auth.LoginUserId;
+import com.pickeat.backend.global.auth.annotation.LoginUserId;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

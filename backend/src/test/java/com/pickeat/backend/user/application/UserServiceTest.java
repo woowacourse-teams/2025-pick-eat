@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
+import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.room.domain.Room;
@@ -66,9 +67,10 @@ class UserServiceTest {
             SignupRequest request = new SignupRequest("nickname");
             Long providerId = 2L;
             String provider = "kakao";
+            ProviderInfo providerInfo = new ProviderInfo(providerId, provider);
 
             // when
-            UserResponse savedUser = userService.createUser(request, providerId, provider);
+            UserResponse savedUser = userService.createUser(request, providerInfo);
 
             // then
             assertAll(() -> assertThat(savedUser.id()).isNotNull(),
@@ -82,9 +84,10 @@ class UserServiceTest {
             // given
             entityManager.persist(new User("nickname", 1L, "kakao"));
             SignupRequest request = new SignupRequest("nickname");
+            ProviderInfo providerInfo = new ProviderInfo(2L, "google");
 
             // when & then
-            assertThatThrownBy(() -> userService.createUser(request, 2L, "google")).isInstanceOf(
+            assertThatThrownBy(() -> userService.createUser(request, providerInfo)).isInstanceOf(
                     BusinessException.class).hasMessage(ALREADY_NICKNAME_EXISTS.getMessage());
         }
     }
