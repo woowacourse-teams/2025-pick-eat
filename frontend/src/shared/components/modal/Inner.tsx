@@ -14,7 +14,7 @@ function Inner({
   onUnmount,
   size = 'md',
   closeButton = true,
-}: Omit<ModalProps, 'mounted'>) {
+}: Omit<ModalProps, 'mounted' | 'onOpen'>) {
   if (!opened) return null;
 
   return (
@@ -58,12 +58,13 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p10};
 
+    background-color: white;
+
     animation: slide-up 0.3s ease-out forwards;
 
     opacity: 0;
     transform: translate(-50%, 40%);
 
-    background-color: white;
     border-radius: ${({ theme }) => theme.RADIUS.medium3};
 
     ${setMobileStyle(css`
