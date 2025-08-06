@@ -2,14 +2,13 @@ export type ApiHeaders = Record<string, string>;
 export type ApiBody = Record<string, unknown> | undefined;
 export type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
-const joinCode = localStorage.getItem('joinCode');
-
 const requestApi = async <TResponse = unknown>(
   method: Method,
   endPoint: string,
   body?: ApiBody,
   headers?: ApiHeaders
 ): Promise<TResponse | null> => {
+  const joinCode = localStorage.getItem('joinCode');
   const response = await fetch(`${process.env.API_BASE_URL}${endPoint}`, {
     method,
     headers: {

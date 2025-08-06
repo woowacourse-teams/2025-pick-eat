@@ -3,8 +3,7 @@ import { getLatLngByAddress } from '@domains/pickeat/utils/convertAddress';
 import { joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
-import { convertResponseToRestaurant, RestaurantResponse } from './restaurant';
-import { Restaurant } from './restaurant';
+import { RestaurantResponse } from './restaurant';
 
 export type PickeatResponse = {
   id: number;
@@ -67,7 +66,6 @@ export const pickeat = {
   },
 
   postWish: async (wishlistId: number, pickeatCode: string) => {
-    console.log(wishlistId);
     const getUrl = joinAsPath(basePath, pickeatCode, 'restaurants', 'wish');
     await apiClient.post<PickeatResponse>(getUrl, {
       wishListId: wishlistId,
@@ -122,12 +120,11 @@ export const pickeat = {
     return data ?? null;
   },
 
-  getResult: async (pickeatCode: string): Promise<Restaurant[]> => {
+  getResult: async (
+    pickeatCode: string
+  ): Promise<RestaurantResponse | null> => {
     const getUrl = joinAsPath(basePath, pickeatCode, 'result');
-    const response = await apiClient.get<RestaurantResponse[]>(`${getUrl}`);
-    const results = (response ?? []).map(restaurant =>
-      convertResponseToRestaurant(restaurant)
-    );
-    return results;
+    const response = await apiClient.get<RestaurantResponse>(`${getUrl}`);
+    return response ?? null;
   },
 };

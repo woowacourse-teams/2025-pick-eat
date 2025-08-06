@@ -30,10 +30,10 @@ function PreferRestaurantItem({ restaurant, onUpdateRestaurant }: Props) {
         <S.TitleWrapper>
           <S.RestaurantName>{name}</S.RestaurantName>
         </S.TitleWrapper>
-        <S.Distance>식당까지 {distance}m</S.Distance>
-        <S.LinkButton href={placeUrl} target="_blank" rel="noopener noreferrer">
+        {/* <S.Distance>식당까지 {distance}m</S.Distance> */}
+        {/* <S.LinkButton href={placeUrl} target="_blank" rel="noopener noreferrer">
           식당 상세 정보 보기
-        </S.LinkButton>
+        </S.LinkButton> */}
       </S.CardContent>
 
       <LikeButton

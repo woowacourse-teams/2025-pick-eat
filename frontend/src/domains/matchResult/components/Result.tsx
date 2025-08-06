@@ -1,26 +1,27 @@
 import Button from '@components/actions/Button';
 
-import { Restaurant } from '@apis/restaurant';
+import { RestaurantResponse } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 import { use } from 'react';
 
 type Props = {
   //TODO: 백엔드에서 이제 하나로
-  resultPromise: Promise<Restaurant[]>;
+  resultPromise: Promise<RestaurantResponse | null>;
 };
 
 function Result({ resultPromise }: Props) {
-  const result = use(resultPromise)[0];
+  const result = resultPromise ? use(resultPromise) : null;
 
   return (
     <>
-      <S.Name>{result.name}</S.Name>{' '}
+      <S.Name>{result?.name}</S.Name>{' '}
       <S.ButtonContainer>
         <Button
           color="primary"
           text="식당 싱세 정보"
           onClick={() =>
+            result?.placeUrl &&
             window.open(result.placeUrl, '_blank', 'noopener,noreferrer')
           }
         />

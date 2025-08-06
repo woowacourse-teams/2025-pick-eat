@@ -15,7 +15,7 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
     useRestaurantExcludeContext();
 
   const excluded = selectedRestaurantIds.includes(id);
-  const menuUrl = `${placeUrl}#menuInfo`;
+  const menuUrl = `${placeUrl && placeUrl}#menuInfo`;
 
   return (
     <S.Container excluded={excluded}>
@@ -45,7 +45,7 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
             <S.RestaurantName>{name}</S.RestaurantName>
           </S.TitleWrapper>
           <S.DetailBox>
-            <S.DetailText>식당까지 {distance}m</S.DetailText>
+            <S.DetailText>식당까지 {distance && distance}m</S.DetailText>
             <S.LinkButton
               href={menuUrl}
               target="_blank"
