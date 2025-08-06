@@ -75,7 +75,7 @@ public class RestaurantService {
 
     @Transactional
     public void like(Long restaurantId, Long participantId) {
-        if (existsLike(restaurantId, participantId)) {
+        if (existsLike(participantId, restaurantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_ALREADY_LIKED);
         }
 
@@ -88,7 +88,7 @@ public class RestaurantService {
 
     @Transactional
     public void cancelLike(Long restaurantId, Long participantId) {
-        if (!existsLike(restaurantId, participantId)) {
+        if (!existsLike(participantId, restaurantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_NOT_LIKED);
         }
 
