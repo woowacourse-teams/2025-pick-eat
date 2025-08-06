@@ -110,7 +110,7 @@ public class RestaurantService {
 
     }
 
-    private boolean existsLike(Long restaurantId, Long participantId) {
+    private boolean existsLike(Long participantId, Long restaurantId) {
         return restaurantLikeRepository.existsByParticipantIdAndRestaurantId(participantId, restaurantId);
     }
 
