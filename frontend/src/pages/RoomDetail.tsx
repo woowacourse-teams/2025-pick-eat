@@ -1,4 +1,3 @@
-// import { room } from '@apis/room';
 import IncludeMemberList from '@domains/room/components/IncludeMemberList';
 
 import Button from '@components/actions/Button';
@@ -9,7 +8,7 @@ import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { room } from '@apis/room';
 
-import { ROUTE_PATH } from '@routes/routePath';
+import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
 import { Suspense, useEffect, useState } from 'react';
@@ -17,7 +16,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 function RoomDetail() {
   const [searchParams] = useSearchParams();
-  const roomId = Number(searchParams.get('roomId')) ?? 0;
+  const roomId = Number(searchParams.get('roomId')) ?? '';
   const [roomName, setRoomName] = useState('');
   const navigate = useNavigate();
 
@@ -32,11 +31,17 @@ function RoomDetail() {
     <S.Container>
       <S.Name>{roomName}</S.Name>
       <S.SelectWrapper>
-        <Button text="위시로 픽잇!" leftIcon="🤍" />
+        <Button
+          text="위시로 픽잇!"
+          leftIcon="🤍"
+          onClick={() => navigate(generateRouterPath.pickeatWithWish(roomId))}
+        />
         <Button
           text="위치로 픽잇!"
           leftIcon={<Location size="sm" color="white" />}
-          onClick={() => navigate(ROUTE_PATH.HOME)}
+          onClick={() =>
+            navigate(generateRouterPath.pickeatWithLocation(roomId))
+          }
         />
       </S.SelectWrapper>
       <ErrorBoundary>
