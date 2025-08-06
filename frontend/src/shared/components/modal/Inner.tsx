@@ -36,26 +36,31 @@ export default Inner;
 
 const S = {
   BackDrop: styled.div`
-    height: 100vh;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.1);
+    height: 100vh;
+    position: fixed;
     top: 0;
     left: 0;
-    position: fixed;
     z-index: ${({ theme }) => theme.Z_INDEX.overlay};
+
+    background-color: rgb(0 0 0 / 10%);
     backdrop-filter: blur(2px);
   `,
 
   Container: styled.div<{ size: 'sm' | 'md' | 'lg' }>`
     width: ${({ size }) =>
       size === 'sm' ? '500px' : size === 'md' ? '600px' : '700px'};
+
     background-color: white;
     border-radius: ${({ theme }) => theme.RADIUS.medium3};
+
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+
     padding: ${({ theme }) => theme.PADDING.p10};
+
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
 
     ${setMobileStyle(css`
@@ -75,13 +80,13 @@ const S = {
     top: -10px;
     right: -10px;
 
+    margin-left: auto;
+
     padding: 2px;
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
 
     border-radius: ${({ theme }) => theme.RADIUS.half};
-
-    margin-left: auto;
     cursor: pointer;
   `,
 };

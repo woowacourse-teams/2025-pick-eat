@@ -23,10 +23,11 @@ const S = {
     height: calc(100vh - ${HEADER_HEIGHT});
     display: flex;
     flex-direction: column;
-    padding: 0 ${({ theme }) => theme.PADDING.p7};
+    justify-content: center;
 
     align-items: center;
-    justify-content: center;
     gap: ${({ theme }) => theme.GAP.level4};
+
+    padding: 0 ${({ theme }) => theme.PADDING.p7};
   `,
 };
