@@ -23,7 +23,8 @@ public interface WishPictureApiSpec {
 
     @Operation(
             summary = "위시 사진 생성",
-            operationId = "createWishPictures"
+            operationId = "createWishPictures",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(

@@ -63,4 +63,3 @@ public class RoomController implements RoomApiSpec {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }
-

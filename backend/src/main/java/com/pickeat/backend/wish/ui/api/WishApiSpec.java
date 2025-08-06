@@ -26,6 +26,7 @@ public interface WishApiSpec {
     @Operation(
             summary = "위시 생성",
             operationId = "createWish",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth"),
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "생성할 위시 정보",
                     required = true,
@@ -75,7 +76,8 @@ public interface WishApiSpec {
 
     @Operation(
             summary = "위시 삭제",
-            operationId = "deleteWish"
+            operationId = "deleteWish",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "위시 삭제 성공"),

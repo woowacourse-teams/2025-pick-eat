@@ -24,6 +24,7 @@ public interface RoomApiSpec {
     @Operation(
             summary = "새 방 생성",
             operationId = "createRoom",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth"),
             requestBody = @RequestBody(
                     description = "방 생성 정보",
                     required = true,
@@ -72,7 +73,8 @@ public interface RoomApiSpec {
 
     @Operation(
             summary = "방 정보 조회",
-            operationId = "getRoom"
+            operationId = "getRoom",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -112,7 +114,8 @@ public interface RoomApiSpec {
 
     @Operation(
             summary = "사용자가 속한 모든 방 조회",
-            operationId = "getAllRoomsForUser"
+            operationId = "getAllRoomsForUser",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -129,6 +132,7 @@ public interface RoomApiSpec {
     @Operation(
             summary = "방에 사용자 초대",
             operationId = "inviteToRoom",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth"),
             requestBody = @RequestBody(
                     required = true,
                     content = @Content(
