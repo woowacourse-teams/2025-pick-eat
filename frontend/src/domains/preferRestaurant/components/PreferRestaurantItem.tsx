@@ -5,20 +5,19 @@ import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
-import useLike from '../hooks/useLike';
-
 type Props = {
   restaurant: Restaurant;
-  onUpdateRestaurant: (content: (prev: Restaurant[]) => Restaurant[]) => void;
+  liked: boolean;
+  onLike: (id: string) => void;
+  onUnlike: (id: string) => void;
 };
 
-function PreferRestaurantItem({ restaurant, onUpdateRestaurant }: Props) {
-  const { isLiked, handleLike, handleUnlike } = useLike(onUpdateRestaurant);
+function PreferRestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
   const { id, name, tags, distance, likeCount, category, placeUrl } =
     restaurant;
 
   return (
-    <S.Container liked={isLiked(id)}>
+    <S.Container liked={liked}>
       <S.CardContent>
         <S.TagBox>
           {tags.length === 0 && <Badge>{category}</Badge>}
@@ -39,9 +38,9 @@ function PreferRestaurantItem({ restaurant, onUpdateRestaurant }: Props) {
       <LikeButton
         id={id}
         count={likeCount}
-        onLike={handleLike}
-        onUnlike={handleUnlike}
-        liked={isLiked}
+        onLike={() => onLike(id)}
+        onUnlike={() => onUnlike(id)}
+        liked={liked}
       />
     </S.Container>
   );

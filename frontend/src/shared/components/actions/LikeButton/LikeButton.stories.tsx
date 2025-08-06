@@ -15,15 +15,22 @@ type Story = StoryObj<typeof LikeButton>;
 
 export const Default: Story = {
   render: () => {
-    const [liked, setLiked] = useState(0);
+    const [count, setCount] = useState(0);
+    const [liked, setLiked] = useState(false);
 
     return (
       <LikeButton
         id={'1'}
-        count={liked}
-        onLike={() => setLiked(1)}
-        onUnlike={() => setLiked(0)}
-        liked={() => liked === 1}
+        count={count}
+        onLike={() => {
+          setLiked(true);
+          setCount(1);
+        }}
+        onUnlike={() => {
+          setCount(0);
+          setLiked(false);
+        }}
+        liked={liked}
       />
     );
   },

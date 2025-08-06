@@ -7,6 +7,7 @@ import { useSearchParams } from 'react-router';
 const usePreferRestaurant = (initialData: Restaurant[]) => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
+  const [likedIds, setLikedIds] = useState<string[]>([]);
 
   const sortRestaurants = (restaurantList: Restaurant[]) => {
     return restaurantList.sort((a, b) => {
@@ -37,6 +38,11 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
       });
       if (!isUnmounted && response) {
         setRestaurantList(sortRestaurants(response));
+        setLikedIds(
+          response
+            .filter((restaurant: Restaurant) => restaurant.isLiked)
+            .map((restaurant: Restaurant) => restaurant.id)
+        );
       }
     };
 
@@ -50,7 +56,7 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
     };
   }, []);
 
-  return { restaurantList, updateSortedRestaurantList };
+  return { restaurantList, updateSortedRestaurantList, likedIds, setLikedIds };
 };
 
 export default usePreferRestaurant;
