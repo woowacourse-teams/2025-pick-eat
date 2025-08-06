@@ -22,5 +22,7 @@ export const generateRouterPath = {
     `${ROUTE_PATH.PREFER_RESTAURANT}?code=${pickeatCode}`,
   matchResult: (pickeatCode: string) =>
     `${ROUTE_PATH.MATCH_RESULT}?code=${pickeatCode}`,
+  // TODO: 이거 왜 써뒀는지 물어보기(수이)
   chooseWishlist: ROUTE_PATH.CHOOSE_WISHLIST,
+  roomDetail: (roomId: number) => `${ROUTE_PATH.ROOM_DETAIL}?roomId=${roomId}`,
 };
