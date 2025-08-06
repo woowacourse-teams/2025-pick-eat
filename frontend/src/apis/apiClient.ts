@@ -2,6 +2,8 @@ export type ApiHeaders = Record<string, string>;
 export type ApiBody = Record<string, unknown> | undefined;
 export type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
+const joinCode = localStorage.getItem('joinCode');
+
 const requestApi = async <TResponse = unknown>(
   method: Method,
   endPoint: string,
@@ -13,8 +15,10 @@ const requestApi = async <TResponse = unknown>(
     headers: {
       Authorization: `${process.env.API_KEY}`,
       'Content-Type': 'application/json',
+      'Pickeat-Participant-Token': joinCode ?? '',
       ...headers,
     },
+
     body: body ? JSON.stringify(body) : undefined,
   });
 

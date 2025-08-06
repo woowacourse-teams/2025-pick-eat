@@ -1,7 +1,4 @@
-import {
-  getAddressByLatLng,
-  getLatLngByAddress,
-} from '@domains/pickeat/utils/convertAddress';
+import { getLatLngByAddress } from '@domains/pickeat/utils/convertAddress';
 
 import { joinAsPath } from '@utils/createUrl';
 
@@ -37,9 +34,7 @@ type JoinPickeatFormData = {
 };
 
 type JoinPickeatResponse = {
-  id: number;
-  nickname: string;
-  pickeatCode: string;
+  token: string;
 };
 
 type ParticipantsResponse = {
@@ -100,7 +95,12 @@ export const pickeat = {
   },
 
   postJoin: async (data: JoinPickeatFormData) => {
-    await apiClient.post<JoinPickeatResponse>(`participants`, data);
+    const response = await apiClient.post<JoinPickeatResponse>(
+      `participants`,
+      data
+    );
+
+    return response;
   },
 
   getParticipantsCount: async (

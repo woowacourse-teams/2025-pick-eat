@@ -25,10 +25,14 @@ export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
     }
 
     try {
-      await pickeat.postJoin({
+      const response = await pickeat.postJoin({
         nickname: nickName,
         pickeatId: pickeatDetail!.id,
       });
+
+      if (response)
+        localStorage.setItem('joinCode', 'Bearer ' + response.token);
+
       navigate(generateRouterPath.restaurantsExclude(pickeatDetail.code));
     } catch (e) {
       if (e instanceof Error) {
