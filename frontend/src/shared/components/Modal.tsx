@@ -5,14 +5,23 @@ import styled from '@emotion/styled';
 import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
+import Cross from './assets/icons/Cross';
+
 type Props = {
   opened: boolean;
   onClose: () => void;
   children?: ReactNode;
   size?: 'sm' | 'md' | 'lg';
+  closeButton?: boolean;
 };
 
-function Modal({ opened, onClose, children, size = 'md' }: Props) {
+function Modal({
+  opened,
+  onClose,
+  children,
+  size = 'md',
+  closeButton = true,
+}: Props) {
   const modalRoot = document.querySelector('#modal') as HTMLElement;
 
   useEffect(() => {
@@ -38,7 +47,15 @@ function Modal({ opened, onClose, children, size = 'md' }: Props) {
   return ReactDOM.createPortal(
     <>
       <S.BackDrop onClick={() => onClose()} />
-      <S.Container size={size}>{children}</S.Container>
+      <S.Container size={size}>
+        {closeButton && (
+          <S.IconWrapper onClick={() => onClose()}>
+            <Cross color="white" size="sm" strokeWidth={4} />
+          </S.IconWrapper>
+        )}
+
+        {children}
+      </S.Container>
     </>,
     modalRoot
   );
@@ -50,11 +67,12 @@ const S = {
   BackDrop: styled.div`
     height: 100vh;
     width: 100%;
-    background-color: rgba(1, 1, 1, 0.2);
+    background-color: rgba(0, 0, 0, 0.1);
     top: 0;
     left: 0;
     position: fixed;
     z-index: ${({ theme }) => theme.Z_INDEX.overlay};
+    backdrop-filter: blur(2px);
   `,
 
   Container: styled.div<{ size: 'sm' | 'md' | 'lg' }>`
@@ -72,5 +90,27 @@ const S = {
     ${setMobileStyle(css`
       width: 90%;
     `)}
+  `,
+
+  IconWrapper: styled.div`
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    position: absolute;
+    top: -10px;
+    right: -10px;
+
+    padding: 2px;
+
+    background-color: ${({ theme }) => theme.PALETTE.primary[50]};
+
+    border-radius: ${({ theme }) => theme.RADIUS.half};
+
+    margin-left: auto;
+    cursor: pointer;
   `,
 };
