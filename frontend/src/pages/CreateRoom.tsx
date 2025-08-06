@@ -1,40 +1,24 @@
-import MemberList from '@domains/room/components/MemberList';
-import SelectedMemberList from '@domains/room/components/SelectedMemberList';
+import InviteMember from '@domains/room/components/InviteMember';
 
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
-import SearchBar from '@components/actions/SearchBar';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { useCreateRoom } from '@domains/room/hooks/useCreateRoom';
-import { useFindMember } from '@domains/room/hooks/useFindMember';
-
-import { User } from '@apis/users';
+import { useInviteMember } from '@domains/room/hooks/useInviteMember';
 
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
 function CreateRoom() {
   const [roomName, setRoomName] = useState('');
-  const [selectedMemberList, setSelectedMemberList] = useState<User[]>([]);
-
+  const {
+    selectedMemberList,
+    handleAddSelectedMember,
+    handleDeleteSelectedMember,
+  } = useInviteMember();
   const { createRoom, error } = useCreateRoom();
-
-  const { nickname, handleInputChange, memberList, handleMemberClick } =
-    useFindMember();
-
-  const handleAddSelectedMember = (value: User) => {
-    if (selectedMemberList.find(member => member.id === value.id)) {
-      alert('이미 추가된 멤버입니다.');
-      return;
-    }
-    setSelectedMemberList(prev => [...prev, value]);
-  };
-
-  const handleDeleteSelectedMember = (id: number) => {
-    setSelectedMemberList(prev => prev.filter(member => member.id !== id));
-  };
 
   return (
     <S.Container>
@@ -50,24 +34,10 @@ function CreateRoom() {
         onChange={e => setRoomName(e.target.value)}
       />
 
-      <SearchBar
-        label="멤버 초대"
-        placeholder="아이디를 입력해주세요."
-        value={nickname}
-        onChange={e => handleInputChange(e.target.value)}
-      >
-        {memberList && (
-          <MemberList
-            memberList={memberList}
-            onClick={value =>
-              handleMemberClick(() => handleAddSelectedMember(value))
-            }
-          />
-        )}
-      </SearchBar>
-      <SelectedMemberList
-        memberList={selectedMemberList}
-        onDelete={handleDeleteSelectedMember}
+      <InviteMember
+        selectedMemberList={selectedMemberList}
+        onAddMember={handleAddSelectedMember}
+        onDeleteMember={handleDeleteSelectedMember}
       />
 
       <ErrorMessage message={error} />
@@ -82,14 +52,6 @@ function CreateRoom() {
 export default CreateRoom;
 
 const S = {
-  Title: styled.span`
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
-  `,
-
-  Description: styled.div`
-    color: ${({ theme }) => theme.PALETTE.gray[70]};
-  `,
-
   Container: styled.div`
     height: calc(100vh - ${HEADER_HEIGHT});
     display: flex;
@@ -99,5 +61,13 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level7};
 
     padding: 0 ${({ theme }) => theme.PADDING.p7};
+  `,
+
+  Title: styled.span`
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
+  `,
+
+  Description: styled.div`
+    color: ${({ theme }) => theme.PALETTE.gray[70]};
   `,
 };

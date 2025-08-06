@@ -33,7 +33,7 @@ export default SelectedMemberList;
 const S = {
   MemberContainer: styled.ul`
     width: 100%;
-    height: 30%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};

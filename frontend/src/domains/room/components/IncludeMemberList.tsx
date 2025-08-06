@@ -1,13 +1,51 @@
 import Button from '@components/actions/Button';
 import People from '@components/assets/icons/People';
+import Modal from '@components/modal/Modal';
+import { useModal } from '@components/modal/useModal';
 
+import { room } from '@apis/room';
 import { User } from '@apis/users';
 
 import styled from '@emotion/styled';
 import { use } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
+
+import { useInviteMember } from '../hooks/useInviteMember';
+
+import InviteMember from './InviteMember';
 
 function IncludeMemberList({ members }: { members: Promise<User[]> }) {
   const memberList = use(members);
+  const [searchParams] = useSearchParams();
+  const roomId = Number(searchParams.get('roomId')) ?? '';
+  const navigate = useNavigate();
+
+  const {
+    opened,
+    mounted,
+    handleCloseModal,
+    handleOpenModal,
+    handleUnmountModal,
+  } = useModal();
+  const {
+    selectedMemberList,
+    handleAddSelectedMember,
+    handleDeleteSelectedMember,
+  } = useInviteMember();
+
+  const inviteMember = async () => {
+    try {
+      await room.postMember(
+        roomId,
+        selectedMemberList.map(member => member.id)
+      );
+      alert('초대 완료!');
+      navigate(0);
+    } catch {
+      console.log('초대 실패');
+    }
+  };
+
   return (
     <S.Container>
       <S.TitleArea>
@@ -15,8 +53,29 @@ function IncludeMemberList({ members }: { members: Promise<User[]> }) {
           <People size="sm" />
           멤버({memberList.length})
         </S.Description>
-        {/* TODO: 수이가 만든 모달창으로 초대 모달 띄우기, 아이콘 추가 */}
-        <Button text="초대" size="sm" color="secondary" />
+        <Button
+          text="초대"
+          size="sm"
+          color="secondary"
+          onClick={handleOpenModal}
+        />
+        <Modal
+          mounted={mounted}
+          opened={opened}
+          onClose={handleCloseModal}
+          onOpen={handleOpenModal}
+          onUnmount={handleUnmountModal}
+          size="lg"
+        >
+          <S.ModalContent>
+            <InviteMember
+              selectedMemberList={selectedMemberList}
+              onAddMember={handleAddSelectedMember}
+              onDeleteMember={handleDeleteSelectedMember}
+            />
+            <Button text="초대하기" onClick={inviteMember} />
+          </S.ModalContent>
+        </Modal>
       </S.TitleArea>
       <S.List>
         {memberList.map(member => (
@@ -54,6 +113,12 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
 
     font: ${({ theme }) => theme.FONTS.heading.small};
+  `,
+
+  ModalContent: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
 
   List: styled.ul``,
