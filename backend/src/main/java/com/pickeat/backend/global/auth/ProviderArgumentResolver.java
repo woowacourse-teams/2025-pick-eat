@@ -1,9 +1,8 @@
 package com.pickeat.backend.global.auth;
 
-import com.pickeat.backend.global.auth.annotation.LoginUserId;
+import com.pickeat.backend.global.auth.annotation.Provider;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.login.application.UserTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -14,15 +13,15 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
 @RequiredArgsConstructor
-public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolver {
+public class ProviderArgumentResolver implements HandlerMethodArgumentResolver {
 
     private static final String PREFIX = "Bearer ";
-    private final UserTokenProvider userTokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(LoginUserId.class)
-                && parameter.getParameterType().equals(Long.class);
+        return parameter.hasParameterAnnotation(Provider.class)
+                && parameter.getParameterType().equals(ProviderInfo.class);
     }
 
     @Override
@@ -38,6 +37,6 @@ public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolve
 
         String token = authHeader.substring(PREFIX.length());
 
-        return userTokenProvider.getUserId(token);
+        return jwtProvider.getProviderInfo(token);
     }
 }

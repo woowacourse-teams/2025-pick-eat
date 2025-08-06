@@ -1,4 +1,4 @@
-package com.pickeat.backend.global.auth;
+package com.pickeat.backend.global.auth.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

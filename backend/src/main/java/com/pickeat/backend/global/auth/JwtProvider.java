@@ -35,6 +35,15 @@ public class JwtProvider {
                 .compact();
     }
 
+    public String createProviderToken(Long providerId, String provider) {
+        return Jwts.builder()
+                .subject(String.valueOf(providerId))
+                .claim("provider", provider)
+                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5)) // 5분
+                .signWith(secretKey)
+                .compact();
+    }
+
     public Claims getClaims(String token) {
         if (token == null || token.isEmpty()) {
             throw new BusinessException(ErrorCode.TOKEN_IS_EMPTY);
@@ -51,5 +60,17 @@ public class JwtProvider {
         } catch (JwtException e) {
             throw new BusinessException(ErrorCode.INVALID_TOKEN);
         }
+    }
+
+    public ProviderInfo getProviderInfo(String token) {
+        Claims claims = getClaims(token);
+        String provider = claims.get("provider", String.class);
+        Long providerId = Long.valueOf(claims.getSubject());
+
+        if (provider == null || provider.isEmpty()) {
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
+        }
+
+        return new ProviderInfo(providerId, provider);
     }
 }

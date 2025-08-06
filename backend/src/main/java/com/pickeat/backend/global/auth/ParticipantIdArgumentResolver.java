@@ -1,5 +1,6 @@
 package com.pickeat.backend.global.auth;
 
+import com.pickeat.backend.global.auth.annotation.ParticipantId;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.ParticipantTokenProvider;

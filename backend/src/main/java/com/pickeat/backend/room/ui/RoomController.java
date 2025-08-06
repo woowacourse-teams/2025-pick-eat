@@ -1,6 +1,6 @@
 package com.pickeat.backend.room.ui;
 
-import com.pickeat.backend.global.auth.LoginUserId;
+import com.pickeat.backend.global.auth.annotation.LoginUserId;
 import com.pickeat.backend.room.application.RoomService;
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;

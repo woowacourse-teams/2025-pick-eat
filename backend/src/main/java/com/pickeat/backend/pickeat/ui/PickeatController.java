@@ -1,7 +1,7 @@
 package com.pickeat.backend.pickeat.ui;
 
-import com.pickeat.backend.global.auth.LoginUserId;
-import com.pickeat.backend.global.auth.ParticipantId;
+import com.pickeat.backend.global.auth.annotation.LoginUserId;
+import com.pickeat.backend.global.auth.annotation.ParticipantId;
 import com.pickeat.backend.pickeat.application.PickeatService;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;

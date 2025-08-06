@@ -1,8 +1,9 @@
 package com.pickeat.backend.user.ui;
 
-import com.pickeat.backend.global.auth.LoginUserId;
+import com.pickeat.backend.global.auth.annotation.LoginUserId;
 import com.pickeat.backend.user.application.UserService;
 import com.pickeat.backend.user.application.dto.UserResponse;
+import com.pickeat.backend.user.ui.api.UserApiSpec;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pickeat.backend.user.ui.api.UserApiSpec;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1")
 public class UserController implements UserApiSpec {
+
     private final UserService userService;
 
     @GetMapping("/users")
