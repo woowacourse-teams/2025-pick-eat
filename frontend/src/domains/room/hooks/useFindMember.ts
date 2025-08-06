@@ -5,27 +5,23 @@ import useDebounce from '@hooks/useDebounce';
 import { useEffect, useState } from 'react';
 
 export const useFindMember = () => {
-  const [nickName, setNickName] = useState<string>('');
+  const [nickname, setNickName] = useState<string>('');
   const [memberList, setMemberList] = useState<User[] | null>(null);
 
-  const [query, setQuery] = useState<string>('');
-
-  const debouncedQuery = useDebounce(query, 500);
+  const debouncedQuery = useDebounce(nickname, 500);
 
   const handleInputChange = (value: string) => {
     setNickName(value);
-    setQuery(value);
   };
 
   const handleMemberClick = (onClick: () => void) => {
     setNickName('');
     onClick();
     setMemberList(null);
-    setQuery('');
   };
 
   useEffect(() => {
-    const findAddress = async () => {
+    const findMember = async () => {
       if (!debouncedQuery) {
         setMemberList(null);
         return;
@@ -33,11 +29,11 @@ export const useFindMember = () => {
       const data = await users.getMembers(debouncedQuery);
       setMemberList(data);
     };
-    findAddress();
+    findMember();
   }, [debouncedQuery]);
 
   return {
-    nickName,
+    nickname,
     handleInputChange,
     memberList,
     handleMemberClick,
