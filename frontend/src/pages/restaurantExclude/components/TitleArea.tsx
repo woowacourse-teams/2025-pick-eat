@@ -85,7 +85,7 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    padding: 2px;
+    padding: ${({ theme }) => theme.PADDING.p1};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
 
