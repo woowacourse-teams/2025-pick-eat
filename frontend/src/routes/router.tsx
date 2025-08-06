@@ -1,5 +1,13 @@
 import Layout from '@components/layouts/Layout';
 
+import { useGA } from '@hooks/useGA';
+
+import { ROUTE_PATH } from '@routes/routePath';
+
+import { THEME } from '@styles/global';
+import reset from '@styles/reset';
+
+import { ThemeProvider, Global } from '@emotion/react';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeat from '@pages/CreatePickeat';
 import CreateRoom from '@pages/CreateRoom';
@@ -11,15 +19,6 @@ import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
 import QuickSignup from '@pages/ProfileInit';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-
-import { useGA } from '@hooks/useGA';
-
-import { ROUTE_PATH } from '@routes/routePath';
-
-import { THEME } from '@styles/global';
-import reset from '@styles/reset';
-
-import { ThemeProvider, Global } from '@emotion/react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 function Wrapper() {
