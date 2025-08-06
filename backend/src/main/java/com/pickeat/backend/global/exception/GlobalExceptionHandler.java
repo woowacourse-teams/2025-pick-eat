@@ -2,6 +2,7 @@ package com.pickeat.backend.global.exception;
 
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
@@ -12,12 +13,16 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ProblemDetail handleBusinessException(BusinessException e) {
         ErrorCode errorCode = e.getErrorCode();
+
+        logByStatus(errorCode.getStatus(), errorCode.getMessage(), e);
+
         ProblemDetail problemDetail = ProblemDetail.forStatus(errorCode.getStatus());
         problemDetail.setTitle(errorCode.name());
         problemDetail.setDetail(e.getMessage());
@@ -27,6 +32,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExternalApiException.class)
     public ProblemDetail handleExternalApiException(ExternalApiException e) {
+        logByStatus(e.getHttpStatus(), e.getMessage(), e);
+
         ProblemDetail problemDetail = ProblemDetail.forStatus(e.getHttpStatus());
         problemDetail.setTitle(e.getHttpStatus().name());
         //TODO: 사용자 메시지 노출 여부 고민고민  (2025-07-21, 월, 16:47)
@@ -37,6 +44,9 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException e) {
+
+        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
                 ErrorCode.VALIDATION_FAILED.getMessage()
@@ -57,6 +67,8 @@ public class GlobalExceptionHandler {
             ConversionFailedException.class
     })
     public ProblemDetail handleTypeMismatchException(Exception e) {
+        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
         problemDetail.setDetail("요청 파라미터 형식이 잘못되었습니다.");
@@ -65,6 +77,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestPartException.class})
     public ProblemDetail handleInvalidRequestFormat(Exception e) {
+        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
         problemDetail.setDetail("요청 형식이 잘못되었습니다.");
@@ -73,11 +87,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneralException(Exception e) {
+        logByStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        //problemDetail.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.name());
-        //TODO: 로깅 적용후 삭제  (2025-08-6, 수, 13:18)
-        problemDetail.setTitle(e.getMessage());
+        problemDetail.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.name());
         problemDetail.setDetail("예상치 못한 오류가 발생했습니다.");
         return problemDetail;
+    }
+
+    private void logByStatus(HttpStatus status, String message, Throwable e) {
+        if (status.is5xxServerError()) {
+            log.error("Server error ({}): {}", status.value(), message, e);
+            return;
+        }
+
+        log.info("Client error ({}): {}", status.value(), message);
     }
 }

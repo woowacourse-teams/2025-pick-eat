@@ -51,7 +51,7 @@ public class KakaoLoginClient implements LoginClient {
     private void handleError(ClientHttpResponse response) {
         try {
             JsonNode errorRoot = objectMapper.readTree(response.getBody());
-            String kakaoErrorMessage = errorRoot.get("message").asText();
+            String kakaoErrorMessage = objectMapper.writeValueAsString(errorRoot);
             throw new ExternalApiException(kakaoErrorMessage, PLATFORM_NAME, HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (IOException e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
