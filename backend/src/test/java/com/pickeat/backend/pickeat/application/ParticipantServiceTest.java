@@ -8,6 +8,7 @@ import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.global.auth.JwtProvider;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import org.junit.jupiter.api.Nested;
@@ -39,11 +40,11 @@ class ParticipantServiceTest {
             ParticipantRequest request = new ParticipantRequest("테스트유저", pickeat.getId());
 
             // when
-            String response = participantService.createParticipant(request);
+            TokenResponse response = participantService.createParticipant(request);
 
             // then
             assertAll(
-                    () -> assertThat(response).isNotEmpty(),
+                    () -> assertThat(response).isNotNull(),
                     () -> assertThat(pickeat.getParticipantCount()).isEqualTo(pastCount + 1)
             );
         }

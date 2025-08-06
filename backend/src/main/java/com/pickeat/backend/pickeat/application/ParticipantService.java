@@ -2,6 +2,7 @@ package com.pickeat.backend.pickeat.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
@@ -21,10 +22,10 @@ public class ParticipantService {
     private final ParticipantTokenProvider participantTokenProvider;
 
     @Transactional
-    public String createParticipant(ParticipantRequest request) {
+    public TokenResponse createParticipant(ParticipantRequest request) {
         Pickeat pickeat = findPickeatById(request.pickeatId());
         pickeat.incrementParticipantCount();
-        
+
         Participant participant = new Participant(request.nickname(), pickeat);
         participantRepository.save(participant);
 

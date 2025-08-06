@@ -1,6 +1,7 @@
 package com.pickeat.backend.login.application;
 
 import com.pickeat.backend.global.auth.JwtProvider;
+import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,7 +19,7 @@ public class UserTokenProvider {
         this.expirationMillis = expirationMillis;
     }
 
-    public String createToken(Long userId) {
+    public TokenResponse createToken(Long userId) {
         return jwtProvider.createToken(userId, expirationMillis);
     }
 
