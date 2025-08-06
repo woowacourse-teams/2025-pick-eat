@@ -1,7 +1,6 @@
-import { useState } from 'react';
-
 import Button from './actions/Button';
 import Modal from './Modal';
+import { useModal } from './useModal';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -17,43 +16,35 @@ type Story = StoryObj<typeof Modal>;
 
 export const Default: Story = {
   render: () => {
-    const [opened, setOpened] = useState(false);
-    const [smOpened, setSmOpened] = useState(false);
-    const [lgOpened, setLgOpened] = useState(false);
+    const smModal = useModal();
+    const mdModal = useModal();
+    const lgModal = useModal();
 
     return (
       <>
-        <Button text="sm" size="md" onClick={() => setSmOpened(true)} />
-        <Button
-          text="md"
-          size="md"
-          onClick={() => setOpened(true)}
-          color="secondary"
-        />
-        <Button
-          text="lg"
-          size="md"
-          onClick={() => setLgOpened(true)}
-          color="gray"
-        />
+        <Button text="sm" size="md" onClick={smModal.handleOpenModal} />
+        <Button text="md" size="md" onClick={mdModal.handleOpenModal} />
+        <Button text="lg" size="md" onClick={lgModal.handleOpenModal} />
+
         <Modal
-          opened={smOpened}
-          onClose={() => {
-            setSmOpened(false);
-          }}
+          mounted={smModal.mounted}
+          opened={smModal.opened}
+          onClose={smModal.handleCloseModal}
+          onUnmount={smModal.handleUnmountModal}
           size="sm"
         />
         <Modal
-          opened={opened}
-          onClose={() => {
-            setOpened(false);
-          }}
+          mounted={mdModal.mounted}
+          opened={mdModal.opened}
+          onClose={mdModal.handleCloseModal}
+          onUnmount={mdModal.handleUnmountModal}
+          size="md"
         />
         <Modal
-          opened={lgOpened}
-          onClose={() => {
-            setLgOpened(false);
-          }}
+          mounted={lgModal.mounted}
+          opened={lgModal.opened}
+          onClose={lgModal.handleCloseModal}
+          onUnmount={lgModal.handleUnmountModal}
           size="lg"
         />
       </>

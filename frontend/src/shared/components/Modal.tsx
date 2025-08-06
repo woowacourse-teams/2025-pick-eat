@@ -2,27 +2,64 @@ import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 
+import Button from './actions/Button';
 import Cross from './assets/icons/Cross';
 
 type Props = {
   opened: boolean;
+  mounted: boolean;
   onClose: () => void;
   children?: ReactNode;
   size?: 'sm' | 'md' | 'lg';
   closeButton?: boolean;
+  onUnmount?: () => void;
 };
 
 function Modal({
+  mounted,
   opened,
   onClose,
   children,
   size = 'md',
   closeButton = true,
+  onUnmount,
 }: Props) {
   const modalRoot = document.querySelector('#modal') as HTMLElement;
+
+  return ReactDOM.createPortal(
+    <>
+      {mounted && (
+        <>
+          <Inner
+            opened={opened}
+            onClose={onClose}
+            size={size}
+            closeButton={closeButton}
+            onUnmount={onUnmount}
+          >
+            {children}
+          </Inner>
+        </>
+      )}
+    </>,
+    modalRoot
+  );
+}
+
+export default Modal;
+
+function Inner({
+  opened,
+  onClose,
+  children,
+  onUnmount,
+  size = 'md',
+  closeButton = true,
+}: Omit<Props, 'mounted'>) {
+  const [text, setText] = useState(0);
 
   useEffect(() => {
     if (!opened) return;
@@ -44,24 +81,22 @@ function Modal({
 
   if (!opened) return null;
 
-  return ReactDOM.createPortal(
+  return opened ? (
     <>
       <S.BackDrop onClick={() => onClose()} />
       <S.Container size={size}>
         {closeButton && (
-          <S.IconWrapper onClick={() => onClose()}>
+          <S.IconWrapper onClick={onUnmount}>
             <Cross color="white" size="sm" strokeWidth={4} />
           </S.IconWrapper>
         )}
-
+        <Button text="+1" size="sm" onClick={() => setText(prev => prev + 1)} />
+        <div>{text}</div>
         {children}
       </S.Container>
-    </>,
-    modalRoot
-  );
+    </>
+  ) : null;
 }
-
-export default Modal;
 
 const S = {
   BackDrop: styled.div`
