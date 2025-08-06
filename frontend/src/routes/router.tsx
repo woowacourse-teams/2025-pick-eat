@@ -1,21 +1,8 @@
 import Layout from '@components/layouts/Layout';
 
-import { useGA } from '@hooks/useGA';
-
-import { ROUTE_PATH } from '@routes/routePath';
-
-import { THEME } from '@styles/global';
-import reset from '@styles/reset';
-
-import { ThemeProvider, Global } from '@emotion/react';
-
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeat from '@pages/CreatePickeat';
 import CreateRoom from '@pages/CreateRoom';
-import MatchResult from '@pages/MatchResult';
-import PickeatDetail from '@pages/PickeatDetail';
-import PreferRestaurant from '@pages/PreferRestaurant';
-import CreatePickeat from '@pages/CreatePickeat';
 import Login from '@pages/Login';
 import MatchResult from '@pages/MatchResult';
 import MyPage from '@pages/MyPage';
@@ -24,6 +11,15 @@ import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
 import QuickSignup from '@pages/ProfileInit';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
+
+import { useGA } from '@hooks/useGA';
+
+import { ROUTE_PATH } from '@routes/routePath';
+
+import { THEME } from '@styles/global';
+import reset from '@styles/reset';
+
+import { ThemeProvider, Global } from '@emotion/react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 function Wrapper() {
@@ -55,6 +51,7 @@ const routes = createBrowserRouter([
       {
         path: ROUTE_PATH.CHOOSE_WISHLIST,
         Component: ChooseWishlist,
+      },
       { path: ROUTE_PATH.LOGIN, Component: Login },
       { path: ROUTE_PATH.QUICK_SIGNUP, Component: QuickSignup },
       { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
