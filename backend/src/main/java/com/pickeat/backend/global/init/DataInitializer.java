@@ -29,19 +29,21 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        User user = userRepository.save(new User("운영자", 1L, "SERVER"));
-        Room room = roomRepository.save(new Room("운영자 Room"));
-        RoomUser roomUser = roomUserRepository.save(new RoomUser(room, user));
+        if (!userRepository.existsByNickname("운영자")) {
+            User user = userRepository.save(new User("운영자", 1L, "SERVER"));
+            Room room = roomRepository.save(new Room("운영자 Room"));
+            RoomUser roomUser = roomUserRepository.save(new RoomUser(room, user));
 
-        WishList jamsilWishList = wishListRepository.save(new WishList("잠실", room.getId(), true));
-        wishRepository.save(new Wish("잠실 맛집1", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", jamsilWishList));
-        wishRepository.save(new Wish("잠실 맛집2", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", jamsilWishList));
-        wishRepository.save(new Wish("잠실 맛집3", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", jamsilWishList));
-        wishRepository.save(new Wish("잠실 맛집4", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", jamsilWishList));
-        WishList sunRungWishList = wishListRepository.save(new WishList("선릉", room.getId(), true));
-        wishRepository.save(new Wish("선릉 맛집1", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", sunRungWishList));
-        wishRepository.save(new Wish("선릉 맛집2", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", sunRungWishList));
-        wishRepository.save(new Wish("선릉 맛집3", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", sunRungWishList));
-        wishRepository.save(new Wish("선릉 맛집4", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", sunRungWishList));
+            WishList jamsilWishList = wishListRepository.save(new WishList("잠실", room.getId(), true));
+            wishRepository.save(new Wish("잠실 맛집1", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", jamsilWishList));
+            wishRepository.save(new Wish("잠실 맛집2", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", jamsilWishList));
+            wishRepository.save(new Wish("잠실 맛집3", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", jamsilWishList));
+            wishRepository.save(new Wish("잠실 맛집4", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", jamsilWishList));
+            WishList sunRungWishList = wishListRepository.save(new WishList("선릉", room.getId(), true));
+            wishRepository.save(new Wish("선릉 맛집1", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", sunRungWishList));
+            wishRepository.save(new Wish("선릉 맛집2", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", sunRungWishList));
+            wishRepository.save(new Wish("선릉 맛집3", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", sunRungWishList));
+            wishRepository.save(new Wish("선릉 맛집4", FoodCategory.KOREAN, "도로명주소", "태그1,태그2", sunRungWishList));
+        }
     }
 }
