@@ -1,4 +1,5 @@
-import Button from './actions/Button';
+import Button from '@components/actions/Button';
+
 import Modal from './Modal';
 import { useModal } from './useModal';
 

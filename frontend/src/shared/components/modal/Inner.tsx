@@ -1,70 +1,11 @@
+import Cross from '@components/assets/icons/Cross';
+
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ReactNode, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
 
-import Button from './actions/Button';
-import Cross from './assets/icons/Cross';
-
-type Props = {
-  opened: boolean;
-  mounted: boolean;
-  onClose: () => void;
-  children?: ReactNode;
-  size?: 'sm' | 'md' | 'lg';
-  closeButton?: boolean;
-  onUnmount?: () => void;
-};
-
-function Modal({
-  mounted,
-  opened,
-  onClose,
-  children,
-  size = 'md',
-  closeButton = true,
-  onUnmount,
-}: Props) {
-  if (!mounted) return;
-  const modalRoot = document.querySelector('#modal') as HTMLElement;
-
-  useEffect(() => {
-    if (!opened) return;
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-      }
-    };
-
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = '';
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [opened]);
-
-  return ReactDOM.createPortal(
-    <>
-      <Inner
-        opened={opened}
-        onClose={onClose}
-        size={size}
-        closeButton={closeButton}
-        onUnmount={onUnmount}
-      >
-        {children}
-      </Inner>
-    </>,
-    modalRoot
-  );
-}
-
-export default Modal;
+import { ModalProps } from './Modal';
 
 function Inner({
   opened,
@@ -73,9 +14,7 @@ function Inner({
   onUnmount,
   size = 'md',
   closeButton = true,
-}: Omit<Props, 'mounted'>) {
-  const [text, setText] = useState(0);
-
+}: Omit<ModalProps, 'mounted'>) {
   if (!opened) return null;
 
   return (
@@ -87,13 +26,13 @@ function Inner({
             <Cross color="white" size="sm" strokeWidth={4} />
           </S.IconWrapper>
         )}
-        <Button text="+1" size="sm" onClick={() => setText(prev => prev + 1)} />
-        <div>{text}</div>
         {children}
       </S.Container>
     </>
   );
 }
+
+export default Inner;
 
 const S = {
   BackDrop: styled.div`
