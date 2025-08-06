@@ -2,7 +2,7 @@ import { createQueryString, joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
 
-type UserResponse = {
+export type UserResponse = {
   id: number;
   nickname: string;
   providerId: number;
@@ -21,7 +21,7 @@ const convertResponseToUser = (data: UserResponse) => {
   };
 };
 
-const convertResponseToUsers = (data: UserResponse[]) => {
+export const convertResponseToUsers = (data: UserResponse[]) => {
   return data.map(d => ({
     id: d.id,
     nickname: d.nickname,
@@ -36,7 +36,7 @@ export const users = {
     if (response) return convertResponseToUser(response);
     return null;
   },
-  getMembers: async (nickname: string): Promise<User[] | null> => {
+  getMembers: async (nickname: string): Promise<User[]> => {
     const url = joinAsPath(basePath, 'search');
     const params = createQueryString({ nickname: nickname });
     const response = await apiClient.get<UserResponse[]>(`${url}${params}`);
