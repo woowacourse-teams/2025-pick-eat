@@ -20,6 +20,7 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
   return (
     <S.Container excluded={excluded}>
       <S.DeleteButton
+        aria-label={`소거: ${name}`}
         type="button"
         onClick={() => handleRestaurantToggle(id)}
         excluded={excluded}
