@@ -57,25 +57,23 @@ const S = {
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
 
     padding: ${({ theme }) => theme.PADDING.p10};
+
+    animation: slide-up 0.3s ease-out forwards;
+
+    opacity: 0;
+    transform: translate(-50%, 40%);
+
     background-color: white;
     border-radius: ${({ theme }) => theme.RADIUS.medium3};
-
-    transform: translate(-50%, -50%) scale(0.95);
-    opacity: 0;
-    animation: fadeIn 0.2s ease-out forwards;
 
     ${setMobileStyle(css`
       width: 90%;
     `)}
 
-    transform: translate(-50%, 40%);
-    opacity: 0;
-    animation: slideUp 0.3s ease-out forwards;
-
-    @keyframes slideUp {
+    @keyframes slide-up {
       to {
-        transform: translate(-50%, -50%);
         opacity: 1;
+        transform: translate(-50%, -50%);
       }
     }
   `,
