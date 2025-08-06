@@ -11,20 +11,20 @@ type UserResponse = {
 
 export type User = {
   id: number;
-  nickName: string;
+  nickname: string;
 };
 
 const convertResponseToUser = (data: UserResponse) => {
   return {
     id: data.id,
-    nickName: data.nickname,
+    nickname: data.nickname,
   };
 };
 
 const convertResponseToUsers = (data: UserResponse[]) => {
   return data.map(d => ({
     id: d.id,
-    nickName: d.nickname,
+    nickname: d.nickname,
   }));
 };
 
@@ -36,9 +36,9 @@ export const users = {
     if (response) return convertResponseToUser(response);
     return null;
   },
-  getMembers: async (nickName: string): Promise<User[] | null> => {
+  getMembers: async (nickname: string): Promise<User[] | null> => {
     const url = joinAsPath(basePath, 'search');
-    const params = createQueryString({ nickname: nickName });
+    const params = createQueryString({ nickname: nickname });
     const response = await apiClient.get<UserResponse[]>(`${url}${params}`);
     if (response) return convertResponseToUsers(response);
     return [];

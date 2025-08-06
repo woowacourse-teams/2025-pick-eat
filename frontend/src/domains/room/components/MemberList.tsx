@@ -13,7 +13,7 @@ function MemberList({ memberList, onClick }: Props) {
       {memberList.length > 0 ? (
         memberList.map(member => (
           <S.List key={member.id} onClick={() => onClick(member)}>
-            {member.nickName}
+            {member.nickname}
           </S.List>
         ))
       ) : (

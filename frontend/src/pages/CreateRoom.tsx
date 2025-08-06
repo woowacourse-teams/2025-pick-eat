@@ -21,7 +21,7 @@ function CreateRoom() {
 
   const { createRoom, error } = useCreateRoom();
 
-  const { nickName, handleInputChange, memberList, handleMemberClick } =
+  const { nickname, handleInputChange, memberList, handleMemberClick } =
     useFindMember();
 
   const handleAddSelectedMember = (value: User) => {
@@ -53,7 +53,7 @@ function CreateRoom() {
       <SearchBar
         label="멤버 초대"
         placeholder="아이디를 입력해주세요."
-        value={nickName}
+        value={nickname}
         onChange={e => handleInputChange(e.target.value)}
       >
         {memberList && (

@@ -14,7 +14,7 @@ function Profile({ user }: { user: Promise<User | null> }) {
         alt="프로필"
         onError={e => (e.currentTarget.src = '/images/person.svg')}
       />
-      <S.NickName>{profile?.nickName}</S.NickName>
+      <S.NickName>{profile?.nickname}</S.NickName>
     </S.Container>
   );
 }

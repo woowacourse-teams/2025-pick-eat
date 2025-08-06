@@ -15,7 +15,7 @@ function SelectedMemberList({ memberList, onDelete }: Props) {
       {memberList.length > 0 ? (
         memberList.map(member => (
           <S.Member key={member.id}>
-            <S.Nickname>{member.nickName}</S.Nickname>
+            <S.Nickname>{member.nickname}</S.Nickname>
             <S.DeleteIcon onClick={() => onDelete(member.id)}>
               <Cross color="white" size="sm" strokeWidth={4} />
             </S.DeleteIcon>
