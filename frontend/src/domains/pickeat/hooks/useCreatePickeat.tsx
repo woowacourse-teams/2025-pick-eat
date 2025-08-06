@@ -4,12 +4,15 @@ import { generateRouterPath } from '@routes/routePath';
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 import { validatePickeatForms } from '../services/validatePickeatForms';
 
 export const useCreatePickeat = () => {
   const [error, setError] = useState<string>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get('roomId') ?? '';
 
   const createPickeat = async (
     formData: FormData,
@@ -31,8 +34,9 @@ export const useCreatePickeat = () => {
 
     try {
       const radius = parseInt(radiusValue as string);
+
       const code = await pickeat.postRoomPickeat(
-        '1',
+        roomId,
         data.pickeatName as string
       );
 

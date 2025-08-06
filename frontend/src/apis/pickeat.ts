@@ -56,7 +56,9 @@ const basePath = 'pickeats';
 
 export const pickeat = {
   postRoomPickeat: async (roomId: string, name: string): Promise<string> => {
-    const getUrl = joinAsPath('rooms', roomId, 'pickeats');
+    const getUrl = roomId
+      ? joinAsPath('rooms', roomId, 'pickeats')
+      : joinAsPath('pickeats');
     const response = await apiClient.post<PickeatResponse>(getUrl, {
       name,
     });
