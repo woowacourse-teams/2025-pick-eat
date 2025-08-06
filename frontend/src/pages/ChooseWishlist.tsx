@@ -3,15 +3,18 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import WishlistGroup from '@domains/wishlist/WishlistGroup';
 
+import { pickeat } from '@apis/pickeat';
 import { wishlist } from '@apis/wishlist';
+
+import { generateRouterPath } from '@routes/routePath';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ErrorBoundary } from '@sentry/react';
-import { Suspense } from 'react';
-import { useSearchParams } from 'react-router';
+import { Suspense, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
 
 export type Wishlist = {
   id: string;
@@ -21,8 +24,31 @@ export type Wishlist = {
 };
 
 function ChooseWishlist() {
+  const [pickeatName, setPickeatName] = useState('');
   const [searchParams] = useSearchParams();
   const roomId = searchParams.get('roomId') ?? '';
+  const navigate = useNavigate();
+  const [selectedWishlistId, setSelectedWishlistId] = useState(0);
+
+  const createWishPickeat = async () => {
+    const code = await pickeat.postPickeat(roomId, pickeatName);
+
+    await pickeat.postWish(selectedWishlistId, code);
+
+    navigate(generateRouterPath.pickeatDetail(code));
+  };
+
+  const handleSelectWishlist = (id: number) => {
+    setSelectedWishlistId(id);
+  };
+
+  // const selectedWishlist = initialData.find(
+  //   wishlist => wishlist.id === selectedWishlistId
+  // );
+
+  const isSelected = (id: number) => {
+    return selectedWishlistId === id;
+  };
 
   return (
     <S.Container>
@@ -35,7 +61,13 @@ function ChooseWishlist() {
           </S.TitleText>
         </S.TitleArea>
 
-        <Input name="pickeatName" label="픽잇 이름" placeholder="레전드 점심" />
+        <Input
+          name="pickeatName"
+          label="픽잇 이름"
+          placeholder="레전드 점심"
+          value={pickeatName}
+          onChange={e => setPickeatName(e.target.value)}
+        />
 
         <ErrorBoundary>
           <Suspense fallback={<div>로딩 중</div>}>
@@ -43,9 +75,14 @@ function ChooseWishlist() {
               wishlistGroupPromise={
                 roomId ? wishlist.getRoom(roomId) : wishlist.getPublic()
               }
+              onSelectWishlist={handleSelectWishlist}
+              selected={isSelected}
             />
           </Suspense>
         </ErrorBoundary>
+        <button type="button" onClick={createWishPickeat}>
+          시작
+        </button>
       </S.Wrapper>
     </S.Container>
   );

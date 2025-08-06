@@ -55,7 +55,7 @@ const convertResponseToPickeatDetail = async (
 const basePath = 'pickeats';
 
 export const pickeat = {
-  postRoomPickeat: async (roomId: string, name: string): Promise<string> => {
+  postPickeat: async (roomId: string, name: string): Promise<string> => {
     const getUrl = roomId
       ? joinAsPath('rooms', roomId, 'pickeats')
       : joinAsPath('pickeats');
@@ -64,6 +64,14 @@ export const pickeat = {
     });
     if (response) return response.code;
     return '';
+  },
+
+  postWish: async (wishlistId: number, pickeatCode: string) => {
+    console.log(wishlistId);
+    const getUrl = joinAsPath(basePath, pickeatCode, 'restaurants', 'wish');
+    await apiClient.post<PickeatResponse>(getUrl, {
+      wishListId: wishlistId,
+    });
   },
 
   postLocation: async (data: CreatePickeatFormData, pickeatCode: string) => {
