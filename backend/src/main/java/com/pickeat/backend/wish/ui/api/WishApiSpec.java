@@ -115,7 +115,8 @@ public interface WishApiSpec {
 
     @Operation(
             summary = "위시리스트의 위시 조회",
-            operationId = "getWishesInWishList"
+            operationId = "getWishesInWishList",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(

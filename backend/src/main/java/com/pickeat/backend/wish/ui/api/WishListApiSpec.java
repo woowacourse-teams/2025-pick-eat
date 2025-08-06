@@ -4,7 +4,6 @@ import com.pickeat.backend.global.auth.LoginUserId;
 import com.pickeat.backend.global.auth.ParticipantId;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
-import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -79,7 +78,8 @@ public interface WishListApiSpec {
 
     @Operation(
             summary = "위시리스트 목록 조회",
-            operationId = "getWishLists"
+            operationId = "getWishLists",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -114,46 +114,6 @@ public interface WishListApiSpec {
     ResponseEntity<List<WishListResponse>> getWishLists(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
-            @Parameter(hidden = true) @ParticipantId Long participantId
-    );
-
-    @Operation(
-            summary = "위시리스트의 위시 조회",
-            operationId = "getWishesInWishList"
-    )
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "위시리스트의 위시 조회 성공",
-                    content = @Content(
-                            mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = WishResponse.class)))
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "위시리스트를 찾을 수 없음",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "위시리스트를 찾을 수 없음",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "Not Found",
-                                              "status": 404,
-                                              "detail": "위시리스트를 찾을 수 없습니다.",
-                                              "instance": "/api/v1/wishLists/1"
-                                            }
-                                            """
-                            )
-                    )
-            )
-    })
-    @GetMapping("/wishLists/{wishListId}/wishes")
-    ResponseEntity<List<WishResponse>> getWishesInWishList(
-            @Parameter(description = "위시리스트 ID", example = "1")
-            @PathVariable("wishListId") Long wishListId,
             @Parameter(hidden = true) @ParticipantId Long participantId
     );
 
