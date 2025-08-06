@@ -74,9 +74,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneralException(Exception e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        problemDetail.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.name());
+        //problemDetail.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.name());
+        //TODO: 로깅 적용후 삭제  (2025-08-6, 수, 13:18)
+        problemDetail.setTitle(e.getMessage());
         problemDetail.setDetail("예상치 못한 오류가 발생했습니다.");
-
         return problemDetail;
     }
 }
