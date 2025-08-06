@@ -20,7 +20,7 @@ public record RestaurantResultResponse(
         List<String> tags,
 
         @Schema(description = "중심지로부터의 거리 (미터)", example = "150")
-        int distance,
+        Integer distance,
 
         @Schema(description = "장소 URL", example = "https://place.map.kakao.com/12345")
         String placeUrl,
@@ -32,10 +32,10 @@ public record RestaurantResultResponse(
         int likeCount,
 
         @Schema(description = "식당 위치의 x 좌표 (경도)", example = "37.5670")
-        double x,
+        Double x,
 
         @Schema(description = "식당 위치의 y 좌표 (위도)", example = "126.9785")
-        double y,
+        Double y,
 
         @Schema(description = "사진 url들")
         List<String> pictureUrls,
@@ -55,8 +55,8 @@ public record RestaurantResultResponse(
                 restaurant.getPlaceUrl(),
                 restaurant.getRoadAddressName(),
                 restaurant.getLikeCount(),
-                restaurant.getLocation().getX(),
-                restaurant.getLocation().getY(),
+                getLocationX(restaurant),
+                getLocationY(restaurant),
                 parsePictureUrls(restaurant.getPictureUrls()),
                 restaurant.getType());
     }
@@ -67,6 +67,22 @@ public record RestaurantResultResponse(
                 .toList();
     }
 
+
+    private static Double getLocationX(Restaurant restaurant) {
+        if (restaurant.getLocation() != null) {
+            return restaurant.getLocation().getX();
+        }
+
+        return null;
+    }
+
+    private static Double getLocationY(Restaurant restaurant) {
+        if (restaurant.getLocation() != null) {
+            return restaurant.getLocation().getY();
+        }
+
+        return null;
+    }
 
     private static List<String> parseTags(String tags) {
         if (tags == null || tags.isBlank()) {
