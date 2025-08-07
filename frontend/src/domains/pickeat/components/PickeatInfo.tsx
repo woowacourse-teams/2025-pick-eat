@@ -54,7 +54,10 @@ function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
 
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
-      <S.ArrowButton type="button" onClick={() => navigate(ROUTE_PATH.HOME)}>
+      <S.ArrowButton
+        type="button"
+        onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
+      >
         <Arrow size="lg" direction="left" />
       </S.ArrowButton>
       <S.PickeatName>{pickeatDetail.name}</S.PickeatName>

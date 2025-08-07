@@ -12,6 +12,7 @@ import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
 import QuickSignup from '@pages/ProfileInit';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
+import RoomDetail from '@pages/RoomDetail';
 
 import { useGA } from '@hooks/useGA';
 
@@ -42,6 +43,7 @@ const routes = createBrowserRouter([
     Component: Wrapper,
     children: [
       { path: ROUTE_PATH.HOME, Component: CreatePickeatWithLocation },
+      { path: ROUTE_PATH.PICKEAT_WITH_LOCATION, Component: CreatePickeat },
       { path: ROUTE_PATH.PICKEAT_DETAIL, Component: PickeatDetail },
       { path: ROUTE_PATH.PREFER_RESTAURANT, Component: PreferRestaurant },
       { path: ROUTE_PATH.MATCH_RESULT, Component: MatchResult },
@@ -50,7 +52,7 @@ const routes = createBrowserRouter([
         Component: RestaurantExcludePage,
       },
       {
-        path: ROUTE_PATH.CHOOSE_WISHLIST,
+        path: ROUTE_PATH.PICKEAT_WITH_WISH,
         Component: ChooseWishlist,
       },
       { path: ROUTE_PATH.LOGIN, Component: Login },
@@ -64,6 +66,10 @@ const routes = createBrowserRouter([
       {
         path: ROUTE_PATH.CREATE_ROOM,
         Component: CreateRoom,
+      },
+      {
+        path: ROUTE_PATH.ROOM_DETAIL,
+        Component: RoomDetail,
       },
     ],
   },

@@ -1,6 +1,6 @@
 import { NICKNAME_ADJECTIVES, NICKNAME_NOUNS } from '../constants/nickname';
 
-export const makeNickname = () => {
+export const makeNickName = () => {
   const randomAdjective = Math.floor(
     Math.random() * NICKNAME_ADJECTIVES.length
   );

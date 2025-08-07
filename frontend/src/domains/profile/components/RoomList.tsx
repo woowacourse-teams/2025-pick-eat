@@ -4,13 +4,17 @@ import People from '@components/assets/icons/People';
 
 import { Room } from '@apis/room';
 
+import { generateRouterPath } from '@routes/routePath';
+
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
 import { use } from 'react';
+import { useNavigate } from 'react-router';
 
 function RoomList({ roomsData }: { roomsData: Promise<Room[]> }) {
   const roomList = use(roomsData);
+  const navigate = useNavigate();
   return (
     <S.Container>
       <S.Description>참여 중인 방</S.Description>
@@ -30,6 +34,7 @@ function RoomList({ roomsData }: { roomsData: Promise<Room[]> }) {
                 text="입장"
                 size="sm"
                 leftIcon={<Enter size="xs" color="white" />}
+                onClick={() => navigate(generateRouterPath.roomDetail(room.id))}
               />
             </S.List>
           ))
