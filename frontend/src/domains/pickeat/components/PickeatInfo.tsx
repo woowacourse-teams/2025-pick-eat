@@ -56,6 +56,7 @@ function PickeatInfo({
       value: 1,
     });
   };
+
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
       <S.ArrowButton type="button" onClick={() => navigate(ROUTE_PATH.HOME)}>
@@ -63,15 +64,17 @@ function PickeatInfo({
       </S.ArrowButton>
       <S.PickeatName>{pickeatDetail.name}</S.PickeatName>
 
-      <S.LocationInfo>
-        <S.TitleWrapper>
-          <Location size="sm" />
-          위치정보
-        </S.TitleWrapper>
+      {pickeatDetail.location && (
+        <S.LocationInfo>
+          <S.TitleWrapper>
+            <Location size="sm" />
+            위치정보
+          </S.TitleWrapper>
 
-        <S.Location>설정 위치: {pickeatDetail.location} </S.Location>
-        <S.Radius>반경: {pickeatDetail.radius}미터 이내</S.Radius>
-      </S.LocationInfo>
+          <S.Location>설정 위치: {pickeatDetail.location} </S.Location>
+          <S.Radius>반경: {pickeatDetail.radius}미터 이내</S.Radius>
+        </S.LocationInfo>
+      )}
 
       <Button
         type="button"
