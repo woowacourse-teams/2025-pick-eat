@@ -5,6 +5,8 @@ services:
     restart: always
     ports:
       - "80:8080"
+    volumes:
+      - ./data/springboot/logs:/var/logs
     networks:
       - app-tier
 
@@ -20,6 +22,20 @@ services:
     restart: always
     volumes:
       - 'mysqldb-data:/var/lib/mysql'
+    networks:
+      - app-tier
+
+
+  alloy:
+    image: grafana/alloy:latest
+    container_name: alloy
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./data/springboot/logs:/var/log/spring
+      - ./data/alloy/config.alloy:/etc/alloy/config.alloy
+    environment:
+      - ALLOY_ENV=dev
     networks:
       - app-tier
 

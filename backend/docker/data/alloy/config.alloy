@@ -1,0 +1,38 @@
+logging {
+  level  = "info"
+  format = "logfmt"
+}
+
+local.file_match "spring_logs" {
+  path_targets = [{ __path__ = "/var/log/spring/*.log" }]
+}
+
+loki.source.file "spring_source" {
+  targets = local.file_match.spring_logs.targets 
+  forward_to = [loki.process.spring_labels.receiver]
+}
+
+loki.process "spring_labels" {
+  forward_to = [loki.write.grafana_loki.receiver]
+
+  stage.static_labels {
+    values = {
+      service = "pickeat",
+      env = sys.env("ALLOY_ENV"), 
+    }
+  }
+
+  stage.multiline {
+    firstline = "^\\[\\d{4}-\\d{2}-\\d{2}"
+    max_wait_time = "3s"
+  }
+}
+
+loki.write "grafana_loki" {
+  endpoint {
+    url = "http://3.35.147.202/loki/api/v1/push"
+    tenant_id = "fake"
+    batch_wait = "1s"
+    batch_size = "1MB"
+  }
+}
