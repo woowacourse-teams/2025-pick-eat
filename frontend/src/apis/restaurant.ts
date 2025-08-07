@@ -29,8 +29,6 @@ export type Restaurant = {
   roadAddressName: string;
   likeCount: number;
   isExcluded?: boolean;
-  x: number | null;
-  y: number | null;
   pictureUrls: string[];
   type: 'WISH' | 'LOCATION';
   isLiked: boolean;
@@ -47,8 +45,6 @@ export const convertResponseToRestaurant = ({
   likeCount,
   isExcluded,
   type,
-  x,
-  y,
   pictureUrls,
   isLiked,
 }: RestaurantResponse): Restaurant => ({
@@ -61,25 +57,25 @@ export const convertResponseToRestaurant = ({
   roadAddressName: roadAddressName.toString(),
   likeCount: Number(likeCount),
   isExcluded: isExcluded ? Boolean(isExcluded) : false,
-  x: Number(x),
-  y: Number(y),
   type: type,
   pictureUrls,
   isLiked,
 });
 
-export const restaurantBaseUrl = 'restaurants';
+export const RESTAURANT_BAUSE_PATH = 'restaurants';
 
 export const restaurant = {
   patchLike: async (restaurantId: string) => {
-    const patchUrl = joinAsPath('restaurants', restaurantId.toString(), 'like');
-    await apiClient.patch(patchUrl, undefined, {
-      'Content-Type': 'application/json',
-    });
+    const patchUrl = joinAsPath(
+      RESTAURANT_BAUSE_PATH,
+      restaurantId.toString(),
+      'like'
+    );
+    await apiClient.patch(patchUrl);
   },
   patchUnlike: async (restaurantId: string) => {
     const patchUrl = joinAsPath(
-      'restaurants',
+      RESTAURANT_BAUSE_PATH,
       restaurantId.toString(),
       'unlike'
     );

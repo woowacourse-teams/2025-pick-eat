@@ -1,10 +1,11 @@
-import { WishlistResponse } from '@apis/wishlist';
-
-import styled from '@emotion/styled';
 import { Wishlist } from '@pages/ChooseWishlist';
 
+import { WishlistType } from '@apis/wishlist';
+
+import styled from '@emotion/styled';
+
 type Prop = {
-  wishlist: WishlistResponse;
+  wishlist: WishlistType;
   selected: boolean;
   onSelect: (id: number) => void;
 };

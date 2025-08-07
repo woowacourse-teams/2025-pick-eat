@@ -12,9 +12,9 @@ const requestApi = async <TResponse = unknown>(
   const response = await fetch(`${process.env.API_BASE_URL}${endPoint}`, {
     method,
     headers: {
-      Authorization: `${process.env.API_KEY}`,
+      Authorization: `Bearer ${process.env.AUTHORIZATION_TOKEN}`,
       'Content-Type': 'application/json',
-      'Pickeat-Participant-Token': joinCode ?? '',
+      'Pickeat-Participant-Token': `Bearer ${joinCode}`,
       ...headers,
     },
 

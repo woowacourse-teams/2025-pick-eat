@@ -33,18 +33,12 @@ export const useCreatePickeat = () => {
     }
 
     try {
-      const radius = parseInt(radiusValue as string);
-
-      const code = await pickeat.postPickeat(
-        roomId,
-        data.pickeatName as string
-      );
+      const code = await pickeat.post(roomId, data.pickeatName as string);
 
       await pickeat.postLocation(
         {
-          name: data.name as string,
           address: data.address as string,
-          radius,
+          radius: parseInt(radiusValue as string),
         },
         code
       );

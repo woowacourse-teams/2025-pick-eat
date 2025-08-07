@@ -2,7 +2,7 @@ import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
 
 import { pickeat } from '@apis/pickeat';
-import { WishlistResponse } from '@apis/wishlist';
+import { WishlistType } from '@apis/wishlist';
 
 import { useGA } from '@hooks/useGA';
 import { useInputAutoFocus } from '@hooks/useInputAutoFocus';
@@ -16,7 +16,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import Wishlist from './Wishlist';
 
 type Props = {
-  wishlistGroupPromise: Promise<WishlistResponse[]>;
+  wishlistGroupPromise: Promise<WishlistType[]>;
 };
 
 function WishlistGroup({ wishlistGroupPromise }: Props) {
@@ -36,7 +36,7 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
   );
 
   const createWishPickeat = async () => {
-    const code = await pickeat.postPickeat(roomId, pickeatName);
+    const code = await pickeat.post(roomId, pickeatName);
     await pickeat.postWish(selectedWishlistId, code);
 
     navigate(generateRouterPath.pickeatDetail(code));

@@ -1,10 +1,10 @@
-import { PickeatDetailType } from '@apis/pickeat';
+import { PickeatType } from '@apis/pickeat';
 
 import { validate } from '@utils/validate';
 
 type ValidateType = {
   nickname: string | undefined;
-  pickeatDetail: PickeatDetailType | undefined;
+  pickeatDetail: PickeatType | undefined;
 };
 
 const ERROR_MESSAGE = {

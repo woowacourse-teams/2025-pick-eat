@@ -2,25 +2,34 @@ import { joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
 
-export type WishlistResponse = {
+type WishlistResponse = {
   id: number;
   name: string;
   roomId: number;
   isPublic: boolean;
 };
 
+export type WishlistType = {
+  id: number;
+  name: string;
+};
+
+const convertResponseToWish = (data: WishlistResponse[]) => {
+  return data.map(d => ({
+    id: d.id,
+    name: d.name,
+  }));
+};
+
+const BASE_URL = 'wishLists';
+
 export const wishlist = {
-  getPublic: async () => {
-    const getUrl = joinAsPath('wishLists');
-    const response = await apiClient.get<WishlistResponse[]>(`${getUrl}`);
-
-    return response ?? [];
-  },
-
-  getRoom: async (roomId: string) => {
-    const getUrl = joinAsPath('room', roomId, 'wishLists');
-    const response = await apiClient.get<WishlistResponse[]>(`${getUrl}`);
-
-    return response ?? [];
+  get: async (roomId: string): Promise<WishlistType[]> => {
+    const url = roomId
+      ? joinAsPath('room', roomId, BASE_URL)
+      : joinAsPath(BASE_URL);
+    const response = await apiClient.get<WishlistResponse[]>(url);
+    if (response) return convertResponseToWish(response);
+    return [];
   },
 };
