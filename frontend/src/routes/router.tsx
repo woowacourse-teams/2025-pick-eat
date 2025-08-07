@@ -11,6 +11,7 @@ import { ThemeProvider, Global } from '@emotion/react';
 import Choosetype from '@pages/ChooseType';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeat from '@pages/CreatePickeat';
+import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
 import MatchResult from '@pages/MatchResult';
 import MyPage from '@pages/MyPage';
@@ -59,6 +60,10 @@ const routes = createBrowserRouter([
         Component: MyPage,
       },
       { path: ROUTE_PATH.CHOOSE_TYPE, Component: Choosetype },
+      {
+        path: ROUTE_PATH.CREATE_ROOM,
+        Component: CreateRoom,
+      },
     ],
   },
 ]);

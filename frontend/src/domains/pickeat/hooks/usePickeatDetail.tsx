@@ -11,10 +11,10 @@ export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>();
 
-  const joinPickeat = async (nickName: string) => {
+  const joinPickeat = async (nickname: string) => {
     try {
       validateJoinPickeat({
-        nickName,
+        nickname,
         pickeatDetail,
       });
     } catch (e) {
@@ -25,8 +25,8 @@ export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
     }
 
     try {
-      const response = await pickeat.postJoin({
-        nickname: nickName,
+      await pickeat.postJoin({
+        nickname: nickname,
         pickeatId: pickeatDetail!.id,
       });
 

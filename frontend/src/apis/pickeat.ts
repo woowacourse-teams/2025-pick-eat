@@ -99,7 +99,7 @@ export const pickeat = {
     const getUrl = joinAsPath(basePath, pickeatId);
     const response = await apiClient.get<PickeatResponse>(getUrl);
     if (response) return await convertResponseToPickeatDetail(response);
-    throw new Error('방 정보가 존재하지 않습니다.');
+    throw new Error('픽잇 정보가 존재하지 않습니다.');
   },
 
   postJoin: async (data: JoinPickeatFormData) => {

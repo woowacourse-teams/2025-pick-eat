@@ -1,10 +1,20 @@
-import styled from '@emotion/styled';
+import { User } from '@apis/users';
 
-function Profile() {
+import styled from '@emotion/styled';
+import { use } from 'react';
+
+const profileUrl = null;
+
+function Profile({ user }: { user: Promise<User | null> }) {
+  const profile = use(user);
   return (
     <S.Container>
-      <S.ProfileImage />
-      <S.NickName>머핀</S.NickName>
+      <S.ProfileImage
+        src={profileUrl || '/images/person.svg'}
+        alt="프로필"
+        onError={e => (e.currentTarget.src = '/images/person.svg')}
+      />
+      <S.NickName>{profile?.nickname}</S.NickName>
     </S.Container>
   );
 }
@@ -20,12 +30,13 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level6};
   `,
 
-  ProfileImage: styled.div`
+  ProfileImage: styled.img`
     width: 150px;
     height: 150px;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[30]};
     border-radius: ${({ theme }) => theme.RADIUS.half};
+    object-fit: cover;
   `,
 
   NickName: styled.span`

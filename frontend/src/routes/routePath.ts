@@ -10,6 +10,7 @@ export const ROUTE_PATH = {
   OAUTH_CALLBACK: '/oauth/callback',
   MY_PAGE: '/my-page',
   CHOOSE_TYPE: '/choose-type',
+  CREATE_ROOM: '/create-room',
 };
 
 export const generateRouterPath = {
