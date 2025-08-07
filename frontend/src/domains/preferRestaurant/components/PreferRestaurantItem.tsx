@@ -13,8 +13,7 @@ type Props = {
 };
 
 function PreferRestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
-  const { id, name, tags, distance, likeCount, category, placeUrl } =
-    restaurant;
+  const { id, name, tags, likeCount, category } = restaurant;
 
   return (
     <S.Container liked={liked}>
@@ -29,10 +28,6 @@ function PreferRestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
         <S.TitleWrapper>
           <S.RestaurantName>{name}</S.RestaurantName>
         </S.TitleWrapper>
-        {/* <S.Distance>식당까지 {distance}m</S.Distance> */}
-        {/* <S.LinkButton href={placeUrl} target="_blank" rel="noopener noreferrer">
-          식당 상세 정보 보기
-        </S.LinkButton> */}
       </S.CardContent>
 
       <LikeButton
