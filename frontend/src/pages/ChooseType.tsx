@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router';
 
 function Choosetype() {
   const navigate = useNavigate();
+
   return (
     <S.Container>
       <S.Wrapper>
@@ -18,6 +19,7 @@ function Choosetype() {
             <br /> 쉽게 고르기
           </S.TitleText>
         </S.TitleArea>
+
         <S.ButtonWrapper>
           <Button
             text="추천에서 pick!"
@@ -29,6 +31,7 @@ function Choosetype() {
             onClick={() => navigate('/')}
           />
         </S.ButtonWrapper>
+
         <Button text="방 생성" color="gray" size="md" />
       </S.Wrapper>
     </S.Container>

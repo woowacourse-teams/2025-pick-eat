@@ -17,6 +17,15 @@ function PreferRestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
 
   return (
     <S.Container liked={liked}>
+      {type === 'WISH' && (
+        <S.Image
+          src={pictureUrls[0] || './images/restaurant.png'}
+          onError={e => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = './images/restaurant.png';
+          }}
+        />
+      )}
       <S.CardContent>
         <S.TagBox>
           {tags.length === 0 && <Badge>{category}</Badge>}
@@ -28,6 +37,18 @@ function PreferRestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
         <S.TitleWrapper>
           <S.RestaurantName>{name}</S.RestaurantName>
         </S.TitleWrapper>
+        {type === 'LOCATION' && (
+          <>
+            <S.Distance>식당까지 {distance}m</S.Distance>
+            <S.LinkButton
+              href={placeUrl || ''}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              식당 상세 정보 보기
+            </S.LinkButton>
+          </>
+        )}
       </S.CardContent>
 
       <LikeButton
@@ -48,8 +69,8 @@ const S = {
     width: 312px;
     height: fit-content;
     display: flex;
+    gap: ${({ theme }) => theme.GAP.level4};
 
-    align-items: flex-end;
     overflow: hidden;
     position: relative;
 
@@ -62,6 +83,13 @@ const S = {
     border-radius: ${({ theme }) => theme.RADIUS.medium3};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
     transform: scale(1);
+  `,
+
+  Image: styled.img`
+    width: 90px;
+    height: 90px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
+    object-fit: cover;
   `,
 
   CardContent: styled.div`
@@ -79,6 +107,7 @@ const S = {
 
   TagBox: styled.div`
     display: flex;
+    flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level2};
   `,
 

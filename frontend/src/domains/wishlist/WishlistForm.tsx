@@ -19,13 +19,13 @@ type Props = {
   wishlistGroupPromise: Promise<WishlistType[]>;
 };
 
-function WishlistGroup({ wishlistGroupPromise }: Props) {
+function WishlistForm({ wishlistGroupPromise }: Props) {
   const initialData = use(wishlistGroupPromise);
-  const [pickeatName, setPickeatName] = useState('');
   const [selectedWishlistId, setSelectedWishlistId] = useState(0);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomId = searchParams.get('roomId') ?? '';
+  const [pickeatName, setPickeatName] = useState('');
 
   const handleSelectWishlist = (id: number) => {
     setSelectedWishlistId(id);
@@ -35,32 +35,38 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
     wishlist => wishlist.id === selectedWishlistId
   );
 
-  const createWishPickeat = async () => {
-    const code = await pickeat.post(roomId, pickeatName);
-    await pickeat.postWish(selectedWishlistId, code);
+  const createWishPickeat = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const code = await pickeat.post(roomId, pickeatName);
+      await pickeat.postWish(selectedWishlistId, code);
 
-    navigate(generateRouterPath.pickeatDetail(code));
+      navigate(generateRouterPath.pickeatDetail(code));
 
-    useGA().useGAEventTrigger({
-      action: 'click',
-      category: 'button',
-      label: '위시 기반 픽잇 시작 버튼',
-      value: 1,
-    });
+      useGA().useGAEventTrigger({
+        action: 'click',
+        category: 'button',
+        label: '위시 기반 픽잇 시작 버튼',
+        value: 1,
+      });
+    } catch (e) {
+      alert(e);
+    }
   };
 
   const { inputRef } = useInputAutoFocus();
 
   return (
-    <>
+    <S.Wrapper onSubmit={createWishPickeat}>
       <Input
         name="pickeatName"
         label="픽잇 이름"
         placeholder="레전드 점심"
+        ref={inputRef}
         value={pickeatName}
         onChange={e => setPickeatName(e.target.value)}
-        ref={inputRef}
       />
+
       <S.WishlistWrapper>
         {initialData.map(wishlist => (
           <Wishlist
@@ -71,24 +77,32 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
           />
         ))}
       </S.WishlistWrapper>
+
       <Button
         text={
           selectedWishlistId
-            ? `${selectedWishlist?.name}으로 픽잇 시작`
+            ? `${selectedWishlist?.name} 픽잇 시작`
             : '픽잇 시작하기'
         }
         color="primary"
-        onClick={createWishPickeat}
         disabled={!selectedWishlistId || !pickeatName}
+        type="submit"
       />
-    </>
+    </S.Wrapper>
   );
 }
 
-export default WishlistGroup;
+export default WishlistForm;
 
 const S = {
   WishlistWrapper: styled.div`
-    height: 250px;
+    height: 230px;
+  `,
+
+  Wrapper: styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
 };

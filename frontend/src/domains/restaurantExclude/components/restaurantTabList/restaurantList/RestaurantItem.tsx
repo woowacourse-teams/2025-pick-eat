@@ -8,9 +8,20 @@ import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
-type Props = Pick<Restaurant, 'id' | 'name' | 'tags' | 'placeUrl' | 'distance'>;
+type Props = Pick<
+  Restaurant,
+  'id' | 'name' | 'tags' | 'placeUrl' | 'distance' | 'type' | 'pictureUrls'
+>;
 
-function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
+function RestaurantItem({
+  id,
+  name,
+  tags,
+  placeUrl,
+  distance,
+  type,
+  pictureUrls,
+}: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
     useRestaurantExcludeContext();
 
@@ -35,6 +46,15 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
         </S.IconContainer>
       </S.DeleteButton>
       <S.CardContainer>
+        {type === 'WISH' && (
+          <S.Image
+            src={pictureUrls[0] || './images/restaurant.png'}
+            onError={e => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = './images/restaurant.png';
+            }}
+          />
+        )}
         <S.CardContent excluded={excluded}>
           <S.TitleWrapper>
             <S.TagBox>
@@ -44,17 +64,19 @@ function RestaurantItem({ id, name, tags, placeUrl, distance }: Props) {
             </S.TagBox>
             <S.RestaurantName>{name}</S.RestaurantName>
           </S.TitleWrapper>
-          <S.DetailBox>
-            <S.DetailText>식당까지 {distance && distance}m</S.DetailText>
-            <S.LinkButton
-              href={menuUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={e => e.stopPropagation()}
-            >
-              메뉴 보러가기
-            </S.LinkButton>
-          </S.DetailBox>
+          {type === 'LOCATION' && (
+            <S.DetailBox>
+              <S.DetailText>식당까지 {distance && distance}m</S.DetailText>
+              <S.LinkButton
+                href={menuUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
+              >
+                메뉴 보러가기
+              </S.LinkButton>
+            </S.DetailBox>
+          )}
         </S.CardContent>
         {excluded && (
           <S.Overlay>
@@ -92,19 +114,29 @@ const S = {
   CardContainer: styled.div`
     width: 100%;
     height: 120px;
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level4};
     overflow: hidden;
     position: relative;
 
+    padding: ${({ theme }) => theme.PADDING.p5};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: 10px;
+  `,
+
+  Image: styled.img`
+    width: 90px;
+    height: 90px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
+    object-fit: cover;
   `,
   CardContent: styled.div<{ excluded: boolean }>`
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
-
-    padding: ${({ theme }) => theme.PADDING.p5};
 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -212,6 +244,7 @@ const S = {
   `,
   TagBox: styled.div`
     display: flex;
+    flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level2};
   `,
   RestaurantName: styled.a`

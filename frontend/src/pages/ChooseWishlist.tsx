@@ -1,6 +1,6 @@
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import WishlistGroup from '@domains/wishlist/WishlistGroup';
+import WishlistForm from '@domains/wishlist/WishlistForm';
 
 import { wishlist } from '@apis/wishlist';
 
@@ -35,7 +35,7 @@ function ChooseWishlist() {
 
         <ErrorBoundary>
           <Suspense fallback={<div>로딩 중</div>}>
-            <WishlistGroup wishlistGroupPromise={wishlist.get(roomId)} />
+            <WishlistForm wishlistGroupPromise={wishlist.get(roomId)} />
           </Suspense>
         </ErrorBoundary>
       </S.Wrapper>
@@ -56,6 +56,7 @@ const S = {
 
   Wrapper: styled.div`
     width: 70%;
+    height: 600px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level6};
