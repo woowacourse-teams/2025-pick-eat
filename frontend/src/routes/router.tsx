@@ -1,5 +1,7 @@
 import Layout from '@components/layouts/Layout';
 
+import { AuthProvider } from '@domains/login/context/AuthProvider';
+
 import { useGA } from '@hooks/useGA';
 
 import { ROUTE_PATH } from '@routes/routePath';
@@ -26,9 +28,11 @@ function Wrapper() {
     <>
       <Global styles={reset} />
       <ThemeProvider theme={THEME}>
-        <Layout>
-          <Outlet />
-        </Layout>
+        <AuthProvider>
+          <Layout>
+            <Outlet />
+          </Layout>
+        </AuthProvider>
       </ThemeProvider>
     </>
   );
