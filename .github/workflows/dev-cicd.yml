@@ -15,6 +15,9 @@ jobs:
           token: ${{ secrets.SUBMODULE_KEY }}
           submodules: recursive
 
+      - name: Update Submodule
+        run: git submodule update --remote
+
       - name: Generate short SHA
         id: meta
         run: echo "short_sha=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_OUTPUT
@@ -61,9 +64,6 @@ jobs:
         with:
           token: ${{ secrets.SUBMODULE_KEY }}
           submodules: true
-
-      - name: Update Submodule
-        run: git submodule update --remote
 
       - name: Copy Docker Compose
         run: |
