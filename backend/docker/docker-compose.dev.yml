@@ -2,6 +2,8 @@ version: '3.8'
 services:
   backend:
     image: pickeat/pickeat:latest
+    environment:
+      SPRING_ACTIVE_PROFILE: dev
     restart: always
     ports:
       - "80:8080"
