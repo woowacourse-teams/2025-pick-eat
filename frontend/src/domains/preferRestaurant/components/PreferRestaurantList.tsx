@@ -5,6 +5,7 @@ import { useFlip } from '@hooks/useFlip';
 import styled from '@emotion/styled';
 import { use } from 'react';
 
+import useLike from '../hooks/useLike';
 import usePreferRestaurant from '../hooks/usePreferRestaurant';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
@@ -15,9 +16,15 @@ type Props = {
 
 function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
   const initialData = use(preferRestaurantListPromise);
-  const { restaurantList, updateSortedRestaurantList } =
+
+  const { restaurantList, updateSortedRestaurantList, likedIds, setLikedIds } =
     usePreferRestaurant(initialData);
   const { itemRefs } = useFlip(restaurantList);
+  const { isLiked, handleLike, handleUnlike } = useLike(
+    updateSortedRestaurantList,
+    likedIds,
+    setLikedIds
+  );
 
   return (
     <S.Container>
@@ -30,7 +37,9 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
         >
           <PreferRestaurantItem
             restaurant={restaurant}
-            onUpdateRestaurant={updateSortedRestaurantList}
+            liked={isLiked(restaurant.id)}
+            onLike={handleLike}
+            onUnlike={handleUnlike}
           />
         </S.ItemWrapper>
       ))}

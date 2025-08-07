@@ -24,7 +24,7 @@ const RADIUS_OPTIONS = [
   { value: '500', label: '15분 이내' },
 ];
 
-function CreatePickeat() {
+function CreatePickeatWithLocation() {
   const [selectedOption, setSelectedOption] = useState<{
     value: string;
     label: string;
@@ -93,7 +93,7 @@ function CreatePickeat() {
   );
 }
 
-export default CreatePickeat;
+export default CreatePickeatWithLocation;
 
 const S = {
   Container: styled.div`

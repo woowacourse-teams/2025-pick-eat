@@ -1,4 +1,4 @@
-import { pickeat, PickeatDetailType } from '@apis/pickeat';
+import { pickeat, PickeatType } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router';
 
 import { validateJoinPickeat } from '../services/validateJoinPickeat';
 
-export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
+export const useJoinPickeat = (pickeatDetail: PickeatType) => {
   const navigate = useNavigate();
   const [error, setError] = useState<string>();
 
@@ -25,10 +25,13 @@ export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
     }
 
     try {
-      await pickeat.postJoin({
+      const token = await pickeat.postJoin({
         nickname: nickname,
         pickeatId: pickeatDetail!.id,
       });
+
+      localStorage.setItem('joinCode', token);
+
       navigate(generateRouterPath.restaurantsExclude(pickeatDetail.code));
     } catch (e) {
       if (e instanceof Error) {

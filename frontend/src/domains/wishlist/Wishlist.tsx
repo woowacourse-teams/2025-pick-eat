@@ -1,12 +1,15 @@
 import Button from '@components/actions/Button';
 
-import styled from '@emotion/styled';
 import { Wishlist } from '@pages/ChooseWishlist';
 
+import { WishlistType } from '@apis/wishlist';
+
+import styled from '@emotion/styled';
+
 type Prop = {
-  wishlist: Wishlist;
+  wishlist: WishlistType;
   selected: boolean;
-  onSelect: (id: string) => void;
+  onSelect: (id: number) => void;
 };
 
 function Wishlist({ wishlist, selected, onSelect }: Prop) {
@@ -15,7 +18,12 @@ function Wishlist({ wishlist, selected, onSelect }: Prop) {
   return (
     <S.Container selected={selected} onClick={() => onSelect(id)}>
       <S.Name>{name}</S.Name>
-      <Button text="상세" color={selected ? 'primary' : 'gray'} size="sm" />
+      <Button
+        text="상세"
+        color={selected ? 'primary' : 'gray'}
+        size="sm"
+        type="button"
+      />
     </S.Container>
   );
 }

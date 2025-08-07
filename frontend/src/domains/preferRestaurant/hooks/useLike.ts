@@ -1,15 +1,13 @@
 import { Restaurant } from '@apis/restaurant';
 import { restaurant } from '@apis/restaurant';
 
-import { useState } from 'react';
-
 const useLike = (
   updateSortedRestaurantList: (
     content: (prev: Restaurant[]) => Restaurant[]
-  ) => void
+  ) => void,
+  likedIds: string[],
+  setLikedIds: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
-  const [likedIds, setLikedIds] = useState<string[]>([]);
-
   const isLiked = (id: string) =>
     likedIds.some((likedId: string) => likedId === id);
 
@@ -61,7 +59,7 @@ const useLike = (
     }
   };
 
-  return { isLiked, handleLike, handleUnlike };
+  return { isLiked, handleLike, handleUnlike, setLikedIds };
 };
 
 export default useLike;

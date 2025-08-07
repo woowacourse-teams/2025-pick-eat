@@ -1,35 +1,25 @@
-import {
-  getAddressByLatLng,
-  getLatLngByAddress,
-} from '@domains/pickeat/utils/convertAddress';
+import { getLatLngByAddress } from '@domains/pickeat/utils/convertAddress';
 
 import { joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
-import { convertResponseToRestaurant, RestaurantResponse } from './restaurant';
-import { Restaurant } from './restaurant';
+import { RestaurantResponse } from './restaurant';
 
-export type PickeatResponse = {
+export type PickeatType = {
   id: number;
   name: string;
-  isActive: boolean;
   code: string;
-  x: number;
-  y: number;
-  radius: number;
-  participantCount: number;
 };
 
-export type PickeatDetailType = {
+type PickeatResponse = {
   id: number;
-  name: string;
   code: string;
-  radius: number;
-  location: string | null;
+  name: string;
+  participantCount: number;
+  isActive: boolean;
 };
 
 type CreatePickeatFormData = {
-  name: string;
   address: string;
   radius: number;
 };
@@ -39,69 +29,89 @@ type JoinPickeatFormData = {
   pickeatId: number;
 };
 
-type JoinPickeatResponse = {
-  id: number;
-  nickname: string;
-  pickeatCode: string;
-};
-
 type ParticipantsResponse = {
   totalParticipants: number;
   eliminatedParticipants: number;
 };
 
+export type PickeatResult = {
+  type: 'WISH' | 'LOCATION';
+  name: string;
+  placeUrl: string | null;
+  pictureUrls: string[] | [];
+};
+
 const convertResponseToPickeatDetail = async (
   data: PickeatResponse
-): Promise<PickeatDetailType> => ({
+): Promise<PickeatType> => ({
   id: data.id,
   name: data.name,
   code: data.code,
-  radius: data.radius,
-  location: await getAddressByLatLng(data.x, data.y),
 });
 
-const basePath = 'pickeats';
+const convertResponseToResult = async (
+  data: RestaurantResponse
+): Promise<PickeatResult> => ({
+  type: data.type,
+  name: data.name,
+  placeUrl: data.placeUrl,
+  pictureUrls: data.pictureUrls,
+});
+
+const BASE_PATH = 'pickeats';
 
 export const pickeat = {
-  post: async (data: CreatePickeatFormData): Promise<string> => {
-    const coords = await getLatLngByAddress(data.address);
-    if (!coords) throw new Error('INVALID_ADDRESS');
-    const response = await apiClient.post<PickeatResponse>(basePath, {
-      name: data.name,
-      x: coords.x,
-      y: coords.y,
-      radius: data.radius,
+  post: async (roomId: string, name: string): Promise<string> => {
+    const url = roomId
+      ? joinAsPath('rooms', roomId, BASE_PATH)
+      : joinAsPath(BASE_PATH);
+    const response = await apiClient.post<PickeatResponse>(url, {
+      name,
     });
     if (response) return response.code;
     return '';
   },
-
+  postWish: async (wishlistId: number, pickeatCode: string) => {
+    const getUrl = joinAsPath(BASE_PATH, pickeatCode, 'restaurants', 'wish');
+    await apiClient.post<PickeatResponse>(getUrl, {
+      wishListId: wishlistId,
+    });
+  },
+  postLocation: async (data: CreatePickeatFormData, pickeatCode: string) => {
+    const coords = await getLatLngByAddress(data.address);
+    if (!coords) throw new Error('INVALID_ADDRESS');
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'restaurants', 'location');
+    await apiClient.post(url, {
+      x: coords.x,
+      y: coords.y,
+      radius: data.radius,
+    });
+  },
   get: async (pickeatId: string) => {
-    const getUrl = joinAsPath(basePath, pickeatId);
-    const response = await apiClient.get<PickeatResponse>(getUrl);
+    const url = joinAsPath(BASE_PATH, pickeatId);
+    const response = await apiClient.get<PickeatResponse>(url);
     if (response) return await convertResponseToPickeatDetail(response);
     throw new Error('픽잇 정보가 존재하지 않습니다.');
   },
-
-  postJoin: async (data: JoinPickeatFormData) => {
-    await apiClient.post<JoinPickeatResponse>(`participants`, data);
+  postJoin: async (data: JoinPickeatFormData): Promise<string> => {
+    const response = await apiClient.post<{ token: string }>(
+      `participants`,
+      data
+    );
+    return response?.token || '';
   },
-
   getParticipantsCount: async (
     pickeatCode: string
   ): Promise<ParticipantsResponse | null> => {
-    const getUrl = joinAsPath(basePath, pickeatCode, 'participants', 'state');
-    const data = await apiClient.get<ParticipantsResponse>(getUrl);
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'participants', 'state');
+    const data = await apiClient.get<ParticipantsResponse>(url);
 
     return data ?? null;
   },
-
-  getResult: async (pickeatCode: string): Promise<Restaurant[]> => {
-    const getUrl = joinAsPath(basePath, pickeatCode, 'result');
-    const response = await apiClient.get<RestaurantResponse[]>(`${getUrl}`);
-    const results = (response ?? []).map(restaurant =>
-      convertResponseToRestaurant(restaurant)
-    );
-    return results;
+  getResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
+    const response = await apiClient.get<RestaurantResponse>(url);
+    if (response) return convertResponseToResult(response);
+    return null;
   },
 };

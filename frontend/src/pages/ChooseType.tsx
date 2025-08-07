@@ -1,53 +1,47 @@
+import Button from '@components/actions/Button';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
-
-import WishlistForm from '@domains/wishlist/WishlistForm';
-
-import { wishlist } from '@apis/wishlist';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ErrorBoundary } from '@sentry/react';
-import { Suspense } from 'react';
-import { useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
-export type Wishlist = {
-  id: string;
-  name: string;
-  isPublic: boolean;
-};
-
-function ChooseWishlist() {
-  const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId') ?? '';
+function Choosetype() {
+  const navigate = useNavigate();
 
   return (
     <S.Container>
       <S.Wrapper>
         <S.TitleArea>
           <S.TitleText>
-            <S.PointText>위시리스트🍰</S.PointText>를
-            <br />
-            <S.PointText>선택</S.PointText>해 주세요!
+            <S.PointText>🧀픽잇</S.PointText>과 음식점
+            <br /> 쉽게 고르기
           </S.TitleText>
         </S.TitleArea>
 
-        <ErrorBoundary>
-          <Suspense fallback={<div>로딩 중</div>}>
-            <WishlistForm wishlistGroupPromise={wishlist.get(roomId)} />
-          </Suspense>
-        </ErrorBoundary>
+        <S.ButtonWrapper>
+          <Button
+            text="추천에서 pick!"
+            onClick={() => navigate('/choose-wishlist')}
+          />
+          <Button
+            text="근처에서 pick!"
+            color="secondary"
+            onClick={() => navigate('/')}
+          />
+        </S.ButtonWrapper>
+
+        <Button text="방 생성" color="gray" size="md" />
       </S.Wrapper>
     </S.Container>
   );
 }
 
-export default ChooseWishlist;
+export default Choosetype;
 
 const S = {
   Container: styled.div`
-    width: 100%;
     height: calc(100% - ${HEADER_HEIGHT});
     display: flex;
     justify-content: center;
@@ -56,9 +50,10 @@ const S = {
 
   Wrapper: styled.div`
     width: 70%;
-    height: 600px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: ${({ theme }) => theme.GAP.level6};
 
     padding: ${({ theme }) => theme.PADDING.p11};
@@ -74,15 +69,24 @@ const S = {
     `)}
   `,
 
-  TitleArea: styled.div``,
+  ButtonWrapper: styled.div`
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
+  `,
+
+  TitleArea: styled.div`
+    text-align: center;
+  `,
 
   TitleText: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
 
   PointText: styled.span`
     color: ${({ theme }) => theme.PALETTE.primary[50]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
 };

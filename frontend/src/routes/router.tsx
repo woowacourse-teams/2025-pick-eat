@@ -1,7 +1,8 @@
 import Layout from '@components/layouts/Layout';
 
+import Choosetype from '@pages/ChooseType';
 import ChooseWishlist from '@pages/ChooseWishlist';
-import CreatePickeat from '@pages/CreatePickeat';
+import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
 import MatchResult from '@pages/MatchResult';
@@ -41,6 +42,7 @@ const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [
+      { path: ROUTE_PATH.HOME, Component: CreatePickeatWithLocation },
       { path: ROUTE_PATH.PICKEAT_WITH_LOCATION, Component: CreatePickeat },
       { path: ROUTE_PATH.PICKEAT_DETAIL, Component: PickeatDetail },
       { path: ROUTE_PATH.PREFER_RESTAURANT, Component: PreferRestaurant },
@@ -60,6 +62,7 @@ const routes = createBrowserRouter([
         path: ROUTE_PATH.MY_PAGE,
         Component: MyPage,
       },
+      { path: ROUTE_PATH.CHOOSE_TYPE, Component: Choosetype },
       {
         path: ROUTE_PATH.CREATE_ROOM,
         Component: CreateRoom,

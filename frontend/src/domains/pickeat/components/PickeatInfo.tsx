@@ -1,11 +1,10 @@
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
 import Arrow from '@components/assets/icons/Arrow';
-import Location from '@components/assets/icons/Location';
 import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
 
-import { PickeatDetailType } from '@apis/pickeat';
+import { PickeatType } from '@apis/pickeat';
 
 import { useGA } from '@hooks/useGA';
 
@@ -20,19 +19,15 @@ import styled from '@emotion/styled';
 import { FormEvent, use } from 'react';
 import { useNavigate } from 'react-router';
 
-import { usePickeatDetail } from '../hooks/usePickeatDetail';
-import { makeNickName } from '../utils/makeNickname';
+import { useJoinPickeat } from '../hooks/useJoinPickeat';
+import { makeNickname } from '../utils/makeNickname';
 
-function PickeatInfo({
-  pickeatData,
-}: {
-  pickeatData: Promise<PickeatDetailType>;
-}) {
+function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
   const pickeatDetail = use(pickeatData);
   const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
   const navigate = useNavigate();
 
-  const { joinPickeat, error } = usePickeatDetail(pickeatDetail);
+  const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
 
   const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,6 +51,7 @@ function PickeatInfo({
       value: 1,
     });
   };
+
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
       <S.ArrowButton
@@ -65,16 +61,6 @@ function PickeatInfo({
         <Arrow size="lg" direction="left" />
       </S.ArrowButton>
       <S.PickeatName>{pickeatDetail.name}</S.PickeatName>
-
-      <S.LocationInfo>
-        <S.TitleWrapper>
-          <Location size="sm" />
-          위치정보
-        </S.TitleWrapper>
-
-        <S.Location>설정 위치: {pickeatDetail.location} </S.Location>
-        <S.Radius>반경: {pickeatDetail.radius}미터 이내</S.Radius>
-      </S.LocationInfo>
 
       <Button
         type="button"
@@ -93,6 +79,14 @@ function PickeatInfo({
         <ErrorMessage message={error} />
         <Button text="입장" />
       </S.FormWrapper>
+
+      <Button
+        type="button"
+        leftIcon={<Share size="sm" />}
+        text="링크공유"
+        color="secondary"
+        onClick={handleLinkShareClick}
+      />
     </S.Wrapper>
   );
 }
@@ -105,7 +99,7 @@ const S = {
     display: flex;
     flex-direction: column;
 
-    gap: ${({ theme }) => theme.GAP.level8};
+    gap: ${({ theme }) => theme.GAP.level6};
     position: relative;
 
     padding: ${({ theme }) => theme.PADDING.p10};

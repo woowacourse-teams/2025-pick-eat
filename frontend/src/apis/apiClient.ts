@@ -8,13 +8,16 @@ const requestApi = async <TResponse = unknown>(
   body?: ApiBody,
   headers?: ApiHeaders
 ): Promise<TResponse | null> => {
+  const joinCode = localStorage.getItem('joinCode');
   const response = await fetch(`${process.env.API_BASE_URL}${endPoint}`, {
     method,
     headers: {
-      // Authorization: `Basic ${process.env.API_KEY}`,
+      Authorization: `Bearer ${process.env.AUTHORIZATION_TOKEN}`,
       'Content-Type': 'application/json',
+      'Pickeat-Participant-Token': `Bearer ${joinCode}`,
       ...headers,
     },
+
     body: body ? JSON.stringify(body) : undefined,
   });
 

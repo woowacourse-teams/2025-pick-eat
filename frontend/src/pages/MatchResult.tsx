@@ -20,7 +20,7 @@ function MatchResult() {
 
   return (
     <S.Container>
-      <S.ResultContainer>
+      <S.ResultWrapper>
         <Confetti />
         <S.Title>👏 오늘의 Pick! 👏</S.Title>
 
@@ -29,7 +29,7 @@ function MatchResult() {
             <Result resultPromise={pickeat.getResult(pickeatCode)} />
           </Suspense>
         </ErrorBoundary>
-      </S.ResultContainer>
+      </S.ResultWrapper>
     </S.Container>
   );
 }
@@ -45,7 +45,7 @@ const S = {
     align-items: center;
   `,
 
-  ResultContainer: styled.div`
+  ResultWrapper: styled.div`
     width: 50%;
     height: 400px;
     display: flex;

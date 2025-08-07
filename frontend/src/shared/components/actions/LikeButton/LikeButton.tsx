@@ -8,14 +8,14 @@ type Props = {
   count: number;
   onLike: (id: string) => void;
   onUnlike: (id: string) => void;
-  liked: (id: string) => boolean;
+  liked: boolean;
 };
 
 function LikeButton({ id, count, onLike, onUnlike, liked }: Props) {
   const { explosionRef, trigger, removeAnimation } = useExplosion();
 
   const handleClick = () => {
-    if (liked(id)) {
+    if (liked) {
       onUnlike(id);
     } else {
       trigger();
@@ -30,7 +30,7 @@ function LikeButton({ id, count, onLike, onUnlike, liked }: Props) {
   return (
     <S.Container>
       <S.HeartWrapper>
-        <S.Heart onClick={handleClick}>{liked(id) ? '❤️' : '♡'}</S.Heart>
+        <S.Heart onClick={handleClick}>{liked ? '❤️' : '♡'}</S.Heart>
         <S.Explosion ref={explosionRef}>
           {Array.from({ length: 5 }).map((_, i) => (
             <S.SmallHeart key={i} />

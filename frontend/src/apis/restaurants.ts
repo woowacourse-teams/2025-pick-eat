@@ -6,7 +6,7 @@ import { apiClient } from './apiClient';
 import {
   Restaurant,
   RestaurantResponse,
-  restaurantBaseUrl,
+  RESTAURANT_BAUSE_PATH,
   convertResponseToRestaurant,
 } from './restaurant';
 
@@ -18,11 +18,10 @@ const initialOption = {};
 
 export const restaurants = {
   get: async (pickeatCode: string, option?: Option): Promise<Restaurant[]> => {
-    //Todo : pickeats=>pickeats
-    const getUrl = joinAsPath('pickeats', pickeatCode, 'restaurants');
+    const url = joinAsPath('pickeats', pickeatCode, RESTAURANT_BAUSE_PATH);
     const queryString = createQueryString(option ?? initialOption);
     const response = await apiClient.get<RestaurantResponse[]>(
-      `${getUrl}${queryString}`
+      `${url}${queryString}`
     );
     const results = (response ?? []).map(restaurant =>
       convertResponseToRestaurant(restaurant)
@@ -32,7 +31,7 @@ export const restaurants = {
   patch: async (restaurantsIds: string[]) => {
     const convertedRestaurantsIds =
       convert.stringArrayToNumberArray(restaurantsIds);
-    const patchUrl = joinAsPath(restaurantBaseUrl, 'exclude');
+    const patchUrl = joinAsPath(RESTAURANT_BAUSE_PATH, 'exclude');
     const response = await apiClient.patch<RestaurantResponse>(patchUrl, {
       restaurantIds: convertedRestaurantsIds,
     });
