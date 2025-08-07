@@ -21,7 +21,7 @@ import { FormEvent, use } from 'react';
 import { useNavigate } from 'react-router';
 
 import { usePickeatDetail } from '../hooks/usePickeatDetail';
-import { makeNickname } from '../utils/makeNickname';
+import { makeNickName } from '../utils/makeNickname';
 
 function PickeatInfo({
   pickeatData,
