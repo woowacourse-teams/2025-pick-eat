@@ -21,7 +21,7 @@ import { FormEvent, use } from 'react';
 import { useNavigate } from 'react-router';
 
 import { usePickeatDetail } from '../hooks/usePickeatDetail';
-import { makeNickName } from '../utils/makeNickName';
+import { makeNickName } from '../utils/makeNickname';
 
 function PickeatInfo({
   pickeatData,
@@ -37,8 +37,8 @@ function PickeatInfo({
   const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const nickName = formData.get('nickName') as string;
-    joinPickeat(nickName);
+    const nickname = formData.get('nickname') as string;
+    joinPickeat(nickname);
     useGA().useGAEventTrigger({
       action: 'click',
       category: 'form_button',
@@ -82,8 +82,8 @@ function PickeatInfo({
       />
       <S.FormWrapper>
         <Input
-          defaultValue={makeNickName()}
-          name="nickName"
+          defaultValue={makeNickname()}
+          name="nickname"
           label="닉네임 입력"
           placeholder="사용하실 닉네임을 입력하세요."
         />
