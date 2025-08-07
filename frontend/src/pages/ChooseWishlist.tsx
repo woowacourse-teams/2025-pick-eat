@@ -1,6 +1,6 @@
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import WishlistGroup from '@domains/wishlist/WishlistGroup';
+import WishlistForm from '@domains/wishlist/WishlistForm';
 
 import { wishlist } from '@apis/wishlist';
 
@@ -35,7 +35,7 @@ function ChooseWishlist() {
 
         <ErrorBoundary>
           <Suspense fallback={<div>로딩 중</div>}>
-            <WishlistGroup
+            <WishlistForm
               wishlistGroupPromise={
                 roomId ? wishlist.getRoom(roomId) : wishlist.getPublic()
               }

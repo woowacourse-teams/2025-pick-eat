@@ -19,7 +19,7 @@ type Props = {
   wishlistGroupPromise: Promise<WishlistResponse[]>;
 };
 
-function WishlistGroup({ wishlistGroupPromise }: Props) {
+function WishlistForm({ wishlistGroupPromise }: Props) {
   const initialData = use(wishlistGroupPromise);
   const [pickeatName, setPickeatName] = useState('');
   const [selectedWishlistId, setSelectedWishlistId] = useState(0);
@@ -66,6 +66,7 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
         onChange={e => setPickeatName(e.target.value)}
         ref={inputRef}
       />
+
       <S.WishlistWrapper>
         {initialData.map(wishlist => (
           <Wishlist
@@ -76,6 +77,7 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
           />
         ))}
       </S.WishlistWrapper>
+
       <Button
         text={
           selectedWishlistId
@@ -90,7 +92,7 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
   );
 }
 
-export default WishlistGroup;
+export default WishlistForm;
 
 const S = {
   WishlistWrapper: styled.div`
