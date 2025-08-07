@@ -8,10 +8,12 @@ const useLike = (
   likedIds: string[],
   setLikedIds: React.Dispatch<React.SetStateAction<string[]>>
 ) => {
-  const isLiked = (id: string) =>
-    likedIds.some((likedId: string) => likedId === id);
+  const [likedIds, setLikedIds] = useState<number[]>([]);
 
-  const handleLike = async (id: string) => {
+  const isLiked = (id: number) =>
+    likedIds.some((likedId: number) => likedId === id);
+
+  const handleLike = async (id: number) => {
     updateSortedRestaurantList(prev =>
       prev.map(item =>
         item.id === id ? { ...item, likeCount: item.likeCount + 1 } : item
@@ -33,7 +35,7 @@ const useLike = (
     }
   };
 
-  const handleUnlike = async (id: string) => {
+  const handleUnlike = async (id: number) => {
     updateSortedRestaurantList(prev =>
       prev.map(item =>
         item.id === id ? { ...item, likeCount: item.likeCount - 1 } : item

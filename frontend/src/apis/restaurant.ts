@@ -20,7 +20,7 @@ export type RestaurantResponse = {
 };
 
 export type Restaurant = {
-  id: string;
+  id: number;
   name: string;
   tags: string[];
   category: '한식' | '중식' | '일식' | '양식' | '기타';
@@ -48,7 +48,7 @@ export const convertResponseToRestaurant = ({
   pictureUrls,
   isLiked,
 }: RestaurantResponse): Restaurant => ({
-  id: id.toString(),
+  id: id,
   name: name.toString(),
   category: category,
   tags: tags.map(tag => tag.toString()),
@@ -65,7 +65,7 @@ export const convertResponseToRestaurant = ({
 export const RESTAURANT_BAUSE_PATH = 'restaurants';
 
 export const restaurant = {
-  patchLike: async (restaurantId: string) => {
+  patchLike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
       RESTAURANT_BAUSE_PATH,
       restaurantId.toString(),
@@ -73,7 +73,7 @@ export const restaurant = {
     );
     await apiClient.patch(patchUrl);
   },
-  patchUnlike: async (restaurantId: string) => {
+  patchUnlike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
       RESTAURANT_BAUSE_PATH,
       restaurantId.toString(),

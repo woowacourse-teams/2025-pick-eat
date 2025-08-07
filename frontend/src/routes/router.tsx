@@ -1,5 +1,9 @@
 import Layout from '@components/layouts/Layout';
 
+import { AuthProvider } from '@domains/login/context/AuthProvider';
+
+import { AuthProvider } from '@domains/login/context/AuthProvider';
+
 import Choosetype from '@pages/ChooseType';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
@@ -10,7 +14,7 @@ import MyPage from '@pages/MyPage';
 import OauthCallback from '@pages/OauthCallback';
 import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
-import QuickSignup from '@pages/ProfileInit';
+import ProfileInit from '@pages/ProfileInit';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
 import RoomDetail from '@pages/RoomDetail';
 
@@ -30,9 +34,11 @@ function Wrapper() {
     <>
       <Global styles={reset} />
       <ThemeProvider theme={THEME}>
-        <Layout>
-          <Outlet />
-        </Layout>
+        <AuthProvider>
+          <Layout>
+            <Outlet />
+          </Layout>
+        </AuthProvider>
       </ThemeProvider>
     </>
   );
@@ -56,7 +62,7 @@ const routes = createBrowserRouter([
         Component: ChooseWishlist,
       },
       { path: ROUTE_PATH.LOGIN, Component: Login },
-      { path: ROUTE_PATH.QUICK_SIGNUP, Component: QuickSignup },
+      { path: ROUTE_PATH.PROFILE_INIT, Component: ProfileInit },
       { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
       {
         path: ROUTE_PATH.MY_PAGE,

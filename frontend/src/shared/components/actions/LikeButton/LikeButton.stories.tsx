@@ -20,7 +20,7 @@ export const Default: Story = {
 
     return (
       <LikeButton
-        id={'1'}
+        id={1}
         count={count}
         onLike={() => {
           setLiked(true);

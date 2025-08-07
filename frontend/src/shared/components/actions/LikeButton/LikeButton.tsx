@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { useExplosion } from './hooks/useExplosion';
 
 type Props = {
-  id: string;
+  id: number;
   count: number;
-  onLike: (id: string) => void;
-  onUnlike: (id: string) => void;
+  onLike: (id: number) => void;
+  onUnlike: (id: number) => void;
   liked: boolean;
 };
 

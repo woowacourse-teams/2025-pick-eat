@@ -1,4 +1,6 @@
-import { apiClient } from '@apis/apiClient';
+import { useAuth } from '@domains/login/context/AuthProvider';
+
+import { login } from '@apis/login';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
@@ -9,38 +11,37 @@ const OauthCallback = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
+  const { loginUser, logoutUser } = useAuth();
   const query = new URLSearchParams(location.search);
   const code = query.get('code');
 
   useEffect(() => {
     if (!code) {
-      setError('인증 코드가 없습니다.');
-      setLoading(false);
+      navigate(ROUTE_PATH.LOGIN, { replace: true });
       return;
     }
 
     const fetchAccessToken = async () => {
       try {
-        const response = await apiClient.post<{ accessToken: string }>(
-          '/api/v1/oauth/kakao/code',
-          { code }
-        );
-
-        if (response) {
-          localStorage.setItem('accessToken', response.accessToken);
+        const { accessToken, status } = await login.postKakao(code);
+        switch (status) {
+          case 401:
+            navigate(ROUTE_PATH.PROFILE_INIT, {
+              replace: true,
+              state: { accessToken },
+            });
+            break;
+          case 200:
+            loginUser(accessToken);
+            navigate(ROUTE_PATH.HOME, { replace: true });
+            break;
+          default:
+            break;
         }
-
-        navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION, { replace: true });
-      } catch (err) {
-        if (err instanceof Error && err.message.includes('401')) {
-          navigate(ROUTE_PATH.QUICK_SIGNUP, { replace: true });
-        } else {
-          setError('로그인 중 오류가 발생했습니다.');
-          console.error(err);
-          navigate(ROUTE_PATH.LOGIN, { replace: true });
-        }
+      } catch {
+        alert('인증에 실패했습니다. 다시 로그인해주세요.');
+        logoutUser();
+        navigate(ROUTE_PATH.LOGIN, { replace: true });
       } finally {
         setLoading(false);
       }
@@ -50,8 +51,6 @@ const OauthCallback = () => {
   }, [code, navigate]);
 
   if (loading) return <div>로그인 처리 중입니다...</div>;
-  if (error) return <div>오류: {error}</div>;
-
   return null;
 };
 

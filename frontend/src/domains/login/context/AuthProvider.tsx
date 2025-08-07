@@ -1,0 +1,76 @@
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+
+import { ACCESS_TOKEN_STORAGE_NAME, accessToken } from '../utils/authStorage';
+
+interface AuthContextType {
+  loggedIn: boolean;
+  loginUser: (token: string) => Promise<void>;
+  logoutUser: () => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = accessToken.get();
+      if (token) {
+        accessToken.save(token);
+        setLoggedIn(true);
+        return;
+      }
+      accessToken.remove();
+      setLoggedIn(false);
+    };
+    checkAuth();
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === ACCESS_TOKEN_STORAGE_NAME && e.newValue !== null) {
+        accessToken.save(e.newValue);
+        setLoggedIn(!!e.newValue);
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const loginUser = async (token: string) => {
+    accessToken.save(token);
+    setLoggedIn(true);
+  };
+
+  const logoutUser = () => {
+    accessToken.remove();
+    setLoggedIn(false);
+  };
+
+  const value = {
+    loggedIn,
+    loginUser,
+    logoutUser,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth 는 AuthProvider 내부에서 사용해야 합니다.');
+  }
+  return context;
+}

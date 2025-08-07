@@ -7,24 +7,24 @@ import {
 } from 'react';
 
 interface RestaurantExcludeContextInterface {
-  selectedRestaurantIds: string[];
-  handleRestaurantToggle: (restaurantId: string) => void;
-  handleRestaurantSetPush: (restaurantIds: string[]) => void;
-  handleRestaurantSelection: (restaurantIds: string[]) => void;
-  handleRestaurantSelectionDelete: (restaurantIds: string[]) => void;
-  handleRestaurantSelectionToggle: (restaurantIds: string[]) => void;
+  selectedRestaurantIds: number[];
+  handleRestaurantToggle: (restaurantId: number) => void;
+  handleRestaurantSetPush: (restaurantIds: number[]) => void;
+  handleRestaurantSelection: (restaurantIds: number[]) => void;
+  handleRestaurantSelectionDelete: (restaurantIds: number[]) => void;
+  handleRestaurantSelectionToggle: (restaurantIds: number[]) => void;
 }
 
 const RestaurantExcludeContext =
   createContext<RestaurantExcludeContextInterface | null>(null);
 
 export const RestaurantExcludeProvider = ({ children }: PropsWithChildren) => {
-  const [selectedRestaurantIds, setSelectedRestaurantIds] = useState<string[]>(
+  const [selectedRestaurantIds, setSelectedRestaurantIds] = useState<number[]>(
     []
   );
 
   const handleRestaurantToggle = useCallback(
-    (restaurantId: string) => {
+    (restaurantId: number) => {
       setSelectedRestaurantIds(prev => {
         if (prev.includes(restaurantId)) {
           return prev.filter(r => r !== restaurantId);
@@ -37,7 +37,7 @@ export const RestaurantExcludeProvider = ({ children }: PropsWithChildren) => {
   );
 
   const handleRestaurantSetPush = useCallback(
-    (restaurantIds: string[]) => {
+    (restaurantIds: number[]) => {
       setSelectedRestaurantIds(prev => {
         const newIds = [...prev, ...restaurantIds];
         return Array.from(new Set(newIds));
@@ -47,14 +47,14 @@ export const RestaurantExcludeProvider = ({ children }: PropsWithChildren) => {
   );
 
   const handleRestaurantSelection = useCallback(
-    (restaurantIds: string[]) => {
+    (restaurantIds: number[]) => {
       setSelectedRestaurantIds(restaurantIds);
     },
     [setSelectedRestaurantIds]
   );
 
   const handleRestaurantSelectionDelete = useCallback(
-    (restaurantIds: string[]) => {
+    (restaurantIds: number[]) => {
       setSelectedRestaurantIds(prev =>
         prev.filter(id => !restaurantIds.includes(id))
       );
@@ -63,7 +63,7 @@ export const RestaurantExcludeProvider = ({ children }: PropsWithChildren) => {
   );
 
   const handleRestaurantSelectionToggle = useCallback(
-    (restaurantIds: string[]) => {
+    (restaurantIds: number[]) => {
       setSelectedRestaurantIds(prev => {
         const prevSet = new Set(prev);
         restaurantIds.forEach(id => {

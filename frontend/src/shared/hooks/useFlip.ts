@@ -1,8 +1,8 @@
 import { useRef } from 'react';
 
-export const useFlip = <T extends { id: string }>(arr: T[]) => {
-  const itemRefs = useRef(new Map<string, HTMLDivElement>());
-  const prevRects = useRef(new Map<string, DOMRect>());
+export const useFlip = <T extends { id: number }>(arr: T[]) => {
+  const itemRefs = useRef(new Map<number, HTMLDivElement>());
+  const prevRects = useRef(new Map<number, DOMRect>());
 
   const recordPositions = () => {
     arr.forEach(item => {

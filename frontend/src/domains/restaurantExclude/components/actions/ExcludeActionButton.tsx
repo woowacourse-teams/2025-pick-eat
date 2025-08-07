@@ -29,6 +29,7 @@ function ExcludeActionButton() {
   return (
     <S.ButtonBox>
       <Button
+        aria-label="제외 식당 제출"
         text="다음"
         size="md"
         rightIcon={<Arrow size="sm" direction="right" color="white" />}

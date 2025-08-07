@@ -31,6 +31,7 @@ function RestaurantItem({
   return (
     <S.Container excluded={excluded}>
       <S.DeleteButton
+        aria-label={`소거: ${name}`}
         type="button"
         onClick={() => handleRestaurantToggle(id)}
         excluded={excluded}

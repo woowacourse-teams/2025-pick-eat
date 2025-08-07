@@ -6,7 +6,7 @@ export const ROUTE_PATH = {
   RESTAURANTS_EXCLUDE: '/restaurants-exclude',
   PICKEAT_WITH_WISH: '/create-pickeat/wish',
   LOGIN: '/login',
-  QUICK_SIGNUP: '/quick-signup',
+  PROFILE_INIT: '/profile-init',
   OAUTH_CALLBACK: '/oauth/callback',
   MY_PAGE: '/my-page',
   CHOOSE_TYPE: '/choose-type',

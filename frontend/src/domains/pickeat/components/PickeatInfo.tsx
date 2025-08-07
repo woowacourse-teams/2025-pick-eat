@@ -62,13 +62,6 @@ function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
       </S.ArrowButton>
       <S.PickeatName>{pickeatDetail.name}</S.PickeatName>
 
-      <Button
-        type="button"
-        leftIcon={<Share size="sm" />}
-        text="링크공유"
-        color="secondary"
-        onClick={handleLinkShareClick}
-      />
       <S.FormWrapper>
         <Input
           defaultValue={makeNickname()}
