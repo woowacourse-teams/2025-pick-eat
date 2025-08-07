@@ -31,10 +31,14 @@ const OauthCallback = () => {
               state: { accessToken },
             });
             break;
-          case 200:
-            loginUser(accessToken);
+          case 200: {
+            const { token: userToken } = await login.postLogin({
+              token: accessToken,
+            });
+            loginUser(userToken);
             navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION, { replace: true });
             break;
+          }
           default:
             break;
         }

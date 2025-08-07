@@ -39,12 +39,12 @@ function ProfileInit() {
     setError(null);
 
     try {
-      await login.postSignUp({
-        accessToken: token,
+      const userToken = await login.postSignUp({
+        token,
         nickname,
       });
 
-      loginUser(token);
+      loginUser(userToken);
       navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION);
       alert('회원가입이 완료되었습니다.');
     } catch {

@@ -29,10 +29,10 @@ export const login = {
     }
   },
   postSignUp: async ({
-    accessToken,
+    token,
     nickname,
   }: {
-    accessToken: string;
+    token: string;
     nickname: string;
   }) => {
     const path = 'auth/signup';
@@ -40,10 +40,23 @@ export const login = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ nickname }),
     });
     if (!response.ok) throw new Error('요청 실패');
+    return response.json();
+  },
+  postLogin: async ({ token }: { token: string }) => {
+    const path = 'auth/login';
+    const response = await fetch(`${process.env.API_BASE_URL}${path}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) throw new Error('로그인 실패');
+    return response.json();
   },
 };
