@@ -33,7 +33,7 @@ const OauthCallback = () => {
             break;
           case 200:
             loginUser(accessToken);
-            navigate(ROUTE_PATH.HOME, { replace: true });
+            navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION, { replace: true });
             break;
           default:
             break;

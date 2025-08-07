@@ -7,7 +7,7 @@ import { useSearchParams } from 'react-router';
 const usePreferRestaurant = (initialData: Restaurant[]) => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  const [likedIds, setLikedIds] = useState<string[]>([]);
+  const [likedIds, setLikedIds] = useState<number[]>([]);
 
   const sortRestaurants = (restaurantList: Restaurant[]) => {
     return restaurantList.sort((a, b) => {

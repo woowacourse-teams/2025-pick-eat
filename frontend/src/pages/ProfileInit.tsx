@@ -23,7 +23,7 @@ function ProfileInit() {
   const location = useLocation();
   const token = location.state?.accessToken;
 
-  if (!token) navigate(ROUTE_PATH.HOME, { replace: true });
+  if (!token) navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION, { replace: true });
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -45,7 +45,7 @@ function ProfileInit() {
       });
 
       loginUser(token);
-      navigate(ROUTE_PATH.HOME);
+      navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION);
       alert('회원가입이 완료되었습니다.');
     } catch {
       alert('회원가입에 실패하였습니다.');
@@ -90,6 +90,7 @@ const S = {
     justify-content: center;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
+
     padding: 0 ${({ theme }) => theme.PADDING.p8};
   `,
   Title: styled.h1`
@@ -104,7 +105,8 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level5};
   `,
   Error: styled.div`
-    color: red;
     margin-top: 8px;
+
+    color: red;
   `,
 };

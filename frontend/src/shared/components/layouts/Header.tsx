@@ -63,7 +63,9 @@ const S = {
     position: sticky;
     top: 0;
     z-index: ${({ theme }) => theme.Z_INDEX.sticky};
+
     padding: ${({ theme }) => theme.PADDING.p5};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
   `,
@@ -75,18 +77,22 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level4};
   `,
   TextButton: styled.button`
-    background: none;
     border: none;
-    cursor: pointer;
-    font: ${({ theme }) => theme.FONTS.body.small_bold};
+
+    background: none;
+
     color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.small_bold};
+    cursor: pointer;
   `,
   LoginButton: styled.button`
-    background: none;
     border: none;
-    cursor: pointer;
-    font: ${({ theme }) => theme.FONTS.body.small_bold};
+
+    background: none;
+
     color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.small_bold};
+    cursor: pointer;
   `,
 };
 

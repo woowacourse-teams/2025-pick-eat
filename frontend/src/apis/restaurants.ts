@@ -6,7 +6,6 @@ import {
   RestaurantResponse,
   RESTAURANT_BAUSE_PATH,
   convertResponseToRestaurant,
-  restaurantBaseUrl,
 } from './restaurant';
 
 type Option = {

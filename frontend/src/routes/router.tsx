@@ -1,9 +1,5 @@
 import Layout from '@components/layouts/Layout';
 
-import { AuthProvider } from '@domains/login/context/AuthProvider';
-
-import { AuthProvider } from '@domains/login/context/AuthProvider';
-
 import Choosetype from '@pages/ChooseType';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
@@ -17,6 +13,8 @@ import PreferRestaurant from '@pages/PreferRestaurant';
 import ProfileInit from '@pages/ProfileInit';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
 import RoomDetail from '@pages/RoomDetail';
+
+import { AuthProvider } from '@domains/login/context/AuthProvider';
 
 import { useGA } from '@hooks/useGA';
 
@@ -48,8 +46,10 @@ const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [
-      { path: ROUTE_PATH.HOME, Component: CreatePickeatWithLocation },
-      { path: ROUTE_PATH.PICKEAT_WITH_LOCATION, Component: CreatePickeat },
+      {
+        path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
+        Component: CreatePickeatWithLocation,
+      },
       { path: ROUTE_PATH.PICKEAT_DETAIL, Component: PickeatDetail },
       { path: ROUTE_PATH.PREFER_RESTAURANT, Component: PreferRestaurant },
       { path: ROUTE_PATH.MATCH_RESULT, Component: MatchResult },

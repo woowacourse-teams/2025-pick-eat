@@ -8,8 +8,8 @@ import styled from '@emotion/styled';
 type Props = {
   restaurant: Restaurant;
   liked: boolean;
-  onLike: (id: string) => void;
-  onUnlike: (id: string) => void;
+  onLike: (id: number) => void;
+  onUnlike: (id: number) => void;
 };
 
 function PreferRestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {

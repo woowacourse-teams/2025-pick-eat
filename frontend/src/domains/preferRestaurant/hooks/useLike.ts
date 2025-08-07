@@ -5,11 +5,9 @@ const useLike = (
   updateSortedRestaurantList: (
     content: (prev: Restaurant[]) => Restaurant[]
   ) => void,
-  likedIds: string[],
-  setLikedIds: React.Dispatch<React.SetStateAction<string[]>>
+  likedIds: number[],
+  setLikedIds: React.Dispatch<React.SetStateAction<number[]>>
 ) => {
-  const [likedIds, setLikedIds] = useState<number[]>([]);
-
   const isLiked = (id: number) =>
     likedIds.some((likedId: number) => likedId === id);
 

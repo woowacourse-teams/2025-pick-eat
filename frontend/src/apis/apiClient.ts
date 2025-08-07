@@ -1,3 +1,5 @@
+import { accessToken } from '@domains/login/utils/authStorage';
+
 export type ApiHeaders = Record<string, string>;
 export type ApiBody = Record<string, unknown> | undefined;
 export type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
@@ -9,10 +11,11 @@ const requestApi = async <TResponse = unknown>(
   headers?: ApiHeaders
 ): Promise<TResponse | null> => {
   const joinCode = localStorage.getItem('joinCode');
+  const token = accessToken.get();
   const response = await fetch(`${process.env.API_BASE_URL}${endPoint}`, {
     method,
     headers: {
-      Authorization: `Bearer ${process.env.AUTHORIZATION_TOKEN}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
       'Pickeat-Participant-Token': `Bearer ${joinCode}`,
       ...headers,
