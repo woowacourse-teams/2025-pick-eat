@@ -14,7 +14,7 @@ export type RestaurantResponse = {
   isExcluded: boolean;
   x: number | null;
   y: number | null;
-  pictureUrls: string[];
+  pictureUrls: string[] | [];
   type: 'WISH' | 'LOCATION';
   isLiked: boolean;
 };

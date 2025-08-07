@@ -13,7 +13,17 @@ type Props = {
 };
 
 function PreferRestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
-  const { id, name, tags, likeCount, category } = restaurant;
+  const {
+    id,
+    name,
+    tags,
+    likeCount,
+    category,
+    type,
+    pictureUrls,
+    distance,
+    placeUrl,
+  } = restaurant;
 
   return (
     <S.Container liked={liked}>

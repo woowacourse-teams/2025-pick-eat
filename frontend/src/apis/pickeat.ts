@@ -35,9 +35,10 @@ type ParticipantsResponse = {
 };
 
 export type PickeatResult = {
+  type: 'WISH' | 'LOCATION';
   name: string;
   placeUrl: string | null;
-  pictureUrls: string[];
+  pictureUrls: string[] | [];
 };
 
 const convertResponseToPickeatDetail = async (
@@ -51,6 +52,7 @@ const convertResponseToPickeatDetail = async (
 const convertResponseToResult = async (
   data: RestaurantResponse
 ): Promise<PickeatResult> => ({
+  type: data.type,
   name: data.name,
   placeUrl: data.placeUrl,
   pictureUrls: data.pictureUrls,

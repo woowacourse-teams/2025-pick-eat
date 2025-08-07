@@ -13,7 +13,7 @@ type Props = {
 function Result({ resultPromise }: Props) {
   const result = resultPromise ? use(resultPromise) : null;
   if (!result) return null;
-  const { name, type, pictureUrls } = result;
+  const { name, type, pictureUrls, placeUrl } = result;
 
   return (
     <>
@@ -30,8 +30,7 @@ function Result({ resultPromise }: Props) {
           color="primary"
           text="식당 싱세 정보"
           onClick={() =>
-            result?.placeUrl &&
-            window.open(result.placeUrl, '_blank', 'noopener,noreferrer')
+            placeUrl && window.open(placeUrl, '_blank', 'noopener,noreferrer')
           }
         />
       </S.ButtonContainer>
