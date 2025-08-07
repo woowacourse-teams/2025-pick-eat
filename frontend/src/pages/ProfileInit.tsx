@@ -2,17 +2,22 @@ import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
+import { useAuth } from '@domains/login/context/AuthProvider';
+
 import { ROUTE_PATH } from '@routes/routePath';
 
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 function ProfileInit() {
   const [nickname, setNickname] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { loginUser } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const token = location.state?.token;
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -32,14 +37,13 @@ function ProfileInit() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ nickname }),
       });
 
       if (response.ok) {
-        // 회원가입 성공 처리 (예: 홈으로 이동)
-        // 임포트한 navigate 함수가 있다면 사용, 없으면 window.location 등 사용
-        // navigate(루트경로나적절한경로);
+        loginUser(token);
         navigate(ROUTE_PATH.HOME);
         alert('회원가입이 완료되었습니다.');
       } else {

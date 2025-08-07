@@ -1,22 +1,29 @@
 import KakaoLoginButton from '@components/actions/KakaoLoginButton';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
+import { ROUTE_PATH } from '@routes/routePath';
+
+import { createQueryStrings } from '@utils/createUrl';
+
 import styled from '@emotion/styled';
 
-// TODO : 추후 .env 에 있는 슬링키한테 받은 REST API 키로 연결해둘것임
-const REST_API_KEY = process.env.REST_API_KEY;
+const kauthUrl = 'https://kauth.kakao.com/oauth/authorize';
+const REST_API_KEY = process.env.REST_API_KEY as string;
+const baseRedirectUrl = process.env.BASE_URL as string;
+const redirectPath = ROUTE_PATH.OAUTH_CALLBACK.replace(/^\//, '');
 
-// TODO : 최초 로그인 시 닉네임 리다이렉트, 닉네임있으면 메인으로 리다이렉트
-
-const kauthUrl = 'https://kauth.kakao.com/oauth/authorize?response_type=code&';
-
-const baseRedirectUrl = process.env.BASE_URL;
-const redirectPath = 'oauth/callback';
-
+// TODO : 회원가입 후에 로그인 바로 되도록
 function Login() {
   const handleKakaoLoginClick = () => {
-    window.location.href = `${kauthUrl}client_id=${REST_API_KEY}&redirect_uri=${baseRedirectUrl}${redirectPath}`;
+    const queryParams = createQueryStrings({
+      response_type: 'code',
+      client_id: REST_API_KEY,
+      redirect_uri: `${baseRedirectUrl}${redirectPath}`,
+    });
+
+    window.location.href = `${kauthUrl}${queryParams}`;
   };
+
   return (
     <S.Container>
       <S.Title>
