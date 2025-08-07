@@ -26,7 +26,6 @@ export const login = {
   postKakao: async (
     code: string
   ): Promise<{ accessToken: string; status: number }> => {
-    console.log('Kakao code:', code);
     const isDevelopment = process.env.BASE_URL === 'http://localhost:3000/';
     const response = await fetch(
       `${process.env.API_BASE_URL}${process.env.LOGIN_PATH}`,
