@@ -82,61 +82,61 @@ public class DataInitializer implements CommandLineRunner {
                     "서울 강남구 테헤란로63길 12 103호, 104호", "분식", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish1,
                     "pickeat/wish_images/default_images/seolleung_template/꺼벙이분식.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EA%BA%BC%EB%B2%99%EC%9D%B4%EB%B6%84%EC%8B%9D.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EA%BA%BC%EB%B2%99%EC%9D%B4%EB%B6%84%EC%8B%9D.jpg"));
 
             Wish seolleungWish2 = wishRepository.save(new Wish("반포식스", FoodCategory.OTHERS,
                     "서울 강남구 선릉로 518 2,3층", "쌀국수", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish2,
                     "pickeat/wish_images/default_images/seolleung_template/반포식스.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EB%B0%98%ED%8F%AC%EC%8B%9D%EC%8A%A4.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EB%B0%98%ED%8F%AC%EC%8B%9D%EC%8A%A4.jpg"));
 
             Wish seolleungWish3 = wishRepository.save(new Wish("숯칼 선릉 손칼국수", FoodCategory.KOREAN,
                     "서울 강남구 삼성로91길 38 1층 숯칼 숯불닭구이 칼국수", "닭갈비, 칼국수", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish3,
                     "pickeat/wish_images/default_images/seolleung_template/숯칼손칼국수.png",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EC%B9%9C%EC%B9%9C.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EC%B9%9C%EC%B9%9C.jpg"));
 
             Wish seolleungWish4 = wishRepository.save(new Wish("신동궁감자탕뼈숯불구이 선릉직영점", FoodCategory.KOREAN,
                     "서울 강남구 선릉로86길 39 1층", "감자탕, 뼈숯불구이", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish4,
                     "pickeat/wish_images/default_images/seolleung_template/신동궁감자탕.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EC%8B%A0%EB%8F%99%EA%B6%81%EA%B0%90%EC%9E%90%ED%83%95.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EC%8B%A0%EB%8F%99%EA%B6%81%EA%B0%90%EC%9E%90%ED%83%95.jpg"));
 
             Wish seolleungWish5 = wishRepository.save(new Wish("친친", FoodCategory.CHINESE,
                     "서울 강남구 테헤란로63길 12 LG에클라트 B동 1층", "마라탕면, 가지덮밥, 짜장면", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish5,
                     "pickeat/wish_images/default_images/seolleung_template/친친.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EC%B9%9C%EC%B9%9C.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EC%B9%9C%EC%B9%9C.jpg"));
 
             Wish seolleungWish6 = wishRepository.save(new Wish("명정루", FoodCategory.CHINESE,
                     "서울 강남구 테헤란로70길 12 1층", "중화덮밥, 짬뽕", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish6,
                     "pickeat/wish_images/default_images/seolleung_template/명정루.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EB%AA%85%EC%A0%95%EB%A3%A8.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EB%AA%85%EC%A0%95%EB%A3%A8.jpg"));
 
             Wish seolleungWish7 = wishRepository.save(new Wish("참치여행", FoodCategory.JAPANESE,
                     "서울 강남구 테헤란로53길 22 성인빌딩 1층 101호", "초밥, 알밥, 회덮밥", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish7,
                     "pickeat/wish_images/default_images/seolleung_template/잇쇼우.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EC%9E%87%EC%87%BC%EC%9A%B0.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EC%9E%87%EC%87%BC%EC%9A%B0.jpg"));
 
             Wish seolleungWish8 = wishRepository.save(new Wish("잇쇼우", FoodCategory.JAPANESE,
                     "서울 강남구 선릉로 524 선릉대림아크로텔 1층 109호", "돈카츠, 우동", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish8,
                     "pickeat/wish_images/default_images/seolleung_template/잇쇼우.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EC%9E%87%EC%87%BC%EC%9A%B0.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EC%9E%87%EC%87%BC%EC%9A%B0.jpg"));
 
             Wish seolleungWish9 = wishRepository.save(new Wish("라피자노스트라", FoodCategory.WESTERN,
                     "서울 강남구 테헤란로 406 샹제리제센터 A동 1층 101호", "피자", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish9,
                     "pickeat/wish_images/default_images/seolleung_template/라피자노스트라.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EB%9D%BC%ED%94%BC%EC%9E%90%EB%85%B8%EC%8A%A4%ED%8A%B8%EB%9D%BC.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EB%9D%BC%ED%94%BC%EC%9E%90%EB%85%B8%EC%8A%A4%ED%8A%B8%EB%9D%BC.jpg"));
 
             Wish seolleungWish10 = wishRepository.save(new Wish("꾸우덕", FoodCategory.WESTERN,
                     "서울 강남구 선릉로82길 16 수이빌딩 1층", "파스타", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish10,
                     "pickeat/wish_images/default_images/seolleung_template/꾸우덕 강남점.jpg",
-                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/seolleung_template/%EA%BE%B8%EC%9A%B0%EB%8D%95+%EA%B0%95%EB%82%A8%EC%A0%90.jpg"));
+                    "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/+seolleung_template/%EA%BE%B8%EC%9A%B0%EB%8D%95+%EA%B0%95%EB%82%A8%EC%A0%90.jpg"));
 
         }
     }
