@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  backend:
+    image: pickeat/pickeat:release
+    restart: always
+    ports:
+      - "80:8080"
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
