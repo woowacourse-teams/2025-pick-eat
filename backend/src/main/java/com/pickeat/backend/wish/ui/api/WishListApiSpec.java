@@ -1,7 +1,6 @@
 package com.pickeat.backend.wish.ui.api;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
-import com.pickeat.backend.global.auth.annotation.ParticipantId;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -79,7 +78,7 @@ public interface WishListApiSpec {
     @Operation(
             summary = "위시리스트 목록 조회",
             operationId = "getWishLists",
-            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -114,7 +113,7 @@ public interface WishListApiSpec {
     ResponseEntity<List<WishListResponse>> getWishLists(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
-            @Parameter(hidden = true) @ParticipantId Long participantId
+            @Parameter(hidden = true) @LoginUserId Long loginUserID
     );
 
     @Operation(
