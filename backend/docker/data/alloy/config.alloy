@@ -30,7 +30,7 @@ loki.process "spring_labels" {
 
 loki.write "grafana_loki" {
   endpoint {
-    url = "http://loki:3100/loki/api/v1/push"
+    url = "http://3.35.147.202/loki/api/v1/push"
     tenant_id = "fake"
     batch_wait = "1s"
     batch_size = "1MB"
