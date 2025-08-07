@@ -98,8 +98,8 @@ const S = {
   Image: styled.img`
     width: 90px;
     height: 90px;
-    object-fit: cover;
     border-radius: ${({ theme }) => theme.RADIUS.medium};
+    object-fit: cover;
   `,
 
   CardContent: styled.div`
@@ -117,8 +117,8 @@ const S = {
 
   TagBox: styled.div`
     display: flex;
-    gap: ${({ theme }) => theme.GAP.level2};
     flex-wrap: wrap;
+    gap: ${({ theme }) => theme.GAP.level2};
   `,
 
   TitleWrapper: styled.div`

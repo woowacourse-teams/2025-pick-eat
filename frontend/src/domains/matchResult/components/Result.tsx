@@ -12,10 +12,19 @@ type Props = {
 
 function Result({ resultPromise }: Props) {
   const result = resultPromise ? use(resultPromise) : null;
+  if (!result) return null;
+  const { name, type, pictureUrls } = result;
 
   return (
     <>
-      <S.Name>{result?.name}</S.Name>{' '}
+      <S.Name>{name}</S.Name>
+      {type === 'WISH' && (
+        <S.Image
+          src={pictureUrls[0] || './images/restaurant.png'}
+          alt={name}
+          onError={e => (e.currentTarget.src = '/images/person.svg')}
+        />
+      )}
       <S.ButtonContainer>
         <Button
           color="primary"
@@ -38,9 +47,11 @@ const S = {
   `,
 
   Name: styled.p`
-    padding: ${({ theme }) => theme.PADDING.p5};
-
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
+  `,
+
+  Image: styled.img`
+    width: 130px;
   `,
 };

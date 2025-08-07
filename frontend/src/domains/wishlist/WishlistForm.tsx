@@ -81,7 +81,7 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
       <Button
         text={
           selectedWishlistId
-            ? `${selectedWishlist?.name}으로 픽잇 시작`
+            ? `${selectedWishlist?.name} 픽잇 시작`
             : '픽잇 시작하기'
         }
         color="primary"

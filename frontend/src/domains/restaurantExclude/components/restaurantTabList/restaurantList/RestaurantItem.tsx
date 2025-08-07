@@ -114,11 +114,12 @@ const S = {
   CardContainer: styled.div`
     width: 100%;
     height: 120px;
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level4};
     overflow: hidden;
     position: relative;
-    display: flex;
-    gap: ${({ theme }) => theme.GAP.level4};
-    align-items: center;
+
     padding: ${({ theme }) => theme.PADDING.p5};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
@@ -128,8 +129,8 @@ const S = {
   Image: styled.img`
     width: 90px;
     height: 90px;
-    object-fit: cover;
     border-radius: ${({ theme }) => theme.RADIUS.medium};
+    object-fit: cover;
   `,
   CardContent: styled.div<{ excluded: boolean }>`
     width: 100%;
@@ -243,8 +244,8 @@ const S = {
   `,
   TagBox: styled.div`
     display: flex;
-    gap: ${({ theme }) => theme.GAP.level2};
     flex-wrap: wrap;
+    gap: ${({ theme }) => theme.GAP.level2};
   `,
   RestaurantName: styled.a`
     max-width: 180px;
