@@ -25,7 +25,7 @@ export const usePickeatDetail = (pickeatDetail: PickeatDetailType) => {
     }
 
     try {
-      await pickeat.postJoin({
+      const response = await pickeat.postJoin({
         nickname: nickname,
         pickeatId: pickeatDetail!.id,
       });
