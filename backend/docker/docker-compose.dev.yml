@@ -25,6 +25,7 @@ services:
     networks:
       - app-tier
 
+
   alloy:
     image: grafana/alloy:latest
     container_name: alloy
