@@ -4,6 +4,9 @@ import Input from '@components/actions/Input';
 import { pickeat } from '@apis/pickeat';
 import { WishlistResponse } from '@apis/wishlist';
 
+import { useGA } from '@hooks/useGA';
+import { useInputAutoFocus } from '@hooks/useInputAutoFocus';
+
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
@@ -34,11 +37,19 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
 
   const createWishPickeat = async () => {
     const code = await pickeat.postPickeat(roomId, pickeatName);
-
     await pickeat.postWish(selectedWishlistId, code);
 
     navigate(generateRouterPath.pickeatDetail(code));
+
+    useGA().useGAEventTrigger({
+      action: 'click',
+      category: 'button',
+      label: '위시 기반 픽잇 시작 버튼',
+      value: 1,
+    });
   };
+
+  const { inputRef } = useInputAutoFocus();
 
   return (
     <>
@@ -48,6 +59,7 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
         placeholder="레전드 점심"
         value={pickeatName}
         onChange={e => setPickeatName(e.target.value)}
+        ref={inputRef}
       />
       <S.WishlistWrapper>
         {initialData.map(wishlist => (
