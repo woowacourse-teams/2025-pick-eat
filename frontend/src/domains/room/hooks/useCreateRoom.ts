@@ -1,12 +1,16 @@
 import { room } from '@apis/room';
 import { User } from '@apis/users';
 
+import { generateRouterPath } from '@routes/routePath';
+
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 import { validateCreateRoom } from '../services/validateCreateRoom';
 
 export const useCreateRoom = () => {
   const [error, setError] = useState<string>();
+  const navigate = useNavigate();
 
   const createRoom = async (roomName: string, selectedMemberList: User[]) => {
     try {
@@ -25,6 +29,7 @@ export const useCreateRoom = () => {
         selectedMemberList.map(member => member.id)
       );
       alert('방생성 완료!');
+      navigate(generateRouterPath.roomDetail(roomId));
     } catch {
       setError('방 생성 중 문제가 발생했습니다.');
     }

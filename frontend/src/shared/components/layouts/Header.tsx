@@ -19,7 +19,7 @@ function Header() {
       label: '로고 클릭',
       value: 1,
     });
-    navigate(ROUTE_PATH.HOME);
+    navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION);
   };
   return (
     <S.Container>

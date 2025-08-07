@@ -1,6 +1,7 @@
 import { joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
+import { convertResponseToUsers, User, UserResponse } from './users';
 
 export type RoomResponse = {
   id: number;
@@ -41,5 +42,11 @@ export const room = {
     await apiClient.post(joinAsPath(basePath, `${roomId}`, 'invite'), {
       userIds,
     });
+  },
+  getIncludeMembers: async (roomId: number): Promise<User[]> => {
+    const url = joinAsPath(basePath, `${roomId}`, 'users');
+    const response = await apiClient.get<UserResponse[]>(url);
+    if (response) return convertResponseToUsers(response);
+    return [];
   },
 };

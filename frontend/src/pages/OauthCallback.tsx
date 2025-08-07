@@ -32,7 +32,7 @@ const OauthCallback = () => {
           localStorage.setItem('accessToken', response.accessToken);
         }
 
-        navigate(ROUTE_PATH.HOME, { replace: true });
+        navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION, { replace: true });
       } catch (err) {
         if (err instanceof Error && err.message.includes('401')) {
           navigate(ROUTE_PATH.QUICK_SIGNUP, { replace: true });
