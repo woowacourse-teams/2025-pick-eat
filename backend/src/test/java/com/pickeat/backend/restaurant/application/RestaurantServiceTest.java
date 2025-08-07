@@ -14,6 +14,7 @@ import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
@@ -191,6 +192,50 @@ class RestaurantServiceTest {
             // then
             Restaurant actual = restaurantRepository.findById(restaurant.getId()).get();
             assertThat(actual.getLikeCount()).isEqualTo(originCount - 1);
+        }
+    }
+
+    @Nested
+    class 식당_조회_케이스 {
+
+        @Test
+        void 식당_조회_성공() {
+            // given
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Restaurant restaurant1 = entityManager.persist(RestaurantFixture.create(pickeat));
+            Restaurant restaurant2 = entityManager.persist(RestaurantFixture.create(pickeat));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            List<RestaurantResponse> restaurants = restaurantService.getPickeatRestaurants(
+                    pickeat.getCode().toString(), false, participant.getId());
+
+            // then
+            assertThat(restaurants).hasSize(2);
+        }
+
+        @Test
+        void 참여자의_식당_좋아요_여부_조회_성공() {
+            // given
+            Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Restaurant restaurant1 = entityManager.persist(RestaurantFixture.create(pickeat));
+            Restaurant restaurant2 = entityManager.persist(RestaurantFixture.create(pickeat));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            restaurantService.like(restaurant1.getId(), participant.getId());
+            List<RestaurantResponse> restaurants = restaurantService.getPickeatRestaurants(
+                    pickeat.getCode().toString(), false, participant.getId());
+
+            // then
+            assertThat(restaurants.getFirst().isLiked()).isTrue();
+            assertThat(restaurants.getLast().isLiked()).isFalse();
         }
     }
 }

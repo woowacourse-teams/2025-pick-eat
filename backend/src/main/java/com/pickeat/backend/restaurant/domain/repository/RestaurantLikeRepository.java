@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, Long> {
 
-    boolean existsByParticipantIdAndRestaurantId(Long participantId, Long restaurantId);
+    boolean existsByRestaurantIdAndParticipantId(Long restaurantId, Long participantId);
 
-    void deleteByParticipantIdAndRestaurantId(Long participantId, Long restaurantId);
+    void deleteByRestaurantIdAndParticipantId(Long restaurantId, Long participantId);
 }
