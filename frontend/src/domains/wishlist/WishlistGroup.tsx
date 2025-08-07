@@ -35,24 +35,29 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
     wishlist => wishlist.id === selectedWishlistId
   );
 
-  const createWishPickeat = async () => {
-    const code = await pickeat.postPickeat(roomId, pickeatName);
-    await pickeat.postWish(selectedWishlistId, code);
+  const createWishPickeat = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const code = await pickeat.postPickeat(roomId, pickeatName);
+      await pickeat.postWish(selectedWishlistId, code);
 
-    navigate(generateRouterPath.pickeatDetail(code));
+      navigate(generateRouterPath.pickeatDetail(code));
 
-    useGA().useGAEventTrigger({
-      action: 'click',
-      category: 'button',
-      label: '위시 기반 픽잇 시작 버튼',
-      value: 1,
-    });
+      useGA().useGAEventTrigger({
+        action: 'click',
+        category: 'button',
+        label: '위시 기반 픽잇 시작 버튼',
+        value: 1,
+      });
+    } catch (e) {
+      alert(e);
+    }
   };
 
   const { inputRef } = useInputAutoFocus();
 
   return (
-    <>
+    <S.Wrapper onSubmit={createWishPickeat}>
       <Input
         name="pickeatName"
         label="픽잇 이름"
@@ -78,10 +83,10 @@ function WishlistGroup({ wishlistGroupPromise }: Props) {
             : '픽잇 시작하기'
         }
         color="primary"
-        onClick={createWishPickeat}
         disabled={!selectedWishlistId || !pickeatName}
+        type="submit"
       />
-    </>
+    </S.Wrapper>
   );
 }
 
@@ -89,6 +94,13 @@ export default WishlistGroup;
 
 const S = {
   WishlistWrapper: styled.div`
-    height: 250px;
+    height: 230px;
+  `,
+
+  Wrapper: styled.form`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
 };

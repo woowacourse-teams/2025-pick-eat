@@ -60,6 +60,7 @@ const S = {
 
   Wrapper: styled.div`
     width: 70%;
+    height: 600px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level6};
