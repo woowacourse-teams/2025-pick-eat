@@ -9,7 +9,7 @@ import { useRestaurantTabs } from './useRestaurantTabs';
 
 const sampleRestaurants = [
   {
-    id: '1',
+    id: 1,
     name: 'Test Restaurant 1',
     tags: ['한식'],
     category: '한식',
@@ -22,7 +22,7 @@ const sampleRestaurants = [
     y: 37.5,
   },
   {
-    id: '2',
+    id: 2,
     name: 'Test Restaurant 2',
     tags: ['양식'],
     category: '양식',

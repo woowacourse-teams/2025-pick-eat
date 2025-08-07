@@ -19,7 +19,7 @@ export const Default: Story = {
 
     return (
       <LikeButton
-        id={'1'}
+        id={1}
         count={liked}
         onLike={() => setLiked(1)}
         onUnlike={() => setLiked(0)}

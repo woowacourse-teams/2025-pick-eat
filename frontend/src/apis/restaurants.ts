@@ -1,13 +1,11 @@
-import { convert } from '@utils/convert';
-import { joinAsPath } from '@utils/createUrl';
-import { createQueryString } from '@utils/createUrl';
+import { createQueryString, joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
 import {
   Restaurant,
   RestaurantResponse,
-  restaurantBaseUrl,
   convertResponseToRestaurant,
+  restaurantBaseUrl,
 } from './restaurant';
 
 type Option = {
@@ -28,12 +26,10 @@ export const restaurants = {
     );
     return results ?? [];
   },
-  patch: async (restaurantsIds: string[]) => {
-    const convertedRestaurantsIds =
-      convert.stringArrayToNumberArray(restaurantsIds);
+  patch: async (restaurantsIds: number[]) => {
     const patchUrl = joinAsPath(restaurantBaseUrl, 'exclude');
     const response = await apiClient.patch<RestaurantResponse>(patchUrl, {
-      restaurantIds: convertedRestaurantsIds,
+      restaurantIds: restaurantsIds,
     });
     if (!response) return [];
     return convertResponseToRestaurant(response);

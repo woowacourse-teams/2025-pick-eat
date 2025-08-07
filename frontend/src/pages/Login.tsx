@@ -12,7 +12,6 @@ const REST_API_KEY = process.env.REST_API_KEY as string;
 const baseRedirectUrl = process.env.BASE_URL as string;
 const redirectPath = ROUTE_PATH.OAUTH_CALLBACK.replace(/^\//, '');
 
-// TODO : 회원가입 후에 로그인 바로 되도록
 function Login() {
   const handleKakaoLoginClick = () => {
     const queryParams = createQueryStrings({

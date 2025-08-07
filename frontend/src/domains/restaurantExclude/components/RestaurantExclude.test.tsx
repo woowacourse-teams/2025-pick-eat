@@ -21,7 +21,7 @@ import RestaurantExclude from './RestaurantExclude';
 
 const sampleRestaurants: Restaurant[] = [
   {
-    id: '1',
+    id: 1,
     name: 'Test Restaurant 1',
     tags: ['한식'],
     category: '한식',
@@ -34,7 +34,7 @@ const sampleRestaurants: Restaurant[] = [
     y: 37.5,
   },
   {
-    id: '2',
+    id: 2,
     name: 'Test Restaurant 2',
     tags: ['양식'],
     category: '양식',
@@ -98,7 +98,7 @@ describe('RestaurantExclude 크로스 버튼 및 제외 제출 통합 테스트'
 
     await waitFor(() => {
       expect(patchMock).toHaveBeenCalledTimes(1);
-      expect(patchMock).toHaveBeenCalledWith(expect.arrayContaining(['1']));
+      expect(patchMock).toHaveBeenCalledWith(expect.arrayContaining([1]));
     });
 
     expect(mockNavigate).toHaveBeenCalledTimes(1);
