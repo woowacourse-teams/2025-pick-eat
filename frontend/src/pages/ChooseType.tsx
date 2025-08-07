@@ -35,7 +35,7 @@ function Choosetype() {
         </S.ButtonWrapper>
 
         {/* TODO: 버튼 연결 */}
-        <Button text="방 생성" color="gray" size="md" />
+        {/* <Button text="방 생성" color="gray" size="md" /> */}
       </S.Wrapper>
     </S.Container>
   );
