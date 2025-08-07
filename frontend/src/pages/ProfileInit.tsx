@@ -23,7 +23,7 @@ function ProfileInit() {
   const location = useLocation();
   const token = location.state?.accessToken;
 
-  if (!token) navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION, { replace: true });
+  if (!token) navigate(ROUTE_PATH.MAIN, { replace: true });
 
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
@@ -45,7 +45,7 @@ function ProfileInit() {
       });
 
       loginUser(userToken);
-      navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION);
+      navigate(ROUTE_PATH.MAIN);
       alert('회원가입이 완료되었습니다.');
     } catch {
       alert('회원가입에 실패하였습니다.');

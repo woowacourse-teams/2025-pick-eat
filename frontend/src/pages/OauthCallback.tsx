@@ -36,7 +36,7 @@ const OauthCallback = () => {
               token: accessToken,
             });
             loginUser(userToken);
-            navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION, { replace: true });
+            navigate(ROUTE_PATH.MAIN, { replace: true });
             break;
           }
           default:
