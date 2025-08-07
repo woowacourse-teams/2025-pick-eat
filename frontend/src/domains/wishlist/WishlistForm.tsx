@@ -25,6 +25,7 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomId = searchParams.get('roomId') ?? '';
+  const [pickeatName, setPickeatName] = useState('');
 
   const handleSelectWishlist = (id: number) => {
     setSelectedWishlistId(id);
@@ -37,8 +38,6 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
   const createWishPickeat = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const formData = new FormData(e.currentTarget);
-      const pickeatName = formData.get('pickeatName') as string;
       const code = await pickeat.postPickeat(roomId, pickeatName);
       await pickeat.postWish(selectedWishlistId, code);
 
@@ -64,6 +63,8 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
         label="픽잇 이름"
         placeholder="레전드 점심"
         ref={inputRef}
+        value={pickeatName}
+        onChange={e => setPickeatName(e.target.value)}
       />
 
       <S.WishlistWrapper>
