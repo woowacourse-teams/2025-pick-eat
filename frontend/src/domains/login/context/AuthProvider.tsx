@@ -25,7 +25,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_NAME);
+      const token = accessToken.get();
       if (token) {
         accessToken.save(token);
         setLoggedIn(true);
