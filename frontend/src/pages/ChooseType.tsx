@@ -1,6 +1,8 @@
 import Button from '@components/actions/Button';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
+import { ROUTE_PATH } from '@routes/routePath';
+
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
@@ -23,15 +25,16 @@ function Choosetype() {
         <S.ButtonWrapper>
           <Button
             text="추천에서 pick!"
-            onClick={() => navigate('/choose-wishlist')}
+            onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_WISH)}
           />
           <Button
             text="근처에서 pick!"
             color="secondary"
-            onClick={() => navigate('/')}
+            onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
           />
         </S.ButtonWrapper>
 
+        {/* TODO: 버튼 연결 */}
         <Button text="방 생성" color="gray" size="md" />
       </S.Wrapper>
     </S.Container>

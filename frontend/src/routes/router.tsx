@@ -46,6 +46,8 @@ const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [
+      { path: ROUTE_PATH.MAIN, Component: Choosetype },
+
       {
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
         Component: CreatePickeatWithLocation,
@@ -68,7 +70,6 @@ const routes = createBrowserRouter([
         path: ROUTE_PATH.MY_PAGE,
         Component: MyPage,
       },
-      { path: ROUTE_PATH.CHOOSE_TYPE, Component: Choosetype },
       {
         path: ROUTE_PATH.CREATE_ROOM,
         Component: CreateRoom,

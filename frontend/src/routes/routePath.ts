@@ -1,15 +1,15 @@
 export const ROUTE_PATH = {
-  PICKEAT_WITH_LOCATION: '/',
+  MAIN: '/',
+  PICKEAT_WITH_LOCATION: '/create-pickeat/location',
+  PICKEAT_WITH_WISH: '/create-pickeat/wish',
   PICKEAT_DETAIL: '/pickeat-detail',
   PREFER_RESTAURANT: '/prefer-restaurant',
   MATCH_RESULT: '/match-result',
   RESTAURANTS_EXCLUDE: '/restaurants-exclude',
-  PICKEAT_WITH_WISH: '/create-pickeat/wish',
   LOGIN: '/login',
   PROFILE_INIT: '/profile-init',
   OAUTH_CALLBACK: '/oauth/callback',
   MY_PAGE: '/my-page',
-  CHOOSE_TYPE: '/choose-type',
   CREATE_ROOM: '/create-room',
   ROOM_DETAIL: '/room-detail',
 };
