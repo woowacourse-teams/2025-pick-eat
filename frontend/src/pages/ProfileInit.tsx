@@ -21,7 +21,7 @@ function ProfileInit() {
   const { loginUser } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const token = location.state?.token;
+  const token = location.state?.accessToken;
 
   if (!token) navigate(ROUTE_PATH.HOME, { replace: true });
 
