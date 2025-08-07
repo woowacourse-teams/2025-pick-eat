@@ -55,4 +55,21 @@ export const login = {
       throw error;
     }
   },
+  postSignUp: async ({
+    accessToken,
+    nickname,
+  }: {
+    accessToken: string;
+    nickname: string;
+  }) => {
+    const response = await fetch(`${process.env.API_BASE_URL}auth/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({ nickname }),
+    });
+    if (!response.ok) throw new Error('요청 실패');
+  },
 };

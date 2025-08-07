@@ -4,7 +4,11 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { useAuth } from '@domains/login/context/AuthProvider';
 
+import { login } from '@apis/login';
+
 import { ROUTE_PATH } from '@routes/routePath';
+
+import { validate } from '@utils/validate';
 
 import styled from '@emotion/styled';
 import { useState } from 'react';
@@ -19,12 +23,14 @@ function ProfileInit() {
   const location = useLocation();
   const token = location.state?.token;
 
+  if (!token) navigate(ROUTE_PATH.HOME, { replace: true });
+
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
   };
 
   const handleSubmit = async () => {
-    if (nickname.trim() === '') {
+    if (validate.isEmpty(nickname)) {
       setError('닉네임을 입력해주세요.');
       return;
     }
@@ -33,25 +39,16 @@ function ProfileInit() {
     setError(null);
 
     try {
-      const response = await fetch(`${process.env.API_BASE_URL}auth/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ nickname }),
+      await login.postSignUp({
+        accessToken: token,
+        nickname,
       });
 
-      if (response.ok) {
-        loginUser(token);
-        navigate(ROUTE_PATH.HOME);
-        alert('회원가입이 완료되었습니다.');
-      } else {
-        const data = await response.json();
-        setError(data.message || '회원가입에 실패했습니다.');
-      }
+      loginUser(token);
+      navigate(ROUTE_PATH.HOME);
+      alert('회원가입이 완료되었습니다.');
     } catch {
-      setError('서버와 연결할 수 없습니다.');
+      alert('회원가입에 실패하였습니다.');
     } finally {
       setLoading(false);
     }
@@ -69,6 +66,7 @@ function ProfileInit() {
           placeholder="김픽잇"
           value={nickname}
           onChange={handleNicknameChange}
+          maxLength={10}
         />
         <Button
           text={loading ? '가입 중...' : '가입하기'}
