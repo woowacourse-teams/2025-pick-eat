@@ -15,12 +15,10 @@ function Inner({
   size = 'md',
   closeButton = true,
 }: Omit<ModalType, 'mounted' | 'onOpen'>) {
-  if (!opened) return null;
-
   return (
     <>
-      <S.BackDrop onClick={onClose} />
-      <S.Container size={size}>
+      <S.BackDrop opened={opened} onClick={onClose} />
+      <S.Container opened={opened} size={size}>
         {closeButton && (
           <S.IconWrapper onClick={onUnmount}>
             <Cross color="white" size="sm" strokeWidth={4} />
@@ -35,9 +33,11 @@ function Inner({
 export default Inner;
 
 const S = {
-  BackDrop: styled.div`
+  BackDrop: styled.div<{ opened: boolean }>`
     width: 100%;
     height: 100vh;
+
+    display: ${({ opened }) => (opened ? 'block' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
@@ -47,7 +47,7 @@ const S = {
     backdrop-filter: blur(2px);
   `,
 
-  Container: styled.div<{ size: 'sm' | 'md' | 'lg' }>`
+  Container: styled.div<{ size: 'sm' | 'md' | 'lg'; opened: boolean }>`
     width: ${({ size }) =>
       size === 'sm' ? '500px' : size === 'md' ? '600px' : '700px'};
 
@@ -60,23 +60,16 @@ const S = {
 
     background-color: white;
 
-    animation: slide-up 0.3s ease-out forwards;
-
     border-radius: ${({ theme }) => theme.RADIUS.medium3};
+    transform: translate(-50%, -50%);
+    opacity: ${({ opened }) => (opened ? 1 : 0)};
+    pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
 
-    opacity: 0;
-    transform: translate(-50%, 40%);
+    transition: opacity 0.3s ease;
 
     ${setMobileStyle(css`
       width: 90%;
     `)}
-
-    @keyframes slide-up {
-      to {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-      }
-    }
   `,
 
   IconWrapper: styled.div`
@@ -96,7 +89,6 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p1};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
-
     border-radius: ${({ theme }) => theme.RADIUS.half};
     cursor: pointer;
   `,
