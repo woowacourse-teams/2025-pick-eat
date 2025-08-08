@@ -48,15 +48,15 @@ const S = {
   ResultWrapper: styled.div`
     width: 50%;
     height: 400px;
+
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+
     gap: ${({ theme }) => theme.GAP.level6};
 
     position: relative;
-
-    padding: ${({ theme }) => theme.PADDING.p9} 0;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 

@@ -1,5 +1,9 @@
 import Layout from '@components/layouts/Layout';
 
+
+
+
+
 import Choosetype from '@pages/ChooseType';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';

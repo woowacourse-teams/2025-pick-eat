@@ -91,7 +91,7 @@ const S = {
 
   RestaurantListContainer: styled.div`
     width: 100%;
-    height: 78%;
+    min-height: 580px;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,

@@ -1,10 +1,14 @@
 import Button from '@components/actions/Button';
+import Modal from '@components/modal/Modal';
+import { useModal } from '@components/modal/useModal';
 
 import { Wishlist } from '@pages/ChooseWishlist';
 
 import { WishlistType } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
+
+import Wishies from './Wishes';
 
 type Prop = {
   wishlist: WishlistType;
@@ -14,6 +18,13 @@ type Prop = {
 
 function Wishlist({ wishlist, selected, onSelect }: Prop) {
   const { id, name } = wishlist;
+  const {
+    mounted,
+    opened,
+    handleCloseModal,
+    handleOpenModal,
+    handleUnmountModal,
+  } = useModal();
 
   return (
     <S.Container selected={selected} onClick={() => onSelect(id)}>
@@ -23,7 +34,17 @@ function Wishlist({ wishlist, selected, onSelect }: Prop) {
         color={selected ? 'primary' : 'gray'}
         size="sm"
         type="button"
+        onClick={handleOpenModal}
       />
+
+      <Modal
+        opened={opened}
+        mounted={mounted}
+        onUnmount={handleUnmountModal}
+        onClose={handleCloseModal}
+      >
+        <Wishies wishlistId={id} wishlistName={name} />
+      </Modal>
     </S.Container>
   );
 }

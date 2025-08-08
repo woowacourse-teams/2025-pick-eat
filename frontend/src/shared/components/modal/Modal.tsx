@@ -1,16 +1,16 @@
 import Cross from '@components/assets/icons/Cross';
 
+import { setMobileStyle } from '@styles/mediaQuery';
+
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
-
-import Inner from './Inner';
 
 export type ModalType = {
   opened: boolean;
   mounted: boolean;
   onClose: () => void;
-  onOpen: () => void;
   children?: ReactNode;
   size?: 'sm' | 'md' | 'lg';
   closeButton?: boolean;
@@ -21,15 +21,11 @@ function Modal({
   mounted,
   opened,
   onClose,
-  onOpen,
   children,
   size = 'md',
   closeButton = true,
   onUnmount,
 }: ModalType) {
-  if (!mounted) return;
-  const modalRoot = document.querySelector('#modal') as HTMLElement;
-
   useEffect(() => {
     if (!opened) return;
 
@@ -48,24 +44,27 @@ function Modal({
     };
   }, [opened]);
 
+  if (!mounted) return;
+  const modalRoot = document.querySelector('#modal') as HTMLElement;
+
   return ReactDOM.createPortal(
     <>
-      {mounted && !opened && (
+      {/* {mounted && !opened && (
         <S.Mini onClick={onOpen}>
+          <S.MiniIconWrapper onClick={onUnmount}>
+            <Cross color="white" size="sm" strokeWidth={4} />
+          </S.MiniIconWrapper>
+        </S.Mini>
+      )} */}
+      <S.BackDrop opened={opened} onClick={onClose} />
+      <S.Container opened={opened} size={size}>
+        {closeButton && (
           <S.IconWrapper onClick={onUnmount}>
             <Cross color="white" size="sm" strokeWidth={4} />
           </S.IconWrapper>
-        </S.Mini>
-      )}
-      <Inner
-        opened={opened}
-        onClose={onClose}
-        size={size}
-        closeButton={closeButton}
-        onUnmount={onUnmount}
-      >
+        )}
         {children}
-      </Inner>
+      </S.Container>
     </>,
     modalRoot
   );
@@ -88,9 +87,69 @@ const S = {
     cursor: pointer;
   `,
 
+  // MiniIconWrapper: styled.div`
+  //   width: 22px;
+  //   height: 22px;
+
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+
+  //   position: absolute;
+  //   top: -10px;
+  //   right: -10px;
+
+  //   margin-left: auto;
+
+  //   padding: ${({ theme }) => theme.PADDING.p1};
+
+  //   background-color: ${({ theme }) => theme.PALETTE.primary[50]};
+
+  //   border-radius: ${({ theme }) => theme.RADIUS.half};
+  //   cursor: pointer;
+  // `,
+
+  BackDrop: styled.div<{ opened: boolean }>`
+    width: 100%;
+    height: 100vh;
+
+    display: ${({ opened }) => (opened ? 'block' : 'none')};
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: ${({ theme }) => theme.Z_INDEX.overlay};
+
+    background-color: rgb(0 0 0 / 10%);
+    backdrop-filter: blur(2px);
+  `,
+
+  Container: styled.div<{ size: 'sm' | 'md' | 'lg'; opened: boolean }>`
+    width: ${({ size }) =>
+      size === 'sm' ? '500px' : size === 'md' ? '600px' : '700px'};
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: ${({ theme }) => theme.Z_INDEX.modal};
+
+    padding: ${({ theme }) => theme.PADDING.p10};
+
+    background-color: white;
+
+    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+    opacity: ${({ opened }) => (opened ? 1 : 0)};
+    pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
+
+    transform: translate(-50%, -50%);
+
+    ${setMobileStyle(css`
+      width: 90%;
+    `)}
+  `,
+
   IconWrapper: styled.div`
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
 
     display: flex;
     justify-content: center;
@@ -105,7 +164,6 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p1};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
-
     border-radius: ${({ theme }) => theme.RADIUS.half};
     cursor: pointer;
   `,
