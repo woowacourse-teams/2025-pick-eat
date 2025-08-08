@@ -48,10 +48,12 @@ const S = {
   ResultWrapper: styled.div`
     width: 50%;
     height: 400px;
+
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+
     gap: ${({ theme }) => theme.GAP.level6};
 
     position: relative;

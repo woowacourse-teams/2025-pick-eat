@@ -114,6 +114,8 @@ const S = {
   BackDrop: styled.div<{ opened: boolean }>`
     width: 100%;
     height: 100vh;
+
+    display: ${({ opened }) => (opened ? 'block' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
@@ -121,8 +123,6 @@ const S = {
 
     background-color: rgb(0 0 0 / 10%);
     backdrop-filter: blur(2px);
-
-    display: ${({ opened }) => (opened ? 'block' : 'none')};
   `,
 
   Container: styled.div<{ size: 'sm' | 'md' | 'lg'; opened: boolean }>`
@@ -135,12 +135,14 @@ const S = {
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
 
     padding: ${({ theme }) => theme.PADDING.p10};
+
     background-color: white;
 
     border-radius: ${({ theme }) => theme.RADIUS.medium3};
-    transform: translate(-50%, -50%);
     opacity: ${({ opened }) => (opened ? 1 : 0)};
     pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
+
+    transform: translate(-50%, -50%);
 
     ${setMobileStyle(css`
       width: 90%;
