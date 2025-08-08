@@ -31,7 +31,7 @@ function Wishes({ wishlistId, wishlistName }: Props) {
               src={
                 pictures.length === 0
                   ? '/images/restaurant.png'
-                  : pictures[0].imageUrl
+                  : pictures[0].imageDownloadUrl
               }
               alt={name}
               onError={e => {

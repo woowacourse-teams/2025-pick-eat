@@ -11,7 +11,7 @@ type WishlistResponse = {
 
 type Picture = {
   id: number;
-  imageUrl: string;
+  imageDownloadUrl: string;
 };
 
 type WishesResponse = {
@@ -21,7 +21,7 @@ type WishesResponse = {
   pictures: Picture[];
   roadAddressName: string;
   tags: string[];
-  wishListId: number;
+  wishlistId: number;
 };
 
 export type Wishes = {
@@ -31,7 +31,7 @@ export type Wishes = {
   pictures: Picture[];
   roadAddressName: string;
   tags: string[];
-  wishListId: number;
+  wishlistId: number;
 };
 
 export type WishlistType = {
@@ -54,7 +54,7 @@ const convertResponaseToWishes = (data: WishesResponse[]) => {
     pictures: d.pictures,
     roadAddressName: d.roadAddressName,
     tags: d.tags,
-    wishListId: d.wishListId,
+    wishlistId: d.wishlistId,
   }));
 };
 

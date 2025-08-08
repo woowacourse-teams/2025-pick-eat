@@ -2,11 +2,10 @@ import Button from '@components/actions/Button';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
-import { Wishlist } from '@pages/ChooseWishlist';
-
 import { WishlistType } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
+import { Wishlist } from '@pages/ChooseWishlist';
 
 import Wishies from './Wishes';
 
