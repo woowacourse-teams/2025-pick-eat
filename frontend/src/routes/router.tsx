@@ -1,5 +1,15 @@
 import Layout from '@components/layouts/Layout';
 
+import { AuthProvider } from '@domains/login/context/AuthProvider';
+
+import { useGA } from '@hooks/useGA';
+
+import { ROUTE_PATH } from '@routes/routePath';
+
+import { THEME } from '@styles/global';
+import reset from '@styles/reset';
+
+import { ThemeProvider, Global } from '@emotion/react';
 import Choosetype from '@pages/ChooseType';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
@@ -13,17 +23,6 @@ import PreferRestaurant from '@pages/PreferRestaurant';
 import ProfileInit from '@pages/ProfileInit';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
 import RoomDetail from '@pages/RoomDetail';
-
-import { AuthProvider } from '@domains/login/context/AuthProvider';
-
-import { useGA } from '@hooks/useGA';
-
-import { ROUTE_PATH } from '@routes/routePath';
-
-import { THEME } from '@styles/global';
-import reset from '@styles/reset';
-
-import { ThemeProvider, Global } from '@emotion/react';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 function Wrapper() {

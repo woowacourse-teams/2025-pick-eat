@@ -50,13 +50,11 @@ const S = {
     height: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
+    justify-content: center;
     gap: ${({ theme }) => theme.GAP.level6};
 
     position: relative;
-
-    padding: ${({ theme }) => theme.PADDING.p9} 0;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 

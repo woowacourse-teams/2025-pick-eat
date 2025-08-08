@@ -17,23 +17,28 @@ function Result({ resultPromise }: Props) {
 
   return (
     <>
-      <S.Name>{name}</S.Name>
-      {type === 'WISH' && (
-        <S.Image
-          src={pictureUrls[0] || './images/restaurant.png'}
-          alt={name}
-          onError={e => (e.currentTarget.src = '/images/person.svg')}
-        />
+      <S.Wrapper>
+        <S.Name>{name}</S.Name>
+        {type === 'WISH' && (
+          <S.Image
+            src={pictureUrls[0] || './images/restaurant.png'}
+            alt={name}
+            onError={e => (e.currentTarget.src = '/images/person.svg')}
+          />
+        )}
+      </S.Wrapper>
+
+      {placeUrl && (
+        <S.ButtonWrapper>
+          <Button
+            color="primary"
+            text="식당 싱세 정보"
+            onClick={() =>
+              placeUrl && window.open(placeUrl, '_blank', 'noopener,noreferrer')
+            }
+          />
+        </S.ButtonWrapper>
       )}
-      <S.ButtonContainer>
-        <Button
-          color="primary"
-          text="식당 싱세 정보"
-          onClick={() =>
-            placeUrl && window.open(placeUrl, '_blank', 'noopener,noreferrer')
-          }
-        />
-      </S.ButtonContainer>
     </>
   );
 }
@@ -41,7 +46,13 @@ function Result({ resultPromise }: Props) {
 export default Result;
 
 const S = {
-  ButtonContainer: styled.div`
+  Wrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `,
+
+  ButtonWrapper: styled.div`
     width: 80%;
   `,
 
