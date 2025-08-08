@@ -31,7 +31,6 @@ export const Default: Story = {
           mounted={smModal.mounted}
           opened={smModal.opened}
           onClose={smModal.handleCloseModal}
-          onOpen={smModal.handleOpenModal}
           onUnmount={smModal.handleUnmountModal}
           size="sm"
         />
@@ -39,7 +38,6 @@ export const Default: Story = {
           mounted={mdModal.mounted}
           opened={mdModal.opened}
           onClose={mdModal.handleCloseModal}
-          onOpen={mdModal.handleOpenModal}
           onUnmount={mdModal.handleUnmountModal}
           size="md"
         />
@@ -47,7 +45,6 @@ export const Default: Story = {
           mounted={lgModal.mounted}
           opened={lgModal.opened}
           onClose={lgModal.handleCloseModal}
-          onOpen={lgModal.handleOpenModal}
           onUnmount={lgModal.handleUnmountModal}
           size="lg"
         />

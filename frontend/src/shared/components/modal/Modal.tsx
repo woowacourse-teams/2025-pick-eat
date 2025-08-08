@@ -11,7 +11,6 @@ export type ModalType = {
   opened: boolean;
   mounted: boolean;
   onClose: () => void;
-  onOpen: () => void;
   children?: ReactNode;
   size?: 'sm' | 'md' | 'lg';
   closeButton?: boolean;
@@ -22,7 +21,6 @@ function Modal({
   mounted,
   opened,
   onClose,
-  onOpen,
   children,
   size = 'md',
   closeButton = true,

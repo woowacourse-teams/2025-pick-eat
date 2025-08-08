@@ -63,7 +63,6 @@ function IncludeMemberList({ members }: { members: Promise<User[]> }) {
           mounted={mounted}
           opened={opened}
           onClose={handleCloseModal}
-          onOpen={handleOpenModal}
           onUnmount={handleUnmountModal}
           size="lg"
         >
