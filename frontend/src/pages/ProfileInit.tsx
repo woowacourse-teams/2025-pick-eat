@@ -39,7 +39,7 @@ function ProfileInit() {
     setError(null);
 
     try {
-      const userToken = await login.postSignUp({
+      const { token: userToken } = await login.postSignUp({
         token,
         nickname,
       });
