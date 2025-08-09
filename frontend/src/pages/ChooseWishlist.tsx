@@ -1,5 +1,6 @@
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import WishlistForm from '@domains/wishlist/WishlistForm';
 
 import { wishlist } from '@apis/wishlist';
@@ -8,7 +9,6 @@ import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ErrorBoundary } from '@sentry/react';
 import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
