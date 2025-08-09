@@ -19,7 +19,7 @@ type Props = {
 };
 
 function WishlistForm({ wishlistGroupPromise }: Props) {
-  const initialData = use(wishlistGroupPromise);
+  const data = use(wishlistGroupPromise);
   const [selectedWishlistId, setSelectedWishlistId] = useState(0);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -30,7 +30,7 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
     setSelectedWishlistId(id);
   };
 
-  const selectedWishlist = initialData.find(
+  const selectedWishlist = data.find(
     wishlist => wishlist.id === selectedWishlistId
   );
 
@@ -65,7 +65,7 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
       />
 
       <S.WishlistWrapper>
-        {initialData.map(wishlist => (
+        {data.map(wishlist => (
           <Wishlist
             key={wishlist.id}
             wishlist={wishlist}
