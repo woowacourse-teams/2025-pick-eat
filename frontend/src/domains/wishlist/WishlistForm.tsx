@@ -5,7 +5,6 @@ import { pickeat } from '@apis/pickeat';
 import { WishlistType } from '@apis/wishlist';
 
 import { useGA } from '@hooks/useGA';
-import { useInputAutoFocus } from '@hooks/useInputAutoFocus';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -54,15 +53,13 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
     }
   };
 
-  const { inputRef } = useInputAutoFocus();
-
   return (
     <S.Wrapper onSubmit={createWishPickeat}>
       <Input
         name="pickeatName"
         label="픽잇 이름"
         placeholder="레전드 점심"
-        ref={inputRef}
+        autoFocus={true}
         value={pickeatName}
         onChange={e => setPickeatName(e.target.value)}
       />

@@ -15,12 +15,10 @@ function Choosetype() {
   return (
     <S.Container>
       <S.Wrapper>
-        <S.TitleArea>
-          <S.TitleText>
-            <S.PointText>🧀픽잇</S.PointText>과 음식점
-            <br /> 쉽게 고르기
-          </S.TitleText>
-        </S.TitleArea>
+        <S.TitleText>
+          <S.PointText>🧀픽잇</S.PointText>과 음식점
+          <br /> 쉽게 고르기
+        </S.TitleText>
 
         <S.ButtonWrapper>
           <Button
@@ -79,11 +77,8 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level3};
   `,
 
-  TitleArea: styled.div`
+  TitleText: styled.div`
     text-align: center;
-  `,
-
-  TitleText: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
