@@ -1,7 +1,7 @@
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
+import ErrorMessage from '@components/errors/ErrorMessage';
 
-import { pickeat } from '@apis/pickeat';
 import { WishlistType } from '@apis/wishlist';
 
 import { useGA } from '@hooks/useGA';
@@ -10,7 +10,10 @@ import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
 import { use, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
+
+import useCreateWishPickeat from '../hooks/useCreateWishPickeat';
+import useSelectWishlist from '../hooks/useSelectWishlist';
 
 import Wishlist from './Wishlist';
 
@@ -20,41 +23,28 @@ type Props = {
 
 function WishlistForm({ wishlistGroupPromise }: Props) {
   const data = use(wishlistGroupPromise);
-  const [selectedWishlistId, setSelectedWishlistId] = useState(0);
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId') ?? '';
   const [pickeatName, setPickeatName] = useState('');
+  const { selectedWishlistId, handleSelectWishlist, selectedWishlist } =
+    useSelectWishlist(data);
+  const { createPickeat, errorMessage } = useCreateWishPickeat();
+  const navigate = useNavigate();
 
-  const handleSelectWishlist = (id: number) => {
-    setSelectedWishlistId(id);
-  };
-
-  const selectedWishlist = data.find(
-    wishlist => wishlist.id === selectedWishlistId
-  );
-
-  const createWishPickeat = async (e: React.FormEvent<HTMLFormElement>) => {
+  const submitWishlistForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const code = await pickeat.post(roomId, pickeatName);
-      await pickeat.postWish(selectedWishlistId, code);
 
-      navigate(generateRouterPath.pickeatDetail(code));
+    const code = await createPickeat(pickeatName, selectedWishlistId);
+    if (code) navigate(generateRouterPath.pickeatDetail(code));
 
-      useGA().useGAEventTrigger({
-        action: 'click',
-        category: 'button',
-        label: '위시 기반 픽잇 시작 버튼',
-        value: 1,
-      });
-    } catch (e) {
-      alert(e);
-    }
+    useGA().useGAEventTrigger({
+      action: 'click',
+      category: 'button',
+      label: '위시 기반 픽잇 시작 버튼',
+      value: 1,
+    });
   };
 
   return (
-    <S.Wrapper onSubmit={createWishPickeat}>
+    <S.Wrapper onSubmit={submitWishlistForm}>
       <Input
         name="pickeatName"
         label="픽잇 이름"
@@ -74,6 +64,7 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
           />
         ))}
       </S.WishlistWrapper>
+      <ErrorMessage message={errorMessage} />
 
       <Button
         text={
@@ -93,6 +84,7 @@ export default WishlistForm;
 
 const S = {
   WishlistWrapper: styled.div`
+    width: 100%;
     height: 230px;
   `,
 

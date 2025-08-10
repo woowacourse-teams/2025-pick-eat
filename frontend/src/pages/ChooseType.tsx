@@ -78,9 +78,9 @@ const S = {
   `,
 
   TitleText: styled.div`
-    text-align: center;
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.heading.large_style};
+    text-align: center;
   `,
 
   PointText: styled.span`

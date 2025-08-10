@@ -1,7 +1,8 @@
+import WishlistForm from '@domains/wishlist/components/WishlistForm';
+
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-import WishlistForm from '@domains/wishlist/WishlistForm';
 
 import { wishlist } from '@apis/wishlist';
 
@@ -56,7 +57,7 @@ const S = {
 
   Wrapper: styled.div`
     width: 70%;
-    height: 600px;
+    height: 650px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level6};

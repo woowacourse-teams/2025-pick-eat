@@ -7,7 +7,7 @@ import Select from '@components/actions/Select';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import { useCreatePickeat } from '@domains/pickeat/hooks/useCreatePickeat';
+import { useCreateLocationPickeat } from '@domains/pickeat/hooks/useCreateLocationPickeat';
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 
 import { useGA } from '@hooks/useGA';
@@ -31,7 +31,7 @@ function CreatePickeatWithLocation() {
   }>();
   const { address, handleInputChange, addressList, handleAddressClick } =
     useFindAddress();
-  const { createPickeat, error } = useCreatePickeat();
+  const { createPickeat, error } = useCreateLocationPickeat();
 
   const submitPickeatForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
