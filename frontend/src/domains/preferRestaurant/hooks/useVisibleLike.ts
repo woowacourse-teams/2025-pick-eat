@@ -1,0 +1,20 @@
+import { useState } from 'react';
+
+export const useVisibleLike = () => {
+  const [visibleLikedIds, setVisibleLikedIds] = useState<number[]>([]);
+
+  const isLikeVisible = (id: number) =>
+    visibleLikedIds.some((visibleLikedId: number) => visibleLikedId === id);
+
+  const syncVisibleLikes = (newLikedIds: number[]) => {
+    setVisibleLikedIds(newLikedIds);
+  };
+
+  const addVisibleLike = (id: number) =>
+    setVisibleLikedIds(prev => (prev.includes(id) ? prev : [...prev, id]));
+
+  const removeVisibleLike = (id: number) =>
+    setVisibleLikedIds(prev => prev.filter(x => x !== id));
+
+  return { isLikeVisible, syncVisibleLikes, addVisibleLike, removeVisibleLike };
+};

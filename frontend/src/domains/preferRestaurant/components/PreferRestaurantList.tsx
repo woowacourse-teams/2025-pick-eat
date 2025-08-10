@@ -1,12 +1,12 @@
-import { Restaurant } from '@apis/restaurant';
+import { restaurant, Restaurant } from '@apis/restaurant';
 
 import { useFlip } from '@hooks/useFlip';
 
 import styled from '@emotion/styled';
 import { use } from 'react';
 
-import useLike from '../hooks/useLike';
 import usePreferRestaurant from '../hooks/usePreferRestaurant';
+import { useVisibleLike } from '../hooks/useVisibleLike';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
 
@@ -16,15 +16,40 @@ type Props = {
 
 function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
   const initialData = use(preferRestaurantListPromise);
-
-  const { restaurantList, updateSortedRestaurantList, likedIds, setLikedIds } =
-    usePreferRestaurant(initialData);
-  const { itemRefs } = useFlip(restaurantList);
-  const { isLiked, handleLike, handleUnlike } = useLike(
-    updateSortedRestaurantList,
-    likedIds,
-    setLikedIds
+  const { isLikeVisible, syncVisibleLikes, addVisibleLike, removeVisibleLike } =
+    useVisibleLike();
+  const { restaurantList, updateLikeCount } = usePreferRestaurant(
+    initialData,
+    syncVisibleLikes
   );
+  const { itemRefs } = useFlip(restaurantList);
+
+  const handleLike = async (id: number) => {
+    addVisibleLike(id);
+    updateLikeCount(id, +1);
+
+    try {
+      restaurant.patchLike(id);
+    } catch (error) {
+      removeVisibleLike(id);
+      updateLikeCount(id, -1);
+
+      console.log('좋아요 실패:', error);
+    }
+  };
+
+  const handleUnlike = async (id: number) => {
+    removeVisibleLike(id);
+    updateLikeCount(id, -1);
+
+    try {
+      restaurant.patchUnlike(id);
+    } catch (error) {
+      addVisibleLike(id);
+      updateLikeCount(id, +1);
+      console.error('좋아요 취소 실패:', error);
+    }
+  };
 
   return (
     <S.Container>
@@ -37,7 +62,7 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
         >
           <PreferRestaurantItem
             restaurant={restaurant}
-            liked={isLiked(restaurant.id)}
+            liked={isLikeVisible(restaurant.id)}
             onLike={handleLike}
             onUnlike={handleUnlike}
           />
