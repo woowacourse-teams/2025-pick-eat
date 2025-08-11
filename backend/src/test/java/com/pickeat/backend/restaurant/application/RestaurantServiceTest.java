@@ -103,8 +103,9 @@ class RestaurantServiceTest {
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds),
-                    participant.getId())).isInstanceOf(BusinessException.class)
+            assertThatThrownBy(
+                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId()))
+                    .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN.getMessage());
         }
 
@@ -123,8 +124,9 @@ class RestaurantServiceTest {
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds),
-                    participant.getId())).isInstanceOf(BusinessException.class)
+            assertThatThrownBy(
+                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId()))
+                    .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.PICKEAT_ALREADY_INACTIVE.getMessage());
         }
     }

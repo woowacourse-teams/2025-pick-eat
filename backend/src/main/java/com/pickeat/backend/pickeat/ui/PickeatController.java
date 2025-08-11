@@ -2,6 +2,7 @@ package com.pickeat.backend.pickeat.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
 import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.pickeat.application.PickeatResultService;
 import com.pickeat.backend.pickeat.application.PickeatService;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PickeatController implements PickeatApiSpec {
 
     private final PickeatService pickeatService;
+    private final PickeatResultService pickeatResultService;
 
     @Override
     @PostMapping("/pickeats")
@@ -74,12 +76,22 @@ public class PickeatController implements PickeatApiSpec {
     }
 
     @Override
+    @PostMapping("/pickeats/{pickeatCode}/result")
+    public ResponseEntity<RestaurantResultResponse> createPickeatResult(
+            @PathVariable("pickeatCode") String pickeatCode,
+            @ParticipantId Long participantId
+    ) {
+        RestaurantResultResponse response = pickeatResultService.createPickeatResult(pickeatCode, participantId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @Override
     @GetMapping("/pickeats/{pickeatCode}/result")
     public ResponseEntity<RestaurantResultResponse> getPickeatResult(
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantId Long participantId
     ) {
-        RestaurantResultResponse response = pickeatService.getPickeatResult(pickeatCode, participantId);
+        RestaurantResultResponse response = pickeatResultService.getPickeatResult(pickeatCode, participantId);
         return ResponseEntity.ok().body(response);
     }
 

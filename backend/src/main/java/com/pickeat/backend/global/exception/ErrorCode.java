@@ -11,7 +11,8 @@ public enum ErrorCode {
     PICKEAT_ALREADY_INACTIVE(HttpStatus.BAD_REQUEST, "이미 비활성화된 픽잇입니다."),
     INVALID_PICKEAT_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 픽잇 코드입니다."),
     PICKEAT_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 픽잇에 접근 권한이 없습니다."),
-    PICKEAT_RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "픽잇의 식당이 모두 소거되어 픽잇 결과를 생성할 수 없습니다."),
+    PICKEAT_RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "픽잇 결과를 찾을 수 없습니다."),
+    PICKEAT_RESULT_ALREADY_EXISTS(HttpStatus.CONFLICT, "픽잇 결과가 이미 존재합니다."),
 
     // Participant 관련 에러
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "참가자를 찾을 수 없습니다."),
@@ -40,6 +41,7 @@ public enum ErrorCode {
     RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "식당을 찾을 수 없습니다."),
     PARTICIPANT_RESTAURANT_ALREADY_LIKED(HttpStatus.BAD_REQUEST, "이미 좋아요를 누른 식당입니다."),
     PARTICIPANT_RESTAURANT_NOT_LIKED(HttpStatus.BAD_REQUEST, "좋아요 기록이 없습니다."),
+    RESTAURANTS_IS_EMPTY(HttpStatus.BAD_REQUEST, "픽잇의 식당이 비어있습니다."),
 
     // User 관련 에러
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "유저를 찾을 수 없습니다."),
