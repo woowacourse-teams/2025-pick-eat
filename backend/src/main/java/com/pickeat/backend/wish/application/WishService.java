@@ -2,8 +2,6 @@ package com.pickeat.backend.wish.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.pickeat.domain.Participant;
-import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
@@ -25,7 +23,6 @@ public class WishService {
     private final WishListRepository wishListRepository;
     private final WishRepository wishRepository;
     private final RoomUserRepository roomUserRepository;
-    private final ParticipantRepository participantRepository;
 
     @Transactional
     public WishResponse createWish(
@@ -55,10 +52,9 @@ public class WishService {
         wishRepository.delete(wish);
     }
 
-    public List<WishResponse> getWishes(Long wishListId, Long participantId) {
+    public List<WishResponse> getWishes(Long wishListId, Long userId) {
         WishList wishList = getWishList(wishListId);
-        Participant participant = getParticipant(participantId);
-        validateParticipantAccessToRoom(wishList.getRoomId(), participant);
+        validateUserAccessToRoom(wishList.getRoomId(), userId);
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
         return WishResponse.from(wishList.getWishes());
     }
@@ -80,11 +76,6 @@ public class WishService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
     }
 
-    private Participant getParticipant(Long participantId) {
-        return participantRepository.findById(participantId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
-    }
-
     private void validateIsPublicWishList(WishList wishList) {
         if (!wishList.getIsPublic()) {
             throw new BusinessException(ErrorCode.NOT_PUBLIC_WISH_LIST);
@@ -94,12 +85,6 @@ public class WishService {
     private void validateUserAccessToRoom(Long roomId, Long userId) {
         if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
             throw new BusinessException(ErrorCode.WISH_ACCESS_DENIED);
-        }
-    }
-
-    private void validateParticipantAccessToRoom(Long roomId, Participant participant) {
-        if (!participant.getPickeat().getRoomId().equals(roomId)) {
-            throw new BusinessException(ErrorCode.WISH_LIST_ACCESS_DENIED);
         }
     }
 }
