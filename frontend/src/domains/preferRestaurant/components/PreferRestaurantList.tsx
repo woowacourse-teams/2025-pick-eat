@@ -17,7 +17,7 @@ type Props = {
 function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
   const initialData = use(preferRestaurantListPromise);
   const { isLikeVisible, syncVisibleLikes, addVisibleLike, removeVisibleLike } =
-    useVisibleLike();
+    useVisibleLike(initialData);
   const { restaurantList, updateLikeCount } = usePreferRestaurant(
     initialData,
     syncVisibleLikes
