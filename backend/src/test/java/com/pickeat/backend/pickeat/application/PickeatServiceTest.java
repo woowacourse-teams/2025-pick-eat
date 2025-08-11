@@ -14,6 +14,7 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
@@ -23,6 +24,7 @@ import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.user.domain.User;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -334,6 +336,51 @@ public class PickeatServiceTest {
 
             // then
             assertThat(result).isEmpty();
+        }
+    }
+
+    @Nested
+    class 픽잇_활성화_상태_조회_케이스 {
+
+        @Test
+        void 활성화된_픽잇_상태_조회_성공() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            PickeatStateResponse result = pickeatService.getPickeatState(pickeat.getCode().toString());
+
+            // then
+            assertThat(result.isActive()).isTrue();
+        }
+
+        @Test
+        void 비활성화된_픽잇_상태_조회_성공() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            pickeat.deactivate();
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            PickeatStateResponse result = pickeatService.getPickeatState(pickeat.getCode().toString());
+
+            // then
+            assertThat(result.isActive()).isFalse();
+        }
+
+        @Test
+        void 존재하지_않는_픽잇_조회시_예외() {
+            // given
+            String invalidCode = String.valueOf(UUID.randomUUID());
+
+            // when & then
+            assertThatThrownBy(() -> pickeatService.getPickeatState(invalidCode))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.PICKEAT_NOT_FOUND.getMessage());
         }
     }
 }

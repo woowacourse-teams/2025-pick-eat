@@ -5,6 +5,7 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
@@ -79,6 +80,11 @@ public class PickeatService {
         return RestaurantResultResponse.from(restaurants.getTopRestaurants());
     }
 
+    public PickeatStateResponse getPickeatState(String pickeatCode) {
+        Pickeat pickeatByCode = getPickeatByCode(pickeatCode);
+        return PickeatStateResponse.from(pickeatByCode);
+    }
+
     private void validateUserAccessToRoom(Long roomId, Long userId) {
         if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
             throw new BusinessException(ErrorCode.ROOM_ACCESS_DENIED);
@@ -103,4 +109,5 @@ public class PickeatService {
         return participantRepository.findById(participantId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
     }
+
 }
