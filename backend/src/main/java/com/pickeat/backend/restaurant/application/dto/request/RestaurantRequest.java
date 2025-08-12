@@ -16,6 +16,7 @@ public record RestaurantRequest(
         String pictureUrls,
         RestaurantType type
 ) {
+
     public static RestaurantRequest fromWish(Wish wish, String pictureUrls) {
         return new RestaurantRequest(
                 wish.getName(),

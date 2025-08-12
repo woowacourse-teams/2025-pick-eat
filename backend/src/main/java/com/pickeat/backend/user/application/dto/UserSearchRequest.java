@@ -8,4 +8,5 @@ public record UserSearchRequest(
         @Schema(description = "검색할 사용자의 닉네임", example = "머핀")
         String nickname
 ) {
+
 }

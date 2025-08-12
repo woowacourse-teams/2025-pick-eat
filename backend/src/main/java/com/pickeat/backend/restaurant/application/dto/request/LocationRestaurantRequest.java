@@ -17,4 +17,5 @@ public record LocationRestaurantRequest(
         @NotNull(message = "반경 범위는 NULL일 수 없습니다.")
         Integer radius
 ) {
+
 }

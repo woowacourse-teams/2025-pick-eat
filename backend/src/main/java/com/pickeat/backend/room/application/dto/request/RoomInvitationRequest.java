@@ -11,4 +11,5 @@ public record RoomInvitationRequest(
         @Schema(description = "초대할 사용자 ID 목록", example = "[1, 2, 3]")
         List<Long> userIds
 ) {
+
 }

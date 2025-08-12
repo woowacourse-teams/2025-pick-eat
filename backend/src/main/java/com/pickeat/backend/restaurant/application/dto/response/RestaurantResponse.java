@@ -85,7 +85,7 @@ public record RestaurantResponse(
 
         return null;
     }
-    
+
     private static List<String> parseTags(String tags) {
         if (tags == null || tags.isBlank()) {
             return List.of();

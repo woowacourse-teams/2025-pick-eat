@@ -10,4 +10,5 @@ public record RoomRequest(
         @Schema(description = "방 이름", example = "점심 같이 먹어요")
         String name
 ) {
+
 }

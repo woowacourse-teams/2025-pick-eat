@@ -26,6 +26,7 @@ import org.springframework.context.annotation.Import;
 @DataJpaTest
 @Import(RoomService.class)
 class RoomServiceTest {
+
     @Autowired
     private TestEntityManager testEntityManager;
 
