@@ -184,42 +184,41 @@ public class PickeatServiceTest {
     }
 
     @Nested
-    class 픽잇_활성화_상태_조회_케이스 {
+    class 픽잇_상태_조회_케이스 {
 
         @Test
         void 활성화된_픽잇_상태_조회_성공() {
             // given
-            Pickeat pickeat = createWithoutRoomPickeat();
-
+            Pickeat pickeat = testEntityManager.persist(createWithoutRoomPickeat());
             testEntityManager.flush();
             testEntityManager.clear();
 
             // when
-            PickeatStateResponse result = pickeatService.getPickeatState(pickeat.getCode().toString());
+            PickeatStateResponse response = pickeatService.getPickeatState(pickeat.getCode().toString());
 
             // then
-            assertThat(result.isActive()).isTrue();
+            assertThat(response.isActive()).isTrue();
         }
 
         @Test
         void 비활성화된_픽잇_상태_조회_성공() {
             // given
-            Pickeat pickeat = createWithoutRoomPickeat();
+            Pickeat pickeat = testEntityManager.persist(createWithoutRoomPickeat());
             pickeat.deactivate();
             testEntityManager.flush();
             testEntityManager.clear();
 
             // when
-            PickeatStateResponse result = pickeatService.getPickeatState(pickeat.getCode().toString());
+            PickeatStateResponse response = pickeatService.getPickeatState(pickeat.getCode().toString());
 
             // then
-            assertThat(result.isActive()).isFalse();
+            assertThat(response.isActive()).isFalse();
         }
 
         @Test
-        void 존재하지_않는_픽잇_조회시_예외() {
+        void 존재하지_않는_픽잇_코드로_상태_조회_시_예외() {
             // given
-            String invalidCode = String.valueOf(UUID.randomUUID());
+            String invalidCode = UUID.randomUUID().toString();
 
             // when & then
             assertThatThrownBy(() -> pickeatService.getPickeatState(invalidCode))

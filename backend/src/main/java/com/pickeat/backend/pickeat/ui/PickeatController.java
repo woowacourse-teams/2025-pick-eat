@@ -8,6 +8,7 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateUpdateResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import jakarta.validation.Valid;
@@ -60,12 +61,12 @@ public class PickeatController implements PickeatApiSpec {
 
     @Override
     @PatchMapping("/pickeats/{pickeatCode}/deactivate")
-    public ResponseEntity<Void> deactivatePickeat(
+    public ResponseEntity<PickeatStateUpdateResponse> deactivatePickeat(
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantId Long participantId
     ) {
-        pickeatService.deactivatePickeat(pickeatCode, participantId);
-        return ResponseEntity.ok().build();
+        PickeatStateUpdateResponse response = pickeatService.deactivatePickeat(pickeatCode, participantId);
+        return ResponseEntity.ok().body(response);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateUpdateResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -235,7 +236,7 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> deactivatePickeat(
+    ResponseEntity<PickeatStateUpdateResponse> deactivatePickeat(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode,
             @Parameter(hidden = true) Long participantId
@@ -410,18 +411,20 @@ public interface PickeatApiSpec {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "픽잇 없음",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "PICKEAT_NOT_FOUND",
-                                              "status": 404,
-                                              "detail": "픽잇을 찾을 수 없습니다.",
-                                              "instance": "/api/v1/pickeats/ABC123/state"
-                                            }
-                                            """
-                            )
+                            examples = {
+                                    @ExampleObject(
+                                            name = "픽잇 없음",
+                                            value = """
+                                                    {
+                                                      "type": "about:blank",
+                                                      "title": "PICKEAT_NOT_FOUND",
+                                                      "status": 404,
+                                                      "detail": "픽잇을 찾을 수 없습니다.",
+                                                      "instance": "/api/v1/pickeats/ABC123/state"
+                                                    }
+                                                    """
+                                    )
+                            }
                     )
             )
     })
