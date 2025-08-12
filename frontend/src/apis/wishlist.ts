@@ -61,9 +61,9 @@ const convertResponaseToWishes = (data: WishesResponse[]) => {
 const BASE_URL = 'wishLists';
 
 export const wishlist = {
-  get: async (roomId: string): Promise<WishlistType[]> => {
+  get: async (roomId: number): Promise<WishlistType[]> => {
     const url = roomId
-      ? joinAsPath('room', roomId, BASE_URL)
+      ? joinAsPath('room', `${roomId}`, BASE_URL)
       : joinAsPath(BASE_URL);
     const response = await apiClient.get<WishlistResponse[]>(url);
     if (response) return convertResponseToWish(response);
@@ -76,5 +76,10 @@ export const wishlist = {
     const response = await apiClient.get<WishesResponse[]>(url);
     if (response) return convertResponaseToWishes(response);
     return null;
+  },
+
+  post: async (roomId: number, name: string) => {
+    const url = joinAsPath('room', `${roomId}`, BASE_URL);
+    await apiClient.post(url, { name });
   },
 };

@@ -89,14 +89,15 @@ export default IncludeMemberList;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 40%;
+    min-height: 40%;
+
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level5};
 
     padding: ${({ theme }) => theme.PADDING.p5};
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 
@@ -120,7 +121,9 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level4};
   `,
 
-  List: styled.ul``,
+  List: styled.ul`
+    overflow: scroll;
+  `,
 
   Member: styled.li`
     padding: ${({ theme }) => theme.PADDING.p3};
