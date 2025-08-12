@@ -1,23 +1,5 @@
 import Layout from '@components/layouts/Layout';
 
-
-
-
-
-import Choosetype from '@pages/ChooseType';
-import ChooseWishlist from '@pages/ChooseWishlist';
-import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
-import CreateRoom from '@pages/CreateRoom';
-import Login from '@pages/Login';
-import MatchResult from '@pages/MatchResult';
-import MyPage from '@pages/MyPage';
-import OauthCallback from '@pages/OauthCallback';
-import PickeatDetail from '@pages/PickeatDetail';
-import PreferRestaurant from '@pages/PreferRestaurant';
-import ProfileInit from '@pages/ProfileInit';
-import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-import RoomDetail from '@pages/RoomDetail';
-
 import { AuthProvider } from '@domains/login/context/AuthProvider';
 
 import { useGA } from '@hooks/useGA';
@@ -28,6 +10,19 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { ThemeProvider, Global } from '@emotion/react';
+import ChooseWishlist from '@pages/ChooseWishlist';
+import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
+import CreateRoom from '@pages/CreateRoom';
+import Login from '@pages/Login';
+import Main from '@pages/Main';
+import MatchResult from '@pages/MatchResult';
+import MyPage from '@pages/MyPage';
+import OauthCallback from '@pages/OauthCallback';
+import PickeatDetail from '@pages/PickeatDetail';
+import PreferRestaurant from '@pages/PreferRestaurant';
+import ProfileInit from '@pages/ProfileInit';
+import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
+import RoomDetail from '@pages/RoomDetail';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
 
 function Wrapper() {
@@ -50,7 +45,7 @@ const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [
-      { path: ROUTE_PATH.MAIN, Component: Choosetype },
+      { path: ROUTE_PATH.MAIN, Component: Main },
 
       {
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
