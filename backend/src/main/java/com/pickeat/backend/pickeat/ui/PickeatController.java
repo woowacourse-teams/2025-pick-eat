@@ -8,7 +8,6 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatStateUpdateResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import jakarta.validation.Valid;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -60,16 +58,6 @@ public class PickeatController implements PickeatApiSpec {
     }
 
     @Override
-    @PatchMapping("/pickeats/{pickeatCode}/deactivate")
-    public ResponseEntity<PickeatStateUpdateResponse> deactivatePickeat(
-            @PathVariable("pickeatCode") String pickeatCode,
-            @ParticipantId Long participantId
-    ) {
-        PickeatStateUpdateResponse response = pickeatService.deactivatePickeat(pickeatCode, participantId);
-        return ResponseEntity.ok().body(response);
-    }
-
-    @Override
     @GetMapping("/pickeats/{pickeatCode}")
     public ResponseEntity<PickeatResponse> getPickeat(@PathVariable("pickeatCode") String pickeatCode) {
         PickeatResponse response = pickeatService.getPickeat(pickeatCode);
@@ -82,6 +70,7 @@ public class PickeatController implements PickeatApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantId Long participantId
     ) {
+        pickeatService.deactivatePickeat(pickeatCode, participantId);
         RestaurantResultResponse response = pickeatResultService.createPickeatResult(pickeatCode, participantId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

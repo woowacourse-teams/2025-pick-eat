@@ -6,7 +6,6 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatStateUpdateResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
@@ -45,14 +44,10 @@ public class PickeatService {
     }
 
     @Transactional
-    public PickeatStateUpdateResponse deactivatePickeat(String pickeatCode, Long participantId) {
+    public void deactivatePickeat(String pickeatCode, Long participantId) {
         validateParticipantAccessToPickeat(participantId, pickeatCode);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        if (!pickeat.getIsActive()) {
-            return new PickeatStateUpdateResponse(false);
-        }
         pickeat.deactivate();
-        return new PickeatStateUpdateResponse(true);
     }
 
     public ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {

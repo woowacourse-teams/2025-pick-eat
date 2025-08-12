@@ -4,7 +4,6 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatStateUpdateResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -186,60 +185,6 @@ public interface PickeatApiSpec {
     ResponseEntity<ParticipantStateResponse> getParticipantStateSummary(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode
-    );
-
-    @Operation(
-            summary = "픽잇 비활성화",
-            operationId = "deactivatePickeat",
-            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "픽잇 비활성화 성공"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "존재하지 않는 픽잇",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "픽잇 없음",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "PICKEAT_NOT_FOUND",
-                                              "status": 404,
-                                              "detail": "픽잇을 찾을 수 없습니다.",
-                                              "instance": "/api/v1/pickeats/ABC123/deactivate"
-                                            }
-                                            """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "이미 비활성화된 픽잇",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "이미 비활성화됨",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "PICKEAT_ALREADY_INACTIVE",
-                                              "status": 400,
-                                              "detail": "이미 비활성화된 픽잇입니다.",
-                                              "instance": "/api/v1/pickeats/ABC123/deactivate"
-                                            }
-                                            """
-                            )
-                    )
-            )
-    })
-    ResponseEntity<PickeatStateUpdateResponse> deactivatePickeat(
-            @Parameter(description = 픽잇_코드_UUID_형식)
-            @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
     );
 
     @Operation(
