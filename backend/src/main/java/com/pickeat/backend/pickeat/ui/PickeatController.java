@@ -9,6 +9,7 @@ import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,5 +81,15 @@ public class PickeatController implements PickeatApiSpec {
     ) {
         RestaurantResultResponse response = pickeatService.getPickeatResult(pickeatCode, participantId);
         return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    @GetMapping("/room/{roomId}/pickeats/active")
+    public ResponseEntity<List<PickeatResponse>> getActivePickeatsInRoom(
+            @PathVariable("roomId") Long roomId,
+            @LoginUserId Long userId
+    ) {
+        List<PickeatResponse> responses = pickeatService.getActivePickeatInRoom(roomId, userId);
+        return ResponseEntity.ok().body(responses);
     }
 }

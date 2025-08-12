@@ -79,6 +79,12 @@ public class PickeatService {
         return RestaurantResultResponse.from(restaurants.getTopRestaurants());
     }
 
+    public List<PickeatResponse> getActivePickeatInRoom(Long roomId, Long userId) {
+        validateUserAccessToRoom(roomId, userId);
+        List<Pickeat> pickeats = pickeatRepository.findByRoomIdAndIsActive(roomId, true);
+        return PickeatResponse.from(pickeats);
+    }
+
     private void validateUserAccessToRoom(Long roomId, Long userId) {
         if (!roomUserRepository.existsByRoomIdAndUserId(roomId, userId)) {
             throw new BusinessException(ErrorCode.ROOM_ACCESS_DENIED);
