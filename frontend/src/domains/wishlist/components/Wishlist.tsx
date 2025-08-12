@@ -11,11 +11,11 @@ import Wishes from './Wishes';
 
 type Prop = {
   wishlist: WishlistType;
-  selected: boolean;
-  onSelect: (id: number) => void;
+  selected?: boolean;
+  onSelect?: (id: number) => void;
 };
 
-function Wishlist({ wishlist, selected, onSelect }: Prop) {
+function Wishlist({ wishlist, selected = false, onSelect }: Prop) {
   const { id, name } = wishlist;
   const {
     mounted,
@@ -26,7 +26,7 @@ function Wishlist({ wishlist, selected, onSelect }: Prop) {
   } = useModal();
 
   return (
-    <S.Container selected={selected} onClick={() => onSelect(id)}>
+    <S.Container selected={selected} onClick={() => onSelect?.(id)}>
       <S.Name>{name}</S.Name>
       <Button
         text="상세"

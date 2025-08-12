@@ -21,7 +21,7 @@ export type Wishlist = {
 
 function ChooseWishlist() {
   const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId') ?? '';
+  const roomId = Number(searchParams.get('roomId')) ?? '';
 
   return (
     <S.Container>
