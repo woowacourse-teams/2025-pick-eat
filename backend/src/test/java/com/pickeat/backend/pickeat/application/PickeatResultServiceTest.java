@@ -9,10 +9,10 @@ import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import java.util.UUID;
@@ -139,6 +139,75 @@ public class PickeatResultServiceTest {
                     pickeat.getCode().toString(), participant.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.RESTAURANTS_IS_EMPTY.getMessage());
+        }
+
+        @Test
+        void 존재하지_않는_참여자로_접근시_예외() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            createRestaurantInPickeat(pickeat, 3);
+            Long invalidParticipantId = 999L;
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> pickeatResultService.createPickeatResult(
+                    pickeat.getCode().toString(), invalidParticipantId))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.PARTICIPANT_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        void 픽잇에_속하지_않은_참여자로_접근시_예외() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            Pickeat otherPickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(otherPickeat);
+            createRestaurantInPickeat(pickeat, 3);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> pickeatResultService.createPickeatResult(
+                    pickeat.getCode().toString(), participant.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.PICKEAT_ACCESS_DENIED.getMessage());
+        }
+
+        @Test
+        void 존재하지_않는_픽잇_코드로_접근시_예외() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(pickeat);
+            String invalidCode = String.valueOf(UUID.randomUUID());
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> pickeatResultService.createPickeatResult(invalidCode, participant.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.PICKEAT_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        void 픽잇_결과_생성_후_픽잇_비활성화_확인() {
+            // given
+            Pickeat pickeat = createWithoutRoomPickeat();
+            Participant participant = createParticipant(pickeat);
+            createRestaurantInPickeat(pickeat, 3);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            pickeatResultService.createPickeatResult(pickeat.getCode().toString(), participant.getId());
+
+            // then
+            Pickeat updatedPickeat = testEntityManager.find(Pickeat.class, pickeat.getId());
+            assertThat(updatedPickeat.getIsActive()).isFalse();
         }
     }
 
