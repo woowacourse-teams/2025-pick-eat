@@ -3,11 +3,13 @@ import { Restaurant } from '@apis/restaurant';
 import { useState } from 'react';
 
 export const useVisibleLike = (initialData: Restaurant[]) => {
-  const [visibleLikedIds, setVisibleLikedIds] = useState<number[]>(
+  const getInitialLikedIds = () =>
     initialData
       .filter(restaurant => restaurant.isLiked)
-      .map(restaurant => restaurant.id)
-  );
+      .map(restaurant => restaurant.id);
+
+  const [visibleLikedIds, setVisibleLikedIds] =
+    useState<number[]>(getInitialLikedIds);
 
   const isLikeVisible = (id: number) =>
     visibleLikedIds.some((visibleLikedId: number) => visibleLikedId === id);
