@@ -13,7 +13,7 @@ public class Restaurants {
 
     private final List<Restaurant> restaurants;
 
-    public Restaurant getRandomTopRestaurant() {
+    public Restaurant getRandomRestaurant() {
         if (restaurants.isEmpty()) {
             throw new BusinessException(ErrorCode.RESTAURANTS_IS_EMPTY);
         }

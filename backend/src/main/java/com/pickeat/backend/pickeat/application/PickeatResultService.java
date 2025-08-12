@@ -41,7 +41,7 @@ public class PickeatResultService {
                 restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false);
 
         Restaurants restaurants = new Restaurants(availableRestaurants);
-        Restaurant randomResult = restaurants.getRandomTopRestaurant();
+        Restaurant randomResult = restaurants.getRandomRestaurant();
         boolean isTied = restaurants.isTied();
 
         PickeatResult pickeatResult = PickeatResult.of(pickeat, randomResult, isTied);
