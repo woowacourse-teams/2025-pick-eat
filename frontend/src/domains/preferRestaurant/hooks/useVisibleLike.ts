@@ -11,7 +11,7 @@ export const useVisibleLike = (initialData: Restaurant[]) => {
   const [visibleLikedIds, setVisibleLikedIds] =
     useState<number[]>(getInitialLikedIds);
 
-  const isLikeVisible = (id: number) =>
+  const isVisibleLike = (id: number) =>
     visibleLikedIds.some((visibleLikedId: number) => visibleLikedId === id);
 
   const syncVisibleLikes = (newLikedIds: number[]) => {
@@ -24,5 +24,5 @@ export const useVisibleLike = (initialData: Restaurant[]) => {
   const removeVisibleLike = (id: number) =>
     setVisibleLikedIds(prev => prev.filter(x => x !== id));
 
-  return { isLikeVisible, syncVisibleLikes, addVisibleLike, removeVisibleLike };
+  return { isVisibleLike, syncVisibleLikes, addVisibleLike, removeVisibleLike };
 };
