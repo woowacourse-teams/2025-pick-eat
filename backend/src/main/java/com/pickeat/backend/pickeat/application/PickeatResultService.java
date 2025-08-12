@@ -82,7 +82,7 @@ public class PickeatResultService {
                 restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false);
 
         Restaurants restaurants = new Restaurants(availableRestaurants);
-        Restaurant selectedRestaurant = restaurants.getRandomRestaurant();
+        Restaurant selectedRestaurant = restaurants.getRandomTopRatedRestaurant();
         boolean hasEqualLike = restaurants.hasEqualLike();
 
         PickeatResult newResult = new PickeatResult(pickeat, selectedRestaurant, hasEqualLike);

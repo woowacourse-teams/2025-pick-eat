@@ -26,7 +26,7 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of(restaurant));
 
             // when
-            Restaurant topRestaurant = restaurants.getRandomRestaurant();
+            Restaurant topRestaurant = restaurants.getRandomTopRatedRestaurant();
 
             // then
             assertThat(topRestaurant.getName()).isEqualTo(restaurant.getName());
@@ -44,7 +44,7 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when
-            Restaurant topRestaurant = restaurants.getRandomRestaurant();
+            Restaurant topRestaurant = restaurants.getRandomTopRatedRestaurant();
 
             // then
             assertThat(topRestaurant.getName()).isIn(restaurant1.getName(), restaurant2.getName());
@@ -57,7 +57,7 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of());
 
             // when & then
-            assertThatThrownBy(() -> restaurants.getRandomRestaurant())
+            assertThatThrownBy(() -> restaurants.getRandomTopRatedRestaurant())
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.RESTAURANTS_IS_EMPTY.getMessage());
         }
@@ -71,7 +71,7 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when
-            Restaurant topRestaurant = restaurants.getRandomRestaurant();
+            Restaurant topRestaurant = restaurants.getRandomTopRatedRestaurant();
 
             // then
             assertThat(topRestaurant.getName()).isIn(restaurant1.getName(), restaurant2.getName());
@@ -94,7 +94,7 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2, restaurant3));
 
             // when
-            Restaurant topRestaurant = restaurants.getRandomRestaurant();
+            Restaurant topRestaurant = restaurants.getRandomTopRatedRestaurant();
 
             // then
             assertThat(topRestaurant.getName()).isEqualTo("3점집");
