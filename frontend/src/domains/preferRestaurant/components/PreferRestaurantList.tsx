@@ -5,8 +5,8 @@ import { useFlip } from '@hooks/useFlip';
 import styled from '@emotion/styled';
 import { use } from 'react';
 
+import { useOptimisticLike } from '../hooks/useOptimisticLike';
 import usePreferRestaurant from '../hooks/usePreferRestaurant';
-import { useVisibleLike } from '../hooks/useVisibleLike';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
 
@@ -16,22 +16,26 @@ type Props = {
 
 function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
   const initialData = use(preferRestaurantListPromise);
-  const { isVisibleLike, syncVisibleLikes, addVisibleLike, removeVisibleLike } =
-    useVisibleLike(initialData);
+  const {
+    isOptimisticLike,
+    syncOptimisticLikes,
+    addOptimisticLike,
+    removeOptimisticLike,
+  } = useOptimisticLike(initialData);
   const { restaurantList, updateLikeCount } = usePreferRestaurant(
     initialData,
-    syncVisibleLikes
+    syncOptimisticLikes
   );
   const { itemRefs } = useFlip(restaurantList);
 
   const handleLike = async (id: number) => {
-    addVisibleLike(id);
+    addOptimisticLike(id);
     updateLikeCount(id, +1);
 
     try {
       restaurant.patchLike(id);
     } catch (error) {
-      removeVisibleLike(id);
+      removeOptimisticLike(id);
       updateLikeCount(id, -1);
 
       console.log('좋아요 실패:', error);
@@ -39,13 +43,13 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
   };
 
   const handleUnlike = async (id: number) => {
-    removeVisibleLike(id);
+    removeOptimisticLike(id);
     updateLikeCount(id, -1);
 
     try {
       restaurant.patchUnlike(id);
     } catch (error) {
-      addVisibleLike(id);
+      addOptimisticLike(id);
       updateLikeCount(id, +1);
       console.error('좋아요 취소 실패:', error);
     }
@@ -62,7 +66,7 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
         >
           <PreferRestaurantItem
             restaurant={restaurant}
-            liked={isVisibleLike(restaurant.id)}
+            liked={isOptimisticLike(restaurant.id)}
             onLike={handleLike}
             onUnlike={handleUnlike}
           />

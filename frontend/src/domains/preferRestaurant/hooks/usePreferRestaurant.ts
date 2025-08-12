@@ -6,7 +6,7 @@ import { useSearchParams } from 'react-router';
 
 const usePreferRestaurant = (
   initialData: Restaurant[],
-  syncVisibleLikes: (newLikedIds: number[]) => void
+  syncOptimisticLikes: (newLikedIds: number[]) => void
 ) => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
@@ -47,7 +47,7 @@ const usePreferRestaurant = (
       });
       if (!isUnmounted && response) {
         setRestaurantList(sortRestaurants(response));
-        syncVisibleLikes(
+        syncOptimisticLikes(
           response
             .filter((restaurant: Restaurant) => restaurant.isLiked)
             .map((restaurant: Restaurant) => restaurant.id)
