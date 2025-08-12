@@ -12,17 +12,24 @@ import { users } from '@apis/users';
 import { ROUTE_PATH } from '@routes/routePath';
 
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
+import { Suspense, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
 function MyPage() {
   const navigate = useNavigate();
+  const roomData = useMemo(() => {
+    return rooms.get();
+  }, []);
+  const userData = useMemo(() => {
+    return users.get();
+  }, []);
   return (
     <S.Container>
       <ErrorBoundary>
         <Suspense fallback={<div>로딩중...</div>}>
-          <Profile user={users.get()} />
-          <RoomList roomsData={rooms.get()} />
+          <Profile user={userData} />
+          <RoomList roomsData={roomData} />
+          {/* <RoomList roomsData={rooms.get()} /> */}
         </Suspense>
       </ErrorBoundary>
       <Button
