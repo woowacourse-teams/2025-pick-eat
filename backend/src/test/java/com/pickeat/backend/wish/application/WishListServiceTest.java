@@ -2,10 +2,13 @@ package com.pickeat.backend.wish.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
+import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
+import com.pickeat.backend.fixture.WishPictureFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.domain.Room;
@@ -13,7 +16,9 @@ import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
+import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
+import com.pickeat.backend.wish.domain.WishPicture;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -148,7 +153,83 @@ class WishListServiceTest {
             assertThat(response)
                     .extracting(WishListResponse::id)
                     .containsExactlyInAnyOrderElementsOf(publicWishListIds);
+        }
+    }
 
+    @Nested
+    class 위시리스트_삭제_케이스 {
+
+        @Test
+        void 위시리스트_삭제_성공() {
+            // given
+            User user = entityManager.persist(UserFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            wishListService.deleteWishList(wishList.getId(), user.getId());
+
+            // then
+            assertThat(entityManager.find(WishList.class, wishList.getId())).isNull();
+        }
+
+        @Test
+        void 방의_참가자가_아닌_회원이_위시리스트를_삭제할_경우_예외_발생() {
+            // given
+            User user = entityManager.persist(UserFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> wishListService.deleteWishList(wishList.getId(), user.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISH_LIST_ACCESS_DENIED.getMessage());
+        }
+
+        @Test
+        void 위시리스트가_존재하지_않는_경우_예외_발생() {
+            // given
+            User user = entityManager.persist(UserFixture.create());
+            Long invalidWishListId = 100L;
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> wishListService.deleteWishList(invalidWishListId, user.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISH_LIST_NOT_FOUND.getMessage());
+        }
+
+        @Test
+        void 위시와_위시사진이_함께_삭제되는지_체크() {
+            // given
+            User user = entityManager.persist(UserFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+            Wish wish = entityManager.persist(WishFixture.create(wishList));
+            WishPicture wishPicture = entityManager.persist(WishPictureFixture.create(wish));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            wishListService.deleteWishList(wishList.getId(), user.getId());
+
+            // then
+            assertAll(
+                    () -> assertThat(entityManager.find(WishList.class, wishList.getId())).isNull(),
+                    () -> assertThat(entityManager.find(Wish.class, wish.getId())).isNull(),
+                    () -> assertThat(entityManager.find(WishPicture.class, wishPicture.getId())).isNull()
+            );
         }
     }
 }

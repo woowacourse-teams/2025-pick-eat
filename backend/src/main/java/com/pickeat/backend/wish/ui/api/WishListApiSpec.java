@@ -131,4 +131,62 @@ public interface WishListApiSpec {
     })
     @GetMapping("/wishLists")
     ResponseEntity<List<WishListResponse>> getPublicWishLists();
+
+    @Operation(
+            summary = "위시리스트 삭제",
+            operationId = "deleteWishList",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "위시리스트 삭제 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "위시리스트를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "위시리스트를 찾을 수 없음",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Not Found",
+                                              "status": 404,
+                                              "detail": "위시리스트를 찾을 수 없습니다.",
+                                              "instance": "/api/v1/wishLists/1"
+                                            }
+                                            """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "방에 대한 접근 권한 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "방에 대한 접근 권한 없음",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Forbidden",
+                                              "status": 403,
+                                              "detail": "해당 위시리스트에 대한 접근 권한이 없습니다.",
+                                              "instance": "/api/v1/wishLists/1"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    @org.springframework.web.bind.annotation.DeleteMapping("/wishLists/{wishListId}")
+    ResponseEntity<Void> deleteWishList(
+            @Parameter(description = "삭제할 위시리스트 ID", example = "1")
+            @PathVariable("wishListId") Long wishListId,
+            @Parameter(hidden = true) @LoginUserId Long userId
+    );
 }

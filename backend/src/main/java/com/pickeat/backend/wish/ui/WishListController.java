@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,5 +51,15 @@ public class WishListController implements WishListApiSpec {
     public ResponseEntity<List<WishListResponse>> getPublicWishLists() {
         List<WishListResponse> wishLists = wishListService.getPublicWishLists();
         return ResponseEntity.ok(wishLists);
+    }
+
+    @Override
+    @DeleteMapping("/wishLists/{wishListId}")
+    public ResponseEntity<Void> deleteWishList(
+            @PathVariable("wishListId") Long wishListId,
+            @LoginUserId Long userId
+    ) {
+        wishListService.deleteWishList(wishListId, userId);
+        return ResponseEntity.noContent().build();
     }
 }
