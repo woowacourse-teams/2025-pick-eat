@@ -1,6 +1,8 @@
+import WishlistForm from '@domains/wishlist/components/WishlistForm';
+
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import WishlistForm from '@domains/wishlist/WishlistForm';
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { wishlist } from '@apis/wishlist';
 
@@ -8,7 +10,6 @@ import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ErrorBoundary } from '@sentry/react';
 import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
@@ -56,7 +57,7 @@ const S = {
 
   Wrapper: styled.div`
     width: 70%;
-    height: 600px;
+    height: 650px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level6};

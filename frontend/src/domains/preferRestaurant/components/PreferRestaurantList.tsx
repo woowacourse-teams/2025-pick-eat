@@ -1,11 +1,11 @@
-import { Restaurant } from '@apis/restaurant';
+import { restaurant, Restaurant } from '@apis/restaurant';
 
 import { useFlip } from '@hooks/useFlip';
 
 import styled from '@emotion/styled';
 import { use } from 'react';
 
-import useLike from '../hooks/useLike';
+import { useOptimisticLike } from '../hooks/useOptimisticLike';
 import usePreferRestaurant from '../hooks/usePreferRestaurant';
 
 import PreferRestaurantItem from './PreferRestaurantItem';
@@ -16,15 +16,44 @@ type Props = {
 
 function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
   const initialData = use(preferRestaurantListPromise);
-
-  const { restaurantList, updateSortedRestaurantList, likedIds, setLikedIds } =
-    usePreferRestaurant(initialData);
-  const { itemRefs } = useFlip(restaurantList);
-  const { isLiked, handleLike, handleUnlike } = useLike(
-    updateSortedRestaurantList,
-    likedIds,
-    setLikedIds
+  const {
+    isOptimisticLike,
+    syncOptimisticLikes,
+    addOptimisticLike,
+    removeOptimisticLike,
+  } = useOptimisticLike(initialData);
+  const { restaurantList, updateLikeCount } = usePreferRestaurant(
+    initialData,
+    syncOptimisticLikes
   );
+  const { itemRefs } = useFlip(restaurantList);
+
+  const handleLike = async (id: number) => {
+    addOptimisticLike(id);
+    updateLikeCount(id, +1);
+
+    try {
+      restaurant.patchLike(id);
+    } catch (error) {
+      removeOptimisticLike(id);
+      updateLikeCount(id, -1);
+
+      console.log('좋아요 실패:', error);
+    }
+  };
+
+  const handleUnlike = async (id: number) => {
+    removeOptimisticLike(id);
+    updateLikeCount(id, -1);
+
+    try {
+      restaurant.patchUnlike(id);
+    } catch (error) {
+      addOptimisticLike(id);
+      updateLikeCount(id, +1);
+      console.error('좋아요 취소 실패:', error);
+    }
+  };
 
   return (
     <S.Container>
@@ -37,7 +66,7 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
         >
           <PreferRestaurantItem
             restaurant={restaurant}
-            liked={isLiked(restaurant.id)}
+            liked={isOptimisticLike(restaurant.id)}
             onLike={handleLike}
             onUnlike={handleUnlike}
           />

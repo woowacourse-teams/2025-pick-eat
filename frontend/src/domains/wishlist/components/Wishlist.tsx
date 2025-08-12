@@ -7,7 +7,7 @@ import { WishlistType } from '@apis/wishlist';
 import styled from '@emotion/styled';
 import { Wishlist } from '@pages/ChooseWishlist';
 
-import Wishies from './Wishes';
+import Wishes from './Wishes';
 
 type Prop = {
   wishlist: WishlistType;
@@ -42,7 +42,7 @@ function Wishlist({ wishlist, selected, onSelect }: Prop) {
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <Wishies wishlistId={id} wishlistName={name} />
+        <Wishes wishlistId={id} wishlistName={name} />
       </Modal>
     </S.Container>
   );

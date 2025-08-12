@@ -4,10 +4,12 @@ import { restaurants } from '@apis/restaurants';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router';
 
-const usePreferRestaurant = (initialData: Restaurant[]) => {
+const usePreferRestaurant = (
+  initialData: Restaurant[],
+  syncOptimisticLikes: (newLikedIds: number[]) => void
+) => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  const [likedIds, setLikedIds] = useState<number[]>([]);
 
   const sortRestaurants = (restaurantList: Restaurant[]) => {
     return restaurantList.sort((a, b) => {
@@ -29,6 +31,13 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
     setRestaurantList(prev => sortRestaurants(content(prev)));
   };
 
+  const updateLikeCount = (id: number, delta: 1 | -1) =>
+    updateSortedRestaurantList(prev =>
+      prev.map(item =>
+        item.id === id ? { ...item, likeCount: item.likeCount + delta } : item
+      )
+    );
+
   useEffect(() => {
     let isUnmounted = false;
 
@@ -38,7 +47,7 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
       });
       if (!isUnmounted && response) {
         setRestaurantList(sortRestaurants(response));
-        setLikedIds(
+        syncOptimisticLikes(
           response
             .filter((restaurant: Restaurant) => restaurant.isLiked)
             .map((restaurant: Restaurant) => restaurant.id)
@@ -56,7 +65,7 @@ const usePreferRestaurant = (initialData: Restaurant[]) => {
     };
   }, []);
 
-  return { restaurantList, updateSortedRestaurantList, likedIds, setLikedIds };
+  return { restaurantList, updateLikeCount };
 };
 
 export default usePreferRestaurant;

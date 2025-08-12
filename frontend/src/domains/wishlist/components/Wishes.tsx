@@ -12,6 +12,7 @@ type Props = {
 
 function Wishes({ wishlistId, wishlistName }: Props) {
   const [wishes, setWishes] = useState<WishesType[] | null>(null);
+
   useEffect(() => {
     const fetchWishes = async () => {
       const response = await wishlist.getWishes(wishlistId);

@@ -8,7 +8,7 @@ import { useSearchParams } from 'react-router';
 
 import { validatePickeatForms } from '../services/validatePickeatForms';
 
-export const useCreatePickeat = () => {
+export const useCreateLocationPickeat = () => {
   const [error, setError] = useState<string>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -20,7 +20,7 @@ export const useCreatePickeat = () => {
   ) => {
     const data = Object.fromEntries(formData.entries());
     try {
-      validatePickeatForms({
+      validatePickeatForms.location({
         name: data.pickeatName as string,
         address: data.address as string,
         radius: radiusValue,
@@ -50,7 +50,7 @@ export const useCreatePickeat = () => {
         setError(() =>
           e.message === 'INVALID_ADDRESS'
             ? '잘못된 위치입니다.'
-            : '방 생성에 실패했습니다.'
+            : '픽잇 생성에 실패했습니다.'
         );
       }
     }

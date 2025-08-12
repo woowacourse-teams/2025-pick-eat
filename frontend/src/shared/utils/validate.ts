@@ -7,4 +7,6 @@ export const validate = {
       return Object.keys(value as object).length === 0;
     return false;
   },
+
+  isInvaildId: (id: number): boolean => id === 0 || id === -1,
 };
