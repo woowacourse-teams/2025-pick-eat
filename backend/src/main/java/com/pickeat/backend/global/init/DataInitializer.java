@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile({"dev", "local"})
+@Profile({"local"})
 @RequiredArgsConstructor
 public class DataInitializer implements CommandLineRunner {
 
