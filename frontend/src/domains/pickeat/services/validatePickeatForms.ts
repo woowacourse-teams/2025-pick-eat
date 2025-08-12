@@ -27,7 +27,7 @@ export const validatePickeatForms = {
 
   wish: ({ name, wishlistId }: WishValidateType) => {
     if (validate.isEmpty(name)) throw new Error(ERROR_MESSAGE.NAME);
-    if (validate.isUnvalidId(wishlistId))
+    if (validate.isInvaildId(wishlistId))
       throw new Error(ERROR_MESSAGE.WISHLIST);
   },
 };

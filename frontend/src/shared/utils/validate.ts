@@ -8,5 +8,5 @@ export const validate = {
     return false;
   },
 
-  isUnvalidId: (id: number): boolean => id === 0 || id === -1,
+  isInvaildId: (id: number): boolean => id === 0 || id === -1,
 };
