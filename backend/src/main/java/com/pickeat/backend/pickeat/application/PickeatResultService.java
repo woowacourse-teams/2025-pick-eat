@@ -48,6 +48,12 @@ public class PickeatResultService {
         return RestaurantResultResponse.of(pickeatResult.getRestaurant(), pickeatResult.isHasEqualLike());
     }
 
+    private Pickeat getPickeatByCode(String pickeatCode) {
+        PickeatCode code = new PickeatCode(pickeatCode);
+        return pickeatRepository.findByCode(code)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
+    }
+
     private void validateParticipantAccessToPickeat(Long participantId, Pickeat pickeat) {
         Participant participant = getParticipant(participantId);
         if (!participant.getPickeat().equals(pickeat)) {
@@ -60,19 +66,13 @@ public class PickeatResultService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
     }
 
-    private Pickeat getPickeatByCode(String pickeatCode) {
-        PickeatCode code = new PickeatCode(pickeatCode);
-        return pickeatRepository.findByCode(code)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
-    }
-
     private Participant getParticipant(Long participantId) {
         return participantRepository.findById(participantId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
     }
 
     private PickeatResultCreationResponse getPickeatResultCreationResponse(Pickeat pickeat) {
-        return pickeatResultRepository.findByPickeatWithPessimisticLock(pickeat)
+        return pickeatResultRepository.findByPickeat(pickeat)
                 .map(existingResult -> new PickeatResultCreationResponse(convertToResponse(existingResult), false))
                 .orElseGet(() -> new PickeatResultCreationResponse(createNewPickeatResult(pickeat), true));
     }
