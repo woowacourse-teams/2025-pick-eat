@@ -47,7 +47,7 @@ public record RestaurantResultResponse(
         boolean hasEqualLike
 ) {
 
-    public static RestaurantResultResponse from(Restaurant restaurant, boolean hasEqualLike) {
+    public static RestaurantResultResponse of(Restaurant restaurant, boolean hasEqualLike) {
         return new RestaurantResultResponse(
                 restaurant.getId(),
                 restaurant.getName(),

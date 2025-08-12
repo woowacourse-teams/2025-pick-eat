@@ -71,7 +71,6 @@ public class PickeatController implements PickeatApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantId Long participantId
     ) {
-        pickeatService.deactivatePickeat(pickeatCode, participantId);
         PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(pickeatCode, participantId);
 
         HttpStatus status = response.isNewlyCreated() ? HttpStatus.CREATED : HttpStatus.OK;

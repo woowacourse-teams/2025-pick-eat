@@ -8,5 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PickeatRepository extends JpaRepository<Pickeat, Long> {
 
     Optional<Pickeat> findByCode(PickeatCode uuid);
-
 }
