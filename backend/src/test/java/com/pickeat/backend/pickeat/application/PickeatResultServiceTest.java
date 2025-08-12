@@ -12,6 +12,7 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import java.util.UUID;
@@ -63,13 +64,14 @@ public class PickeatResultServiceTest {
             testEntityManager.clear();
 
             // when
-            RestaurantResultResponse response = pickeatResultService.createPickeatResult(
+            PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(
                     pickeat.getCode().toString(), participant.getId());
 
             // then
             assertAll(
-                    () -> assertThat(response.id()).isEqualTo(restaurant2.getId()),
-                    () -> assertThat(response.hasEqualLike()).isFalse()
+                    () -> assertThat(response.result().id()).isEqualTo(restaurant2.getId()),
+                    () -> assertThat(response.result().hasEqualLike()).isFalse(),
+                    () -> assertThat(response.isNewlyCreated()).isTrue()
             );
         }
 
@@ -85,11 +87,14 @@ public class PickeatResultServiceTest {
             testEntityManager.clear();
 
             // when
-            RestaurantResultResponse response = pickeatResultService.createPickeatResult(
+            PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(
                     pickeat.getCode().toString(), participant.getId());
 
             // then
-            assertThat(response.hasEqualLike()).isTrue();
+            assertAll(
+                    () -> assertThat(response.result().hasEqualLike()).isTrue(),
+                    () -> assertThat(response.isNewlyCreated()).isTrue()
+            );
         }
 
         @Test
@@ -103,16 +108,18 @@ public class PickeatResultServiceTest {
             testEntityManager.clear();
 
             // when
-            RestaurantResultResponse firstResponse = pickeatResultService.createPickeatResult(
+            PickeatResultCreationResponse firstResponse = pickeatResultService.createPickeatResult(
                     pickeat.getCode().toString(), participant.getId());
-            RestaurantResultResponse secondResponse = pickeatResultService.createPickeatResult(
+            PickeatResultCreationResponse secondResponse = pickeatResultService.createPickeatResult(
                     pickeat.getCode().toString(), participant.getId());
 
             // then
             assertAll(
-                    () -> assertThat(firstResponse.id()).isEqualTo(restaurant.getId()),
-                    () -> assertThat(secondResponse.id()).isEqualTo(restaurant.getId()),
-                    () -> assertThat(firstResponse.id()).isEqualTo(secondResponse.id())
+                    () -> assertThat(firstResponse.result().id()).isEqualTo(restaurant.getId()),
+                    () -> assertThat(secondResponse.result().id()).isEqualTo(restaurant.getId()),
+                    () -> assertThat(firstResponse.result().id()).isEqualTo(secondResponse.result().id()),
+                    () -> assertThat(firstResponse.isNewlyCreated()).isTrue(),
+                    () -> assertThat(secondResponse.isNewlyCreated()).isFalse()
             );
         }
 

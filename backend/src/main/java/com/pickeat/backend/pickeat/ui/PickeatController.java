@@ -7,6 +7,7 @@ import com.pickeat.backend.pickeat.application.PickeatService;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
@@ -71,8 +72,10 @@ public class PickeatController implements PickeatApiSpec {
             @ParticipantId Long participantId
     ) {
         pickeatService.deactivatePickeat(pickeatCode, participantId);
-        RestaurantResultResponse response = pickeatResultService.createPickeatResult(pickeatCode, participantId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(pickeatCode, participantId);
+
+        HttpStatus status = response.isNewlyCreated() ? HttpStatus.CREATED : HttpStatus.OK;
+        return ResponseEntity.status(status).body(response.result());
     }
 
     @Override

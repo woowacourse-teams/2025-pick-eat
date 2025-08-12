@@ -228,14 +228,22 @@ public interface PickeatApiSpec {
 
     @Operation(
             summary = "픽잇 결과 생성",
-            description = "픽잇의 결과를 생성합니다. likeCount가 가장 높은 식당들 중에서 랜덤으로 1개를 선택하여 DB에 저장합니다. 모든 식당의 likeCount가 0인 경우 전체 식당에서 랜덤 선택합니다. 이미 결과가 있는 경우 409 에러를 반환합니다.",
+            description = "픽잇의 결과를 생성하거나 기존 결과를 반환합니다. likeCount가 가장 높은 식당들 중에서 랜덤으로 1개를 선택하여 DB에 저장합니다. 모든 식당의 likeCount가 0인 경우 전체 식당에서 랜덤 선택합니다. 멱등성을 지원하여 이미 결과가 있는 경우 기존 결과를 반환합니다.",
             operationId = "createPickeatResult",
             security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "201",
-                    description = "결과 생성 성공",
+                    description = "새로운 결과 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RestaurantResultResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "기존 결과 반환",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = RestaurantResultResponse.class)

@@ -9,6 +9,7 @@ import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.Restaurants;
@@ -28,6 +29,16 @@ public class PickeatResultService {
     private final ParticipantRepository participantRepository;
     private final PickeatResultRepository pickeatResultRepository;
 
+    @Transactional
+    public PickeatResultCreationResponse createPickeatResult(String pickeatCode, Long participantId) {
+        validateParticipantAccessToPickeat(participantId, pickeatCode);
+        Pickeat pickeat = getPickeatByCode(pickeatCode);
+
+        return pickeatResultRepository.findByPickeat(pickeat)
+                .map(existingResult -> new PickeatResultCreationResponse(convertToResponse(existingResult), false))
+                .orElseGet(() -> new PickeatResultCreationResponse(createNewPickeatResult(pickeat), true));
+    }
+
     public RestaurantResultResponse getPickeatResult(String pickeatCode, Long participantId) {
         validateParticipantAccessToPickeat(participantId, pickeatCode);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
@@ -37,27 +48,17 @@ public class PickeatResultService {
         return RestaurantResultResponse.from(pickeatResult.getRestaurant(), pickeatResult.isHasEqualLike());
     }
 
-    @Transactional
-    public RestaurantResultResponse createPickeatResult(String pickeatCode, Long participantId) {
-        validateParticipantAccessToPickeat(participantId, pickeatCode);
-        Pickeat pickeat = getPickeatByCode(pickeatCode);
-
-        return pickeatResultRepository.findByPickeat(pickeat)
-                .map(this::convertToResponse)
-                .orElseGet(() -> createNewPickeatResult(pickeat));
-    }
-
-    private PickeatResult getPickeatResult(Pickeat pickeat) {
-        return pickeatResultRepository.findByPickeat(pickeat)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
-    }
-
     private void validateParticipantAccessToPickeat(Long participantId, String pickeatCode) {
         Participant participant = getParticipant(participantId);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         if (!participant.getPickeat().equals(pickeat)) {
             throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
         }
+    }
+
+    private PickeatResult getPickeatResult(Pickeat pickeat) {
+        return pickeatResultRepository.findByPickeat(pickeat)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
     }
 
     private Pickeat getPickeatByCode(String pickeatCode) {
