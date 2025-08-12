@@ -44,10 +44,10 @@ public record RestaurantResultResponse(
         RestaurantType type,
 
         @Schema(description = "동점 여부", example = "true")
-        boolean isTied
+        boolean hasEqualLike
 ) {
 
-    public static RestaurantResultResponse from(Restaurant restaurant, boolean isTied) {
+    public static RestaurantResultResponse from(Restaurant restaurant, boolean hasEqualLike) {
         return new RestaurantResultResponse(
                 restaurant.getId(),
                 restaurant.getName(),
@@ -61,7 +61,7 @@ public record RestaurantResultResponse(
                 getLocationY(restaurant),
                 parsePictureUrls(restaurant.getPictureUrls()),
                 restaurant.getType(),
-                isTied);
+                hasEqualLike);
     }
 
 

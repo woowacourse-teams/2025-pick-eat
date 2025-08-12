@@ -12,7 +12,6 @@ public enum ErrorCode {
     INVALID_PICKEAT_CODE(HttpStatus.BAD_REQUEST, "유효하지 않은 픽잇 코드입니다."),
     PICKEAT_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 픽잇에 접근 권한이 없습니다."),
     PICKEAT_RESULT_NOT_FOUND(HttpStatus.NOT_FOUND, "픽잇 결과를 찾을 수 없습니다."),
-    PICKEAT_RESULT_ALREADY_EXISTS(HttpStatus.CONFLICT, "픽잇 결과가 이미 존재합니다."),
 
     // Participant 관련 에러
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "참가자를 찾을 수 없습니다."),

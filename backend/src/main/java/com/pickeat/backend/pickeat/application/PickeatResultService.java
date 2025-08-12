@@ -34,7 +34,7 @@ public class PickeatResultService {
 
         PickeatResult pickeatResult = getPickeatResult(pickeat);
 
-        return RestaurantResultResponse.from(pickeatResult.getRestaurant(), pickeatResult.isTied());
+        return RestaurantResultResponse.from(pickeatResult.getRestaurant(), pickeatResult.isHasEqualLike());
     }
 
     @Transactional
@@ -71,21 +71,21 @@ public class PickeatResultService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
     }
 
-    private RestaurantResultResponse convertToResponse(PickeatResult result) {
-        return RestaurantResultResponse.from(result.getRestaurant(), result.isTied());
-    }
-
     private RestaurantResultResponse createNewPickeatResult(Pickeat pickeat) {
         List<Restaurant> availableRestaurants =
                 restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false);
 
         Restaurants restaurants = new Restaurants(availableRestaurants);
         Restaurant selectedRestaurant = restaurants.getRandomRestaurant();
-        boolean hasTie = restaurants.isTied();
+        boolean hasEqualLike = restaurants.hasEqualLike();
 
-        PickeatResult newResult = PickeatResult.of(pickeat, selectedRestaurant, hasTie);
+        PickeatResult newResult = new PickeatResult(pickeat, selectedRestaurant, hasEqualLike);
         PickeatResult savedResult = pickeatResultRepository.save(newResult);
 
         return convertToResponse(savedResult);
+    }
+
+    private RestaurantResultResponse convertToResponse(PickeatResult result) {
+        return RestaurantResultResponse.from(result.getRestaurant(), result.isHasEqualLike());
     }
 }

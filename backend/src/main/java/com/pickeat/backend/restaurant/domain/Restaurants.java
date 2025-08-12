@@ -23,7 +23,7 @@ public class Restaurants {
         return topRestaurants.getFirst();
     }
 
-    public boolean isTied() {
+    public boolean hasEqualLike() {
         if (restaurants.isEmpty()) {
             return false;
         }

@@ -262,28 +262,6 @@ public interface PickeatApiSpec {
                                     )
                             }
                     )
-            ),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "이미 결과가 존재함",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class),
-                            examples = {
-                                    @ExampleObject(
-                                            name = "결과 이미 존재",
-                                            value = """
-                                                    {
-                                                      "type": "about:blank",
-                                                      "title": "PICKEAT_RESULT_ALREADY_EXISTS",
-                                                      "status": 409,
-                                                      "detail": "픽잇 결과가 이미 존재합니다.",
-                                                      "instance": "/api/v1/pickeats/ABC123/result"
-                                                    }
-                                                    """
-                                    )
-                            }
-                    )
             )
     })
     ResponseEntity<RestaurantResultResponse> createPickeatResult(

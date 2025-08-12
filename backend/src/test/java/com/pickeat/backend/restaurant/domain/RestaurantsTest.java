@@ -114,10 +114,10 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when
-            boolean isTied = restaurants.isTied();
+            boolean hasEqualLike = restaurants.hasEqualLike();
 
             // then
-            assertThat(isTied).isFalse();
+            assertThat(hasEqualLike).isFalse();
         }
 
         @Test
@@ -131,10 +131,10 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when
-            boolean isTied = restaurants.isTied();
+            boolean hasEqualLike = restaurants.hasEqualLike();
 
             // then
-            assertThat(isTied).isTrue();
+            assertThat(hasEqualLike).isTrue();
         }
 
         @Test
@@ -146,10 +146,10 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when
-            boolean isTied = restaurants.isTied();
+            boolean hasEqualLike = restaurants.hasEqualLike();
 
             // then
-            assertThat(isTied).isTrue();
+            assertThat(hasEqualLike).isTrue();
         }
 
         @Test
@@ -158,10 +158,10 @@ class RestaurantsTest {
             Restaurants restaurants = new Restaurants(List.of());
 
             // when
-            boolean isTied = restaurants.isTied();
+            boolean hasEqualLike = restaurants.hasEqualLike();
 
             // then
-            assertThat(isTied).isFalse();
+            assertThat(hasEqualLike).isFalse();
         }
     }
 }

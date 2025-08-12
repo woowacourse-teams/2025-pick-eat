@@ -69,12 +69,12 @@ public class PickeatResultServiceTest {
             // then
             assertAll(
                     () -> assertThat(response.id()).isEqualTo(restaurant2.getId()),
-                    () -> assertThat(response.isTied()).isFalse() // 최고 선호도가 1개이므로 동점 아님
+                    () -> assertThat(response.hasEqualLike()).isFalse()
             );
         }
 
         @Test
-        void 동점인_경우_isTied_true() {
+        void 동점인_경우_hasEqualLike_true() {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
             Participant participant = createParticipant(pickeat);
@@ -89,27 +89,31 @@ public class PickeatResultServiceTest {
                     pickeat.getCode().toString(), participant.getId());
 
             // then
-            assertThat(response.isTied()).isTrue();
+            assertThat(response.hasEqualLike()).isTrue();
         }
 
         @Test
-        void 이미_결과가_존재할_경우_예외() {
+        void 이미_결과가_존재할_경우_기존_결과_반환() {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
             Participant participant = createParticipant(pickeat);
-            createRestaurantInPickeat(pickeat, 3);
+            Restaurant restaurant = createRestaurantInPickeat(pickeat, 3);
 
             testEntityManager.flush();
             testEntityManager.clear();
 
             // when
-            pickeatResultService.createPickeatResult(pickeat.getCode().toString(), participant.getId());
+            RestaurantResultResponse firstResponse = pickeatResultService.createPickeatResult(
+                    pickeat.getCode().toString(), participant.getId());
+            RestaurantResultResponse secondResponse = pickeatResultService.createPickeatResult(
+                    pickeat.getCode().toString(), participant.getId());
 
             // then
-            assertThatThrownBy(() -> pickeatResultService.createPickeatResult(
-                    pickeat.getCode().toString(), participant.getId()))
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.PICKEAT_RESULT_ALREADY_EXISTS.getMessage());
+            assertAll(
+                    () -> assertThat(firstResponse.id()).isEqualTo(restaurant.getId()),
+                    () -> assertThat(secondResponse.id()).isEqualTo(restaurant.getId()),
+                    () -> assertThat(firstResponse.id()).isEqualTo(secondResponse.id())
+            );
         }
 
         @Test
@@ -140,7 +144,7 @@ public class PickeatResultServiceTest {
             Pickeat pickeat = createWithoutRoomPickeat();
             Participant participant = createParticipant(pickeat);
             Restaurant restaurant = createRestaurantInPickeat(pickeat, 3);
-            PickeatResult pickeatResult = PickeatResult.of(pickeat, restaurant, false);
+            PickeatResult pickeatResult = new PickeatResult(pickeat, restaurant, false);
             testEntityManager.persist(pickeatResult);
 
             testEntityManager.flush();
@@ -153,7 +157,7 @@ public class PickeatResultServiceTest {
             // then
             assertAll(
                     () -> assertThat(response.id()).isEqualTo(restaurant.getId()),
-                    () -> assertThat(response.isTied()).isFalse()
+                    () -> assertThat(response.hasEqualLike()).isFalse()
             );
         }
 
