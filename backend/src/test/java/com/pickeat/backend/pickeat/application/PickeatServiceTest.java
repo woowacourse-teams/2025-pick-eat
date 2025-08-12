@@ -336,4 +336,49 @@ public class PickeatServiceTest {
             assertThat(result).isEmpty();
         }
     }
+
+    @Nested
+    class 방의_활성화된_픽잇_리스트_조회_케이스 {
+
+        @Test
+        void 방의_활성화된_픽잇_리스트_조회_성공() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            Room room = testEntityManager.persist(RoomFixture.create());
+            RoomUser roomUser = testEntityManager.persist(new RoomUser(room, user));
+            List<Pickeat> pickeats = List.of(
+                    testEntityManager.persist(PickeatFixture.createWithRoom(room.getId())),
+                    testEntityManager.persist(PickeatFixture.createWithRoom(room.getId())));
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            List<PickeatResponse> responses = pickeatService.getActivePickeatInRoom(room.getId(), user.getId());
+
+            // then
+            List<Long> pickeatIds = pickeats.stream().map(Pickeat::getId).toList();
+            assertThat(responses)
+                    .extracting(PickeatResponse::id)
+                    .containsExactlyInAnyOrderElementsOf(pickeatIds);
+        }
+
+        @Test
+        void 회원이_방의_참가자가_아닌_경우_예외_발생() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            Room room = testEntityManager.persist(RoomFixture.create());
+            List<Pickeat> pickeats = List.of(
+                    testEntityManager.persist(PickeatFixture.createWithoutRoom()),
+                    testEntityManager.persist(PickeatFixture.createWithoutRoom()));
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> pickeatService.getActivePickeatInRoom(room.getId(), user.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.ROOM_ACCESS_DENIED.getMessage());
+        }
+    }
 }
