@@ -13,8 +13,20 @@ public record WishResponse(
         String name,
         @Schema(description = "카테고리", example = "한식")
         String category,
-        @Schema(description = "위시 이미지",
-                example = "[{\"id\":1,\"imageUrl\":\"https://example.com/image1.jpg\"},{\"id\":2,\"imageUrl\":\"https://example.com/image2.jpg\"}]")
+        @Schema(description = "위시 이미지", example = """
+                [
+                  {
+                    "id": 1,
+                    "wishId": 1,
+                    "imageDownloadUrl": "https://example.com/image1.jpg"
+                  },
+                  {
+                    "id": 2,
+                    "wishId": 1,
+                    "imageDownloadUrl": "https://example.com/image2.jpg"
+                  }
+                ]
+                """)
         List<WishPictureResponse> pictures,
         @Schema(description = "도로명 주소", example = "서울특별시 강남구 테헤란로 123")
         String roadAddressName,
