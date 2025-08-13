@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -403,5 +404,4 @@ public interface PickeatApiSpec {
             @Parameter(description = "방 ID") @PathVariable("roomId") Long roomId,
             @Parameter(hidden = true) Long userId
     );
-
 }

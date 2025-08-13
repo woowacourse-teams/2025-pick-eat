@@ -12,6 +12,7 @@ import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +66,7 @@ public class PickeatService {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         return PickeatStateResponse.from(pickeat);
     }
-
+    
     public List<PickeatResponse> getActivePickeatInRoom(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
         List<Pickeat> pickeats = pickeatRepository.findByRoomIdAndIsActive(roomId, true);
