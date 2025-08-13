@@ -9,6 +9,7 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { useCreateLocationPickeat } from '@domains/pickeat/hooks/useCreateLocationPickeat';
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
 import { useGA } from '@hooks/useGA';
 
@@ -56,7 +57,12 @@ function CreatePickeatWithLocation() {
         </S.Description>
 
         <S.FormWrapper>
-          <Input name="pickeatName" label="투표명" placeholder="레전드 점심" />
+          <Input
+            name="pickeatName"
+            label="투표명"
+            placeholder="레전드 점심"
+            defaultValue={makePickeatName()}
+          />
 
           <SearchBar
             value={address}
