@@ -9,13 +9,13 @@ import styled from '@emotion/styled';
 import { use, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
-import Wishlist from './Wishlist';
+import WishlistCard from './WishlistCard';
 
 type Props = {
   wishlistPromise: Promise<WishlistType[]>;
 };
 
-function WishlistGroup({ wishlistPromise }: Props) {
+function WishlistGroupTab({ wishlistPromise }: Props) {
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
   const data = use(wishlistPromise);
@@ -64,13 +64,13 @@ function WishlistGroup({ wishlistPromise }: Props) {
       </S.TitleArea>
 
       {data.map(wishlist => (
-        <Wishlist key={wishlist.id} wishlist={wishlist} />
+        <WishlistCard key={wishlist.id} wishlist={wishlist} />
       ))}
     </S.Container>
   );
 }
 
-export default WishlistGroup;
+export default WishlistGroupTab;
 
 const S = {
   Container: styled.div`
