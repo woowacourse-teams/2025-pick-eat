@@ -1,7 +1,6 @@
 package com.pickeat.backend.wish.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
-import com.pickeat.backend.global.auth.annotation.ParticipantId;
 import com.pickeat.backend.wish.application.WishService;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
@@ -49,9 +48,9 @@ public class WishController implements WishApiSpec {
     @GetMapping("/wishLists/{wishListId}/wishes")
     public ResponseEntity<List<WishResponse>> getWishesInWishList(
             @PathVariable("wishListId") Long wishListId,
-            @ParticipantId Long participantId
+            @LoginUserId Long loginUserId
     ) {
-        List<WishResponse> wishes = wishService.getWishes(wishListId, participantId);
+        List<WishResponse> wishes = wishService.getWishes(wishListId, loginUserId);
         return ResponseEntity.ok(wishes);
     }
 

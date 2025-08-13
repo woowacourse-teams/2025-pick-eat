@@ -363,4 +363,45 @@ public interface PickeatApiSpec {
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode
     );
+
+    @Operation(
+            summary = "방의 활성화된 픽잇 목록 조회",
+            operationId = "getActivePickeatsInRoom",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "활성화된 픽잇 목록 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PickeatResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "방에 대한 접근 권한 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "방에 대한 접근 권한 없음",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Forbidden",
+                                              "status": 403,
+                                              "detail": "해당 방에 대한 접근 권한이 없습니다.",
+                                              "instance": "/api/v1/room/1/pickeats/active"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    ResponseEntity<List<PickeatResponse>> getActivePickeatsInRoom(
+            @Parameter(description = "방 ID") @PathVariable("roomId") Long roomId,
+            @Parameter(hidden = true) Long userId
+    );
+
 }

@@ -2,6 +2,7 @@ package com.pickeat.backend.pickeat.application.dto.response;
 
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.List;
 
 @Schema(description = "픽잇 응답")
 public record PickeatResponse(
@@ -29,5 +30,9 @@ public record PickeatResponse(
                 pickeat.getParticipantCount(),
                 pickeat.getIsActive()
         );
+    }
+
+    public static List<PickeatResponse> from(List<Pickeat> pickeats) {
+        return pickeats.stream().map(PickeatResponse::from).toList();
     }
 }
