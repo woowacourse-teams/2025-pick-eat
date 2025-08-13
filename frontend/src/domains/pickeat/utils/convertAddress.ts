@@ -87,3 +87,20 @@ export const getAddressByLatLng = async (
     return null;
   }
 };
+
+export const getFormDataByAddress = async (address: string) => {
+  const url = joinAsPath('search', 'keyword.json');
+  const queryString = createQueryString({ query: address });
+
+  const data = await kakaoApiClient(`${url}${queryString}`);
+
+  if (data?.documents.length > 0) {
+    return {
+      name: data?.documents[0].place_name,
+      roadAddressName: data?.documents[0].road_address_name,
+      url: data?.documents[0].place_url,
+    };
+  } else {
+    return null;
+  }
+};
