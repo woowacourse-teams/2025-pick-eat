@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router';
 import useCreateWishPickeat from '../hooks/useCreateWishPickeat';
 import useSelectWishlist from '../hooks/useSelectWishlist';
 
-import Wishlist from './Wishlist';
+import WishlistCard from './WishlistCard';
 
 type Props = {
   wishlistGroupPromise: Promise<WishlistType[]>;
@@ -56,7 +56,7 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
 
       <S.WishlistWrapper>
         {data.map(wishlist => (
-          <Wishlist
+          <WishlistCard
             key={wishlist.id}
             wishlist={wishlist}
             selected={wishlist.id === selectedWishlistId}
