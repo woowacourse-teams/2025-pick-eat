@@ -132,7 +132,7 @@ const S = {
     left: 50%;
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
 
-    padding: ${({ theme }) => theme.PADDING.p10};
+    padding: ${({ theme }) => theme.PADDING.p5};
 
     background-color: white;
 
