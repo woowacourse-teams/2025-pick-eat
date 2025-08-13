@@ -1,9 +1,17 @@
 import Carousel from '@components/Carousel';
+import ErrorMessage from '@components/errors/ErrorMessage';
+
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
 import { WishlistType } from '@apis/wishlist';
 
+import { generateRouterPath } from '@routes/routePath';
+
 import styled from '@emotion/styled';
 import { use } from 'react';
+import { useNavigate } from 'react-router';
+
+import useCreateWishPickeat from '../hooks/useCreateWishPickeat';
 
 type Props = {
   wishlistPromise: Promise<WishlistType[]>;
@@ -11,15 +19,27 @@ type Props = {
 
 const PublicWishlist = ({ wishlistPromise }: Props) => {
   const wishlist = use(wishlistPromise);
+  const navigate = useNavigate();
+  const { createPickeat, errorMessage } = useCreateWishPickeat();
+
+  const handleCreatePickeat = async (id: number) => {
+    const code = await createPickeat(makePickeatName(), id);
+    if (code) navigate(generateRouterPath.pickeatDetail(code));
+  };
 
   return (
-    <Carousel stepSize={220}>
-      <S.Container>
-        {wishlist.map(item => (
-          <S.Box key={item.id}>{item.name}</S.Box>
-        ))}
-      </S.Container>
-    </Carousel>
+    <>
+      <Carousel stepSize={220}>
+        <S.Container>
+          {wishlist.map(item => (
+            <S.Box key={item.id} onClick={() => handleCreatePickeat(item.id)}>
+              {item.name}
+            </S.Box>
+          ))}
+        </S.Container>
+      </Carousel>
+      <ErrorMessage message={errorMessage} />
+    </>
   );
 };
 

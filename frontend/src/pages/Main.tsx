@@ -7,13 +7,18 @@ import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { wishlist } from '@apis/wishlist';
 
+import { ROUTE_PATH } from '@routes/routePath';
+
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
+import { useNavigate } from 'react-router';
 
 const Main = () => {
+  const navigate = useNavigate();
+
   return (
     <S.Container>
       <S.Section>
@@ -36,11 +41,16 @@ const Main = () => {
         </S.Title>
 
         <S.ButtonWrapper>
-          <Button text="위시리스트 선택" leftIcon="🤍" />
+          <Button
+            text="위시리스트 선택"
+            leftIcon="🤍"
+            onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_WISH)}
+          />
           <Button
             text="위치/반경 선택"
             color="secondary"
             leftIcon={<Location size="sm" color="black" />}
+            onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
           />
         </S.ButtonWrapper>
       </S.Section>
