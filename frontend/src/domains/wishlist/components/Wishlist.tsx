@@ -16,7 +16,7 @@ type Prop = {
 };
 
 function Wishlist({ wishlist, selected = false, onSelect }: Prop) {
-  const { id, name } = wishlist;
+  const { id, name, isPublic } = wishlist;
   const {
     mounted,
     opened,
@@ -42,7 +42,7 @@ function Wishlist({ wishlist, selected = false, onSelect }: Prop) {
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <Wishes wishlistId={id} wishlistName={name} />
+        <Wishes id={id} name={name} isPublic={isPublic} />
       </Modal>
     </S.Container>
   );
