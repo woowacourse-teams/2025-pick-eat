@@ -75,57 +75,13 @@ public class MetricsConfig {
                             return uri;
                         } catch (Exception e) {
                             log.warn("Failed to normalize URI: {}, error: {}", uri, e.getMessage());
-                            return uri; // 정규화 실패시 원본 반환
+                            return uri;
                         }
-                    }))
-
-                    // 3. 4 Golden Signals에 불필요한 메트릭만 선별적으로 차단
-                    .meterFilter(MeterFilter.deny(id -> {
-                        String name = id.getName();
-
-                        // 4 Golden Signals에 필수적인 메트릭은 보호
-                        if (isEssentialMetric(name)) {
-                            return false; // 반드시 유지
-                        }
-
-                        // 불필요한 메트릭들만 차단
-                        return name.startsWith("jvm.gc") ||
-                                name.startsWith("jvm.buffer") ||
-                                name.startsWith("jvm.classes") ||
-                                name.startsWith("jvm.threads") ||
-                                name.startsWith("jvm.compilation") ||
-                                name.startsWith("disk") ||
-                                name.startsWith("logback") ||
-                                name.startsWith("tomcat.sessions") ||
-                                name.startsWith("cache") ||
-                                name.startsWith("spring.integration") ||
-                                name.startsWith("rabbitmq") ||
-                                name.startsWith("redis");
                     }))
 
                     .commonTags(
-                            "service", "pickeats",
                             "application", "pickeats-api"
                     );
         };
-    }
-
-    /**
-     * 4 Golden Signals 모니터링에 필수적인 메트릭인지 확인
-     */
-    private boolean isEssentialMetric(String name) {
-        return name.startsWith("http.server.requests") ||           // 지연율, 트래픽, 에러율
-                name.startsWith("jvm.memory.used") ||                // 포화도 (메모리)
-                name.startsWith("jvm.memory.max") ||                 // 포화도 (메모리)
-                name.startsWith("system.cpu.usage") ||               // 포화도 (CPU)
-                name.startsWith("process.cpu.usage") ||              // 포화도 (CPU)
-                name.startsWith("system.load.average") ||            // 포화도 (로드)
-                name.startsWith("system.cpu.count") ||               // 포화도 (CPU 코어)
-                name.startsWith("process.uptime") ||                 // 애플리케이션 상태
-                name.startsWith("process.start.time") ||             // 애플리케이션 상태
-                name.startsWith("process.files.open") ||             // 포화도 (파일 핸들)
-                name.startsWith("executor.active") ||                // 포화도 (스레드)
-                name.startsWith("executor.pool.max") ||              // 포화도 (스레드)
-                name.startsWith("hikaricp.connections");             // 포화도 (DB 커넥션)
     }
 }
