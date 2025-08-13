@@ -8,4 +8,5 @@ public record WishRestaurantRequest(
         @NotNull(message = "위시리스트의 Id는 NULL일 수 없습니다.")
         Long wishListId
 ) {
+
 }

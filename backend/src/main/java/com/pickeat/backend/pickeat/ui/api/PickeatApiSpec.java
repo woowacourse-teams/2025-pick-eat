@@ -3,6 +3,7 @@ package com.pickeat.backend.pickeat.ui.api;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -188,60 +189,6 @@ public interface PickeatApiSpec {
     );
 
     @Operation(
-            summary = "픽잇 비활성화",
-            operationId = "deactivatePickeat",
-            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "픽잇 비활성화 성공"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "존재하지 않는 픽잇",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "픽잇 없음",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "PICKEAT_NOT_FOUND",
-                                              "status": 404,
-                                              "detail": "픽잇을 찾을 수 없습니다.",
-                                              "instance": "/api/v1/pickeats/ABC123/deactivate"
-                                            }
-                                            """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "이미 비활성화된 픽잇",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "이미 비활성화됨",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "PICKEAT_ALREADY_INACTIVE",
-                                              "status": 400,
-                                              "detail": "이미 비활성화된 픽잇입니다.",
-                                              "instance": "/api/v1/pickeats/ABC123/deactivate"
-                                            }
-                                            """
-                            )
-                    )
-            )
-    })
-    ResponseEntity<Void> deactivatePickeat(
-            @Parameter(description = 픽잇_코드_UUID_형식)
-            @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
-    );
-
-    @Operation(
             summary = "픽잇 정보 조회",
             operationId = "getPickeat"
     )
@@ -281,7 +228,60 @@ public interface PickeatApiSpec {
     );
 
     @Operation(
+            summary = "픽잇 결과 생성",
+            description = "픽잇의 결과를 생성하거나 기존 결과를 반환합니다. likeCount가 가장 높은 식당들 중에서 랜덤으로 1개를 선택하여 DB에 저장합니다. 모든 식당의 likeCount가 0인 경우 전체 식당에서 랜덤 선택합니다. 멱등성을 지원하여 이미 결과가 있는 경우 기존 결과를 반환합니다.",
+            operationId = "createPickeatResult",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "새로운 결과 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RestaurantResultResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "기존 결과 반환",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = RestaurantResultResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "결과 생성 실패 (모든 식당 소거됨)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "결과 생성 불가 (모든 식당 소거됨)",
+                                            value = """
+                                                    {
+                                                      "type": "about:blank",
+                                                      "title": "RESTAURANTS_IS_EMPTY",
+                                                      "status": 400,
+                                                      "detail": "픽잇의 식당이 비어있습니다.",
+                                                      "instance": "/api/v1/pickeats/ABC123/result"
+                                                    }
+                                                    """
+                                    )
+                            }
+                    )
+            )
+    })
+    ResponseEntity<RestaurantResultResponse> createPickeatResult(
+            @Parameter(description = 픽잇_코드_UUID_형식)
+            @PathVariable("pickeatCode") String pickeatCode,
+            @Parameter(hidden = true) Long participantId
+    );
+
+    @Operation(
             summary = "픽잇 결과 조회",
+            description = "저장된 픽잇 결과를 조회합니다. 결과가 없는 경우 404 에러를 반환합니다.",
             operationId = "getPickeatResult",
             security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
@@ -296,22 +296,24 @@ public interface PickeatApiSpec {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "존재하지 않는 픽잇",
+                    description = "결과 없음",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "픽잇 없음",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "PICKEAT_NOT_FOUND",
-                                              "status": 404,
-                                              "detail": "픽잇을 찾을 수 없습니다.",
-                                              "instance": "/api/v1/pickeats/ABC123/result"
-                                            }
-                                            """
-                            )
+                            examples = {
+                                    @ExampleObject(
+                                            name = "결과 없음",
+                                            value = """
+                                                    {
+                                                      "type": "about:blank",
+                                                      "title": "PICKEAT_RESULT_NOT_FOUND",
+                                                      "status": 404,
+                                                      "detail": "픽잇 결과를 찾을 수 없습니다.",
+                                                      "instance": "/api/v1/pickeats/ABC123/result"
+                                                    }
+                                                    """
+                                    )
+                            }
                     )
             )
     })
@@ -319,6 +321,48 @@ public interface PickeatApiSpec {
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode,
             @Parameter(hidden = true) Long participantId
+    );
+
+    @Operation(
+            summary = "픽잇 활성화 상태 조회",
+            description = "픽잇의 현재 활성화 상태를 조회합니다.",
+            operationId = "getPickeatState"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "픽잇 상태 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PickeatStateResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "존재하지 않는 픽잇",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = {
+                                    @ExampleObject(
+                                            name = "픽잇 없음",
+                                            value = """
+                                                    {
+                                                      "type": "about:blank",
+                                                      "title": "PICKEAT_NOT_FOUND",
+                                                      "status": 404,
+                                                      "detail": "픽잇을 찾을 수 없습니다.",
+                                                      "instance": "/api/v1/pickeats/ABC123/state"
+                                                    }
+                                                    """
+                                    )
+                            }
+                    )
+            )
+    })
+    ResponseEntity<PickeatStateResponse> getPickeatState(
+            @Parameter(description = 픽잇_코드_UUID_형식)
+            @PathVariable("pickeatCode") String pickeatCode
     );
 
     @Operation(
@@ -360,5 +404,4 @@ public interface PickeatApiSpec {
             @Parameter(description = "방 ID") @PathVariable("roomId") Long roomId,
             @Parameter(hidden = true) Long userId
     );
-
 }

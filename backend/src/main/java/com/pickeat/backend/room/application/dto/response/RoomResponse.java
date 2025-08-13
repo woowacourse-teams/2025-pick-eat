@@ -12,6 +12,7 @@ public record RoomResponse(
         @Schema(description = "방에 참여한 인원 수", example = "3")
         int userCount
 ) {
+
     public static RoomResponse of(Room room, int userCount) {
         return new RoomResponse(room.getId(), room.getName(), userCount);
     }

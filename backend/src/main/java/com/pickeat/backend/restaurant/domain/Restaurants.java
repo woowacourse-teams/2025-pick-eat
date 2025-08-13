@@ -2,8 +2,10 @@ package com.pickeat.backend.restaurant.domain;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -11,31 +13,32 @@ public class Restaurants {
 
     private final List<Restaurant> restaurants;
 
-    public Restaurant getTopRestaurantByName() {
+    public Restaurant getRandomTopRatedRestaurant() {
         if (restaurants.isEmpty()) {
-            throw new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND);
+            throw new BusinessException(ErrorCode.RESTAURANTS_IS_EMPTY);
         }
 
         List<Restaurant> topRestaurants = getTopRestaurants();
-        return topRestaurants.stream()
-                .sorted(Comparator.comparing(Restaurant::getName))
-                .toList()
-                .getFirst();
+        Collections.shuffle(topRestaurants);
+        return topRestaurants.getFirst();
     }
 
-    public List<Restaurant> getTopRestaurants() {
+    public boolean hasEqualLike() {
         if (restaurants.isEmpty()) {
-            return List.of();
+            return false;
         }
+        return getTopRestaurants().size() > 1;
+    }
 
+    private List<Restaurant> getTopRestaurants() {
         int maxLikeCount = getMaxLikeCount();
         if (maxLikeCount == 0) {
-            return List.of();
+            return new ArrayList<>(restaurants);
         }
 
         return restaurants.stream()
                 .filter(r -> r.getLikeCount() == maxLikeCount)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private int getMaxLikeCount() {

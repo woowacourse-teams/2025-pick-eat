@@ -10,9 +10,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 class LocalImageUploadClientTest {
 
-    private String defaultImageUrl = "default_image_url";
-    private String keyPrefix = "/dir1/dir2/";
-    private LocalImageUploadClient localImageUploadClient = new LocalImageUploadClient(defaultImageUrl, keyPrefix);
+    private final String defaultImageUrl = "default_image_url";
+    private final String keyPrefix = "/dir1/dir2/";
+    private final LocalImageUploadClient localImageUploadClient = new LocalImageUploadClient(defaultImageUrl,
+            keyPrefix);
 
     @Test
     void 디폴트_이미지_URL을_반환한다() {

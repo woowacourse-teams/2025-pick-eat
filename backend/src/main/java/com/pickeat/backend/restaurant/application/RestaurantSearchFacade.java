@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RestaurantSearchFacade {
+
     private final LocationRestaurantSearchService locationRestaurantSearchService;
     private final WishRestaurantSearchService wishRestaurantSearchService;
     private final RestaurantService restaurantService;

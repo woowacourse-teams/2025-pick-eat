@@ -39,7 +39,7 @@ public class Wish extends BaseEntity {
     private WishList wishList;
 
     @OneToMany(mappedBy = "wish", cascade = CascadeType.REMOVE)
-    private List<WishPicture> wishPictures = new ArrayList<>();
+    private final List<WishPicture> wishPictures = new ArrayList<>();
 
     public Wish(
             String name,

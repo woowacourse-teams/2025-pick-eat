@@ -41,11 +41,13 @@ public record RestaurantResultResponse(
         List<String> pictureUrls,
 
         @Schema(description = "식당 타입", example = "WISH / LOCATION")
-        RestaurantType type
+        RestaurantType type,
+
+        @Schema(description = "동점 여부", example = "true")
+        boolean hasEqualLike
 ) {
 
-
-    public static RestaurantResultResponse from(Restaurant restaurant) {
+    public static RestaurantResultResponse of(Restaurant restaurant, boolean hasEqualLike) {
         return new RestaurantResultResponse(
                 restaurant.getId(),
                 restaurant.getName(),
@@ -58,13 +60,8 @@ public record RestaurantResultResponse(
                 getLocationX(restaurant),
                 getLocationY(restaurant),
                 parsePictureUrls(restaurant.getPictureUrls()),
-                restaurant.getType());
-    }
-
-    public static List<RestaurantResultResponse> from(List<Restaurant> restaurants) {
-        return restaurants.stream()
-                .map(RestaurantResultResponse::from)
-                .toList();
+                restaurant.getType(),
+                hasEqualLike);
     }
 
 

@@ -2,10 +2,13 @@ package com.pickeat.backend.pickeat.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
 import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.pickeat.application.PickeatResultService;
 import com.pickeat.backend.pickeat.application.PickeatService;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import jakarta.validation.Valid;
@@ -14,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PickeatController implements PickeatApiSpec {
 
     private final PickeatService pickeatService;
+    private final PickeatResultService pickeatResultService;
 
     @Override
     @PostMapping("/pickeats")
@@ -57,20 +60,22 @@ public class PickeatController implements PickeatApiSpec {
     }
 
     @Override
-    @PatchMapping("/pickeats/{pickeatCode}/deactivate")
-    public ResponseEntity<Void> deactivatePickeat(
-            @PathVariable("pickeatCode") String pickeatCode,
-            @ParticipantId Long participantId
-    ) {
-        pickeatService.deactivatePickeat(pickeatCode, participantId);
-        return ResponseEntity.ok().build();
-    }
-
-    @Override
     @GetMapping("/pickeats/{pickeatCode}")
     public ResponseEntity<PickeatResponse> getPickeat(@PathVariable("pickeatCode") String pickeatCode) {
         PickeatResponse response = pickeatService.getPickeat(pickeatCode);
         return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    @PostMapping("/pickeats/{pickeatCode}/result")
+    public ResponseEntity<RestaurantResultResponse> createPickeatResult(
+            @PathVariable("pickeatCode") String pickeatCode,
+            @ParticipantId Long participantId
+    ) {
+        PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(pickeatCode, participantId);
+
+        HttpStatus status = response.isNewlyCreated() ? HttpStatus.CREATED : HttpStatus.OK;
+        return ResponseEntity.status(status).body(response.result());
     }
 
     @Override
@@ -79,7 +84,16 @@ public class PickeatController implements PickeatApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantId Long participantId
     ) {
-        RestaurantResultResponse response = pickeatService.getPickeatResult(pickeatCode, participantId);
+        RestaurantResultResponse response = pickeatResultService.getPickeatResult(pickeatCode, participantId);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    @GetMapping("/pickeats/{pickeatCode}/state")
+    public ResponseEntity<PickeatStateResponse> getPickeatState(
+            @PathVariable("pickeatCode") String pickeatCode
+    ) {
+        PickeatStateResponse response = pickeatService.getPickeatState(pickeatCode);
         return ResponseEntity.ok().body(response);
     }
 

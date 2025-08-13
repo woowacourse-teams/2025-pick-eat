@@ -5,14 +5,12 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
-import com.pickeat.backend.restaurant.domain.Restaurants;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class PickeatService {
 
     private final PickeatRepository pickeatRepository;
-    private final RestaurantRepository restaurantRepository;
     private final ParticipantRepository participantRepository;
     private final RoomUserRepository roomUserRepository;
 
@@ -65,20 +62,11 @@ public class PickeatService {
         return PickeatResponse.from(pickeat);
     }
 
-    public RestaurantResultResponse getPickeatResult(String pickeatCode, Long participantId) {
-        validateParticipantAccessToPickeat(participantId, pickeatCode);
+    public PickeatStateResponse getPickeatState(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        Restaurants restaurants = new Restaurants(restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false));
-        return RestaurantResultResponse.from(restaurants.getTopRestaurantByName());
+        return PickeatStateResponse.from(pickeat);
     }
-
-    public List<RestaurantResultResponse> getPickeatResults(String pickeatCode, Long participantId) {
-        validateParticipantAccessToPickeat(participantId, pickeatCode);
-        Pickeat pickeat = getPickeatByCode(pickeatCode);
-        Restaurants restaurants = new Restaurants(restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false));
-        return RestaurantResultResponse.from(restaurants.getTopRestaurants());
-    }
-
+    
     public List<PickeatResponse> getActivePickeatInRoom(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
         List<Pickeat> pickeats = pickeatRepository.findByRoomIdAndIsActive(roomId, true);

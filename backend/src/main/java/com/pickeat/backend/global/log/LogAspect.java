@@ -19,6 +19,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Slf4j
 @Component
 public class LogAspect {
+
     //TODO: 로그 구조화 + Resolver에서 던진 예외는 어떻게 찍을까  (2025-08-6, 수, 17:37)
     private final ObjectMapper objectMapper = new ObjectMapper();
 

@@ -66,7 +66,8 @@ public interface UserApiSpec {
                     )
             )
     })
-    ResponseEntity<List<UserResponse>> getRoomUsers(@Parameter(description = "방 ID") @PathVariable("roomId") Long roomId);
+    ResponseEntity<List<UserResponse>> getRoomUsers(
+            @Parameter(description = "방 ID") @PathVariable("roomId") Long roomId);
 
     @Operation(
             summary = "닉네임으로 사용자 검색",

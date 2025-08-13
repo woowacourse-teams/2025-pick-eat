@@ -26,7 +26,7 @@ public class WishList extends BaseEntity {
     private Boolean isPublic;
 
     @OneToMany(mappedBy = "wishList", cascade = CascadeType.REMOVE)
-    private List<Wish> wishes = new ArrayList<>();
+    private final List<Wish> wishes = new ArrayList<>();
 
     public WishList(String name, Long roomId, Boolean isPublic) {
         this.name = name;
