@@ -7,7 +7,6 @@ import TabMenu from '@components/tabMenus/TabMenu';
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { room } from '@apis/room';
-import { wishlist } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
@@ -37,11 +36,7 @@ function RoomDetail() {
             tab: '위시리스트',
             content: (
               <S.TabWrapper>
-                <ErrorBoundary>
-                  <Suspense fallback={<div>로딩중</div>}>
-                    <WishlistGroupTab wishlistPromise={wishlist.get(roomId)} />
-                  </Suspense>
-                </ErrorBoundary>
+                <WishlistGroupTab />
               </S.TabWrapper>
             ),
           },

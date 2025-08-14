@@ -4,23 +4,31 @@ import ErrorMessage from '@components/errors/ErrorMessage';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
-import { WishlistType } from '@apis/wishlist';
+import { wishlist, WishlistType } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
-import { FormEvent, use } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
 import { useCreateWishlist } from '../hooks/useCreateWishlist';
 
 import WishlistCard from './WishlistCard';
 
-type Props = {
-  wishlistPromise: Promise<WishlistType[]>;
-};
+function WishlistGroupTab() {
+  const [searchParams] = useSearchParams();
+  const roomId = Number(searchParams.get('roomId')) ?? '';
 
-function WishlistGroupTab({ wishlistPromise }: Props) {
-  const { name, handleName, error, createWishlist } = useCreateWishlist();
-  const data = use(wishlistPromise);
-  const wishCount = data.length;
+  const [wishlistData, setWishlistData] = useState<WishlistType[]>();
+  const getWishlist = async () => {
+    const response = await wishlist.getWishGroup(roomId);
+    setWishlistData(response);
+  };
+
+  useEffect(() => {
+    getWishlist();
+  }, []);
+
+  const wishCount = wishlistData?.length;
 
   const {
     opened,
@@ -29,6 +37,14 @@ function WishlistGroupTab({ wishlistPromise }: Props) {
     handleOpenModal,
     handleUnmountModal,
   } = useModal();
+
+  const handleCreateWishlist = () => {
+    getWishlist();
+    handleUnmountModal();
+  };
+
+  const { name, handleName, error, createWishlist } =
+    useCreateWishlist(handleCreateWishlist);
 
   const submitWishlist = (e: FormEvent) => {
     e.preventDefault();
@@ -64,7 +80,7 @@ function WishlistGroupTab({ wishlistPromise }: Props) {
         </Modal>
       </S.TitleArea>
 
-      {data.map(wishlist => (
+      {wishlistData?.map(wishlist => (
         <WishlistCard key={wishlist.id} wishlist={wishlist} />
       ))}
     </S.Container>

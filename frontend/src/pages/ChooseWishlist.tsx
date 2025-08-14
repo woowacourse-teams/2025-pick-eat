@@ -36,7 +36,9 @@ function ChooseWishlist() {
 
         <ErrorBoundary>
           <Suspense fallback={<div>로딩 중</div>}>
-            <WishlistForm wishlistGroupPromise={wishlist.get(roomId)} />
+            <WishlistForm
+              wishlistGroupPromise={wishlist.getWishGroup(roomId)}
+            />
           </Suspense>
         </ErrorBoundary>
       </S.Wrapper>
