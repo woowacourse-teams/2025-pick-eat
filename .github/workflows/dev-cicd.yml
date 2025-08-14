@@ -65,9 +65,6 @@ jobs:
           token: ${{ secrets.SUBMODULE_KEY }}
           submodules: true
 
-      - name: Update Submodule
-        run: git submodule update --remote
-
       - name: Copy Docker Compose
         run: |
           sudo cp ./backend/docker/docker-compose.dev.yml /home/ubuntu/docker/docker-compose.yml
