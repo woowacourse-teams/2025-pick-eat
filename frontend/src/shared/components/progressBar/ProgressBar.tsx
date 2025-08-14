@@ -34,6 +34,7 @@ const S = {
 
     background-color: ${({ theme }) => theme.PALETTE.primary[60]};
     border-radius: ${({ theme }) => theme.RADIUS.medium2};
+    transition: width 0.5s ease;
   `,
   IconWrapper: styled.div<{ percentage: number }>`
     width: ${({ percentage }) => `${percentage}`}%;
@@ -42,5 +43,6 @@ const S = {
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
     font: ${({ theme }) => theme.FONTS.heading.large};
+    transition: width 0.5s ease;
   `,
 };
