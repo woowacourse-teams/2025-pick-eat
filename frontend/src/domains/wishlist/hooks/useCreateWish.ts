@@ -49,6 +49,7 @@ export const useCreateWish = (onCreate?: () => void) => {
       onCreate?.();
       setFormData(undefined);
     } catch {
+      // todo: 에러 메시지 분기 필요
       setError('사진 등록을 실패했습니다.');
     }
   };

@@ -123,6 +123,7 @@ const S = {
 
   List: styled.ul`
     overflow: scroll;
+    scrollbar-width: none;
   `,
 
   Member: styled.li`

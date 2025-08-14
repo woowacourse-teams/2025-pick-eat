@@ -16,7 +16,7 @@ export type WishFormData = {
 
 export const wish = {
   post: async (wishListId: number, data: WishFormData) => {
-    const url = joinAsPath('wishList', `${wishListId}`, BASE_URL);
+    const url = joinAsPath('wishLists', `${wishListId}`, BASE_URL);
     const response = await apiClient.post<WishesResponse>(url, data);
     if (response) return response.id;
   },
