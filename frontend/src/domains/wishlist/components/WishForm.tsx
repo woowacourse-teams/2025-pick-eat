@@ -1,5 +1,6 @@
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
+import ErrorMessage from '@components/errors/ErrorMessage';
 import Badge from '@components/labels/Badge';
 
 import styled from '@emotion/styled';
@@ -17,14 +18,15 @@ type Props = {
     value: WishFormDataWithImage[K]
   ) => void;
   onSubmit: () => void;
+  errorMessage: string;
 };
 
-function WishForm({ formData, onFormChange, onSubmit }: Props) {
-  const [selectedCategory, setSelectedCategory] = useState<Category>('한식');
-  const [tag, setTag] = useState('');
+function WishForm({ formData, onFormChange, onSubmit, errorMessage }: Props) {
+  const [selectedCategory, setSelectedCategory] = useState<Category>();
+  const [tag, setTag] = useState<string>();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && tag.trim() !== '') {
+    if (e.key === 'Enter' && tag && tag.trim() !== '') {
       e.preventDefault();
       if (!formData.tags?.includes(tag.trim())) {
         onFormChange('tags', [...(formData.tags ?? []), tag.trim()]);
@@ -105,6 +107,7 @@ function WishForm({ formData, onFormChange, onSubmit }: Props) {
           </S.TagList>
         )}
       </S.TagWrapper>
+      <ErrorMessage message={errorMessage} />
 
       <Button text="등록" />
     </S.Form>

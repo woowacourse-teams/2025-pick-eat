@@ -4,19 +4,17 @@ import { wish, WishFormData } from '@apis/wish';
 
 import { useState } from 'react';
 
+import { validateWishForm } from '../services/validateWishForm';
+
 export type WishFormDataWithImage = WishFormData & { image?: File };
 
 export const useCreateWish = () => {
-  const [formData, setFormData] = useState<WishFormDataWithImage>({
-    name: '',
-    roadAddressName: '',
-    category: '한식',
-    tags: [],
-  });
+  const [formData, setFormData] = useState<WishFormDataWithImage>();
+  const [error, setError] = useState('');
 
-  const createInitialWishFormData = async (address: string) => {
+  const initialWishFormData = async (address: string) => {
     const data = await getFormDataByAddress(address);
-    if (data) setFormData(prev => ({ ...prev, data }));
+    if (data) setFormData({ ...data, tags: [], category: '' });
   };
 
   const handleFormData = <K extends keyof WishFormDataWithImage>(
@@ -28,19 +26,30 @@ export const useCreateWish = () => {
 
   const createWish = async (wishListId: number) => {
     try {
+      validateWishForm(formData);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+        return;
+      }
+    }
+
+    try {
       const wishId = await wish.post(wishListId, {
-        name: formData?.name,
-        category: formData?.category,
-        roadAddressName: formData?.roadAddressName,
-        tags: formData?.tags || [],
+        name: formData?.name as string,
+        category: formData?.category as string,
+        roadAddressName: formData?.roadAddressName as string,
+        tags: formData?.tags as string[],
       });
 
       if (formData?.image && wishId)
         await wish.postImage(wishId, formData?.image);
-    } catch (error) {
-      console.log('error', error);
+
+      alert('위시 등록!');
+    } catch {
+      setError('사진 등록을 실패했습니다.');
     }
   };
 
-  return { formData, handleFormData, createInitialWishFormData, createWish };
+  return { formData, handleFormData, initialWishFormData, createWish, error };
 };
