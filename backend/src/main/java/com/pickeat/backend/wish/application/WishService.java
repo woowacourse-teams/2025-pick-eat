@@ -10,6 +10,7 @@ import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -54,16 +55,22 @@ public class WishService {
 
     public List<WishResponse> getWishes(Long wishListId, Long userId) {
         WishList wishList = getWishList(wishListId);
-        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        if (!wishList.getIsPublic()) {
+            validateUserAccessToRoom(wishList.getRoomId(), userId);
+        }
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
-        return WishResponse.from(wishList.getWishes());
+        List<Wish> wishes = wishList.getWishes();
+        wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
+        return WishResponse.from(wishes);
     }
 
     public List<WishResponse> getWishesFromPublicWishList(Long wishListId) {
         WishList wishList = getWishList(wishListId);
         validateIsPublicWishList(wishList);
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
-        return WishResponse.from(wishList.getWishes());
+        List<Wish> wishes = wishList.getWishes();
+        wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
+        return WishResponse.from(wishes);
     }
 
     private WishList getWishList(Long wishListId) {
