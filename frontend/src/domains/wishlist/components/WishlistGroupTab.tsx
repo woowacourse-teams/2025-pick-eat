@@ -1,13 +1,15 @@
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
+import ErrorMessage from '@components/errors/ErrorMessage';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
-import { WishlistType, wishlist } from '@apis/wishlist';
+import { WishlistType } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
-import { use, useState } from 'react';
-import { useSearchParams } from 'react-router';
+import { FormEvent, use } from 'react';
+
+import { useCreateWishlist } from '../hooks/useCreateWishlist';
 
 import WishlistCard from './WishlistCard';
 
@@ -16,16 +18,9 @@ type Props = {
 };
 
 function WishlistGroupTab({ wishlistPromise }: Props) {
-  const [searchParams] = useSearchParams();
-  const roomId = Number(searchParams.get('roomId')) ?? '';
+  const { name, handleName, error, createWishlist } = useCreateWishlist();
   const data = use(wishlistPromise);
   const wishCount = data.length;
-  const [name, setName] = useState('');
-
-  const registerWishList = () => {
-    // TODO: try-catch
-    wishlist.post(roomId, name);
-  };
 
   const {
     opened,
@@ -34,6 +29,11 @@ function WishlistGroupTab({ wishlistPromise }: Props) {
     handleOpenModal,
     handleUnmountModal,
   } = useModal();
+
+  const submitWishlist = (e: FormEvent) => {
+    e.preventDefault();
+    createWishlist();
+  };
   return (
     <S.Container>
       <S.TitleArea>
@@ -51,14 +51,15 @@ function WishlistGroupTab({ wishlistPromise }: Props) {
           onUnmount={handleUnmountModal}
           size="lg"
         >
-          <S.ModalContent>
+          <S.ModalContent onSubmit={submitWishlist}>
             <S.ModalTitle>나만의 위시</S.ModalTitle>
             <Input
               value={name}
-              onChange={e => setName(e.target.value)}
+              onChange={e => handleName(e.target.value)}
               placeholder="위시 이름을 입력하세요."
             />
-            <Button text="등록" onClick={registerWishList} />
+            <ErrorMessage message={error} />
+            <Button text="등록" />
           </S.ModalContent>
         </Modal>
       </S.TitleArea>
@@ -94,7 +95,7 @@ const S = {
     font: ${({ theme }) => theme.FONTS.heading.small};
   `,
 
-  ModalContent: styled.div`
+  ModalContent: styled.form`
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};

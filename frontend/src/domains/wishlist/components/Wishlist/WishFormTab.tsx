@@ -3,10 +3,9 @@ import AddressList from '@domains/pickeat/components/AddressList';
 import SearchBar from '@components/actions/SearchBar';
 
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
+import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
 
-import { useCreateWish } from '../hooks/useCreateWish';
-
-import WishForm from './WishForm';
+import WishForm from '../WishForm';
 
 type Props = {
   wishlistId: number;
