@@ -74,7 +74,7 @@ export const wishlist = {
   getWishes: async (
     wishlistId: number,
     isPublic: boolean
-  ): Promise<Wishes[] | null> => {
+  ): Promise<Wishes[]> => {
     const id = wishlistId.toString();
     const url = isPublic
       ? joinAsPath(BASE_URL, 'public', id, 'wishes')
@@ -82,7 +82,7 @@ export const wishlist = {
 
     const response = await apiClient.get<WishesResponse[]>(url);
     if (response) return convertResponseToWishes(response);
-    return null;
+    return [];
   },
   post: async (roomId: number, name: string) => {
     const url = joinAsPath('room', `${roomId}`, BASE_URL);
