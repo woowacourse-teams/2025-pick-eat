@@ -13,6 +13,7 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
   const [currentTab, setCurrentTab] = useState(0);
 
   const getWishlist = async () => {
+    // todo: try-catch
     const response = await wishlist.get(id, isPublic);
     setWishlistData(response);
   };
@@ -38,6 +39,7 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
           wishlist={wishlistData}
           onClick={handleCurrentTab}
           isPublic={isPublic}
+          onRefetch={getWishlist}
         />
       ) : (
         <TabContent
@@ -48,6 +50,7 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
                 wishlist={wishlistData}
                 onClick={handleCurrentTab}
                 isPublic={isPublic}
+                onRefetch={getWishlist}
               />
             </S.TabWrapper>,
             <S.TabWrapper key="wishFormTab">
@@ -66,6 +69,7 @@ const S = {
   Container: styled.div`
     max-height: 650px;
     overflow: scroll;
+    scrollbar-width: none;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};

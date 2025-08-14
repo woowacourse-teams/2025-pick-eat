@@ -5,7 +5,7 @@ import { joinAsPath } from '@utils/createUrl';
 import { apiClient } from './apiClient';
 import { WishesResponse } from './wishlist';
 
-const BASE_URL = 'wishLists';
+const BASE_URL = 'wishes';
 
 export type WishFormData = {
   name: string;
@@ -16,9 +16,8 @@ export type WishFormData = {
 
 export const wish = {
   post: async (wishListId: number, data: WishFormData) => {
-    const url = joinAsPath(BASE_URL, `${wishListId}`, 'wishes');
+    const url = joinAsPath('wishList', `${wishListId}`, BASE_URL);
     const response = await apiClient.post<WishesResponse>(url, data);
-    console.log('3', response);
     if (response) return response.id;
   },
   postImage: async (wishId: number, data: File) => {
@@ -35,5 +34,9 @@ export const wish = {
       },
       body: formData,
     });
+  },
+  delete: async (wishId: number) => {
+    const url = joinAsPath(BASE_URL, `${wishId}`);
+    await apiClient.delete(url);
   },
 };

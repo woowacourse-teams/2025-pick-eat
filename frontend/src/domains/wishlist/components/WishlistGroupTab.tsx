@@ -19,7 +19,9 @@ function WishlistGroupTab() {
   const roomId = Number(searchParams.get('roomId')) ?? '';
 
   const [wishlistData, setWishlistData] = useState<WishlistType[]>();
+
   const getWishlist = async () => {
+    // todo: try-catch
     const response = await wishlist.getWishGroup(roomId);
     setWishlistData(response);
   };

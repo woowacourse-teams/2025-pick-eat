@@ -1,6 +1,8 @@
 import Button from '@components/actions/Button';
+import Trash from '@components/assets/icons/Trash';
 import Badge from '@components/labels/Badge';
 
+import { wish } from '@apis/wish';
 import { Wishes } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
@@ -9,9 +11,19 @@ type Props = {
   wishlist: Wishes[];
   onClick: (index: number) => void;
   isPublic: boolean;
+  onRefetch: () => void;
 };
 
-function WishlistTab({ wishlist, onClick, isPublic }: Props) {
+function WishlistTab({ wishlist, onClick, isPublic, onRefetch }: Props) {
+  const deleteWish = async (wishId: number) => {
+    // todo: try-catch
+    const isDelete = confirm('정말 삭제하시겠습니까?');
+    await wish.delete(wishId);
+    if (isDelete) {
+      onRefetch();
+    }
+  };
+
   return (
     <>
       {isPublic || (
@@ -38,7 +50,14 @@ function WishlistTab({ wishlist, onClick, isPublic }: Props) {
             />
 
             <S.Info>
-              <Badge>{category}</Badge>
+              <S.BadgeArea>
+                <Badge>{category}</Badge>
+                {isPublic || (
+                  <S.RemoveBtn type="button" onClick={() => deleteWish(id)}>
+                    <Trash size="xs" color="red" />
+                  </S.RemoveBtn>
+                )}
+              </S.BadgeArea>
               <S.Name>{name}</S.Name>
               <S.Address>{roadAddressName}</S.Address>
             </S.Info>
@@ -66,7 +85,18 @@ const S = {
     object-fit: cover;
   `,
 
-  Info: styled.div``,
+  Info: styled.div`
+    flex: 1;
+  `,
+
+  BadgeArea: styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: ${({ theme }) => theme.PADDING.px2};
+  `,
+
+  RemoveBtn: styled.button``,
 
   Name: styled.p`
     font: ${({ theme }) => theme.FONTS.body.medium};
