@@ -1,49 +1,44 @@
-import Button from '@components/actions/Button';
-import Modal from '@components/modal/Modal';
-import { useModal } from '@components/modal/useModal';
+import TabContent from '@components/tabMenus/TabContent';
 
-import { WishlistType } from '@apis/wishlist';
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+
+import { wishlist, WishlistType } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
-import { Wishlist } from '@pages/ChooseWishlist';
+import { Suspense, useState } from 'react';
 
-import Wishes from './Wishes';
+import WishFormTab from './WishFormTab';
+import WishlistTab from './WishlistTab';
 
-type Prop = {
-  wishlist: WishlistType;
-  selected?: boolean;
-  onSelect?: (id: number) => void;
-};
+function Wishlist({ id, name, isPublic }: WishlistType) {
+  const [currentTab, setCurrentTab] = useState(0);
 
-function Wishlist({ wishlist, selected = false, onSelect }: Prop) {
-  const { id, name, isPublic } = wishlist;
-  const {
-    mounted,
-    opened,
-    handleCloseModal,
-    handleOpenModal,
-    handleUnmountModal,
-  } = useModal();
+  const handleCurrentTab = (index: number) => {
+    setCurrentTab(index);
+  };
 
   return (
-    <S.Container selected={selected} onClick={() => onSelect?.(id)}>
-      <S.Name>{name}</S.Name>
-      <Button
-        text="상세"
-        color={selected ? 'primary' : 'gray'}
-        size="sm"
-        type="button"
-        onClick={handleOpenModal}
+    <S.Container>
+      <S.Title>{name}</S.Title>
+      <TabContent
+        selectedIndex={currentTab}
+        tabContents={[
+          <S.TabWrapper key="wishlistTab">
+            <ErrorBoundary>
+              <Suspense>
+                <WishlistTab
+                  wishlistPromise={wishlist.getWishes(id, isPublic)}
+                  onClick={handleCurrentTab}
+                  isPublic={isPublic}
+                />
+              </Suspense>
+            </ErrorBoundary>
+          </S.TabWrapper>,
+          <S.TabWrapper key="wishFormTab">
+            <WishFormTab wishlistId={id} />
+          </S.TabWrapper>,
+        ]}
       />
-
-      <Modal
-        opened={opened}
-        mounted={mounted}
-        onUnmount={handleUnmountModal}
-        onClose={handleCloseModal}
-      >
-        <Wishes id={id} name={name} isPublic={isPublic} />
-      </Modal>
     </S.Container>
   );
 }
@@ -51,36 +46,24 @@ function Wishlist({ wishlist, selected = false, onSelect }: Prop) {
 export default Wishlist;
 
 const S = {
-  Container: styled.div<{ selected: boolean }>`
-    height: 90px;
-
+  Container: styled.div`
+    height: 600px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    padding: ${({ theme }) => theme.PADDING.p7};
-
-    background-color: ${({ selected, theme }) =>
-      selected && theme.PALETTE.secondary[10]};
-
-    ${({ selected, theme }) =>
-      !selected &&
-      `cursor: pointer;
-
-       &:hover {
-         background-color: ${theme.PALETTE.secondary[5]};
-        }
-
-      &:active {
-        background-color: ${theme.PALETTE.secondary[20]};
-        }
-    `};
-
-    border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
+    overflow: scroll;
   `,
 
-  Name: styled.span`
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.heading.small};
+  Title: styled.span`
+    top: 20px;
+
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
+  `,
+
+  TabWrapper: styled.div`
+    min-height: 550px;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
 };
