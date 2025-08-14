@@ -1,14 +1,11 @@
 import styled from '@emotion/styled';
 
 type Props = {
-  step: number;
-  currentStep: number;
+  percentage: number;
   icon?: string;
 };
 
-function ProgressBar({ step, currentStep, icon }: Props) {
-  const percentage = (100 / step) * currentStep;
-
+function ProgressBar({ percentage, icon }: Props) {
   return (
     <S.Track>
       <S.Progress percentage={percentage} />
@@ -21,6 +18,7 @@ export default ProgressBar;
 
 const S = {
   Track: styled.div`
+    width: 100%;
     height: 2px;
     display: flex;
     flex-direction: column;
