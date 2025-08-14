@@ -194,6 +194,30 @@ class WishServiceTest {
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
         }
+
+        @Test
+        void 공용_위시는_검증없이_조회() {
+            // given
+            User user = entityManager.persist(UserFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            WishList publicWishList = entityManager.persist(WishListFixture.createPublic(room.getId()));
+            List<Wish> wishes = List.of(
+                    entityManager.persist(WishFixture.create(publicWishList)),
+                    entityManager.persist(WishFixture.create(publicWishList)),
+                    entityManager.persist(WishFixture.create(publicWishList)));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            List<WishResponse> response = wishService.getWishes(publicWishList.getId(), user.getId());
+
+            // then
+            List<Long> actualWishIds = wishes.stream().map(Wish::getId).toList();
+            assertThat(response)
+                    .extracting(WishResponse::id)
+                    .containsExactlyInAnyOrderElementsOf(actualWishIds);
+        }
     }
 
     @Nested

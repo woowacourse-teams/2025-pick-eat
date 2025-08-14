@@ -55,7 +55,9 @@ public class WishService {
 
     public List<WishResponse> getWishes(Long wishListId, Long userId) {
         WishList wishList = getWishList(wishListId);
-        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        if (!wishList.getIsPublic()) {
+            validateUserAccessToRoom(wishList.getRoomId(), userId);
+        }
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
         List<Wish> wishes = wishList.getWishes();
         wishes.sort(Comparator.comparing(Wish::getCreatedAt));
