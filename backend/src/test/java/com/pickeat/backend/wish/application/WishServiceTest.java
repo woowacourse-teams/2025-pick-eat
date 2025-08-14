@@ -168,7 +168,7 @@ class WishServiceTest {
 
             // then
             List<Long> sortedWishIds = wishes.stream()
-                    .sorted(Comparator.comparing(Wish::getCreatedAt))
+                    .sorted(Comparator.comparing(Wish::getCreatedAt).reversed())
                     .map(Wish::getId).toList();
             assertThat(response)
                     .extracting(WishResponse::id)
@@ -264,7 +264,7 @@ class WishServiceTest {
 
             // then
             List<Long> sortedWishIds = wishes.stream()
-                    .sorted(Comparator.comparing(Wish::getCreatedAt))
+                    .sorted(Comparator.comparing(Wish::getCreatedAt).reversed())
                     .map(Wish::getId).toList();
             assertThat(responses)
                     .extracting(WishResponse::id)

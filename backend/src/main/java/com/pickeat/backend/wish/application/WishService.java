@@ -60,7 +60,7 @@ public class WishService {
         }
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
         List<Wish> wishes = wishList.getWishes();
-        wishes.sort(Comparator.comparing(Wish::getCreatedAt));
+        wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
         return WishResponse.from(wishes);
     }
 
@@ -69,7 +69,7 @@ public class WishService {
         validateIsPublicWishList(wishList);
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
         List<Wish> wishes = wishList.getWishes();
-        wishes.sort(Comparator.comparing(Wish::getCreatedAt));
+        wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
         return WishResponse.from(wishes);
     }
 
