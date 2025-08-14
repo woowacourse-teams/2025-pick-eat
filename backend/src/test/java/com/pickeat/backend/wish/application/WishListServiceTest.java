@@ -76,19 +76,20 @@ class WishListServiceTest {
     }
 
     @Nested
-    class 위시리스트_조회_케이스 {
+    class 방의_위시리스트_조회_케이스 {
 
         @Test
-        void 위시리스트_조회_성공() {
+        void 방의_위시리스트_조회_성공() {
             // given
             Room templateRoom = entityManager.persist(RoomFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
             User user = entityManager.persist(UserFixture.create());
             RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
-            List<WishList> wishLists = List.of(
+            List<WishList> privateWishList = List.of(
                     entityManager.persist(WishListFixture.createPrivate(room.getId())),
-                    entityManager.persist(WishListFixture.createPrivate(room.getId())),
+                    entityManager.persist(WishListFixture.createPrivate(room.getId())));
+            List<WishList> publicWishLists = List.of(
                     entityManager.persist(WishListFixture.createPublic(templateRoom.getId())),
                     entityManager.persist(WishListFixture.createPublic(templateRoom.getId())));
 
@@ -96,13 +97,13 @@ class WishListServiceTest {
             entityManager.clear();
 
             // when
-            List<WishListResponse> response = wishListService.getWishLists(room.getId(), user.getId());
+            List<WishListResponse> response = wishListService.getPrivateWishLists(room.getId(), user.getId());
 
             // then
-            List<Long> actualWishListIds = wishLists.stream().map(WishList::getId).toList();
+            List<Long> privateWishListIds = privateWishList.stream().map(WishList::getId).toList();
             assertThat(response)
                     .extracting(WishListResponse::id)
-                    .containsExactlyInAnyOrderElementsOf(actualWishListIds);
+                    .containsExactlyInAnyOrderElementsOf(privateWishListIds);
         }
 
         @Test
@@ -120,7 +121,7 @@ class WishListServiceTest {
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> wishListService.getWishLists(otherRoom.getId(), user.getId()))
+            assertThatThrownBy(() -> wishListService.getPrivateWishLists(otherRoom.getId(), user.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_LIST_ACCESS_DENIED.getMessage());
         }

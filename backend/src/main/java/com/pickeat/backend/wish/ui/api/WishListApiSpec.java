@@ -76,14 +76,14 @@ public interface WishListApiSpec {
     );
 
     @Operation(
-            summary = "위시리스트 목록 조회",
-            operationId = "getWishLists",
+            summary = "방의 위시리스트 목록 조회",
+            operationId = "getPrivateWishLists",
             security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "위시리스트 목록 조회 성공",
+                    description = "방의 위시리스트 목록 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = WishListResponse.class)))
@@ -110,7 +110,7 @@ public interface WishListApiSpec {
             )
     })
     @GetMapping("/room/{roomId}/wishLists")
-    ResponseEntity<List<WishListResponse>> getWishLists(
+    ResponseEntity<List<WishListResponse>> getPrivateWishLists(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
             @Parameter(hidden = true) @LoginUserId Long loginUserID

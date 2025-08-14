@@ -7,7 +7,7 @@ import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,12 +29,10 @@ public class WishListService {
         return WishListResponse.from(saved);
     }
 
-    public List<WishListResponse> getWishLists(Long roomId, Long userId) {
+    public List<WishListResponse> getPrivateWishLists(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
-
-        List<WishList> wishLists = new ArrayList<>();
-        wishLists.addAll(wishListRepository.findAllByRoomIdAndIsPublic(roomId, false));
-        wishLists.addAll(wishListRepository.findAllByIsPublicTrue());
+        List<WishList> wishLists = wishListRepository.findAllByRoomIdAndIsPublic(roomId, false);
+        wishLists.sort(Comparator.comparing(WishList::getCreatedAt).reversed());
         return WishListResponse.from(wishLists);
     }
 
