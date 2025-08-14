@@ -11,7 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @OpenAPIDefinition(
         servers = {
-                @Server(url = "https://api.pickeat.io.kr", description = "픽잇 API 서버 도메인"),
+                @Server(url = "https://dev.api.pickeat.io.kr", description = "픽잇 API 개발 서버 도메인"),
+                @Server(url = "https://api.pickeat.io.kr", description = "픽잇 API 운영 서버 도메인"),
                 @Server(url = "http://localhost:8080", description = "로컬 개발 서버"),
         }
 )
