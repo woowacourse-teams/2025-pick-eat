@@ -15,7 +15,7 @@ export const Default: Story = {
   render: () => {
     return (
       <div style={{ width: '100%' }}>
-        <ProgressBar step={3} currentStep={2} icon="🧀" />
+        <ProgressBar percentage={60} icon="🧀" />
       </div>
     );
   },
