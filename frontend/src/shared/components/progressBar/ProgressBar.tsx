@@ -6,10 +6,12 @@ type Props = {
 };
 
 function ProgressBar({ percentage, icon }: Props) {
+  const safePercentage = Math.min(100, Math.max(0, percentage));
+
   return (
     <S.Track>
-      <S.Progress percentage={percentage} />
-      <S.IconWrapper percentage={percentage}>{icon}</S.IconWrapper>
+      <S.Progress percentage={safePercentage} />
+      <S.IconWrapper percentage={safePercentage}>{icon}</S.IconWrapper>
     </S.Track>
   );
 }
