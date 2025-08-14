@@ -1,4 +1,5 @@
 import RoomDetailTab from '@domains/room/components/RoomDetailTab';
+import PublicWishGroupTab from '@domains/wishlist/components/PublicWishGroupTab';
 import WishlistGroupTab from '@domains/wishlist/components/WishlistGroupTab';
 
 import { HEADER_HEIGHT } from '@components/layouts/Header';
@@ -7,6 +8,7 @@ import TabMenu from '@components/tabMenus/TabMenu';
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { room } from '@apis/room';
+import { wishlist } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
@@ -37,6 +39,18 @@ function RoomDetail() {
             content: (
               <S.TabWrapper>
                 <WishlistGroupTab />
+              </S.TabWrapper>
+            ),
+          },
+          {
+            tab: '픽잇 위시',
+            content: (
+              <S.TabWrapper>
+                <ErrorBoundary>
+                  <Suspense fallback={<div>로딩중</div>}>
+                    <PublicWishGroupTab wishGroup={wishlist.getWishGroup()} />
+                  </Suspense>
+                </ErrorBoundary>
               </S.TabWrapper>
             ),
           },

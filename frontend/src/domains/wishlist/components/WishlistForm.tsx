@@ -58,7 +58,7 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
         {data.map(wishlist => (
           <WishlistCard
             key={wishlist.id}
-            wishlist={wishlist}
+            wishlistData={wishlist}
             selected={wishlist.id === selectedWishlistId}
             onSelect={handleSelectWishlist}
           />

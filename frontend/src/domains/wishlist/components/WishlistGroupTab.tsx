@@ -40,17 +40,13 @@ function WishlistGroupTab() {
     handleUnmountModal,
   } = useModal();
 
-  const handleCreateWishlist = () => {
-    getWishlist();
-    handleUnmountModal();
-  };
+  const { name, handleName, error, createWishlist } = useCreateWishlist();
 
-  const { name, handleName, error, createWishlist } =
-    useCreateWishlist(handleCreateWishlist);
-
-  const submitWishlist = (e: FormEvent) => {
+  const submitWishlist = async (e: FormEvent) => {
     e.preventDefault();
     createWishlist();
+    handleUnmountModal();
+    await getWishlist();
   };
   return (
     <S.Container>
@@ -83,7 +79,11 @@ function WishlistGroupTab() {
       </S.TitleArea>
 
       {wishlistData?.map(wishlist => (
-        <WishlistCard key={wishlist.id} wishlist={wishlist} />
+        <WishlistCard
+          key={wishlist.id}
+          wishlistData={wishlist}
+          onRefetch={getWishlist}
+        />
       ))}
     </S.Container>
   );
