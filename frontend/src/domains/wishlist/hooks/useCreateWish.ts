@@ -8,7 +8,7 @@ import { validateWishForm } from '../services/validateWishForm';
 
 export type WishFormDataWithImage = WishFormData & { image?: File };
 
-export const useCreateWish = () => {
+export const useCreateWish = (onCreate?: () => void) => {
   const [formData, setFormData] = useState<WishFormDataWithImage>();
   const [error, setError] = useState('');
 
@@ -46,6 +46,8 @@ export const useCreateWish = () => {
         await wish.postImage(wishId, formData?.image);
 
       alert('위시 등록!');
+      onCreate?.();
+      setFormData(undefined);
     } catch {
       setError('사진 등록을 실패했습니다.');
     }

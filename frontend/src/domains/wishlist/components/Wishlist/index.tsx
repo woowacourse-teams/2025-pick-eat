@@ -1,20 +1,34 @@
 import TabContent from '@components/tabMenus/TabContent';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-
-import { wishlist, WishlistType } from '@apis/wishlist';
+import { Wishes, wishlist, WishlistType } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
-import { Suspense, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import WishFormTab from './WishFormTab';
 import WishlistTab from './WishlistTab';
 
 function Wishlist({ id, name, isPublic }: WishlistType) {
+  const [wishlistData, setWishlistData] = useState<Wishes[]>([]);
+
+  const getWishlist = async () => {
+    const response = await wishlist.get(id, isPublic);
+    setWishlistData(response);
+  };
+
+  useEffect(() => {
+    getWishlist();
+  }, []);
+
   const [currentTab, setCurrentTab] = useState(0);
 
   const handleCurrentTab = (index: number) => {
     setCurrentTab(index);
+  };
+
+  const handleCreateWish = () => {
+    getWishlist();
+    setCurrentTab(0);
   };
 
   return (
@@ -24,18 +38,14 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
         selectedIndex={currentTab}
         tabContents={[
           <S.TabWrapper key="wishlistTab">
-            <ErrorBoundary>
-              <Suspense>
-                <WishlistTab
-                  wishlistPromise={wishlist.getWishes(id, isPublic)}
-                  onClick={handleCurrentTab}
-                  isPublic={isPublic}
-                />
-              </Suspense>
-            </ErrorBoundary>
+            <WishlistTab
+              wishlist={wishlistData}
+              onClick={handleCurrentTab}
+              isPublic={isPublic}
+            />
           </S.TabWrapper>,
           <S.TabWrapper key="wishFormTab">
-            <WishFormTab wishlistId={id} />
+            <WishFormTab wishlistId={id} onCreate={handleCreateWish} />
           </S.TabWrapper>,
         ]}
       />
@@ -47,11 +57,9 @@ export default Wishlist;
 
 const S = {
   Container: styled.div`
-    height: 600px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
-    overflow: scroll;
   `,
 
   Title: styled.span`
@@ -61,7 +69,7 @@ const S = {
   `,
 
   TabWrapper: styled.div`
-    min-height: 550px;
+    min-height: 600px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};

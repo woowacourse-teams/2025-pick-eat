@@ -9,11 +9,16 @@ import WishForm from '../WishForm';
 
 type Props = {
   wishlistId: number;
+  onCreate: () => void;
 };
 
-function WishFormTab({ wishlistId }: Props) {
+function WishFormTab({ wishlistId, onCreate }: Props) {
+  const handleCreateWish = () => {
+    onCreate();
+    handleInputChange('');
+  };
   const { formData, handleFormData, initialWishFormData, createWish, error } =
-    useCreateWish();
+    useCreateWish(handleCreateWish);
   const { address, handleInputChange, addressList, handleAddressClick } =
     useFindAddress(initialWishFormData);
 

@@ -4,21 +4,19 @@ import Badge from '@components/labels/Badge';
 import { Wishes } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
 
 type Props = {
-  wishlistPromise: Promise<Wishes[]>;
+  wishlist: Wishes[];
   onClick: (index: number) => void;
   isPublic: boolean;
 };
 
-function WishlistTab({ wishlistPromise, onClick, isPublic }: Props) {
-  const wishes = use(wishlistPromise);
+function WishlistTab({ wishlist, onClick, isPublic }: Props) {
   return (
     <>
       {isPublic || <Button text="새 위시 등록" onClick={() => onClick(1)} />}
-      {wishes && wishes.length > 0 ? (
-        wishes.map(({ id, name, pictures, category, roadAddressName }) => (
+      {wishlist && wishlist.length > 0 ? (
+        wishlist.map(({ id, name, pictures, category, roadAddressName }) => (
           <S.Container key={id}>
             <S.Image
               src={
@@ -41,7 +39,7 @@ function WishlistTab({ wishlistPromise, onClick, isPublic }: Props) {
           </S.Container>
         ))
       ) : (
-        <div>위시를 등록해보세요!</div>
+        <S.Description>위시를 등록해보세요!</S.Description>
       )}
     </>
   );
@@ -70,5 +68,10 @@ const S = {
 
   Address: styled.p`
     font: ${({ theme }) => theme.FONTS.body.small};
+  `,
+
+  Description: styled.p`
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    text-align: center;
   `,
 };
