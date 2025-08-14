@@ -17,6 +17,7 @@ services:
       MYSQL_DATABASE: pickeat_db
       MYSQL_USER: pickeat
       MYSQL_PASSWORD: pickeatcheeze33
+      SPRING_ACTIVE_PROFILE: dev
     ports:
       - '3306:3306'
     restart: always
