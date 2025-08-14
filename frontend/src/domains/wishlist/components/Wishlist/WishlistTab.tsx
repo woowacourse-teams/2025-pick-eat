@@ -14,7 +14,13 @@ type Props = {
 function WishlistTab({ wishlist, onClick, isPublic }: Props) {
   return (
     <>
-      {isPublic || <Button text="새 위시 등록" onClick={() => onClick(1)} />}
+      {isPublic || (
+        <Button
+          text="새 위시 등록"
+          onClick={() => onClick(1)}
+          style={{ position: 'sticky', top: 0 }}
+        />
+      )}
       {wishlist && wishlist.length > 0 ? (
         wishlist.map(({ id, name, pictures, category, roadAddressName }) => (
           <S.Container key={id}>

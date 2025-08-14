@@ -10,6 +10,7 @@ import WishlistTab from './WishlistTab';
 
 function Wishlist({ id, name, isPublic }: WishlistType) {
   const [wishlistData, setWishlistData] = useState<Wishes[]>([]);
+  const [currentTab, setCurrentTab] = useState(0);
 
   const getWishlist = async () => {
     const response = await wishlist.get(id, isPublic);
@@ -19,8 +20,6 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
   useEffect(() => {
     getWishlist();
   }, []);
-
-  const [currentTab, setCurrentTab] = useState(0);
 
   const handleCurrentTab = (index: number) => {
     setCurrentTab(index);
@@ -34,21 +33,29 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
   return (
     <S.Container>
       <S.Title>{name}</S.Title>
-      <TabContent
-        selectedIndex={currentTab}
-        tabContents={[
-          <S.TabWrapper key="wishlistTab">
-            <WishlistTab
-              wishlist={wishlistData}
-              onClick={handleCurrentTab}
-              isPublic={isPublic}
-            />
-          </S.TabWrapper>,
-          <S.TabWrapper key="wishFormTab">
-            <WishFormTab wishlistId={id} onCreate={handleCreateWish} />
-          </S.TabWrapper>,
-        ]}
-      />
+      {isPublic ? (
+        <WishlistTab
+          wishlist={wishlistData}
+          onClick={handleCurrentTab}
+          isPublic={isPublic}
+        />
+      ) : (
+        <TabContent
+          selectedIndex={currentTab}
+          tabContents={[
+            <S.TabWrapper key="wishlistTab">
+              <WishlistTab
+                wishlist={wishlistData}
+                onClick={handleCurrentTab}
+                isPublic={isPublic}
+              />
+            </S.TabWrapper>,
+            <S.TabWrapper key="wishFormTab">
+              <WishFormTab wishlistId={id} onCreate={handleCreateWish} />
+            </S.TabWrapper>,
+          ]}
+        />
+      )}
     </S.Container>
   );
 }
@@ -57,6 +64,8 @@ export default Wishlist;
 
 const S = {
   Container: styled.div`
+    max-height: 650px;
+    overflow: scroll;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
