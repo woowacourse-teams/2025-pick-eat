@@ -223,6 +223,31 @@ class WishServiceTest {
         }
 
         @Test
+        void 조회되는_위시는_기본적으로_생성순으로_정렬() {
+            // given
+            Room room = entityManager.persist(RoomFixture.create());
+            WishList wishList = entityManager.persist(WishListFixture.createPublic(room.getId()));
+            List<Wish> wishes = List.of(
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            List<WishResponse> responses = wishService.getWishesFromPublicWishList(wishList.getId());
+
+            // then
+            List<Long> sortedWishIds = wishes.stream()
+                    .sorted(Comparator.comparing(Wish::getCreatedAt))
+                    .map(Wish::getId).toList();
+            assertThat(responses)
+                    .extracting(WishResponse::id)
+                    .containsExactlyInAnyOrderElementsOf(sortedWishIds);
+        }
+
+        @Test
         void 위시리스트가_존재하지_않는_경우_예외_발생() {
             // when & then
             assertThatThrownBy(() -> wishService.getWishesFromPublicWishList(1L))

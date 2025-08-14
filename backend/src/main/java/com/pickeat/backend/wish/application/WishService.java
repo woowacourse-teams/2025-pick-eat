@@ -66,7 +66,9 @@ public class WishService {
         WishList wishList = getWishList(wishListId);
         validateIsPublicWishList(wishList);
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
-        return WishResponse.from(wishList.getWishes());
+        List<Wish> wishes = wishList.getWishes();
+        wishes.sort(Comparator.comparing(Wish::getCreatedAt));
+        return WishResponse.from(wishes);
     }
 
     private WishList getWishList(Long wishListId) {
