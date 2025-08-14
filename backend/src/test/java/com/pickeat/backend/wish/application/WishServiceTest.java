@@ -17,6 +17,7 @@ import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
+import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -144,6 +145,34 @@ class WishServiceTest {
             assertThat(response)
                     .extracting(WishResponse::id)
                     .containsExactlyInAnyOrderElementsOf(actualWishIds);
+        }
+
+        @Test
+        void 조회된_위시들은_기본적으로_생성순으로_정렬() {
+            // given
+            User user = entityManager.persist(UserFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+            List<Wish> wishes = List.of(
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            List<WishResponse> response = wishService.getWishes(wishList.getId(), user.getId());
+
+            // then
+            List<Long> sortedWishIds = wishes.stream()
+                    .sorted(Comparator.comparing(Wish::getCreatedAt))
+                    .map(Wish::getId).toList();
+            assertThat(response)
+                    .extracting(WishResponse::id)
+                    .containsExactlyElementsOf(sortedWishIds);
         }
 
         @Test
