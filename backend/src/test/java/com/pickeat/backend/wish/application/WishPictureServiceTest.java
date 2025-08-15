@@ -117,7 +117,7 @@ class WishPictureServiceTest {
             assertThatThrownBy(
                     () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUser().getId(), pictures))
                     .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.NOT_ALLOWED_CONTENT_TYPE.toString());
+                    .hasMessage(ErrorCode.NOT_ALLOWED_CONTENT_TYPE.getMessage());
         }
 
         @Test
