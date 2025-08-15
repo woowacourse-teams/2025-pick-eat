@@ -37,7 +37,7 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
   return (
     <S.Container>
       <Carousel
-        dd={WISHLIST_MOCK_DATA.map(item => (
+        contentArr={WISHLIST_MOCK_DATA.map(item => (
           <S.Box
             key={item.id}
             onClick={() => handleCreatePickeat(item.id)}

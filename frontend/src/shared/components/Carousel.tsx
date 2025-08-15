@@ -4,14 +4,14 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import Arrow from './assets/icons/Arrow';
 
 type Props = {
-  dd: ReactNode[];
+  contentArr: ReactNode[];
 };
 
-function Carousel({ dd }: Props) {
-  const [currentContentIdx, setCurrentContentIdx] = useState(0);
-  const atFirstContentIdx = currentContentIdx === 0;
-  const atLastContentIdx = currentContentIdx === dd.length - 1;
-  const isFocused = (idx: number) => currentContentIdx === idx;
+function Carousel({ contentArr }: Props) {
+  const [focusedIdx, setFocusedIdx] = useState(0);
+  const focusedFirseIdx = focusedIdx === 0;
+  const focusedLastIdx = focusedIdx === contentArr.length - 1;
+  const isFocused = (idx: number) => focusedIdx === idx;
   const containerRef = useRef<HTMLDivElement>(null);
 
   //TODO: 리뷰 후 주석 지우기: 포커스된 요소가 가운데로 오게 스크롤 조정하는 아이입니다!
@@ -31,34 +31,34 @@ function Carousel({ dd }: Props) {
   return (
     <S.Container>
       <S.ContentWrapper ref={containerRef}>
-        {dd.map((item, i) => (
+        {contentArr.map((content, i) => (
           <S.Content
             key={i}
-            focus={isFocused(i)}
+            focused={isFocused(i)}
             atFirstContent={i === 0}
-            atLastContent={i === dd.length - 1}
+            atLastContent={i === contentArr.length - 1}
           >
-            {item}
+            {content}
           </S.Content>
         ))}
       </S.ContentWrapper>
 
       <S.LeftArrowButton
         onClick={() => {
-          setCurrentContentIdx(prev => prev - 1);
-          scrollToIndex(currentContentIdx - 1);
+          setFocusedIdx(prev => prev - 1);
+          scrollToIndex(focusedIdx - 1);
         }}
-        active={!atFirstContentIdx}
+        active={!focusedFirseIdx}
       >
         <Arrow size="sm" direction="left" color="white" />
       </S.LeftArrowButton>
 
       <S.RightArrowButton
         onClick={() => {
-          setCurrentContentIdx(prev => prev + 1);
-          scrollToIndex(currentContentIdx + 1);
+          setFocusedIdx(prev => prev + 1);
+          scrollToIndex(focusedIdx + 1);
         }}
-        active={!atLastContentIdx}
+        active={!focusedLastIdx}
       >
         <Arrow size="sm" direction="right" color="white" />
       </S.RightArrowButton>
@@ -120,7 +120,7 @@ const S = {
   `,
 
   Content: styled.div<{
-    focus: boolean;
+    focused: boolean;
     atFirstContent: boolean;
     atLastContent: boolean;
   }>`
@@ -133,8 +133,8 @@ const S = {
     transition:
       transform 0.3s ease,
       opacity 0.3s ease;
-    opacity: ${({ focus }) => (focus ? 1 : 0.6)};
-    pointer-events: ${({ focus }) => !focus && 'none'};
-    transform: ${({ focus }) => (focus ? 'scale(1)' : 'scale(0.6)')};
+    opacity: ${({ focused }) => (focused ? 1 : 0.6)};
+    pointer-events: ${({ focused }) => !focused && 'none'};
+    transform: ${({ focused }) => (focused ? 'scale(1)' : 'scale(0.6)')};
   `,
 };
