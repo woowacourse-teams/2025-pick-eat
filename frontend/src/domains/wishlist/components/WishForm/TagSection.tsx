@@ -68,11 +68,13 @@ const S = {
   `,
 
   RemoveBtn: styled.button`
-    background: none;
-    border: none;
     margin-left: 6px;
+    border: none;
+
+    background: none;
+
     color: ${({ theme }) => theme.PALETTE.gray[70]};
-    cursor: pointer;
     font-size: 14px;
+    cursor: pointer;
   `,
 };

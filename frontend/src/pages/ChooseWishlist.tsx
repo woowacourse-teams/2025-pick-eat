@@ -2,14 +2,13 @@ import WishlistForm from '@domains/wishlist/components/WishlistForm';
 
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-
 import { wishlist } from '@apis/wishlist';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { ErrorBoundary } from '@sentry/react';
 import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
@@ -22,7 +21,6 @@ export type Wishlist = {
 function ChooseWishlist() {
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
-
   return (
     <S.Container>
       <S.Wrapper>

@@ -69,6 +69,7 @@ const S = {
 
   TabWrapper: styled.div`
     height: calc(100vh - ${HEADER_HEIGHT} - 56px);
+
     padding: ${({ theme }) => theme.PADDING.p6};
   `,
 };

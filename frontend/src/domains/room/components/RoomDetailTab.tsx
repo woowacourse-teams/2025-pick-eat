@@ -55,6 +55,7 @@ const S = {
     flex-direction: column;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level4};
+
     padding: ${({ theme }) => theme.PADDING.p7};
   `,
 

@@ -94,9 +94,9 @@ export default WishlistGroupTab;
 const S = {
   Container: styled.div`
     width: 100%;
-    border-radius: ${({ theme }) => theme.RADIUS.large};
     display: flex;
     flex-direction: column;
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 
   TitleArea: styled.div`

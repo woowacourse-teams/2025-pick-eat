@@ -43,8 +43,9 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level3};
   `,
   BadgeButton: styled.button`
-    border: none;
     padding: 0;
+    border: none;
+
     background: none;
     cursor: pointer;
   `,

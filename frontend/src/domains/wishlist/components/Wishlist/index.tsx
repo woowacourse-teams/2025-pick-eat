@@ -68,11 +68,11 @@ export default Wishlist;
 const S = {
   Container: styled.div`
     max-height: 650px;
-    overflow: scroll;
-    scrollbar-width: none;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
+    overflow: scroll;
+    scrollbar-width: none;
   `,
 
   Title: styled.span`
