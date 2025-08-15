@@ -33,9 +33,9 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
   };
 
   return (
-    <>
+    <S.Container>
       <Carousel stepSize={220}>
-        <S.Container>
+        <S.WishlistWrapper>
           {WISHLIST_MOCK_DATA.map(item => (
             <S.Box
               key={item.id}
@@ -44,10 +44,10 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
               alt={item.name}
             />
           ))}
-        </S.Container>
+        </S.WishlistWrapper>
       </Carousel>
       <ErrorMessage message={errorMessage} />
-    </>
+    </S.Container>
   );
 };
 
@@ -55,6 +55,11 @@ export default PublicWishlist;
 
 const S = {
   Container: styled.div`
+    width: 100%;
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+  `,
+
+  WishlistWrapper: styled.div`
     width: max-content;
     height: 200px;
 
@@ -67,8 +72,8 @@ const S = {
   `,
 
   Box: styled.img`
-    width: fit-cover;
     flex-shrink: 0;
     cursor: pointer;
+    object-fit: cover;
   `,
 };
