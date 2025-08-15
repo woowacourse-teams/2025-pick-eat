@@ -237,19 +237,20 @@ class WishServiceTest {
         @Test
         void 방에_참가한_회원이_아닌_경우_예외_발생() {
             // given
-            User user = entityManager.persist(UserFixture.create());
-            Room otherRoom = entityManager.persist(RoomFixture.create());
-            WishList otherRoomWishList = entityManager.persist(WishListFixture.createPrivate(otherRoom.getId()));
-            List<Wish> otherRoomWishes = List.of(
-                    entityManager.persist(WishFixture.create(otherRoomWishList)),
-                    entityManager.persist(WishFixture.create(otherRoomWishList)),
-                    entityManager.persist(WishFixture.create(otherRoomWishList)));
+            Room room = entityManager.persist(RoomFixture.create());
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+            List<Wish> wishes = List.of(
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)),
+                    entityManager.persist(WishFixture.create(wishList)));
+
+            User otherUser = entityManager.persist(UserFixture.create());
 
             entityManager.flush();
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> wishService.getWishes(otherRoomWishList.getId(), user.getId()))
+            assertThatThrownBy(() -> wishService.getWishes(wishList.getId(), otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
         }
