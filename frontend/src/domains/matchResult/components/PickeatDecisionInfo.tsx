@@ -38,11 +38,13 @@ export default PickeatDecisionInfo;
 const S = {
   Container: styled.div`
     display: flex;
-    gap: ${({ theme }) => theme.GAP.level5};
+    gap: ${({ theme }) => theme.GAP.level2};
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   `,
   Description: styled.p`
-    color: ${({ theme }) => theme.PALETTE.gray[60]};
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 };
