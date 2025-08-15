@@ -17,19 +17,14 @@ import { useNavigate } from 'react-router';
 
 function MyPage() {
   const navigate = useNavigate();
-  const roomData = useMemo(() => {
-    return rooms.get();
-  }, []);
-  const userData = useMemo(() => {
-    return users.get();
-  }, []);
+  const userData = useMemo(() => users.get(), []);
+  const roomsData = useMemo(() => rooms.get(), []);
   return (
     <S.Container>
       <ErrorBoundary>
         <Suspense fallback={<div>로딩중...</div>}>
           <Profile user={userData} />
-          <RoomList roomsData={roomData} />
-          {/* <RoomList roomsData={rooms.get()} /> */}
+          <RoomList roomsData={roomsData} />
         </Suspense>
       </ErrorBoundary>
       <Button
