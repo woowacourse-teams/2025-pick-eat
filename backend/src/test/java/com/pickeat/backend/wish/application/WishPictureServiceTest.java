@@ -11,6 +11,7 @@ import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
 import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
+import com.pickeat.backend.fixture.WishPictureFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.domain.Room;
@@ -21,6 +22,7 @@ import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
+import com.pickeat.backend.wish.domain.WishPicture;
 import com.pickeat.backend.wish.domain.repository.WishPictureRepository;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
 import com.pickeat.backend.wish.infrastructure.LocalImageUploadClient;
@@ -133,6 +135,45 @@ class WishPictureServiceTest {
                             user.getId(),
                             pictures
                     ))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISH_PICTURE_ACCESS_DENIED.getMessage());
+        }
+    }
+
+    @Nested
+    class 위시_사진_삭제_케이스 {
+
+        @Test
+        void 위시_사진_생성_성공() {
+            // given
+            RoomUser roomUser = makeRoomUser();
+            Wish wish = makeWish(roomUser.getRoom());
+            List<WishPicture> wishPictures = List.of(WishPictureFixture.create(wish), WishPictureFixture.create(wish));
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when
+            wishPictureService.deleteWishPictures(wish.getId(), roomUser.getUser().getId());
+
+            // then
+            assertThat(wishPictureRepository.findAll()).isEmpty();
+        }
+
+        @Test
+        void 방에_참가하지_않은_회원이_위시이미지를_삭제할_경우_예외_발생() {
+            // given
+            RoomUser roomUser = makeRoomUser();
+            Wish wish = makeWish(roomUser.getRoom());
+            List<WishPicture> wishPictures = List.of(WishPictureFixture.create(wish), WishPictureFixture.create(wish));
+
+            User otherUser = UserFixture.create();
+
+            entityManager.flush();
+            entityManager.clear();
+
+            // when & then
+            assertThatThrownBy(() -> wishPictureService.deleteWishPictures(wish.getId(), otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_PICTURE_ACCESS_DENIED.getMessage());
         }

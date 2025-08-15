@@ -42,6 +42,15 @@ public class WishPictureService {
         return WishPictureResponse.from(wishPictures);
     }
 
+    @Transactional
+    public void deleteWishPictures(Long wishId, Long userId) {
+        Wish wish = getWish(wishId);
+        validateUserAccessToWish(wish, userId);
+        List<WishPicture> wishPictures = wish.getWishPictures();
+        wishPictureRepository.deleteAll(wishPictures);
+        //TODO: cascade로 함께 삭제되는 WishPicture에 해당하는 이미지를 S3에서 제거  (2025-08-12, 화, 13:3)
+    }
+
     private Wish getWish(Long wishId) {
         return wishRepository.findById(wishId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));

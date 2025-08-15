@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ public class WishPictureController implements WishPictureApiSpec {
 
     private final WishPictureService wishPictureService;
 
+    @Override
     @PostMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<List<WishPictureResponse>> createWishPictures(
             @PathVariable("wishId") Long wishId,
@@ -32,5 +34,15 @@ public class WishPictureController implements WishPictureApiSpec {
         List<WishPictureResponse> wishPictureResponses =
                 wishPictureService.createWishPicture(wishId, userId, wishPictures);
         return ResponseEntity.status(HttpStatus.CREATED).body(wishPictureResponses);
+    }
+
+    @Override
+    @DeleteMapping("/wish/{wishId}/wishpictures")
+    public ResponseEntity<Void> deleteWishPictures(
+            @PathVariable("wishId") Long wishId,
+            @LoginUserId Long userId
+    ) {
+        wishPictureService.deleteWishPictures(wishId, userId);
+        return ResponseEntity.noContent().build();
     }
 }
