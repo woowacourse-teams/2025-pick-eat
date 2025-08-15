@@ -18,7 +18,7 @@ export const Default: Story = {
     const [percentage, setPercentage] = useState(0);
 
     useEffect(() => {
-      setPercentage(100);
+      setPercentage(50);
     }, []);
 
     return (
