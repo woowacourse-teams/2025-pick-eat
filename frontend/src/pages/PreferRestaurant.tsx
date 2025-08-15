@@ -1,3 +1,4 @@
+import PickeatEndButton from '@domains/matchResult/components/PickeatEndButton';
 import Participant from '@domains/preferRestaurant/components/Participant';
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 
@@ -8,8 +9,6 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { restaurants } from '@apis/restaurants';
-
-import { useGA } from '@hooks/useGA';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -22,16 +21,6 @@ function PreferRestaurant() {
   const pickeatCode = searchParams.get('code') ?? '';
 
   const navigate = useNavigate();
-
-  const handleResultClick = () => {
-    navigate(generateRouterPath.matchResult(pickeatCode));
-    useGA().useGAEventTrigger({
-      action: 'click',
-      category: 'button',
-      label: '결과 페이지 이동 버튼',
-      value: 1,
-    });
-  };
 
   return (
     <S.Container>
@@ -64,13 +53,7 @@ function PreferRestaurant() {
           }
           leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
         />
-        <Button
-          text="결과"
-          color="secondary"
-          size="md"
-          onClick={handleResultClick}
-          rightIcon={<Arrow size="sm" direction="right" color={'black'} />}
-        />
+        <PickeatEndButton />
       </S.Footer>
     </S.Container>
   );

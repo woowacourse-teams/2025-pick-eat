@@ -2,9 +2,14 @@ import Button from '@components/actions/Button';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
+import { pickeat } from '@apis/pickeat';
+
 import { useGA } from '@hooks/useGA';
 
+import { generateRouterPath } from '@routes/routePath';
+
 import styled from '@emotion/styled';
+import { useNavigate, useSearchParams } from 'react-router';
 
 function PickeatEndButton() {
   const {
@@ -15,7 +20,12 @@ function PickeatEndButton() {
     handleUnmountModal,
   } = useModal();
 
-  const endPickeat = () => {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+
+  const navigate = useNavigate();
+
+  const endPickeat = async () => {
     handleCloseModal();
     useGA().useGAEventTrigger({
       action: 'click',
@@ -23,6 +33,12 @@ function PickeatEndButton() {
       label: '결과 페이지 이동 버튼',
       value: 1,
     });
+    try {
+      await pickeat.postResult(pickeatCode);
+      navigate(generateRouterPath.matchResult(pickeatCode));
+    } catch {
+      return alert('픽잇 결과를 가져오는 데 실패했습니다.');
+    }
   };
 
   return (

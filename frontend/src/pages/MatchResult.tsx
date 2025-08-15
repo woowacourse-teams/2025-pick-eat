@@ -23,7 +23,6 @@ function MatchResult() {
       <S.ResultWrapper>
         <Confetti />
         <S.Title>👏 오늘의 Pick! 👏</S.Title>
-
         <ErrorBoundary>
           <Suspense fallback={<div>로딩중</div>}>
             <Result resultPromise={pickeat.getResult(pickeatCode)} />
