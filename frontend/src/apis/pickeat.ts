@@ -65,6 +65,10 @@ export type PickeatResult = {
   hasEqualLike: boolean;
 };
 
+export type PickeatStateResponse = {
+  isActive: boolean;
+};
+
 const convertResponseToPickeatDetail = async (
   data: PickeatResponse
 ): Promise<PickeatType> => ({
@@ -145,6 +149,14 @@ export const pickeat = {
     const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
     const response = await apiClient.get<PickeatResultResponse>(url);
     if (response) return convertResponseToResult(response);
+    return null;
+  },
+  getPickeatState: async (
+    pickeatCode: string
+  ): Promise<PickeatStateResponse | null> => {
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'state');
+    const response = await apiClient.get<PickeatStateResponse>(url);
+    if (response) return response;
     return null;
   },
   postResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
