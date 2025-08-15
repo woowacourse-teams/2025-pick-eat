@@ -18,9 +18,14 @@ type Props = {
 };
 
 const PublicWishlist = ({ wishlistPromise }: Props) => {
-  const wishlist = use(wishlistPromise);
+  // const wishlist = use(wishlistPromise);
+
   const navigate = useNavigate();
   const { createPickeat, errorMessage } = useCreateWishPickeat();
+  const WISHLIST_MOCK_DATA = [
+    { id: 1, name: '잠실', image: '/images/jamsil-wish-image.jpg' },
+    { id: 2, name: '선릉', image: '/images/seolleung-wish-image.jpg' },
+  ];
 
   const handleCreatePickeat = async (id: number) => {
     const code = await createPickeat(makePickeatName(), id);
@@ -31,10 +36,13 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
     <>
       <Carousel stepSize={220}>
         <S.Container>
-          {wishlist.map(item => (
-            <S.Box key={item.id} onClick={() => handleCreatePickeat(item.id)}>
-              {item.name}
-            </S.Box>
+          {WISHLIST_MOCK_DATA.map(item => (
+            <S.Box
+              key={item.id}
+              onClick={() => handleCreatePickeat(item.id)}
+              src={item.image}
+              alt={item.name}
+            />
           ))}
         </S.Container>
       </Carousel>
@@ -58,13 +66,9 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
-  Box: styled.div`
-    width: 200px;
-    height: 100%;
+  Box: styled.img`
+    width: fit-cover;
     flex-shrink: 0;
-
-    background-color: white;
-    border-radius: ${({ theme }) => theme.RADIUS.medium3};
     cursor: pointer;
   `,
 };
