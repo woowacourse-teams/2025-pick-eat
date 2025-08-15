@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import { ReactNode } from 'react';
 
 type Props = {
   percentage: number;
-  icon?: string;
+  icon?: ReactNode;
 };
 
 function ProgressBar({ percentage, icon }: Props) {
