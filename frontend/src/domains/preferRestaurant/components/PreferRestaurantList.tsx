@@ -26,6 +26,7 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
     initialData,
     syncOptimisticLikes
   );
+
   const { itemRefs } = useFlip(restaurantList);
 
   const handleLike = async (id: number) => {

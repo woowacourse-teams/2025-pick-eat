@@ -7,6 +7,7 @@ import Arrow from '@components/assets/icons/Arrow';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import { usePickeatStateChecker } from '@domains/matchResult/hooks/usePickeatEndCheck';
 
 import { restaurants } from '@apis/restaurants';
 
@@ -21,6 +22,7 @@ function PreferRestaurant() {
   const pickeatCode = searchParams.get('code') ?? '';
 
   const navigate = useNavigate();
+  usePickeatStateChecker(pickeatCode);
 
   return (
     <S.Container>

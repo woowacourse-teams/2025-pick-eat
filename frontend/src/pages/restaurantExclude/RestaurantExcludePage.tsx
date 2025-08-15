@@ -3,6 +3,7 @@ import RestaurantExclude from '@domains/restaurantExclude/components/RestaurantE
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import { usePickeatStateChecker } from '@domains/matchResult/hooks/usePickeatEndCheck';
 
 import { restaurants } from '@apis/restaurants';
 
@@ -14,14 +15,17 @@ import TitleArea from './components/TitleArea';
 
 function RestaurantExcludePage() {
   const [searchParams] = useSearchParams();
-  const code = searchParams.get('code') ?? '';
+  const pickeatCode = searchParams.get('code') ?? '';
+  usePickeatStateChecker(pickeatCode);
 
   return (
     <S.Container>
       <TitleArea />
       <ErrorBoundary>
         <Suspense>
-          <RestaurantExclude restaurantsPromise={restaurants.get(code)} />
+          <RestaurantExclude
+            restaurantsPromise={restaurants.get(pickeatCode)}
+          />
         </Suspense>
       </ErrorBoundary>
     </S.Container>
