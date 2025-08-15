@@ -24,6 +24,20 @@ function Carousel({ contentArr }: Props) {
     container.scrollTo({ left: offset });
   };
 
+  const changeFocus = (idx: number) => {
+    setFocusedIdx(idx);
+    scrollToIndex(idx);
+  };
+
+  const handleClickContent = (e: React.MouseEvent, idx: number) => {
+    if (isFocused(idx)) {
+      return;
+    }
+    e.stopPropagation();
+    e.preventDefault();
+    changeFocus(idx);
+  };
+
   useEffect(() => {
     scrollToIndex(0);
   }, []);
@@ -37,6 +51,9 @@ function Carousel({ contentArr }: Props) {
             focused={isFocused(i)}
             atFirstContent={i === 0}
             atLastContent={i === contentArr.length - 1}
+            onClickCapture={e => {
+              handleClickContent(e, i);
+            }}
           >
             {content}
           </S.Content>
@@ -45,8 +62,7 @@ function Carousel({ contentArr }: Props) {
 
       <S.LeftArrowButton
         onClick={() => {
-          setFocusedIdx(prev => prev - 1);
-          scrollToIndex(focusedIdx - 1);
+          changeFocus(focusedIdx - 1);
         }}
         active={!focusedFirseIdx}
       >
@@ -55,8 +71,7 @@ function Carousel({ contentArr }: Props) {
 
       <S.RightArrowButton
         onClick={() => {
-          setFocusedIdx(prev => prev + 1);
-          scrollToIndex(focusedIdx + 1);
+          changeFocus(focusedIdx + 1);
         }}
         active={!focusedLastIdx}
       >
@@ -134,7 +149,7 @@ const S = {
       transform 0.3s ease,
       opacity 0.3s ease;
     opacity: ${({ focused }) => (focused ? 1 : 0.6)};
-    pointer-events: ${({ focused }) => !focused && 'none'};
+
     transform: ${({ focused }) => (focused ? 'scale(1)' : 'scale(0.6)')};
   `,
 };
