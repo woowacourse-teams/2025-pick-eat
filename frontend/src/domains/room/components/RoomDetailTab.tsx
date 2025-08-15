@@ -12,6 +12,7 @@ import { Suspense, use } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import IncludeMemberList from './IncludeMemberList';
+import ProgressPickeat from './ProgressPickeat';
 
 function RoomDetailTab({ roomName }: { roomName: Promise<Room | null> }) {
   const name = use(roomName)?.name;
@@ -40,6 +41,11 @@ function RoomDetailTab({ roomName }: { roomName: Promise<Room | null> }) {
       <ErrorBoundary>
         <Suspense>
           <IncludeMemberList members={room.getIncludeMembers(roomId)} />
+        </Suspense>
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Suspense>
+          <ProgressPickeat pickeats={room.getPickeats(roomId)} />
         </Suspense>
       </ErrorBoundary>
     </S.Container>
