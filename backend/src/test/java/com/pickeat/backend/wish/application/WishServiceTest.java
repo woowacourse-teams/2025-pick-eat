@@ -156,14 +156,15 @@ class WishServiceTest {
             );
 
             // when
-            wishService.updateWish(wish.getId(), user.getId(), wishUpdateRequest);
+            WishResponse response = wishService.updateWish(wish.getId(), user.getId(), wishUpdateRequest);
 
             // then
+            Wish updatedWish = entityManager.find(Wish.class, response.id());
             assertAll(
-                    () -> assertThat(wish.getName()).isEqualTo("업데이트 위시"),
-                    () -> assertThat(wish.getFoodCategory()).isEqualTo(FoodCategory.KOREAN),
-                    () -> assertThat(wish.getRoadAddressName()).isEqualTo("업데이트 주소"),
-                    () -> assertThat(wish.getTags()).isEqualTo("업데이트 태그1,업데이트 태그2")
+                    () -> assertThat(updatedWish.getName()).isEqualTo("업데이트 위시"),
+                    () -> assertThat(updatedWish.getFoodCategory()).isEqualTo(FoodCategory.KOREAN),
+                    () -> assertThat(updatedWish.getRoadAddressName()).isEqualTo("업데이트 주소"),
+                    () -> assertThat(updatedWish.getTags()).isEqualTo("업데이트 태그1,업데이트 태그2")
             );
         }
 
