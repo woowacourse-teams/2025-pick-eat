@@ -18,12 +18,12 @@ export const Default: Story = {
     const [percentage, setPercentage] = useState(0);
 
     useEffect(() => {
-      setPercentage(60);
+      setPercentage(100);
     }, []);
 
     return (
       <div style={{ width: '100%' }}>
-        <ProgressBar percentage={percentage} icon="🧀" />
+        <ProgressBar percentage={percentage} icon={<p>🧀</p>} />
       </div>
     );
   },
