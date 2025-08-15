@@ -24,41 +24,10 @@ export const Default: Story = {
     ];
     return (
       <Carousel
-        dd={WISHLIST_MOCK_DATA.map(item => (
+        contentArr={WISHLIST_MOCK_DATA.map(item => (
           <div key={item.id}>{item.name}</div>
         ))}
       />
     );
   },
 };
-
-{
-  /* <div
-          style={{
-            maxWidth: 'max-content',
-            display: 'inline-flex',
-            gap: '10px',
-            height: '200px',
-            backgroundColor: 'lightgray',
-            padding: '10px',
-          }}
-        >
-          {WISHLIST_MOCK_DATA.map(item => (
-            <div
-              key={item.id}
-              style={{
-                height: '100%',
-                width: '200px',
-                backgroundColor: 'white',
-                flexShrink: '0',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                fontSize: '20px',
-              }}
-            >
-              {item.name}
-            </div>
-          ))}
-        </div> */
-}
