@@ -3,7 +3,6 @@ import { getLatLngByAddress } from '@domains/pickeat/utils/convertAddress';
 import { joinAsPath } from '@utils/createUrl';
 
 import { apiClient } from './apiClient';
-import { RestaurantResponse } from './restaurant';
 
 export type PickeatType = {
   id: number;
@@ -34,11 +33,36 @@ type ParticipantsResponse = {
   eliminatedParticipants: number;
 };
 
-export type PickeatResult = {
-  type: 'WISH' | 'LOCATION';
+type PickeatResultResponse = {
+  id: number;
   name: string;
+  category: string;
+  tags: string[];
+  distance: number;
+  placeUrl: string;
+  roadAddressName: string;
+  likeCount: number;
+  x: number;
+  y: number;
+  pictureUrls: string[];
+  type: 'WISH' | 'LOCATION';
+  hasEqualLike: boolean;
+};
+
+export type PickeatResult = {
+  id: number;
+  name: string;
+  category: string;
+  tags: string[];
+  distance: number;
   placeUrl: string | null;
-  pictureUrls: string[] | [];
+  roadAddressName: string;
+  likeCount: number;
+  x: number;
+  y: number;
+  pictureUrls: string[];
+  type: 'WISH' | 'LOCATION';
+  hasEqualLike: boolean;
 };
 
 const convertResponseToPickeatDetail = async (
@@ -50,12 +74,21 @@ const convertResponseToPickeatDetail = async (
 });
 
 const convertResponseToResult = async (
-  data: RestaurantResponse
+  data: PickeatResultResponse
 ): Promise<PickeatResult> => ({
-  type: data.type,
+  id: data.id,
   name: data.name,
+  category: data.category,
+  tags: data.tags,
+  distance: data.distance,
   placeUrl: data.placeUrl,
+  roadAddressName: data.roadAddressName,
+  likeCount: data.likeCount,
+  x: data.x,
+  y: data.y,
   pictureUrls: data.pictureUrls,
+  type: data.type,
+  hasEqualLike: data.hasEqualLike,
 });
 
 const BASE_PATH = 'pickeats';
@@ -110,7 +143,13 @@ export const pickeat = {
   },
   getResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
     const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
-    const response = await apiClient.get<RestaurantResponse>(url);
+    const response = await apiClient.get<PickeatResultResponse>(url);
+    if (response) return convertResponseToResult(response);
+    return null;
+  },
+  postResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
+    const response = await apiClient.post<PickeatResultResponse>(url);
     if (response) return convertResponseToResult(response);
     return null;
   },
