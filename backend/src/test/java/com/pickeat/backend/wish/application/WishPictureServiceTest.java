@@ -65,8 +65,10 @@ class WishPictureServiceTest {
             // given
             RoomUser roomUser = makeRoomUser();
             Wish wish = makeWish(roomUser.getRoom());
-
             List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
+
+            entityManager.flush();
+            entityManager.clear();
 
             // when
             List<WishPictureResponse> responses = wishPictureService.createWishPicture(
@@ -95,6 +97,9 @@ class WishPictureServiceTest {
             Wish wish = makeWish(roomUser.getRoom());
             List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
 
+            entityManager.flush();
+            entityManager.clear();
+
             // when & then
             assertThatThrownBy(
                     () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUser().getId(), pictures))
@@ -111,6 +116,9 @@ class WishPictureServiceTest {
             when(mockFile.getContentType()).thenReturn("image/gif");
             List<MultipartFile> pictures = List.of(mockFile);
 
+            entityManager.flush();
+            entityManager.clear();
+
             // when & then
             assertThatThrownBy(
                     () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUser().getId(), pictures))
@@ -123,8 +131,10 @@ class WishPictureServiceTest {
             Room room = entityManager.persist(RoomFixture.create());
             User user = entityManager.persist(UserFixture.create());
             Wish wish = makeWish(room);
-
             List<MultipartFile> pictures = List.of(makeMockImageFile(), makeMockImageFile());
+
+            entityManager.flush();
+            entityManager.clear();
 
             // when & then
             assertThatThrownBy(

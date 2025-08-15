@@ -51,6 +51,9 @@ class WishListServiceTest {
             User user = entityManager.persist(UserFixture.create());
             RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
+            entityManager.flush();
+            entityManager.clear();
+
             WishListRequest request = new WishListRequest("위시리스트");
 
             // when
@@ -65,6 +68,9 @@ class WishListServiceTest {
             // given
             Room room = entityManager.persist(RoomFixture.create());
             User otherUser = entityManager.persist(UserFixture.create());
+
+            entityManager.flush();
+            entityManager.clear();
 
             WishListRequest request = new WishListRequest("위시리스트");
 

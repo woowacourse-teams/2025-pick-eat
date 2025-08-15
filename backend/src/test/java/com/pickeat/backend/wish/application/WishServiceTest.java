@@ -56,6 +56,9 @@ class WishServiceTest {
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"));
 
+            entityManager.flush();
+            entityManager.clear();
+
             // when
             WishResponse response = wishService.createWish(wishList.getId(), wishRequest, user.getId());
 
@@ -74,6 +77,9 @@ class WishServiceTest {
             WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"));
 
             User otherUser = entityManager.persist(UserFixture.create());
+
+            entityManager.flush();
+            entityManager.clear();
 
             // when & then
             assertThatThrownBy(() -> wishService.createWish(wishList.getId(), wishRequest, otherUser.getId()))
@@ -95,6 +101,9 @@ class WishServiceTest {
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             Wish wish = entityManager.persist(WishFixture.create(wishList));
 
+            entityManager.flush();
+            entityManager.clear();
+
             // when
             wishService.deleteWish(wish.getId(), user.getId());
 
@@ -114,6 +123,9 @@ class WishServiceTest {
 
             User otherUser = entityManager.persist(UserFixture.create());
 
+            entityManager.flush();
+            entityManager.clear();
+
             // when & then
             assertThatThrownBy(() -> wishService.deleteWish(wish.getId(), otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
@@ -132,6 +144,9 @@ class WishServiceTest {
             RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             Wish wish = entityManager.persist(WishFixture.create(wishList));
+
+            entityManager.flush();
+            entityManager.clear();
 
             WishUpdateRequest wishUpdateRequest = new WishUpdateRequest(
                     "업데이트 위시",
@@ -162,6 +177,9 @@ class WishServiceTest {
             Wish wish = entityManager.persist(WishFixture.create(wishList));
 
             User otherUser = entityManager.persist(UserFixture.create());
+
+            entityManager.flush();
+            entityManager.clear();
 
             WishUpdateRequest wishUpdateRequest = new WishUpdateRequest(
                     "업데이트 위시",
