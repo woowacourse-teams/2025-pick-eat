@@ -5,6 +5,7 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.request.WishUpdateRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
@@ -51,6 +52,20 @@ public class WishService {
         validateUserAccessToRoom(wishList.getRoomId(), userId);
         //TODO: 위시 삭제시 위시 이미지 제거  (2025-08-4, 월, 17:59)
         wishRepository.delete(wish);
+    }
+
+    @Transactional
+    public WishResponse updateWish(Long wishId, Long userId, WishUpdateRequest request) {
+        Wish wish = getWish(wishId);
+        WishList wishList = wish.getWishList();
+        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        wish.update(
+                request.name(),
+                FoodCategory.getCategoryNameBy(request.category()),
+                request.roadAddressName(),
+                String.join(",", request.tags())
+        );
+        return WishResponse.from(wish);
     }
 
     public List<WishResponse> getWishes(Long wishListId, Long userId) {

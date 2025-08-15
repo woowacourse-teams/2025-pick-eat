@@ -2,6 +2,7 @@ package com.pickeat.backend.wish.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
@@ -9,10 +10,12 @@ import com.pickeat.backend.fixture.WishFixture;
 import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.request.WishUpdateRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
@@ -113,6 +116,62 @@ class WishServiceTest {
 
             // when & then
             assertThatThrownBy(() -> wishService.deleteWish(wish.getId(), otherUser.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
+        }
+    }
+
+    @Nested
+    class 위시_수정_케이스 {
+
+        @Test
+        void 위시_수정_성공() {
+            // given
+            User user = entityManager.persist(UserFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+            Wish wish = entityManager.persist(WishFixture.create(wishList));
+
+            WishUpdateRequest wishUpdateRequest = new WishUpdateRequest(
+                    "업데이트 위시",
+                    "한식",
+                    "업데이트 주소",
+                    List.of("업데이트 태그1", "업데이트 태그2")
+            );
+
+            // when
+            wishService.updateWish(wish.getId(), user.getId(), wishUpdateRequest);
+
+            // then
+            assertAll(
+                    () -> assertThat(wish.getName()).isEqualTo("업데이트 위시"),
+                    () -> assertThat(wish.getFoodCategory()).isEqualTo(FoodCategory.KOREAN),
+                    () -> assertThat(wish.getRoadAddressName()).isEqualTo("업데이트 주소"),
+                    () -> assertThat(wish.getTags()).isEqualTo("업데이트 태그1,업데이트 태그2")
+            );
+        }
+
+        @Test
+        void 방의_참가하지_않은_회원이_요청할_경우_예외발생() {
+            // given
+            User user = entityManager.persist(UserFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
+            Wish wish = entityManager.persist(WishFixture.create(wishList));
+
+            User otherUser = entityManager.persist(UserFixture.create());
+
+            WishUpdateRequest wishUpdateRequest = new WishUpdateRequest(
+                    "업데이트 위시",
+                    "한식",
+                    "업데이트 주소",
+                    List.of("업데이트 태그1", "업데이트 태그2")
+            );
+
+            // when & then
+            assertThatThrownBy(() -> wishService.updateWish(wish.getId(), otherUser.getId(), wishUpdateRequest))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
         }

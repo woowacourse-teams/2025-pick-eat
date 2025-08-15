@@ -54,4 +54,16 @@ public class Wish extends BaseEntity {
         this.tags = tags;
         this.wishList = wishList;
     }
+
+    public void update(
+            String name,
+            FoodCategory foodCategory,
+            String roadAddressName,
+            String tags
+    ) {
+        this.name = name;
+        this.foodCategory = foodCategory;
+        this.roadAddressName = roadAddressName;
+        this.tags = tags;
+    }
 }
