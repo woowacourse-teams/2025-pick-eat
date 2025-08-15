@@ -5,6 +5,7 @@ export function usePolling<T>(
   {
     setData,
     interval = 3000,
+    immediate = false,
     enabled = true,
     errorHandler = (error: Error) => {
       console.error('Polling error:', error.message);
@@ -12,6 +13,7 @@ export function usePolling<T>(
   }: {
     setData: (data: T) => void;
     interval?: number;
+    immediate?: boolean;
     enabled?: boolean;
     errorHandler?: (error: Error) => void;
   }
@@ -38,6 +40,8 @@ export function usePolling<T>(
     };
 
     const intervalId = setInterval(run, interval);
+
+    if (immediate) run();
 
     return () => {
       isUnmounted.current = true;
