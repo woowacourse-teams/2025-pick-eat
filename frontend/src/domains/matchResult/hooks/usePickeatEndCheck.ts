@@ -28,5 +28,6 @@ export function usePickeatStateChecker(pickeatCode: string) {
       }
     },
     interval: 3000,
+    immediate: true,
   });
 }
