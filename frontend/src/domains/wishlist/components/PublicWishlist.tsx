@@ -18,7 +18,9 @@ type Props = {
 };
 
 const PublicWishlist = ({ wishlistPromise }: Props) => {
-  // const wishlist = use(wishlistPromise);
+  const wishlist = use(wishlistPromise);
+  //TODO:콘솔 지우기
+  console.log(wishlist);
 
   const navigate = useNavigate();
   const { createPickeat, errorMessage } = useCreateWishPickeat();
@@ -34,18 +36,16 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
 
   return (
     <S.Container>
-      <Carousel stepSize={220}>
-        <S.WishlistWrapper>
-          {WISHLIST_MOCK_DATA.map(item => (
-            <S.Box
-              key={item.id}
-              onClick={() => handleCreatePickeat(item.id)}
-              src={item.image}
-              alt={item.name}
-            />
-          ))}
-        </S.WishlistWrapper>
-      </Carousel>
+      <Carousel
+        dd={WISHLIST_MOCK_DATA.map(item => (
+          <S.Box
+            key={item.id}
+            onClick={() => handleCreatePickeat(item.id)}
+            src={item.image}
+            alt={item.name}
+          />
+        ))}
+      ></Carousel>
       <ErrorMessage message={errorMessage} />
     </S.Container>
   );
@@ -56,6 +56,9 @@ export default PublicWishlist;
 const S = {
   Container: styled.div`
     width: 100%;
+
+    padding: ${({ theme }) => theme.PADDING.p5} 0;
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
@@ -72,6 +75,7 @@ const S = {
   `,
 
   Box: styled.img`
+    width: 190px;
     flex-shrink: 0;
     cursor: pointer;
     object-fit: cover;

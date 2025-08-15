@@ -23,8 +23,17 @@ export const Default: Story = {
       { id: 7, name: '슬링키' },
     ];
     return (
-      <Carousel stepSize={220}>
-        <div
+      <Carousel
+        dd={WISHLIST_MOCK_DATA.map(item => (
+          <div key={item.id}>{item.name}</div>
+        ))}
+      />
+    );
+  },
+};
+
+{
+  /* <div
           style={{
             maxWidth: 'max-content',
             display: 'inline-flex',
@@ -51,8 +60,5 @@ export const Default: Story = {
               {item.name}
             </div>
           ))}
-        </div>
-      </Carousel>
-    );
-  },
-};
+        </div> */
+}
