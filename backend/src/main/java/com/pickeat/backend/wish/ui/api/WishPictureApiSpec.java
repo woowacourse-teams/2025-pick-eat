@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -90,6 +91,62 @@ public interface WishPictureApiSpec {
     ResponseEntity<Void> deleteWishPictures(
             @Parameter(description = "위시 ID", example = "1")
             @PathVariable("wishId") Long wishId,
+            @Parameter(hidden = true) @LoginUserId Long userId
+    );
+
+    @Operation(
+            summary = "위시 사진 수정",
+            operationId = "updateWishPictures",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "위시 사진 수정 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = WishPictureResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청 데이터 (부적절한 이미지 타입)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = org.springframework.http.ProblemDetail.class),
+                            examples = @io.swagger.v3.oas.annotations.media.ExampleObject(
+                                    name = "부적절한 이미지 타입",
+                                    value = "{\"type\":\"about:blank\",\"title\":\"Bad Request\",\"status\":400,\"detail\":\"이미지 파일만 업로드할 수 있습니다.\",\"instance\":\"/api/v1/wish/1/wishpictures\"}"
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "위시를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = org.springframework.http.ProblemDetail.class),
+                            examples = @io.swagger.v3.oas.annotations.media.ExampleObject(
+                                    name = "위시를 찾을 수 없음",
+                                    value = """
+                                            {
+                                                "type":"about:blank",
+                                                "title":"Not Found",
+                                                "status":404,
+                                                "detail":"위시를 찾을 수 없습니다.",
+                                                "instance":"/api/v1/wish/1/wishpictures"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    @PutMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<List<WishPictureResponse>> updateWishPictures(
+            @Parameter(description = "위시 ID", example = "1")
+            @PathVariable("wishId") Long wishId,
+            @Parameter(description = "기존 위시 사진을 대체해서 새롭게 저장할 위시 사진 목록")
+            @RequestPart("wishPictures") @NotEmpty List<MultipartFile> wishPictures,
             @Parameter(hidden = true) @LoginUserId Long userId
     );
 }

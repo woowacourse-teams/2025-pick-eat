@@ -30,15 +30,11 @@ public class WishPictureService {
     @Transactional
     public List<WishPictureResponse> createWishPicture(Long wishId, Long userId, List<MultipartFile> pictures) {
         validateWishPictureFormat(pictures);
-
         Wish wish = getWish(wishId);
         validateUserAccessToWish(wish, userId);
 
-        //TODO: 이미지 업로드 실패시 이미 업로드된 이미지 제거 필요 (2025-08-4, 월, 17:46)
-        List<WishPicture> wishPictures = pictures.stream()
-                .map(imageUploadClient::uploadImage)
-                .map(uploadResult -> saveWishPicture(wish, uploadResult))
-                .toList();
+        List<ImageRequest> uploadedResults = uploadWishPictures(pictures);
+        List<WishPicture> wishPictures = saveWishPictures(wish, uploadedResults);
         return WishPictureResponse.from(wishPictures);
     }
 
@@ -46,9 +42,20 @@ public class WishPictureService {
     public void deleteWishPictures(Long wishId, Long userId) {
         Wish wish = getWish(wishId);
         validateUserAccessToWish(wish, userId);
-        List<WishPicture> wishPictures = wish.getWishPictures();
-        wishPictureRepository.deleteAll(wishPictures);
+        deleteWishPicturesInWish(wish);
         //TODO: cascade로 함께 삭제되는 WishPicture에 해당하는 이미지를 S3에서 제거  (2025-08-12, 화, 13:3)
+    }
+
+    @Transactional
+    public List<WishPictureResponse> updateWishPictures(Long wishId, Long userId, List<MultipartFile> pictures) {
+        validateWishPictureFormat(pictures);
+        Wish wish = getWish(wishId);
+        validateUserAccessToWish(wish, userId);
+
+        deleteWishPicturesInWish(wish);
+        List<ImageRequest> uploadedResults = uploadWishPictures(pictures);
+        List<WishPicture> wishPictures = saveWishPictures(wish, uploadedResults);
+        return WishPictureResponse.from(wishPictures);
     }
 
     private Wish getWish(Long wishId) {
@@ -56,9 +63,22 @@ public class WishPictureService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
     }
 
-    private WishPicture saveWishPicture(Wish wish, ImageRequest uploadResult) {
-        WishPicture wishPicture = new WishPicture(wish, uploadResult.key(), uploadResult.downloadUrl());
-        return wishPictureRepository.save(wishPicture);
+    private List<ImageRequest> uploadWishPictures(List<MultipartFile> pictures) {
+        return pictures.stream()
+                .map(imageUploadClient::uploadImage)
+                .toList();
+    }
+
+    private List<WishPicture> saveWishPictures(Wish wish, List<ImageRequest> uploadResults) {
+        return uploadResults.stream()
+                .map(uploadResult -> new WishPicture(wish, uploadResult.key(), uploadResult.downloadUrl()))
+                .map(wishPictureRepository::save)
+                .toList();
+    }
+
+    private void deleteWishPicturesInWish(Wish wish) {
+        List<WishPicture> wishPictures = wish.getWishPictures();
+        wishPictureRepository.deleteAll(wishPictures);
     }
 
     private void validateWishPictureFormat(List<MultipartFile> pictures) {
