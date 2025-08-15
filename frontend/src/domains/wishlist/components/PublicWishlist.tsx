@@ -38,7 +38,7 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
     <S.Container>
       <Carousel
         contentArr={WISHLIST_MOCK_DATA.map(item => (
-          <S.Box
+          <S.ThumbnailImg
             key={item.id}
             onClick={() => handleCreatePickeat(item.id)}
             src={item.image}
@@ -74,7 +74,7 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
-  Box: styled.img`
+  ThumbnailImg: styled.img`
     width: 190px;
     flex-shrink: 0;
     cursor: pointer;
