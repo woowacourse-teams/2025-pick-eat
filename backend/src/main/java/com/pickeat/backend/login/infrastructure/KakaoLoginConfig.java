@@ -30,7 +30,7 @@ public class KakaoLoginConfig {
     }
 
     @Bean
-    public OidcPublicKeyResolver kakaoJwtRSAChecker(KakaoJwksCache kakaoJwksCache) {
+    public OidcPublicKeyResolver kakaOidcPublicKeyResolver(KakaoJwksCache kakaoJwksCache) {
 
         return new KakaoOidcPublicKeyResolver(kakaoJwksCache);
     }
