@@ -38,4 +38,19 @@ public class KakaoJwksCache {
             throw new ExternalApiException(e.getMessage(), "kakao", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    public void refresh() {
+        try {
+            var now = Instant.now();
+            String jwtSet = restClient.get()
+                    .uri(jwksUrl)
+                    .retrieve()
+                    .body(String.class);
+            JWKSet freshJwkSet = JWKSet.parse(jwtSet);
+            cachedjwkSet = freshJwkSet;
+            expiredAt = now.plus(ttlCacheDuration);
+        } catch (Exception e) {
+            throw new ExternalApiException(e.getMessage(), "kakao", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

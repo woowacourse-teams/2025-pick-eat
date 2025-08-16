@@ -1,14 +1,13 @@
 package com.pickeat.backend.login.infrastructure;
 
 import com.nimbusds.jose.JWSAlgorithm;
-import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.SignedJWT;
-import com.pickeat.backend.global.exception.ExternalApiException;
+import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.OidcPublicKeyResolver;
 import java.security.interfaces.RSAPublicKey;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public class KakaoOidcPublicKeyResolver implements OidcPublicKeyResolver {
@@ -25,26 +24,39 @@ public class KakaoOidcPublicKeyResolver implements OidcPublicKeyResolver {
 
     private void validateAlgIsRs256(SignedJWT jws) {
         if (!JWSAlgorithm.RS256.equals(jws.getHeader().getAlgorithm())) {
-            throw new ExternalApiException("허용되지 않은 알고리즘입니다.", "kakao", HttpStatus.UNAUTHORIZED);
+            throw new BusinessException(ErrorCode.TOKEN_IS_EMPTY);
         }
     }
 
     private String extractKid(SignedJWT jws) {
         String kid = jws.getHeader().getKeyID();
         if (kid == null || kid.isBlank()) {
-            throw new ExternalApiException("인증 토큰 형식이 잘못되었습니다.", "kakao", HttpStatus.UNAUTHORIZED);
+            throw new BusinessException(ErrorCode.TOKEN_IS_EMPTY);
         }
         return kid;
     }
 
     private RSAKey resolveRsaJwkByKid(String kid) {
-        JWK jwk = kakaoJwksCache.getJwkSet().getKeyByKeyId(kid);
-        if (jwk == null) {
+        RSAKey rsaKey = tryResolve(kid);
+        if (rsaKey != null) {
+            return rsaKey;
+        }
 
-            throw new ExternalApiException("인증 토큰 형식이 잘못되었습니다.", "kakao", HttpStatus.UNAUTHORIZED);
+        kakaoJwksCache.refresh();
+        rsaKey = tryResolve(kid);
+        if (rsaKey != null) {
+            return rsaKey;
+        }
+        throw new BusinessException(ErrorCode.TOKEN_IS_EMPTY);
+    }
+
+    private RSAKey tryResolve(String kid) {
+        var jwk = kakaoJwksCache.getJwkSet().getKeyByKeyId(kid);
+        if (jwk == null) {
+            return null;
         }
         if (!(jwk instanceof RSAKey)) {
-            throw new ExternalApiException("인증 토큰 형식이 잘못되었습니다.", "kakao", HttpStatus.UNAUTHORIZED);
+            throw new BusinessException(ErrorCode.TOKEN_IS_EMPTY);
         }
         return (RSAKey) jwk;
     }
@@ -53,7 +65,7 @@ public class KakaoOidcPublicKeyResolver implements OidcPublicKeyResolver {
         try {
             return rsaKey.toRSAPublicKey();
         } catch (Exception e) {
-            throw new ExternalApiException("인증 토큰 형식이 잘못되었습니다.", "kakao", HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new BusinessException(ErrorCode.INVALID_TOKEN);
         }
     }
 }
