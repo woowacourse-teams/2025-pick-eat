@@ -9,6 +9,7 @@ import jakarta.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import org.hibernate.annotations.SoftDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 @EqualsAndHashCode(of = "id")
+@SoftDelete
 public class BaseEntity {
 
     @Id
