@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class LoginService {
 
     private final LoginClient loginClient;
-    private final JwtOIDProvider jwtOIDProvider;
+    private final JwtOidProvider jwtOIDProvider;
     private final UserRepository userRepository;
     private final UserTokenProvider userTokenProvider;
 
@@ -34,6 +34,4 @@ public class LoginService {
 
         return response;
     }
-
-
 }

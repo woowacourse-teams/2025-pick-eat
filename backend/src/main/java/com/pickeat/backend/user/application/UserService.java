@@ -4,7 +4,6 @@ import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
-import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.user.application.dto.UserResponse;
 import com.pickeat.backend.user.domain.User;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;
 
     public boolean isUserExist(Long providerId, String provider) {

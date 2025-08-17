@@ -2,7 +2,7 @@ package com.pickeat.backend.login.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.login.application.LoginClient;
-import com.pickeat.backend.login.application.OidcPublicKeyResolver;
+import com.pickeat.backend.login.application.OidcPublicKeyProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,18 +30,26 @@ public class KakaoLoginConfig {
     }
 
     @Bean
-    public OidcPublicKeyResolver kakaOidcPublicKeyResolver(KakaoJwksCache kakaoJwksCache) {
+    public OidcPublicKeyProvider kakaOidcPublicKeyProvider(KakaoJwksClient kakaoJwksClient,
+                                                           KakaoJwksCache kakaoJwksCache) {
 
-        return new KakaoOidcPublicKeyResolver(kakaoJwksCache);
+        return new KakaoOidcPublicKeyProvider(kakaoJwksClient, kakaoJwksCache);
     }
 
     @Bean
-    public KakaoJwksCache kakaoJwksCache(KakaoJwtRSAProperties properties) {
+    public KakaoJwksCache kakaoJwksCache() {
+        return new KakaoJwksCache();
+    }
+
+    @Bean
+    public KakaoJwksClient kakaoJwksClient(KakaoJwtRSAProperties properties) {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(properties.getConnectTimeout());
         factory.setReadTimeout(properties.getReadTimeout());
+
         RestClient restClient = RestClient.builder().requestFactory(factory)
                 .defaultHeader("Content-Type", "application/x-www-form-urlencoded;charset=utf-8").build();
-        return new KakaoJwksCache("https://kauth.kakao.com/.well-known/jwks.json", restClient);
+
+        return new KakaoJwksClient(restClient);
     }
 }
