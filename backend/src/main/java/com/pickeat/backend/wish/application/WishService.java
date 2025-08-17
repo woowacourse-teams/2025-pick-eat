@@ -47,18 +47,14 @@ public class WishService {
 
     @Transactional
     public void deleteWish(Long wishId, Long userId) {
-        Wish wish = getWish(wishId);
-        WishList wishList = wish.getWishList();
-        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        Wish wish = getWishWithAccessValidation(wishId, userId);
         //TODO: 위시 삭제시 위시 이미지 제거  (2025-08-4, 월, 17:59)
         wishRepository.delete(wish);
     }
 
     @Transactional
     public WishResponse updateWish(Long wishId, Long userId, WishUpdateRequest request) {
-        Wish wish = getWish(wishId);
-        WishList wishList = wish.getWishList();
-        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        Wish wish = getWishWithAccessValidation(wishId, userId);
         wish.update(
                 request.name(),
                 FoodCategory.getCategoryNameBy(request.category()),
@@ -96,6 +92,13 @@ public class WishService {
     private Wish getWish(Long wishId) {
         return wishRepository.findById(wishId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
+    }
+
+    private Wish getWishWithAccessValidation(Long wishId, Long userId) {
+        Wish wish = getWish(wishId);
+        WishList wishList = wish.getWishList();
+        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        return wish;
     }
 
     private void validateIsPublicWishList(WishList wishList) {
