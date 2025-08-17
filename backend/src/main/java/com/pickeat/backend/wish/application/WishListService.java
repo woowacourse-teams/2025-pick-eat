@@ -38,6 +38,7 @@ public class WishListService {
 
     public List<WishListResponse> getPublicWishLists() {
         List<WishList> publicWishList = wishListRepository.findAllByIsPublicTrue();
+        publicWishList.sort(Comparator.comparing(WishList::getCreatedAt).reversed());
         return WishListResponse.from(publicWishList);
     }
 

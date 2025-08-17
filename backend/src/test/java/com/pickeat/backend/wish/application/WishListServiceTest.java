@@ -20,6 +20,7 @@ import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.WishPicture;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
+import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -106,10 +107,13 @@ class WishListServiceTest {
             List<WishListResponse> response = wishListService.getPrivateWishLists(room.getId(), user.getId());
 
             // then
-            List<Long> privateWishListIds = privateWishList.stream().map(WishList::getId).toList();
+            List<Long> privateWishListIds = privateWishList.stream()
+                    .sorted(Comparator.comparing(WishList::getCreatedAt))
+                    .map(WishList::getId)
+                    .toList();
             assertThat(response)
                     .extracting(WishListResponse::id)
-                    .containsExactlyInAnyOrderElementsOf(privateWishListIds);
+                    .containsExactlyElementsOf(privateWishListIds);
         }
 
         @Test
@@ -155,10 +159,13 @@ class WishListServiceTest {
             List<WishListResponse> response = wishListService.getPublicWishLists();
 
             // then
-            List<Long> publicWishListIds = publicWishLists.stream().map(WishList::getId).toList();
+            List<Long> publicWishListIds = publicWishLists.stream()
+                    .sorted(Comparator.comparing(WishList::getCreatedAt))
+                    .map(WishList::getId)
+                    .toList();
             assertThat(response)
                     .extracting(WishListResponse::id)
-                    .containsExactlyInAnyOrderElementsOf(publicWishListIds);
+                    .containsExactlyElementsOf(publicWishListIds);
         }
     }
 
