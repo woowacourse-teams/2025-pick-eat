@@ -31,10 +31,9 @@ public class KakaoOidcPublicKeyProvider implements OidcPublicKeyProvider {
             // 만약 KID에 해당하는 JWK가 캐시에 없다면, 새로 갱신을 시도합니다. 이유: 15분 사이에 공개키가 바뀌었을 수 있기 때문.
             kakaoJwksCache.refresh(kakaoJwksClient.fetchJwkSet());
             jwk = kakaoJwksCache.getJwkByKeyId(kId);
-        }
-
-        if (jwk == null) {
-            throw new BusinessException(ErrorCode.TOKEN_IS_EMPTY);
+            if (jwk == null) {
+                throw new BusinessException(ErrorCode.TOKEN_IS_EMPTY);
+            }
         }
 
         if (!(jwk instanceof RSAKey)) {
