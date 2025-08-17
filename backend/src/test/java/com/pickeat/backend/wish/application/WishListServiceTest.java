@@ -108,7 +108,7 @@ class WishListServiceTest {
 
             // then
             List<Long> privateWishListIds = privateWishList.stream()
-                    .sorted(Comparator.comparing(WishList::getCreatedAt))
+                    .sorted(Comparator.comparing(WishList::getCreatedAt).reversed())
                     .map(WishList::getId)
                     .toList();
             assertThat(response)
@@ -160,7 +160,7 @@ class WishListServiceTest {
 
             // then
             List<Long> publicWishListIds = publicWishLists.stream()
-                    .sorted(Comparator.comparing(WishList::getCreatedAt))
+                    .sorted(Comparator.comparing(WishList::getCreatedAt).reversed())
                     .map(WishList::getId)
                     .toList();
             assertThat(response)
