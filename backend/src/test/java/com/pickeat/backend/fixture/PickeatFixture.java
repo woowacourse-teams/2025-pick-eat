@@ -11,4 +11,10 @@ public class PickeatFixture {
     public static Pickeat createWithRoom(Long roomId) {
         return Pickeat.createWithRoom("pickeat", roomId);
     }
+
+    public static Pickeat createInactiveWithoutRoom() {
+        Pickeat pickeat = createWithoutRoom();
+        pickeat.deactivate();
+        return pickeat;
+    }
 }
