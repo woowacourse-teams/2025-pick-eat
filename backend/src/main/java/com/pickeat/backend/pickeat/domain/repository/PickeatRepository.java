@@ -24,10 +24,5 @@ public interface PickeatRepository extends JpaRepository<Pickeat, Long> {
             """, nativeQuery = true)
     int deleteOldDeactivatedPickeats(@Param("cutoffDate") LocalDateTime cutoffDate);
 
-    @Query(value = """
-                SELECT COUNT(*) FROM pickeat
-                WHERE is_active = false
-                AND updated_at < :cutoffDate
-            """, nativeQuery = true)
-    int countOldDeactivatedPickeats(@Param("cutoffDate") LocalDateTime cutoffDate);
+    int countByIsActiveFalseAndUpdatedAtBefore(LocalDateTime cutoffDate);
 }

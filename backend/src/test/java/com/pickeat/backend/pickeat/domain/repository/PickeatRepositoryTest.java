@@ -13,7 +13,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @DataJpaTest
-class PickeatRepositoryCleanupTest {
+class PickeatRepositoryTest {
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -22,35 +22,10 @@ class PickeatRepositoryCleanupTest {
     private PickeatRepository pickeatRepository;
 
     @Nested
-    class 오래된_비활성화_픽잇_조회 {
-
-        @Test
-        void 비활성화되고_cutoff_시간_이전에_수정된_픽잇_개수를_조회_성공() {
-            // given
-            LocalDateTime cutoffDate = LocalDateTime.now().minusDays(2);
-            LocalDateTime oldDate = cutoffDate.minusHours(1);
-
-            Pickeat oldDeactivePickeat = testEntityManager.persist(PickeatFixture.createInactiveWithoutRoom());
-            setUpdatedAt(oldDeactivePickeat.getId(), oldDate);
-            Pickeat oldActivePickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
-            setUpdatedAt(oldActivePickeat.getId(), oldDate);
-            Pickeat DeactivePickeat = testEntityManager.persist(PickeatFixture.createInactiveWithoutRoom());
-
-            testEntityManager.flush();
-
-            // when
-            int count = pickeatRepository.countOldDeactivatedPickeats(cutoffDate);
-
-            // then
-            assertThat(count).isEqualTo(1);
-        }
-    }
-
-    @Nested
     class 오래된_비활성화_픽잇_삭제 {
 
         @Test
-        void 비활성화되고_cutoff_시간_이전에_수정된_픽잇_삭제_성공() {
+        void cutoff_시간_이전에_비활성화된_픽잇_삭제_성공() {
             // given
             LocalDateTime cutoffDate = LocalDateTime.now().minusDays(2);
             LocalDateTime oldDate = cutoffDate.minusHours(1);

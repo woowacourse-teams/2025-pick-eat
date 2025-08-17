@@ -22,7 +22,7 @@ public class PickeatScheduler {
     public void cleanupOldDeactivatedPickeats() {
         LocalDateTime cutoffDate = LocalDateTime.now().minusDays(3);
 
-        int targetPickeatCount = pickeatRepository.countOldDeactivatedPickeats(cutoffDate);
+        int targetPickeatCount = pickeatRepository.countByIsActiveFalseAndUpdatedAtBefore(cutoffDate);
 
         if (targetPickeatCount == 0) {
             log.info("Cleanup skipped - no records older than {}", cutoffDate.toLocalDate());
