@@ -21,21 +21,14 @@ public class PickeatScheduler {
     @Transactional
     public void cleanupOldDeactivatedPickeats() {
         LocalDateTime cutoffDate = LocalDateTime.now().minusDays(3);
-
+        //Todo: 삭제 스케줄링 결과에 대한 로깅 필요 [2025-08-18 01:12:32]
         int targetPickeatCount = pickeatRepository.countByIsActiveFalseAndUpdatedAtBefore(cutoffDate);
 
         if (targetPickeatCount == 0) {
-            log.info("Cleanup skipped - no records older than {}", cutoffDate.toLocalDate());
             return;
         }
 
-        log.info("Cleanup started - {} records to delete (cutoff: {})",
-                targetPickeatCount, cutoffDate.toLocalDate());
-
-        int deletedRestaurantCount = restaurantRepository.deleteAllByOldDeactivatedPickeats(cutoffDate);
-        int deletedPickeatCount = pickeatRepository.deleteOldDeactivatedPickeats(cutoffDate);
-
-        log.info("Cleanup completed - deleted: {} pickeats, {} restaurants",
-                deletedPickeatCount, deletedRestaurantCount);
+        restaurantRepository.deleteAllByOldDeactivatedPickeats(cutoffDate);
+        pickeatRepository.deleteOldDeactivatedPickeats(cutoffDate);
     }
 }
