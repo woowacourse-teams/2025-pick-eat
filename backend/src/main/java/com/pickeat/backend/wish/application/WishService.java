@@ -55,12 +55,10 @@ public class WishService {
     @Transactional
     public WishResponse updateWish(Long wishId, Long userId, WishUpdateRequest request) {
         Wish wish = getWishWithAccessValidation(wishId, userId);
-        wish.update(
-                request.name(),
-                FoodCategory.getCategoryNameBy(request.category()),
-                request.roadAddressName(),
-                String.join(",", request.tags())
-        );
+        wish.updateName(request.name());
+        wish.updateFoodCategory(FoodCategory.getCategoryNameBy(request.category()));
+        wish.updateRoadAddressName(request.roadAddressName());
+        wish.updateTags(String.join(",", request.tags()));
         return WishResponse.from(wish);
     }
 
