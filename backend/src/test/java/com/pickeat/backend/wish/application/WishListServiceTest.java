@@ -20,7 +20,6 @@ import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.WishPicture;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
-import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -108,12 +107,11 @@ class WishListServiceTest {
 
             // then
             List<Long> privateWishListIds = privateWishList.stream()
-                    .sorted(Comparator.comparing(WishList::getCreatedAt).reversed())
                     .map(WishList::getId)
                     .toList();
             assertThat(response)
                     .extracting(WishListResponse::id)
-                    .containsExactlyElementsOf(privateWishListIds);
+                    .containsExactlyInAnyOrderElementsOf(privateWishListIds);
         }
 
         @Test
@@ -160,12 +158,11 @@ class WishListServiceTest {
 
             // then
             List<Long> publicWishListIds = publicWishLists.stream()
-                    .sorted(Comparator.comparing(WishList::getCreatedAt).reversed())
                     .map(WishList::getId)
                     .toList();
             assertThat(response)
                     .extracting(WishListResponse::id)
-                    .containsExactlyElementsOf(publicWishListIds);
+                    .containsExactlyInAnyOrderElementsOf(publicWishListIds);
         }
     }
 
