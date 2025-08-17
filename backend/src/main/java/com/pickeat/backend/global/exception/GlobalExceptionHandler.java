@@ -7,11 +7,15 @@ import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
@@ -82,6 +86,39 @@ public class GlobalExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
         problemDetail.setDetail("요청 형식이 잘못되었습니다.");
+        return problemDetail;
+    }
+
+    @ExceptionHandler({
+            HttpRequestMethodNotSupportedException.class,
+            NoResourceFoundException.class,
+    })
+    public ProblemDetail handleWrongRequest(Exception e) {
+        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
+        problemDetail.setDetail("존재하지 않은 API에 대한 요청입니다. HTTP 메서드와 URL을 다시 확인해주세요.");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ProblemDetail handleWrongMediaType(Exception e) {
+        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
+        problemDetail.setDetail("허용하지 않는 미디어타입입니다. 요청 형식을 다시 확인해주세요.");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(MultipartException.class)
+    public ProblemDetail handleInvalidMultiPartFormRequest(Exception e) {
+        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
+        problemDetail.setDetail("잘못된 multipart/form-data 요청입니다. 요청 형식이나 업로드할 파일의 크기를 다시 확인해주세요.");
         return problemDetail;
     }
 

@@ -5,6 +5,7 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.request.WishUpdateRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.WishList;
@@ -46,11 +47,19 @@ public class WishService {
 
     @Transactional
     public void deleteWish(Long wishId, Long userId) {
-        Wish wish = getWish(wishId);
-        WishList wishList = wish.getWishList();
-        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        Wish wish = getWishWithAccessValidation(wishId, userId);
         //TODO: 위시 삭제시 위시 이미지 제거  (2025-08-4, 월, 17:59)
         wishRepository.delete(wish);
+    }
+
+    @Transactional
+    public WishResponse updateWish(Long wishId, Long userId, WishUpdateRequest request) {
+        Wish wish = getWishWithAccessValidation(wishId, userId);
+        wish.updateName(request.name());
+        wish.updateFoodCategory(FoodCategory.getCategoryNameBy(request.category()));
+        wish.updateRoadAddressName(request.roadAddressName());
+        wish.updateTags(String.join(",", request.tags()));
+        return WishResponse.from(wish);
     }
 
     public List<WishResponse> getWishes(Long wishListId, Long userId) {
@@ -81,6 +90,13 @@ public class WishService {
     private Wish getWish(Long wishId) {
         return wishRepository.findById(wishId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.WISH_NOT_FOUND));
+    }
+
+    private Wish getWishWithAccessValidation(Long wishId, Long userId) {
+        Wish wish = getWish(wishId);
+        WishList wishList = wish.getWishList();
+        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        return wish;
     }
 
     private void validateIsPublicWishList(WishList wishList) {

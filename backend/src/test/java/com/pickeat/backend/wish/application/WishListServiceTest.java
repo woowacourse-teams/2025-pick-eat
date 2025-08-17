@@ -51,6 +51,9 @@ class WishListServiceTest {
             User user = entityManager.persist(UserFixture.create());
             RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
+            entityManager.flush();
+            entityManager.clear();
+
             WishListRequest request = new WishListRequest("위시리스트");
 
             // when
@@ -63,13 +66,16 @@ class WishListServiceTest {
         @Test
         void 방에_참가중이_아닌_회원의_경우_예외_발생() {
             // given
-            Room otherRoom = entityManager.persist(RoomFixture.create());
-            User user = entityManager.persist(UserFixture.create());
+            Room room = entityManager.persist(RoomFixture.create());
+            User otherUser = entityManager.persist(UserFixture.create());
+
+            entityManager.flush();
+            entityManager.clear();
 
             WishListRequest request = new WishListRequest("위시리스트");
 
             // when & then
-            assertThatThrownBy(() -> wishListService.createWishList(otherRoom.getId(), user.getId(), request))
+            assertThatThrownBy(() -> wishListService.createWishList(room.getId(), otherUser.getId(), request))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_LIST_ACCESS_DENIED.getMessage());
         }
@@ -82,16 +88,16 @@ class WishListServiceTest {
         void 방의_위시리스트_조회_성공() {
             // given
             Room templateRoom = entityManager.persist(RoomFixture.create());
-            Room room = entityManager.persist(RoomFixture.create());
-            User user = entityManager.persist(UserFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
-
-            List<WishList> privateWishList = List.of(
-                    entityManager.persist(WishListFixture.createPrivate(room.getId())),
-                    entityManager.persist(WishListFixture.createPrivate(room.getId())));
             List<WishList> publicWishLists = List.of(
                     entityManager.persist(WishListFixture.createPublic(templateRoom.getId())),
                     entityManager.persist(WishListFixture.createPublic(templateRoom.getId())));
+
+            Room room = entityManager.persist(RoomFixture.create());
+            User user = entityManager.persist(UserFixture.create());
+            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            List<WishList> privateWishList = List.of(
+                    entityManager.persist(WishListFixture.createPrivate(room.getId())),
+                    entityManager.persist(WishListFixture.createPrivate(room.getId())));
 
             entityManager.flush();
             entityManager.clear();
@@ -100,7 +106,9 @@ class WishListServiceTest {
             List<WishListResponse> response = wishListService.getPrivateWishLists(room.getId(), user.getId());
 
             // then
-            List<Long> privateWishListIds = privateWishList.stream().map(WishList::getId).toList();
+            List<Long> privateWishListIds = privateWishList.stream()
+                    .map(WishList::getId)
+                    .toList();
             assertThat(response)
                     .extracting(WishListResponse::id)
                     .containsExactlyInAnyOrderElementsOf(privateWishListIds);
@@ -110,18 +118,17 @@ class WishListServiceTest {
         void 방의_회원이_아닌_경우_예외_발생() {
             // given
             Room room = entityManager.persist(RoomFixture.create());
-            User user = entityManager.persist(UserFixture.create());
+            List<WishList> wishLists = List.of(
+                    entityManager.persist(WishListFixture.createPrivate(room.getId())),
+                    entityManager.persist(WishListFixture.createPrivate(room.getId())));
 
-            Room otherRoom = entityManager.persist(RoomFixture.create());
-            List<WishList> otherRoomWishLists = List.of(
-                    entityManager.persist(WishListFixture.createPrivate(otherRoom.getId())),
-                    entityManager.persist(WishListFixture.createPrivate(otherRoom.getId())));
+            User otherUser = entityManager.persist(UserFixture.create());
 
             entityManager.flush();
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> wishListService.getPrivateWishLists(otherRoom.getId(), user.getId()))
+            assertThatThrownBy(() -> wishListService.getPrivateWishLists(room.getId(), otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_LIST_ACCESS_DENIED.getMessage());
         }
@@ -150,7 +157,9 @@ class WishListServiceTest {
             List<WishListResponse> response = wishListService.getPublicWishLists();
 
             // then
-            List<Long> publicWishListIds = publicWishLists.stream().map(WishList::getId).toList();
+            List<Long> publicWishListIds = publicWishLists.stream()
+                    .map(WishList::getId)
+                    .toList();
             assertThat(response)
                     .extracting(WishListResponse::id)
                     .containsExactlyInAnyOrderElementsOf(publicWishListIds);
