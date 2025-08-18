@@ -46,7 +46,7 @@ public class PickeatScheduler {
         deleteRelatedData(expiredPickeatIds);
 
         restaurantRepository.deleteByPickeatIds(expiredPickeatIds);
-        pickeatRepository.deleteByPickeatIds(expiredPickeatIds);
+        pickeatRepository.deleteAll(expiredPickeats);
     }
 
     private void deleteRelatedData(List<Long> expiredPickeatIds) {
