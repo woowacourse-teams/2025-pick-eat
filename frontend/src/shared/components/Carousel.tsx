@@ -14,14 +14,15 @@ function Carousel({ contentArr }: Props) {
   const isFocused = (idx: number) => focusedIdx === idx;
   const containerRef = useRef<HTMLDivElement>(null);
 
-  //TODO: 리뷰 후 주석 지우기: 포커스된 요소가 가운데로 오게 스크롤 조정하는 아이입니다!
   const scrollToIndex = (index: number) => {
     const container = containerRef.current;
     if (!container) return;
     const item = container.children[index] as HTMLElement;
-    const offset =
-      item.offsetLeft - container.clientWidth / 2 + item.clientWidth / 2;
-    container.scrollTo({ left: offset });
+    item.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+      inline: 'center',
+    });
   };
 
   const changeFocus = (idx: number) => {
