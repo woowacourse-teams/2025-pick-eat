@@ -37,7 +37,7 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
       {isPublic ? (
         <WishlistTab
           wishlist={wishlistData}
-          onClick={handleCurrentTab}
+          onTabChange={handleCurrentTab}
           isPublic={isPublic}
           onRefetch={getWishlist}
         />
@@ -48,13 +48,17 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
             <S.TabWrapper key="wishlistTab">
               <WishlistTab
                 wishlist={wishlistData}
-                onClick={handleCurrentTab}
+                onTabChange={handleCurrentTab}
                 isPublic={isPublic}
                 onRefetch={getWishlist}
               />
             </S.TabWrapper>,
             <S.TabWrapper key="wishFormTab">
-              <WishFormTab wishlistId={id} onCreate={handleCreateWish} />
+              <WishFormTab
+                wishlistId={id}
+                onCreate={handleCreateWish}
+                onTabChange={handleCurrentTab}
+              />
             </S.TabWrapper>,
           ]}
         />

@@ -13,17 +13,20 @@ function TagSection({ tags, onFormChange }: Props) {
   const [tag, setTag] = useState<string>();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && tag && tag.trim() !== '') {
+    const trimmedTag = tag?.trim();
+    if (e.key === 'Enter' && trimmedTag) {
       e.preventDefault();
-      if (!tags?.includes(tag.trim())) {
-        onFormChange([...(tags ?? []), tag.trim()]);
+      if (!tags?.includes(trimmedTag)) {
+        onFormChange([...(tags ?? []), trimmedTag]);
+      } else {
+        alert('다른 태그를 입력해주세요.');
       }
       setTag('');
     }
   };
 
   const removeTag = (tagToRemove: string) => {
-    onFormChange(tags?.filter(t => t !== tagToRemove) ?? []);
+    onFormChange(tags.filter(t => t !== tagToRemove) ?? []);
   };
   return (
     <S.TagWrapper>
@@ -40,7 +43,11 @@ function TagSection({ tags, onFormChange }: Props) {
           {tags.map(tag => (
             <Badge key={tag} color="primary">
               <span>{tag}</span>
-              <S.RemoveBtn type="button" onClick={() => removeTag(tag)}>
+              <S.RemoveBtn
+                type="button"
+                aria-label={`${tag} 태그 삭제`}
+                onClick={() => removeTag(tag)}
+              >
                 ×
               </S.RemoveBtn>
             </Badge>
@@ -75,6 +82,5 @@ const S = {
 
     color: ${({ theme }) => theme.PALETTE.gray[70]};
     font-size: 14px;
-    cursor: pointer;
   `,
 };

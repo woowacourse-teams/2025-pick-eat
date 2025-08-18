@@ -1,18 +1,22 @@
 import AddressList from '@domains/pickeat/components/AddressList';
 
 import SearchBar from '@components/actions/SearchBar';
+import Arrow from '@components/assets/icons/Arrow';
 
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
+
+import styled from '@emotion/styled';
 
 import WishForm from '../WishForm';
 
 type Props = {
   wishlistId: number;
   onCreate: () => void;
+  onTabChange: (index: number) => void;
 };
 
-function WishFormTab({ wishlistId, onCreate }: Props) {
+function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
   const handleCreateWish = () => {
     onCreate();
     handleInputChange('');
@@ -24,16 +28,25 @@ function WishFormTab({ wishlistId, onCreate }: Props) {
 
   return (
     <>
-      <SearchBar
-        value={address}
-        onChange={e => handleInputChange(e.target.value)}
-        name="address"
-        placeholder="식당 이름을 입력하세요."
-      >
-        {addressList && (
-          <AddressList addressList={addressList} onClick={handleAddressClick} />
-        )}
-      </SearchBar>
+      <S.TopArea>
+        <S.BackArrow onClick={() => onTabChange(0)}>
+          <Arrow size="lg" direction="left" />
+        </S.BackArrow>
+
+        <SearchBar
+          value={address}
+          onChange={e => handleInputChange(e.target.value)}
+          name="address"
+          placeholder="식당 이름을 입력하세요."
+        >
+          {addressList && (
+            <AddressList
+              addressList={addressList}
+              onClick={handleAddressClick}
+            />
+          )}
+        </SearchBar>
+      </S.TopArea>
       {formData && (
         <WishForm
           formData={formData}
@@ -46,3 +59,13 @@ function WishFormTab({ wishlistId, onCreate }: Props) {
   );
 }
 export default WishFormTab;
+
+const S = {
+  TopArea: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
+
+  BackArrow: styled.button``,
+};
