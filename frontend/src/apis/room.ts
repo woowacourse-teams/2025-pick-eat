@@ -16,6 +16,14 @@ export type Room = {
   memberCount: number;
 };
 
+export type ProgressPickeat = {
+  id: number;
+  code: string;
+  name: string;
+  participantCount: number;
+  active: boolean;
+};
+
 const convertResponseToRoom = (data: RoomResponse) => {
   return {
     id: data.id,
@@ -30,7 +38,7 @@ const convertResponseToProgressPickeat = (data: PickeatResponse[]) => {
     code: d.code,
     name: d.name,
     participantCount: d.participantCount,
-    isActive: d.isActive,
+    active: d.isActive,
   }));
 };
 
@@ -60,7 +68,7 @@ export const room = {
     if (response) return convertResponseToUsers(response);
     return [];
   },
-  getPickeats: async (roomId: number): Promise<PickeatResponse[]> => {
+  getPickeats: async (roomId: number): Promise<ProgressPickeat[]> => {
     const url = joinAsPath('room', `${roomId}`, 'pickeats', 'active');
     const response = await apiClient.get<PickeatResponse[]>(url);
     if (response) return convertResponseToProgressPickeat(response);
