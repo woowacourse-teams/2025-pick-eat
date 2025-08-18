@@ -9,7 +9,7 @@ type Props = {
 
 function Carousel({ contentArr }: Props) {
   const [focusedIdx, setFocusedIdx] = useState(0);
-  const focusedFirseIdx = focusedIdx === 0;
+  const focusedFirstIdx = focusedIdx === 0;
   const focusedLastIdx = focusedIdx === contentArr.length - 1;
   const isFocused = (idx: number) => focusedIdx === idx;
   const containerRef = useRef<HTMLDivElement>(null);
@@ -64,7 +64,7 @@ function Carousel({ contentArr }: Props) {
         onClick={() => {
           changeFocus(focusedIdx - 1);
         }}
-        active={!focusedFirseIdx}
+        active={!focusedFirstIdx}
       >
         <Arrow size="sm" direction="left" color="white" />
       </S.LeftArrowButton>
