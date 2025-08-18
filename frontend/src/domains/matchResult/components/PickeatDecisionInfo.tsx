@@ -10,23 +10,31 @@ function PickeatDecisionInfo() {
   const [hasTie, setHasTie] = useState(false);
 
   useEffect(() => {
-    restaurants.get(pickeatCode).then(restaurantsData => {
-      const maxLikeCount = Math.max(
-        ...restaurantsData.map(restaurant => restaurant.likeCount)
-      );
-      const topRestaurants = restaurantsData.filter(
-        restaurant => restaurant.likeCount === maxLikeCount
-      );
-      setHasTie(topRestaurants.length > 1);
-    });
+    const fetchRestaurants = async () => {
+      try {
+        const restaurantsData = await restaurants.get(pickeatCode);
+        const maxLikeCount = Math.max(
+          ...restaurantsData.map(restaurant => restaurant.likeCount)
+        );
+        const topRestaurants = restaurantsData.filter(
+          restaurant => restaurant.likeCount === maxLikeCount
+        );
+        setHasTie(topRestaurants.length > 1);
+      } catch {
+        alert('현재 통신이 원활하지 않습니다');
+      }
+    };
+
+    fetchRestaurants();
   }, []);
 
   return (
     <S.Container>
-      종료 시점에 좋아요가 제일 많은 식당으로 결정됩니다
+      현재 좋아요가 제일 많은 식당으로 결정됩니다
       {hasTie && (
         <S.Description>
-          현재 동점이 있어 랜덤으로 결과가 결정됩니다
+          동점으로 인해 최대 득표수를 기록한 식당들 중 하나가 무작위로
+          결정됩니다.
         </S.Description>
       )}
     </S.Container>

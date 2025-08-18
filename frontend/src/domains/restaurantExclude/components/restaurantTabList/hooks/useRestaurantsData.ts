@@ -22,7 +22,7 @@ export function useRestaurantsData(initialData: Restaurant[] = []) {
   const fetcher = useCallback(() => restaurants.get(code ?? ''), [code]);
 
   usePolling<Restaurant[]>(fetcher, {
-    setData: handleDataUpdate,
+    onData: handleDataUpdate,
     interval: 3000,
     enabled: !!code,
     errorHandler: error => {
