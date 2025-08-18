@@ -28,29 +28,30 @@ function WishForm({ formData, onFormChange, onSubmit, errorMessage }: Props) {
 
   return (
     <S.Form onSubmit={submitForm}>
-      <S.Label>카테고리</S.Label>
+      <S.Label>카테고리 *</S.Label>
       <CategorySection
         onFormChange={value => onFormChange('category', value)}
       />
       <Input
-        label="식당 이름"
+        label="식당 이름 *"
         name="name"
         value={formData.name}
         onChange={e => onFormChange('name', e.target.value)}
       />
       <Input
-        label="주소"
+        label="주소 *"
         name="roadAddressName"
         value={formData.roadAddressName}
         onChange={e => onFormChange('roadAddressName', e.target.value)}
       />
-      <S.Label>이미지</S.Label>
+      <S.Label htmlFor="thumbnail">위시 썸네일</S.Label>
       <input
+        id="thumbnail"
         type="file"
         accept="image/*"
-        name="image"
+        name="thumbnail"
         onChange={e => {
-          if (e.target.files?.[0]) onFormChange('image', e.target.files[0]);
+          if (e.target.files?.[0]) onFormChange('thumbnail', e.target.files[0]);
         }}
       />
       <TagSection
