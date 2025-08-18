@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 export function usePolling<T>(
   fetcher: () => Promise<T>,
   {
-    setData,
+    onData,
     interval = 3000,
     immediate = false,
     enabled = true,
@@ -11,7 +11,7 @@ export function usePolling<T>(
       console.error('Polling error:', error.message);
     },
   }: {
-    setData: (data: T) => void;
+    onData: (data: T) => void;
     interval?: number;
     immediate?: boolean;
     enabled?: boolean;
@@ -28,7 +28,7 @@ export function usePolling<T>(
     const run = async () => {
       try {
         const result = await fetcher();
-        if (!isUnmounted.current) setData(result);
+        if (!isUnmounted.current) onData(result);
       } catch (err) {
         if (isUnmounted.current) return;
         if (err instanceof Error) {
@@ -47,5 +47,5 @@ export function usePolling<T>(
       isUnmounted.current = true;
       clearInterval(intervalId);
     };
-  }, [fetcher, interval, enabled, setData, errorHandler]);
+  }, [fetcher, interval, enabled, onData, errorHandler]);
 }

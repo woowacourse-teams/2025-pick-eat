@@ -14,14 +14,14 @@ export function usePickeatStateChecker(pickeatCode: string) {
   };
 
   usePolling<PickeatStateResponse | null>(fetchPickeatState, {
-    setData: data => {
+    onData: data => {
       if (data?.isActive === false) {
         navigate(generateRouterPath.matchResult(pickeatCode));
       }
     },
     errorHandler: error => {
       if (error.message === 'PICKEAT_NOT_FOUND') {
-        alert('종료된 접근입니다.');
+        alert('해당 픽잇이 종료되었습니다');
         navigate(ROUTE_PATH.MAIN);
       } else {
         console.error('Polling error:', error.message);
