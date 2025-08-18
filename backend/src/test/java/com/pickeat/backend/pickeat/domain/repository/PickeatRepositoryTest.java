@@ -37,6 +37,7 @@ class PickeatRepositoryTest {
             Pickeat keepPickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
 
             testEntityManager.flush();
+            testEntityManager.clear();
 
             long beforeCount = pickeatRepository.count();
 

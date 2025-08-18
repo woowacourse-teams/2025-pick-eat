@@ -17,7 +17,7 @@ public class PickeatScheduler {
     private final PickeatRepository pickeatRepository;
     private final RestaurantRepository restaurantRepository;
 
-    @Scheduled(cron = "0 0 0 * * *")
+    @Scheduled(cron = "0 0 0 * * *") // 매일 자정(00:00)에 실행
     @Transactional
     public void cleanupOldDeactivatedPickeats() {
         LocalDateTime cutoffDate = LocalDateTime.now().minusDays(3);

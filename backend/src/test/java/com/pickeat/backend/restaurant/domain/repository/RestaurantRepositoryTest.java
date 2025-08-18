@@ -67,6 +67,7 @@ class RestaurantRepositoryTest {
             testEntityManager.persist(RestaurantFixture.create(keepPickeat2, "유지될 레스토랑2"));
 
             testEntityManager.flush();
+            testEntityManager.clear();
 
             long beforeCount = restaurantRepository.count();
 
