@@ -29,7 +29,7 @@ function Carousel({ contentArr }: Props) {
     scrollToIndex(idx);
   };
 
-  const handleClickContent = (e: React.MouseEvent, idx: number) => {
+  const handleContentClick = (e: React.MouseEvent, idx: number) => {
     if (isFocused(idx)) {
       return;
     }
@@ -52,7 +52,7 @@ function Carousel({ contentArr }: Props) {
             atFirstContent={i === 0}
             atLastContent={i === contentArr.length - 1}
             onClickCapture={e => {
-              handleClickContent(e, i);
+              handleContentClick(e, i);
             }}
           >
             {content}
