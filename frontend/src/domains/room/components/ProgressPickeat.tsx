@@ -1,6 +1,6 @@
 import Enter from '@components/assets/icons/Enter';
 
-import { PickeatResponse } from '@apis/pickeat';
+import { ProgressPickeat } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router';
 function ProgressPickeat({
   pickeats,
 }: {
-  pickeats: Promise<PickeatResponse[]>;
+  pickeats: Promise<ProgressPickeat[]>;
 }) {
   const pickeatList = use(pickeats);
   const navigate = useNavigate();
@@ -61,10 +61,6 @@ const S = {
   `,
 
   Description: styled.span`
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level2};
-
     font: ${({ theme }) => theme.FONTS.heading.small};
   `,
 
@@ -82,13 +78,12 @@ const S = {
   TitleArea: styled.div`
     display: flex;
     align-items: center;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
 
   ProgressIcon: styled.span``,
 
-  Name: styled.li`
-    padding: ${({ theme }) => theme.PADDING.p3};
-  `,
+  Name: styled.li``,
 
   DescriptionArea: styled.div`
     display: flex;

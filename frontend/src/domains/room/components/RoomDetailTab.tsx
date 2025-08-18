@@ -14,8 +14,8 @@ import { useNavigate, useSearchParams } from 'react-router';
 import IncludeMemberList from './IncludeMemberList';
 import ProgressPickeat from './ProgressPickeat';
 
-function RoomDetailTab({ roomName }: { roomName: Promise<Room | null> }) {
-  const name = use(roomName)?.name;
+function RoomDetailTab({ roomDetail }: { roomDetail: Promise<Room | null> }) {
+  const name = use(roomDetail)?.name;
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -24,7 +24,7 @@ function RoomDetailTab({ roomName }: { roomName: Promise<Room | null> }) {
   return (
     <S.Container>
       <S.Name>{name}</S.Name>
-      <S.SelectWrapper>
+      <S.ButtonWrapper>
         <Button
           text="위시로 픽잇!"
           leftIcon="🤍"
@@ -37,7 +37,7 @@ function RoomDetailTab({ roomName }: { roomName: Promise<Room | null> }) {
             navigate(generateRouterPath.pickeatWithLocation(roomId))
           }
         />
-      </S.SelectWrapper>
+      </S.ButtonWrapper>
       <ErrorBoundary>
         <Suspense>
           <IncludeMemberList members={room.getIncludeMembers(roomId)} />
@@ -69,7 +69,7 @@ const S = {
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
 
-  SelectWrapper: styled.div`
+  ButtonWrapper: styled.div`
     width: 100%;
     display: flex;
     gap: ${({ theme }) => theme.GAP.level5};

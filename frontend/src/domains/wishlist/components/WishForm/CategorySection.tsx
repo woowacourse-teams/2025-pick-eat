@@ -47,6 +47,5 @@ const S = {
     border: none;
 
     background: none;
-    cursor: pointer;
   `,
 };

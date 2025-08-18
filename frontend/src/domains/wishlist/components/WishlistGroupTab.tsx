@@ -92,12 +92,7 @@ function WishlistGroupTab() {
 export default WishlistGroupTab;
 
 const S = {
-  Container: styled.div`
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    border-radius: ${({ theme }) => theme.RADIUS.large};
-  `,
+  Container: styled.div``,
 
   TitleArea: styled.div`
     display: flex;
