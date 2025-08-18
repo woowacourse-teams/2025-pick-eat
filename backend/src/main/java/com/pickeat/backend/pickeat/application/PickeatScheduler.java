@@ -44,7 +44,6 @@ public class PickeatScheduler {
                 .toList();
 
         deleteRelatedData(expiredPickeatIds);
-
         restaurantRepository.deleteByPickeatIds(expiredPickeatIds);
         pickeatRepository.deleteAll(expiredPickeats);
     }
