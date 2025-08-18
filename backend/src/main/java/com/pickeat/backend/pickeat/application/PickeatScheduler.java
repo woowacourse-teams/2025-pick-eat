@@ -1,34 +1,61 @@
 package com.pickeat.backend.pickeat.application;
 
+import com.pickeat.backend.pickeat.domain.Participant;
+import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.domain.PickeatResult;
+import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
+import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
+import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
+@Transactional(readOnly = true)
 public class PickeatScheduler {
 
+    private static final int DELETE_CUT_LINE = 1;
+
     private final PickeatRepository pickeatRepository;
+    private final PickeatResultRepository pickeatResultRepository;
+    private final ParticipantRepository participantRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
     private final RestaurantRepository restaurantRepository;
 
-    @Scheduled(cron = "0 0 0 * * *") // 매일 자정(00:00)에 실행
+    @Scheduled(cron = "0 0 0 * * *") // 매일 00:00에 실행
     @Transactional
-    public void cleanupOldDeactivatedPickeats() {
-        LocalDateTime cutoffDate = LocalDateTime.now().minusDays(3);
-        //Todo: 삭제 스케줄링 결과에 대한 로깅 필요 [2025-08-18 01:12:32]
-        int targetPickeatCount = pickeatRepository.countByIsActiveFalseAndUpdatedAtBefore(cutoffDate);
+    public void cleanupOldPickeats() {
+        LocalDateTime deleteCutLine = LocalDateTime.now().minusDays(DELETE_CUT_LINE);
+        List<Pickeat> expiredPickeats = pickeatRepository.findByUpdatedAtBefore(deleteCutLine);
 
-        if (targetPickeatCount == 0) {
+        if (expiredPickeats.isEmpty()) {
             return;
         }
 
-        restaurantRepository.deleteAllByOldDeactivatedPickeats(cutoffDate);
-        pickeatRepository.deleteOldDeactivatedPickeats(cutoffDate);
+        List<Long> expiredPickeatIds = expiredPickeats.stream()
+                .map(Pickeat::getId)
+                .toList();
+
+        deleteRelatedData(expiredPickeatIds);
+
+        restaurantRepository.deleteByPickeatIds(expiredPickeatIds);
+        pickeatRepository.deleteByPickeatIds(expiredPickeatIds);
+    }
+
+    private void deleteRelatedData(List<Long> expiredPickeatIds) {
+        List<RestaurantLike> likesToDelete = restaurantLikeRepository.findByRestaurantPickeatIdIn(expiredPickeatIds);
+        List<PickeatResult> resultsToDelete = pickeatResultRepository.findByPickeatIdIn(expiredPickeatIds);
+        List<Participant> participantsToDelete = participantRepository.findByPickeatIdIn(expiredPickeatIds);
+
+        restaurantLikeRepository.deleteAll(likesToDelete);
+        pickeatResultRepository.deleteAll(resultsToDelete);
+        participantRepository.deleteAll(participantsToDelete);
     }
 }

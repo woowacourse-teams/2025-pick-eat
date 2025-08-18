@@ -16,13 +16,9 @@ public interface PickeatRepository extends JpaRepository<Pickeat, Long> {
 
     List<Pickeat> findByRoomIdAndIsActive(Long roomId, Boolean isActive);
 
-    @Modifying
-    @Query(value = """
-                DELETE FROM pickeat
-                WHERE is_active = false
-                AND updated_at < :cutoffDate
-            """, nativeQuery = true)
-    int deleteOldDeactivatedPickeats(@Param("cutoffDate") LocalDateTime cutoffDate);
+    List<Pickeat> findByUpdatedAtBefore(LocalDateTime cutoffDate);
 
-    int countByIsActiveFalseAndUpdatedAtBefore(LocalDateTime cutoffDate);
+    @Modifying
+    @Query("DELETE FROM Pickeat p WHERE p.id IN :pickeatIds")
+    int deleteByPickeatIds(@Param("pickeatIds") List<Long> pickeatIds);
 }

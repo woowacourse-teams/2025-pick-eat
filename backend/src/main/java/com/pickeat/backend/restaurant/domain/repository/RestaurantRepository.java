@@ -2,7 +2,6 @@ package com.pickeat.backend.restaurant.domain.repository;
 
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.Restaurant;
-import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,13 +21,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
                                                           @Param("isExcluded") Boolean isExcluded);
 
     @Modifying
-    @Query(value = """
-                DELETE FROM restaurant
-                WHERE pickeat_id IN (
-                    SELECT id FROM pickeat
-                    WHERE is_active = false
-                    AND updated_at < :cutoffDate
-                )
-            """, nativeQuery = true)
-    int deleteAllByOldDeactivatedPickeats(@Param("cutoffDate") LocalDateTime cutoffDate);
+    @Query(value = "UPDATE restaurant SET deleted = true WHERE pickeat_id IN (:pickeatIds)", nativeQuery = true)
+    int deleteByPickeatIds(@Param("pickeatIds") List<Long> pickeatIds);
+
 }

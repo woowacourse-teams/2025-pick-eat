@@ -3,13 +3,20 @@ package com.pickeat.backend.pickeat.application;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.pickeat.backend.fixture.ParticipantFixture;
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
+import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.domain.PickeatResult;
+import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
+import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
+import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.time.LocalDateTime;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -30,46 +37,72 @@ class PickeatSchedulerTest {
     private PickeatRepository pickeatRepository;
 
     @Autowired
+    private ParticipantRepository participantRepository;
+
+    @Autowired
     private RestaurantRepository restaurantRepository;
 
-    @Nested
-    class 오래된_비활성화_픽잇_정리 {
+    @Autowired
+    private RestaurantLikeRepository restaurantLikeRepository;
 
-        @Test
-        void 오래된_비활성_픽잇과_연관_레스토랑만_삭제() {
-            // given
-            LocalDateTime oldDate = LocalDateTime.now().minusDays(4);
+    @Autowired
+    private PickeatResultRepository pickeatResultRepository;
 
-            Pickeat deletePickeat = testEntityManager.persist(PickeatFixture.createInactiveWithoutRoom());
-            setUpdatedAt(deletePickeat.getId(), oldDate);
-            testEntityManager.persist(RestaurantFixture.create(deletePickeat, "삭제될 레스토랑"));
+    @Test
+    void 오래된_픽잇_삭제() {
+        // given
+        LocalDateTime oldDate = LocalDateTime.now().minusDays(2);
 
-            Pickeat keepPickeat1 = testEntityManager.persist(PickeatFixture.createInactiveWithoutRoom());
-            testEntityManager.persist(RestaurantFixture.create(keepPickeat1, "유지될 레스토랑1"));
+        Pickeat deletePickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+        setUpdatedAt(deletePickeat.getId(), oldDate);
 
-            Pickeat keepPickeat2 = testEntityManager.persist(PickeatFixture.createWithoutRoom());
-            setUpdatedAt(keepPickeat2.getId(), oldDate);
-            testEntityManager.persist(RestaurantFixture.create(keepPickeat2, "유지될 레스토랑2"));
+        Pickeat keepPickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
 
-            testEntityManager.flush();
-            testEntityManager.clear();
+        testEntityManager.flush();
+        testEntityManager.clear();
 
-            long pickeatCountBefore = pickeatRepository.count();
-            long restaurantCountBefore = restaurantRepository.count();
+        long pickeatCountBefore = pickeatRepository.count();
 
-            // when
-            scheduler.cleanupOldDeactivatedPickeats();
+        // when
+        scheduler.cleanupOldPickeats();
 
-            // then
-            long pickeatCountAfter = pickeatRepository.count();
-            long restaurantCountAfter = restaurantRepository.count();
+        // then
+        long pickeatCountAfter = pickeatRepository.count();
+        assertAll(
+                () -> assertThat(pickeatCountAfter).isEqualTo(pickeatCountBefore - 1),
+                () -> assertThat(pickeatRepository.existsById(deletePickeat.getId())).isFalse(),
+                () -> assertThat(pickeatRepository.existsById(keepPickeat.getId())).isTrue()
+        );
+    }
 
-            assertAll(
-                    () -> assertThat(pickeatCountAfter).isEqualTo(pickeatCountBefore - 1),
-                    () -> assertThat(restaurantCountAfter).isEqualTo(restaurantCountBefore - 1),
-                    () -> assertThat(pickeatRepository.existsById(deletePickeat.getId())).isFalse()
-            );
-        }
+    @Test
+    void 픽잇_삭제시_연관된_데이터도_함께_삭제() {
+        // given
+        LocalDateTime oldDate = LocalDateTime.now().minusDays(2);
+
+        Pickeat deletePickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+        setUpdatedAt(deletePickeat.getId(), oldDate);
+
+        // 연관 데이터 생성
+        Restaurant restaurant = testEntityManager.persist(RestaurantFixture.create(deletePickeat));
+        Participant participant = testEntityManager.persist(ParticipantFixture.create(deletePickeat));
+        RestaurantLike like = testEntityManager.persist(new RestaurantLike(participant, restaurant));
+        PickeatResult result = testEntityManager.persist(new PickeatResult(deletePickeat, restaurant, false));
+
+        testEntityManager.flush();
+        testEntityManager.clear();
+
+        // when
+        scheduler.cleanupOldPickeats();
+
+        // then
+        assertAll(
+                () -> assertThat(pickeatRepository.existsById(deletePickeat.getId())).isFalse(),
+                () -> assertThat(restaurantRepository.existsById(restaurant.getId())).isFalse(),
+                () -> assertThat(participantRepository.existsById(participant.getId())).isFalse(),
+                () -> assertThat(restaurantLikeRepository.existsById(like.getId())).isFalse(),
+                () -> assertThat(pickeatResultRepository.existsById(result.getId())).isFalse()
+        );
     }
 
     private void setUpdatedAt(Long pickeatId, LocalDateTime oldDate) {

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
-import java.time.LocalDateTime;
+import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,43 +22,32 @@ class PickeatRepositoryTest {
     private PickeatRepository pickeatRepository;
 
     @Nested
-    class 오래된_비활성화_픽잇_삭제 {
+    class 만료된_픽잇_삭제 {
 
         @Test
-        void cutoff_시간_이전에_비활성화된_픽잇_삭제_성공() {
+        void 픽잇_ID_목록으로_픽잇_삭제() {
             // given
-            LocalDateTime cutoffDate = LocalDateTime.now().minusDays(2);
-            LocalDateTime oldDate = cutoffDate.minusHours(1);
-
-            Pickeat deletePickeat = testEntityManager.persist(
-                    PickeatFixture.createInactiveWithoutRoom());
-            setUpdatedAt(deletePickeat.getId(), oldDate);
-
-            Pickeat keepPickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+            Pickeat pickeat1 = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+            Pickeat pickeat2 = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+            Pickeat pickeat3 = testEntityManager.persist(PickeatFixture.createWithoutRoom());
 
             testEntityManager.flush();
             testEntityManager.clear();
 
             long beforeCount = pickeatRepository.count();
+            List<Long> deleteIds = List.of(pickeat1.getId(), pickeat2.getId());
 
             // when
-            int deletedCount = pickeatRepository.deleteOldDeactivatedPickeats(cutoffDate);
-
-            testEntityManager.flush();
+            int deletedCount = pickeatRepository.deleteByPickeatIds(deleteIds);
 
             // then
             assertAll(
-                    () -> assertThat(deletedCount).isEqualTo(1),
-                    () -> assertThat(pickeatRepository.count()).isEqualTo(beforeCount - deletedCount)
+                    () -> assertThat(deletedCount).isEqualTo(2),
+                    () -> assertThat(pickeatRepository.count()).isEqualTo(beforeCount - deletedCount),
+                    () -> assertThat(pickeatRepository.existsById(pickeat1.getId())).isFalse(),
+                    () -> assertThat(pickeatRepository.existsById(pickeat2.getId())).isFalse(),
+                    () -> assertThat(pickeatRepository.existsById(pickeat3.getId())).isTrue()
             );
         }
-    }
-
-    private void setUpdatedAt(Long pickeatId, LocalDateTime oldDate) {
-        testEntityManager.getEntityManager().createNativeQuery(
-                        "UPDATE pickeat SET updated_at = :oldDate WHERE id = :id")
-                .setParameter("oldDate", oldDate)
-                .setParameter("id", pickeatId)
-                .executeUpdate();
     }
 }
