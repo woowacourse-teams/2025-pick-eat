@@ -9,17 +9,17 @@ import styled from '@emotion/styled';
 
 type Props = {
   wishlist: Wishes[];
-  onClick: (index: number) => void;
+  onTabChange: (index: number) => void;
   isPublic: boolean;
   onRefetch: () => void;
 };
 
-function WishlistTab({ wishlist, onClick, isPublic, onRefetch }: Props) {
+function WishlistTab({ wishlist, onTabChange, isPublic, onRefetch }: Props) {
   const deleteWish = async (wishId: number) => {
     // todo: try-catch
     const isDelete = confirm('정말 삭제하시겠습니까?');
-    await wish.delete(wishId);
     if (isDelete) {
+      await wish.delete(wishId);
       onRefetch();
     }
   };
@@ -29,11 +29,11 @@ function WishlistTab({ wishlist, onClick, isPublic, onRefetch }: Props) {
       {isPublic || (
         <Button
           text="새 위시 등록"
-          onClick={() => onClick(1)}
+          onClick={() => onTabChange(1)}
           style={{ position: 'sticky', top: 0 }}
         />
       )}
-      {wishlist && wishlist.length > 0 ? (
+      {wishlist.length > 0 ? (
         wishlist.map(({ id, name, pictures, category, roadAddressName }) => (
           <S.Container key={id}>
             <S.Image
@@ -50,14 +50,14 @@ function WishlistTab({ wishlist, onClick, isPublic, onRefetch }: Props) {
             />
 
             <S.Info>
-              <S.BadgeArea>
+              <S.TopArea>
                 <Badge>{category}</Badge>
                 {isPublic || (
                   <S.RemoveBtn type="button" onClick={() => deleteWish(id)}>
                     <Trash size="xs" color="red" />
                   </S.RemoveBtn>
                 )}
-              </S.BadgeArea>
+              </S.TopArea>
               <S.Name>{name}</S.Name>
               <S.Address>{roadAddressName}</S.Address>
             </S.Info>
@@ -89,7 +89,7 @@ const S = {
     flex: 1;
   `,
 
-  BadgeArea: styled.div`
+  TopArea: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -36,8 +36,8 @@ function WishlistCard({
   const deleteWishlist = async (wishId: number) => {
     // todo: try-catch
     const isDelete = confirm('정말 삭제하시겠습니까?');
-    await wishlist.delete(wishId);
     if (isDelete) {
+      await wishlist.delete(wishId);
       onRefetch?.();
     }
   };
