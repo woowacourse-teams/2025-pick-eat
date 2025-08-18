@@ -104,7 +104,7 @@ const S = {
   `,
 
   CardContent: styled.div`
-    width: 100%;
+    width: 120px;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -120,6 +120,9 @@ const S = {
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level2};
+    height: 20px;
+    //TODO:+버튼 누르면 태그 다 보이게? 상의해봐야 할 듯
+    overflow: hidden;
   `,
 
   TitleWrapper: styled.div`
