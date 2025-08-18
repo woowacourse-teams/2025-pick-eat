@@ -62,18 +62,6 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
-  WishlistWrapper: styled.div`
-    width: max-content;
-    height: 200px;
-
-    display: flex;
-    gap: ${({ theme }) => theme.GAP.level5};
-
-    padding: ${({ theme }) => theme.PADDING.p5};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-  `,
-
   ThumbnailImg: styled.img`
     width: 190px;
     flex-shrink: 0;
