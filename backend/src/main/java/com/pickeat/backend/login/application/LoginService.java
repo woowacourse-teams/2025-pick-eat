@@ -1,9 +1,8 @@
 package com.pickeat.backend.login.application;
 
-import static com.pickeat.backend.global.exception.ErrorCode.USER_NOT_FOUND;
-
 import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.global.exception.BusinessException;
+import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.user.domain.User;
@@ -29,7 +28,7 @@ public class LoginService {
 
     public TokenResponse login(ProviderInfo providerInfo) {
         User user = userRepository.findByProviderIdAndProvider(providerInfo.providerId(), providerInfo.provider())
-                .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+                .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
         TokenResponse response = userTokenProvider.createToken(user.getId());
 
         return response;
