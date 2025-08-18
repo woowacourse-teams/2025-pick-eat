@@ -29,7 +29,7 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
     { id: 2, name: '선릉', image: '/images/seolleung-wish-image.jpg' },
   ];
 
-  const handleCreatePickeat = async (id: number) => {
+  const handlePublicWishlistClick = async (id: number) => {
     const code = await createPickeat(makePickeatName(), id);
     if (code) navigate(generateRouterPath.pickeatDetail(code));
   };
@@ -40,7 +40,7 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
         contentArr={WISHLIST_MOCK_DATA.map(item => (
           <S.ThumbnailImg
             key={item.id}
-            onClick={() => handleCreatePickeat(item.id)}
+            onClick={() => handlePublicWishlistClick(item.id)}
             src={item.image}
             alt={item.name}
           />
