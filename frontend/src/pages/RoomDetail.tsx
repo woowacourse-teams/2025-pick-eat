@@ -28,7 +28,7 @@ function RoomDetail() {
               <S.TabWrapper>
                 <ErrorBoundary>
                   <Suspense fallback={<div>로딩중</div>}>
-                    <RoomDetailTab roomName={room.get(roomId)} />
+                    <RoomDetailTab roomDetail={room.get(roomId)} />
                   </Suspense>
                 </ErrorBoundary>
               </S.TabWrapper>

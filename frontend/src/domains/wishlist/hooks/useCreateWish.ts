@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 import { validateWishForm } from '../services/validateWishForm';
 
-export type WishFormDataWithImage = WishFormData & { image?: File };
+export type WishFormDataWithImage = WishFormData & { thumbnail?: File };
 
 export const useCreateWish = (onCreate?: () => void) => {
   const [formData, setFormData] = useState<WishFormDataWithImage>();
@@ -35,15 +35,16 @@ export const useCreateWish = (onCreate?: () => void) => {
     }
 
     try {
+      if (!formData) return;
       const wishId = await wish.post(wishListId, {
-        name: formData?.name as string,
-        category: formData?.category as string,
-        roadAddressName: formData?.roadAddressName as string,
-        tags: formData?.tags as string[],
+        name: formData.name as string,
+        category: formData.category as string,
+        roadAddressName: formData.roadAddressName as string,
+        tags: formData.tags as string[],
       });
 
-      if (formData?.image && wishId)
-        await wish.postImage(wishId, formData?.image);
+      if (formData.thumbnail && wishId)
+        await wish.postImage(wishId, formData.thumbnail);
 
       alert('위시 등록!');
       onCreate?.();
