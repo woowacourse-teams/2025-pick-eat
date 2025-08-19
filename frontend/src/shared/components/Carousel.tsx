@@ -62,18 +62,14 @@ function Carousel({ contentArr }: Props) {
       </S.ContentWrapper>
 
       <S.LeftArrowButton
-        onClick={() => {
-          changeFocus(focusedIdx - 1);
-        }}
+        onClick={() => changeFocus(focusedIdx - 1)}
         active={!focusedFirstIdx}
       >
         <Arrow size="sm" direction="left" color="white" />
       </S.LeftArrowButton>
 
       <S.RightArrowButton
-        onClick={() => {
-          changeFocus(focusedIdx + 1);
-        }}
+        onClick={() => changeFocus(focusedIdx + 1)}
         active={!focusedLastIdx}
       >
         <Arrow size="sm" direction="right" color="white" />

@@ -98,9 +98,9 @@ const S = {
   Image: styled.img`
     width: 90px;
     height: 90px;
+    flex-shrink: 0;
     border-radius: ${({ theme }) => theme.RADIUS.medium};
     object-fit: cover;
-    flex-shrink: 0;
   `,
 
   CardContent: styled.div`
@@ -116,12 +116,12 @@ const S = {
     opacity: 1;
   `,
 
+  //TODO:+버튼 누르면 태그 다 보이게? 상의해봐야 할 듯
   TagBox: styled.div`
+    height: 26px;
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level2};
-    height: 20px;
-    //TODO:+버튼 누르면 태그 다 보이게? 상의해봐야 할 듯
     overflow: hidden;
   `,
 
