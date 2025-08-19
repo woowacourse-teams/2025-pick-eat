@@ -13,7 +13,6 @@ import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Suspense, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
 const Main = () => {
@@ -27,13 +26,7 @@ const Main = () => {
           <S.PrimaryPoint>Pick!</S.PrimaryPoint>
         </S.Title>
 
-        <ErrorBoundary>
-          <Suspense fallback={<div>로딩 중..</div>}>
-            <PublicWishlist
-              wishlistPromise={useMemo(() => wishlist.get(''), [])}
-            />
-          </Suspense>
-        </ErrorBoundary>
+        <PublicWishlist />
       </S.Section>
 
       <S.Section>

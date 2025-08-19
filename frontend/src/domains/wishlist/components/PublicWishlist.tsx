@@ -3,30 +3,29 @@ import ErrorMessage from '@components/errors/ErrorMessage';
 
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
-import { WishlistType } from '@apis/wishlist';
-
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
 import { useNavigate } from 'react-router';
 
 import useCreateWishPickeat from '../hooks/useCreateWishPickeat';
 
-type Props = {
-  wishlistPromise: Promise<WishlistType[]>;
-};
-
 const WISHLIST_MOCK_DATA = [
-  { id: 1, name: '잠실', image: '/images/jamsil-wish-image.jpg' },
-  { id: 2, name: '선릉', image: '/images/seolleung-wish-image.jpg' },
+  {
+    id: 1,
+    name: '잠실',
+    image:
+      'https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/template_images/jamsil_restaurant.png',
+  },
+  {
+    id: 2,
+    name: '선릉',
+    image:
+      'https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/template_images/seonreung_restaurant.png',
+  },
 ];
 
-const PublicWishlist = ({ wishlistPromise }: Props) => {
-  const wishlist = use(wishlistPromise);
-  //TODO:콘솔 지우기
-  console.log(wishlist);
-
+const PublicWishlist = () => {
   const navigate = useNavigate();
   const { createPickeat, errorMessage } = useCreateWishPickeat();
 
