@@ -1,6 +1,7 @@
 package com.pickeat.backend.wish.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
+import com.pickeat.backend.global.log.BusinessLogging;
 import com.pickeat.backend.wish.application.WishListService;
 import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
@@ -26,6 +27,7 @@ public class WishListController implements WishListApiSpec {
     private final WishListService wishListService;
 
     @Override
+    @BusinessLogging("위시리스트 생성")
     @PostMapping("/room/{roomId}/wishLists")
     public ResponseEntity<WishListResponse> createWishList(
             @PathVariable("roomId") Long roomId,
@@ -54,6 +56,7 @@ public class WishListController implements WishListApiSpec {
     }
 
     @Override
+    @BusinessLogging("위시리스트 삭제")
     @DeleteMapping("/wishLists/{wishListId}")
     public ResponseEntity<Void> deleteWishList(
             @PathVariable("wishListId") Long wishListId,

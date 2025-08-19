@@ -29,5 +29,4 @@ public record RequestLog(
                 new String(request.getContentAsByteArray(), StandardCharsets.UTF_8)
         );
     }
-
 }

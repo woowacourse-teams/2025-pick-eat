@@ -18,11 +18,7 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "위시", description = "위시 관련 API")
@@ -71,7 +67,6 @@ public interface WishApiSpec {
                     )
             )
     })
-    @PostMapping(value = "/wishLists/{wishListId}/wishes")
     ResponseEntity<WishResponse> createWish(
             @Parameter(description = "위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,
@@ -107,7 +102,6 @@ public interface WishApiSpec {
                     )
             )
     })
-    @DeleteMapping("/wishes/{wishId}")
     ResponseEntity<Void> deleteWish(
             @Parameter(description = "위시 ID", example = "1")
             @PathVariable("wishId") Long wishId,
@@ -148,7 +142,6 @@ public interface WishApiSpec {
                     )
             )
     })
-    @GetMapping("/wishLists/{wishListId}/wishes")
     ResponseEntity<List<WishResponse>> getWishesInWishList(
             @Parameter(description = "위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,
@@ -188,7 +181,6 @@ public interface WishApiSpec {
                     )
             )
     })
-    @GetMapping("/wishLists/public/{wishListId}/wishes")
     ResponseEntity<List<WishResponse>> getWishesInPublicWishList(
             @Parameter(description = "공개 위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId
@@ -257,7 +249,6 @@ public interface WishApiSpec {
                     )
             )
     })
-    @PatchMapping("/wishes/{wishId}")
     ResponseEntity<WishResponse> updateWish(
             @Parameter(description = "위시 ID", example = "1")
             @PathVariable("wishId") Long wishId,
