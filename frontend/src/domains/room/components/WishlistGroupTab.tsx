@@ -18,7 +18,7 @@ function WishlistGroupTab() {
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
 
-  const [wishlistData, setWishlistData] = useState<WishlistType[]>();
+  const [wishlistData, setWishlistData] = useState<WishlistType[]>([]);
 
   const getWishlist = async () => {
     // todo: try-catch
@@ -30,7 +30,7 @@ function WishlistGroupTab() {
     getWishlist();
   }, []);
 
-  const wishCount = wishlistData?.length;
+  const wishCount = wishlistData.length;
 
   const {
     opened,
@@ -78,13 +78,17 @@ function WishlistGroupTab() {
         </Modal>
       </S.TitleArea>
 
-      {wishlistData?.map(wishlist => (
-        <WishlistCard
-          key={wishlist.id}
-          wishlistData={wishlist}
-          onRefetch={getWishlist}
-        />
-      ))}
+      {wishlistData.length > 0 ? (
+        wishlistData.map(wishlist => (
+          <WishlistCard
+            key={wishlist.id}
+            wishlistData={wishlist}
+            onRefetch={getWishlist}
+          />
+        ))
+      ) : (
+        <S.EmptyDescription>위시리스트를 추가해보세요!</S.EmptyDescription>
+      )}
     </S.Container>
   );
 }
@@ -106,6 +110,11 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
 
     font: ${({ theme }) => theme.FONTS.heading.small};
+  `,
+
+  EmptyDescription: styled.span`
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    text-align: center;
   `,
 
   ModalContent: styled.form`
