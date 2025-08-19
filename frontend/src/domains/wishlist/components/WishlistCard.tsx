@@ -6,7 +6,7 @@ import { WishlistType } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
 
-import Wishlist from './Wishlist';
+import Wishes from './Wishes';
 
 type Prop = {
   wishlistData: WishlistType;
@@ -43,7 +43,7 @@ function WishlistCard({ wishlistData, selected, onSelect }: Prop) {
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <Wishlist id={id} name={name} isPublic={isPublic} />
+        <Wishes wishlistId={id} wishlistName={name} isPublic={isPublic} />
       </Modal>
     </S.Container>
   );
