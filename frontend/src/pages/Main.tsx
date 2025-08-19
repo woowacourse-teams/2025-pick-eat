@@ -23,7 +23,7 @@ const Main = () => {
     <S.Container>
       <S.Section>
         <S.Title>
-          <S.PrimaryPoint>픽잇 추천</S.PrimaryPoint>에서{' '}
+          <S.PrimaryPoint>픽잇 추천</S.PrimaryPoint>에서&nbsp;
           <S.PrimaryPoint>Pick!</S.PrimaryPoint>
         </S.Title>
 
@@ -38,7 +38,7 @@ const Main = () => {
 
       <S.Section>
         <S.Title>
-          <S.SecondaryPoint>맞춤 설정</S.SecondaryPoint>으로{' '}
+          <S.SecondaryPoint>맞춤 설정</S.SecondaryPoint>으로&nbsp;
           <S.SecondaryPoint>Pick!</S.SecondaryPoint>
         </S.Title>
 
