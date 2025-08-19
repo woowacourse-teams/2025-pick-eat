@@ -48,8 +48,6 @@ const S = {
     justify-content: flex-end;
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
-    font: ${({ theme }) => theme.FONTS.heading.large};
-
     transition: width 0.5s ease;
   `,
 };
