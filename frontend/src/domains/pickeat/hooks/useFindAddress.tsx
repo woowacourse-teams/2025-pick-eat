@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { AddressType, getAddressListByKeyword } from '../utils/convertAddress';
 
-export const useFindAddress = () => {
+export const useFindAddress = (onSelectedAddress?: (value: string) => void) => {
   const [address, setAddress] = useState<string>('');
   const [addressList, setAddressList] = useState<AddressType[] | null>(null);
 
@@ -21,6 +21,7 @@ export const useFindAddress = () => {
     setAddress(value);
     setAddressList(null);
     setQuery('');
+    onSelectedAddress?.(value);
   };
 
   useEffect(() => {

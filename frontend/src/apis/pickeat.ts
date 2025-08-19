@@ -10,7 +10,7 @@ export type PickeatType = {
   code: string;
 };
 
-type PickeatResponse = {
+export type PickeatResponse = {
   id: number;
   code: string;
   name: string;

@@ -14,7 +14,7 @@ type Picture = {
   imageDownloadUrl: string;
 };
 
-type WishesResponse = {
+export type WishesResponse = {
   id: number;
   name: string;
   category: '한식' | '중식' | '일식' | '양식' | '기타';
@@ -37,16 +37,18 @@ export type Wishes = {
 export type WishlistType = {
   id: number;
   name: string;
+  isPublic: boolean;
 };
 
 const convertResponseToWish = (data: WishlistResponse[]) => {
   return data.map(d => ({
     id: d.id,
     name: d.name,
+    isPublic: d.isPublic,
   }));
 };
 
-const convertResponaseToWishes = (data: WishesResponse[]) => {
+const convertResponseToWishes = (data: WishesResponse[]) => {
   return data.map(d => ({
     id: d.id,
     name: d.name,
@@ -61,20 +63,37 @@ const convertResponaseToWishes = (data: WishesResponse[]) => {
 const BASE_URL = 'wishLists';
 
 export const wishlist = {
-  get: async (roomId: string): Promise<WishlistType[]> => {
+  get: async (wishlistId: number, isPublic: boolean): Promise<Wishes[]> => {
+    const id = wishlistId.toString();
+    const url = isPublic
+      ? joinAsPath(BASE_URL, 'public', id, 'wishes')
+      : joinAsPath(BASE_URL, id, 'wishes');
+
+    const response = await apiClient.get<WishesResponse[]>(url);
+    if (response) return convertResponseToWishes(response);
+    return [];
+  },
+  getWishGroup: async (roomId?: number): Promise<WishlistType[]> => {
     const url = roomId
-      ? joinAsPath('room', roomId, BASE_URL)
+      ? joinAsPath('room', `${roomId}`, BASE_URL)
       : joinAsPath(BASE_URL);
     const response = await apiClient.get<WishlistResponse[]>(url);
     if (response) return convertResponseToWish(response);
     return [];
   },
-
   getWishes: async (wishlistId: number): Promise<Wishes[] | null> => {
     const id = wishlistId.toString();
     const url = joinAsPath(BASE_URL, 'public', id, 'wishes');
     const response = await apiClient.get<WishesResponse[]>(url);
-    if (response) return convertResponaseToWishes(response);
+    if (response) return convertResponseToWishes(response);
     return null;
+  },
+  post: async (roomId: number, name: string) => {
+    const url = joinAsPath('room', `${roomId}`, BASE_URL);
+    await apiClient.post(url, { name });
+  },
+  delete: async (wishlistId: number) => {
+    const url = joinAsPath(BASE_URL, `${wishlistId}`);
+    await apiClient.delete(url);
   },
 };

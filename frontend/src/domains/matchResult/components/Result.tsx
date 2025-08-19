@@ -32,7 +32,7 @@ function Result({ resultPromise }: Props) {
         <S.ButtonWrapper>
           <Button
             color="primary"
-            text="식당 싱세 정보"
+            text="식당 상세 정보"
             onClick={() =>
               placeUrl && window.open(placeUrl, '_blank', 'noopener,noreferrer')
             }

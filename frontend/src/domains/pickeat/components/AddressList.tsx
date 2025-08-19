@@ -10,12 +10,19 @@ type Props = {
 function AddressList({ addressList, onClick }: Props) {
   return (
     <>
-      {addressList.map(address => (
-        <S.Address key={address.id} onClick={() => onClick(address.placeName)}>
-          <S.PlaceName>{address.placeName}</S.PlaceName>
-          <S.AddressName>{address.addressName}</S.AddressName>
-        </S.Address>
-      ))}
+      {addressList.length > 0 ? (
+        addressList.map(address => (
+          <S.Address
+            key={address.id}
+            onClick={() => onClick(address.placeName)}
+          >
+            <S.PlaceName>{address.placeName}</S.PlaceName>
+            <S.AddressName>{address.addressName}</S.AddressName>
+          </S.Address>
+        ))
+      ) : (
+        <div>존재하는 주소가 없습니다.</div>
+      )}
     </>
   );
 }

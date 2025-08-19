@@ -40,10 +40,13 @@ export default TabContent;
 const S = {
   Container: styled.div<{ height: number | null }>`
     width: 100%;
+
     ${({ height }) =>
       `height: ${height}px;
        transition: ${height} 0.3s cubic-bezier(0.4,0,0.2,1)`};
-    overflow: hidden;
+    /* TODO: 변경 사항 가능한지 물어보기 */
+
+    overflow: hidden scroll;
     position: relative;
 
     background: ${({ theme }) => theme.PALETTE.gray[5]};
