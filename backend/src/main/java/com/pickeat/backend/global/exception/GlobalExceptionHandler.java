@@ -184,5 +184,4 @@ public class GlobalExceptionHandler {
     }
 
     private enum LogLevel {INFO, WARN, ERROR}
-
 }

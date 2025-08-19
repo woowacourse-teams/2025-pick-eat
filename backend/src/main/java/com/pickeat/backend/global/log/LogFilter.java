@@ -54,10 +54,10 @@ public class LogFilter extends OncePerRequestFilter {
 
         try {
             filterChain.doFilter(cacheRequest, cacheResponse);
+            log.info(objectMapper.writeValueAsString(RequestLog.of(cacheRequest)));
 
             //TODO: ContentCachingRequestWrapper는 요청 바디가 실제로 읽힌 후에만 캐시에 저장됨.
             // 따라서 현재 요청 로그를 doFilter 이후에 찍게되면서 로그 순서상 리졸버 단의 예외 로그가 먼저 발생(2025-08-19, 화, 1:45):
-            log.info(objectMapper.writeValueAsString(RequestLog.of(cacheRequest)));
 
         } finally {
             log.info(objectMapper.writeValueAsString(ResponseLog.of(cacheResponse)));

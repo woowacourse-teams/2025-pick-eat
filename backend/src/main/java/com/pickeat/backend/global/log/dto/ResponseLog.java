@@ -7,7 +7,7 @@ import org.slf4j.MDC;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 public record ResponseLog(
-        LogType type,
+        LogType logType,
         String timestamp,
         String requestId,
         String body

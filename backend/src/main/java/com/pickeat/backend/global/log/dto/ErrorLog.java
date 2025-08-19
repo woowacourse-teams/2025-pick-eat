@@ -65,8 +65,10 @@ public record ErrorLog(
 
     private static String getStackTraceAsString(Throwable ex) {
         StringBuilder sb = new StringBuilder();
-        for (StackTraceElement element : ex.getStackTrace()) {
-            sb.append(element).append("\n");
+        StackTraceElement[] stackTrace = ex.getStackTrace();
+        int limit = Math.min(stackTrace.length, 5);
+        for (int i = 0; i < limit; i++) {
+            sb.append(stackTrace[i]).append("\n");
         }
         return sb.toString();
     }
