@@ -1,10 +1,10 @@
 import SearchBar from '@components/actions/SearchBar';
 
+import { useFindMember } from '@domains/room/hooks/useFindMember';
+
 import { User } from '@apis/users';
 
 import styled from '@emotion/styled';
-
-import { useFindMember } from '../hooks/useFindMember';
 
 import MemberList from './MemberList';
 import SelectedMemberList from './SelectedMemberList';

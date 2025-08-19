@@ -3,14 +3,14 @@ import People from '@components/assets/icons/People';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
+import { useInviteMember } from '@domains/room/hooks/useInviteMember';
+
 import { room } from '@apis/room';
 import { User } from '@apis/users';
 
 import styled from '@emotion/styled';
 import { use } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
-
-import { useInviteMember } from '../hooks/useInviteMember';
 
 import InviteMember from './InviteMember';
 

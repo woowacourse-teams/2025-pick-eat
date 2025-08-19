@@ -1,4 +1,4 @@
-import InviteMember from '@domains/room/components/InviteMember';
+import InviteMember from '@domains/room/components/RoomDetailTab/InviteMember';
 
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
