@@ -7,17 +7,12 @@ import TabMenu from '@components/tabMenus/TabMenu';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { room } from '@apis/room';
 import { wishlist } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
-import { useSearchParams } from 'react-router';
 
 function RoomDetail() {
-  const [searchParams] = useSearchParams();
-  const roomId = Number(searchParams.get('roomId')) ?? '';
-
   return (
     <S.Container>
       <TabMenu
@@ -28,7 +23,7 @@ function RoomDetail() {
               <S.TabWrapper>
                 <ErrorBoundary>
                   <Suspense fallback={<div>로딩중</div>}>
-                    <RoomDetailTab roomDetail={room.get(roomId)} />
+                    <RoomDetailTab />
                   </Suspense>
                 </ErrorBoundary>
               </S.TabWrapper>

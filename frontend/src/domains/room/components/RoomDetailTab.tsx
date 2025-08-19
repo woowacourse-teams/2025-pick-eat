@@ -3,19 +3,19 @@ import Location from '@components/assets/icons/Location';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { room, Room } from '@apis/room';
+import { room } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
-import { Suspense, use } from 'react';
+import { Suspense } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import IncludeMemberList from './IncludeMemberList';
 import ProgressPickeat from './ProgressPickeat';
+import RoomDetailName from './RoomDetailName';
 
-function RoomDetailTab({ roomDetail }: { roomDetail: Promise<Room | null> }) {
-  const name = use(roomDetail)?.name;
+function RoomDetailTab() {
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -23,7 +23,9 @@ function RoomDetailTab({ roomDetail }: { roomDetail: Promise<Room | null> }) {
 
   return (
     <S.Container>
-      <S.Name>{name}</S.Name>
+      <Suspense>
+        <RoomDetailName roomData={room.get(roomId)} />
+      </Suspense>
       <S.ButtonWrapper>
         <Button
           text="위시로 픽잇!"
