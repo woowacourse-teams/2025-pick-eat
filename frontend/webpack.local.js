@@ -8,11 +8,17 @@ import common from './webpack.common.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const devConfig = {
+const localConfig = {
   mode: 'development',
   devtool: 'inline-source-map',
-  optimization: {
-    minimize: false,
+  devServer: {
+    port: 3000,
+    hot: true,
+    open: true,
+    historyApiFallback: true,
+    client: {
+      overlay: false,
+    },
   },
   output: {
     path: path.resolve(__dirname, 'dist/dev'),
@@ -20,6 +26,9 @@ const devConfig = {
     publicPath: '/',
     clean: true,
   },
+  optimization: {
+    minimize: false,
+  },
 };
 
-export default merge(common, devConfig);
+export default merge(common, localConfig);

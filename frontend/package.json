@@ -4,13 +4,14 @@
   "description": "팀원들의 취향을 기억하는 PickEat",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack serve --config webpack.dev.js",
-    "build": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
+    "dev": "cross-env NODE_ENV=local webpack serve --config webpack.local.js",
+    "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
+    "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js",
     "test": "jest --verbose",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "lint:css": "stylelint --ignore-path .gitignore **/*.tsx",
-    "fix:css": "stylelint \"src/**/*.{js,jsx,ts,tsx,css}\" --fix",
+    "css:fix": "stylelint \"src/**/*.{js,jsx,ts,tsx,css}\" --fix",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
