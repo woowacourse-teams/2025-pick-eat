@@ -130,6 +130,7 @@ const S = {
   Image: styled.img`
     width: 90px;
     height: 90px;
+    flex-shrink: 0;
     border-radius: ${({ theme }) => theme.RADIUS.medium};
     object-fit: cover;
   `,

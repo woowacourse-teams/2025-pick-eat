@@ -13,6 +13,8 @@ const __dirname = path.dirname(__filename);
 const env = dotenv.config({ path: path.resolve(__dirname, './.env') }).parsed;
 const MODE = process.env.NODE_ENV || 'development';
 const BASE_URL = MODE === 'production' ? env.BASE_URL_PROD : env.BASE_URL_DEV;
+const API_BASE_URL =
+  MODE === 'production' ? env.API_BASE_URL_PROD : env.API_BASE_URL_DEV;
 
 const envKeys = Object.entries(env).reduce(
   (acc, [key, value]) => {
@@ -22,6 +24,7 @@ const envKeys = Object.entries(env).reduce(
   {
     'process.env.BASE_URL': JSON.stringify(BASE_URL),
     'process.env.NODE_ENV': JSON.stringify(MODE),
+    'process.env.API_BASE_URL': JSON.stringify(API_BASE_URL),
   }
 );
 

@@ -2,6 +2,8 @@ import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
 import ErrorMessage from '@components/errors/ErrorMessage';
 
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
+
 import { WishlistType } from '@apis/wishlist';
 
 import { useGA } from '@hooks/useGA';
@@ -23,7 +25,7 @@ type Props = {
 
 function WishlistForm({ wishlistGroupPromise }: Props) {
   const data = use(wishlistGroupPromise);
-  const [pickeatName, setPickeatName] = useState('');
+  const [pickeatName, setPickeatName] = useState(makePickeatName);
   const { selectedWishlistId, handleSelectWishlist, selectedWishlist } =
     useSelectWishlist(data);
   const { createPickeat, errorMessage } = useCreateWishPickeat();
