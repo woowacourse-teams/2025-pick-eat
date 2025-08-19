@@ -17,6 +17,11 @@ type Props = {
   wishlistPromise: Promise<WishlistType[]>;
 };
 
+const WISHLIST_MOCK_DATA = [
+  { id: 1, name: '잠실', image: '/images/jamsil-wish-image.jpg' },
+  { id: 2, name: '선릉', image: '/images/seolleung-wish-image.jpg' },
+];
+
 const PublicWishlist = ({ wishlistPromise }: Props) => {
   const wishlist = use(wishlistPromise);
   //TODO:콘솔 지우기
@@ -24,10 +29,6 @@ const PublicWishlist = ({ wishlistPromise }: Props) => {
 
   const navigate = useNavigate();
   const { createPickeat, errorMessage } = useCreateWishPickeat();
-  const WISHLIST_MOCK_DATA = [
-    { id: 1, name: '잠실', image: '/images/jamsil-wish-image.jpg' },
-    { id: 2, name: '선릉', image: '/images/seolleung-wish-image.jpg' },
-  ];
 
   const handlePublicWishlistClick = async (id: number) => {
     const code = await createPickeat(makePickeatName(), id);
