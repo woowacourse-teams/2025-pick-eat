@@ -1,6 +1,7 @@
 package com.pickeat.backend.wish.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
+import com.pickeat.backend.global.log.BusinessLogging;
 import com.pickeat.backend.wish.application.WishService;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.request.WishUpdateRequest;
@@ -28,6 +29,7 @@ public class WishController implements WishApiSpec {
     private final WishService wishService;
 
     @Override
+    @BusinessLogging("위시 생성")
     @PostMapping(value = "/wishLists/{wishListId}/wishes")
     public ResponseEntity<WishResponse> createWish(
             @PathVariable("wishListId") Long wishListId,
@@ -41,6 +43,7 @@ public class WishController implements WishApiSpec {
     }
 
     @Override
+    @BusinessLogging("위시 삭제")
     @DeleteMapping("/wishes/{wishId}")
     public ResponseEntity<Void> deleteWish(@PathVariable("wishId") Long wishId, @LoginUserId Long userId) {
         wishService.deleteWish(wishId, userId);
@@ -69,6 +72,7 @@ public class WishController implements WishApiSpec {
     }
 
     @Override
+    @BusinessLogging("위시 수정")
     @GetMapping("/wishLists/public/{wishListId}/wishes")
     public ResponseEntity<List<WishResponse>> getWishesInPublicWishList(
             @PathVariable("wishListId") Long wishListId

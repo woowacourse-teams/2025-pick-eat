@@ -16,9 +16,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "위시리스트", description = "위시리스트 관련 API")
@@ -67,7 +65,6 @@ public interface WishListApiSpec {
                     )
             )
     })
-    @PostMapping("/room/{roomId}/wishLists")
     ResponseEntity<WishListResponse> createWishList(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
@@ -109,7 +106,6 @@ public interface WishListApiSpec {
                     )
             )
     })
-    @GetMapping("/room/{roomId}/wishLists")
     ResponseEntity<List<WishListResponse>> getPrivateWishLists(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
@@ -129,7 +125,6 @@ public interface WishListApiSpec {
                             array = @ArraySchema(schema = @Schema(implementation = WishListResponse.class)))
             )
     })
-    @GetMapping("/wishLists")
     ResponseEntity<List<WishListResponse>> getPublicWishLists();
 
     @Operation(
@@ -183,7 +178,6 @@ public interface WishListApiSpec {
                     )
             )
     })
-    @org.springframework.web.bind.annotation.DeleteMapping("/wishLists/{wishListId}")
     ResponseEntity<Void> deleteWishList(
             @Parameter(description = "삭제할 위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId,

@@ -1,10 +1,15 @@
 package com.pickeat.backend.global.exception;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pickeat.backend.global.log.dto.ErrorLog;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -19,13 +24,21 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
 @RestControllerAdvice
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+    private final ObjectMapper objectMapper;
 
     @ExceptionHandler(BusinessException.class)
     public ProblemDetail handleBusinessException(BusinessException e) {
         ErrorCode errorCode = e.getErrorCode();
+        HttpStatus status = errorCode.getStatus();
 
-        logByStatus(errorCode.getStatus(), errorCode.getMessage(), e);
+        if (status.isSameCodeAs(HttpStatusCode.valueOf(401)) || status.isSameCodeAs(
+                HttpStatusCode.valueOf(403))) {
+            logWarn(status, e, errorCode.name());
+        } else {
+            logInfo(e, errorCode.name());
+        }
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(errorCode.getStatus());
         problemDetail.setTitle(errorCode.name());
@@ -36,11 +49,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ExternalApiException.class)
     public ProblemDetail handleExternalApiException(ExternalApiException e) {
-        logByStatus(e.getHttpStatus(), e.getMessage(), e);
+        HttpStatus status = e.getHttpStatus();
+
+        if (status.is5xxServerError()) {
+            logExternalError(e, status);
+        } else {
+            logWarn(status, e, e.getPlatformName());
+        }
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(e.getHttpStatus());
         problemDetail.setTitle(e.getHttpStatus().name());
-        //TODO: 사용자 메시지 노출 여부 고민고민  (2025-07-21, 월, 16:47)
         problemDetail.setDetail(e.getMessage());
 
         return problemDetail;
@@ -49,7 +67,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException e) {
 
-        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        logInfo(e, "INVALID_INPUT");
 
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST,
@@ -71,7 +89,7 @@ public class GlobalExceptionHandler {
             ConversionFailedException.class
     })
     public ProblemDetail handleTypeMismatchException(Exception e) {
-        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        logInfo(e, "BINDING_ERROR");
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
@@ -81,7 +99,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({HttpMessageNotReadableException.class, MissingServletRequestPartException.class})
     public ProblemDetail handleInvalidRequestFormat(Exception e) {
-        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        logInfo(e, "PARSING_ERROR");
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
@@ -94,7 +112,7 @@ public class GlobalExceptionHandler {
             NoResourceFoundException.class,
     })
     public ProblemDetail handleWrongRequest(Exception e) {
-        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        logInfo(e, "NO_RESOURCE_FOUND");
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
@@ -104,7 +122,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ProblemDetail handleWrongMediaType(Exception e) {
-        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        logInfo(e, "NOT_SUPPORTED_MEDIA");
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
@@ -114,7 +132,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MultipartException.class)
     public ProblemDetail handleInvalidMultiPartFormRequest(Exception e) {
-        logByStatus(HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        logInfo(e, "INVALID_MULTIPART");
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setTitle(HttpStatus.BAD_REQUEST.name());
@@ -124,7 +142,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneralException(Exception e) {
-        logByStatus(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), e);
+        logServerError(e);
 
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
         problemDetail.setTitle(HttpStatus.INTERNAL_SERVER_ERROR.name());
@@ -132,12 +150,38 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
-    private void logByStatus(HttpStatus status, String message, Throwable e) {
-        if (status.is5xxServerError()) {
-            log.error("Server error ({}): {}", status.value(), message, e);
+    private void logServerError(Exception e) {
+        logSafe(ErrorLog.createServerErrorLog(500, e, ErrorCode.INTERNAL_SERVER_ERROR.name()), LogLevel.ERROR);
+    }
+
+    private void logExternalError(ExternalApiException e, HttpStatus status) {
+        logSafe(ErrorLog.createExternalErrorLog(status.value(), e, e.getPlatformName()), LogLevel.ERROR);
+    }
+
+    private void logInfo(Exception e, String customCode) {
+        logSafe(ErrorLog.createClientErrorLog(400, e, customCode), LogLevel.INFO);
+    }
+
+    private void logWarn(HttpStatus status, Throwable e, String customCode) {
+        logSafe(ErrorLog.createClientErrorLog(status.value(), e, customCode), LogLevel.WARN);
+    }
+
+    private void logSafe(Object logObject, LogLevel level) {
+        String json;
+        try {
+            json = objectMapper.writeValueAsString(logObject);
+        } catch (JsonProcessingException e) {
+            // 직렬화 실패 시 무조건 error 레벨로 로그
+            log.error("{\"logType\":\"LOG_SERIALIZE_FAIL\",\"message\":\"{}\"}", e.getMessage());
             return;
         }
 
-        log.info("Client error ({}): {}", status.value(), message);
+        switch (level) {
+            case INFO -> log.info(json);
+            case WARN -> log.warn(json);
+            case ERROR -> log.error(json);
+        }
     }
+
+    private enum LogLevel {INFO, WARN, ERROR}
 }

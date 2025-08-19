@@ -2,6 +2,7 @@ package com.pickeat.backend.pickeat.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
 import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.global.log.BusinessLogging;
 import com.pickeat.backend.pickeat.application.PickeatResultService;
 import com.pickeat.backend.pickeat.application.PickeatService;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
@@ -41,6 +42,7 @@ public class PickeatController implements PickeatApiSpec {
 
     //TODO: 유저 권한이 필요한 API에 대해 인터셉터 혹은 필터단에서 early return 하게 하기  (2025-08-5, 화, 2:35)
     @Override
+    @BusinessLogging("방에서 픽잇 생성")
     @PostMapping("/rooms/{roomId}/pickeats")
     public ResponseEntity<PickeatResponse> createPickeatWithRoom(
             @PathVariable("roomId") Long roomId,
