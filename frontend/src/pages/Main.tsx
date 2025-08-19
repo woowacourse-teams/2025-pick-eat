@@ -3,10 +3,6 @@ import PublicWishlist from '@domains/wishlist/components/PublicWishlist';
 import Button from '@components/actions/Button';
 import Location from '@components/assets/icons/Location';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-
-import { wishlist } from '@apis/wishlist';
-
 import { ROUTE_PATH } from '@routes/routePath';
 
 import { setMobileStyle } from '@styles/mediaQuery';
