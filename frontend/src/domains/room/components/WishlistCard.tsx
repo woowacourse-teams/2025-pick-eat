@@ -1,5 +1,3 @@
-import Wishlist from '@domains/wishlist/components/Wishlist';
-
 import Button from '@components/actions/Button';
 import Trash from '@components/assets/icons/Trash';
 import Modal from '@components/modal/Modal';
@@ -10,6 +8,8 @@ import { wishlist, WishlistType } from '@apis/wishlist';
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
+
+import Wishlist from './Wishlist';
 
 type Prop = {
   wishlistData: WishlistType;
