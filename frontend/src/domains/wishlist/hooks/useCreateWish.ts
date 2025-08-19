@@ -43,15 +43,25 @@ export const useCreateWish = (onCreate?: () => void) => {
         tags: formData.tags as string[],
       });
 
-      if (formData.thumbnail && wishId)
-        await wish.postImage(wishId, formData.thumbnail);
+      let imageUploadError = false;
+      if (formData.thumbnail && wishId) {
+        try {
+          await wish.postImage(wishId, formData.thumbnail);
+        } catch {
+          imageUploadError = true;
+        }
+      }
 
-      alert('위시 등록!');
+      if (imageUploadError) {
+        alert('위시는 등록되었으나, 이미지 등록에 실패했습니다.');
+      } else {
+        alert('위시 등록!');
+      }
       onCreate?.();
       setFormData(undefined);
+      setError('');
     } catch {
-      // todo: 에러 메시지 분기 필요
-      setError('사진 등록을 실패했습니다.');
+      setError('위시 등록 중 에러가 발생했습니다.');
     }
   };
 

@@ -27,13 +27,15 @@ export const wish = {
     formData.append('wishPictures', data);
 
     // TODO: apiClient 확장으로 추 후에 변경
-    await fetch(`${process.env.API_BASE_URL}${url}`, {
+    const response = await fetch(`${process.env.API_BASE_URL}${url}`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${token}`,
       },
       body: formData,
     });
+
+    if (!response.ok) throw new Error('요청 실패');
   },
   delete: async (wishId: number) => {
     const url = joinAsPath(BASE_URL, `${wishId}`);
