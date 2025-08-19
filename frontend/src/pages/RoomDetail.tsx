@@ -1,6 +1,6 @@
+import PublicWishGroupTab from '@domains/room/components/PublicWishGroupTab';
 import RoomDetailTab from '@domains/room/components/RoomDetailTab';
-import PublicWishGroupTab from '@domains/wishlist/components/PublicWishGroupTab';
-import WishlistGroupTab from '@domains/wishlist/components/WishlistGroupTab';
+import WishlistGroupTab from '@domains/room/components/WishlistGroupTab';
 
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 import TabMenu from '@components/tabMenus/TabMenu';

@@ -4,13 +4,13 @@ import ErrorMessage from '@components/errors/ErrorMessage';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
+import { useCreateWishlist } from '@domains/wishlist/hooks/useCreateWishlist';
+
 import { wishlist, WishlistType } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
 import { FormEvent, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
-
-import { useCreateWishlist } from '../hooks/useCreateWishlist';
 
 import WishlistCard from './WishlistCard';
 
