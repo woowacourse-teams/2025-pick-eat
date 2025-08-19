@@ -11,7 +11,6 @@ import WishlistTab from './WishlistTab';
 function Wishlist({ id, name, isPublic }: WishlistType) {
   const [wishlistData, setWishlistData] = useState<Wishes[]>([]);
   const [currentTab, setCurrentTab] = useState(0);
-  console.log('위시리스트 렌더링!');
 
   const getWishlist = async () => {
     // todo: try-catch

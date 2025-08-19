@@ -31,9 +31,6 @@ function Choosetype() {
             onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
           />
         </S.ButtonWrapper>
-
-        {/* TODO: 버튼 연결 */}
-        {/* <Button text="방 생성" color="gray" size="md" /> */}
       </S.Wrapper>
     </S.Container>
   );

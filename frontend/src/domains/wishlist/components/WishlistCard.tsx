@@ -8,7 +8,6 @@ import { wishlist, WishlistType } from '@apis/wishlist';
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
 
 import Wishlist from './Wishlist';
 
@@ -67,9 +66,7 @@ function WishlistCard({
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <Suspense>
-          <Wishlist id={id} name={name} isPublic={isPublic} />
-        </Suspense>
+        <Wishlist id={id} name={name} isPublic={isPublic} />
       </Modal>
     </S.Container>
   );

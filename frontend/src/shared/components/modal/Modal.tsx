@@ -49,13 +49,6 @@ function Modal({
 
   return ReactDOM.createPortal(
     <>
-      {/* {mounted && !opened && (
-        <S.Mini onClick={onOpen}>
-          <S.MiniIconWrapper onClick={onUnmount}>
-            <Cross color="white" size="sm" strokeWidth={4} />
-          </S.MiniIconWrapper>
-        </S.Mini>
-      )} */}
       <S.BackDrop opened={opened} onClick={onClose} />
       <S.Container opened={opened} size={size}>
         {closeButton && (
@@ -86,29 +79,6 @@ const S = {
     border-radius: ${({ theme }) => theme.RADIUS.half};
     cursor: pointer;
   `,
-
-  // MiniIconWrapper: styled.div`
-  //   width: 22px;
-  //   height: 22px;
-
-  //   display: flex;
-  //   justify-content: center;
-  //   align-items: center;
-
-  //   position: absolute;
-  //   top: -10px;
-  //   right: -10px;
-
-  //   margin-left: auto;
-
-  //   padding: ${({ theme }) => theme.PADDING.p1};
-
-  //   background-color: ${({ theme }) => theme.PALETTE.primary[50]};
-
-  //   border-radius: ${({ theme }) => theme.RADIUS.half};
-  //   cursor: pointer;
-  // `,
-
   BackDrop: styled.div<{ opened: boolean }>`
     width: 100%;
     height: 100vh;

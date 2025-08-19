@@ -6,7 +6,6 @@ import styled from '@emotion/styled';
 import { use } from 'react';
 
 type Props = {
-  //TODO: 백엔드에서 이제 하나로
   resultPromise: Promise<PickeatResult | null>;
 };
 
