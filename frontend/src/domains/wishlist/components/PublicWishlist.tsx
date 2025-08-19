@@ -41,11 +41,10 @@ const PublicWishlist = () => {
           <S.ThumbnailImg
             key={item.id}
             onClick={() => handlePublicWishlistClick(item.id)}
-            src={item.image}
-            alt={item.name}
+            imgUrl={item.image}
           />
         ))}
-      ></Carousel>
+      />
       <ErrorMessage message={errorMessage} />
     </S.Container>
   );
@@ -62,10 +61,13 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
-  ThumbnailImg: styled.img`
+  ThumbnailImg: styled.div<{ imgUrl: string }>`
     width: 190px;
-    flex-shrink: 0;
+    height: 190px;
+
+    background-image: url(${({ imgUrl }) => imgUrl});
+    background-size: cover;
+    border-radius: ${({ theme }) => theme.RADIUS.medium2};
     cursor: pointer;
-    object-fit: cover;
   `,
 };
