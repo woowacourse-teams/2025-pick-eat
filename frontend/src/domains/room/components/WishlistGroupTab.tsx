@@ -20,14 +20,17 @@ function WishlistGroupTab() {
 
   const [wishlistData, setWishlistData] = useState<WishlistType[]>([]);
 
-  const getWishlist = async () => {
-    // todo: try-catch
-    const response = await wishlist.getWishGroup(roomId);
-    setWishlistData(response);
+  const getWishlistGroup = async () => {
+    try {
+      const response = await wishlist.getWishGroup(roomId);
+      setWishlistData(response);
+    } catch {
+      alert('위시 리스트를 불러오던 중 에러가 발생했습니다.');
+    }
   };
 
   useEffect(() => {
-    getWishlist();
+    getWishlistGroup();
   }, []);
 
   const wishCount = wishlistData.length;
@@ -46,7 +49,7 @@ function WishlistGroupTab() {
     e.preventDefault();
     createWishlist();
     handleUnmountModal();
-    await getWishlist();
+    await getWishlistGroup();
   };
   return (
     <S.Container>
@@ -83,7 +86,7 @@ function WishlistGroupTab() {
           <WishlistCard
             key={wishlist.id}
             wishlistData={wishlist}
-            onRefetch={getWishlist}
+            onRefetch={getWishlistGroup}
           />
         ))
       ) : (

@@ -15,9 +15,12 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
   const [currentTab, setCurrentTab] = useState(0);
 
   const getWishlist = async () => {
-    // todo: try-catch
-    const response = await wishlist.get(id, isPublic);
-    setWishlistData(response);
+    try {
+      const response = await wishlist.get(id, isPublic);
+      setWishlistData(response);
+    } catch {
+      alert('위시 리스트를 불러오던 중 에러가 발생했습니다.');
+    }
   };
 
   useEffect(() => {

@@ -15,11 +15,14 @@ type Props = {
 
 function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
   const deleteWish = async (wishId: number) => {
-    // todo: try-catch
     const isDelete = confirm('정말 삭제하시겠습니까?');
     if (isDelete) {
-      await wish.delete(wishId);
-      onRefetch();
+      try {
+        await wish.delete(wishId);
+        onRefetch();
+      } catch {
+        alert('삭제 실패!');
+      }
     }
   };
 

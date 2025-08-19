@@ -27,11 +27,14 @@ function WishlistCard({ wishlistData, onRefetch }: Prop) {
   } = useModal();
 
   const deleteWishlist = async (wishId: number) => {
-    // todo: try-catch
     const isDelete = confirm('정말 삭제하시겠습니까?');
     if (isDelete) {
-      await wishlist.delete(wishId);
-      onRefetch?.();
+      try {
+        await wishlist.delete(wishId);
+        onRefetch?.();
+      } catch {
+        alert('삭제 실패!');
+      }
     }
   };
 
