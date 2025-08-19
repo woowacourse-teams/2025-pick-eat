@@ -32,6 +32,9 @@ jobs:
       - name: 의존성 설치
         run: npm ci
 
+      - name: 테스트 실행
+        run: npm run test
+
       - name: 코드 린트 적용
         run: npm run lint:fix
 
