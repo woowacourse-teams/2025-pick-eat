@@ -23,7 +23,10 @@ export const Default: Story = {
 
     return (
       <div style={{ width: '100%' }}>
-        <ProgressBar percentage={percentage} icon={<p>🧀</p>} />
+        <ProgressBar
+          percentage={percentage}
+          icon={<p style={{ fontSize: '30px' }}>🧀</p>}
+        />
       </div>
     );
   },
