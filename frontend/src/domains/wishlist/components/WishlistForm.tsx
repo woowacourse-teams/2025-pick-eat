@@ -88,6 +88,7 @@ const S = {
   WishlistWrapper: styled.div`
     width: 100%;
     height: 230px;
+    overflow: scroll;
   `,
 
   Wrapper: styled.form`
