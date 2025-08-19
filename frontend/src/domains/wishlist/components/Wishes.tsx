@@ -1,6 +1,6 @@
 import Badge from '@components/labels/Badge';
 
-import { Wishes as WishesType, wishlist } from '@apis/wishlist';
+import { Wishes, wishlist } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
@@ -8,14 +8,15 @@ import { useEffect, useState } from 'react';
 type Props = {
   wishlistId: number;
   wishlistName: string;
+  isPublic: boolean;
 };
 
-function Wishes({ wishlistId, wishlistName }: Props) {
-  const [wishes, setWishes] = useState<WishesType[] | null>(null);
+function Wishes({ wishlistId, wishlistName, isPublic }: Props) {
+  const [wishes, setWishes] = useState<Wishes[]>([]);
 
   useEffect(() => {
     const fetchWishes = async () => {
-      const response = await wishlist.getWishes(wishlistId);
+      const response = await wishlist.get(wishlistId, isPublic);
       setWishes(response);
     };
     fetchWishes();
@@ -25,7 +26,7 @@ function Wishes({ wishlistId, wishlistName }: Props) {
     <S.Container>
       <S.Title>{wishlistName}</S.Title>
 
-      {wishes &&
+      {wishes.length > 0 ? (
         wishes.map(({ id, name, pictures, category, roadAddressName }) => (
           <S.WishWrapper key={id}>
             <S.Image
@@ -47,7 +48,10 @@ function Wishes({ wishlistId, wishlistName }: Props) {
               <S.Address>{roadAddressName}</S.Address>
             </S.Info>
           </S.WishWrapper>
-        ))}
+        ))
+      ) : (
+        <div>위시가 존재하지 않습니다.</div>
+      )}
     </S.Container>
   );
 }
