@@ -12,9 +12,19 @@ const __dirname = path.dirname(__filename);
 
 const env = dotenv.config({ path: path.resolve(__dirname, './.env') }).parsed;
 const MODE = process.env.NODE_ENV || 'development';
-const BASE_URL = MODE === 'production' ? env.BASE_URL_PROD : env.BASE_URL_DEV;
+const BASE_URL =
+  MODE === 'production'
+    ? env.BASE_URL_PROD
+    : MODE === 'development'
+      ? env.BASE_URL_DEV
+      : env.BASE_URL_LOCAL;
+
 const API_BASE_URL =
-  MODE === 'production' ? env.API_BASE_URL_PROD : env.API_BASE_URL_DEV;
+  MODE === 'production'
+    ? env.API_BASE_URL_PROD
+    : MODE === 'development'
+      ? env.API_BASE_URL_DEV
+      : env.API_BASE_URL_LOCAL;
 
 const envKeys = Object.entries(env).reduce(
   (acc, [key, value]) => {
@@ -30,12 +40,6 @@ const envKeys = Object.entries(env).reduce(
 
 const config = {
   entry: './src/main.tsx',
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].[contenthash].js',
-    publicPath: '/',
-    clean: true,
-  },
   module: {
     rules: [
       {
