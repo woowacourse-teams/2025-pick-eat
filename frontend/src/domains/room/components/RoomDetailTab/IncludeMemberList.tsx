@@ -97,7 +97,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p5};
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 
