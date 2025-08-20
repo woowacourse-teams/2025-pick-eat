@@ -14,6 +14,7 @@ export const useModal = () => {
   };
 
   const handleUnmountModal = () => {
+    setOpened(false);
     setMounted(false);
   };
 
