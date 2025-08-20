@@ -121,9 +121,8 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level3};
   `,
 
-  //TODO:+버튼 누르면 태그 다 보이게? 상의해봐야 할 듯
   TagBox: styled.div`
-    height: 26px;
+    max-height: 54px;
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level2};
