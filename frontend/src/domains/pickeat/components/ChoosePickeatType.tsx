@@ -49,7 +49,12 @@ function ChoosePickeatType() {
         />
       </S.ButtonWrapper>
 
-      <Modal opened={opened} mounted={mounted} onClose={handleCloseModal}>
+      <Modal
+        opened={opened}
+        mounted={mounted}
+        onClose={handleCloseModal}
+        onUnmount={handleCloseModal}
+      >
         <ErrorBoundary>
           <Suspense fallback={<div>로딩 중..</div>}>
             <ChooseRoomWishlist roomsData={roomsData} />
