@@ -40,7 +40,6 @@ const S = {
     cursor: pointer;
   `,
   TabItem: styled.button`
-    min-width: 80px;
     height: 56px;
     min-height: 1px;
     flex: 1 0 0;
