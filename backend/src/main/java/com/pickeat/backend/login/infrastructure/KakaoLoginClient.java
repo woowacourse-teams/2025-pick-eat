@@ -8,7 +8,6 @@ import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.login.application.LoginClient;
 import com.pickeat.backend.login.application.dto.response.OAuthTokenResponse;
 import java.io.IOException;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -24,14 +23,12 @@ public class KakaoLoginClient implements LoginClient {
     private static final String PLATFORM_NAME = "kakao";
 
     private final String clientId;
-    private final Map<String, String> redirectUrls;
     private final RestClient restClient;
     private final ObjectMapper objectMapper;
 
     @Override
-    public String getIdToken(String code, String redirectUrlType) {
-        // TODO: 개발 서버와 배포서버가 분리 된다면 불필요한 코드가 될 것 같음.
-        String redirectUrl = resolveRedirectUri(redirectUrlType);
+    public String getIdToken(String code, String redirectUrl) {
+
         String uri = String.format(URI, clientId, redirectUrl, code);
 
         try {
@@ -56,12 +53,5 @@ public class KakaoLoginClient implements LoginClient {
         } catch (IOException e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
         }
-    }
-
-    private String resolveRedirectUri(String type) {
-        if (!redirectUrls.containsKey(type)) {
-            throw new BusinessException(ErrorCode.INVALID_REDIRECT_TYPE);
-        }
-        return redirectUrls.get(type);
     }
 }

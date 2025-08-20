@@ -32,7 +32,7 @@ public interface LoginApiSpec {
                                             {
                                               "code": "abc123",
                                               "provider": "kakao",
-                                              "redirectUrlType": "development"
+                                              "redirectUrl": "https://example.com/callback"
                                             }
                                             """
                             )
