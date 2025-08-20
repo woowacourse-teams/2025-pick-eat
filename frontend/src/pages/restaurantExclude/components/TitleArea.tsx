@@ -30,6 +30,7 @@ export default TitleArea;
 
 const S = {
   Container: styled.div`
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     padding: ${({ theme }) => theme.PADDING.p7};
     padding-left: ${({ theme }) => theme.PADDING.px6};
   `,

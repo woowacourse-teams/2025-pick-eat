@@ -11,13 +11,24 @@ type Props = {
 
 function RestaurantList({ restaurantList }: Props) {
   return (
-    <S.Container>
-      {restaurantList.map(restaurant => (
-        restaurant.isExcluded ? (
-          <ExcludedRestaurantItem key={restaurant.id} {...restaurant} />
-        ) : <RestaurantItem key={restaurant.id} {...restaurant} />
-      ))}
-    </S.Container>
+    <>
+      {restaurantList.length === 0 ? (
+        <S.NoContentTitle>
+          해당 카테고리에
+          <br /> 식당이 없어요ㅠㅠ
+        </S.NoContentTitle>
+      ) : (
+        <S.Container>
+          {restaurantList.map(restaurant =>
+            restaurant.isExcluded ? (
+              <ExcludedRestaurantItem key={restaurant.id} {...restaurant} />
+            ) : (
+              <RestaurantItem key={restaurant.id} {...restaurant} />
+            )
+          )}
+        </S.Container>
+      )}
+    </>
   );
 }
 export default RestaurantList;
@@ -31,5 +42,15 @@ const S = {
     grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
 
     padding: ${({ theme }) => theme.PADDING.p5};
+  `,
+  NoContentTitle: styled.p`
+    width: 100%;
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
+    text-align: center;
   `,
 };
