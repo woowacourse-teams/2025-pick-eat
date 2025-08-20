@@ -16,12 +16,31 @@ export function useFitHeightToActiveChild<
   const [height, setHeight] = useState<number | null>(null);
 
   useLayoutEffect(() => {
-    const current = contentRefs.current[selectedIndex];
-    if (current) {
-      setHeight(current.offsetHeight);
-    } else {
+    if (!contentRefs.current[selectedIndex]) {
       setHeight(null);
+      return;
     }
+    const element = contentRefs.current[selectedIndex];
+    if (!element) {
+      setHeight(null);
+      return;
+    }
+
+    setHeight(element.offsetHeight);
+
+    const observer = new ResizeObserver(entries => {
+      for (const entry of entries) {
+        if (entry.target === element) {
+          const newHeight = entry.contentRect.height;
+          setHeight(newHeight);
+        }
+      }
+    });
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
   }, [selectedIndex, ...deps]);
 
   return [height, contentRefs];

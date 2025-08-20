@@ -81,6 +81,7 @@ const S = {
   Container: styled.div`
     display: flex;
     flex-direction: column;
+    background: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
   CheckBoxWrapper: styled.div`
     width: fit-content;
