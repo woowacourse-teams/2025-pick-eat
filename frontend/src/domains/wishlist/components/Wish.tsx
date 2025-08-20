@@ -48,6 +48,7 @@ const S = {
     height: 90px;
     border-radius: ${({ theme }) => theme.RADIUS.medium};
     object-fit: cover;
+    flex-shrink: 0;
   `,
 
   Info: styled.div``,
