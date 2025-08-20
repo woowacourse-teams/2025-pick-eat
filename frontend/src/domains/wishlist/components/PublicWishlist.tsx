@@ -1,14 +1,13 @@
 import Carousel from '@components/Carousel';
-import ErrorMessage from '@components/errors/ErrorMessage';
 
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
+
+import { pickeat } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router';
-
-import useCreateWishPickeat from '../hooks/useCreateWishPickeat';
+import { useNavigate, useSearchParams } from 'react-router';
 
 const WISHLIST_MOCK_DATA = [
   {
@@ -27,11 +26,17 @@ const WISHLIST_MOCK_DATA = [
 
 const PublicWishlist = () => {
   const navigate = useNavigate();
-  const { createPickeat, errorMessage } = useCreateWishPickeat();
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get('roomId') ?? '';
 
   const handlePublicWishlistClick = async (id: number) => {
-    const code = await createPickeat(makePickeatName(), id);
-    if (code) navigate(generateRouterPath.pickeatDetail(code));
+    try {
+      const code = await pickeat.post(roomId, makePickeatName());
+      await pickeat.postWish(id, code);
+      if (code) navigate(generateRouterPath.pickeatDetail(code));
+    } catch (e) {
+      alert(e);
+    }
   };
 
   return (
@@ -45,7 +50,6 @@ const PublicWishlist = () => {
           />
         ))}
       />
-      <ErrorMessage message={errorMessage} />
     </S.Container>
   );
 };
