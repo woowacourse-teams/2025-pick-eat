@@ -1,5 +1,3 @@
-import Carousel from '@components/Carousel';
-
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
 import { pickeat } from '@apis/pickeat';
@@ -41,16 +39,13 @@ const PublicWishlist = () => {
 
   return (
     <S.Container>
-      <Carousel
-        interval={5000}
-        contentArr={WISHLIST_MOCK_DATA.map(item => (
-          <S.ThumbnailImg
-            key={item.id}
-            onClick={() => handlePublicWishlistClick(item.id)}
-            imgUrl={item.image}
-          />
-        ))}
-      />
+      {WISHLIST_MOCK_DATA.map(item => (
+        <S.ThumbnailImg
+          key={item.id}
+          onClick={() => handlePublicWishlistClick(item.id)}
+          imgUrl={item.image}
+        />
+      ))}
     </S.Container>
   );
 };
@@ -59,7 +54,12 @@ export default PublicWishlist;
 
 const S = {
   Container: styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 170px;
     width: 100%;
+    gap: ${({ theme }) => theme.GAP.level5};
 
     padding: ${({ theme }) => theme.PADDING.p5} 0;
 
@@ -67,12 +67,17 @@ const S = {
   `,
 
   ThumbnailImg: styled.div<{ imgUrl: string }>`
-    width: 190px;
-    height: 190px;
+    width: 140px;
+    height: 140px;
 
     background-image: url(${({ imgUrl }) => imgUrl});
     background-size: cover;
     border-radius: ${({ theme }) => theme.RADIUS.medium2};
     cursor: pointer;
+
+    &:hover {
+      width: 160px;
+      height: 160px;
+    }
   `,
 };

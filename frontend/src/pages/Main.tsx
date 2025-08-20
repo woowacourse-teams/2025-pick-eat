@@ -11,9 +11,15 @@ const Main = () => {
       <S.Section>
         <S.Title>
           <S.PrimaryPoint>픽잇 추천</S.PrimaryPoint>에서&nbsp;
-          <S.PrimaryPoint>Pick!</S.PrimaryPoint>
+          <S.PrimaryPoint>
+            Pick!
+            <br />
+          </S.PrimaryPoint>
         </S.Title>
 
+        <S.Description>
+          원하는 맛집 리스트를 클릭해서 빠르게 시작해 보세요.
+        </S.Description>
         <PublicWishlist />
       </S.Section>
 
@@ -54,6 +60,11 @@ const S = {
   Title: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.heading.medium_style};
+  `,
+
+  Description: styled.span`
+    color: ${({ theme }) => theme.PALETTE.gray[70]};
+    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
   PrimaryPoint: styled.span`
