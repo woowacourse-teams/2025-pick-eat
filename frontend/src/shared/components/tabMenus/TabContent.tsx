@@ -6,9 +6,14 @@ import { useFitHeightToActiveChild } from './hooks/useFitHeightToActiveChild';
 type Props = {
   selectedIndex: number;
   tabContents: React.ReactNode[];
+  overflowHidden?: boolean;
 };
 
-function TabContent({ selectedIndex, tabContents }: Props) {
+function TabContent({
+  selectedIndex,
+  tabContents,
+  overflowHidden = true,
+}: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [height, contentRefs] = useFitHeightToActiveChild<HTMLDivElement>(
     selectedIndex,
@@ -16,7 +21,11 @@ function TabContent({ selectedIndex, tabContents }: Props) {
   );
 
   return (
-    <S.Container ref={containerRef} height={height}>
+    <S.Container
+      ref={containerRef}
+      height={height}
+      overflowHidden={overflowHidden}
+    >
       {tabContents.map((content, idx) => {
         const offset = idx - selectedIndex;
         return (
@@ -38,14 +47,16 @@ function TabContent({ selectedIndex, tabContents }: Props) {
 export default TabContent;
 
 const S = {
-  Container: styled.div<{ height: number | null }>`
+  Container: styled.div<{ height: number | null; overflowHidden: boolean }>`
     width: 100%;
 
     ${({ height }) =>
       `height: ${height}px;
        transition: ${height} 0.3s cubic-bezier(0.4,0,0.2,1)`};
 
-    overflow: hidden;
+    ${({ overflowHidden }) => `
+      ${overflowHidden ? 'overflow: hidden' : 'overflow-x: hidden'};
+    `};
     position: relative;
   `,
   ContentBox: styled.div<{ offset: number }>`

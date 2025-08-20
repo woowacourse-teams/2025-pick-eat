@@ -48,6 +48,7 @@ function Wishlist({ id, name, isPublic }: WishlistType) {
         <>
           <S.Title>{name}</S.Title>
           <TabContent
+            overflowHidden={false}
             selectedIndex={currentTab}
             tabContents={[
               <S.TabWrapper key="wishlistTab">
