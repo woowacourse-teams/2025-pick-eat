@@ -10,6 +10,7 @@ import { ACCESS_TOKEN_STORAGE_NAME, accessToken } from '../utils/authStorage';
 
 interface AuthContextType {
   loggedIn: boolean;
+  loading: boolean;
   loginUser: (token: string) => Promise<void>;
   logoutUser: () => void;
 }
@@ -22,6 +23,7 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -29,10 +31,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
       if (token) {
         accessToken.save(token);
         setLoggedIn(true);
+        setLoading(false);
         return;
       }
       accessToken.remove();
       setLoggedIn(false);
+      setLoading(false);
     };
     checkAuth();
   }, []);
@@ -60,6 +64,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const value = {
     loggedIn,
+    loading,
     loginUser,
     logoutUser,
   };

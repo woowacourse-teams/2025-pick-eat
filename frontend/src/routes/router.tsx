@@ -1,9 +1,15 @@
 import Layout from '@components/layouts/Layout';
 
+import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
+import { useGA } from '@hooks/useGA';
 
+import { ROUTE_PATH } from '@routes/routePath';
 
+import { THEME } from '@styles/global';
+import reset from '@styles/reset';
 
+import { Global, ThemeProvider } from '@emotion/react';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import CreateRoom from '@pages/CreateRoom';
@@ -17,18 +23,13 @@ import PreferRestaurant from '@pages/PreferRestaurant';
 import ProfileInit from '@pages/ProfileInit';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
 import RoomDetail from '@pages/RoomDetail';
-
-import { AuthProvider } from '@domains/login/context/AuthProvider';
-
-import { useGA } from '@hooks/useGA';
-
-import { ROUTE_PATH } from '@routes/routePath';
-
-import { THEME } from '@styles/global';
-import reset from '@styles/reset';
-
-import { ThemeProvider, Global } from '@emotion/react';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router';
+import {
+  createBrowserRouter,
+  Navigate,
+  Outlet,
+  RouterProvider,
+  useLocation,
+} from 'react-router';
 
 function Wrapper() {
   useGA().useRouteChangeTracker();
@@ -46,12 +47,55 @@ function Wrapper() {
   );
 }
 
+function ProtectedLayout() {
+  const { loggedIn, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) return null;
+
+  if (!loggedIn) {
+    return (
+      <Navigate to={ROUTE_PATH.LOGIN} state={{ from: location }} replace />
+    );
+  }
+
+  return <Outlet />;
+}
+
+function GuestOnlyRoute() {
+  const { loggedIn, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) return null;
+
+  if (loggedIn) {
+    return <Navigate to={ROUTE_PATH.MAIN} state={{ from: location }} replace />;
+  }
+
+  return <Outlet />;
+}
+
 const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [
       { path: ROUTE_PATH.MAIN, Component: Main },
-
+      {
+        Component: ProtectedLayout,
+        children: [
+          { path: ROUTE_PATH.MY_PAGE, Component: MyPage },
+          { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
+          { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
+        ],
+      },
+      {
+        Component: GuestOnlyRoute,
+        children: [
+          { path: ROUTE_PATH.LOGIN, Component: Login },
+          { path: ROUTE_PATH.PROFILE_INIT, Component: ProfileInit },
+          { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
+        ],
+      },
       {
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
         Component: CreatePickeatWithLocation,
@@ -66,21 +110,6 @@ const routes = createBrowserRouter([
       {
         path: ROUTE_PATH.PICKEAT_WITH_WISH,
         Component: ChooseWishlist,
-      },
-      { path: ROUTE_PATH.LOGIN, Component: Login },
-      { path: ROUTE_PATH.PROFILE_INIT, Component: ProfileInit },
-      { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
-      {
-        path: ROUTE_PATH.MY_PAGE,
-        Component: MyPage,
-      },
-      {
-        path: ROUTE_PATH.CREATE_ROOM,
-        Component: CreateRoom,
-      },
-      {
-        path: ROUTE_PATH.ROOM_DETAIL,
-        Component: RoomDetail,
       },
     ],
   },
