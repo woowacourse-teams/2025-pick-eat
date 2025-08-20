@@ -1,9 +1,15 @@
+import Button from '@components/actions/Button';
+import Modal from '@components/modal/Modal';
+
 import { restaurant, Restaurant } from '@apis/restaurant';
 
 import { useFlip } from '@hooks/useFlip';
 
+import { ROUTE_PATH } from '@routes/routePath';
+
 import styled from '@emotion/styled';
 import { use } from 'react';
+import { useNavigate } from 'react-router';
 
 import { useOptimisticLike } from '../hooks/useOptimisticLike';
 import usePreferRestaurant from '../hooks/usePreferRestaurant';
@@ -28,6 +34,7 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
   );
 
   const { itemRefs } = useFlip(restaurantList);
+  const navigate = useNavigate();
 
   const handleLike = async (id: number) => {
     addOptimisticLike(id);
@@ -58,6 +65,26 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
 
   return (
     <S.Container>
+      {!restaurantList.length && (
+        <Modal
+          opened={true}
+          mounted={true}
+          onClose={() => {}}
+          closeButton={false}
+          size="sm"
+        >
+          <S.AlertContainer>
+            <S.PointText>이런!😥</S.PointText>
+            <S.Text> 모든 음식점이 소거되어 픽잇이 종료 되었습니다.</S.Text>
+            <Button
+              text="메인 페이지로 이동"
+              color="gray"
+              onClick={() => navigate(ROUTE_PATH.MAIN)}
+            />
+          </S.AlertContainer>
+        </Modal>
+      )}
+
       {restaurantList.map((restaurant: Restaurant) => (
         <S.ItemWrapper
           key={restaurant.id}
@@ -91,5 +118,23 @@ const S = {
 
   ItemWrapper: styled.div`
     overflow-anchor: none;
+  `,
+
+  AlertContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    gap: ${({ theme }) => theme.GAP.level3};
+  `,
+
+  PointText: styled.span`
+    font: ${({ theme }) => theme.FONTS.heading.medium_style};
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
+  `,
+
+  Text: styled.span`
+    color: black;
+    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 };
