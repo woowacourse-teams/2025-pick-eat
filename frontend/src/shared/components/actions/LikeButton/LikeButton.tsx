@@ -50,9 +50,9 @@ const S = {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    shrink: 0;
 
     gap: ${({ theme }) => theme.GAP.level2};
+    flex-shrink: 0;
   `,
 
   HeartWrapper: styled.div`

@@ -58,10 +58,10 @@ export default PickeatEndConfirm;
 const S = {
   Container: styled.div`
     display: flex;
-    gap: ${({ theme }) => theme.GAP.level5};
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: ${({ theme }) => theme.GAP.level5};
   `,
   Title: styled.p`
     font: ${({ theme }) => theme.FONTS.heading.medium};
