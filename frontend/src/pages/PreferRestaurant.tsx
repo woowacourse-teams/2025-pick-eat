@@ -4,6 +4,7 @@ import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRes
 
 import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
+import LoadingSpinner from '@components/assets/LoadingSpinner';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
@@ -34,7 +35,7 @@ function PreferRestaurant() {
       </S.TitleArea>
 
       <ErrorBoundary>
-        <Suspense fallback={<div>로딩 중</div>}>
+        <Suspense fallback={<LoadingSpinner />}>
           <S.RestaurantListContainer>
             <PreferRestaurantList
               preferRestaurantListPromise={restaurants.get(pickeatCode, {

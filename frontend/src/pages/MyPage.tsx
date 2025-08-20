@@ -2,6 +2,7 @@ import Profile from '@domains/profile/components/Profile';
 import RoomList from '@domains/profile/components/RoomList';
 
 import Button from '@components/actions/Button';
+import LoadingSpinner from '@components/assets/LoadingSpinner';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
@@ -22,7 +23,7 @@ function MyPage() {
   return (
     <S.Container>
       <ErrorBoundary>
-        <Suspense fallback={<div>로딩중...</div>}>
+        <Suspense fallback={<LoadingSpinner />}>
           <Profile user={userData} />
           <RoomList roomsData={roomsData} />
         </Suspense>

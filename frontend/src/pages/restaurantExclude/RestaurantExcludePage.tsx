@@ -1,5 +1,6 @@
 import RestaurantExclude from '@domains/restaurantExclude/components/RestaurantExclude';
 
+import LoadingSpinner from '@components/assets/LoadingSpinner';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
@@ -22,7 +23,7 @@ function RestaurantExcludePage() {
     <S.Container>
       <TitleArea />
       <ErrorBoundary>
-        <Suspense>
+        <Suspense fallback={<LoadingSpinner />}>
           <RestaurantExclude
             restaurantsPromise={restaurants.get(pickeatCode)}
           />

@@ -1,5 +1,6 @@
 import Result from '@domains/matchResult/components/Result';
 
+import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Confetti from '@components/Confetti';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
@@ -24,7 +25,7 @@ function MatchResult() {
         <Confetti />
         <S.Title>👏 오늘의 Pick! 👏</S.Title>
         <ErrorBoundary>
-          <Suspense fallback={<div>로딩중</div>}>
+          <Suspense fallback={<LoadingSpinner />}>
             <Result resultPromise={pickeat.getResult(pickeatCode)} />
           </Suspense>
         </ErrorBoundary>

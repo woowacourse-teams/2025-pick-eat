@@ -2,6 +2,7 @@ import ChooseRoomWishlist from '@domains/room/components/ChooseRoomWishlist';
 
 import Button from '@components/actions/Button';
 import Location from '@components/assets/icons/Location';
+import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
@@ -56,7 +57,7 @@ function ChoosePickeatType() {
         onUnmount={handleCloseModal}
       >
         <ErrorBoundary>
-          <Suspense fallback={<div>로딩 중..</div>}>
+          <Suspense fallback={<LoadingSpinner />}>
             <ChooseRoomWishlist roomsData={roomsData} />
           </Suspense>
         </ErrorBoundary>

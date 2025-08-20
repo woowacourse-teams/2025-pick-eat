@@ -2,6 +2,7 @@ import PublicWishGroupTab from '@domains/room/components/PublicWishGroupTab';
 import RoomDetailTab from '@domains/room/components/RoomDetailTab';
 import WishlistGroupTab from '@domains/room/components/WishlistGroupTab';
 
+import LoadingSpinner from '@components/assets/LoadingSpinner';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 import TabMenu from '@components/tabMenus/TabMenu';
 
@@ -23,7 +24,7 @@ function RoomDetail() {
             content: (
               <S.TabWrapper>
                 <ErrorBoundary>
-                  <Suspense fallback={<div>로딩중</div>}>
+                  <Suspense fallback={<LoadingSpinner />}>
                     <RoomDetailTab />
                   </Suspense>
                 </ErrorBoundary>

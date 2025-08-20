@@ -1,5 +1,6 @@
 import WishlistForm from '@domains/wishlist/components/WishlistForm';
 
+import LoadingSpinner from '@components/assets/LoadingSpinner';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { wishlist } from '@apis/wishlist';
@@ -33,7 +34,7 @@ function ChooseWishlist() {
         </S.TitleArea>
 
         <ErrorBoundary>
-          <Suspense fallback={<div>로딩 중</div>}>
+          <Suspense fallback={<LoadingSpinner />}>
             <WishlistForm
               wishlistGroupPromise={wishlist.getWishGroup(roomId)}
             />
