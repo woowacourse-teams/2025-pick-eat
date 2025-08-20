@@ -42,6 +42,7 @@ const PublicWishlist = () => {
   return (
     <S.Container>
       <Carousel
+        interval={5000}
         contentArr={WISHLIST_MOCK_DATA.map(item => (
           <S.ThumbnailImg
             key={item.id}
