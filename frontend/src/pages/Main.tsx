@@ -1,19 +1,11 @@
+import ChoosePickeatType from '@domains/pickeat/components/ChoosePickeatType';
 import PublicWishlist from '@domains/wishlist/components/PublicWishlist';
-
-import Button from '@components/actions/Button';
-import Location from '@components/assets/icons/Location';
-
-import { ROUTE_PATH } from '@routes/routePath';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router';
-
 const Main = () => {
-  const navigate = useNavigate();
-
   return (
     <S.Container>
       <S.Section>
@@ -31,19 +23,7 @@ const Main = () => {
           <S.SecondaryPoint>Pick!</S.SecondaryPoint>
         </S.Title>
 
-        <S.ButtonWrapper>
-          <Button
-            text="위시리스트 선택"
-            leftIcon="🤍"
-            onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_WISH)}
-          />
-          <Button
-            text="위치/반경 선택"
-            color="secondary"
-            leftIcon={<Location size="sm" color="black" />}
-            onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
-          />
-        </S.ButtonWrapper>
+        <ChoosePickeatType />
       </S.Section>
     </S.Container>
   );
@@ -84,14 +64,5 @@ const S = {
   SecondaryPoint: styled.span`
     color: ${({ theme }) => theme.PALETTE.secondary[60]};
     font: ${({ theme }) => theme.FONTS.heading.large_style};
-  `,
-
-  ButtonWrapper: styled.div`
-    display: flex;
-    gap: ${({ theme }) => theme.GAP.level3};
-
-    ${setMobileStyle(css`
-      flex-direction: column;
-    `)}
   `,
 };

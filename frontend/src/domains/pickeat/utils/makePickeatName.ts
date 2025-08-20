@@ -21,5 +21,5 @@ export const makePickeatName = (now: Date = new Date()) => {
   const meal = getMealLabel(hour);
   const yymmdd = formatYYMMDD(now);
 
-  return `${yymmdd} 맛있는 ${meal} 고르기`;
+  return `${yymmdd} ${meal} 고르기`;
 };

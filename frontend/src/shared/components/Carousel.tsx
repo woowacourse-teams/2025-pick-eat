@@ -5,9 +5,10 @@ import Arrow from './assets/icons/Arrow';
 
 type Props = {
   contentArr: ReactNode[];
+  interval?: number;
 };
 
-function Carousel({ contentArr }: Props) {
+function Carousel({ contentArr, interval = 3000 }: Props) {
   const [focusedIdx, setFocusedIdx] = useState(0);
   const focusedFirstIdx = focusedIdx === 0;
   const focusedLastIdx = focusedIdx === contentArr.length - 1;
@@ -42,6 +43,18 @@ function Carousel({ contentArr }: Props) {
   useEffect(() => {
     scrollToIndex(0);
   }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setFocusedIdx(prev => {
+        const next = prev === contentArr.length - 1 ? 0 : prev + 1;
+        scrollToIndex(next);
+        return next;
+      });
+    }, interval);
+
+    return () => clearInterval(intervalId);
+  });
 
   return (
     <S.Container>
