@@ -94,10 +94,6 @@ const S = {
        &:hover {
          background-color: ${theme.PALETTE.secondary[5]};
         }
-
-      &:active {
-        background-color: ${theme.PALETTE.secondary[20]};
-        }
     `};
 
     border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
