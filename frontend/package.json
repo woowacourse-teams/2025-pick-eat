@@ -4,7 +4,7 @@
   "description": "팀원들의 취향을 기억하는 PickEat",
   "type": "module",
   "scripts": {
-    "dev": "cross-env NODE_ENV=local webpack serve --config webpack.local.js",
+    "dev": "cross-env NODE_ENV=local webpack serve --config webpack.local.js --host 0.0.0.0",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
     "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js",
     "test": "jest --verbose",

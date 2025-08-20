@@ -1,8 +1,14 @@
+import { ROUTE_PATH } from '@routes/routePath';
+
 export const login = {
   postKakao: async (
     code: string
   ): Promise<{ accessToken: string; status: number }> => {
-    const isDevelopment = process.env.BASE_URL === 'http://localhost:3000/';
+    const baseUrl = window.location.origin;
+    const redirectPath = ROUTE_PATH.OAUTH_CALLBACK.replace(/^\//, '');
+    // TODO : 리다이렉트 URL 환경변수에서 뽑아쓰도록 다시 되돌려놓기
+    // const redirectUrl = process.env.BASE_URL;
+
     const path = 'auth/code';
     const response = await fetch(`${process.env.API_BASE_URL}${path}`, {
       method: 'POST',
@@ -12,7 +18,7 @@ export const login = {
       body: JSON.stringify({
         code,
         provider: 'kakao',
-        redirectUrlType: isDevelopment ? 'development' : 'production',
+        redirectUrl: `${baseUrl}${redirectPath}`,
       }),
       credentials: 'include',
     });
