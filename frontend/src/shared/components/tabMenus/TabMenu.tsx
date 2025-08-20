@@ -9,9 +9,10 @@ type TabData = { tab: string; content: React.ReactNode }[];
 type Props = {
   tabData: TabData;
   style?: React.CSSProperties;
+  overflowHidden?: boolean;
 };
 
-function TabMenu({ tabData, style }: Props) {
+function TabMenu({ tabData, style, overflowHidden = true }: Props) {
   const [currentTab, setCurrentTab] = useState(0);
 
   const tabs = tabData.map(d => d.tab);
@@ -28,7 +29,11 @@ function TabMenu({ tabData, style }: Props) {
         selectedIndex={currentTab}
         onTabClick={handleTabClick}
       />
-      <TabContent selectedIndex={currentTab} tabContents={tabContents} />
+      <TabContent
+        selectedIndex={currentTab}
+        tabContents={tabContents}
+        overflowHidden={overflowHidden}
+      />
     </S.Container>
   );
 }

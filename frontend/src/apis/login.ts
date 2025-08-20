@@ -4,7 +4,7 @@ export const login = {
   postKakao: async (
     code: string
   ): Promise<{ accessToken: string; status: number }> => {
-    const baseUrl = window.location.origin;
+    const baseUrl = window.location.origin + '/';
     const redirectPath = ROUTE_PATH.OAUTH_CALLBACK.replace(/^\//, '');
     // TODO : 리다이렉트 URL 환경변수에서 뽑아쓰도록 다시 되돌려놓기
     // const redirectUrl = process.env.BASE_URL;

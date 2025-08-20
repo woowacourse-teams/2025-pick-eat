@@ -18,6 +18,7 @@ function RoomDetail() {
   return (
     <S.Container>
       <TabMenu
+        overflowHidden={false}
         tabData={[
           {
             tab: '방 상세',

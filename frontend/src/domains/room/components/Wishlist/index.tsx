@@ -77,11 +77,10 @@ export default Wishlist;
 
 const S = {
   Container: styled.div`
-    max-height: 650px;
+    max-height: 600px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
-    overflow: scroll;
     scrollbar-width: none;
   `,
 
@@ -92,9 +91,10 @@ const S = {
   `,
 
   TabWrapper: styled.div`
-    min-height: 600px;
+    min-height: 500px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
+    overflow-y: scroll;
   `,
 };
