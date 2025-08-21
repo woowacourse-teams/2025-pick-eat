@@ -10,10 +10,20 @@
     "forceConsistentCasingInFileNames": true,
     "rootDir": "src",
     "outDir": "dist",
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "paths": {
-      "@components/*": ["components/*"]
-    }
+      "@domains/*": ["domains/*"],
+      "@components/*": ["shared/components/*"],
+      "@hooks/*": ["shared/hooks/*"],
+      "@utils/*": ["shared/utils/*"],
+      "@pages/*": ["pages/*"],
+      "@routes/*": ["routes/*"],
+      "@apis/*": ["apis/*"],
+      "@types/*": ["shared/types/*"],
+      "@styles/*": ["shared/styles/*"]
+    },
+    "checkJs": true,
+    "types": ["node", "jest", "@testing-library/jest-dom"]
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

@@ -1,0 +1,25 @@
+{
+  "preset": "ts-jest/presets/default-esm",
+  "setupFilesAfterEnv": ["<rootDir>/jest.setup.ts"],
+  "testEnvironment": "jsdom",
+  "transform": {
+    "^.+\\.[tj]sx?$": ["ts-jest", { "useESM": true }]
+  },
+  "extensionsToTreatAsEsm": [".ts", ".tsx"],
+  "globals": {
+    "ts-jest": {
+      "useESM": true
+    }
+  },
+  "moduleNameMapper": {
+    "^@domains/(.*)$": "<rootDir>/src/domains/$1",
+    "^@components/(.*)$": "<rootDir>/src/shared/components/$1",
+    "^@hooks/(.*)$": "<rootDir>/src/shared/hooks/$1",
+    "^@utils/(.*)$": "<rootDir>/src/shared/utils/$1",
+    "^@pages/(.*)$": "<rootDir>/src/pages/$1",
+    "^@routes/(.*)$": "<rootDir>/src/routes/$1",
+    "^@apis/(.*)$": "<rootDir>/src/apis/$1",
+    "^@types/(.*)$": "<rootDir>/src/shared/types/$1",
+    "^@styles/(.*)$": "<rootDir>/src/shared/styles/$1"
+  }
+}

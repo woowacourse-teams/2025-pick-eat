@@ -1,0 +1,66 @@
+import styled from '@emotion/styled';
+
+import { AddressType } from '../utils/convertAddress';
+
+type Props = {
+  addressList: AddressType[];
+  onClick: (value: string) => void;
+};
+
+function AddressList({ addressList, onClick }: Props) {
+  return (
+    <>
+      {addressList.length > 0 ? (
+        addressList.map(address => (
+          <S.Address
+            key={address.id}
+            onClick={() => onClick(address.placeName)}
+          >
+            <S.PlaceName>{address.placeName}</S.PlaceName>
+            <S.AddressName>{address.addressName}</S.AddressName>
+          </S.Address>
+        ))
+      ) : (
+        <div>존재하는 주소가 없습니다.</div>
+      )}
+    </>
+  );
+}
+
+export default AddressList;
+
+const S = {
+  List: styled.ul`
+    width: 100%;
+    max-height: 300px;
+    position: absolute;
+    top: 110%;
+    z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
+
+    padding: ${({ theme }) => theme.PADDING.p3};
+    border: 1px solid ${({ theme }) => theme.PALETTE.gray[60]};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
+    overflow-x: scroll;
+  `,
+
+  Address: styled.li`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level1};
+
+    padding: ${({ theme }) => theme.PADDING.px3};
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    }
+  `,
+
+  PlaceName: styled.span``,
+  AddressName: styled.span`
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
+  `,
+};
