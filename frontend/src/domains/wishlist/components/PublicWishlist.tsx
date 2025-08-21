@@ -54,11 +54,11 @@ export default PublicWishlist;
 
 const S = {
   Container: styled.div`
+    width: 100%;
+    height: 170px;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 170px;
-    width: 100%;
     gap: ${({ theme }) => theme.GAP.level5};
 
     padding: ${({ theme }) => theme.PADDING.p5} 0;
@@ -70,9 +70,13 @@ const S = {
     width: 140px;
     height: 140px;
 
+    border: 5px solid white;
+
     background-image: url(${({ imgUrl }) => imgUrl});
     background-size: cover;
     border-radius: ${({ theme }) => theme.RADIUS.medium2};
+
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
     cursor: pointer;
 
     &:hover {

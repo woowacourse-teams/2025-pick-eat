@@ -165,4 +165,9 @@ export const pickeat = {
     if (response) return convertResponseToResult(response);
     return null;
   },
+  patchDeactive: async (pickeatCode: string) => {
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'deactive');
+    await apiClient.patch(url);
+    return null;
+  },
 };

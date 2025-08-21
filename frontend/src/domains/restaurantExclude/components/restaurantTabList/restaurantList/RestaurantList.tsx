@@ -47,10 +47,11 @@ const S = {
     width: 100%;
     height: 240px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+    align-items: center;
+
     color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
     text-align: center;
   `,
 };

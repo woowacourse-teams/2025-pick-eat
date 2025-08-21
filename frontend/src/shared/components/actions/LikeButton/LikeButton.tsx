@@ -1,5 +1,4 @@
 import styled from '@emotion/styled';
-import { useEffect } from 'react';
 
 import { useExplosion } from './hooks/useExplosion';
 
@@ -15,6 +14,7 @@ function LikeButton({ id, count, onLike, onUnlike, liked }: Props) {
   const { explosionRef, trigger, removeAnimation } = useExplosion();
 
   const handleClick = () => {
+    removeAnimation();
     if (liked) {
       onUnlike(id);
     } else {
@@ -22,10 +22,6 @@ function LikeButton({ id, count, onLike, onUnlike, liked }: Props) {
       onLike(id);
     }
   };
-
-  useEffect(() => {
-    removeAnimation();
-  }, []);
 
   return (
     <S.Container>

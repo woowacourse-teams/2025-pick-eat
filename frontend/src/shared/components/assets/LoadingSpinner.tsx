@@ -8,12 +8,14 @@ const spin = keyframes`
 `;
 
 const Spinner = styled.div`
-  border: 4px solid ${({ theme }) => theme.PALETTE.gray[10]};
-  border-top: 4px solid ${({ theme }) => theme.PALETTE.primary[50]};
-  border-radius: 50%;
   width: 40px;
   height: 40px;
+
+  border: 4px solid ${({ theme }) => theme.PALETTE.gray[10]};
+
   animation: ${spin} 1s linear infinite;
+  border-radius: 50%;
+  border-top: 4px solid ${({ theme }) => theme.PALETTE.primary[50]};
 `;
 
 function LoadingSpinner() {

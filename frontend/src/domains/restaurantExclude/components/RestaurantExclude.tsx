@@ -36,8 +36,9 @@ const S = {
     flex-direction: column;
   `,
   RestaurantTabContainer: styled.div`
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     margin-bottom: ${footerHeight}px;
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,
   Footer: styled.footer`
     width: 100%;
