@@ -1,7 +1,21 @@
-const { merge } = require("webpack-merge");
-const common = require("./webpack.common.js");
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-module.exports = merge(common, {
-  mode: "production",
-  devtool: "source-map",
-});
+import { merge } from 'webpack-merge';
+
+import common from './webpack.common.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const prodConfig = {
+  mode: 'production',
+  output: {
+    path: path.resolve(__dirname, 'dist/prod'),
+    filename: '[name].[contenthash].js',
+    publicPath: '/',
+    clean: true,
+  },
+};
+
+export default merge(common, prodConfig);
