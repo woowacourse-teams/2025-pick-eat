@@ -13,7 +13,9 @@ public record WishListResponse(
         @Schema(description = "방 ID", example = "1")
         long roomId,
         @Schema(description = "공개 여부", example = "true")
-        boolean isPublic
+        boolean isPublic,
+        @Schema(description = "위시의 개수", example = "3")
+        int wishCount
 ) {
 
     public static WishListResponse from(WishList wishList) {
@@ -21,7 +23,8 @@ public record WishListResponse(
                 wishList.getId(),
                 wishList.getName(),
                 wishList.getRoomId(),
-                wishList.getIsPublic()
+                wishList.getIsPublic(),
+                wishList.getWishes().size()
         );
     }
 
