@@ -9,27 +9,41 @@ const Main = () => {
   return (
     <S.Container>
       <S.Section>
-        <S.Title>
-          <S.PrimaryPoint>픽잇 추천</S.PrimaryPoint>에서&nbsp;
-          <S.PrimaryPoint>
-            Pick!
-            <br />
-          </S.PrimaryPoint>
-        </S.Title>
+        <S.PaddingBox>
+          <S.Title>
+            <S.PrimaryPoint>픽잇 추천</S.PrimaryPoint>에서&nbsp;
+            <S.PrimaryPoint>
+              Pick!
+              <br />
+            </S.PrimaryPoint>
+          </S.Title>
 
-        <S.Description>
-          원하는 맛집 리스트를 클릭해서 빠르게 시작해 보세요.
-        </S.Description>
+          <S.Description>
+            원하는 맛집 리스트를 클릭해서 빠르게 시작해 보세요.
+          </S.Description>
+        </S.PaddingBox>
         <PublicWishlist />
       </S.Section>
 
       <S.Section>
-        <S.Title>
-          <S.SecondaryPoint>맞춤 설정</S.SecondaryPoint>으로&nbsp;
-          <S.SecondaryPoint>Pick!</S.SecondaryPoint>
-        </S.Title>
+        <S.PaddingBox
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+          }}
+        >
+          <S.Title>
+            <S.PrimaryPoint>맞춤 설정</S.PrimaryPoint>으로&nbsp;
+            <S.PrimaryPoint>Pick!</S.PrimaryPoint>
+          </S.Title>
 
-        <ChoosePickeatType />
+          <S.Description>
+            주변 식당이나, 원하는 식당 중에서 투표를 시작해보세요.
+          </S.Description>
+
+          <ChoosePickeatType />
+        </S.PaddingBox>
       </S.Section>
     </S.Container>
   );
@@ -41,7 +55,8 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level12};
-
+  `,
+  PaddingBox: styled.div`
     padding: ${({ theme }) => theme.PADDING.p10}
       ${({ theme }) => theme.PADDING.p10} 0;
 
@@ -63,17 +78,12 @@ const S = {
   `,
 
   Description: styled.span`
-    color: ${({ theme }) => theme.PALETTE.gray[70]};
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
   PrimaryPoint: styled.span`
     color: ${({ theme }) => theme.PALETTE.primary[50]};
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
-  `,
-
-  SecondaryPoint: styled.span`
-    color: ${({ theme }) => theme.PALETTE.secondary[60]};
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
 };
