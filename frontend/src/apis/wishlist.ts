@@ -7,6 +7,7 @@ type WishlistResponse = {
   name: string;
   roomId: number;
   isPublic: boolean;
+  wishCount: number;
 };
 
 type Picture = {
@@ -38,6 +39,7 @@ export type WishlistType = {
   id: number;
   name: string;
   isPublic: boolean;
+  wishCount: number;
 };
 
 const convertResponseToWish = (data: WishlistResponse[]) => {
@@ -45,6 +47,7 @@ const convertResponseToWish = (data: WishlistResponse[]) => {
     id: d.id,
     name: d.name,
     isPublic: d.isPublic,
+    wishCount: d.wishCount,
   }));
 };
 

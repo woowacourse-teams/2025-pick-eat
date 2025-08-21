@@ -15,7 +15,7 @@ type Prop = {
 };
 
 function WishlistCard({ wishlistData, selected, onSelect }: Prop) {
-  const { id, name, isPublic } = wishlistData;
+  const { id, name, isPublic, wishCount } = wishlistData;
   const {
     mounted,
     opened,
@@ -25,17 +25,18 @@ function WishlistCard({ wishlistData, selected, onSelect }: Prop) {
   } = useModal();
 
   return (
-    <S.Container selected={selected} onClick={() => onSelect?.(id)}>
-      <S.Name>{name}</S.Name>
-      <S.ButtonWrapper>
-        <Button
-          text="상세"
-          color={selected ? 'primary' : 'gray'}
-          size="sm"
-          type="button"
-          onClick={handleOpenModal}
-        />
-      </S.ButtonWrapper>
+    <S.Container selected={selected} onClick={() => onSelect(id)}>
+      <S.LeftWrapper>
+        <S.Name>{name}</S.Name>
+        <S.WishCount>({wishCount})</S.WishCount>
+      </S.LeftWrapper>
+      <Button
+        text="상세"
+        color={selected ? 'primary' : 'gray'}
+        size="sm"
+        type="button"
+        onClick={handleOpenModal}
+      />
 
       <Modal
         opened={opened}
@@ -75,14 +76,17 @@ const S = {
 
     border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
   `,
-
-  Name: styled.span`
+  LeftWrapper: styled.div`
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.small};
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level2};
   `,
 
-  ButtonWrapper: styled.div`
-    display: flex;
-    gap: ${({ theme }) => theme.GAP.level4};
+  Name: styled.span``,
+
+  WishCount: styled.span`
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 };
