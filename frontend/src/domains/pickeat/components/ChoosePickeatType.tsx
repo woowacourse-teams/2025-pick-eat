@@ -21,18 +21,20 @@ import { Suspense, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
 function ChoosePickeatType() {
+  const { opened, mounted, handleCloseModal, handleOpenModal } = useModal();
+  const { loggedIn } = useAuth();
+  const navigate = useNavigate();
+  const roomsData = useMemo(() => rooms.get(), []);
+
   const handleWishlistButtonClick = () => {
     if (!loggedIn) {
       alert('로그인 후 이용해 주세요!');
+      navigate(ROUTE_PATH.LOGIN);
       return;
     }
 
     handleOpenModal();
   };
-  const { opened, mounted, handleCloseModal, handleOpenModal } = useModal();
-  const { loggedIn } = useAuth();
-  const navigate = useNavigate();
-  const roomsData = useMemo(() => rooms.get(), []);
 
   return (
     <>

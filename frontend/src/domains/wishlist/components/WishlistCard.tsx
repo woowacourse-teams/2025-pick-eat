@@ -77,11 +77,12 @@ const S = {
     border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
   `,
   LeftWrapper: styled.div`
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.heading.small};
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level4};
+
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.heading.small};
   `,
 
   Name: styled.span``,

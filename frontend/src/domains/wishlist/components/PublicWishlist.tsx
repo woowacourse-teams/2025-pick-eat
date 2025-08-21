@@ -79,12 +79,14 @@ const S = {
     height: 220px;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: space-between;
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    align-items: center;
+
     padding: ${({ theme }) => theme.PADDING.p3};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: ${({ theme }) => theme.RADIUS.medium3};
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    box-shadow: rgb(0 0 0 / 10%) 0 4px 12px;
     cursor: pointer;
   `,
   ThumbnailImg: styled.div<{ imgUrl: string }>`
@@ -100,8 +102,9 @@ const S = {
   TitleBox: styled.div`
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
+
     padding: ${({ theme }) => theme.PADDING.p4};
     cursor: pointer;
   `,
@@ -113,6 +116,7 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
+
     color: ${({ theme }) => theme.PALETTE.gray[40]};
   `,
 };

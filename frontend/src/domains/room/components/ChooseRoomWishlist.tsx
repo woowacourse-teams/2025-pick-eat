@@ -53,7 +53,7 @@ export default ChooseRoomWishlist;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 50%;
+    max-height: 600px;
 
     display: flex;
     flex-direction: column;

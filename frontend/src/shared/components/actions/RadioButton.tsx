@@ -35,11 +35,12 @@ const S = {
   ButtonContainer: styled.button<{ checked: boolean }>`
     width: 20px;
     height: 20px;
-    border-radius: ${({ theme }) => theme.RADIUS.half};
+
     border: 2px solid
       ${({ checked, theme }) => (checked ? 'white' : theme.PALETTE.gray[30])};
 
     background-color: ${({ checked, theme }) =>
       checked ? theme.PALETTE.primary[50] : 'white'};
+    border-radius: ${({ theme }) => theme.RADIUS.half};
   `,
 };
