@@ -404,4 +404,37 @@ public interface PickeatApiSpec {
             @Parameter(description = "방 ID") @PathVariable("roomId") Long roomId,
             @Parameter(hidden = true) Long userId
     );
+
+    @Operation(
+            summary = "픽잇 비활성화",
+            operationId = "deactivatePickeat",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "픽잇 비활성화 성공"),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "픽잇에 대한 접근 권한 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "픽잇에 대한 접근 권한 없음",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "Forbidden",
+                                              "status": 403,
+                                              "detail": "해당 픽잇에 접근 권한이 없습니다.",
+                                              "instance": "/api/v1/pickeats/{ABC123}/deactivate"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    ResponseEntity<Void> deactivatePickeat(
+            @PathVariable("pickeatCode") String pickeatCode,
+            @Parameter(hidden = true) Long participantId
+    );
 }

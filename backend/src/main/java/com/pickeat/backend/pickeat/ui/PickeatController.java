@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -107,5 +108,15 @@ public class PickeatController implements PickeatApiSpec {
     ) {
         List<PickeatResponse> responses = pickeatService.getActivePickeatInRoom(roomId, userId);
         return ResponseEntity.ok().body(responses);
+    }
+
+    @Override
+    @PatchMapping("/pickeats/{pickeatCode}/deactive")
+    public ResponseEntity<Void> deactivatePickeat(
+            @PathVariable("pickeatCode") String pickeatCode,
+            @ParticipantId Long participantId
+    ) {
+        pickeatService.deactivatePickeat(pickeatCode, participantId);
+        return ResponseEntity.noContent().build();
     }
 }
