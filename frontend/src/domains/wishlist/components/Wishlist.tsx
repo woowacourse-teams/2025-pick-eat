@@ -27,16 +27,19 @@ function Wishlist({ wishlistId, wishlistName, isPublic }: Props) {
       <S.Title>{wishlistName}</S.Title>
 
       {wishes.length > 0 ? (
-        wishes.map(({ id, name, pictures, category, roadAddressName }) => (
-          <Wish
-            key={id}
-            id={id}
-            name={name}
-            pictures={pictures}
-            category={category}
-            roadAddressName={roadAddressName}
-          />
-        ))
+        wishes.map(
+          ({ id, name, pictures, category, roadAddressName, tags }) => (
+            <Wish
+              key={id}
+              id={id}
+              name={name}
+              pictures={pictures}
+              category={category}
+              roadAddressName={roadAddressName}
+              tags={tags}
+            />
+          )
+        )
       ) : (
         <div>위시가 존재하지 않습니다.</div>
       )}

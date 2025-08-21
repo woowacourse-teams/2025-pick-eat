@@ -34,34 +34,41 @@ function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
         style={{ position: 'sticky', top: 0 }}
       />
       {wishlist.length > 0 ? (
-        wishlist.map(({ id, name, pictures, category, roadAddressName }) => (
-          <S.Container key={id}>
-            <S.Image
-              src={
-                pictures.length === 0
-                  ? '/images/restaurant.png'
-                  : pictures[0].imageDownloadUrl
-              }
-              alt={name}
-              onError={e => {
-                e.currentTarget.onerror = null;
-                e.currentTarget.src = '/images/restaurant.png';
-              }}
-            />
+        wishlist.map(
+          ({ id, name, pictures, category, roadAddressName, tags }) => (
+            <S.Container key={id}>
+              <S.Image
+                src={
+                  pictures.length === 0
+                    ? '/images/restaurant.png'
+                    : pictures[0].imageDownloadUrl
+                }
+                alt={name}
+                onError={e => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src = '/images/restaurant.png';
+                }}
+              />
 
-            <S.Info>
-              <S.TopArea>
-                <Badge>{category}</Badge>
+              <S.Info>
+                <S.TopArea>
+                  <S.BadgeWrapper>
+                    <Badge color="primary">{category}</Badge>
+                    {tags.map(tag => (
+                      <Badge key={tag}>{tag}</Badge>
+                    ))}
+                  </S.BadgeWrapper>
 
-                <S.RemoveBtn type="button" onClick={() => deleteWish(id)}>
-                  <Trash size="xs" color="red" />
-                </S.RemoveBtn>
-              </S.TopArea>
-              <S.Name>{name}</S.Name>
-              <S.Address>{roadAddressName}</S.Address>
-            </S.Info>
-          </S.Container>
-        ))
+                  <S.RemoveBtn type="button" onClick={() => deleteWish(id)}>
+                    <Trash size="xs" color="red" />
+                  </S.RemoveBtn>
+                </S.TopArea>
+                <S.Name>{name}</S.Name>
+                <S.Address>{roadAddressName}</S.Address>
+              </S.Info>
+            </S.Container>
+          )
+        )
       ) : (
         <S.Description>위시를 등록해보세요!</S.Description>
       )}
@@ -88,6 +95,14 @@ const S = {
 
   Info: styled.div`
     flex: 1;
+  `,
+
+  BadgeWrapper: styled.div`
+    max-height: 54px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.GAP.level2};
+    overflow: hidden;
   `,
 
   TopArea: styled.div`

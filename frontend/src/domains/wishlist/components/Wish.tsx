@@ -10,7 +10,8 @@ function Wish({
   pictures,
   category,
   roadAddressName,
-}: Omit<Wishes, 'tags' | 'wishlistId'>) {
+  tags,
+}: Omit<Wishes, 'wishlistId'>) {
   return (
     <S.WishWrapper key={id}>
       <S.Image
@@ -27,7 +28,12 @@ function Wish({
       />
 
       <S.Info>
-        <Badge>{category}</Badge>
+        <S.BadgeWrapper>
+          <Badge color="primary">{category}</Badge>
+          {tags.map(tag => (
+            <Badge key={tag}>{tag}</Badge>
+          ))}
+        </S.BadgeWrapper>
         <S.Name>{name}</S.Name>
         <S.Address>{roadAddressName}</S.Address>
       </S.Info>
@@ -52,6 +58,14 @@ const S = {
   `,
 
   Info: styled.div``,
+
+  BadgeWrapper: styled.div`
+    max-height: 54px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.GAP.level2};
+    overflow: hidden;
+  `,
 
   Name: styled.p`
     font: ${({ theme }) => theme.FONTS.body.medium};
