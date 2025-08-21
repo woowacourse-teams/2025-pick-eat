@@ -30,9 +30,9 @@ function Wish({
       <S.Info>
         <S.BadgeWrapper>
           <Badge color="primary">{category}</Badge>
-          {tags.map(tag => (
-            <Badge key={tag}>{tag}</Badge>
-          ))}
+          {tags.map(tag =>
+            tag.length === 0 ? null : <Badge key={tag}>{tag}</Badge>
+          )}
         </S.BadgeWrapper>
         <S.Name>{name}</S.Name>
         <S.Address>{roadAddressName}</S.Address>

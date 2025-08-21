@@ -46,7 +46,7 @@ const S = {
     justify-content: center;
 
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level7};
+    gap: ${({ theme }) => theme.GAP.level2};
 
     padding: 0 ${({ theme }) => theme.PADDING.p7};
   `,

@@ -54,9 +54,9 @@ function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
                 <S.TopArea>
                   <S.BadgeWrapper>
                     <Badge color="primary">{category}</Badge>
-                    {tags.map(tag => (
-                      <Badge key={tag}>{tag}</Badge>
-                    ))}
+                    {tags.map(tag =>
+                      tag.length === 0 ? null : <Badge key={tag}>{tag}</Badge>
+                    )}
                   </S.BadgeWrapper>
 
                   <S.RemoveBtn type="button" onClick={() => deleteWish(id)}>
