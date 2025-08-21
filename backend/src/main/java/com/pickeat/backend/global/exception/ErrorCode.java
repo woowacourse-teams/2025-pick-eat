@@ -21,6 +21,7 @@ public enum ErrorCode {
     WISH_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "위시리스트를 찾을 수 없습니다."),
     WISH_LIST_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 위시리스트에 접근할 권한이 없습니다."),
     NOT_PUBLIC_WISH_LIST(HttpStatus.BAD_REQUEST, "공용 위시리스트가 아닙니다."),
+    WISH_LIST_HAS_NO_WISHES(HttpStatus.BAD_REQUEST, "위시리스트에 위시가 존재하지 않습니다."),
 
     // Wish 관련 에러
     WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "위시를 찾을 수 없습니다."),

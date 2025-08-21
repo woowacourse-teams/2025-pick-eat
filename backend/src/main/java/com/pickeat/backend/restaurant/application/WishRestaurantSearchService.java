@@ -29,10 +29,18 @@ public class WishRestaurantSearchService {
         WishList wishList = getWishList(request);
 
         List<Wish> wishes = wishRepository.findAllByWishList(wishList);
+        validateWishExists(wishes);
 
         return wishes.stream()
                 .map(wish -> RestaurantRequest.fromWish(wish, getPictureUrls(wish)))
                 .toList();
+    }
+
+    private void validateWishExists(List<Wish> wishes) {
+        //TODO: 앞서 생성된 픽잇 삭제하는 보상 트랜잭션 필요  (2025-08-21, 목, 11:36)
+        if (wishes.isEmpty()) {
+            throw new BusinessException(ErrorCode.WISH_LIST_HAS_NO_WISHES);
+        }
     }
 
     private WishList getWishList(WishRestaurantRequest request) {
