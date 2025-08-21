@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 import WishFormTab from './WishFormTab';
 import WishlistTab from './WishlistTab';
 
-function Wishlist({ id, name, isPublic }: WishlistType) {
+function Wishlist({ id, name, isPublic }: Omit<WishlistType, 'wishCount'>) {
   const [wishlistData, setWishlistData] = useState<Wishes[]>([]);
   const [currentTab, setCurrentTab] = useState(0);
 
