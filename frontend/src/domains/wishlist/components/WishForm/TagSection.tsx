@@ -11,10 +11,12 @@ type Props = {
 
 function TagSection({ tags, onFormChange }: Props) {
   const [tag, setTag] = useState<string>();
+  const [isComposing, setIsComposing] = useState(false);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const trimmedTag = tag?.trim();
-    if (e.key === 'Enter' && trimmedTag) {
+    if (e.key === 'Enter' && !isComposing) {
+      const trimmedTag = tag?.trim();
+      if (!trimmedTag) return;
       e.preventDefault();
       if (!tags?.includes(trimmedTag)) {
         onFormChange([...(tags ?? []), trimmedTag]);
@@ -36,6 +38,8 @@ function TagSection({ tags, onFormChange }: Props) {
         value={tag}
         onChange={e => setTag(e.target.value)}
         onKeyDown={handleKeyDown}
+        onCompositionStart={() => setIsComposing(true)}
+        onCompositionEnd={() => setIsComposing(false)}
       />
 
       {tags && (
