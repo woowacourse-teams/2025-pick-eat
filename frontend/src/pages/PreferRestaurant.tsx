@@ -21,9 +21,9 @@ import { useNavigate, useSearchParams } from 'react-router';
 function PreferRestaurant() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
+  usePickeatStateChecker(pickeatCode);
 
   const navigate = useNavigate();
-  usePickeatStateChecker(pickeatCode);
 
   return (
     <S.Container>
@@ -33,7 +33,6 @@ function PreferRestaurant() {
         </S.Title>
         <Participant pickeatCode={pickeatCode} />
       </S.TitleArea>
-
       <ErrorBoundary>
         <Suspense fallback={<LoadingSpinner />}>
           <S.RestaurantListContainer>
@@ -45,7 +44,6 @@ function PreferRestaurant() {
           </S.RestaurantListContainer>
         </Suspense>
       </ErrorBoundary>
-
       <S.Footer>
         <Button
           text="이전"

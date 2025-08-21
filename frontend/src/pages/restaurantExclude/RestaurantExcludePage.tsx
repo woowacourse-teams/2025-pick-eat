@@ -1,3 +1,4 @@
+import PickeatEndModal from '@domains/matchResult/components/PickeatEndModal';
 import RestaurantExclude from '@domains/restaurantExclude/components/RestaurantExclude';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
@@ -17,10 +18,11 @@ import TitleArea from './components/TitleArea';
 function RestaurantExcludePage() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  usePickeatStateChecker(pickeatCode);
+  const { hasRestaurants } = usePickeatStateChecker(pickeatCode);
 
   return (
     <S.Container>
+      {!hasRestaurants && <PickeatEndModal />}
       <TitleArea />
       <ErrorBoundary>
         <Suspense fallback={<LoadingSpinner />}>

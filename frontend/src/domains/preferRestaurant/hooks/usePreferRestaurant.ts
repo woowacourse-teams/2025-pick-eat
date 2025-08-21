@@ -1,3 +1,4 @@
+import { pickeat } from '@apis/pickeat';
 import { Restaurant } from '@apis/restaurant';
 import { restaurants } from '@apis/restaurants';
 
@@ -64,6 +65,14 @@ const usePreferRestaurant = (
       clearInterval(intervalId);
     };
   }, []);
+
+  useEffect(() => {
+    if (restaurantList.length > 0) return;
+    const endPickeat = async () => {
+      await pickeat.patchDeactive(pickeatCode);
+    };
+    endPickeat();
+  }, [restaurantList]);
 
   return { restaurantList, updateLikeCount };
 };
