@@ -1,14 +1,11 @@
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
-import Arrow from '@components/assets/icons/Arrow';
 import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
 
 import { PickeatType } from '@apis/pickeat';
 
 import { useGA } from '@hooks/useGA';
-
-import { ROUTE_PATH } from '@routes/routePath';
 
 import { copyLink } from '@utils/copyLink';
 
@@ -17,7 +14,6 @@ import { setMobileStyle } from '@styles/mediaQuery';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FormEvent, use } from 'react';
-import { useNavigate } from 'react-router';
 
 import { useJoinPickeat } from '../hooks/useJoinPickeat';
 import { makeNickname } from '../utils/makeNickname';
@@ -25,7 +21,6 @@ import { makeNickname } from '../utils/makeNickname';
 function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
   const pickeatDetail = use(pickeatData);
   const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
-  const navigate = useNavigate();
 
   const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
 
@@ -54,12 +49,6 @@ function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
 
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
-      <S.ArrowButton
-        type="button"
-        onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
-      >
-        <Arrow size="lg" direction="left" />
-      </S.ArrowButton>
       <S.PickeatName>{pickeatDetail.name}</S.PickeatName>
 
       <S.FormWrapper>
@@ -103,16 +92,6 @@ const S = {
     ${setMobileStyle(css`
       width: 100%;
       box-shadow: none;
-    `)}
-  `,
-
-  ArrowButton: styled.button`
-    position: absolute;
-    top: 30px;
-    left: 20px;
-
-    ${setMobileStyle(css`
-      display: none;
     `)}
   `,
 

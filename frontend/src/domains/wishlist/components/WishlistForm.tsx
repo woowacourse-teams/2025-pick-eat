@@ -9,7 +9,7 @@ import { WishlistType } from '@apis/wishlist';
 
 import { useGA } from '@hooks/useGA';
 
-import { generateRouterPath, ROUTE_PATH } from '@routes/routePath';
+import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
 import { use, useState } from 'react';
