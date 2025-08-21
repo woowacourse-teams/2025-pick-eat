@@ -10,10 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestClient;
 
-@ActiveProfiles("test")
 @Disabled("외부 네트워크 요청이 일어나므로 비활성화")
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
 class KakaoClientConnectionTest {
