@@ -7,7 +7,7 @@ const useSelectWishlist = (wishlistGroup: WishlistType[]) => {
 
   const handleSelectWishlist = (id: number) => {
     const wishCount = wishlistGroup.find(
-      wishlist => wishlist.id === selectedWishlistId
+      wishlist => wishlist.id === id
     )?.wishCount;
     if (wishCount === 0) {
       alert('해당 리스트에 위시가 존재하지 않습니다.');

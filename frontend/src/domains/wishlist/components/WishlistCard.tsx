@@ -1,4 +1,5 @@
 import Button from '@components/actions/Button';
+import RadioButton from '@components/actions/RadioButton';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
@@ -25,11 +26,19 @@ function WishlistCard({ wishlistData, selected, onSelect }: Prop) {
   } = useModal();
 
   return (
-    <S.Container selected={selected} onClick={() => onSelect(id)}>
+    <S.Container selected={selected}>
       <S.LeftWrapper>
-        <S.Name>{name}</S.Name>
-        <S.WishCount>({wishCount})</S.WishCount>
+        <RadioButton
+          name="wishlist"
+          value={id.toString()}
+          checked={selected}
+          onChange={() => onSelect(id)}
+        />
+        <S.Name>
+          {name} <S.WishCount>({wishCount})</S.WishCount>
+        </S.Name>
       </S.LeftWrapper>
+
       <Button
         text="상세"
         color={selected ? 'primary' : 'gray'}
@@ -65,15 +74,6 @@ const S = {
     background-color: ${({ selected, theme }) =>
       selected && theme.PALETTE.secondary[10]};
 
-    ${({ selected, theme }) =>
-      !selected &&
-      `cursor: pointer;
-
-       &:hover {
-         background-color: ${theme.PALETTE.secondary[5]};
-        }
-    `};
-
     border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
   `,
   LeftWrapper: styled.div`
@@ -81,7 +81,7 @@ const S = {
     font: ${({ theme }) => theme.FONTS.heading.small};
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level2};
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
 
   Name: styled.span``,
