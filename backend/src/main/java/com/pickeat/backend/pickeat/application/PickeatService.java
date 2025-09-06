@@ -4,6 +4,7 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
@@ -66,11 +67,21 @@ public class PickeatService {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         return PickeatStateResponse.from(pickeat);
     }
-    
+
     public List<PickeatResponse> getActivePickeatInRoom(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
         List<Pickeat> pickeats = pickeatRepository.findByRoomIdAndIsActive(roomId, true);
         return PickeatResponse.from(pickeats);
+    }
+
+    public PickeatRejoinAvailableResponse getRejoinAvailableToPickeat(String pickeatCode, Long participantId) {
+        if (participantId == null) {
+            return new PickeatRejoinAvailableResponse(false);
+        }
+        Participant participant = getParticipant(participantId);
+        Pickeat pickeat = participant.getPickeat();
+        Boolean rejoinAvailable = pickeat.isEqualPickeatCode(pickeatCode);
+        return new PickeatRejoinAvailableResponse(rejoinAvailable);
     }
 
     private void validateUserAccessToRoom(Long roomId, Long userId) {
