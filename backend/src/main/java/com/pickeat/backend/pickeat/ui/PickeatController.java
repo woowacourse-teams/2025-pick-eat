@@ -123,7 +123,7 @@ public class PickeatController implements PickeatApiSpec {
 
     @Override
     @GetMapping("/pickeats/{pickeatCode}/rejoin-available")
-    public ResponseEntity<PickeatRejoinAvailableResponse> getRejoinAvailableToPickeat(
+    public ResponseEntity<PickeatRejoinAvailableResponse> getRejoinAvailableFromNoneUser(
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantId(required = false) Long participantId
     ) {

@@ -440,8 +440,8 @@ public interface PickeatApiSpec {
     );
 
     @Operation(
-            summary = "픽잇 재참여 가능 여부 조회",
-            description = "해당 픽잇에 재참여가 가능한지 여부를 반환합니다. 비회원은 항상 재참여 가능합니다. 회원인 경우, 이전에 참여한 적이 없다면 재참여 가능합니다.",
+            summary = "비회원의 픽잇 재참여 가능 여부 조회",
+            description = "비회원이 해당 픽잇에 재참여가 가능한지 여부를 반환합니다.",
             operationId = "getRejoinAvailableToPickeat",
             security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
@@ -477,7 +477,7 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<PickeatRejoinAvailableResponse> getRejoinAvailableToPickeat(
+    ResponseEntity<PickeatRejoinAvailableResponse> getRejoinAvailableFromNoneUser(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode,
             @Parameter(hidden = true) Long participantId
