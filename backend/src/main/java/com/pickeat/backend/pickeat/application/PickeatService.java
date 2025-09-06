@@ -11,6 +11,7 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
+import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -66,11 +67,25 @@ public class PickeatService {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         return PickeatStateResponse.from(pickeat);
     }
-    
+
     public List<PickeatResponse> getActivePickeatInRoom(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
         List<Pickeat> pickeats = pickeatRepository.findByRoomIdAndIsActive(roomId, true);
         return PickeatResponse.from(pickeats);
+    }
+
+    public List<PickeatResponse> getActivePickeatsByUser(Long userId) {
+        List<Room> allRoom = roomUserRepository.getAllRoomByUserId(userId);
+        List<Long> allRoomIds = allRoom.stream().map(Room::getId).toList();
+        List<Pickeat> roomPickeats = pickeatRepository.findByRoomIdInAndIsActive(allRoomIds, true);
+        return PickeatResponse.from(roomPickeats);
+    }
+
+    public PickeatResponse getActivePickeatsByParticipant(Long participantId) {
+        Participant participant = getParticipant(participantId);
+        Pickeat pickeat = participant.getPickeat();
+        validateActivePickeat(pickeat);
+        return PickeatResponse.from(pickeat);
     }
 
     private void validateUserAccessToRoom(Long roomId, Long userId) {
@@ -84,6 +99,12 @@ public class PickeatService {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         if (!participant.getPickeat().equals(pickeat)) {
             throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
+        }
+    }
+
+    private void validateActivePickeat(Pickeat pickeat) {
+        if (!pickeat.getIsActive()) {
+            throw new BusinessException(ErrorCode.PICKEAT_ALREADY_INACTIVE);
         }
     }
 
