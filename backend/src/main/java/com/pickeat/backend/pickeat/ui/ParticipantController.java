@@ -33,18 +33,21 @@ public class ParticipantController implements ParticipantApiSpec {
                 .body(response);
     }
 
+    @Override
     @GetMapping("/participants/me")
     public ResponseEntity<ParticipantResponse> getParticipant(@ParticipantId Long participantId) {
         ParticipantResponse response = participantService.getParticipantBy(participantId);
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @PatchMapping("/completion/complete")
     public ResponseEntity<Void> markCompletion(@ParticipantId Long participantId) {
         participantService.updateCompletion(participantId, true);
         return ResponseEntity.noContent().build();
     }
 
+    @Override
     @PatchMapping("/completion/cancel")
     public ResponseEntity<Void> unMarkCompletion(@ParticipantId Long participantId) {
         participantService.updateCompletion(participantId, false);
