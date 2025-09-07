@@ -25,7 +25,7 @@ class ParticipantTest {
                     .extracting(
                             Participant::getNickname,
                             Participant::getPickeat,
-                            Participant::getIsEliminationCompleted)
+                            Participant::getIsCompleted)
                     .containsExactly(nickname, pickeat, false);
         }
     }

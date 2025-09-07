@@ -53,7 +53,7 @@ public class PickeatService {
 
     public ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        int eliminatedCount = participantRepository.countEliminatedByPickeat(pickeat.getId(), true);
+        int eliminatedCount = participantRepository.countCompletedByPickeat(pickeat.getId(), true);
         return ParticipantStateResponse.of(pickeat.getParticipantCount(), eliminatedCount);
     }
 
@@ -66,7 +66,7 @@ public class PickeatService {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         return PickeatStateResponse.from(pickeat);
     }
-    
+
     public List<PickeatResponse> getActivePickeatInRoom(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
         List<Pickeat> pickeats = pickeatRepository.findByRoomIdAndIsActive(roomId, true);

@@ -36,4 +36,12 @@ public class ParticipantService {
         return pickeatRepository.findById(pickeatId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
     }
+
+    @Transactional
+    public void updateCompletion(Long participantId, boolean isCompleted) {
+        Participant participant = participantRepository.findById(participantId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
+
+        participant.updateCompletionAs(isCompleted);
+    }
 }

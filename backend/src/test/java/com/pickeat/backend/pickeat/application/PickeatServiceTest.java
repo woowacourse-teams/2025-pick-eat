@@ -54,9 +54,9 @@ public class PickeatServiceTest {
             Participant participant = new Participant(nickname, pickeat);
             participants.add(participant);
 
-            // 짝수 번째 참여자는 소거 완료 상태로 설정
+            // 짝수 번째 참여자는 투표 완료 상태로 설정
             if (i % 2 == 0) {
-                participant.eliminateRestaurants();
+                participant.updateCompletionAs(true);
             }
 
             pickeat.incrementParticipantCount();
@@ -67,7 +67,7 @@ public class PickeatServiceTest {
 
     private int countEliminatedParticipants(List<Participant> participants) {
         return (int) participants.stream()
-                .filter(Participant::getIsEliminationCompleted)
+                .filter(Participant::getIsCompleted)
                 .count();
     }
 
@@ -145,7 +145,7 @@ public class PickeatServiceTest {
     class 픽잇_참여자_수_조회_케이스 {
 
         @Test
-        void 픽잇_전체_참여자_수와_소거완료_여부_확인_성공() {
+        void 픽잇_전체_참여자_수와_투표완료_여부_확인_성공() {
             //given
             Pickeat pickeat = createWithoutRoomPickeat();
             int totalParticipantCount = 5;

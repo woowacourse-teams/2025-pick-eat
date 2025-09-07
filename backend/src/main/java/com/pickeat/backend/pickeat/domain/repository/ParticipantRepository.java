@@ -6,10 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
-    int countByPickeatIdAndIsEliminationCompleted(Long pickeatId, Boolean completed);
+    int countByPickeatIdAndIsCompleted(Long pickeatId, Boolean completed);
 
-    default int countEliminatedByPickeat(Long pickeatId, Boolean completed) {
-        return countByPickeatIdAndIsEliminationCompleted(pickeatId, completed);
+    default int countCompletedByPickeat(Long pickeatId, Boolean completed) {
+        return countByPickeatIdAndIsCompleted(pickeatId, completed);
     }
 
     List<Participant> findByPickeatIdIn(List<Long> pickeatIds);
