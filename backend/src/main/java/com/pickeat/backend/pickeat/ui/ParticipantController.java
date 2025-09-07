@@ -4,11 +4,13 @@ import com.pickeat.backend.global.auth.annotation.ParticipantId;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.ParticipantService;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
+import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
 import com.pickeat.backend.pickeat.ui.api.ParticipantApiSpec;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,13 +33,19 @@ public class ParticipantController implements ParticipantApiSpec {
                 .body(response);
     }
 
-    @PatchMapping("completion/complete")
+    @GetMapping("/participants/me")
+    public ResponseEntity<ParticipantResponse> getParticipant(@ParticipantId Long participantId) {
+        ParticipantResponse response = participantService.getParticipantBy(participantId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/completion/complete")
     public ResponseEntity<Void> markCompletion(@ParticipantId Long participantId) {
         participantService.updateCompletion(participantId, true);
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("completion/cancel")
+    @PatchMapping("/completion/cancel")
     public ResponseEntity<Void> unMarkCompletion(@ParticipantId Long participantId) {
         participantService.updateCompletion(participantId, false);
         return ResponseEntity.noContent().build();

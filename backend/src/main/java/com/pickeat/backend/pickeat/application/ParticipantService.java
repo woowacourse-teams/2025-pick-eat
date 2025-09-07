@@ -4,6 +4,7 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
+import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
@@ -32,16 +33,25 @@ public class ParticipantService {
         return participantTokenProvider.createToken(participant.getId());
     }
 
-    private Pickeat findPickeatById(Long pickeatId) {
-        return pickeatRepository.findById(pickeatId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
+    public ParticipantResponse getParticipantBy(Long participantId) {
+        Participant participant = getParticipant(participantId);
+        return ParticipantResponse.from(participant);
     }
 
     @Transactional
     public void updateCompletion(Long participantId, boolean isCompleted) {
-        Participant participant = participantRepository.findById(participantId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
+        Participant participant = getParticipant(participantId);
 
         participant.updateCompletionAs(isCompleted);
+    }
+
+    private Participant getParticipant(Long participantId) {
+        return participantRepository.findById(participantId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
+    }
+
+    private Pickeat findPickeatById(Long pickeatId) {
+        return pickeatRepository.findById(pickeatId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
     }
 }

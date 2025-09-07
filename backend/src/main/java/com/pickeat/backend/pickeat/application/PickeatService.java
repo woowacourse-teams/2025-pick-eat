@@ -53,8 +53,8 @@ public class PickeatService {
 
     public ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        int eliminatedCount = participantRepository.countCompletedByPickeat(pickeat.getId(), true);
-        return ParticipantStateResponse.of(pickeat.getParticipantCount(), eliminatedCount);
+        List<Participant> participants = participantRepository.findByPickeat(pickeat);
+        return ParticipantStateResponse.from(participants);
     }
 
     public PickeatResponse getPickeat(String pickeatCode) {
