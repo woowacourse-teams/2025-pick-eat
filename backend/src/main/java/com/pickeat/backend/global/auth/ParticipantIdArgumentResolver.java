@@ -34,20 +34,17 @@ public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResol
 
         String authHeader = webRequest.getHeader("Pickeat-Participant-Token");
 
-        if (required) {
-            if (isHasAuthToken(authHeader)) {
-                return getParticipantIdByHeader(authHeader);
+        if (!hasAuthToken(authHeader)) {
+            if (required) {
+                throw new BusinessException(ErrorCode.HEADER_IS_EMPTY);
             }
-            throw new BusinessException(ErrorCode.HEADER_IS_EMPTY);
+            return null;
         }
 
-        if (isHasAuthToken(authHeader)) {
-            return getParticipantIdByHeader(authHeader);
-        }
-        return null;
+        return getParticipantIdByHeader(authHeader);
     }
 
-    private boolean isHasAuthToken(String authHeader) {
+    private boolean hasAuthToken(String authHeader) {
         return authHeader != null && authHeader.startsWith(PREFIX);
     }
 
