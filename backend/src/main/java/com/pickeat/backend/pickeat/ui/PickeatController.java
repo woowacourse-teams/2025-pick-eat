@@ -121,7 +121,7 @@ public class PickeatController implements PickeatApiSpec {
     }
 
     @Override
-    @GetMapping("/user/rooms/pickeats")
+    @GetMapping("/rooms/pickeats")
     public ResponseEntity<List<PickeatResponse>> getActivePickeatsByUser(
             @LoginUserId Long userId
     ) {
@@ -130,7 +130,7 @@ public class PickeatController implements PickeatApiSpec {
     }
 
     @Override
-    @GetMapping("/participant/pickeats")
+    @GetMapping("/pickeats/participating")
     public ResponseEntity<PickeatResponse> getActivePickeatsByParticipant(
             @ParticipantId Long participantId
     ) {
