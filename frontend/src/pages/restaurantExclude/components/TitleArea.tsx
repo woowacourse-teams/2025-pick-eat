@@ -4,12 +4,7 @@ import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 import SharePanel from '@components/share/SharePanel';
 
-import ParticipantsAvatarGroup from '@domains/participants/participantsAvatarGroup/ParticipantsAvatarGroup';
-
-import { pickeat } from '@apis/pickeat';
-
 import styled from '@emotion/styled';
-import { Suspense, useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 
 function TitleArea() {
@@ -23,12 +18,6 @@ function TitleArea() {
     handleOpenModal,
     handleUnmountModal,
   } = useModal();
-
-  const participantsState = useMemo(
-    () => pickeat.getParticipantsState(pickeatCode),
-    []
-  );
-
   return (
     <S.Container>
       <S.Title>
@@ -49,25 +38,20 @@ function TitleArea() {
         </S.IconTextBox>
       </S.Title>
 
-      <S.ColumnBox>
-        <Suspense>
-          <ParticipantsAvatarGroup participantsState={participantsState} />
-        </Suspense>
-        <S.ShareContainer onClick={handleOpenModal}>
-          <Share size="sm" />
-          <Modal
-            opened={opened}
-            mounted={mounted}
-            onClose={handleCloseModal}
-            onUnmount={handleUnmountModal}
-          >
-            <SharePanel
-              url={pickeatLink}
-              description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
-            />
-          </Modal>
-        </S.ShareContainer>
-      </S.ColumnBox>
+      <S.ShareContainer onClick={handleOpenModal}>
+        <Share size="sm" />
+      </S.ShareContainer>
+      <Modal
+        opened={opened}
+        mounted={mounted}
+        onClose={handleCloseModal}
+        onUnmount={handleUnmountModal}
+      >
+        <SharePanel
+          url={pickeatLink}
+          description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
+        />
+      </Modal>
     </S.Container>
   );
 }
@@ -83,6 +67,9 @@ const S = {
     padding-left: ${({ theme }) => theme.PADDING.px6};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+
+    display: flex;
+    justify-content: space-between;
   `,
   Imoji: styled.img`
     width: 48px;
@@ -142,12 +129,7 @@ const S = {
 
     border-radius: 1000px;
   `,
-  ColumnBox: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-end;
+  ShareContainer: styled.div`
+    cursor: pointer;
   `,
-
-  ShareContainer: styled.button``,
 };

@@ -60,9 +60,9 @@ const S = {
       ${({ theme }) => theme.PADDING.p6} 0;
   `,
   TopWrapper: styled.div`
-    width: 100%;
     display: flex;
     justify-content: space-between;
+    width: 100%;
   `,
   Title: styled.p`
     color: ${({ theme }) => theme.PALETTE.secondary[60]};
