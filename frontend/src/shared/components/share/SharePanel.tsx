@@ -26,12 +26,11 @@ export default SharePanel;
 const S = {
   Container: styled.div`
     width: 100%;
+    margin: ${({ theme }) => theme.PADDING.p5} 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level7};
-
-    margin: ${({ theme }) => theme.PADDING.p5} 0;
   `,
   TitleArea: styled.div`
     text-align: center;
