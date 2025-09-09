@@ -1,4 +1,4 @@
-import { getFormDataByAddress } from '@domains/pickeat/utils/convertAddress';
+import { getFormDataByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
 import { wish, WishFormData } from '@apis/wish';
 
