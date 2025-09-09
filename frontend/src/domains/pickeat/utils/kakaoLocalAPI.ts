@@ -39,10 +39,11 @@ const kakaoApiClient = async (endPoint: string) => {
 };
 
 export const getAddressListByKeyword = async (
-  keyword: string
+  keyword: string,
+  option?: Record<string, string>
 ): Promise<AddressType[] | null> => {
   const url = joinAsPath('search', 'keyword.json');
-  const queryString = createQueryString({ query: keyword });
+  const queryString = createQueryString({ query: keyword, ...option });
 
   const data = await kakaoApiClient(`${url}${queryString}`);
   if (data?.documents.length > 0) {

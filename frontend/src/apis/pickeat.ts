@@ -1,4 +1,4 @@
-import { getLatLngByAddress } from '@domains/pickeat/utils/convertAddress';
+import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
 import { joinAsPath } from '@utils/createUrl';
 
