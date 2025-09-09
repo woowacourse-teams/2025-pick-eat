@@ -27,17 +27,29 @@ public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResol
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+            NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+
+        ParticipantId participantIdAnnotation = parameter.getParameterAnnotation(ParticipantId.class);
+        boolean required = participantIdAnnotation.required();
 
         String authHeader = webRequest.getHeader("Pickeat-Participant-Token");
 
-        //TODO: return null 방식 추가 고려
-        if (authHeader == null || !authHeader.startsWith(PREFIX)) {
-            throw new BusinessException(ErrorCode.HEADER_IS_EMPTY);
+        if (!hasAuthToken(authHeader)) {
+            if (required) {
+                throw new BusinessException(ErrorCode.HEADER_IS_EMPTY);
+            }
+            return null;
         }
 
-        String token = authHeader.substring(PREFIX.length());
+        return getParticipantIdByHeader(authHeader);
+    }
 
+    private boolean hasAuthToken(String authHeader) {
+        return authHeader != null && authHeader.startsWith(PREFIX);
+    }
+
+    private Long getParticipantIdByHeader(String authHeader) {
+        String token = authHeader.substring(PREFIX.length());
         return participantTokenProvider.getParticipantId(token);
     }
 }

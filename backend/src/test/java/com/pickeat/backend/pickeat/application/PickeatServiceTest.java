@@ -12,6 +12,7 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
@@ -363,6 +364,65 @@ public class PickeatServiceTest {
             assertThatThrownBy(() -> pickeatService.getActivePickeatsByParticipant(participant.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.PICKEAT_ALREADY_INACTIVE.getMessage());
+        }
+    }
+
+    @Nested
+    class 픽잇_재입장_여부_조회 {
+
+        @Test
+        void 재입장이_가능한_경우() {
+            // given
+            Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+            String pickeatCode = pickeat.getCode().getValue().toString();
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            PickeatRejoinAvailableResponse rejoinAvailable =
+                    pickeatService.getRejoinAvailableToPickeat(pickeatCode, participant.getId());
+
+            // then
+            assertThat(rejoinAvailable.isAvailable()).isTrue();
+        }
+
+        @Test
+        void 참가자ID가_비어있는_경우() {
+            // given
+            Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+            String pickeatCode = pickeat.getCode().getValue().toString();
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            PickeatRejoinAvailableResponse rejoinAvailable =
+                    pickeatService.getRejoinAvailableToPickeat(pickeatCode, null);
+
+            // then
+            assertThat((rejoinAvailable.isAvailable())).isFalse();
+        }
+
+        @Test
+        void 해당_픽잇의_참가자가_아닌_경우() {
+            // given
+            Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+            String pickeatCode = pickeat.getCode().getValue().toString();
+
+            Pickeat otherPickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(otherPickeat));
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            PickeatRejoinAvailableResponse rejoinAvailable =
+                    pickeatService.getRejoinAvailableToPickeat(pickeatCode, participant.getId());
+
+            // then
+            assertThat((rejoinAvailable.isAvailable())).isFalse();
         }
     }
 }

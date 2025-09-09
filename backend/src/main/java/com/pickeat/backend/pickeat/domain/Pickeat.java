@@ -49,4 +49,8 @@ public class Pickeat extends BaseEntity {
     public void deactivate() {
         this.isActive = false;
     }
+
+    public Boolean isEqualPickeatCode(String pickeatCode) {
+        return this.code.isEqualCode(pickeatCode);
+    }
 }

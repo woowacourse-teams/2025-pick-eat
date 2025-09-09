@@ -62,4 +62,34 @@ class PickeatTest {
             assertThat(pickeat.getIsActive()).isFalse();
         }
     }
+
+    @Nested
+    class 픽잇코드_비교 {
+
+        @Test
+        void 동일_픽잇코드_비교_성공() {
+            // given
+            Pickeat pickeat = Pickeat.createWithoutRoom("testPickeat");
+            String code = pickeat.getCode().getValue().toString();
+
+            // when
+            Boolean isEqual = pickeat.isEqualPickeatCode(code);
+
+            // then
+            assertThat(isEqual).isTrue();
+        }
+
+        @Test
+        void 다른_픽잇코드_비교_성공() {
+            // given
+            Pickeat pickeat = Pickeat.createWithoutRoom("testPickeat");
+            String code = "otherPickeatCode";
+
+            // when
+            Boolean isEqual = pickeat.isEqualPickeatCode(code);
+
+            // then
+            assertThat(isEqual).isFalse();
+        }
+    }
 }
