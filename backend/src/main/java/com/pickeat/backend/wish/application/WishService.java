@@ -39,6 +39,7 @@ public class WishService {
                 FoodCategory.getCategoryNameBy(request.category()),
                 request.roadAddressName(),
                 String.join(",", request.tags()),
+                request.placeUrl(),
                 wishList
         );
         Wish saved = wishRepository.save(wish);
@@ -59,6 +60,7 @@ public class WishService {
         wish.updateFoodCategory(FoodCategory.getCategoryNameBy(request.category()));
         wish.updateRoadAddressName(request.roadAddressName());
         wish.updateTags(String.join(",", request.tags()));
+        wish.updatePlaceUrl(request.placeUrl());
         return WishResponse.from(wish);
     }
 

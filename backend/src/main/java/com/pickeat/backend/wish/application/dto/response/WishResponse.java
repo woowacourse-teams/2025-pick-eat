@@ -32,6 +32,8 @@ public record WishResponse(
         String roadAddressName,
         @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
         List<String> tags,
+        @Schema(description = "식당 정보 Url", example = "www.restaurant.com")
+        String placeUrl,
         @Schema(description = "위시리스트 ID", example = "1")
         Long wishListId
 ) {
@@ -45,6 +47,7 @@ public record WishResponse(
                 wishPictureResponses,
                 wish.getRoadAddressName(),
                 Arrays.stream(wish.getTags().split(",")).toList(),
+                wish.getPlaceUrl(),
                 wish.getWishList().getId()
         );
     }

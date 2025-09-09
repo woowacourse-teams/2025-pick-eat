@@ -12,6 +12,7 @@ public class WishFixture {
                 FoodCategory.KOREAN,
                 "도로명주소",
                 "태그1,태그2",
+                "https://place.map.kakao.com/505348601",
                 wishList
         );
     }
