@@ -23,7 +23,10 @@ function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
   const { formData, handleFormData, initialWishFormData, createWish, error } =
     useCreateWish(handleCreateWish);
   const { address, handleInputChange, addressList, handleAddressClick } =
-    useFindAddress(initialWishFormData);
+    useFindAddress({
+      onSelectedAddress: initialWishFormData,
+      option: { category_group_code: 'FD6' },
+    });
 
   return (
     <>
