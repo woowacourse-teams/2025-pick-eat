@@ -36,7 +36,7 @@ const OauthCallback = () => {
               token: accessToken,
             });
             loginUser(userToken);
-            navigate(ROUTE_PATH.MAIN, { replace: true });
+            navigate(ROUTE_PATH.MY_PAGE);
             break;
           }
           default:

@@ -93,9 +93,9 @@ const routes = createBrowserRouter([
         children: [
           { path: ROUTE_PATH.LOGIN, Component: Login },
           { path: ROUTE_PATH.PROFILE_INIT, Component: ProfileInit },
-          { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
         ],
       },
+      { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
       {
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
         Component: CreatePickeatWithLocation,
