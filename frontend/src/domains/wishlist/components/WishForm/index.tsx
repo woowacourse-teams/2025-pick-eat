@@ -46,7 +46,7 @@ function WishForm({ formData, onFormChange, onSubmit, errorMessage }: Props) {
           value={formData.roadAddressName}
           onChange={e => onFormChange('roadAddressName', e.target.value)}
         />
-        <S.Label htmlFor="thumbnail">위시 썸네일</S.Label>
+        <S.Label htmlFor="thumbnail">찜 썸네일</S.Label>
         <input
           id="thumbnail"
           type="file"

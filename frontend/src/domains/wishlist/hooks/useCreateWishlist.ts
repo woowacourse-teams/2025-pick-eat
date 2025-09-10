@@ -18,9 +18,9 @@ export const useCreateWishlist = () => {
 
   const createWishlist = async () => {
     try {
-      if (validate.isEmpty(name)) throw new Error('위시 이름을 입력하세요.');
+      if (validate.isEmpty(name)) throw new Error('찜 이름을 입력하세요.');
       wishlist.post(roomId, name);
-      alert('위시리스트 등록!');
+      alert('찜 목록 등록!');
     } catch (err) {
       if (err instanceof Error) {
         setError(err.message);

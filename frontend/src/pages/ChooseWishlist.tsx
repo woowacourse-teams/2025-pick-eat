@@ -27,7 +27,7 @@ function ChooseWishlist() {
       <S.Wrapper>
         <S.TitleArea>
           <S.TitleText>
-            <S.PointText>위시리스트🍰</S.PointText>를
+            <S.PointText>찜 목록🍰</S.PointText>을
             <br />
             <S.PointText>선택</S.PointText>해 주세요!
           </S.TitleText>

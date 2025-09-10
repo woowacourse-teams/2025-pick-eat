@@ -33,7 +33,7 @@ function RoomDetail() {
             ),
           },
           {
-            tab: '위시리스트',
+            tab: '찜 목록',
             content: (
               <S.TabWrapper>
                 <WishlistGroupTab />
@@ -41,7 +41,7 @@ function RoomDetail() {
             ),
           },
           {
-            tab: '픽잇 위시',
+            tab: '픽잇 찜',
             content: (
               <S.TabWrapper>
                 <ErrorBoundary>

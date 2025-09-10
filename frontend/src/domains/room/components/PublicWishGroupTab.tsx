@@ -14,7 +14,7 @@ function PublicWishGroupTab({
 
   return (
     <S.Container>
-      <S.Description>픽잇 위시({wishes?.length})</S.Description>
+      <S.Description>픽잇 찜({wishes?.length})</S.Description>
 
       {wishes?.map(wishlist => (
         <WishlistCard key={wishlist.id} wishlistData={wishlist} />

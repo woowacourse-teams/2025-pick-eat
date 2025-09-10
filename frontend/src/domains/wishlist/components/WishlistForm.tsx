@@ -43,7 +43,7 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
     useGA().useGAEventTrigger({
       action: 'click',
       category: 'button',
-      label: '위시 기반 픽잇 시작 버튼',
+      label: '찜 기반 픽잇 시작 버튼',
       value: 1,
     });
   };
@@ -73,9 +73,9 @@ function WishlistForm({ wishlistGroupPromise }: Props) {
 
         {!data.length && (
           <S.Text>
-            위시리스트가 없어요😥
+            찜 목록이 없어요😥
             <br />
-            방으로 이동하여 위시리스트를 생성해 주세요.
+            방으로 이동하여 찜 목록을 생성해 주세요.
           </S.Text>
         )}
       </S.WishlistWrapper>
