@@ -53,15 +53,15 @@ export const useCreateWish = (onCreate?: () => void) => {
       }
 
       if (imageUploadError) {
-        alert('위시는 등록되었으나, 이미지 등록에 실패했습니다.');
+        alert('찜은 등록되었으나, 이미지 등록에 실패했습니다.');
       } else {
-        alert('위시 등록!');
+        alert('찜 등록!');
       }
       onCreate?.();
       setFormData(undefined);
       setError('');
     } catch {
-      setError('위시 등록 중 에러가 발생했습니다.');
+      setError('찜 등록 중 에러가 발생했습니다.');
     }
   };
 

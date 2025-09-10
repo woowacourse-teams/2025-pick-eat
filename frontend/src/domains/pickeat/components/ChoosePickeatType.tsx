@@ -46,7 +46,7 @@ function ChoosePickeatType() {
           onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
         />
         <Button
-          text="위시리스트 선택"
+          text="찜 목록 선택"
           color="gray"
           leftIcon="❤️"
           onClick={handleWishlistButtonClick}
