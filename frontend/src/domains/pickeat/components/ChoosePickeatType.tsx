@@ -40,13 +40,13 @@ function ChoosePickeatType() {
     <>
       <S.ButtonWrapper>
         <Button
-          text="위치/반경 선택"
+          text="근처에서 픽잇 시작"
           color="gray"
           leftIcon={<Location size="sm" color="black" />}
           onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
         />
         <Button
-          text="찜 목록 선택"
+          text="방에서 픽잇 시작"
           color="gray"
           leftIcon="❤️"
           onClick={handleWishlistButtonClick}
