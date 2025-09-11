@@ -16,7 +16,7 @@ import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
 import MatchResult from '@pages/MatchResult';
-import MyPage from '@pages/MyPage';
+import MyRoom from '@pages/MyRoom';
 import OauthCallback from '@pages/OauthCallback';
 import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
@@ -83,7 +83,7 @@ const routes = createBrowserRouter([
       {
         Component: ProtectedLayout,
         children: [
-          { path: ROUTE_PATH.MY_PAGE, Component: MyPage },
+          { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
           { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
           { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
         ],

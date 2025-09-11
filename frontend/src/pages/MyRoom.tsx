@@ -15,7 +15,7 @@ import styled from '@emotion/styled';
 import { Suspense, useMemo } from 'react';
 import { useNavigate } from 'react-router';
 
-function MyPage() {
+function MyRoom() {
   const navigate = useNavigate();
   const userData = useMemo(() => users.get(), []);
   const roomsData = useMemo(() => rooms.get(), []);
@@ -34,7 +34,7 @@ function MyPage() {
   );
 }
 
-export default MyPage;
+export default MyRoom;
 
 const S = {
   Container: styled.div`
