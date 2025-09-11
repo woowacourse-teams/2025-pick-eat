@@ -41,6 +41,7 @@ function Header() {
         {loggedIn && (
           <S.TextButton onClick={handleProfileClick}>내 방 보기</S.TextButton>
         )}
+        <S.VerticalDivider>|</S.VerticalDivider>
         {loggedIn ? (
           <S.LoginButton onClick={logoutUser}>로그아웃</S.LoginButton>
         ) : (
@@ -74,7 +75,7 @@ const S = {
   `,
   ButtonWrapper: styled.div`
     display: flex;
-    gap: ${({ theme }) => theme.GAP.level4};
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
   TextButton: styled.button`
     border: none;
@@ -85,6 +86,12 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small_bold};
     cursor: pointer;
   `,
+
+  VerticalDivider: styled.p`
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
+  `,
+
   LoginButton: styled.button`
     border: none;
 
