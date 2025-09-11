@@ -39,7 +39,7 @@ function Header() {
       </S.LogoWrapper>
       <S.ButtonWrapper>
         {loggedIn && (
-          <S.TextButton onClick={handleProfileClick}>마이페이지</S.TextButton>
+          <S.TextButton onClick={handleProfileClick}>내 방 보기</S.TextButton>
         )}
         {loggedIn ? (
           <S.LoginButton onClick={logoutUser}>로그아웃</S.LoginButton>
