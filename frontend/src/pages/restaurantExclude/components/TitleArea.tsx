@@ -40,18 +40,18 @@ function TitleArea() {
 
       <S.ShareContainer onClick={handleOpenModal}>
         <Share size="sm" />
+        <Modal
+          opened={opened}
+          mounted={mounted}
+          onClose={handleCloseModal}
+          onUnmount={handleUnmountModal}
+        >
+          <SharePanel
+            url={pickeatLink}
+            description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
+          />
+        </Modal>
       </S.ShareContainer>
-      <Modal
-        opened={opened}
-        mounted={mounted}
-        onClose={handleCloseModal}
-        onUnmount={handleUnmountModal}
-      >
-        <SharePanel
-          url={pickeatLink}
-          description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
-        />
-      </Modal>
     </S.Container>
   );
 }
@@ -126,7 +126,5 @@ const S = {
 
     border-radius: 1000px;
   `,
-  ShareContainer: styled.div`
-    cursor: pointer;
-  `,
+  ShareContainer: styled.button``,
 };
