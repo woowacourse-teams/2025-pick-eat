@@ -17,7 +17,7 @@ function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
 
   return (
     <S.Container>
-      <S.Description>어떤 방에 저장된 찜 목록을 선택할까요?</S.Description>
+      <S.Description>어떤 방의 찜 목록을 선택할까요?</S.Description>
       <S.ListWrapper>
         {roomList.length > 0 ? (
           roomList.map(room => (
