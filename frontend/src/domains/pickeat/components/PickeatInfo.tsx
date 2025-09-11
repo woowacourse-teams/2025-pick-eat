@@ -20,8 +20,6 @@ import { makeNickname } from '../utils/makeNickname';
 
 function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
   const pickeatDetail = use(pickeatData);
-  const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
-
   const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
 
   const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
@@ -38,7 +36,7 @@ function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
   };
 
   const handleLinkShareClick = () => {
-    copyLink(pickeatLink);
+    copyLink(window.location.href);
     useGA().useGAEventTrigger({
       action: 'click',
       category: 'button',
