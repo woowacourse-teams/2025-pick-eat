@@ -17,9 +17,14 @@ import styled from '@emotion/styled';
 import { FormEvent, use } from 'react';
 
 import { useJoinPickeat } from '../hooks/useJoinPickeat';
-import { makeNickname } from '../utils/makeNickname';
 
-function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
+type Props = {
+  pickeatData: Promise<PickeatType>;
+  defaultNickname: string;
+  nicknameError: string;
+};
+
+function PickeatInfo({ pickeatData, defaultNickname, nicknameError }: Props) {
   const pickeatDetail = use(pickeatData);
   const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
 
@@ -52,13 +57,15 @@ function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
       <S.Description>함께 픽잇하고 싶은 친구에게 공유해보세요!</S.Description>
       <QRCode url={pickeatLink} />
       <S.FormWrapper>
+        {nicknameError && <ErrorMessage message={nicknameError} />}
         <Input
-          defaultValue={makeNickname()}
+          defaultValue={defaultNickname}
           name="nickname"
           label="닉네임 입력"
           placeholder="사용하실 닉네임을 입력하세요."
         />
         <ErrorMessage message={error} />
+
         <Button text="입장" />
       </S.FormWrapper>
 
