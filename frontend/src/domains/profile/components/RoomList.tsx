@@ -3,6 +3,7 @@ import Enter from '@components/assets/icons/Enter';
 import People from '@components/assets/icons/People';
 
 import { Room } from '@apis/room';
+import { User } from '@apis/users';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -12,12 +13,19 @@ import styled from '@emotion/styled';
 import { use } from 'react';
 import { useNavigate } from 'react-router';
 
-function RoomList({ roomsData }: { roomsData: Promise<Room[]> }) {
+type Props = {
+  roomsData: Promise<Room[]>;
+  userData: Promise<User | null>;
+};
+
+function RoomList({ roomsData, userData }: Props) {
   const roomList = use(roomsData);
+  const user = use(userData);
+
   const navigate = useNavigate();
   return (
     <S.Container>
-      <S.Description>참여 중인 방</S.Description>
+      <S.Description>{user?.nickname}님이 참여 중인 방</S.Description>
       <S.ListWrapper>
         {roomList.length > 0 ? (
           roomList.map(room => (
@@ -51,7 +59,7 @@ export default RoomList;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 50%;
+    height: 60%;
 
     display: flex;
     flex-direction: column;
@@ -59,11 +67,12 @@ const S = {
   `,
 
   Description: styled.h3`
-    font: ${({ theme }) => theme.FONTS.heading.medium};
+    font: ${({ theme }) => theme.FONTS.heading.large};
+    text-align: center;
   `,
 
   ListWrapper: styled.ul`
-    height: 80%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};

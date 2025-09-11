@@ -1,4 +1,3 @@
-import Profile from '@domains/profile/components/Profile';
 import RoomList from '@domains/profile/components/RoomList';
 
 import Button from '@components/actions/Button';
@@ -24,8 +23,7 @@ function MyPage() {
     <S.Container>
       <ErrorBoundary>
         <Suspense fallback={<LoadingSpinner />}>
-          <Profile user={userData} />
-          <RoomList roomsData={roomsData} />
+          <RoomList roomsData={roomsData} userData={userData} />
         </Suspense>
       </ErrorBoundary>
       <Button
@@ -46,7 +44,7 @@ const S = {
     justify-content: center;
 
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level2};
+    gap: ${({ theme }) => theme.GAP.level5};
 
     padding: 0 ${({ theme }) => theme.PADDING.p7};
   `,
