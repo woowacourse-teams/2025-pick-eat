@@ -20,10 +20,9 @@ import { useJoinPickeat } from '../hooks/useJoinPickeat';
 type Props = {
   pickeatData: Promise<PickeatType>;
   defaultNickname: string;
-  nicknameError: string;
 };
 
-function PickeatInfo({ pickeatData, defaultNickname, nicknameError }: Props) {
+function PickeatInfo({ pickeatData, defaultNickname }: Props) {
   const pickeatDetail = use(pickeatData);
   const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
 
@@ -51,8 +50,6 @@ function PickeatInfo({ pickeatData, defaultNickname, nicknameError }: Props) {
       value: 1,
     });
   };
-
-  if (nicknameError) alert(nicknameError);
 
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>

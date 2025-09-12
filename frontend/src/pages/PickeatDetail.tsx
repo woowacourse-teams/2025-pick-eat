@@ -15,8 +15,6 @@ import { useSearchParams } from 'react-router';
 
 function PickeatDetail() {
   const [defaultNickname, setDefaultNickname] = useState(makeNickname);
-  const [nicknameError, setNicknameError] = useState('');
-
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
   const { loggedIn } = useAuth();
@@ -31,10 +29,8 @@ function PickeatDetail() {
           setDefaultNickname(user.nickname);
         }
       } catch (e) {
-        console.error(e);
-        setNicknameError(
-          '닉네임을 불러오지 못해 랜덤 닉네임이 생성되었습니다.'
-        );
+        alert('닉네임을 불러오지 못해 랜덤 닉네임이 생성되었습니다.');
+        console.log(e);
       }
     };
 
@@ -48,7 +44,6 @@ function PickeatDetail() {
           <PickeatInfo
             pickeatData={pickeat.get(pickeatCode)}
             defaultNickname={defaultNickname}
-            nicknameError={nicknameError}
           />
         </Suspense>
       </ErrorBoundary>
