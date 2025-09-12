@@ -10,21 +10,21 @@ const FONT_PATH = './public/fonts/BMKkubulim.woff2';
 const OUT_PATH = './public/fonts/BMKkubulim-subset.woff2';
 
 const TAG =
-  /<\s*([\w$.:-]*StaticKkubulim[\w$.:-]*)(?=[\s/>])[^>]*>([\s\S]*?)<\/\s*\1\s*>/g;
+  /<\s*([\w$.:-]*PointText[\w$.:-]*)(?=[\s/>])[^>]*>([\s\S]*?)<\/\s*\1\s*>/g;
 
 function extractTextFromCode(code) {
   const blocks = code.matchAll(TAG);
+  const pieces = [];
 
-  let acc = '';
   for (const m of blocks) {
     const inner = m[2]
       .replace(/<[^>]+>/g, '')
       .replace(/\{[^}]*\}/g, '')
       .replace(/\s+/g, ' ')
       .trim();
-    if (inner) acc += inner + ' ';
+    if (inner) pieces.push(inner);
   }
-  return acc;
+  return pieces.join(' ');
 }
 
 async function collectText() {
@@ -34,21 +34,21 @@ async function collectText() {
     ignore: ['**/node_modules/**', '**/*.d.ts'],
   });
 
-  let all = '';
+  const texts = [];
   for (const file of files) {
     const code = fs.readFileSync(file, 'utf8');
-    all += extractTextFromCode(code) + ' ';
+    const extracted = extractTextFromCode(code);
+    if (extracted) texts.push(extracted);
   }
 
-  const normalized = all.normalize('NFC');
-  return normalized;
+  return texts.join(' ').normalize('NFC');
 }
 
 async function buildSubset() {
   const fontData = fs.readFileSync(FONT_PATH);
 
   const text = await collectText();
-  console.log(`총${text.length}자`, text);
+  console.log(`총 ${text.length}자`, text);
 
   const subset = await subsetFont(fontData, text, { targetFormat: 'woff2' });
 
