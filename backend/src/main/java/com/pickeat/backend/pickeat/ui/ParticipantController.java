@@ -41,14 +41,14 @@ public class ParticipantController implements ParticipantApiSpec {
     }
 
     @Override
-    @PatchMapping("/completion/complete")
+    @PatchMapping("/participants/me/completion/complete")
     public ResponseEntity<Void> markCompletion(@ParticipantId Long participantId) {
         participantService.updateCompletion(participantId, true);
         return ResponseEntity.noContent().build();
     }
 
     @Override
-    @PatchMapping("/completion/cancel")
+    @PatchMapping("/participants/me/completion/cancel")
     public ResponseEntity<Void> unMarkCompletion(@ParticipantId Long participantId) {
         participantService.updateCompletion(participantId, false);
         return ResponseEntity.noContent().build();
