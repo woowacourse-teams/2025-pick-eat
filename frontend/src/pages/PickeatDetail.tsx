@@ -22,6 +22,8 @@ function PickeatDetail() {
   const { loggedIn } = useAuth();
 
   useEffect(() => {
+    if (!loggedIn) return;
+
     const getNickname = async () => {
       try {
         const user = await users.get();
@@ -36,8 +38,8 @@ function PickeatDetail() {
       }
     };
 
-    if (loggedIn) getNickname();
-  }, []);
+    getNickname();
+  }, [loggedIn]);
 
   return (
     <S.Container>
