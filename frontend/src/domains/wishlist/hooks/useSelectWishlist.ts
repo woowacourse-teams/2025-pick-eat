@@ -10,7 +10,7 @@ const useSelectWishlist = (wishlistGroup: WishlistType[]) => {
       wishlist => wishlist.id === id
     )?.wishCount;
     if (wishCount === 0) {
-      alert('해당 리스트에 위시가 존재하지 않습니다.');
+      alert('해당 찜 목록에 식당이 존재하지 않습니다.');
       return;
     }
     setSelectedWishlistId(id);

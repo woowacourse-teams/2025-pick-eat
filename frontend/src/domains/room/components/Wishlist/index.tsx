@@ -19,7 +19,7 @@ function Wishlist({ id, name, isPublic }: Omit<WishlistType, 'wishCount'>) {
       const response = await wishlist.get(id, isPublic);
       setWishlistData(response);
     } catch {
-      alert('위시 리스트를 불러오던 중 에러가 발생했습니다.');
+      alert('찜 목록을 불러오던 중 에러가 발생했습니다.');
     }
   };
 

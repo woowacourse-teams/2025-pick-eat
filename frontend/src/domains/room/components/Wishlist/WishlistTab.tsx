@@ -29,7 +29,7 @@ function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
   return (
     <>
       <Button
-        text="새 위시 등록"
+        text="찜 등록"
         onClick={() => onTabChange(1)}
         style={{ position: 'sticky', top: 0 }}
       />
@@ -70,7 +70,7 @@ function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
           )
         )
       ) : (
-        <S.Description>위시를 등록해보세요!</S.Description>
+        <S.Description>식당을 찜해보세요!</S.Description>
       )}
     </>
   );

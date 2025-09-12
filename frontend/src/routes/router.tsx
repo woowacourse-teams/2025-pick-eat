@@ -1,15 +1,9 @@
 import Layout from '@components/layouts/Layout';
 
-import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
-import { useGA } from '@hooks/useGA';
 
-import { ROUTE_PATH } from '@routes/routePath';
 
-import { THEME } from '@styles/global';
-import reset from '@styles/reset';
 
-import { Global, ThemeProvider } from '@emotion/react';
 import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import CreateRoom from '@pages/CreateRoom';
@@ -23,6 +17,17 @@ import PreferRestaurant from '@pages/PreferRestaurant';
 import ProfileInit from '@pages/ProfileInit';
 import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
 import RoomDetail from '@pages/RoomDetail';
+
+import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
+
+import { useGA } from '@hooks/useGA';
+
+import { ROUTE_PATH } from '@routes/routePath';
+
+import { THEME } from '@styles/global';
+import reset from '@styles/reset';
+
+import { Global, ThemeProvider } from '@emotion/react';
 import {
   createBrowserRouter,
   Navigate,
@@ -93,9 +98,9 @@ const routes = createBrowserRouter([
         children: [
           { path: ROUTE_PATH.LOGIN, Component: Login },
           { path: ROUTE_PATH.PROFILE_INIT, Component: ProfileInit },
-          { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
         ],
       },
+      { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
       {
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
         Component: CreatePickeatWithLocation,
