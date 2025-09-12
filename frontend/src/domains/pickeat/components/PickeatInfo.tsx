@@ -27,8 +27,6 @@ function PickeatInfo({ pickeatData, defaultNickname, nicknameError }: Props) {
   const pickeatDetail = use(pickeatData);
   const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
 
-  if (nicknameError) alert(nicknameError);
-
   const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
 
   const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
@@ -53,6 +51,8 @@ function PickeatInfo({ pickeatData, defaultNickname, nicknameError }: Props) {
       value: 1,
     });
   };
+
+  if (nicknameError) alert(nicknameError);
 
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
