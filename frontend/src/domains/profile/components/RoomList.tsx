@@ -25,7 +25,7 @@ function RoomList({ roomsData, userData }: Props) {
   const navigate = useNavigate();
   return (
     <S.Container>
-      <S.Description>{user?.nickname}님이 참여 중인 방</S.Description>
+      <S.Description>{user?.nickname ?? '회원'}님이 참여 중인 방</S.Description>
       <S.ListWrapper>
         {roomList.length > 0 ? (
           roomList.map(room => (
