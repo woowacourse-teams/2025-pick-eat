@@ -11,12 +11,12 @@ const Main = () => {
       <S.Section>
         <S.PaddingBox>
           <S.Title>
-            <S.PrimaryPoint> 픽잇 추천</S.PrimaryPoint>
+            <S.PrimaryText> 픽잇 추천</S.PrimaryText>
             에서&nbsp;
-            <S.PrimaryKkubulimPoint>
+            <S.PrimaryPointText>
               Pick!
               <br />
-            </S.PrimaryKkubulimPoint>
+            </S.PrimaryPointText>
           </S.Title>
 
           <S.Description>
@@ -32,9 +32,9 @@ const Main = () => {
         >
           <S.TitleWrapper>
             <S.Title>
-              <S.PrimaryPoint>맞춤 설정</S.PrimaryPoint>
+              <S.PrimaryText>맞춤 설정</S.PrimaryText>
               으로&nbsp;
-              <S.PrimaryKkubulimPoint>Pick!</S.PrimaryKkubulimPoint>
+              <S.PrimaryPointText>Pick!</S.PrimaryPointText>
             </S.Title>
             <S.Description>
               주변 식당이나, 원하는 식당 중에서 투표를 시작해보세요.
@@ -91,12 +91,12 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
-  PrimaryPoint: styled.span`
+  PrimaryText: styled.span`
     color: ${({ theme }) => theme.PALETTE.primary[50]};
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
 
-  PrimaryKkubulimPoint: styled.span`
+  PrimaryPointText: styled.span`
     color: ${({ theme }) => theme.PALETTE.primary[50]};
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
