@@ -11,11 +11,12 @@ const Main = () => {
       <S.Section>
         <S.PaddingBox>
           <S.Title>
-            <S.PrimaryPoint>픽잇 추천</S.PrimaryPoint>에서&nbsp;
-            <S.PrimaryPoint>
+            <S.PrimaryPoint> 픽잇 추천</S.PrimaryPoint>
+            에서&nbsp;
+            <S.PrimaryKkubulimPoint>
               Pick!
               <br />
-            </S.PrimaryPoint>
+            </S.PrimaryKkubulimPoint>
           </S.Title>
 
           <S.Description>
@@ -31,8 +32,9 @@ const Main = () => {
         >
           <S.TitleWrapper>
             <S.Title>
-              <S.PrimaryPoint>맞춤 설정</S.PrimaryPoint>으로&nbsp;
-              <S.PrimaryPoint>Pick!</S.PrimaryPoint>
+              <S.PrimaryPoint>맞춤 설정</S.PrimaryPoint>
+              으로&nbsp;
+              <S.PrimaryKkubulimPoint>Pick!</S.PrimaryKkubulimPoint>
             </S.Title>
             <S.Description>
               주변 식당이나, 원하는 식당 중에서 투표를 시작해보세요.
@@ -81,7 +83,7 @@ const S = {
 
   Title: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
+    font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
 
   Description: styled.span`
@@ -90,6 +92,11 @@ const S = {
   `,
 
   PrimaryPoint: styled.span`
+    color: ${({ theme }) => theme.PALETTE.primary[50]};
+    font: ${({ theme }) => theme.FONTS.heading.large};
+  `,
+
+  PrimaryKkubulimPoint: styled.span`
     color: ${({ theme }) => theme.PALETTE.primary[50]};
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
