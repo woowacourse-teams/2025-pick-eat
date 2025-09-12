@@ -26,6 +26,10 @@ type Props = {
 
 function PickeatInfo({ pickeatData, defaultNickname, nicknameError }: Props) {
   const pickeatDetail = use(pickeatData);
+  const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
+
+  if (nicknameError) alert(nicknameError);
+
   const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
 
   const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
@@ -57,7 +61,6 @@ function PickeatInfo({ pickeatData, defaultNickname, nicknameError }: Props) {
       <S.Description>함께 픽잇하고 싶은 친구에게 공유해보세요!</S.Description>
       <QRCode url={pickeatLink} />
       <S.FormWrapper>
-        {nicknameError && <ErrorMessage message={nicknameError} />}
         <Input
           defaultValue={defaultNickname}
           name="nickname"
