@@ -54,7 +54,8 @@ class WishServiceTest {
             RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"));
+            WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"),
+                    "https://place.map.kakao.com/505348601");
 
             entityManager.flush();
             entityManager.clear();
@@ -74,7 +75,8 @@ class WishServiceTest {
             RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"));
+            WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"),
+                    "https://place.map.kakao.com/505348601");
 
             User otherUser = entityManager.persist(UserFixture.create());
 
@@ -153,6 +155,7 @@ class WishServiceTest {
                     "한식",
                     "업데이트 주소",
                     List.of("업데이트 태그1", "업데이트 태그2")
+                    , "https://place.map.kakao.com/505348601"
             );
 
             // when
@@ -164,7 +167,8 @@ class WishServiceTest {
                     () -> assertThat(updatedWish.getName()).isEqualTo("업데이트 위시"),
                     () -> assertThat(updatedWish.getFoodCategory()).isEqualTo(FoodCategory.KOREAN),
                     () -> assertThat(updatedWish.getRoadAddressName()).isEqualTo("업데이트 주소"),
-                    () -> assertThat(updatedWish.getTags()).isEqualTo("업데이트 태그1,업데이트 태그2")
+                    () -> assertThat(updatedWish.getTags()).isEqualTo("업데이트 태그1,업데이트 태그2"),
+                    () -> assertThat(updatedWish.getPlaceUrl()).isEqualTo("https://place.map.kakao.com/505348601")
             );
         }
 
@@ -186,7 +190,8 @@ class WishServiceTest {
                     "업데이트 위시",
                     "한식",
                     "업데이트 주소",
-                    List.of("업데이트 태그1", "업데이트 태그2")
+                    List.of("업데이트 태그1", "업데이트 태그2"),
+                    "https://place.map.kakao.com/505348601"
             );
 
             // when & then

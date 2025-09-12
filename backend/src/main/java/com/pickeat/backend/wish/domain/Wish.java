@@ -34,6 +34,8 @@ public class Wish extends BaseEntity {
 
     private String tags;
 
+    private String placeUrl;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "wish_list_id", nullable = false)
     private WishList wishList;
@@ -46,12 +48,14 @@ public class Wish extends BaseEntity {
             FoodCategory foodCategory,
             String roadAddressName,
             String tags,
+            String placeUrl,
             WishList wishList
     ) {
         this.name = name;
         this.foodCategory = foodCategory;
         this.roadAddressName = roadAddressName;
         this.tags = tags;
+        this.placeUrl = placeUrl;
         this.wishList = wishList;
     }
 
@@ -69,5 +73,9 @@ public class Wish extends BaseEntity {
 
     public void updateTags(String tags) {
         this.tags = tags;
+    }
+
+    public void updatePlaceUrl(String placeUrl) {
+        this.placeUrl = placeUrl;
     }
 }
