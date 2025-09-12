@@ -60,13 +60,13 @@ export default TitleArea;
 
 const S = {
   Container: styled.div`
+    display: flex;
+    justify-content: space-between;
+
     padding: ${({ theme }) => theme.PADDING.p7};
     padding-left: ${({ theme }) => theme.PADDING.px6};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-
-    display: flex;
-    justify-content: space-between;
   `,
   Imoji: styled.img`
     width: 48px;

@@ -18,9 +18,9 @@ export default CopyLink;
 
 const S = {
   Container: styled.div`
+    width: 100%;
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level3};
-    width: 100%;
   `,
 };

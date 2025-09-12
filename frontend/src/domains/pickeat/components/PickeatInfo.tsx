@@ -125,10 +125,10 @@ const S = {
   Radius: styled.span``,
 
   FormWrapper: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
 };
