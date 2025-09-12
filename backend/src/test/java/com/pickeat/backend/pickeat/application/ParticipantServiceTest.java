@@ -70,6 +70,8 @@ class ParticipantServiceTest {
             // given
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
             Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             participantService.updateCompletion(participant.getId(), true);
