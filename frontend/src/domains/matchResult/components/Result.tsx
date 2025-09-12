@@ -12,21 +12,16 @@ type Props = {
 function Result({ resultPromise }: Props) {
   const result = resultPromise ? use(resultPromise) : null;
   if (!result) return null;
-  const { name, type, pictureUrls, placeUrl } = result;
+  const { name, pictureUrls, placeUrl } = result;
 
   return (
-    <>
-      <S.Wrapper>
-        <S.Name>{name}</S.Name>
-        {type === 'WISH' && (
-          <S.Image
-            src={pictureUrls[0] || './images/restaurant.png'}
-            alt={name}
-            onError={e => (e.currentTarget.src = '/images/person.svg')}
-          />
-        )}
-      </S.Wrapper>
-
+    <S.Wrapper>
+      <S.Name>{name}</S.Name>
+      <S.Image
+        src={pictureUrls[0] || './images/restaurant.png'}
+        alt={name}
+        onError={e => (e.currentTarget.src = '/images/person.svg')}
+      />
       {placeUrl && (
         <S.ButtonWrapper>
           <Button
@@ -38,7 +33,7 @@ function Result({ resultPromise }: Props) {
           />
         </S.ButtonWrapper>
       )}
-    </>
+    </S.Wrapper>
   );
 }
 
@@ -49,10 +44,11 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
 
   ButtonWrapper: styled.div`
-    width: 80%;
+    width: 100%;
   `,
 
   Name: styled.p`
