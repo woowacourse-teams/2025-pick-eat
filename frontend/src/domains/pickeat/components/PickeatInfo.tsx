@@ -57,7 +57,6 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
       <S.Description>함께 픽잇하고 싶은 친구에게 공유해보세요!</S.Description>
       <QRCode url={pickeatLink} />
       <S.FormWrapper>
-        {nicknameError && <ErrorMessage message={nicknameError} />}
         <Input
           defaultValue={defaultNickname}
           name="nickname"
