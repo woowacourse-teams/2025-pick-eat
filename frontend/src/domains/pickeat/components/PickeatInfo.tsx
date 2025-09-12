@@ -42,7 +42,7 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
   };
 
   const handleLinkShareClick = () => {
-    copyLink(window.location.href);
+    copyLink(pickeatLink);
     useGA().useGAEventTrigger({
       action: 'click',
       category: 'button',
