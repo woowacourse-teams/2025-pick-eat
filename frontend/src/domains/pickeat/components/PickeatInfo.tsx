@@ -25,8 +25,7 @@ type Props = {
 
 function PickeatInfo({ pickeatData, defaultNickname }: Props) {
   const pickeatDetail = use(pickeatData);
-  const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
-
+  const pickeatLink = window.location.href;
   const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
 
   const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
@@ -43,7 +42,7 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
   };
 
   const handleLinkShareClick = () => {
-    copyLink(window.location.href);
+    copyLink(pickeatLink);
     useGA().useGAEventTrigger({
       action: 'click',
       category: 'button',
