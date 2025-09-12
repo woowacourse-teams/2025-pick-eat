@@ -31,6 +31,8 @@ export const Default: Story = {
     placeUrl:
       'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
     distance: 500,
+    category: '일식',
+    pictureUrls: [],
   },
   render: args => <RestaurantItem {...args} />,
 };
@@ -43,6 +45,8 @@ export const LongTitle: Story = {
     placeUrl:
       'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
     distance: 300,
+    category: '양식',
+    pictureUrls: [],
   },
   render: args => <RestaurantItem {...args} />,
 };

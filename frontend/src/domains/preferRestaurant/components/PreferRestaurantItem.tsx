@@ -122,7 +122,7 @@ const S = {
   `,
 
   TagBox: styled.div`
-    max-height: 54px;
+    max-height: 24px;
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level2};

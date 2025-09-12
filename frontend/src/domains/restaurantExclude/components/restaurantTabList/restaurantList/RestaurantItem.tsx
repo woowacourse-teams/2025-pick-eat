@@ -10,7 +10,7 @@ import styled from '@emotion/styled';
 
 type Props = Pick<
   Restaurant,
-  'id' | 'name' | 'tags' | 'placeUrl' | 'distance' | 'type' | 'pictureUrls'
+  'id' | 'name' | 'tags' | 'placeUrl' | 'distance' | 'category' | 'pictureUrls'
 >;
 
 function RestaurantItem({
@@ -19,14 +19,14 @@ function RestaurantItem({
   tags,
   placeUrl,
   distance,
-  type,
+  category,
   pictureUrls,
 }: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
     useRestaurantExcludeContext();
 
   const excluded = selectedRestaurantIds.includes(id);
-  const menuUrl = `${placeUrl && placeUrl}#menuInfo`;
+  const menuUrl = `${placeUrl}#menuInfo`;
 
   return (
     <S.Container excluded={excluded}>
@@ -47,27 +47,30 @@ function RestaurantItem({
         </S.IconContainer>
       </S.DeleteButton>
       <S.CardContainer>
-        {type === 'WISH' && (
-          <S.Image
-            src={pictureUrls[0] || './images/restaurant.png'}
-            onError={e => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = './images/restaurant.png';
-            }}
-          />
-        )}
+        <S.Image
+          src={pictureUrls[0] || './images/restaurant.png'}
+          onError={e => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = './images/restaurant.png';
+          }}
+        />
+
         <S.CardContent excluded={excluded}>
           <S.TitleWrapper>
             <S.TagBox>
-              {(tags ?? []).map((tag, index) => (
-                <Badge key={index}>{tag}</Badge>
+              {tags.length === 0 && <Badge>{category}</Badge>}
+              {tags.map(tag => (
+                <Badge key={tag}>{tag}</Badge>
               ))}
             </S.TagBox>
             <S.RestaurantName>{name}</S.RestaurantName>
           </S.TitleWrapper>
-          {type === 'LOCATION' && (
-            <S.DetailBox>
-              <S.DetailText>식당까지 {distance && distance}m</S.DetailText>
+
+          <S.DetailBox>
+            {distance !== 0 && (
+              <S.DetailText>식당까지 {distance}m</S.DetailText>
+            )}
+            {placeUrl && (
               <S.LinkButton
                 href={menuUrl}
                 target="_blank"
@@ -76,8 +79,8 @@ function RestaurantItem({
               >
                 메뉴 보러가기
               </S.LinkButton>
-            </S.DetailBox>
-          )}
+            )}
+          </S.DetailBox>
         </S.CardContent>
         {excluded && (
           <S.Overlay>
@@ -245,9 +248,11 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level1};
   `,
   TagBox: styled.div`
+    height: 24px;
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level2};
+    overflow: hidden;
   `,
   RestaurantName: styled.a`
     max-width: 180px;
