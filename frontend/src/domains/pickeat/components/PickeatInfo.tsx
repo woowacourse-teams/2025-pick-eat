@@ -2,6 +2,7 @@ import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
 import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
+import QRCode from '@components/share/QRCode';
 
 import { PickeatType } from '@apis/pickeat';
 
@@ -48,7 +49,8 @@ function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
       <S.PickeatName>{pickeatDetail.name}</S.PickeatName>
-
+      <S.Description>함께 픽잇하고 싶은 친구에게 공유해보세요!</S.Description>
+      <QRCode url={pickeatLink} />
       <S.FormWrapper>
         <Input
           defaultValue={makeNickname()}
@@ -78,8 +80,9 @@ const S = {
     width: 70%;
     display: flex;
     flex-direction: column;
+    align-items: center;
 
-    gap: ${({ theme }) => theme.GAP.level6};
+    gap: ${({ theme }) => theme.GAP.level4};
     position: relative;
 
     padding: ${({ theme }) => theme.PADDING.p10};
@@ -95,8 +98,9 @@ const S = {
 
   PickeatName: styled.h1`
     font: ${({ theme }) => theme.FONTS.heading.large};
-    text-align: center;
   `,
+
+  Description: styled.p``,
 
   LocationInfo: styled.div`
     display: flex;
@@ -121,6 +125,7 @@ const S = {
   Radius: styled.span``,
 
   FormWrapper: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
