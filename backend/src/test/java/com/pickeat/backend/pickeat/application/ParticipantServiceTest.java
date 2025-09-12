@@ -77,7 +77,8 @@ class ParticipantServiceTest {
             participantService.updateCompletion(participant.getId(), true);
 
             // then
-            assertThat(participant.getIsCompleted()).isTrue();
+            Participant updatedParticipant = testEntityManager.find(Participant.class, participant.getId());
+            assertThat(updatedParticipant.getIsCompleted()).isTrue();
         }
 
         @Test
