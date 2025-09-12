@@ -11,149 +11,186 @@ type Props = {
   onLike: (id: number) => void;
   onUnlike: (id: number) => void;
 };
-
-function PreferRestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
+function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
   const {
     id,
     name,
     tags,
     likeCount,
     category,
-    type,
     pictureUrls,
     distance,
     placeUrl,
   } = restaurant;
 
-  return (
-    <S.Container liked={liked}>
-      <S.RestaurantInfo>
-        {type === 'WISH' && (
-          <S.Image
-            src={pictureUrls[0] || './images/restaurant.png'}
-            onError={e => {
-              e.currentTarget.onerror = null;
-              e.currentTarget.src = './images/restaurant.png';
-            }}
-          />
-        )}
-        <S.CardContent>
-          <S.TagBox>
-            {tags.length === 0 && <Badge>{category}</Badge>}
-            {tags.map(tag => (
-              <Badge key={tag}>{tag}</Badge>
-            ))}
-          </S.TagBox>
+  const menuUrl = `${placeUrl}#menuInfo`;
 
+  return (
+    <S.Container>
+      <S.CardContainer>
+        <S.Image
+          src={pictureUrls[0] || './images/restaurant.png'}
+          onError={e => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = './images/restaurant.png';
+          }}
+        />
+
+        <S.CardContent>
           <S.TitleWrapper>
+            <S.TagBox>
+              {tags.length === 0 && <Badge>{category}</Badge>}
+              {tags.map(tag => (
+                <Badge key={tag}>{tag}</Badge>
+              ))}
+            </S.TagBox>
             <S.RestaurantName>{name}</S.RestaurantName>
           </S.TitleWrapper>
-          {type === 'LOCATION' && (
-            <>
-              <S.Distance>식당까지 {distance}m</S.Distance>
+
+          <S.DetailBox>
+            {distance !== 0 && (
+              <S.DetailText>식당까지 {distance}m</S.DetailText>
+            )}
+            {placeUrl && (
               <S.LinkButton
-                href={placeUrl || ''}
+                href={menuUrl}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={e => e.stopPropagation()}
               >
-                식당 상세 정보 보기
+                메뉴 보러가기
               </S.LinkButton>
-            </>
-          )}
+            )}
+          </S.DetailBox>
         </S.CardContent>
-      </S.RestaurantInfo>
-
-      <LikeButton
-        id={id}
-        count={likeCount}
-        onLike={() => onLike(id)}
-        onUnlike={() => onUnlike(id)}
-        liked={liked}
-      />
+        <LikeButton
+          id={id}
+          count={likeCount}
+          onLike={() => onLike(id)}
+          onUnlike={() => onUnlike(id)}
+          liked={liked}
+        />
+      </S.CardContainer>
     </S.Container>
   );
 }
 
-export default PreferRestaurantItem;
+export default RestaurantItem;
 
 const S = {
-  Container: styled.div<{ liked: boolean }>`
-    width: 312px;
+  Container: styled.div`
+    width: 360px;
     height: fit-content;
     display: flex;
-    justify-content: space-between;
-    gap: ${({ theme }) => theme.GAP.level4};
+    flex-direction: column;
+    position: relative;
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
+    transform: scale(0.95);
+  `,
 
+  CardContainer: styled.div`
+    width: 100%;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level4};
     overflow: hidden;
     position: relative;
 
-    padding: ${({ theme }) => theme.PADDING.p6};
+    padding: ${({ theme }) => theme.PADDING.p5};
 
-    background-color: ${({ theme, liked }) =>
-      liked ? theme.PALETTE.secondary[5] : theme.PALETTE.secondary[0]};
-
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    border-radius: ${({ theme }) => theme.RADIUS.medium3};
-    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
-    transform: scale(1);
-  `,
-
-  RestaurantInfo: styled.div`
-    width: 240px;
-    min-width: 0;
-    display: flex;
-    gap: ${({ theme }) => theme.GAP.level4};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    border-radius: 10px;
   `,
 
   Image: styled.img`
     width: 90px;
     height: 90px;
-    flex: 0 0 90px;
+    flex-shrink: 0;
     border-radius: ${({ theme }) => theme.RADIUS.medium};
     object-fit: cover;
   `,
-
   CardContent: styled.div`
-    min-width: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex: 1;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level3};
   `,
 
+  IconContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+  `,
+  IconWrapper: styled.div<{ excluded: boolean }>`
+    width: 28px;
+    height: 28px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 6px;
+
+    border-radius: 1000px;
+
+    ${({ excluded, theme }) =>
+      excluded
+        ? `
+      background-color: ${theme.PALETTE.gray[50]};
+      color: ${theme.PALETTE.gray[0]};
+      &:hover {
+        background-color: ${theme.PALETTE.gray[60]};
+      }
+    `
+        : `
+      background-color: ${theme.PALETTE.primary[60]};
+      color: ${theme.PALETTE.gray[0]};
+      &:hover {
+        background-color: ${theme.PALETTE.primary[70]};
+      }
+    `}
+  `,
+  TitleWrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level1};
+  `,
   TagBox: styled.div`
-    max-height: 24px;
+    height: 24px;
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level2};
     overflow: hidden;
   `,
-
-  TitleWrapper: styled.div`
-    display: flex;
-    gap: ${({ theme }) => theme.GAP.level3};
-  `,
-
-  Distance: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.medium};
-  `,
-
-  RestaurantName: styled.p`
-    height: 20px;
+  RestaurantName: styled.a`
+    max-width: 180px;
     overflow: hidden;
 
+    padding-left: ${({ theme }) => theme.PADDING.px2};
+
+    color: #1e293b;
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
     white-space: nowrap;
     text-overflow: ellipsis;
   `,
+  DetailBox: styled.div`
+    display: flex;
+    flex-direction: column;
 
+    padding-left: ${({ theme }) => theme.PADDING.px2};
+  `,
+  DetailText: styled.span`
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
+  `,
   LinkButton: styled.a`
-    width: fit-content;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
 
     color: ${({ theme }) => theme.PALETTE.gray[50]};
-    cursor: pointer;
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
 
     &:hover {
       color: ${({ theme }) => theme.PALETTE.gray[70]};

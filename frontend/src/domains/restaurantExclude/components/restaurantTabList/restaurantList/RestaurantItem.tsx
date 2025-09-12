@@ -82,6 +82,7 @@ function RestaurantItem({
             )}
           </S.DetailBox>
         </S.CardContent>
+
         {excluded && (
           <S.Overlay>
             <S.OverlayText>제외되었습니다</S.OverlayText>

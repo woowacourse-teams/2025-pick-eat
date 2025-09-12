@@ -77,10 +77,10 @@ const S = {
   `,
   InputArea: styled.div`
     height: 340px;
-    overflow: scroll;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
+    overflow: scroll;
   `,
 
   Label: styled.label`

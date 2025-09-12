@@ -120,7 +120,9 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
+
     margin-top: 20px;
+
     color: ${({ theme }) => theme.PALETTE.gray[30]};
     font: ${({ theme }) => theme.FONTS.heading.medium_style};
     text-align: center;

@@ -86,7 +86,7 @@ export default PreferRestaurantList;
 const S = {
   Container: styled.div`
     display: grid;
-    gap: ${({ theme }) => theme.GAP.level5};
+    gap: ${({ theme }) => theme.GAP.level3};
     place-items: center;
     grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
 
