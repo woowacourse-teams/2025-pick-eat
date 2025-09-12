@@ -11,6 +11,7 @@ import com.pickeat.backend.fixture.UserFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
+import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
@@ -55,9 +56,9 @@ public class PickeatServiceTest {
             Participant participant = new Participant(nickname, pickeat);
             participants.add(participant);
 
-            // 짝수 번째 참여자는 소거 완료 상태로 설정
+            // 짝수 번째 참여자는 투표 완료 상태로 설정
             if (i % 2 == 0) {
-                participant.eliminateRestaurants();
+                participant.updateCompletionAs(true);
             }
 
             pickeat.incrementParticipantCount();
@@ -66,9 +67,9 @@ public class PickeatServiceTest {
         return participants;
     }
 
-    private int countEliminatedParticipants(List<Participant> participants) {
+    private int countCompletedParticipants(List<Participant> participants) {
         return (int) participants.stream()
-                .filter(Participant::getIsEliminationCompleted)
+                .filter(Participant::getIsCompleted)
                 .count();
     }
 
@@ -146,12 +147,12 @@ public class PickeatServiceTest {
     class 픽잇_참여자_수_조회_케이스 {
 
         @Test
-        void 픽잇_전체_참여자_수와_소거완료_여부_확인_성공() {
+        void 픽잇_전체_참여자_수_확인_성공() {
             //given
             Pickeat pickeat = createWithoutRoomPickeat();
             int totalParticipantCount = 5;
             List<Participant> participants = createParticipantsInPickeat(pickeat, totalParticipantCount);
-            int eliminatedParticipantsCount = countEliminatedParticipants(participants);
+            int completedParticipantsCount = countCompletedParticipants(participants);
 
             //when
             ParticipantStateResponse participantStateResponse = pickeatService.getParticipantStateSummary(
@@ -160,8 +161,8 @@ public class PickeatServiceTest {
             //then
             assertAll(
                     () -> assertThat(participantStateResponse.totalParticipants()).isEqualTo(totalParticipantCount),
-                    () -> assertThat(participantStateResponse.eliminatedParticipants()).isEqualTo(
-                            eliminatedParticipantsCount)
+                    () -> assertThat(participantStateResponse.participants().stream().filter(
+                            ParticipantResponse::isCompleted).count()).isEqualTo(completedParticipantsCount)
             );
         }
     }

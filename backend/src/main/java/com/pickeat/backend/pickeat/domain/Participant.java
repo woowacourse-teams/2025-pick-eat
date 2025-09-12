@@ -18,7 +18,7 @@ public class Participant extends BaseEntity {
     private String nickname;
 
     @Column(nullable = false)
-    private Boolean isEliminationCompleted = false;
+    private Boolean isCompleted = false;
 
     @ManyToOne
     @JoinColumn(name = "pickeat_id", nullable = false)
@@ -29,7 +29,7 @@ public class Participant extends BaseEntity {
         this.pickeat = pickeat;
     }
 
-    public void eliminateRestaurants() {
-        this.isEliminationCompleted = true;
+    public void updateCompletionAs(boolean isCompleted) {
+        this.isCompleted = isCompleted;
     }
 }

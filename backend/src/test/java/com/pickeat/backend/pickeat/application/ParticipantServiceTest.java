@@ -4,12 +4,14 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.pickeat.backend.fixture.ParticipantFixture;
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.global.auth.JwtProvider;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
+import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -57,6 +59,39 @@ class ParticipantServiceTest {
             assertThatThrownBy(() -> participantService.createParticipant(request))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.PICKEAT_NOT_FOUND.getMessage());
+        }
+    }
+
+    @Nested
+    class 참가자_완료_여부_수정_케이스 {
+
+        @Test
+        void 참가자_완료_표시_성공() {
+            // given
+            Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            participantService.updateCompletion(participant.getId(), true);
+
+            // then
+            Participant updatedParticipant = testEntityManager.find(Participant.class, participant.getId());
+            assertThat(updatedParticipant.getIsCompleted()).isTrue();
+        }
+
+        @Test
+        void 참가자_미완료_표시_성공() {
+            // given
+            Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+
+            // when
+            participantService.updateCompletion(participant.getId(), false);
+
+            // then
+            assertThat(participant.getIsCompleted()).isFalse();
         }
     }
 }

@@ -1,8 +1,11 @@
 package com.pickeat.backend.pickeat.ui.api;
 
+import com.pickeat.backend.global.auth.annotation.ParticipantId;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
+import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -80,4 +83,109 @@ public interface ParticipantApiSpec {
             )
     })
     ResponseEntity<TokenResponse> createParticipant(@Valid @RequestBody ParticipantRequest request);
+
+    @Operation(
+            summary = "자신 정보 조회",
+            description = "자신의 참여자 정보를 조회합니다.",
+            operationId = "getParticipant",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
+
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "정보 조회 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "참여자를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "PARTICIPANT_NOT_FOUND",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "PARTICIPANT_NOT_FOUND",
+                                              "status": 404,
+                                              "detail": "참여자를 찾을 수 없습니다.",
+                                              "instance": "/api/v1/participants/me"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    ResponseEntity<ParticipantResponse> getParticipant(@Parameter(hidden = true) @ParticipantId Long participantId);
+
+    @Operation(
+            summary = "선택 완료",
+            description = "선택을 완료 상태로 변경합니다.",
+            operationId = "markCompletion",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
+
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "선택 완료 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "참여자를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "PARTICIPANT_NOT_FOUND",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "PARTICIPANT_NOT_FOUND",
+                                              "status": 404,
+                                              "detail": "참여자를 찾을 수 없습니다.",
+                                              "instance": "/api/v1/completion/complete"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    ResponseEntity<Void> markCompletion(@Parameter(hidden = true) @ParticipantId Long participantId);
+
+    @Operation(
+            summary = "선택 완료 취소",
+            description = "선택 완료 상태를 취소합니다.",
+            operationId = "unMarkCompletion",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
+
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "선택 완료 취소 성공"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "참여자를 찾을 수 없음",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "PARTICIPANT_NOT_FOUND",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "PARTICIPANT_NOT_FOUND",
+                                              "status": 404,
+                                              "detail": "참여자를 찾을 수 없습니다.",
+                                              "instance": "/api/v1/completion/cancel"
+                                            }
+                                            """
+                            )
+                    )
+            )
+    })
+    ResponseEntity<Void> unMarkCompletion(@Parameter(hidden = true) @ParticipantId Long participantId);
 }
