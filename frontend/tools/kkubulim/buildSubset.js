@@ -6,7 +6,7 @@ import subsetFont from 'subset-font';
 
 const SRC_DIR = './src';
 const GLOB = '**/*.tsx';
-const FONT_PATH = './public/fonts/BMKkubulim.woff2';
+const FONT_PATH = './tools/kkubulim/BMKkubulim.woff2';
 const OUT_PATH = './public/fonts/BMKkubulim-subset.woff2';
 
 const TAG =

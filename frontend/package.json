@@ -14,7 +14,7 @@
     "css:fix": "stylelint \"src/**/*.{js,jsx,ts,tsx,css}\" --fix",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "build:font": "node buildSubset.js"
+    "build:font": "node tools/kkubulim/buildSubset.js"
   },
   "repository": {
     "type": "git",
