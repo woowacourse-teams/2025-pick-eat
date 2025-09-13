@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=local webpack serve --config webpack.local.js --host 0.0.0.0",
-    "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
-    "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js",
+    "build:prod": "npm run build:font && cross-env NODE_ENV=production webpack --config webpack.prod.js",
+    "build:dev": "npm run build:font && cross-env NODE_ENV=development webpack --config webpack.dev.js",
     "test": "jest --verbose",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --fix",
