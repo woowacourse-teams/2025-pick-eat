@@ -27,6 +27,13 @@ function extractTextFromCode(code) {
   return pieces.join(' ');
 }
 
+const EMOJI_SEQUENCE =
+  /\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?(?:\u200D\p{Extended_Pictographic}(?:\uFE0F|\uFE0E)?)*|\p{Emoji_Presentation}/gu;
+
+function removeEmojis(str) {
+  return str.replace(EMOJI_SEQUENCE, '');
+}
+
 async function collectText() {
   const files = await fg(GLOB, {
     cwd: SRC_DIR,
@@ -41,7 +48,11 @@ async function collectText() {
     if (extracted) texts.push(extracted);
   }
 
-  return texts.join(' ').normalize('NFC');
+  let allText = texts.join(' ').normalize('NFC');
+  allText = removeEmojis(allText);
+  allText = allText.replace(/\s+/g, '');
+
+  return Array.from(new Set(allText)).join('');
 }
 
 async function buildSubset() {
