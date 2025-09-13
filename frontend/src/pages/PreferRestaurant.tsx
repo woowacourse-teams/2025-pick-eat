@@ -28,9 +28,9 @@ function PreferRestaurant() {
   return (
     <S.Container>
       <S.TitleArea>
-        <S.Title>
+        <S.PointText>
           가고 싶은 식당에 <br /> ❤️를 눌러 투표해 주세요.
-        </S.Title>
+        </S.PointText>
         <Participant pickeatCode={pickeatCode} />
       </S.TitleArea>
       <ErrorBoundary>
@@ -104,7 +104,7 @@ const S = {
     border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 
-  Title: styled.p`
+  PointText: styled.p`
     color: ${({ theme }) => theme.PALETTE.secondary[60]};
     font: ${({ theme }) => theme.FONTS.heading.medium_style};
   `,
