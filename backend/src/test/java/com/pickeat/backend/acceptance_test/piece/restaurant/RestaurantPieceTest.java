@@ -42,4 +42,22 @@ public class RestaurantPieceTest {
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
+
+    public static void likeRestaurant(Long restaurantId, String token) {
+        RestAssured.given().log().all()
+                .header("Pickeat-Participant-Token", "Bearer " + token)
+                .when()
+                .patch("/api/v1/restaurants/{restaurantId}/like", restaurantId)
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    public static void cancelLikeRestaurant(Long restaurantId, String token) {
+        RestAssured.given().log().all()
+                .header("Pickeat-Participant-Token", "Bearer " + token)
+                .when()
+                .patch("/api/v1/restaurants/{restaurantId}/unlike", restaurantId)
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }
