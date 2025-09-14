@@ -1,6 +1,7 @@
 package com.pickeat.backend.acceptance_test.scenario;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.acceptance_test.piece.participant.ParticipantPieceTest;
 import com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest;
@@ -8,6 +9,8 @@ import com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
+import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
+import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
@@ -77,9 +80,16 @@ public class PickeatByPositionScenarioTest {
         List<RestaurantResponse> restaurantAfterExcluded = RestaurantPieceTest.getPickeatRestaurants(
                 findedPickeatResponse.code(), participant1Token.token(), null);
         checkExcludedRestaurants(excludedRestaurantIds, restaurantAfterExcluded);
-        // -
+        // - 참가자들의 소거 완료 표시
+        ParticipantPieceTest.markCompletion(participant1Token.token());
+        ParticipantPieceTest.markCompletion(participant2Token.token());
+        ParticipantPieceTest.markCompletion(participant3Token.token());
 
         // 참여자들의 식당 좋아요
+        // - 참가자들의 소거 완료 여부 확인
+        ParticipantStateResponse participantStateSummary = PickeatPieceTest.getParticipantStateSummary(
+                findedPickeatResponse.code());
+        checkParticipantState(participantStateSummary, 3, 3);
         // - 제거된 식당 목록 조회
         List<RestaurantResponse> noneExcludedRestaurant = RestaurantPieceTest.getPickeatRestaurants(
                 findedPickeatResponse.code(), participant1Token.token(), null);
@@ -89,7 +99,6 @@ public class PickeatByPositionScenarioTest {
         RestaurantPieceTest.likeRestaurant(noneExcludedRestaurant.get(1).id(), participant3Token.token());
         // - 식당 좋아요 취소
         RestaurantPieceTest.cancelLikeRestaurant(noneExcludedRestaurant.get(0).id(), participant1Token.token());
-        // -
 
         // 픽잇 종료
         // - 픽잇 비활성화
@@ -125,5 +134,18 @@ public class PickeatByPositionScenarioTest {
 
     private void checkoutPickeatResult(RestaurantResultResponse actual, RestaurantResultResponse expected) {
         assertThat(actual).isEqualTo(expected);
+    }
+
+    private void checkParticipantState(
+            ParticipantStateResponse participantState,
+            int totalParticipantCount,
+            int completedParticipantCount
+    ) {
+        assertAll(
+                () -> assertThat(participantState.totalParticipants()).isEqualTo(totalParticipantCount),
+                () -> assertThat(participantState.participants())
+                        .filteredOn(ParticipantResponse::isCompleted)
+                        .hasSize(completedParticipantCount)
+        );
     }
 }

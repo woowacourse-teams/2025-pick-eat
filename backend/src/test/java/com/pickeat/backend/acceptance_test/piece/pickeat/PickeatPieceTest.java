@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
+import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
@@ -87,5 +88,16 @@ public class PickeatPieceTest {
                 .statusCode(HttpStatus.OK.value())
                 .extract()
                 .as(RestaurantResultResponse.class);
+    }
+
+    public static ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {
+        return RestAssured
+                .given().log().all()
+                .when()
+                .get("/api/v1/pickeats/{pickeatCode}/participants/state", pickeatCode)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ParticipantStateResponse.class);
     }
 }

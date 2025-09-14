@@ -23,4 +23,24 @@ public class ParticipantPieceTest {
                 .extract()
                 .as(TokenResponse.class);
     }
+
+    public static void markCompletion(String participantToken) {
+        RestAssured
+                .given().log().all()
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
+                .when()
+                .patch("/api/v1/participants/me/completion/complete")
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    public static void unMarkCompletion(String participantToken) {
+        RestAssured
+                .given().log().all()
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
+                .when()
+                .patch("/api/v1/participants/me/completion/cancel")
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
 }
