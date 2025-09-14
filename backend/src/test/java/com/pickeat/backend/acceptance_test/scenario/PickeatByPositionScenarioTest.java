@@ -8,7 +8,9 @@ import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import io.restassured.RestAssured;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,6 +57,12 @@ public class PickeatByPositionScenarioTest {
 
         // 참여자들의 식당 소거
         // - 픽잇 식당 목록 조회
+        List<RestaurantResponse> restaurantsFromParticipant1 = RestaurantPieceTest.getPickeatRestaurants(
+                findedPickeatResponse.code(), participant1Token.token(), false);
+        List<RestaurantResponse> restaurantsFromParticipant2 = RestaurantPieceTest.getPickeatRestaurants(
+                findedPickeatResponse.code(), participant2Token.token(), false);
+        List<RestaurantResponse> restaurantsFromParticipant3 = RestaurantPieceTest.getPickeatRestaurants(
+                findedPickeatResponse.code(), participant3Token.token(), false);
         // - 식당 소거
 
         // 참여자들의 식당 좋아요
