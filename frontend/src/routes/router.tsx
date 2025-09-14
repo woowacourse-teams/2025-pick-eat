@@ -16,7 +16,7 @@ import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
 import MatchResult from '@pages/MatchResult';
-import MyRoom from '@pages/MyRoom';
+import MyRoom from '@pages/myRoom/MyRoom';
 import OauthCallback from '@pages/OauthCallback';
 import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';

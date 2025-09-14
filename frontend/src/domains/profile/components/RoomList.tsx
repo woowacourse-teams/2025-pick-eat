@@ -1,9 +1,7 @@
-import Button from '@components/actions/Button';
 import Enter from '@components/assets/icons/Enter';
 import People from '@components/assets/icons/People';
 
 import { Room } from '@apis/room';
-import { User } from '@apis/users';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -15,21 +13,21 @@ import { useNavigate } from 'react-router';
 
 type Props = {
   roomsData: Promise<Room[]>;
-  userData: Promise<User | null>;
 };
 
-function RoomList({ roomsData, userData }: Props) {
+function RoomList({ roomsData }: Props) {
   const roomList = use(roomsData);
-  const user = use(userData);
 
   const navigate = useNavigate();
   return (
     <S.Container>
-      <S.Description>{user?.nickname ?? '회원'}님이 참여 중인 방</S.Description>
       <S.ListWrapper>
         {roomList.length > 0 ? (
           roomList.map(room => (
-            <S.List key={room.id}>
+            <S.List
+              key={room.id}
+              onClick={() => navigate(generateRouterPath.roomDetail(room.id))}
+            >
               <S.RoomInfo>
                 <S.Name>{room.name}</S.Name>
                 <S.MemberCount>
@@ -37,13 +35,9 @@ function RoomList({ roomsData, userData }: Props) {
                   {room.memberCount}명
                 </S.MemberCount>
               </S.RoomInfo>
-
-              <Button
-                text="입장"
-                size="sm"
-                leftIcon={<Enter size="xs" color="white" />}
-                onClick={() => navigate(generateRouterPath.roomDetail(room.id))}
-              />
+              <button>
+                <Enter size="sm" color="black" />
+              </button>
             </S.List>
           ))
         ) : (
@@ -59,20 +53,13 @@ export default RoomList;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 60%;
 
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
   `,
 
-  Description: styled.h3`
-    font: ${({ theme }) => theme.FONTS.heading.large};
-    text-align: center;
-  `,
-
   ListWrapper: styled.ul`
-    height: 100%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
