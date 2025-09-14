@@ -9,7 +9,7 @@ import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.springframework.http.HttpStatus;
 
-public class PickeatAcceptancePiece {
+public class PickeatPieceTest {
 
     public static PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
         return RestAssured
@@ -25,6 +25,18 @@ public class PickeatAcceptancePiece {
                 .body("name", is(request.name()))
                 .body("participantCount", is(0))
                 .body("isActive", is(true))
+                .extract()
+                .as(PickeatResponse.class);
+    }
+
+    public static PickeatResponse getPickeat(String pickeatCode) {
+        return RestAssured
+                .given().log().all()
+                .when()
+                .get("/api/v1/pickeats/{pickeatCode}", pickeatCode)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .body("code", is(pickeatCode))
                 .extract()
                 .as(PickeatResponse.class);
     }
