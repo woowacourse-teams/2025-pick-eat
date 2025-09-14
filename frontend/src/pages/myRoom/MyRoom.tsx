@@ -28,17 +28,21 @@ function MyRoom() {
   const navigate = useNavigate();
   return (
     <S.Container>
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<LoadingSpinner />}>
+        <ErrorBoundary>
           <S.Section>
             <Profile user={userData} />
           </S.Section>
+        </ErrorBoundary>
+        <ErrorBoundary>
           <S.Section>
             <S.Title>참여 중인 픽잇</S.Title>
             <ParticipantPickeat
               participatingPickeatData={participatingPickeatData}
             />
           </S.Section>
+        </ErrorBoundary>
+        <ErrorBoundary>
           <S.Section>
             <S.TitleWrapper>
               <S.TitleBox>
@@ -56,8 +60,8 @@ function MyRoom() {
             </S.TitleWrapper>
             <RoomList roomsData={roomsData} />
           </S.Section>
-        </Suspense>
-      </ErrorBoundary>
+        </ErrorBoundary>
+      </Suspense>
     </S.Container>
   );
 }
