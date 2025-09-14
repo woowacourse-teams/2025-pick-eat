@@ -9,9 +9,11 @@ import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import io.restassured.RestAssured;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -75,6 +77,7 @@ public class PickeatByPositionScenarioTest {
         List<RestaurantResponse> restaurantAfterExcluded = RestaurantPieceTest.getPickeatRestaurants(
                 findedPickeatResponse.code(), participant1Token.token(), null);
         checkExcludedRestaurants(excludedRestaurantIds, restaurantAfterExcluded);
+        // -
 
         // 참여자들의 식당 좋아요
         // - 제거된 식당 목록 조회
@@ -86,12 +89,27 @@ public class PickeatByPositionScenarioTest {
         RestaurantPieceTest.likeRestaurant(noneExcludedRestaurant.get(1).id(), participant3Token.token());
         // - 식당 좋아요 취소
         RestaurantPieceTest.cancelLikeRestaurant(noneExcludedRestaurant.get(0).id(), participant1Token.token());
+        // -
 
         // 픽잇 종료
         // - 픽잇 비활성화
+        PickeatPieceTest.deactivatePickeat(findedPickeatResponse.code(), participant1Token.token());
         // - 픽잇 활성화 상태 조회
+        PickeatStateResponse pickeatState = PickeatPieceTest.getPickeatState(findedPickeatResponse.code());
+        checkoutPickeatState(pickeatState, false);
         // - 픽잇 결과 생성
+        RestaurantResultResponse pickeatResult = PickeatPieceTest.createPickeatResult(
+                findedPickeatResponse.code(), participant1Token.token());
         // - 픽잇 결과 조회
+        RestaurantResultResponse pickeatResultFromParticipant1 = PickeatPieceTest.getPickeatResult(
+                findedPickeatResponse.code(), participant1Token.token());
+        checkoutPickeatResult(pickeatResultFromParticipant1, pickeatResult);
+        RestaurantResultResponse pickeatResultFromParticipant2 = PickeatPieceTest.getPickeatResult(
+                findedPickeatResponse.code(), participant2Token.token());
+        checkoutPickeatResult(pickeatResultFromParticipant2, pickeatResult);
+        RestaurantResultResponse pickeatResultFromParticipant3 = PickeatPieceTest.getPickeatResult(
+                findedPickeatResponse.code(), participant3Token.token());
+        checkoutPickeatResult(pickeatResultFromParticipant3, pickeatResult);
     }
 
     private void checkExcludedRestaurants(List<Long> excludedRestaurantIds, List<RestaurantResponse> restaurants) {
@@ -99,5 +117,13 @@ public class PickeatByPositionScenarioTest {
                 .filteredOn(RestaurantResponse::isExcluded)
                 .extracting(RestaurantResponse::id)
                 .containsAnyElementsOf(excludedRestaurantIds);
+    }
+
+    private void checkoutPickeatState(PickeatStateResponse pickeatState, boolean isActive) {
+        assertThat(pickeatState.isActive()).isEqualTo(isActive);
+    }
+
+    private void checkoutPickeatResult(RestaurantResultResponse actual, RestaurantResultResponse expected) {
+        assertThat(actual).isEqualTo(expected);
     }
 }

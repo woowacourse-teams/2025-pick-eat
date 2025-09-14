@@ -1,10 +1,13 @@
 package com.pickeat.backend.acceptance_test.piece.pickeat;
 
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
+import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.springframework.http.HttpStatus;
@@ -39,5 +42,50 @@ public class PickeatPieceTest {
                 .body("code", is(pickeatCode))
                 .extract()
                 .as(PickeatResponse.class);
+    }
+
+    public static void deactivatePickeat(String pickeatCode, String participantToken) {
+        RestAssured
+                .given().log().all()
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
+                .when()
+                .patch("/api/v1/pickeats/{pickeatCode}/deactive", pickeatCode)
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    public static PickeatStateResponse getPickeatState(String pickeatCode) {
+        return RestAssured
+                .given().log().all()
+                .when()
+                .get("/api/v1/pickeats/{pickeatCode}/state", pickeatCode)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(PickeatStateResponse.class);
+    }
+
+    public static RestaurantResultResponse createPickeatResult(String pickeatCode, String participantToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
+                .when()
+                .post("/api/v1/pickeats/{pickeatCode}/result", pickeatCode)
+                .then().log().all()
+                .statusCode(anyOf(is(HttpStatus.CREATED.value()), is(HttpStatus.OK.value())))
+                .extract()
+                .as(RestaurantResultResponse.class);
+    }
+
+    public static RestaurantResultResponse getPickeatResult(String pickeatCode, String participantToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
+                .when()
+                .get("/api/v1/pickeats/{pickeatCode}/result", pickeatCode)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RestaurantResultResponse.class);
     }
 }
