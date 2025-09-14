@@ -33,6 +33,14 @@ type ParticipantsResponse = {
   eliminatedParticipants: number;
 };
 
+export type ParticipatingResponse = {
+  id: number;
+  code: string;
+  name: string;
+  participantCount: number;
+  isActive: boolean;
+};
+
 type PickeatResultResponse = {
   id: number;
   name: string;
@@ -144,6 +152,12 @@ export const pickeat = {
     const data = await apiClient.get<ParticipantsResponse>(url);
 
     return data ?? null;
+  },
+  getParticipating: async (): Promise<ParticipatingResponse | null> => {
+    const url = joinAsPath(BASE_PATH, 'participating');
+    const response = await apiClient.get<ParticipatingResponse>(url);
+    if (response) return response;
+    return null;
   },
   getResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
     const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
