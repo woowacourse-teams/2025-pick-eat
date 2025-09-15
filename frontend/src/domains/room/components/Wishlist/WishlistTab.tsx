@@ -35,7 +35,15 @@ function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
       />
       {wishlist.length > 0 ? (
         wishlist.map(
-          ({ id, name, pictures, category, roadAddressName, tags }) => (
+          ({
+            id,
+            name,
+            pictures,
+            category,
+            roadAddressName,
+            tags,
+            placeUrl,
+          }) => (
             <S.Container key={id}>
               <S.Image
                 src={
@@ -65,6 +73,15 @@ function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
                 </S.TopArea>
                 <S.Name>{name}</S.Name>
                 <S.Address>{roadAddressName}</S.Address>
+                {placeUrl && (
+                  <S.LinkButton
+                    href={`${placeUrl}#menuInfo`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    메뉴 보러가기
+                  </S.LinkButton>
+                )}
               </S.Info>
             </S.Container>
           )
@@ -122,7 +139,18 @@ const S = {
   Address: styled.p`
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
+  LinkButton: styled.a`
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level2};
 
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
+
+    &:hover {
+      color: ${({ theme }) => theme.PALETTE.gray[70]};
+      text-decoration: underline;
+    }
+  `,
   Description: styled.p`
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
     text-align: center;

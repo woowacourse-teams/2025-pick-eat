@@ -47,7 +47,7 @@ function WishForm({ formData, onFormChange, onSubmit, errorMessage }: Props) {
           onChange={e => onFormChange('roadAddressName', e.target.value)}
         />
         <Input
-          label="링크 *"
+          label="링크"
           name="placeUrl"
           value={formData.placeUrl}
           onChange={e => onFormChange('placeUrl', e.target.value)}
