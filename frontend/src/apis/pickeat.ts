@@ -2,7 +2,7 @@ import { getLatLngByAddress } from '@domains/pickeat/utils/convertAddress';
 
 import { joinAsPath } from '@utils/createUrl';
 
-import { apiClient } from './apiClient';
+import { apiClient, ApiError } from './apiClient';
 
 export type PickeatType = {
   id: number;
@@ -155,9 +155,16 @@ export const pickeat = {
   },
   getParticipating: async (): Promise<ParticipatingResponse | null> => {
     const url = joinAsPath(BASE_PATH, 'participating');
-    const response = await apiClient.get<ParticipatingResponse>(url);
-    if (response) return response;
-    return null;
+    try {
+      const response = await apiClient.get<ParticipatingResponse>(url);
+      if (response) return response;
+      return null;
+    } catch (e) {
+      if (e instanceof ApiError && e.status === 401) {
+        return null;
+      }
+      throw e;
+    }
   },
   getResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
     const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
