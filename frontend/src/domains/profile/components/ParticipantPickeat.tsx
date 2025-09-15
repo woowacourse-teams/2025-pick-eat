@@ -1,3 +1,4 @@
+import ActivateCircle from '@components/assets/icons/ActivateCircle';
 import Enter from '@components/assets/icons/Enter';
 
 import { ParticipatingResponse } from '@apis/pickeat';
@@ -20,7 +21,10 @@ function ParticipantPickeat({ participatingPickeatData }: Props) {
       {participantPickeat ? (
         <>
           <S.TitleBox>
-            {participantPickeat?.isActive ? '🟢' : '🔴'}
+            <ActivateCircle
+              size="xxs"
+              activate={participantPickeat?.isActive}
+            />
             <S.Name>{participantPickeat?.name ?? '픽잇'}</S.Name>
           </S.TitleBox>
           <button
