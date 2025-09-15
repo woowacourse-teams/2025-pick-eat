@@ -17,19 +17,25 @@ function ParticipantPickeat({ participatingPickeatData }: Props) {
   const navigate = useNavigate();
   return (
     <S.Container>
-      <S.TitleBox>
-        {participantPickeat?.isActive ? '🟢' : '🔴'}
-        <S.Name>{participantPickeat?.name ?? '픽잇'}</S.Name>
-      </S.TitleBox>
-      <button
-        onClick={() =>
-          navigate(
-            generateRouterPath.pickeatDetail(participantPickeat?.code || '')
-          )
-        }
-      >
-        <Enter size="sm" color="black" />
-      </button>
+      {participantPickeat ? (
+        <>
+          <S.TitleBox>
+            {participantPickeat?.isActive ? '🟢' : '🔴'}
+            <S.Name>{participantPickeat?.name ?? '픽잇'}</S.Name>
+          </S.TitleBox>
+          <button
+            onClick={() =>
+              navigate(
+                generateRouterPath.pickeatDetail(participantPickeat?.code || '')
+              )
+            }
+          >
+            <Enter size="sm" color="black" />
+          </button>
+        </>
+      ) : (
+        '참여 중인 픽잇이 없습니다.'
+      )}
     </S.Container>
   );
 }
@@ -40,24 +46,24 @@ const S = {
   Container: styled.div`
     width: 100%;
     display: flex;
+    justify-content: space-between;
+
+    align-items: center;
     gap: ${({ theme }) => theme.GAP.level4};
 
     padding: ${({ theme }) => theme.PADDING.p5};
 
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
+    font: ${({ theme }) => theme.FONTS.body.small};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
     scrollbar-width: none;
-
-    align-items: center;
-    justify-content: space-between;
   `,
-  Name: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.small};
-    color: ${({ theme }) => theme.PALETTE.gray[60]};
-  `,
+  Name: styled.span``,
   TitleBox: styled.div`
     display: flex;
-    gap: ${({ theme }) => theme.GAP.level3};
     align-items: center;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
 };
