@@ -96,7 +96,7 @@ class WishListServiceTest {
             entityManager.clear();
 
             // when
-            WishListResponse response = wishListService.getPrivateWishList(room.getId(), user.getId());
+            WishListResponse response = wishListService.getWishList(room.getId(), user.getId());
 
             // then
             assertThat(response.id()).isEqualTo(privateWishList.getId());
@@ -113,17 +113,17 @@ class WishListServiceTest {
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> wishListService.getPrivateWishList(room.getId(), otherUser.getId()))
+            assertThatThrownBy(() -> wishListService.getWishList(room.getId(), otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_LIST_ACCESS_DENIED.getMessage());
         }
     }
 
     @Nested
-    class 공용_위시리스트_목록_조회_케이스 {
+    class 탬플릿_목록_조회_케이스 {
 
         @Test
-        void 공용_위시리스트_목록_조회_성공() {
+        void 탬플릿_목록_조회_성공() {
             // given
             Room room = entityManager.persist(RoomFixture.create());
             WishList privateWish = entityManager.persist(WishListFixture.createPrivate(room.getId()));
@@ -138,7 +138,7 @@ class WishListServiceTest {
             entityManager.clear();
 
             // when
-            List<WishListResponse> response = wishListService.getPublicWishLists();
+            List<WishListResponse> response = wishListService.getTemplateWishLists();
 
             // then
             List<Long> publicWishListIds = publicWishLists.stream()

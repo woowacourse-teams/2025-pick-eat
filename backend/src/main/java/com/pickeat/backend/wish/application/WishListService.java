@@ -28,15 +28,15 @@ public class WishListService {
         return WishListResponse.from(saved);
     }
 
-    public WishListResponse getPrivateWishList(Long roomId, Long userId) {
+    public WishListResponse getWishList(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
-        WishList wishLists = wishListRepository.findByRoomIdAndIsPublic(roomId, false);
+        WishList wishLists = wishListRepository.findByRoomIdAndIsTemplate(roomId, false);
         return WishListResponse.from(wishLists);
     }
 
-    public List<WishListResponse> getPublicWishLists() {
-        List<WishList> publicWishList = wishListRepository.findAllByIsPublicTrue();
-        return WishListResponse.from(publicWishList);
+    public List<WishListResponse> getTemplateWishLists() {
+        List<WishList> templateWishList = wishListRepository.findAllByIsTemplateTrue();
+        return WishListResponse.from(templateWishList);
     }
 
     @Transactional
