@@ -14,9 +14,21 @@ services:
       - 'mysqldb-data:/var/lib/mysql'
     networks:
       - app-tier
+  cloudbeaver:
+    container_name: dbeaver
+    image: dbeaver/cloudbeaver:latest # You can specify a specific version like 24.3.0
+    restart: unless-stopped
+    ports:
+      - "8978:8978" # Host_Port:Container_Port
+    volumes:
+      - cloudbeaver_data:/opt/cloudbeaver/workspace # Persistent storage for CloudBeaver data
+    networks:
+      - app-tier
 
 volumes:
   mysqldb-data:
+    driver: local
+  cloudbeaver_data:
     driver: local
 
 networks:
