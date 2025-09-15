@@ -2,6 +2,7 @@ import ParticipantPickeat from '@domains/profile/components/ParticipantPickeat';
 import RoomList from '@domains/profile/components/RoomList';
 
 import Button from '@components/actions/Button';
+import Plus from '@components/assets/icons/Plus';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
@@ -50,12 +51,14 @@ function MyRoom() {
                 팀원을 초대하고 픽잇을 시작해보세요!
               </S.Description>
             </S.TitleBox>
-            <Button
-              text="방 생성 + "
-              size="sm"
-              color="gray"
-              onClick={() => navigate(ROUTE_PATH.CREATE_ROOM)}
-            />
+            <S.ButtonBox>
+              <Button
+                text="방 생성"
+                rightIcon={<Plus size="xs" />}
+                color="gray"
+                onClick={() => navigate(ROUTE_PATH.CREATE_ROOM)}
+              />
+            </S.ButtonBox>
           </S.TitleWrapper>
           <ErrorBoundary>
             <RoomList roomsData={roomsData} />
@@ -103,5 +106,8 @@ const S = {
   Description: styled.h3`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.body.small};
+  `,
+  ButtonBox: styled.div`
+    width: 90px;
   `,
 };
