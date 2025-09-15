@@ -22,6 +22,7 @@ const S = {
   Container: styled.div<{ width: string; color: string }>`
     width: ${({ width }) => width}px;
     height: ${({ width }) => width}px;
+
     background-color: ${({ color }) => color};
     border-radius: 100%;
   `,

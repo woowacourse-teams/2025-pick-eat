@@ -57,10 +57,10 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p5};
 
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+
     color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.body.small};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
     scrollbar-width: none;
   `,
