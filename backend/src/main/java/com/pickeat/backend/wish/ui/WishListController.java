@@ -40,11 +40,11 @@ public class WishListController implements WishListApiSpec {
 
     @Override
     @GetMapping("/room/{roomId}/wishLists")
-    public ResponseEntity<List<WishListResponse>> getPrivateWishLists(
+    public ResponseEntity<WishListResponse> getPrivateWishLists(
             @PathVariable("roomId") Long roomId,
             @LoginUserId Long userId
     ) {
-        List<WishListResponse> wishLists = wishListService.getPrivateWishLists(roomId, userId);
+        WishListResponse wishLists = wishListService.getPrivateWishList(roomId, userId);
         return ResponseEntity.ok(wishLists);
     }
 

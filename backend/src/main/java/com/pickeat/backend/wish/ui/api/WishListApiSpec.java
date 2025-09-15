@@ -106,7 +106,7 @@ public interface WishListApiSpec {
                     )
             )
     })
-    ResponseEntity<List<WishListResponse>> getPrivateWishLists(
+    ResponseEntity<WishListResponse> getPrivateWishLists(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
             @Parameter(hidden = true) @LoginUserId Long loginUserID

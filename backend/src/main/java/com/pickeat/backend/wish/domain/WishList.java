@@ -19,7 +19,7 @@ public class WishList extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Long roomId;
 
     @Column(nullable = false)
