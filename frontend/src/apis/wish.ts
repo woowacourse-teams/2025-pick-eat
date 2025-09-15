@@ -12,6 +12,7 @@ export type WishFormData = {
   roadAddressName: string;
   category: string;
   tags: string[];
+  placeUrl: string;
 };
 
 export const wish = {

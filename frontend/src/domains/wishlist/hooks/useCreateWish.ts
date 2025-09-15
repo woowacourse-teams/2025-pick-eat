@@ -41,6 +41,7 @@ export const useCreateWish = (onCreate?: () => void) => {
         category: formData.category as string,
         roadAddressName: formData.roadAddressName as string,
         tags: formData.tags as string[],
+        placeUrl: formData.placeUrl as string,
       });
 
       let imageUploadError = false;

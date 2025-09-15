@@ -96,5 +96,6 @@ const S = {
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
     overflow-y: scroll;
+    scrollbar-width: none;
   `,
 };

@@ -99,7 +99,7 @@ export const getFormDataByAddress = async (address: string) => {
     return {
       name: data.documents[0].place_name,
       roadAddressName: data.documents[0].road_address_name,
-      url: data.documents[0].place_url,
+      placeUrl: data.documents[0].place_url,
     };
   } else {
     return null;
