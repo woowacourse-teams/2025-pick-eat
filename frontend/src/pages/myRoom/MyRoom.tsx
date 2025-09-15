@@ -29,38 +29,38 @@ function MyRoom() {
   return (
     <S.Container>
       <Suspense fallback={<LoadingSpinner />}>
-        <ErrorBoundary>
-          <S.Section>
+        <S.Section>
+          <ErrorBoundary>
             <Profile user={userData} />
-          </S.Section>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <S.Section>
-            <S.Title>참여 중인 픽잇</S.Title>
+          </ErrorBoundary>
+        </S.Section>
+        <S.Section>
+          <S.Title>참여 중인 픽잇</S.Title>
+          <ErrorBoundary>
             <ParticipantPickeat
               participatingPickeatData={participatingPickeatData}
             />
-          </S.Section>
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <S.Section>
-            <S.TitleWrapper>
-              <S.TitleBox>
-                <S.Title>참여 중인 방</S.Title>
-                <S.Description>
-                  팀원을 초대하고 픽잇을 시작해보세요!
-                </S.Description>
-              </S.TitleBox>
-              <Button
-                text="방 생성 + "
-                size="sm"
-                color="gray"
-                onClick={() => navigate(ROUTE_PATH.CREATE_ROOM)}
-              />
-            </S.TitleWrapper>
+          </ErrorBoundary>
+        </S.Section>
+        <S.Section>
+          <S.TitleWrapper>
+            <S.TitleBox>
+              <S.Title>참여 중인 방</S.Title>
+              <S.Description>
+                팀원을 초대하고 픽잇을 시작해보세요!
+              </S.Description>
+            </S.TitleBox>
+            <Button
+              text="방 생성 + "
+              size="sm"
+              color="gray"
+              onClick={() => navigate(ROUTE_PATH.CREATE_ROOM)}
+            />
+          </S.TitleWrapper>
+          <ErrorBoundary>
             <RoomList roomsData={roomsData} />
-          </S.Section>
-        </ErrorBoundary>
+          </ErrorBoundary>
+        </S.Section>
       </Suspense>
     </S.Container>
   );
@@ -97,6 +97,7 @@ const S = {
 
   Title: styled.h2`
     width: 100%;
+
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
   Description: styled.h3`
