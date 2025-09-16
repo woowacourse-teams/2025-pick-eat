@@ -7,7 +7,6 @@ import com.pickeat.backend.wish.application.dto.request.WishListRequest;
 import com.pickeat.backend.wish.application.dto.response.WishListResponse;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
-import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,17 +28,15 @@ public class WishListService {
         return WishListResponse.from(saved);
     }
 
-    public List<WishListResponse> getPrivateWishLists(Long roomId, Long userId) {
+    public WishListResponse getWishList(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
-        List<WishList> wishLists = wishListRepository.findAllByRoomIdAndIsPublic(roomId, false);
-        wishLists.sort(Comparator.comparing(WishList::getCreatedAt).reversed());
+        WishList wishLists = wishListRepository.findByRoomIdAndIsTemplate(roomId, false);
         return WishListResponse.from(wishLists);
     }
 
-    public List<WishListResponse> getPublicWishLists() {
-        List<WishList> publicWishList = wishListRepository.findAllByIsPublicTrue();
-        publicWishList.sort(Comparator.comparing(WishList::getCreatedAt).reversed());
-        return WishListResponse.from(publicWishList);
+    public List<WishListResponse> getTemplateWishLists() {
+        List<WishList> templateWishList = wishListRepository.findAllByIsTemplateTrue();
+        return WishListResponse.from(templateWishList);
     }
 
     @Transactional

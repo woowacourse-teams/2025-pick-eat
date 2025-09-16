@@ -66,7 +66,7 @@ public class WishService {
 
     public List<WishResponse> getWishes(Long wishListId, Long userId) {
         WishList wishList = getWishList(wishListId);
-        if (!wishList.getIsPublic()) {
+        if (!wishList.getIsTemplate()) {
             validateUserAccessToRoom(wishList.getRoomId(), userId);
         }
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
@@ -102,7 +102,7 @@ public class WishService {
     }
 
     private void validateIsPublicWishList(WishList wishList) {
-        if (!wishList.getIsPublic()) {
+        if (!wishList.getIsTemplate()) {
             throw new BusinessException(ErrorCode.NOT_PUBLIC_WISH_LIST);
         }
     }

@@ -19,18 +19,18 @@ public class WishList extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private Long roomId;
 
     @Column(nullable = false)
-    private Boolean isPublic;
+    private Boolean isTemplate;
 
     @OneToMany(mappedBy = "wishList", cascade = CascadeType.REMOVE)
     private final List<Wish> wishes = new ArrayList<>();
 
-    public WishList(String name, Long roomId, Boolean isPublic) {
+    public WishList(String name, Long roomId, Boolean isTemplate) {
         this.name = name;
         this.roomId = roomId;
-        this.isPublic = isPublic;
+        this.isTemplate = isTemplate;
     }
 }

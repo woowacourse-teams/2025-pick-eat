@@ -23,7 +23,7 @@ public record WishListResponse(
                 wishList.getId(),
                 wishList.getName(),
                 wishList.getRoomId(),
-                wishList.getIsPublic(),
+                wishList.getIsTemplate(),
                 wishList.getWishes().size()
         );
     }
