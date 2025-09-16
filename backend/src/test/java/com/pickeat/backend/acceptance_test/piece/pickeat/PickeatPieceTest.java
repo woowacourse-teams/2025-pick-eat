@@ -100,4 +100,23 @@ public class PickeatPieceTest {
                 .extract()
                 .as(ParticipantStateResponse.class);
     }
+
+    public static PickeatResponse 방에서_픽잇_생성(Long roomId, PickeatRequest request, String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post("/api/v1/rooms/{roomId}/pickeats", roomId)
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value())
+                .body("id", notNullValue())
+                .body("code", notNullValue())
+                .body("name", is(request.name()))
+                .body("participantCount", is(0))
+                .body("isActive", is(true))
+                .extract()
+                .as(PickeatResponse.class);
+    }
 }
