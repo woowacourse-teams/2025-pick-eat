@@ -2,6 +2,7 @@ package com.pickeat.backend.acceptance_test.piece.restaurant;
 
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -16,6 +17,16 @@ public class RestaurantPieceTest {
                 .body(request)
                 .when()
                 .post("/api/v1/pickeats/{pickeatCode}/restaurants/location", pickeatCode)
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value());
+    }
+
+    public static void 위시리스트_기반으로_식당_생성(String pickeatCode, WishRestaurantRequest request) {
+        RestAssured.given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post("/api/v1/pickeats/{pickeatCode}/restaurants/wish", pickeatCode)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
     }
