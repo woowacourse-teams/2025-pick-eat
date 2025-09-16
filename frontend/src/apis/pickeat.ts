@@ -33,7 +33,15 @@ type ParticipantsResponse = {
   eliminatedParticipants: number;
 };
 
-export type ParticipatingResponse = {
+type ParticipatingResponse = {
+  id: number;
+  code: string;
+  name: string;
+  participantCount: number;
+  isActive: boolean;
+};
+
+export type Participating = {
   id: number;
   code: string;
   name: string;
@@ -103,6 +111,16 @@ const convertResponseToResult = async (
   hasEqualLike: data.hasEqualLike,
 });
 
+const convertResponseToParticipating = async (
+  data: ParticipatingResponse
+): Promise<Participating> => ({
+  id: data.id,
+  code: data.code,
+  name: data.name,
+  participantCount: data.participantCount,
+  isActive: data.isActive,
+});
+
 const BASE_PATH = 'pickeats';
 
 export const pickeat = {
@@ -157,7 +175,7 @@ export const pickeat = {
     const url = joinAsPath(BASE_PATH, 'participating');
     try {
       const response = await apiClient.get<ParticipatingResponse>(url);
-      if (response) return response;
+      if (response) return convertResponseToParticipating(response);
       return null;
     } catch (e) {
       if (e instanceof ApiError && e.status === 401) {

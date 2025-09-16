@@ -1,7 +1,7 @@
 import ActivateCircle from '@components/assets/icons/ActivateCircle';
 import Enter from '@components/assets/icons/Enter';
 
-import { ParticipatingResponse } from '@apis/pickeat';
+import { Participating } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -10,7 +10,7 @@ import { use } from 'react';
 import { useNavigate } from 'react-router';
 
 type Props = {
-  participatingPickeatData: Promise<ParticipatingResponse | null>;
+  participatingPickeatData: Promise<Participating | null>;
 };
 
 function ParticipantPickeat({ participatingPickeatData }: Props) {
