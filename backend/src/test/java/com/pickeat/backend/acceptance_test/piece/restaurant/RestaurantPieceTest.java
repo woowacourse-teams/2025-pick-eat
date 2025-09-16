@@ -5,13 +5,12 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeR
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
-import org.springframework.http.HttpStatus;
-
 import java.util.List;
+import org.springframework.http.HttpStatus;
 
 public class RestaurantPieceTest {
 
-    public static void createRestaurantsByLocation(String pickeatCode, LocationRestaurantRequest request) {
+    public static void 위치_기반으로_식당_생성(String pickeatCode, LocationRestaurantRequest request) {
         RestAssured.given().log().all()
                 .contentType(ContentType.JSON)
                 .body(request)
@@ -21,7 +20,7 @@ public class RestaurantPieceTest {
                 .statusCode(HttpStatus.CREATED.value());
     }
 
-    public static List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, String token, Boolean isExcluded) {
+    public static List<RestaurantResponse> 픽잇의_식당_조회(String pickeatCode, String token, Boolean isExcluded) {
         return RestAssured.given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + token)
                 .queryParam("isExcluded", isExcluded)
@@ -32,7 +31,7 @@ public class RestaurantPieceTest {
                 .extract().body().jsonPath().getList(".", RestaurantResponse.class);
     }
 
-    public static void excludeRestaurants(RestaurantExcludeRequest request, String token) {
+    public static void 식당_소거(RestaurantExcludeRequest request, String token) {
         RestAssured.given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + token)
                 .contentType(ContentType.JSON)
@@ -43,7 +42,7 @@ public class RestaurantPieceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    public static void likeRestaurant(Long restaurantId, String token) {
+    public static void 식당_좋아요(Long restaurantId, String token) {
         RestAssured.given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + token)
                 .when()
@@ -52,7 +51,7 @@ public class RestaurantPieceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    public static void cancelLikeRestaurant(Long restaurantId, String token) {
+    public static void 식당_좋아요_취소(Long restaurantId, String token) {
         RestAssured.given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + token)
                 .when()

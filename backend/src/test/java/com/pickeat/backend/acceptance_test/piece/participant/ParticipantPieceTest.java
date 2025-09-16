@@ -1,16 +1,16 @@
 package com.pickeat.backend.acceptance_test.piece.participant;
 
+import static org.hamcrest.Matchers.notNullValue;
+
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.springframework.http.HttpStatus;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 public class ParticipantPieceTest {
 
-    public static TokenResponse createParticipant(ParticipantRequest request) {
+    public static TokenResponse 참가자_생성(ParticipantRequest request) {
         return RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
@@ -24,7 +24,7 @@ public class ParticipantPieceTest {
                 .as(TokenResponse.class);
     }
 
-    public static void markCompletion(String participantToken) {
+    public static void 참가자_선택_완료_표시(String participantToken) {
         RestAssured
                 .given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + participantToken)
@@ -34,7 +34,7 @@ public class ParticipantPieceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    public static void unMarkCompletion(String participantToken) {
+    public static void 참가자_선택_완료_표시_취소(String participantToken) {
         RestAssured
                 .given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + participantToken)

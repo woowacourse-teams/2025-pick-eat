@@ -15,7 +15,7 @@ import org.springframework.http.HttpStatus;
 
 public class PickeatPieceTest {
 
-    public static PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
+    public static PickeatResponse 외부용_픽잇_생성(PickeatRequest request) {
         return RestAssured
                 .given().log().all()
                 .contentType(ContentType.JSON)
@@ -33,7 +33,7 @@ public class PickeatPieceTest {
                 .as(PickeatResponse.class);
     }
 
-    public static PickeatResponse getPickeat(String pickeatCode) {
+    public static PickeatResponse 픽잇_정보_조회(String pickeatCode) {
         return RestAssured
                 .given().log().all()
                 .when()
@@ -45,7 +45,7 @@ public class PickeatPieceTest {
                 .as(PickeatResponse.class);
     }
 
-    public static void deactivatePickeat(String pickeatCode, String participantToken) {
+    public static void 픽잇_비활성화(String pickeatCode, String participantToken) {
         RestAssured
                 .given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + participantToken)
@@ -55,7 +55,7 @@ public class PickeatPieceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    public static PickeatStateResponse getPickeatState(String pickeatCode) {
+    public static PickeatStateResponse 픽잇_활성화_상태_조회(String pickeatCode) {
         return RestAssured
                 .given().log().all()
                 .when()
@@ -66,7 +66,7 @@ public class PickeatPieceTest {
                 .as(PickeatStateResponse.class);
     }
 
-    public static RestaurantResultResponse createPickeatResult(String pickeatCode, String participantToken) {
+    public static RestaurantResultResponse 픽잇_결과_생성(String pickeatCode, String participantToken) {
         return RestAssured
                 .given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + participantToken)
@@ -78,7 +78,7 @@ public class PickeatPieceTest {
                 .as(RestaurantResultResponse.class);
     }
 
-    public static RestaurantResultResponse getPickeatResult(String pickeatCode, String participantToken) {
+    public static RestaurantResultResponse 픽잇_결과_조회(String pickeatCode, String participantToken) {
         return RestAssured
                 .given().log().all()
                 .header("Pickeat-Participant-Token", "Bearer " + participantToken)
@@ -90,7 +90,7 @@ public class PickeatPieceTest {
                 .as(RestaurantResultResponse.class);
     }
 
-    public static ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {
+    public static ParticipantStateResponse 픽잇의_참가자_요약_정보_조회(String pickeatCode) {
         return RestAssured
                 .given().log().all()
                 .when()
