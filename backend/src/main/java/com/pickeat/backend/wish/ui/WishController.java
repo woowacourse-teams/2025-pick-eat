@@ -51,6 +51,7 @@ public class WishController implements WishApiSpec {
     }
 
     @Override
+    @BusinessLogging("위시 수정")
     @PutMapping("/wishes/{wishId}")
     public ResponseEntity<WishResponse> updateWish(
             @PathVariable("wishId") Long wishId,
@@ -72,12 +73,11 @@ public class WishController implements WishApiSpec {
     }
 
     @Override
-    @BusinessLogging("위시 수정")
-    @GetMapping("/wishLists/public/{wishListId}/wishes")
-    public ResponseEntity<List<WishResponse>> getWishesInPublicWishList(
+    @GetMapping("/wishLists/templates/{wishListId}/wishes")
+    public ResponseEntity<List<WishResponse>> getWishesInTemplates(
             @PathVariable("wishListId") Long wishListId
     ) {
-        List<WishResponse> wishes = wishService.getWishesFromPublicWishList(wishListId);
+        List<WishResponse> wishes = wishService.getWishesFromTemplates(wishListId);
         return ResponseEntity.ok(wishes);
     }
 }
