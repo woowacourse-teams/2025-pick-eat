@@ -49,6 +49,17 @@ export type Participating = {
   isActive: boolean;
 };
 
+export type ParticipantState = {
+  id: number;
+  nickname: string;
+  isCompleted: boolean;
+};
+
+export type ParticipantsState = {
+  totalParticipants: number;
+  participants: ParticipantState[];
+};
+
 type PickeatResultResponse = {
   id: number;
   name: string;
@@ -121,6 +132,17 @@ const convertResponseToParticipating = async (
   isActive: data.isActive,
 });
 
+const convertResponseToParticipantsState = async (
+  data: ParticipantsState
+): Promise<ParticipantsState> => ({
+  totalParticipants: data.totalParticipants,
+  participants: data.participants.map(participant => ({
+    id: participant.id,
+    nickname: participant.nickname,
+    isCompleted: participant.isCompleted,
+  })),
+});
+
 const BASE_PATH = 'pickeats';
 
 export const pickeat = {
@@ -183,6 +205,14 @@ export const pickeat = {
       }
       throw e;
     }
+  },
+  getParticipantsState: async (
+    pickeatCode: string
+  ): Promise<ParticipantsState> => {
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'participants', 'state');
+    const response = await apiClient.get<ParticipantsState>(url);
+    if (response) return convertResponseToParticipantsState(response);
+    return { totalParticipants: 0, participants: [] };
   },
   getResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
     const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
