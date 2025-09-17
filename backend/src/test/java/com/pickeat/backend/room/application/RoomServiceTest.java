@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
+import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
@@ -15,6 +16,7 @@ import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.user.domain.User;
+import com.pickeat.backend.wish.domain.WishList;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -70,6 +72,7 @@ class RoomServiceTest {
             // given
             User user = testEntityManager.persist(UserFixture.create());
             Room room = createRoom(user);
+            WishList wishList = testEntityManager.persist(WishListFixture.createPrivate(room.getId()));
             testEntityManager.flush();
             testEntityManager.clear();
 
@@ -79,7 +82,8 @@ class RoomServiceTest {
             // then
             assertAll(
                     () -> assertThat(response.id()).isEqualTo(room.getId()),
-                    () -> assertThat(response.name()).isEqualTo(room.getName())
+                    () -> assertThat(response.name()).isEqualTo(room.getName()),
+                    () -> assertThat(response.wishlistId()).isEqualTo(wishList.getId())
             );
         }
 
@@ -100,13 +104,31 @@ class RoomServiceTest {
         }
 
         @Test
+        void 위시리스트가_없는_방_조회시_예외() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            Room room = createRoom(user);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when && then
+            assertThatThrownBy(() -> roomService.getRoom(room.getId(), user.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(ErrorCode.WISH_LIST_NOT_FOUND.getMessage());
+        }
+
+        @Test
         void 유저가_속한_방_조회() {
             // given
             User user = testEntityManager.persist(UserFixture.create());
             User otherUser = testEntityManager.persist(UserFixture.create());
-            createRoom(user);
-            createRoom(user);
-            createRoom(otherUser);
+            Room room1 = createRoom(user);
+            Room room2 = createRoom(user);
+            Room room3 = createRoom(otherUser);
+            WishList wishList1 = testEntityManager.persist(WishListFixture.createPrivate(room1.getId()));
+            WishList wishList2 = testEntityManager.persist(WishListFixture.createPrivate(room2.getId()));
+            WishList wishList3 = testEntityManager.persist(WishListFixture.createPrivate(room3.getId()));
 
             testEntityManager.flush();
             testEntityManager.clear();
