@@ -75,9 +75,9 @@ public class WishService {
         return WishResponse.from(wishes);
     }
 
-    public List<WishResponse> getWishesFromPublicWishList(Long wishListId) {
+    public List<WishResponse> getWishesFromTemplates(Long wishListId) {
         WishList wishList = getWishList(wishListId);
-        validateIsPublicWishList(wishList);
+        validateIsTemplate(wishList);
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
         List<Wish> wishes = wishList.getWishes();
         wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
@@ -101,7 +101,7 @@ public class WishService {
         return wish;
     }
 
-    private void validateIsPublicWishList(WishList wishList) {
+    private void validateIsTemplate(WishList wishList) {
         if (!wishList.getIsTemplate()) {
             throw new BusinessException(ErrorCode.NOT_PUBLIC_WISH_LIST);
         }

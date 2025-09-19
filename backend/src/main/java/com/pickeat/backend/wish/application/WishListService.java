@@ -30,7 +30,8 @@ public class WishListService {
 
     public WishListResponse getWishList(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
-        WishList wishLists = wishListRepository.findByRoomIdAndIsTemplate(roomId, false);
+        WishList wishLists = wishListRepository.findByRoomIdAndIsTemplate(roomId, false)
+                .orElseThrow(() -> new BusinessException(ErrorCode.WISH_LIST_NOT_FOUND));
         return WishListResponse.from(wishLists);
     }
 
