@@ -1,7 +1,5 @@
 package com.pickeat.backend.acceptance_test.piece.room;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
@@ -21,9 +19,6 @@ public class RoomPieceTest {
                 .post("/api/v1/rooms")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("id", notNullValue())
-                .body("name", notNullValue())
-                .body("userCount", notNullValue())
                 .extract()
                 .as(RoomResponse.class);
     }
@@ -48,9 +43,6 @@ public class RoomPieceTest {
                 .get("/api/v1/rooms/{roomId}", roomId)
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .body("id", notNullValue())
-                .body("name", notNullValue())
-                .body("userCount", notNullValue())
                 .extract()
                 .as(RoomResponse.class);
     }

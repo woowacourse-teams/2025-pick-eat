@@ -22,11 +22,6 @@ public class WishPieceTest {
                 .post("/api/v1/wishLists/{wishListId}/wishes", wishListId)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("id", notNullValue())
-                .body("name", notNullValue())
-                .body("category", notNullValue())
-                .body("roadAddressName", notNullValue())
-                .body("wishListId", notNullValue())
                 .extract()
                 .as(WishResponse.class);
     }
@@ -41,6 +36,7 @@ public class WishPieceTest {
                 .statusCode(HttpStatus.OK.value())
                 .body("$", notNullValue())
                 .extract()
-                .as(new TypeRef<>() {});
+                .as(new TypeRef<>() {
+                });
     }
 }

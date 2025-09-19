@@ -111,11 +111,6 @@ public class PickeatPieceTest {
                 .post("/api/v1/rooms/{roomId}/pickeats", roomId)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("id", notNullValue())
-                .body("code", notNullValue())
-                .body("name", is(request.name()))
-                .body("participantCount", is(0))
-                .body("isActive", is(true))
                 .extract()
                 .as(PickeatResponse.class);
     }

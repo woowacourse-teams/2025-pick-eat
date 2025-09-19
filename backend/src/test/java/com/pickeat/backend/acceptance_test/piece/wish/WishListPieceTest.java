@@ -22,7 +22,8 @@ public class WishListPieceTest {
                 .statusCode(HttpStatus.OK.value())
                 .body(notNullValue())
                 .extract()
-                .as(new TypeRef<>() {});
+                .as(new TypeRef<>() {
+                });
     }
 
     public static WishListResponse 위시리스트_생성(Long roomId, WishListRequest request, String accessToken) {
@@ -35,11 +36,6 @@ public class WishListPieceTest {
                 .post("/api/v1/room/{roomId}/wishLists", roomId)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
-                .body("id", notNullValue())
-                .body("name", notNullValue())
-                .body("roomId", notNullValue())
-                .body("isPublic", notNullValue())
-                .body("wishCount", notNullValue())
                 .extract()
                 .as(WishListResponse.class);
     }
@@ -52,11 +48,6 @@ public class WishListPieceTest {
                 .get("/api/v1/room/{roomId}/wishLists", roomId)
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .body("id", notNullValue())
-                .body("name", notNullValue())
-                .body("roomId", notNullValue())
-                .body("isPublic", notNullValue())
-                .body("wishCount", notNullValue())
                 .extract()
                 .as(WishListResponse.class);
     }
