@@ -34,11 +34,13 @@ public class DataInitializer implements CommandLineRunner {
     public void run(String... args) {
         if (!userRepository.existsByNickname("운영자")) {
             User user = userRepository.save(new User("운영자", 1L, "SERVER"));
-            Room room = roomRepository.save(new Room("운영자 Room"));
-            RoomUser roomUser = roomUserRepository.save(new RoomUser(room, user));
 
             // 잠실 초기 데이터
-            WishList jamsilWishList = wishListRepository.save(new WishList("잠실", room.getId(), true));
+
+            Room jamsilRoom = roomRepository.save(new Room("운영자 잠실 Room"));
+            roomUserRepository.save(new RoomUser(jamsilRoom, user));
+
+            WishList jamsilWishList = wishListRepository.save(new WishList("잠실", jamsilRoom.getId(), true));
 
             Wish jamsilWish1 = wishRepository.save(new Wish("서해바지락칼국수", FoodCategory.KOREAN,
                     "서울 송파구 올림픽로35가길 11 한신코아오피스텔 1층 112호", "칼국수, 만두, 파전", "https://place.map.kakao.com/505348601",
@@ -81,7 +83,10 @@ public class DataInitializer implements CommandLineRunner {
                             "https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/default_images/jamsil_template/%ED%99%8D%EC%88%98%EA%B3%84%EC%B0%9C%EB%8B%AD.jpg"));
 
             // 선릉 초기 데이터
-            WishList seolleungWishList = wishListRepository.save(new WishList("선릉", room.getId(), true));
+            Room seolleungRoom = roomRepository.save(new Room("운영자 선릉 Room"));
+            roomUserRepository.save(new RoomUser(jamsilRoom, user));
+
+            WishList seolleungWishList = wishListRepository.save(new WishList("선릉", seolleungRoom.getId(), true));
             Wish seolleungWish1 = wishRepository.save(new Wish("꺼벙이분식", FoodCategory.OTHERS,
                     "서울 강남구 테헤란로63길 12 103호, 104호", "분식", "https://place.map.kakao.com/505348601", seolleungWishList));
             wishPictureRepository.save(new WishPicture(seolleungWish1,

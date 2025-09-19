@@ -6,9 +6,11 @@ import com.pickeat.backend.login.application.OidcPublicKeyProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
+@Profile("!test")
 @Configuration
 @RequiredArgsConstructor
 public class KakaoLoginConfig {
@@ -31,7 +33,7 @@ public class KakaoLoginConfig {
 
     @Bean
     public OidcPublicKeyProvider kakaOidcPublicKeyProvider(KakaoJwksClient kakaoJwksClient,
-                                                           KakaoJwksCache kakaoJwksCache) {
+            KakaoJwksCache kakaoJwksCache) {
 
         return new KakaoOidcPublicKeyProvider(kakaoJwksClient, kakaoJwksCache);
     }

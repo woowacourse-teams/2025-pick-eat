@@ -47,6 +47,7 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured:5.4.0'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly 'com.h2database:h2'
+    testImplementation 'io.rest-assured:rest-assured'
 }
 
 tasks.named('test') {
