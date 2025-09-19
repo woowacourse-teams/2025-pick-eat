@@ -12,8 +12,8 @@ public record WishListResponse(
         String name,
         @Schema(description = "방 ID", example = "1")
         long roomId,
-        @Schema(description = "공개 여부", example = "true")
-        boolean isPublic,
+        @Schema(description = "탬플릿 여부", example = "true")
+        boolean isTemplate,
         @Schema(description = "위시의 개수", example = "3")
         int wishCount
 ) {

@@ -321,7 +321,7 @@ class WishServiceTest {
             entityManager.clear();
 
             // when
-            List<WishResponse> responses = wishService.getWishesFromPublicWishList(wishList.getId());
+            List<WishResponse> responses = wishService.getWishesFromTemplates(wishList.getId());
 
             // then
             List<Long> wishIds = wishes.stream().map(Wish::getId).toList();
@@ -344,7 +344,7 @@ class WishServiceTest {
             entityManager.clear();
 
             // when
-            List<WishResponse> responses = wishService.getWishesFromPublicWishList(wishList.getId());
+            List<WishResponse> responses = wishService.getWishesFromTemplates(wishList.getId());
 
             // then
             List<Long> sortedWishIds = wishes.stream()
@@ -358,7 +358,7 @@ class WishServiceTest {
         @Test
         void 위시리스트가_존재하지_않는_경우_예외_발생() {
             // when & then
-            assertThatThrownBy(() -> wishService.getWishesFromPublicWishList(1L))
+            assertThatThrownBy(() -> wishService.getWishesFromTemplates(1L))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_LIST_NOT_FOUND.getMessage());
         }
@@ -374,7 +374,7 @@ class WishServiceTest {
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> wishService.getWishesFromPublicWishList(wishList.getId()))
+            assertThatThrownBy(() -> wishService.getWishesFromTemplates(wishList.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.NOT_PUBLIC_WISH_LIST.getMessage());
         }
