@@ -36,7 +36,7 @@ function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
           value={address}
           onChange={e => handleInputChange(e.target.value)}
           name="address"
-          placeholder="맥도날드 잠실역점, 잠실 맥도날드 등등"
+          placeholder="맥도날드 잠실역점, 잠실 맥도날드..."
         >
           {addressList && (
             <AddressList
