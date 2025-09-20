@@ -1,6 +1,6 @@
 import { ParticipantState } from '@apis/pickeat';
 
-import { random } from '@utils/random';
+import { colorCreator } from '@utils/colorCreator';
 
 import { THEME } from '@styles/global';
 
@@ -12,7 +12,10 @@ type Props = {
 };
 
 const ParticipantAvatar: React.FC<Props> = ({ participant }) => {
-  const bgColor = useMemo(() => random.getPastelColor(), []);
+  const bgColor = useMemo(
+    () => colorCreator.uniquePastel(participant.id),
+    [participant.id]
+  );
 
   return (
     <S.Container
