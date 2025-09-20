@@ -261,7 +261,7 @@ const S = {
 
     padding-left: ${({ theme }) => theme.PADDING.px2};
 
-    color: #1e293b;
+    color: ${({ theme }) => theme.PALETTE.gray[100]};
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
     white-space: nowrap;
     text-overflow: ellipsis;
