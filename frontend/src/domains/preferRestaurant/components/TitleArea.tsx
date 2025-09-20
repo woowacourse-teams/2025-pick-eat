@@ -3,10 +3,10 @@ import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 import SharePanel from '@components/share/SharePanel';
 
+import ParticipantsAvatarGroup from '@domains/participants/participantsAvatarGroup/ParticipantsAvatarGroup';
+
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router';
-
-import Participant from './Participant';
 
 function TitleArea() {
   const [searchParams] = useSearchParams();
@@ -19,16 +19,19 @@ function TitleArea() {
     handleOpenModal,
     handleUnmountModal,
   } = useModal();
+
   return (
     <S.TitleArea>
       <S.TopWrapper>
         <S.Title>
           가고 싶은 식당에 <br /> ❤️를 눌러 투표해 주세요.
         </S.Title>
-
-        <S.ShareContainer onClick={handleOpenModal}>
-          <Share size="sm" />
-        </S.ShareContainer>
+        <S.ToolContainer>
+          <S.ShareContainer onClick={handleOpenModal}>
+            <Share size="sm" />
+          </S.ShareContainer>
+          <ParticipantsAvatarGroup />
+        </S.ToolContainer>
         <Modal
           opened={opened}
           mounted={mounted}
@@ -41,8 +44,6 @@ function TitleArea() {
           />
         </Modal>
       </S.TopWrapper>
-
-      <Participant pickeatCode={pickeatCode} />
     </S.TitleArea>
   );
 }
@@ -70,5 +71,12 @@ const S = {
   `,
   ShareContainer: styled.div`
     cursor: pointer;
+  `,
+  ToolContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level4};
+    align-items: flex-end;
+    justify-content: space-between;
   `,
 };

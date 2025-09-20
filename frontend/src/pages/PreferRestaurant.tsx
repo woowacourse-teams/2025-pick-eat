@@ -1,4 +1,5 @@
 import PickeatEndButton from '@domains/matchResult/components/PickeatEndButton';
+import VoteCompleteButton from '@domains/matchResult/components/VoteCompleteButton';
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 import TitleArea from '@domains/preferRestaurant/components/TitleArea';
 
@@ -50,7 +51,10 @@ function PreferRestaurant() {
           }
           leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
         />
-        <PickeatEndButton />
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <PickeatEndButton />
+          <VoteCompleteButton />
+        </div>
       </S.Footer>
     </S.Container>
   );

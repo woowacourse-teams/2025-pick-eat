@@ -6,10 +6,7 @@ import SharePanel from '@components/share/SharePanel';
 
 import ParticipantsAvatarGroup from '@domains/participants/participantsAvatarGroup/ParticipantsAvatarGroup';
 
-import { pickeat } from '@apis/pickeat';
-
 import styled from '@emotion/styled';
-import { Suspense, useMemo } from 'react';
 import { useSearchParams } from 'react-router';
 
 function TitleArea() {
@@ -24,10 +21,6 @@ function TitleArea() {
     handleUnmountModal,
   } = useModal();
 
-  const participantsState = useMemo(
-    () => pickeat.getParticipantsState(pickeatCode),
-    [pickeatCode]
-  );
   return (
     <S.Container>
       <S.Title>
@@ -63,9 +56,7 @@ function TitleArea() {
             />
           </Modal>
         </S.ShareContainer>
-        <Suspense>
-          <ParticipantsAvatarGroup participantsState={participantsState} />
-        </Suspense>
+        <ParticipantsAvatarGroup />
       </S.ToolContainer>
     </S.Container>
   );

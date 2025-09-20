@@ -1,24 +1,25 @@
 import Arrow from '@components/assets/icons/Arrow';
 import Tooltip from '@components/tooltip/Tooltip';
 
-import { ParticipantsState } from '@apis/pickeat';
-
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { use, useState } from 'react';
+import { useState } from 'react';
+import { useSearchParams } from 'react-router';
 
+import { useParticipantsState } from './hooks/useParticipantsState';
 import ParticipantAvatar from './ParticipantAvatar';
 import ParticipantInfoTooltip from './ParticipantInfoTooltip';
 
-type Props = {
-  participantsState: Promise<ParticipantsState>;
-};
+function ParticipantsAvatarGroup() {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
 
-function ParticipantsAvatarGroup({ participantsState }: Props) {
-  const participantsData = use(participantsState);
+  const participantsState = useParticipantsState(pickeatCode);
+
   const [opened, setOpened] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
+
   const onClickContainer = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setCoords({
@@ -38,7 +39,7 @@ function ParticipantsAvatarGroup({ participantsState }: Props) {
         data-tooltip-show-right="false"
         data-tooltip-type="lookup"
       >
-        {participantsData?.participants.map((p, i) => (
+        {participantsState.participants.map((p, i) => (
           <S.AvatarWrapper key={p.id} index={i}>
             <ParticipantAvatar participant={p} />
           </S.AvatarWrapper>
@@ -46,7 +47,7 @@ function ParticipantsAvatarGroup({ participantsState }: Props) {
         <Arrow size="xs" direction="down" color={THEME.PALETTE.gray[30]} />
       </S.Container>
       <Tooltip opened={opened} coords={coords} offsetX={60} showRight={false}>
-        <ParticipantInfoTooltip participantsData={participantsData} />
+        <ParticipantInfoTooltip participantsData={participantsState} />
       </Tooltip>
     </>
   );

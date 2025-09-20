@@ -26,7 +26,7 @@ function PickeatDecisionInfo() {
     };
 
     fetchRestaurants();
-  }, []);
+  }, [pickeatCode]);
 
   return (
     <S.Container>
