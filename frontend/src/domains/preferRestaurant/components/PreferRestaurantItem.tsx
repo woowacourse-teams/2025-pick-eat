@@ -35,7 +35,7 @@ function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
         }}
       />
 
-      <S.CardContent>
+      <S.Content>
         <S.TitleWrapper>
           <S.TagBox>
             {tags.length === 0 && <Badge>{category}</Badge>}
@@ -59,7 +59,7 @@ function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
             </S.LinkButton>
           )}
         </S.DetailBox>
-      </S.CardContent>
+      </S.Content>
       <LikeButton
         id={id}
         count={likeCount}
@@ -98,7 +98,7 @@ const S = {
     border-radius: ${({ theme }) => theme.RADIUS.medium};
     object-fit: cover;
   `,
-  CardContent: styled.div`
+  Content: styled.div`
     width: 100%;
     height: 100%;
     display: flex;
