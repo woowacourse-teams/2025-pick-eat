@@ -1,3 +1,5 @@
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 
 import { SIZE_MAP, SizeType } from './constants';
@@ -11,7 +13,7 @@ function ActivateCircle({ size, activate = false }: Props) {
   return (
     <S.Container
       width={SIZE_MAP[size]}
-      color={activate ? '#39D26C' : '#DE3412'}
+      color={activate ? THEME.PALETTE.green[50] : THEME.PALETTE.red[50]}
     />
   );
 }
