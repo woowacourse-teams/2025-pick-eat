@@ -48,12 +48,14 @@ function Wrapper() {
 }
 
 function ProtectedLayout() {
-  const { loggedIn, loading } = useAuth();
+  const { loggedIn, loading, hasToken, logoutUser } = useAuth();
   const location = useLocation();
 
   if (loading) return null;
 
-  if (!loggedIn) {
+  if (!loggedIn || !hasToken()) {
+    alert('로그인이 필요합니다.');
+    logoutUser();
     return (
       <Navigate to={ROUTE_PATH.LOGIN} state={{ from: location }} replace />
     );
