@@ -67,9 +67,7 @@ function RestaurantItem({
           </S.TitleWrapper>
 
           <S.DetailBox>
-            {distance !== 0 && (
-              <S.DetailText>식당까지 {distance}m</S.DetailText>
-            )}
+            {distance && <S.DetailText>식당까지 {distance}m</S.DetailText>}
             {placeUrl && (
               <S.LinkButton
                 href={menuUrl}

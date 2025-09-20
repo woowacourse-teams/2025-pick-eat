@@ -24,7 +24,6 @@ function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
   } = restaurant;
 
   const menuUrl = `${placeUrl}#menuInfo`;
-
   return (
     <S.Container>
       <S.Image
@@ -47,7 +46,7 @@ function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
         </S.TitleWrapper>
 
         <S.DetailBox>
-          {distance !== 0 && <S.DetailText>식당까지 {distance}m</S.DetailText>}
+          {distance && <S.DetailText>식당까지 {distance}m</S.DetailText>}
           {placeUrl && (
             <S.LinkButton
               href={menuUrl}
