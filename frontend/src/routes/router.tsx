@@ -10,7 +10,7 @@ import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
 import MatchResult from '@pages/MatchResult';
-import MyPage from '@pages/MyPage';
+import MyRoom from '@pages/myRoom/MyRoom';
 import OauthCallback from '@pages/OauthCallback';
 import PickeatDetail from '@pages/PickeatDetail';
 import PreferRestaurant from '@pages/PreferRestaurant';
@@ -53,12 +53,14 @@ function Wrapper() {
 }
 
 function ProtectedLayout() {
-  const { loggedIn, loading } = useAuth();
+  const { loggedIn, loading, hasToken, logoutUser } = useAuth();
   const location = useLocation();
 
   if (loading) return null;
 
-  if (!loggedIn) {
+  if (!loggedIn || !hasToken()) {
+    alert('로그인이 필요합니다.');
+    logoutUser();
     return (
       <Navigate to={ROUTE_PATH.LOGIN} state={{ from: location }} replace />
     );
@@ -88,7 +90,7 @@ const routes = createBrowserRouter([
       {
         Component: ProtectedLayout,
         children: [
-          { path: ROUTE_PATH.MY_PAGE, Component: MyPage },
+          { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
           { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
           { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
         ],
