@@ -1,16 +1,12 @@
 import Badge from '@components/labels/Badge';
 
-
 import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
-type Props = Pick<Restaurant,
- 'name' | 'tags' | 'distance'
->;
+type Props = Pick<Restaurant, 'name' | 'tags' | 'distance'>;
 
 function ExcludedRestaurantItem({ name, tags, distance }: Props) {
-
   return (
     <S.Container>
       <S.CardContainer>
@@ -25,13 +21,11 @@ function ExcludedRestaurantItem({ name, tags, distance }: Props) {
           </S.TitleWrapper>
           <S.DetailBox>
             <S.DetailText>식당까지 {distance}m</S.DetailText>
-            <S.LinkButton>
-              메뉴 보러가기
-            </S.LinkButton>
+            <S.LinkButton>메뉴 보러가기</S.LinkButton>
           </S.DetailBox>
         </S.CardContent>
         <S.Overlay>
-        <S.OverlayText>누군가에 의해 제외된 식당입니다</S.OverlayText>
+          <S.OverlayText>누군가에 의해 제외된 식당입니다</S.OverlayText>
         </S.Overlay>
       </S.CardContainer>
     </S.Container>
@@ -75,7 +69,6 @@ const S = {
 
     filter: blur(1px) brightness(0.88);
     opacity: 0.6;
-    
   `,
   Overlay: styled.div`
     width: 100%;
@@ -115,7 +108,7 @@ const S = {
 
     padding-left: ${({ theme }) => theme.PADDING.px2};
 
-    color: #1e293b;
+    color ${({ theme }) => theme.PALETTE.gray[100]};
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
     white-space: nowrap;
     text-overflow: ellipsis;
