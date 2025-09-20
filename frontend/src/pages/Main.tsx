@@ -1,11 +1,15 @@
 import ChoosePickeatType from '@domains/pickeat/components/ChoosePickeatType';
 import PublicWishlist from '@domains/wishlist/components/PublicWishlist';
 
+import { useShowToast } from 'shared/provider/ToastProvider';
+
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
 const Main = () => {
+  const showToast = useShowToast();
   return (
     <S.Container>
       <S.Section>
@@ -24,7 +28,11 @@ const Main = () => {
         </S.PaddingBox>
         <PublicWishlist />
       </S.Section>
-
+      <button
+        onClick={() => showToast({ mode: 'ERROR', message: 'ERRRORRRR' })}
+      >
+        click
+      </button>
       <S.Section>
         <S.PaddingBox
           style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
