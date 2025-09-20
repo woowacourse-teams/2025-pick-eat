@@ -1,3 +1,5 @@
+import ToastProvider from 'shared/provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
 
@@ -11,8 +13,10 @@ function Layout({ children }: Props) {
   return (
     <Container>
       <Wrapper>
-        <Header />
-        {children}
+        <ToastProvider>
+          <Header />
+          {children}
+        </ToastProvider>
       </Wrapper>
     </Container>
   );
