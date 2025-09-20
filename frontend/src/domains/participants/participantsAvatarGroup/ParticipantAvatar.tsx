@@ -58,7 +58,7 @@ const S = {
     background: ${({ backgroundColor }) => backgroundColor};
   `,
   Initial: styled.span`
-    color: #fff;
+    color: ${({ theme }) => theme.PALETTE.gray[0]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 };
