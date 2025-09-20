@@ -80,7 +80,7 @@ const PALETTE = {
     50: '#FF5A5F',
   },
   green: {
-    50: '#39D26C',
+    50: '#69aa7fff',
   },
   kakao: {
     50: '#FEE500',
