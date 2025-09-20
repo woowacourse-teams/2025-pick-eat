@@ -117,41 +117,6 @@ const S = {
     flex-direction: column;
   `,
 
-  IconContainer: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-  `,
-  IconWrapper: styled.div<{ excluded: boolean }>`
-    width: 28px;
-    height: 28px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 6px;
-
-    border-radius: 1000px;
-
-    ${({ excluded, theme }) =>
-      excluded
-        ? `
-      background-color: ${theme.PALETTE.gray[50]};
-      color: ${theme.PALETTE.gray[0]};
-      &:hover {
-        background-color: ${theme.PALETTE.gray[60]};
-      }
-    `
-        : `
-      background-color: ${theme.PALETTE.primary[60]};
-      color: ${theme.PALETTE.gray[0]};
-      &:hover {
-        background-color: ${theme.PALETTE.primary[70]};
-      }
-    `}
-  `,
   TitleWrapper: styled.div`
     display: flex;
     flex-direction: column;
