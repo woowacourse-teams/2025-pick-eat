@@ -1,39 +1,31 @@
 import { ROUTE_PATH } from '@routes/routePath';
 
+import { apiClient, ApiError } from './apiClient';
+
 export const login = {
   postKakao: async (
     code: string
   ): Promise<{ accessToken: string; status: number }> => {
-    const baseUrl = window.location.origin + '/';
+    const baseUrl = process.env.BASE_URL;
     const redirectPath = ROUTE_PATH.OAUTH_CALLBACK.replace(/^\//, '');
-    // TODO : 리다이렉트 URL 환경변수에서 뽑아쓰도록 다시 되돌려놓기
-    // const redirectUrl = process.env.BASE_URL;
-
     const path = 'auth/code';
-    const response = await fetch(`${process.env.API_BASE_URL}${path}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+
+    try {
+      const data = await apiClient.post<{ token: string }>(path, {
         code,
         provider: 'kakao',
         redirectUrl: `${baseUrl}${redirectPath}`,
-      }),
-      credentials: 'include',
-    });
-    if (response.status === 200 || response.status === 401) {
-      const text = await response.text();
-      if (text === '' || !text)
-        return { accessToken: '', status: response.status };
-      const data = JSON.parse(text);
-      return { accessToken: data.token, status: response.status };
-    } else {
-      const error = new Error('로그인 실패');
-      (error as Error & { status?: number }).status = response.status;
+      });
+      if (data && data.token) return { accessToken: data.token, status: 200 };
+      return { accessToken: '', status: 401 };
+    } catch (error) {
+      if (error instanceof ApiError && error.status === 401) {
+        return { accessToken: '', status: 401 };
+      }
       throw error;
     }
   },
+
   postSignUp: async ({
     token,
     nickname,
@@ -42,27 +34,20 @@ export const login = {
     nickname: string;
   }) => {
     const path = 'auth/signup';
-    const response = await fetch(`${process.env.API_BASE_URL}${path}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ nickname }),
-    });
-    if (!response.ok) throw new Error('요청 실패');
-    return response.json();
+    const data = await apiClient.post<{ token: string; nickname: string }>(
+      path,
+      { nickname },
+      { Authorization: `Bearer ${token}` }
+    );
+
+    return data ?? { token: '', nickname: '' };
   },
+
   postLogin: async ({ token }: { token: string }) => {
     const path = 'auth/login';
-    const response = await fetch(`${process.env.API_BASE_URL}${path}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+    const data = await apiClient.post<{ token: string }>(path, undefined, {
+      Authorization: `Bearer ${token}`,
     });
-    if (!response.ok) throw new Error('로그인 실패');
-    return response.json();
+    return data ?? { token: '' };
   },
 };
