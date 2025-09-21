@@ -2,6 +2,7 @@ import Button from '@components/actions/Button';
 import Input from '@components/actions/Input';
 import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
+import QRCode from '@components/share/QRCode';
 
 import { PickeatType } from '@apis/pickeat';
 
@@ -16,12 +17,15 @@ import styled from '@emotion/styled';
 import { FormEvent, use } from 'react';
 
 import { useJoinPickeat } from '../hooks/useJoinPickeat';
-import { makeNickname } from '../utils/makeNickname';
 
-function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
+type Props = {
+  pickeatData: Promise<PickeatType>;
+  defaultNickname: string;
+};
+
+function PickeatInfo({ pickeatData, defaultNickname }: Props) {
   const pickeatDetail = use(pickeatData);
-  const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatDetail.code}`;
-
+  const pickeatLink = window.location.href;
   const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
 
   const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
@@ -50,15 +54,17 @@ function PickeatInfo({ pickeatData }: { pickeatData: Promise<PickeatType> }) {
   return (
     <S.Wrapper onSubmit={submitJoinPickeatForm}>
       <S.PickeatName>{pickeatDetail.name}</S.PickeatName>
-
+      <S.Description>함께 픽잇하고 싶은 친구에게 공유해보세요!</S.Description>
+      <QRCode url={pickeatLink} />
       <S.FormWrapper>
         <Input
-          defaultValue={makeNickname()}
+          defaultValue={defaultNickname}
           name="nickname"
           label="닉네임 입력"
           placeholder="사용하실 닉네임을 입력하세요."
         />
         <ErrorMessage message={error} />
+
         <Button text="입장" />
       </S.FormWrapper>
 
@@ -80,8 +86,9 @@ const S = {
     width: 70%;
     display: flex;
     flex-direction: column;
+    align-items: center;
 
-    gap: ${({ theme }) => theme.GAP.level6};
+    gap: ${({ theme }) => theme.GAP.level4};
     position: relative;
 
     padding: ${({ theme }) => theme.PADDING.p10};
@@ -97,8 +104,9 @@ const S = {
 
   PickeatName: styled.h1`
     font: ${({ theme }) => theme.FONTS.heading.large};
-    text-align: center;
   `,
+
+  Description: styled.p``,
 
   LocationInfo: styled.div`
     display: flex;
@@ -123,6 +131,7 @@ const S = {
   Radius: styled.span``,
 
   FormWrapper: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;

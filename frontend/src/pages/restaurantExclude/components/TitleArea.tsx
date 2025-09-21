@@ -1,8 +1,23 @@
 import Cross from '@components/assets/icons/Cross';
+import Share from '@components/assets/icons/Share';
+import Modal from '@components/modal/Modal';
+import { useModal } from '@components/modal/useModal';
+import SharePanel from '@components/share/SharePanel';
 
 import styled from '@emotion/styled';
+import { useSearchParams } from 'react-router';
 
 function TitleArea() {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+  const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatCode}`;
+  const {
+    mounted,
+    opened,
+    handleCloseModal,
+    handleOpenModal,
+    handleUnmountModal,
+  } = useModal();
   return (
     <S.Container>
       <S.Title>
@@ -22,6 +37,21 @@ function TitleArea() {
           </S.TitleText>
         </S.IconTextBox>
       </S.Title>
+
+      <S.ShareContainer onClick={handleOpenModal}>
+        <Share size="sm" />
+        <Modal
+          opened={opened}
+          mounted={mounted}
+          onClose={handleCloseModal}
+          onUnmount={handleUnmountModal}
+        >
+          <SharePanel
+            url={pickeatLink}
+            description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
+          />
+        </Modal>
+      </S.ShareContainer>
     </S.Container>
   );
 }
@@ -30,6 +60,9 @@ export default TitleArea;
 
 const S = {
   Container: styled.div`
+    display: flex;
+    justify-content: space-between;
+
     padding: ${({ theme }) => theme.PADDING.p7};
     padding-left: ${({ theme }) => theme.PADDING.px6};
 
@@ -93,4 +126,5 @@ const S = {
 
     border-radius: 1000px;
   `,
+  ShareContainer: styled.button``,
 };

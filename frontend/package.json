@@ -37,6 +37,7 @@
     "eslint-import-resolver-typescript": "^4.4.4",
     "jest": "^30.0.4",
     "jest-environment-jsdom": "^30.0.4",
+    "qrcode.react": "^4.2.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-ga4": "^2.1.0",

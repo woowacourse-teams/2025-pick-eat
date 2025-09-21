@@ -4,7 +4,8 @@ export const useModal = () => {
   const [mounted, setMounted] = useState(false);
   const [opened, setOpened] = useState(false);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (e?: MouseEvent) => {
+    e?.stopPropagation();
     setOpened(false);
   };
 
@@ -13,7 +14,8 @@ export const useModal = () => {
     setMounted(true);
   };
 
-  const handleUnmountModal = () => {
+  const handleUnmountModal = (e?: MouseEvent) => {
+    e?.stopPropagation();
     setOpened(false);
     setMounted(false);
   };
