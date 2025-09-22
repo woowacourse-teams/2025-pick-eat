@@ -1,4 +1,4 @@
-import ToastProvider from 'shared/provider/ToastProvider';
+import ToastProvider from '@provider/ToastProvider';
 
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';

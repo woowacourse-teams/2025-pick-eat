@@ -45,7 +45,7 @@ const S = {
 
     font: ${({ theme }) => theme.FONTS.body.small};
 
-    animation:fade-animation  0.5s ease-out;
+    animation: fade-animation 0.5s ease-out;
     border-radius: ${({ theme }) => theme.RADIUS.medium2};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level4};
 
