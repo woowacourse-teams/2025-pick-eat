@@ -15,7 +15,7 @@ type Props = {
 function Result({ resultPromise }: Props) {
   const result = resultPromise ? use(resultPromise) : null;
   if (!result) return null;
-  const { name, type, pictureUrls, placeUrl } = result;
+  const { name, pictureUrls, placeUrl } = result;
 
   return (
     <>

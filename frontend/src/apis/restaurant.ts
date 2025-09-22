@@ -52,7 +52,7 @@ export const convertResponseToRestaurant = ({
   name: name.toString(),
   category: category,
   tags: tags.map(tag => tag.toString()),
-  distance: Number(distance),
+  distance: distance ? Number(distance) : null,
   placeUrl: placeUrl ? placeUrl.toString() : '',
   roadAddressName: roadAddressName.toString(),
   likeCount: Number(likeCount),
