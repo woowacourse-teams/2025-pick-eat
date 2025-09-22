@@ -58,7 +58,6 @@ function RestaurantItem({
         <S.CardContent excluded={excluded}>
           <S.TitleWrapper>
             <S.TagBox>
-              {tags.length === 0 && <Badge>{category}</Badge>}
               {tags.map(tag => (
                 <Badge key={tag}>{tag}</Badge>
               ))}
