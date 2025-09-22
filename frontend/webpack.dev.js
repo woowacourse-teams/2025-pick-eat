@@ -1,6 +1,8 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { merge } from 'webpack-merge';
 
 import common from './webpack.common.js';
@@ -10,15 +12,26 @@ const __dirname = path.dirname(__filename);
 
 const devConfig = {
   mode: 'production',
-  optimization: {
-    minimize: true,
-    splitChunks: { chunks: 'all' },
-  },
+  plugins: [new MiniCssExtractPlugin()],
+
   output: {
     path: path.resolve(__dirname, 'dist/dev'),
     filename: '[name].[contenthash].js',
     publicPath: '/',
     clean: true,
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
+    ],
+  },
+  optimization: {
+    minimize: true,
+    splitChunks: { chunks: 'all' },
+    minimizer: ['...', new CssMinimizerPlugin()],
   },
 };
 
