@@ -54,10 +54,13 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: ${({ theme }) => theme.GAP.level6};
   `,
 
   ButtonWrapper: styled.div`
-    width: 80%;
+    width: 100%;
+    display: flex;
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
 
   Name: styled.p`
