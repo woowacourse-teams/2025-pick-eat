@@ -21,14 +21,11 @@ function Result({ resultPromise }: Props) {
     <>
       <S.Wrapper>
         <S.Name>{name}</S.Name>
-        {type === 'WISH' && (
-          <S.Image
-            src={pictureUrls[0] || './images/restaurant.png'}
-            alt={name}
-            onError={e => (e.currentTarget.src = '/images/person.svg')}
-          />
-        )}
-
+        <S.Image
+          src={pictureUrls[0] || './images/restaurant.png'}
+          alt={name}
+          onError={e => (e.currentTarget.src = '/images/person.svg')}
+        />
         <S.ButtonWrapper>
           {placeUrl && (
             <Button
