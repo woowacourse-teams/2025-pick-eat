@@ -158,7 +158,7 @@ class UserServiceTest {
             entityManager.persist(new User("테스트유저1", 1L, "kakao"));
             entityManager.persist(new User("테스트유저2", 2L, "kakao"));
             entityManager.persist(new User("유저", 2L, "kakao"));
-            entityManager.persist(new User("테스트유저3", 3L, "kakao"));
+            entityManager.persist(new User("유저3", 3L, "kakao"));
             entityManager.flush();
             entityManager.clear();
 
@@ -167,9 +167,9 @@ class UserServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(results).hasSize(4),
+                    () -> assertThat(results).hasSize(2),
                     () -> assertThat(results.stream().map(UserResponse::nickname).toList())
-                            .containsExactlyInAnyOrder("유저", "테스트유저1", "테스트유저2", "테스트유저3")
+                            .containsExactlyInAnyOrder("유저", "유저3")
             );
         }
 
@@ -179,7 +179,7 @@ class UserServiceTest {
             // given
             entityManager.persist(new User("테스트유저1", 1L, "kakao"));
             entityManager.persist(new User("유저", 2L, "kakao"));
-            entityManager.persist(new User("테스트유저2", 3L, "kakao"));
+            entityManager.persist(new User("유저2", 3L, "kakao"));
             entityManager.flush();
             entityManager.clear();
 
@@ -188,7 +188,7 @@ class UserServiceTest {
 
             // then
             assertAll(
-                    () -> assertThat(results).hasSize(3),
+                    () -> assertThat(results).hasSize(2),
                     () -> assertThat(results.getFirst().nickname()).isEqualTo("유저")
             );
         }
