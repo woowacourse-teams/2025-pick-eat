@@ -89,6 +89,7 @@ const routes = createBrowserRouter([
         Component: ProtectedLayout,
         children: [
           { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
+          { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
           { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
           { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
         ],
