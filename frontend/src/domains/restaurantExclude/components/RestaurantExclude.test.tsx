@@ -30,6 +30,9 @@ const sampleRestaurants: Restaurant[] = [
     roadAddressName: '서울시 송파구',
     likeCount: 0,
     isExcluded: false,
+    pictureUrls: [],
+    type: 'WISH',
+    isLiked: false,
   },
   {
     id: 2,
@@ -41,6 +44,9 @@ const sampleRestaurants: Restaurant[] = [
     roadAddressName: '서울시 송파구',
     likeCount: 0,
     isExcluded: false,
+    pictureUrls: [],
+    type: 'WISH',
+    isLiked: false,
   },
 ] as Restaurant[];
 

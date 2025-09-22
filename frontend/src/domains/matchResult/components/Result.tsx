@@ -15,20 +15,17 @@ type Props = {
 function Result({ resultPromise }: Props) {
   const result = resultPromise ? use(resultPromise) : null;
   if (!result) return null;
-  const { name, type, pictureUrls, placeUrl } = result;
+  const { name, pictureUrls, placeUrl } = result;
 
   return (
     <>
       <S.Wrapper>
         <S.Name>{name}</S.Name>
-        {type === 'WISH' && (
-          <S.Image
-            src={pictureUrls[0] || './images/restaurant.png'}
-            alt={name}
-            onError={e => (e.currentTarget.src = '/images/person.svg')}
-          />
-        )}
-
+        <S.Image
+          src={pictureUrls[0] || './images/restaurant.png'}
+          alt={name}
+          onError={e => (e.currentTarget.src = '/images/person.svg')}
+        />
         <S.ButtonWrapper>
           {placeUrl && (
             <Button
