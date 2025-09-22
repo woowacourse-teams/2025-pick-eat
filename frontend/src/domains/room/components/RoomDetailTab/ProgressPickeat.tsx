@@ -1,3 +1,4 @@
+import ActivateCircle from '@components/assets/icons/ActivateCircle';
 import Enter from '@components/assets/icons/Enter';
 
 import { ProgressPickeat } from '@apis/room';
@@ -23,7 +24,7 @@ function ProgressPickeat({
         {pickeatList.map(pickeat => (
           <S.ProgressPickeat key={pickeat.id}>
             <S.TitleArea>
-              <S.ProgressIcon>🟢</S.ProgressIcon>
+              <ActivateCircle size="xxs" activate={true} />
               <S.Name>{pickeat.name}</S.Name>
             </S.TitleArea>
 

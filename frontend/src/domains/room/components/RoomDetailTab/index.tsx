@@ -33,7 +33,7 @@ function RoomDetailTab() {
         <RoomDetailName roomData={getRoom()} />
         <S.ButtonWrapper>
           <Button
-            text="위시로 픽잇!"
+            text="찜으로 픽잇!"
             leftIcon="🤍"
             onClick={() => navigate(generateRouterPath.pickeatWithWish(roomId))}
           />

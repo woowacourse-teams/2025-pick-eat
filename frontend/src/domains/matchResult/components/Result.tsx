@@ -1,6 +1,9 @@
 import Button from '@components/actions/Button';
+import Share from '@components/assets/icons/Share';
 
 import { PickeatResult } from '@apis/pickeat';
+
+import { copyLink } from '@utils/copyLink';
 
 import styled from '@emotion/styled';
 import { use } from 'react';
@@ -22,8 +25,8 @@ function Result({ resultPromise }: Props) {
         alt={name}
         onError={e => (e.currentTarget.src = '/images/person.svg')}
       />
-      {placeUrl && (
-        <S.ButtonWrapper>
+      <S.ButtonWrapper>
+        {placeUrl && (
           <Button
             color="primary"
             text="식당 상세 정보"
@@ -31,8 +34,15 @@ function Result({ resultPromise }: Props) {
               placeUrl && window.open(placeUrl, '_blank', 'noopener,noreferrer')
             }
           />
-        </S.ButtonWrapper>
-      )}
+        )}
+        <Button
+          type="button"
+          leftIcon={<Share size="sm" />}
+          text="링크공유"
+          color="secondary"
+          onClick={() => copyLink(window.location.href)}
+        />
+      </S.ButtonWrapper>
     </S.Wrapper>
   );
 }
@@ -44,11 +54,10 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level3};
   `,
 
   ButtonWrapper: styled.div`
-    width: 100%;
+    width: 80%;
   `,
 
   Name: styled.p`

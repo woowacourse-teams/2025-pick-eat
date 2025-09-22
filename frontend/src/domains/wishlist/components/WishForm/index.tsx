@@ -46,7 +46,13 @@ function WishForm({ formData, onFormChange, onSubmit, errorMessage }: Props) {
           value={formData.roadAddressName}
           onChange={e => onFormChange('roadAddressName', e.target.value)}
         />
-        <S.Label htmlFor="thumbnail">위시 썸네일</S.Label>
+        <Input
+          label="링크"
+          name="placeUrl"
+          value={formData.placeUrl}
+          onChange={e => onFormChange('placeUrl', e.target.value)}
+        />
+        <S.Label htmlFor="thumbnail">찜 썸네일</S.Label>
         <input
           id="thumbnail"
           type="file"
@@ -80,7 +86,7 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
-    overflow: scroll;
+    overflow-y: scroll;
   `,
 
   Label: styled.label`

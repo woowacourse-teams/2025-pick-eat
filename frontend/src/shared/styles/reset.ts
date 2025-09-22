@@ -2,7 +2,12 @@ import { css } from '@emotion/react';
 
 const reset = css`
   @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css');
-  @import url('https://cdn.jsdelivr.net/gh/fonts-archive/BMKkubulim/BMKkubulim.css');
+  @import url('https://cdn.jsdelivr.net/gh/fonts-archive/BMKkubulim/subsets/BMKkubulim-dynamic-subset.css');
+  @font-face {
+    font-family: 'BM Kkubulim Static';
+    src: url(/fonts/BMKkubulim-subset.woff2);
+    font-display: swap;
+  }
 
   html,
   body,

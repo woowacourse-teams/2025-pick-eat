@@ -23,6 +23,7 @@ export type WishesResponse = {
   roadAddressName: string;
   tags: string[];
   wishlistId: number;
+  placeUrl?: string;
 };
 
 export type Wishes = {
@@ -33,6 +34,7 @@ export type Wishes = {
   roadAddressName: string;
   tags: string[];
   wishlistId: number;
+  placeUrl?: string;
 };
 
 export type WishlistType = {
@@ -60,6 +62,7 @@ const convertResponseToWishes = (data: WishesResponse[]) => {
     roadAddressName: d.roadAddressName,
     tags: d.tags,
     wishlistId: d.wishlistId,
+    placeUrl: d.placeUrl,
   }));
 };
 

@@ -1,6 +1,7 @@
 export type SizeType = keyof typeof SIZE_MAP;
 
 export const SIZE_MAP = {
+  xxs: '8',
   xs: '16',
   sm: '24',
   lg: '32',
