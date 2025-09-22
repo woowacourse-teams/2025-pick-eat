@@ -43,11 +43,18 @@ const PublicWishlist = () => {
     <S.Container>
       {WISHLIST_MOCK_DATA.map(item => (
         <S.ThumbnailBox key={item.id}>
-          <S.ThumbnailImg
-            key={item.id}
-            onClick={() => handlePublicWishlistClick(item.id)}
-            imgUrl={item.image}
-          />
+          <picture>
+            <source
+              type="image/webp"
+              srcSet={item.image.replace(/\.(png|jpg|jpeg)$/, '.webp')}
+            />
+            <S.ThumbnailImg
+              as="img"
+              src={item.image}
+              alt={item.name}
+              loading="lazy"
+            />
+          </picture>
           <S.TitleBox onClick={() => handlePublicWishlistClick(item.id)}>
             <S.Title>시작하기</S.Title>
             <S.LinkButton>
@@ -89,14 +96,10 @@ const S = {
     box-shadow: rgb(0 0 0 / 10%) 0 4px 12px;
     cursor: pointer;
   `,
-  ThumbnailImg: styled.div<{ imgUrl: string }>`
+  ThumbnailImg: styled.img`
     width: 140px;
     height: 140px;
 
-    border: 5px solid white;
-
-    background-image: url(${({ imgUrl }) => imgUrl});
-    background-size: cover;
     border-radius: ${({ theme }) => theme.RADIUS.medium2};
   `,
   TitleBox: styled.div`
