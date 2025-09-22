@@ -178,7 +178,7 @@ export const pickeat = {
       if (response) return convertResponseToParticipating(response);
       return null;
     } catch (e) {
-      if (e instanceof ApiError && e.status === 401) {
+      if (e instanceof ApiError && (e.status === 401 || e.status === 400)) {
         return null;
       }
       throw e;
