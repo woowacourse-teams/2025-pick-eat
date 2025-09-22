@@ -9,10 +9,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const devConfig = {
-  mode: 'development',
-  devtool: 'inline-source-map',
+  mode: 'production',
   optimization: {
-    minimize: false,
+    minimize: true,
+    splitChunks: { chunks: 'all' },
   },
   output: {
     path: path.resolve(__dirname, 'dist/dev'),
