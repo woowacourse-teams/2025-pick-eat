@@ -31,6 +31,7 @@ function WishForm({ formData, onFormChange, onSubmit, errorMessage }: Props) {
       <S.InputArea>
         <S.Label>카테고리 *</S.Label>
         <CategorySection
+          value={formData.category}
           onFormChange={value => onFormChange('category', value)}
         />
 
@@ -78,11 +79,12 @@ export default WishForm;
 const S = {
   Form: styled.form`
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
   InputArea: styled.div`
-    height: 340px;
+    height: 400px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
