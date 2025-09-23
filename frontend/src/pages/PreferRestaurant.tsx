@@ -1,5 +1,5 @@
 import PickeatEndButton from '@domains/matchResult/components/PickeatEndButton';
-import VoteCompleteButton from '@domains/matchResult/components/VoteCompleteButton';
+import PickeatVoteCompleteButton from '@domains/matchResult/components/PickeatVoteCompleteButton';
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 import TitleArea from '@domains/preferRestaurant/components/TitleArea';
 
@@ -53,7 +53,7 @@ function PreferRestaurant() {
         />
         <div style={{ display: 'flex', gap: '8px' }}>
           <PickeatEndButton />
-          <VoteCompleteButton />
+          <PickeatVoteCompleteButton />
         </div>
       </S.Footer>
     </S.Container>

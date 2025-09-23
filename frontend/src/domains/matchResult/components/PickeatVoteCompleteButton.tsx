@@ -2,11 +2,9 @@ import Button from '@components/actions/Button';
 
 import { participants } from '@apis/participants';
 
-import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
-function VoteCompleteButton() {
-  const [voteCompleted, setVoteCompleted] = useState(false);
+function PickeatVoteCompleteButton() {
   const [loading, setLoading] = useState(false);
 
   const handleVoteCompleteClick = async () => {
@@ -16,7 +14,6 @@ function VoteCompleteButton() {
       // TODO : 투표 버튼에 쓰로틀링과 로딩 UI 안에 넣어서 서버 통신임을 나타내기
       await participants.patchComplete();
       alert('투표 완료 상태가 되었습니다. (계속 투표에 참여하실 수 있습니다.)');
-      setVoteCompleted(true);
     } catch {
       alert('투표 완료 상태 변경에 실패했습니다. 다시 시도해주세요.');
     } finally {
@@ -28,8 +25,7 @@ function VoteCompleteButton() {
   useEffect(() => {
     const fetchMyStatus = async () => {
       try {
-        const { isCompleted } = await participants.getMyStatus();
-        setVoteCompleted(isCompleted);
+        await participants.getMyStatus();
       } catch {
         alert(
           '내 투표 상태를 불러오는데 실패했습니다. 새로고침 후 다시 시도해주세요.'
@@ -40,22 +36,14 @@ function VoteCompleteButton() {
   }, []);
 
   return (
-    <S.Container onClick={handleVoteCompleteClick} aria-disabled={loading}>
-      <Button
-        text={voteCompleted ? '투표 참여완료!' : '투표 완료하기'}
-        disabled={loading || voteCompleted}
-        color={voteCompleted ? 'gray' : 'primary'}
-      />
-    </S.Container>
+    <Button
+      onClick={handleVoteCompleteClick}
+      aria-disabled={loading}
+      text="투표 완료하기"
+      disabled={loading}
+      color="primary"
+    />
   );
 }
 
-export default VoteCompleteButton;
-
-const S = {
-  Container: styled.div`
-    width: 120px;
-    height: fit-content;
-    cursor: pointer;
-  `,
-};
+export default PickeatVoteCompleteButton;
