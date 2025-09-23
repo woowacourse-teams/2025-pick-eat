@@ -1,5 +1,3 @@
-import PickeatEndButton from '@domains/matchResult/components/PickeatEndButton';
-import PickeatVoteCompleteButton from '@domains/matchResult/components/PickeatVoteCompleteButton';
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
 
 import Button from '@components/actions/Button';
@@ -20,6 +18,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 
 import TitleSection from '../components/TitleSection';
 
+import PickeatEndTriggerButton from './components/PickeatEndTriggerButton';
 import Title from './components/Title';
 
 function PreferRestaurant() {
@@ -56,10 +55,7 @@ function PreferRestaurant() {
           }
           leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
         />
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <PickeatEndButton />
-          <PickeatVoteCompleteButton />
-        </div>
+        <PickeatEndTriggerButton />
       </S.Footer>
     </S.Container>
   );

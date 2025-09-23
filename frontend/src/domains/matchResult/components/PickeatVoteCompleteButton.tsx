@@ -4,11 +4,16 @@ import { participants } from '@apis/participants';
 
 import { useEffect, useState } from 'react';
 
-function PickeatVoteCompleteButton() {
+type Props = {
+  onClick?: () => void;
+};
+
+function PickeatVoteCompleteButton({ onClick }: Props) {
   const [loading, setLoading] = useState(false);
 
   const handleVoteCompleteClick = async () => {
     if (loading) return;
+    onClick?.();
     setLoading(true);
     try {
       // TODO : 투표 버튼에 쓰로틀링과 로딩 UI 안에 넣어서 서버 통신임을 나타내기

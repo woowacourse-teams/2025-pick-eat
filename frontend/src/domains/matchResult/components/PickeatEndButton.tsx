@@ -27,7 +27,7 @@ function PickeatEndButton() {
 
   return (
     <>
-      <Button text="투표 종료" onClick={openEndModal} />
+      <Button text="픽잇 결과보기" color="secondary" onClick={openEndModal} />
       <Modal
         opened={opened}
         mounted={mounted}
