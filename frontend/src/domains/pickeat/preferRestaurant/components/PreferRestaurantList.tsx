@@ -1,4 +1,4 @@
-import PickeatEndModal from '@domains/matchResult/components/PickeatEndModal';
+import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndModal';
 
 import { restaurant, Restaurant } from '@apis/restaurant';
 

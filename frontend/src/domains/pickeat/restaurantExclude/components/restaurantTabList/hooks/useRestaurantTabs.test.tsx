@@ -1,4 +1,4 @@
-import { RestaurantExcludeProvider } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
+import { RestaurantExcludeProvider } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
 import { Restaurant } from '@apis/restaurant';
 

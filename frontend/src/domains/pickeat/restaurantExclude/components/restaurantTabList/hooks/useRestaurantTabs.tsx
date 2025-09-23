@@ -1,6 +1,6 @@
 import CheckBox from '@components/actions/Checkbox';
 
-import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
+import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
 import { Restaurant } from '@apis/restaurant';
 

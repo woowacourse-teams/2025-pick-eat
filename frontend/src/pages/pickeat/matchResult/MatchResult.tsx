@@ -1,4 +1,4 @@
-import Result from '@domains/matchResult/components/Result';
+import Result from '@domains/pickeat/matchResult/components/Result';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Confetti from '@components/Confetti';

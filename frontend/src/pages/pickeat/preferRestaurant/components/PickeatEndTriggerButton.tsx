@@ -1,5 +1,5 @@
-import PickeatEndButton from '@domains/matchResult/components/PickeatEndButton';
-import PickeatVoteCompleteButton from '@domains/matchResult/components/PickeatVoteCompleteButton';
+import PickeatEndButton from '@domains/pickeat/matchResult/components/PickeatEndButton';
+import PickeatVoteCompleteButton from '@domains/pickeat/matchResult/components/PickeatVoteCompleteButton';
 
 import styled from '@emotion/styled';
 import { useState } from 'react';

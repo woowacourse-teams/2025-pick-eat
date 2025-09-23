@@ -2,7 +2,7 @@ import Cross from '@components/assets/icons/Cross';
 import Revert from '@components/assets/icons/Revert';
 import Badge from '@components/labels/Badge';
 
-import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
+import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
 import { Restaurant } from '@apis/restaurant';
 

@@ -3,7 +3,7 @@ import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 import SharePanel from '@components/share/SharePanel';
 
-import ParticipantsAvatarGroup from '@domains/participants/participantsAvatarGroup/ParticipantsAvatarGroup';
+import ParticipantsAvatarGroup from '@domains/pickeat/participants/participantsAvatarGroup/ParticipantsAvatarGroup';
 
 import { THEME } from '@styles/global';
 import { setMobileStyle } from '@styles/mediaQuery';

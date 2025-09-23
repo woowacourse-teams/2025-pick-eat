@@ -1,7 +1,7 @@
 import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
 
-import { useRestaurantExcludeContext } from '@domains/restaurantExclude/context/RestaurantExcludeProvider';
+import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
 import { restaurants } from '@apis/restaurants';
 
