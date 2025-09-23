@@ -1,6 +1,9 @@
 import Button from '@components/actions/Button';
 import People from '@components/assets/icons/People';
 
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
+
+import { pickeat } from '@apis/pickeat';
 import { Room } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
@@ -14,6 +17,16 @@ import { useNavigate } from 'react-router';
 function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
   const roomList = use(roomsData);
   const navigate = useNavigate();
+
+  const clickWishPickeat = async (roomId: number, wishlistId: number) => {
+    try {
+      const code = await pickeat.post(roomId, makePickeatName());
+      await pickeat.postWish(wishlistId, code);
+      if (code) navigate(generateRouterPath.pickeatDetail(code));
+    } catch (e) {
+      alert(e);
+    }
+  };
 
   return (
     <S.Container>
@@ -34,9 +47,7 @@ function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
                 text="선택"
                 size="sm"
                 rightIcon="🤍"
-                onClick={() =>
-                  navigate(generateRouterPath.pickeatWithWish(room.id))
-                }
+                onClick={() => clickWishPickeat(room.id, room.wishlistId)}
               />
             </S.List>
           ))
