@@ -1,7 +1,7 @@
 name: Build and Deploy
 
 on:
-  pull_request:
+  push:
     branches: [ "back/dev" ]
 
 jobs:
@@ -44,6 +44,7 @@ jobs:
 
       - name: Back Up Image For Rollback
         run: |
+          # secrets 직접 사용
           docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest || true
           docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous || true
           docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous || true
@@ -52,7 +53,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./backend
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
@@ -104,7 +105,8 @@ jobs:
         run: |
           cd /home/ubuntu/docker
           echo "Health check failed. Rolling back to previous version..."
-          sed -i 's/:latest/:previous/g' docker-compose.yml
+          # 특정 이미지만 롤백 (다른 서비스는 영향 없음)
+          sed -i 's/pickeat\/pickeat:latest/pickeat\/pickeat:previous/g' docker-compose.yml
           docker-compose up -d --build backend
           echo "Rollback completed using previous image"
 
@@ -129,3 +131,4 @@ jobs:
           cd /home/ubuntu/docker && docker-compose ps
           echo "=== All Docker Processes ==="
           docker ps
+          docker image prune -f
