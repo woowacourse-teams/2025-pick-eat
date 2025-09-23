@@ -14,11 +14,13 @@ import PickeatDecisionInfo from './PickeatDecisionInfo';
 type Props = {
   onCancel?: () => void;
   onConfirm?: () => void;
+  remainingCount: number;
 };
 
 function PickeatEndConfirm({
   onCancel = () => {},
   onConfirm = () => {},
+  remainingCount,
 }: Props) {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
@@ -43,7 +45,17 @@ function PickeatEndConfirm({
 
   return (
     <S.Container>
-      <S.Title>정말 종료하시겠습니까?</S.Title>
+      <S.Title>
+        {remainingCount === 0 || (
+          <>
+            <S.PointText>잠깐✋</S.PointText>
+            {remainingCount}명이 투표를 완료하지 않았어요!
+            <br />
+          </>
+        )}
+        정말 종료하시겠습니까?
+      </S.Title>
+
       <PickeatDecisionInfo />
       <S.Wrapper>
         <Button text="취소" color="gray" onClick={onCancel} />
@@ -65,6 +77,11 @@ const S = {
   `,
   Title: styled.p`
     font: ${({ theme }) => theme.FONTS.heading.medium};
+    text-align: center;
+  `,
+  PointText: styled.p`
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
   `,
   Wrapper: styled.div`
     width: 100%;

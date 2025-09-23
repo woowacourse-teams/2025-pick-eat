@@ -57,6 +57,7 @@ function PickeatEndButton() {
         <PickeatEndConfirm
           onCancel={handleUnmountModal}
           onConfirm={handleUnmountModal}
+          remainingCount={remainingCount}
         />
       </Modal>
     </>
