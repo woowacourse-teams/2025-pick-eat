@@ -23,13 +23,16 @@ export const useCreateRoom = () => {
     }
 
     try {
-      const roomId = await room.post(roomName as string);
-      await room.postMember(
-        roomId,
-        selectedMemberList.map(member => member.id)
-      );
+      const roomData = await room.post(roomName as string);
+      if (!roomData) return;
+      if (selectedMemberList.length > 0) {
+        await room.postMember(
+          roomData.id,
+          selectedMemberList.map(member => member.id)
+        );
+      }
       alert('방생성 완료!');
-      navigate(generateRouterPath.roomDetail(roomId));
+      navigate(generateRouterPath.roomDetail(roomData.id, roomData.wishlistId));
     } catch {
       setError('방 생성 중 문제가 발생했습니다.');
     }

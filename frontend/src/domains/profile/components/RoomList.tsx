@@ -27,7 +27,11 @@ function RoomList({ roomsData }: Props) {
           roomList.map(room => (
             <S.List
               key={room.id}
-              onClick={() => navigate(generateRouterPath.roomDetail(room.id))}
+              onClick={() =>
+                navigate(
+                  generateRouterPath.roomDetail(room.id, room.wishlistId)
+                )
+              }
             >
               <S.RoomInfo>
                 <S.Name>{room.name}</S.Name>

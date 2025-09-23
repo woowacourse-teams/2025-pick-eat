@@ -1,6 +1,6 @@
-import PublicWishGroupTab from '@domains/room/components/PublicWishGroupTab';
 import RoomDetailTab from '@domains/room/components/RoomDetailTab';
-import WishlistGroupTab from '@domains/room/components/WishlistGroupTab';
+import TemplatesTab from '@domains/room/components/TemplatesTab/TemplatesTab';
+import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
@@ -14,7 +14,7 @@ import styled from '@emotion/styled';
 import { Suspense, useMemo } from 'react';
 
 function RoomDetail() {
-  const getWishGroup = useMemo(() => wishlist.getWishGroup(), []);
+  const getWishGroup = useMemo(() => wishlist.getWishTemplates(), []);
   return (
     <S.Container>
       <TabMenu
@@ -33,10 +33,10 @@ function RoomDetail() {
             ),
           },
           {
-            tab: '찜 목록',
+            tab: '나의 찜',
             content: (
               <S.TabWrapper>
-                <WishlistGroupTab />
+                <WishlistTab />
               </S.TabWrapper>
             ),
           },
@@ -46,7 +46,7 @@ function RoomDetail() {
               <S.TabWrapper>
                 <ErrorBoundary>
                   <Suspense fallback={<div>로딩중</div>}>
-                    <PublicWishGroupTab wishGroup={getWishGroup} />
+                    <TemplatesTab wishGroup={getWishGroup} />
                   </Suspense>
                 </ErrorBoundary>
               </S.TabWrapper>

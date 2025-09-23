@@ -2,7 +2,6 @@ import AddressList from '@domains/pickeat/components/AddressList';
 import WishForm from '@domains/wishlist/components/WishForm';
 
 import SearchBar from '@components/actions/SearchBar';
-import Arrow from '@components/assets/icons/Arrow';
 
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
@@ -12,10 +11,9 @@ import styled from '@emotion/styled';
 type Props = {
   wishlistId: number;
   onCreate: () => void;
-  onTabChange: (index: number) => void;
 };
 
-function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
+function WishAddressFrom({ wishlistId, onCreate }: Props) {
   const handleCreateWish = () => {
     onCreate();
     handleInputChange('');
@@ -29,12 +27,9 @@ function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
     });
 
   return (
-    <>
+    <S.Container>
       <S.TopArea>
-        <S.BackArrow onClick={() => onTabChange(0)}>
-          <Arrow size="lg" direction="left" />
-        </S.BackArrow>
-
+        <S.Description>식당 이름을 검색하여 찜을 등록해 보세요.</S.Description>
         <SearchBar
           value={address}
           onChange={e => handleInputChange(e.target.value)}
@@ -57,17 +52,25 @@ function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
           errorMessage={error}
         />
       )}
-    </>
+    </S.Container>
   );
 }
-export default WishFormTab;
+export default WishAddressFrom;
 
 const S = {
-  TopArea: styled.div`
+  Container: styled.div`
+    height: 600px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
-
-  BackArrow: styled.button``,
+  TopArea: styled.div`
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
+  `,
+  Description: styled.div`
+    font: ${({ theme }) => theme.FONTS.heading.small};
+  `,
 };

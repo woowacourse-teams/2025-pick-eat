@@ -3,7 +3,9 @@ import Location from '@components/assets/icons/Location';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
+import { pickeat } from '@apis/pickeat';
 import { room } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
@@ -18,27 +20,33 @@ import RoomDetailName from './RoomDetailName';
 
 function RoomDetailTab() {
   const navigate = useNavigate();
-
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
+  const wishlistId = Number(searchParams.get('wishId')) ?? '';
 
   const getRoom = () => useMemo(() => room.get(roomId), [roomId]);
   const getIncludeMembers = () =>
     useMemo(() => room.getIncludeMembers(roomId), [roomId]);
   const getPickeats = () => useMemo(() => room.getPickeats(roomId), [roomId]);
 
+  const clickWishPickeat = async () => {
+    try {
+      const code = await pickeat.post(roomId, makePickeatName());
+      await pickeat.postWish(wishlistId, code);
+      if (code) navigate(generateRouterPath.pickeatDetail(code));
+    } catch (e) {
+      alert(e);
+    }
+  };
+
   return (
     <S.Container>
       <Suspense fallback={<LoadingSpinner />}>
         <RoomDetailName roomData={getRoom()} />
         <S.ButtonWrapper>
+          <Button text="찜으로 픽잇" leftIcon="🤍" onClick={clickWishPickeat} />
           <Button
-            text="찜으로 픽잇!"
-            leftIcon="🤍"
-            onClick={() => navigate(generateRouterPath.pickeatWithWish(roomId))}
-          />
-          <Button
-            text="위치로 픽잇!"
+            text="근처에서 픽잇"
             leftIcon={<Location size="sm" color="white" />}
             onClick={() =>
               navigate(generateRouterPath.pickeatWithLocation(roomId))
