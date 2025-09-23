@@ -11,6 +11,8 @@ import { useState } from 'react';
 import ParticipantAvatar from './ParticipantAvatar';
 import ParticipantInfoTooltip from './ParticipantInfoTooltip';
 
+const MAX_RENDER_COUNT = 8;
+
 function ParticipantsAvatarGroup() {
   const { participantsState } = useParticipants();
 
@@ -36,11 +38,13 @@ function ParticipantsAvatarGroup() {
         data-tooltip-show-right="false"
         data-tooltip-type="lookup"
       >
-        {participantsState.participants.map((p, i) => (
-          <S.AvatarWrapper key={p.id} index={i}>
-            <ParticipantAvatar participant={p} />
-          </S.AvatarWrapper>
-        ))}
+        {participantsState.participants
+          .slice(0, MAX_RENDER_COUNT)
+          .map((p, i) => (
+            <S.AvatarWrapper key={p.id} index={i}>
+              <ParticipantAvatar participant={p} />
+            </S.AvatarWrapper>
+          ))}
         <Arrow size="xs" direction="down" color={THEME.PALETTE.gray[30]} />
       </S.Container>
       <Tooltip opened={opened} coords={coords} offsetX={60} showRight={false}>
