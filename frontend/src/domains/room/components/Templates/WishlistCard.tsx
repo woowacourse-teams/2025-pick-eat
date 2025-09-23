@@ -21,7 +21,7 @@ type Prop = {
 
 function WishlistCard({ wishlistData }: Prop) {
   const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId') ?? '';
+  const roomId = Number(searchParams.get('roomId')) ?? '';
   const navigate = useNavigate();
   const { id, name, isPublic } = wishlistData;
   const {

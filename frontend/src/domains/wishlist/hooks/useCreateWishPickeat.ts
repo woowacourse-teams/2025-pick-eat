@@ -8,7 +8,7 @@ import { useSearchParams } from 'react-router';
 const useCreateWishPickeat = () => {
   const [searchParams] = useSearchParams();
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const roomId = searchParams.get('roomId') ?? '';
+  const roomId = Number(searchParams.get('roomId')) ?? '';
 
   const createPickeat = async (
     pickeatName: string,
