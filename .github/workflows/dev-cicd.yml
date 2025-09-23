@@ -1,7 +1,7 @@
 name: Build and Deploy
 
 on:
-  push:
+  pull_request:
     branches: [ "back/dev" ]
 
 jobs:
@@ -42,6 +42,12 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      - name: Back Up Image For Rollback
+        run: |
+          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest || true
+          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous || true
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous || true
+
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
@@ -75,3 +81,51 @@ jobs:
           docker-compose pull backend
           docker-compose up -d --build backend
           docker image prune -f
+
+      - name: Health Check with Retry
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 1
+          max_attempts: 5
+          retry_wait_seconds: 6
+          command: |
+            response=$(curl -s http://localhost:8080/actuator/health)
+            status=$(echo $response | jq -r '.status')
+            if [ "$status" = "UP" ]; then
+              echo "Status is UP. Continuing..."
+              exit 0
+            else
+              echo "Status is NOT UP. Response: $response"
+              exit 1
+            fi
+
+      - name: Rollback if Health Check fails
+        if: failure()
+        run: |
+          cd /home/ubuntu/docker
+          echo "Health check failed. Rolling back to previous version..."
+          sed -i 's/:latest/:previous/g' docker-compose.yml
+          docker-compose up -d --build backend
+          echo "Rollback completed using previous image"
+
+      - name: Update latest tag after successful rollback
+        if: failure() # 롤백이 실행된 경우 (헬스체크 실패 시)
+        run: |
+          echo "Updating latest tag to match rolled back version..."
+          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous
+          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
+          echo "Latest tag updated to match rollback version"
+
+      - name: Confirm successful deployment
+        if: success() # 정상 배포가 성공한 경우
+        run: |
+          echo "Deployment successful. Latest tag correctly points to new version."
+
+      - name: Check Docker Process
+        if: always()
+        run: |
+          echo "=== Docker Compose Status ==="
+          cd /home/ubuntu/docker && docker-compose ps
+          echo "=== All Docker Processes ==="
+          docker ps
