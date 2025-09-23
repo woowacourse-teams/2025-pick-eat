@@ -56,7 +56,7 @@ public class UserService {
     }
 
     public List<UserResponse> searchByNickname(String nickname) {
-        List<User> users = userRepository.findByNicknameContaining(nickname);
+        List<User> users = userRepository.findByNicknameStartsWith(nickname);
 
         // 정확히 일치하는 닉네임을 맨 앞에 정렬
         users.sort(Comparator.comparing(user -> !user.getNickname().equals(nickname)));
