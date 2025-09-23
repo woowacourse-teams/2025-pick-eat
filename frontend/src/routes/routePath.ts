@@ -1,7 +1,6 @@
 export const ROUTE_PATH = {
   MAIN: '/',
   PICKEAT_WITH_LOCATION: '/create-pickeat/location',
-  PICKEAT_WITH_WISH: '/create-pickeat/wish',
   PICKEAT_DETAIL: '/pickeat-detail',
   PREFER_RESTAURANT: '/prefer-restaurant',
   MATCH_RESULT: '/match-result',
@@ -27,6 +26,4 @@ export const generateRouterPath = {
     `${ROUTE_PATH.ROOM_DETAIL}?roomId=${roomId}&wishId=${wishId}`,
   pickeatWithLocation: (roomId: number) =>
     `${ROUTE_PATH.PICKEAT_WITH_LOCATION}?roomId=${roomId}`,
-  pickeatWithWish: (roomId: number) =>
-    `${ROUTE_PATH.PICKEAT_WITH_WISH}?roomId=${roomId}`,
 };
