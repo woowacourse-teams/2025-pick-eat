@@ -2,7 +2,9 @@ import { pickeat } from '@apis/pickeat';
 import { Restaurant } from '@apis/restaurant';
 import { restaurants } from '@apis/restaurants';
 
-import { useState, useEffect } from 'react';
+import { usePolling } from '@hooks/usePolling';
+
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router';
 
 const usePreferRestaurant = (
@@ -39,32 +41,32 @@ const usePreferRestaurant = (
       )
     );
 
-  useEffect(() => {
-    let isUnmounted = false;
-
-    const fetchRestaurantList = async () => {
-      const response = await restaurants.get(pickeatCode, {
-        isExcluded: 'false',
-      });
-      if (!isUnmounted && response) {
-        setRestaurantList(sortRestaurants(response));
-        syncOptimisticLikes(
-          response
-            .filter((restaurant: Restaurant) => restaurant.isLiked)
-            .map((restaurant: Restaurant) => restaurant.id)
-        );
-      }
-    };
-
-    fetchRestaurantList();
-
-    const intervalId = setInterval(fetchRestaurantList, 3000);
-
-    return () => {
-      isUnmounted = true;
-      clearInterval(intervalId);
-    };
+  const fetchRestaurantList = useCallback(async () => {
+    return restaurants.get(pickeatCode, {
+      isExcluded: 'false',
+    });
   }, []);
+
+  const handleUpdateRestaurantList = useCallback((data: Restaurant[]) => {
+    if (data) {
+      setRestaurantList(sortRestaurants(data));
+      syncOptimisticLikes(
+        data
+          .filter((restaurant: Restaurant) => restaurant.isLiked)
+          .map((restaurant: Restaurant) => restaurant.id)
+      );
+    }
+  }, []);
+
+  usePolling(fetchRestaurantList, {
+    onData: handleUpdateRestaurantList,
+    interval: 3000,
+    immediate: false,
+    enabled: true,
+    errorHandler: (error: Error) => {
+      alert('식당 리스트를 불러오는데 실패했습니다.' + error.message);
+    },
+  });
 
   useEffect(() => {
     if (restaurantList.length > 0) return;
