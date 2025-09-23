@@ -59,7 +59,7 @@ export default TitleSection;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 138px;
+    height: 200px;
 
     display: flex;
     justify-content: space-between;
