@@ -41,7 +41,7 @@ function Wishlist({ wishlistId, wishlistName, isPublic }: Props) {
           )
         )
       ) : (
-        <div>위시가 존재하지 않습니다.</div>
+        <div>찜 목록이 존재하지 않습니다.</div>
       )}
     </S.Container>
   );

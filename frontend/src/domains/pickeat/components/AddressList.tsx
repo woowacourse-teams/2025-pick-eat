@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { AddressType } from '../utils/convertAddress';
+import { AddressType } from '../utils/kakaoLocalAPI';
 
 type Props = {
   addressList: AddressType[];

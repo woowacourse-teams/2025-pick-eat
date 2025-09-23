@@ -1,5 +1,19 @@
 import Layout from '@components/layouts/Layout';
 
+import ChooseWishlist from '@pages/ChooseWishlist';
+import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
+import CreateRoom from '@pages/CreateRoom';
+import Login from '@pages/Login';
+import Main from '@pages/Main';
+import MatchResult from '@pages/MatchResult';
+import MyRoom from '@pages/myRoom/MyRoom';
+import OauthCallback from '@pages/OauthCallback';
+import PickeatDetail from '@pages/PickeatDetail';
+import PreferRestaurant from '@pages/PreferRestaurant';
+import ProfileInit from '@pages/ProfileInit';
+import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
+import RoomDetail from '@pages/RoomDetail';
+
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
 import { useGA } from '@hooks/useGA';
@@ -10,19 +24,6 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
-import ChooseWishlist from '@pages/ChooseWishlist';
-import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
-import CreateRoom from '@pages/CreateRoom';
-import Login from '@pages/Login';
-import Main from '@pages/Main';
-import MatchResult from '@pages/MatchResult';
-import MyPage from '@pages/MyPage';
-import OauthCallback from '@pages/OauthCallback';
-import PickeatDetail from '@pages/PickeatDetail';
-import PreferRestaurant from '@pages/PreferRestaurant';
-import ProfileInit from '@pages/ProfileInit';
-import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-import RoomDetail from '@pages/RoomDetail';
 import {
   createBrowserRouter,
   Navigate,
@@ -48,12 +49,14 @@ function Wrapper() {
 }
 
 function ProtectedLayout() {
-  const { loggedIn, loading } = useAuth();
+  const { loggedIn, loading, hasToken, logoutUser } = useAuth();
   const location = useLocation();
 
   if (loading) return null;
 
-  if (!loggedIn) {
+  if (!loggedIn || !hasToken()) {
+    alert('로그인이 필요합니다.');
+    logoutUser();
     return (
       <Navigate to={ROUTE_PATH.LOGIN} state={{ from: location }} replace />
     );
@@ -83,7 +86,8 @@ const routes = createBrowserRouter([
       {
         Component: ProtectedLayout,
         children: [
-          { path: ROUTE_PATH.MY_PAGE, Component: MyPage },
+          { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
+          { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
           { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
           { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
         ],
@@ -93,9 +97,9 @@ const routes = createBrowserRouter([
         children: [
           { path: ROUTE_PATH.LOGIN, Component: Login },
           { path: ROUTE_PATH.PROFILE_INIT, Component: ProfileInit },
-          { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
         ],
       },
+      { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
       {
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
         Component: CreatePickeatWithLocation,

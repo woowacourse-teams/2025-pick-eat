@@ -10,11 +10,11 @@ function Profile({ user }: { user: Promise<User | null> }) {
   return (
     <S.Container>
       <S.ProfileImage
-        src={profileUrl || '/images/person.svg'}
+        src={profileUrl || '/images/profile/cat_profile.svg'}
         alt="프로필"
-        onError={e => (e.currentTarget.src = '/images/person.svg')}
+        onError={e => (e.currentTarget.src = '/images/profile/cat_profile.svg')}
       />
-      <S.NickName>{profile?.nickname}</S.NickName>
+      <S.NickName>{profile?.nickname ?? '회원'}님</S.NickName>
     </S.Container>
   );
 }
@@ -27,19 +27,15 @@ const S = {
     flex-direction: column;
 
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level6};
   `,
 
   ProfileImage: styled.img`
-    width: 150px;
-    height: 150px;
+    width: 120px;
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[30]};
-    border-radius: ${({ theme }) => theme.RADIUS.half};
     object-fit: cover;
   `,
 
   NickName: styled.span`
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+    font: ${({ theme }) => theme.FONTS.heading.large};
   `,
 };

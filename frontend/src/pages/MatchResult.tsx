@@ -54,7 +54,7 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    gap: ${({ theme }) => theme.GAP.level6};
+    gap: ${({ theme }) => theme.GAP.level2};
 
     position: relative;
 

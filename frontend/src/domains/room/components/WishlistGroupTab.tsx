@@ -25,7 +25,7 @@ function WishlistGroupTab() {
       const response = await wishlist.getWishGroup(roomId);
       setWishlistData(response);
     } catch {
-      alert('위시 리스트를 불러오던 중 에러가 발생했습니다.');
+      alert('찜 목록을 불러오던 중 에러가 발생했습니다.');
     }
   };
 
@@ -54,7 +54,7 @@ function WishlistGroupTab() {
   return (
     <S.Container>
       <S.TitleArea>
-        <S.Description>위시리스트({wishCount})</S.Description>
+        <S.Description>찜 목록({wishCount})</S.Description>
         <Button
           text="추가"
           size="sm"
@@ -69,11 +69,11 @@ function WishlistGroupTab() {
           size="lg"
         >
           <S.ModalContent onSubmit={submitWishlist}>
-            <S.ModalTitle>나만의 위시</S.ModalTitle>
+            <S.ModalTitle>나만의 찜 목록</S.ModalTitle>
             <Input
               value={name}
               onChange={e => handleName(e.target.value)}
-              placeholder="위시 이름을 입력하세요."
+              placeholder="찜 목록 이름을 입력하세요."
             />
             <ErrorMessage message={error} />
             <Button text="등록" />
@@ -90,7 +90,7 @@ function WishlistGroupTab() {
           />
         ))
       ) : (
-        <S.EmptyDescription>위시리스트를 추가해보세요!</S.EmptyDescription>
+        <S.EmptyDescription>찜 목록을 추가해보세요!</S.EmptyDescription>
       )}
     </S.Container>
   );
@@ -120,7 +120,9 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
+
     margin-top: 20px;
+
     color: ${({ theme }) => theme.PALETTE.gray[30]};
     font: ${({ theme }) => theme.FONTS.heading.medium_style};
     text-align: center;
