@@ -1,3 +1,5 @@
+import { FoodCategory } from 'shared/constants/foodCategory';
+
 import { accessToken } from '@domains/login/utils/authStorage';
 
 import { joinAsPath } from '@utils/createUrl';
