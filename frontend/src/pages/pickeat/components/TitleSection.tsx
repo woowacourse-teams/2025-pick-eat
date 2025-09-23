@@ -124,11 +124,13 @@ const S = {
   ToolWrapper: styled.div`
     display: flex;
     flex-direction: column;
+    align-items: flex-end;
+
     gap: ${({ theme }) => theme.GAP.level4};
     ${setMobileStyle(css`
       flex-direction: row-reverse;
       width: 100%;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
     `)}
   `,
