@@ -20,11 +20,9 @@ function Title() {
           <S.TitleText>을</S.TitleText>
         </S.Line>
         <S.Line>
-          <S.IconContainer>
-            <S.IconWrapper>
-              <Cross color="white" size="sm" strokeWidth={4} />
-            </S.IconWrapper>
-          </S.IconContainer>
+          <S.IconWrapper>
+            <Cross color="white" size="sm" strokeWidth={4} />
+          </S.IconWrapper>
           <S.TitleText>버튼을 눌러 제외해 주세요</S.TitleText>
         </S.Line>
       </S.Description>
@@ -54,7 +52,6 @@ const S = {
   `,
   Imoji: styled.img`
     width: 48px;
-    height: 48px;
   `,
   Description: styled.div`
     display: flex;
@@ -87,12 +84,6 @@ const S = {
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.small};
   `,
-  IconContainer: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-  `,
   IconWrapper: styled.div`
     width: 24px;
     height: 24px;
@@ -108,68 +99,3 @@ const S = {
     border-radius: 1000px;
   `,
 };
-
-// const S = {
-//   Imoji: styled.img`;
-//     width: 48px;
-//     height: 48px;
-//   `,
-//   Title: styled.h1`
-//     display: flex;
-//     flex-direction: column;
-
-//     color: ${({ theme }) => theme.PALETTE.primary[50]};
-//     font: ${({ theme }) => theme.FONTS.heading.medium};
-//   `,
-//   TitleText: styled.span`
-//     display: flex;
-//     align-items: center;
-
-//     color: ${({ theme }) => theme.PALETTE.gray[30]};
-
-//     font: ${({ theme }) => theme.FONTS.heading.medium};
-//   `,
-//   TitlePointTextStyle: styled.span`
-//     color: ${({ theme }) => theme.PALETTE.primary[95]};
-//     font: ${({ theme }) => theme.FONTS.heading.medium_style};
-//   `,
-//   TitlePointText: styled.span`
-//     color: ${({ theme }) => theme.PALETTE.primary[50]};
-//     font: ${({ theme }) => theme.FONTS.heading.large};
-//   `,
-//   IconTextBox: styled.div`
-//     display: flex;
-//     align-items: center;
-//     gap: ${({ theme }) => theme.GAP.level2};
-//   `,
-//   DeleteButton: styled.div`
-//     width: 20px;
-//     height: 20px;
-
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-
-//     color: ${({ theme }) => theme.PALETTE.gray[0]};
-//   `,
-//   IconContainer: styled.div`
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: flex-end;
-//   `,
-//   IconWrapper: styled.div`
-//     width: 24px;
-//     height: 24px;
-
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-
-//     padding: ${({ theme }) => theme.PADDING.p1};
-
-//     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
-
-//     border-radius: 1000px;
-//   `,
-// };

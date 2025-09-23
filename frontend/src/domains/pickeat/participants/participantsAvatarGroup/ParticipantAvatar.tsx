@@ -11,7 +11,7 @@ type Props = {
   participant: ParticipantState;
 };
 
-const ParticipantAvatar: React.FC<Props> = ({ participant }) => {
+function ParticipantAvatar({ participant }: Props) {
   const bgColor = useMemo(
     () => colorCreator.uniquePastel(participant.id),
     [participant.id]
@@ -34,7 +34,7 @@ const ParticipantAvatar: React.FC<Props> = ({ participant }) => {
       </S.Wrapper>
     </S.Container>
   );
-};
+}
 
 export default ParticipantAvatar;
 
@@ -43,12 +43,12 @@ const S = {
     width: 36px;
     height: 36px;
     border: 2px solid white;
-    border-radius: 50%;
+    border-radius: ${({ theme }) => theme.RADIUS.half};
     border-color: ${({ borderColor }) => borderColor};
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
   `,
   Wrapper: styled.div<{ backgroundColor: string }>`
     width: 32px;
@@ -57,7 +57,7 @@ const S = {
     align-items: center;
     justify-content: center;
     border: 2px solid white;
-    border-radius: 50%;
+    border-radius: ${({ theme }) => theme.RADIUS.half};
     background: ${({ backgroundColor }) => backgroundColor};
   `,
   Initial: styled.span`

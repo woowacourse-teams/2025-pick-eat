@@ -43,8 +43,8 @@ const S = {
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
     padding: 8px 12px;
-    border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: ${({ theme }) => theme.RADIUS.small};
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level2};
   `,
   ParticipantWrapper: styled.div`
     display: flex;

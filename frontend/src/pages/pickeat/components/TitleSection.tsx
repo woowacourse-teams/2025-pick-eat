@@ -32,23 +32,21 @@ function TitleSection({ children }: Props) {
     <S.Container>
       {children}
       <S.ToolContainer>
-        <S.ToolWrapper>
-          <S.ShareContainer onClick={handleOpenModal}>
-            <Share color={THEME.PALETTE.gray[70]} size="sm" />
-            <Modal
-              opened={opened}
-              mounted={mounted}
-              onClose={handleCloseModal}
-              onUnmount={handleUnmountModal}
-            >
-              <SharePanel
-                url={pickeatLink}
-                description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
-              />
-            </Modal>
-          </S.ShareContainer>
-          <ParticipantsAvatarGroup />
-        </S.ToolWrapper>
+        <S.ShareContainer onClick={handleOpenModal}>
+          <Share color={THEME.PALETTE.gray[70]} size="sm" />
+          <Modal
+            opened={opened}
+            mounted={mounted}
+            onClose={handleCloseModal}
+            onUnmount={handleUnmountModal}
+          >
+            <SharePanel
+              url={pickeatLink}
+              description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
+            />
+          </Modal>
+        </S.ShareContainer>
+        <ParticipantsAvatarGroup />
       </S.ToolContainer>
     </S.Container>
   );
@@ -110,6 +108,30 @@ const S = {
   ShareContainer: styled.button`
     height: 36px;
   `,
+  // ToolContainer: styled.div`
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: ${({ theme }) => theme.GAP.level4};
+  //   align-items: flex-end;
+  //   justify-content: space-between;
+  //   ${setMobileStyle(css`
+  //     width: 100%;
+  //     flex-direction: row;
+  //   `)}
+  // `,
+  // ToolWrapper: styled.div`
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-items: flex-end;
+
+  //   gap: ${({ theme }) => theme.GAP.level4};
+  //   ${setMobileStyle(css`
+  //     flex-direction: row-reverse;
+  //     width: 100%;
+  //     align-items: center;
+  //     justify-content: space-between;
+  //   `)}
+  // `,
   ToolContainer: styled.div`
     display: flex;
     flex-direction: column;
@@ -118,20 +140,7 @@ const S = {
     justify-content: space-between;
     ${setMobileStyle(css`
       width: 100%;
-      flex-direction: row;
-    `)}
-  `,
-  ToolWrapper: styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-
-    gap: ${({ theme }) => theme.GAP.level4};
-    ${setMobileStyle(css`
       flex-direction: row-reverse;
-      width: 100%;
-      align-items: center;
-      justify-content: space-between;
     `)}
   `,
 };

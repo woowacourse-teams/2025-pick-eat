@@ -23,7 +23,6 @@ function PickeatVoteCompleteButton({ onClick }: Props) {
       alert('투표 완료 상태 변경에 실패했습니다. 다시 시도해주세요.');
     } finally {
       setLoading(false);
-      // TODO : 투표를 완료하였습니다 / 투표 완료를 해제하였습니다 토스트 메시지 추가
     }
   };
 

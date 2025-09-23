@@ -107,7 +107,7 @@ const S = {
     white-space: nowrap;
     pointer-events: auto;
     user-select: none;
-    z-index: 10000;
-    font-size: 14px;
+    z-index: ${({ theme }) => theme.Z_INDEX.tooltip};
+    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 };

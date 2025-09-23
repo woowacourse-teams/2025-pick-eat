@@ -47,7 +47,6 @@ const S = {
   `,
   Imoji: styled.img`
     width: 48px;
-    height: 48px;
   `,
   Description: styled.div`
     display: flex;
