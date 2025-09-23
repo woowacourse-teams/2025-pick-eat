@@ -6,7 +6,7 @@ import { useParticipants } from '@domains/pickeat/provider/ParticipantsProvider'
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import ParticipantAvatar from './ParticipantAvatar';
 import ParticipantInfoTooltip from './ParticipantInfoTooltip';
@@ -14,23 +14,37 @@ import ParticipantInfoTooltip from './ParticipantInfoTooltip';
 const MAX_RENDER_COUNT = 8;
 
 function ParticipantsAvatarGroup() {
+  const triggerRef = useRef<HTMLDivElement | null>(null);
   const { participantsState } = useParticipants();
 
   const [opened, setOpened] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
 
   const onClickContainer = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (opened) {
+      handleCloseClick();
+      return;
+    }
     const rect = e.currentTarget.getBoundingClientRect();
     setCoords({
       x: rect.left + window.scrollX,
       y: rect.bottom + window.scrollY,
     });
-    setOpened(o => !o);
+    handleOpenClick();
   };
+
+  const handleOpenClick = useCallback(() => {
+    setOpened(true);
+  }, [setOpened]);
+
+  const handleCloseClick = useCallback(() => {
+    setOpened(false);
+  }, [setOpened]);
 
   return (
     <>
       <S.Container
+        ref={triggerRef}
         onClick={onClickContainer}
         opened={opened}
         data-tooltip="메인 메뉴"
@@ -47,7 +61,14 @@ function ParticipantsAvatarGroup() {
           ))}
         <Arrow size="xs" direction="down" color={THEME.PALETTE.gray[30]} />
       </S.Container>
-      <Tooltip opened={opened} coords={coords} offsetX={60} showRight={false}>
+      <Tooltip
+        opened={opened}
+        coords={coords}
+        offsetX={60}
+        showRight={false}
+        onClose={handleCloseClick}
+        excludeRefs={triggerRef ? [triggerRef] : []}
+      >
         <ParticipantInfoTooltip participantsData={participantsState} />
       </Tooltip>
     </>

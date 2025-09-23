@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { useEffect, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 
 type TooltipProps = {
@@ -9,6 +9,8 @@ type TooltipProps = {
   offsetY?: number;
   showRight?: boolean;
   children: React.ReactNode;
+  onClose: () => void;
+  excludeRefs?: RefObject<HTMLElement | null>[];
 };
 
 function Tooltip({
@@ -18,6 +20,8 @@ function Tooltip({
   offsetY = 8,
   showRight = false,
   children,
+  onClose,
+  excludeRefs = [],
 }: TooltipProps) {
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [adjustedX, setAdjustedX] = useState(coords.x);
@@ -38,6 +42,44 @@ function Tooltip({
       setAdjustedY(y);
     }
   }, [opened, coords, offsetX, offsetY, showRight]);
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        excludeRefs?.some(
+          ref => ref.current && ref.current.contains(event.target as Node)
+        )
+      )
+        return;
+      if (
+        opened &&
+        tooltipRef.current &&
+        !tooltipRef.current.contains(event.target as Node)
+      )
+        onClose?.();
+    }
+
+    if (opened) {
+      document.addEventListener('click', handleOutsideClick);
+      return () => {
+        document.removeEventListener('click', handleOutsideClick);
+      };
+    }
+  }, [onClose, opened]);
+
+  useEffect(() => {
+    if (!opened) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [opened]);
 
   if (!opened) return null;
 
