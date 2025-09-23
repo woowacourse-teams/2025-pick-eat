@@ -14,9 +14,7 @@ function Title() {
       </S.TitleBox>
       <S.Description>
         <S.Line>
-          <S.WriteBox>
-            <S.WriteText>안 땡기는 식당</S.WriteText>
-          </S.WriteBox>
+          <S.WriteText>안 땡기는 식당</S.WriteText>
           <S.TitleText>을</S.TitleText>
         </S.Line>
         <S.Line>
@@ -34,8 +32,6 @@ export default Title;
 
 const S = {
   Container: styled.div`
-    display: flex;
-    flex-direction: column;
     padding: ${({ theme }) => theme.PADDING.px6};
   `,
   TitleBox: styled.div`
@@ -67,19 +63,13 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
   `,
-  WriteBox: styled.div`
-    width: 160px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[50]};
-  `,
   WriteText: styled.p`
+    height: 36px;
     color: ${({ theme }) => theme.PALETTE.primary[95]};
     font: ${({ theme }) => theme.FONTS.heading.small_style};
+    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[50]};
+    padding: 0px ${({ theme }) => theme.PADDING.px3};
   `,
-
   TitleText: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.small};

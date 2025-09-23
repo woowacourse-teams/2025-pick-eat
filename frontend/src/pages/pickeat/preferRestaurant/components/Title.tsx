@@ -29,9 +29,8 @@ export default Title;
 
 const S = {
   Container: styled.div`
-    display: flex;
-    flex-direction: column;
-    padding: ${({ theme }) => theme.PADDING.px6};
+    padding: ${({ theme }) => theme.PADDING.px6}
+      ${({ theme }) => theme.PADDING.px4};
   `,
   TitleBox: styled.div`
     display: flex;

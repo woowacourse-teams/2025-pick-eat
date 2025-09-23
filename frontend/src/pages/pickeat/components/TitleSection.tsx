@@ -68,11 +68,11 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 
     ${setMobileStyle(css`
-      height: 280px;
+      height: 210px;
       flex-direction: column;
       align-items: flex-start;
-      justify-content: center;
-      gap: 14px;
+      justify-content: space-between;
+      padding-bottom: 16px;
     `)}
   `,
   DeleteButton: styled.div`
