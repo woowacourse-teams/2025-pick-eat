@@ -5,6 +5,10 @@ import SharePanel from '@components/share/SharePanel';
 
 import ParticipantsAvatarGroup from '@domains/participants/participantsAvatarGroup/ParticipantsAvatarGroup';
 
+import { THEME } from '@styles/global';
+import { setMobileStyle } from '@styles/mediaQuery';
+
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router';
 
@@ -28,21 +32,23 @@ function TitleSection({ children }: Props) {
     <S.Container>
       {children}
       <S.ToolContainer>
-        <S.ShareContainer onClick={handleOpenModal}>
-          <Share size="sm" />
-          <Modal
-            opened={opened}
-            mounted={mounted}
-            onClose={handleCloseModal}
-            onUnmount={handleUnmountModal}
-          >
-            <SharePanel
-              url={pickeatLink}
-              description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
-            />
-          </Modal>
-        </S.ShareContainer>
-        <ParticipantsAvatarGroup />
+        <S.ToolWrapper>
+          <S.ShareContainer onClick={handleOpenModal}>
+            <Share color={THEME.PALETTE.gray[70]} size="sm" />
+            <Modal
+              opened={opened}
+              mounted={mounted}
+              onClose={handleCloseModal}
+              onUnmount={handleUnmountModal}
+            >
+              <SharePanel
+                url={pickeatLink}
+                description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
+              />
+            </Modal>
+          </S.ShareContainer>
+          <ParticipantsAvatarGroup />
+        </S.ToolWrapper>
       </S.ToolContainer>
     </S.Container>
   );
@@ -62,6 +68,14 @@ const S = {
     padding: 0 ${({ theme }) => theme.PADDING.px7};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+
+    ${setMobileStyle(css`
+      height: 158px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 14px;
+    `)}
   `,
   DeleteButton: styled.div`
     width: 20px;
@@ -93,12 +107,29 @@ const S = {
 
     border-radius: 1000px;
   `,
-  ShareContainer: styled.button``,
+  ShareContainer: styled.button`
+    height: 36px;
+  `,
   ToolContainer: styled.div`
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
     align-items: flex-end;
     justify-content: space-between;
+    ${setMobileStyle(css`
+      width: 100%;
+      flex-direction: row;
+    `)}
+  `,
+  ToolWrapper: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level4};
+    ${setMobileStyle(css`
+      flex-direction: row-reverse;
+      width: 100%;
+      align-items: flex-end;
+      justify-content: space-between;
+    `)}
   `,
 };
