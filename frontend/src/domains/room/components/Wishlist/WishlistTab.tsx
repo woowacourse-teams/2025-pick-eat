@@ -1,25 +1,54 @@
 import Button from '@components/actions/Button';
-import Trash from '@components/assets/icons/Trash';
-import Badge from '@components/labels/Badge';
+import Modal from '@components/modal/Modal';
+import { useModal } from '@components/modal/useModal';
 
 import { wish } from '@apis/wish';
-import { Wishes } from '@apis/wishlist';
+import { Wishes, wishlist } from '@apis/wishlist';
 
 import styled from '@emotion/styled';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
-type Props = {
-  wishlist: Wishes[];
-  onTabChange: (index: number) => void;
-  onRefetch: () => void;
-};
+import WishAddressFrom from './WishAddressForm';
+import WishCard from './WishCard';
 
-function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
-  const deleteWish = async (wishId: number) => {
+function WishlistTab() {
+  const [searchParams] = useSearchParams();
+  const wishId = Number(searchParams.get('wishId')) ?? '';
+
+  const [wishlistData, setWishlistData] = useState<Wishes[]>([]);
+  const {
+    opened,
+    mounted,
+    handleCloseModal,
+    handleOpenModal,
+    handleUnmountModal,
+  } = useModal();
+
+  const getWishlist = async () => {
+    try {
+      const response = await wishlist.get(wishId);
+      setWishlistData(response);
+    } catch {
+      alert('찜 목록을 불러오던 중 에러가 발생했습니다.');
+    }
+  };
+
+  useEffect(() => {
+    getWishlist();
+  }, []);
+
+  const handleCreateWish = () => {
+    getWishlist();
+    handleUnmountModal();
+  };
+
+  const handleDeleteWish = async (wishId: number) => {
     const isDelete = confirm('정말 삭제하시겠습니까?');
     if (isDelete) {
       try {
         await wish.delete(wishId);
-        onRefetch();
+        getWishlist();
       } catch {
         alert('삭제 실패!');
       }
@@ -27,132 +56,80 @@ function WishlistTab({ wishlist, onTabChange, onRefetch }: Props) {
   };
 
   return (
-    <>
-      <Button
-        text="찜 등록"
-        onClick={() => onTabChange(1)}
-        style={{ position: 'sticky', top: 0 }}
-      />
-      {wishlist.length > 0 ? (
-        wishlist.map(
-          ({
-            id,
-            name,
-            pictures,
-            category,
-            roadAddressName,
-            tags,
-            placeUrl,
-          }) => (
-            <S.Container key={id}>
-              <S.Image
-                src={
-                  pictures.length === 0
-                    ? '/images/restaurant.png'
-                    : pictures[0].imageDownloadUrl
-                }
-                alt={name}
-                onError={e => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/images/restaurant.png';
-                }}
-              />
+    <S.Container>
+      <S.TitleArea>
+        <S.Description>찜({wishlistData.length})</S.Description>
+        <Button
+          text="추가"
+          size="sm"
+          color="secondary"
+          onClick={handleOpenModal}
+        />
+        <Modal
+          mounted={mounted}
+          opened={opened}
+          onClose={handleCloseModal}
+          onUnmount={handleUnmountModal}
+          size="lg"
+        >
+          <WishAddressFrom wishlistId={wishId} onCreate={handleCreateWish} />
+        </Modal>
+      </S.TitleArea>
 
-              <S.Info>
-                <S.TopArea>
-                  <S.BadgeWrapper>
-                    <Badge color="primary">{category}</Badge>
-                    {tags.map(tag =>
-                      tag.length === 0 ? null : <Badge key={tag}>{tag}</Badge>
-                    )}
-                  </S.BadgeWrapper>
-
-                  <S.RemoveBtn type="button" onClick={() => deleteWish(id)}>
-                    <Trash size="xs" color="red" />
-                  </S.RemoveBtn>
-                </S.TopArea>
-                <S.Name>{name}</S.Name>
-                <S.Address>{roadAddressName}</S.Address>
-                {placeUrl && (
-                  <S.LinkButton
-                    href={`${placeUrl}#menuInfo`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    메뉴 보러가기
-                  </S.LinkButton>
-                )}
-              </S.Info>
-            </S.Container>
-          )
-        )
+      {wishlistData.length > 0 ? (
+        wishlistData.map(wish => (
+          <WishCard
+            key={wish.id}
+            wishData={wish}
+            onDelete={() => handleDeleteWish(wish.id)}
+          />
+        ))
       ) : (
-        <S.Description>식당을 찜해보세요!</S.Description>
+        <S.EmptyDescription>찜을 추가해보세요!</S.EmptyDescription>
       )}
-    </>
+    </S.Container>
   );
 }
 
 export default WishlistTab;
 
 const S = {
-  Container: styled.div`
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level5};
-  `,
+  Container: styled.div``,
 
-  Image: styled.img`
-    width: 90px;
-    height: 90px;
-    flex-shrink: 0;
-    border-radius: ${({ theme }) => theme.RADIUS.medium};
-    object-fit: cover;
-  `,
-
-  Info: styled.div`
-    flex: 1;
-  `,
-
-  BadgeWrapper: styled.div`
-    max-height: 54px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${({ theme }) => theme.GAP.level2};
-    overflow: hidden;
-  `,
-
-  TopArea: styled.div`
+  TitleArea: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    padding-right: ${({ theme }) => theme.PADDING.px2};
   `,
 
-  RemoveBtn: styled.button``,
-
-  Name: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.medium};
-  `,
-
-  Address: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.small};
-  `,
-  LinkButton: styled.a`
+  Description: styled.span`
+    display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
 
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.body.xsmall};
-
-    &:hover {
-      color: ${({ theme }) => theme.PALETTE.gray[70]};
-      text-decoration: underline;
-    }
+    font: ${({ theme }) => theme.FONTS.heading.small};
   `,
-  Description: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+
+  EmptyDescription: styled.span`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-top: 20px;
+
+    color: ${({ theme }) => theme.PALETTE.gray[30]};
+    font: ${({ theme }) => theme.FONTS.heading.medium_style};
     text-align: center;
+  `,
+
+  ModalContent: styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level4};
+  `,
+
+  ModalTitle: styled.span`
+    font: ${({ theme }) => theme.FONTS.heading.medium_style};
   `,
 };

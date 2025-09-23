@@ -2,7 +2,6 @@ import AddressList from '@domains/pickeat/components/AddressList';
 import WishForm from '@domains/wishlist/components/WishForm';
 
 import SearchBar from '@components/actions/SearchBar';
-import Arrow from '@components/assets/icons/Arrow';
 
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
@@ -12,10 +11,9 @@ import styled from '@emotion/styled';
 type Props = {
   wishlistId: number;
   onCreate: () => void;
-  onTabChange: (index: number) => void;
 };
 
-function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
+function WishAddressFrom({ wishlistId, onCreate }: Props) {
   const handleCreateWish = () => {
     onCreate();
     handleInputChange('');
@@ -31,10 +29,6 @@ function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
   return (
     <>
       <S.TopArea>
-        <S.BackArrow onClick={() => onTabChange(0)}>
-          <Arrow size="lg" direction="left" />
-        </S.BackArrow>
-
         <SearchBar
           value={address}
           onChange={e => handleInputChange(e.target.value)}
@@ -60,7 +54,7 @@ function WishFormTab({ wishlistId, onCreate, onTabChange }: Props) {
     </>
   );
 }
-export default WishFormTab;
+export default WishAddressFrom;
 
 const S = {
   TopArea: styled.div`
