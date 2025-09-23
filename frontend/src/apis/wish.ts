@@ -1,3 +1,5 @@
+import { FoodCategory } from 'shared/constants/foodCategory';
+
 import { accessToken } from '@domains/login/utils/authStorage';
 
 import { joinAsPath } from '@utils/createUrl';
@@ -10,7 +12,7 @@ const BASE_URL = 'wishes';
 export type WishFormData = {
   name: string;
   roadAddressName: string;
-  category: string;
+  category: FoodCategory;
   tags: string[];
   placeUrl?: string;
 };

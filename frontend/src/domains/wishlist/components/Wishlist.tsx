@@ -11,12 +11,12 @@ type Props = {
   isPublic: boolean;
 };
 
-function Wishlist({ wishlistId, wishlistName, isPublic }: Props) {
+function Wishlist({ wishlistId, wishlistName }: Props) {
   const [wishes, setWishes] = useState<Wishes[]>([]);
 
   useEffect(() => {
     const fetchWishes = async () => {
-      const response = await wishlist.get(wishlistId, isPublic);
+      const response = await wishlist.get(wishlistId);
       setWishes(response);
     };
     fetchWishes();

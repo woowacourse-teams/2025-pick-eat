@@ -1,6 +1,5 @@
 import Layout from '@components/layouts/Layout';
 
-import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
@@ -110,10 +109,6 @@ const routes = createBrowserRouter([
       {
         path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
         Component: RestaurantExcludePage,
-      },
-      {
-        path: ROUTE_PATH.PICKEAT_WITH_WISH,
-        Component: ChooseWishlist,
       },
     ],
   },

@@ -55,10 +55,16 @@ export const room = {
     if (response) return convertResponseToRoom(response);
     return null;
   },
-  post: async (name: string): Promise<number> => {
+  post: async (
+    name: string
+  ): Promise<Omit<Room, 'name' | 'memberCount'> | null> => {
     const response = await apiClient.post<Room>(basePath, { name });
-    if (response) return response.id;
-    return 0;
+    if (response)
+      return {
+        id: response.id,
+        wishlistId: response.wishlistId,
+      };
+    return null;
   },
   postMember: async (roomId: number, userIds: number[]) => {
     await apiClient.post(joinAsPath(basePath, `${roomId}`, 'invite'), {
