@@ -57,36 +57,33 @@ function WishlistTab() {
 
   return (
     <S.Container>
-      <S.TitleArea>
-        <S.Description>찜({wishlistData.length})</S.Description>
-        <Button
-          text="추가"
-          size="sm"
-          color="secondary"
-          onClick={handleOpenModal}
-        />
-        <Modal
-          mounted={mounted}
-          opened={opened}
-          onClose={handleCloseModal}
-          onUnmount={handleUnmountModal}
-          size="lg"
-        >
-          <WishAddressFrom wishlistId={wishId} onCreate={handleCreateWish} />
-        </Modal>
-      </S.TitleArea>
+      <S.Description>찜({wishlistData.length})</S.Description>
 
-      {wishlistData.length > 0 ? (
-        wishlistData.map(wish => (
-          <WishCard
-            key={wish.id}
-            wishData={wish}
-            onDelete={() => handleDeleteWish(wish.id)}
-          />
-        ))
-      ) : (
-        <S.EmptyDescription>찜을 추가해보세요!</S.EmptyDescription>
-      )}
+      <S.Wishlist>
+        {wishlistData.length > 0 ? (
+          wishlistData.map(wish => (
+            <WishCard
+              key={wish.id}
+              wishData={wish}
+              onDelete={() => handleDeleteWish(wish.id)}
+            />
+          ))
+        ) : (
+          <S.EmptyDescription>찜을 추가해보세요!</S.EmptyDescription>
+        )}
+      </S.Wishlist>
+
+      <Button text="찜 등록" color="secondary" onClick={handleOpenModal} />
+
+      <Modal
+        mounted={mounted}
+        opened={opened}
+        onClose={handleCloseModal}
+        onUnmount={handleUnmountModal}
+        size="lg"
+      >
+        <WishAddressFrom wishlistId={wishId} onCreate={handleCreateWish} />
+      </Modal>
     </S.Container>
   );
 }
@@ -94,20 +91,20 @@ function WishlistTab() {
 export default WishlistTab;
 
 const S = {
-  Container: styled.div``,
-
-  TitleArea: styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  Container: styled.div`
+    height: 100%;
   `,
 
   Description: styled.span`
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level2};
-
     font: ${({ theme }) => theme.FONTS.heading.small};
+  `,
+
+  Wishlist: styled.div`
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level4};
+    overflow: scroll;
   `,
 
   EmptyDescription: styled.span`

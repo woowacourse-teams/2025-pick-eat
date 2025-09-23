@@ -1,3 +1,7 @@
+import { FOOD_CATEGORIES, FoodCategory } from 'shared/constants/foodCategory';
+
+import { WishFormData } from '@apis/wish';
+
 import { createQueryString, joinAsPath } from '@utils/createUrl';
 
 export type AddressType = {
@@ -89,19 +93,36 @@ export const getAddressByLatLng = async (
   }
 };
 
-export const getFormDataByAddress = async (address: string) => {
+export const getFormDataByAddress = async (
+  address: string
+): Promise<Omit<WishFormData, 'tags'> | null> => {
   const url = joinAsPath('search', 'keyword.json');
   const queryString = createQueryString({ query: address });
 
   const data = await kakaoApiClient(`${url}${queryString}`);
 
   if (data && data.documents.length > 0) {
+    const restaurant = data.documents[0];
     return {
-      name: data.documents[0].place_name,
-      roadAddressName: data.documents[0].road_address_name,
-      placeUrl: data.documents[0].place_url,
+      name: restaurant.place_name,
+      roadAddressName: restaurant.road_address_name,
+      placeUrl: restaurant.place_url,
+      category: parseCategory(restaurant.category_name),
     };
   } else {
     return null;
   }
 };
+
+function parseCategory(categoryFullPath: string): FoodCategory {
+  if (!categoryFullPath) return '기타';
+  const parts = categoryFullPath.split(' > ').map(part => part.trim());
+
+  for (const part of parts) {
+    if (FOOD_CATEGORIES.includes(part)) {
+      return part as FoodCategory;
+    }
+  }
+
+  return '기타';
+}

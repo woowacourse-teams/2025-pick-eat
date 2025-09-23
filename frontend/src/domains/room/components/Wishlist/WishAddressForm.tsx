@@ -27,8 +27,9 @@ function WishAddressFrom({ wishlistId, onCreate }: Props) {
     });
 
   return (
-    <>
+    <S.Container>
       <S.TopArea>
+        <S.Description>식당 이름을 검색하여 찜을 등록해 보세요.</S.Description>
         <SearchBar
           value={address}
           onChange={e => handleInputChange(e.target.value)}
@@ -51,17 +52,25 @@ function WishAddressFrom({ wishlistId, onCreate }: Props) {
           errorMessage={error}
         />
       )}
-    </>
+    </S.Container>
   );
 }
 export default WishAddressFrom;
 
 const S = {
-  TopArea: styled.div`
+  Container: styled.div`
+    height: 600px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
-
-  BackArrow: styled.button``,
+  TopArea: styled.div`
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
+  `,
+  Description: styled.div`
+    font: ${({ theme }) => theme.FONTS.heading.small};
+  `,
 };
