@@ -4,7 +4,7 @@ import { usePolling } from '@hooks/usePolling';
 
 import { useCallback, useState } from 'react';
 
-export function useParticipantsState(pickeatCode: string) {
+export function useParticipantsPolling(pickeatCode: string) {
   const [participantsState, setParticipantsState] = useState<ParticipantsState>(
     {
       totalParticipants: 0,
@@ -33,5 +33,5 @@ export function useParticipantsState(pickeatCode: string) {
     immediate: true,
   });
 
-  return participantsState;
+  return { participantsState };
 }

@@ -6,6 +6,7 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
+import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
 
 import { restaurants } from '@apis/restaurants';
 
@@ -23,19 +24,21 @@ function RestaurantExcludePage() {
   const { hasRestaurants } = usePickeatStateChecker(pickeatCode);
 
   return (
-    <S.Container>
-      {!hasRestaurants && <PickeatEndModal />}
-      <TitleSection>
-        <Title />
-      </TitleSection>
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
-          <RestaurantExclude
-            restaurantsPromise={restaurants.get(pickeatCode)}
-          />
-        </Suspense>
-      </ErrorBoundary>
-    </S.Container>
+    <ParticipantsProvider pickeatCode={pickeatCode}>
+      <S.Container>
+        {!hasRestaurants && <PickeatEndModal />}
+        <TitleSection>
+          <Title />
+        </TitleSection>
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingSpinner />}>
+            <RestaurantExclude
+              restaurantsPromise={restaurants.get(pickeatCode)}
+            />
+          </Suspense>
+        </ErrorBoundary>
+      </S.Container>
+    </ParticipantsProvider>
   );
 }
 

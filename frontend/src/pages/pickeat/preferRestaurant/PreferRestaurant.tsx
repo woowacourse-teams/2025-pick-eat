@@ -7,6 +7,7 @@ import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
+import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
 
 import { restaurants } from '@apis/restaurants';
 
@@ -30,34 +31,36 @@ function PreferRestaurant() {
   const navigate = useNavigate();
 
   return (
-    <S.Container>
-      <TitleSection>
-        <Title />
-      </TitleSection>
-      <ErrorBoundary>
-        <Suspense fallback={<LoadingSpinner />}>
-          <S.RestaurantListContainer>
-            <PreferRestaurantList
-              preferRestaurantListPromise={restaurants.get(pickeatCode, {
-                isExcluded: 'false',
-              })}
-            />
-          </S.RestaurantListContainer>
-        </Suspense>
-      </ErrorBoundary>
-      <S.Footer>
-        <Button
-          text="이전"
-          color="gray"
-          size="md"
-          onClick={() =>
-            navigate(generateRouterPath.restaurantsExclude(pickeatCode))
-          }
-          leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
-        />
-        <PickeatEndTriggerButton />
-      </S.Footer>
-    </S.Container>
+    <ParticipantsProvider pickeatCode={pickeatCode}>
+      <S.Container>
+        <TitleSection>
+          <Title />
+        </TitleSection>
+        <ErrorBoundary>
+          <Suspense fallback={<LoadingSpinner />}>
+            <S.RestaurantListContainer>
+              <PreferRestaurantList
+                preferRestaurantListPromise={restaurants.get(pickeatCode, {
+                  isExcluded: 'false',
+                })}
+              />
+            </S.RestaurantListContainer>
+          </Suspense>
+        </ErrorBoundary>
+        <S.Footer>
+          <Button
+            text="이전"
+            color="gray"
+            size="md"
+            onClick={() =>
+              navigate(generateRouterPath.restaurantsExclude(pickeatCode))
+            }
+            leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
+          />
+          <PickeatEndTriggerButton />
+        </S.Footer>
+      </S.Container>
+    </ParticipantsProvider>
   );
 }
 

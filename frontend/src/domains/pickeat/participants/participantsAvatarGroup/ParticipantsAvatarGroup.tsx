@@ -1,21 +1,18 @@
 import Arrow from '@components/assets/icons/Arrow';
 import Tooltip from '@components/tooltip/Tooltip';
 
+import { useParticipants } from '@domains/pickeat/provider/ParticipantsProvider';
+
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
 import { useState } from 'react';
-import { useSearchParams } from 'react-router';
 
-import { useParticipantsState } from './hooks/useParticipantsState';
 import ParticipantAvatar from './ParticipantAvatar';
 import ParticipantInfoTooltip from './ParticipantInfoTooltip';
 
 function ParticipantsAvatarGroup() {
-  const [searchParams] = useSearchParams();
-  const pickeatCode = searchParams.get('code') ?? '';
-
-  const participantsState = useParticipantsState(pickeatCode);
+  const { participantsState } = useParticipants();
 
   const [opened, setOpened] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
