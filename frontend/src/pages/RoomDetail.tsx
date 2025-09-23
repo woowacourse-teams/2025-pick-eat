@@ -1,6 +1,6 @@
 import RoomDetailTab from '@domains/room/components/RoomDetailTab';
-import TemplatesTab from '@domains/room/components/Templates/TemplatesTab';
-import WishlistTab from '@domains/room/components/Wishlist/WishlistTab';
+import TemplatesTab from '@domains/room/components/TemplatesTab/TemplatesTab';
+import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
