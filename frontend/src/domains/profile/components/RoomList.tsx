@@ -2,7 +2,6 @@ import Enter from '@components/assets/icons/Enter';
 import People from '@components/assets/icons/People';
 
 import { Room } from '@apis/room';
-import { User } from '@apis/users';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -27,7 +26,11 @@ function RoomList({ roomsData }: Props) {
           roomList.map(room => (
             <S.List
               key={room.id}
-              onClick={() => navigate(generateRouterPath.roomDetail(room.id))}
+              onClick={() =>
+                navigate(
+                  generateRouterPath.roomDetail(room.id, room.wishlistId)
+                )
+              }
             >
               <S.RoomInfo>
                 <S.Name>{room.name}</S.Name>

@@ -8,12 +8,14 @@ export type RoomResponse = {
   id: number;
   name: string;
   userCount: number;
+  wishlistId: number;
 };
 
 export type Room = {
   id: number;
   name: string;
   memberCount: number;
+  wishlistId: number;
 };
 
 export type ProgressPickeat = {
@@ -29,6 +31,7 @@ const convertResponseToRoom = (data: RoomResponse) => {
     id: data.id,
     name: data.name,
     memberCount: data.userCount,
+    wishlistId: data.wishlistId,
   };
 };
 
