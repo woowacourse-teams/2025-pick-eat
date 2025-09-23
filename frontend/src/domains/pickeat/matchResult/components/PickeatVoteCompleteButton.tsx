@@ -5,10 +5,11 @@ import { participants } from '@apis/participants';
 import { useEffect, useState } from 'react';
 
 type Props = {
+  onVoteComplete: () => void;
   onClick?: () => void;
 };
 
-function PickeatVoteCompleteButton({ onClick }: Props) {
+function PickeatVoteCompleteButton({ onVoteComplete, onClick }: Props) {
   const [loading, setLoading] = useState(false);
 
   const handleVoteCompleteClick = async () => {
@@ -29,7 +30,8 @@ function PickeatVoteCompleteButton({ onClick }: Props) {
   useEffect(() => {
     const fetchMyStatus = async () => {
       try {
-        await participants.getMyStatus();
+        const { isCompleted } = await participants.getMyStatus();
+        if (isCompleted) onVoteComplete();
       } catch {
         alert(
           '내 투표 상태를 불러오는데 실패했습니다. 새로고침 후 다시 시도해주세요.'

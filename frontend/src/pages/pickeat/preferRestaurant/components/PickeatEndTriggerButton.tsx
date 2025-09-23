@@ -2,16 +2,19 @@ import PickeatEndButton from '@domains/pickeat/matchResult/components/PickeatEnd
 import PickeatVoteCompleteButton from '@domains/pickeat/matchResult/components/PickeatVoteCompleteButton';
 
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 function PickeatEndTriggerButton() {
   const [voted, setVoted] = useState(false);
+  const handleVoteComplete = useCallback(() => {
+    setVoted(true);
+  }, [setVoted]);
   return (
     <S.Container>
       {voted ? (
         <PickeatEndButton />
       ) : (
-        <PickeatVoteCompleteButton onClick={() => setVoted(true)} />
+        <PickeatVoteCompleteButton onVoteComplete={handleVoteComplete} />
       )}
     </S.Container>
   );
