@@ -70,7 +70,7 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 
     ${setMobileStyle(css`
-      height: 158px;
+      height: 280px;
       flex-direction: column;
       align-items: flex-start;
       justify-content: center;

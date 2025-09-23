@@ -1,5 +1,8 @@
 import Cross from '@components/assets/icons/Cross';
 
+import { setMobileStyle } from '@styles/mediaQuery';
+
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 function Title() {
@@ -45,6 +48,9 @@ const S = {
   Title: styled.h1`
     font: ${({ theme }) => theme.FONTS.display.medium};
     color: ${({ theme }) => theme.PALETTE.primary[50]};
+    ${setMobileStyle(css`
+      font-size: 36px;
+    `)}
   `,
   Imoji: styled.img`
     width: 48px;
@@ -54,6 +60,10 @@ const S = {
     display: flex;
     flex-direction: row;
     gap: ${({ theme }) => theme.GAP.level4};
+    ${setMobileStyle(css`
+      flex-direction: column;
+      gap: 4px;
+    `)}
   `,
   Line: styled.div`
     display: flex;
