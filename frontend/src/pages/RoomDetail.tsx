@@ -33,7 +33,7 @@ function RoomDetail() {
             ),
           },
           {
-            tab: '찜 목록',
+            tab: '나의 찜',
             content: (
               <S.TabWrapper>
                 <WishlistTab />
