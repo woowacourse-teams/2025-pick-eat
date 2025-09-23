@@ -1,4 +1,3 @@
-import Cross from '@components/assets/icons/Cross';
 import Share from '@components/assets/icons/Share';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
@@ -9,7 +8,11 @@ import ParticipantsAvatarGroup from '@domains/participants/participantsAvatarGro
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router';
 
-function TitleArea() {
+type Props = {
+  children: React.ReactNode;
+};
+
+function TitleSection({ children }: Props) {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
   const pickeatLink = `${process.env.BASE_URL}pickeat-detail?code=${pickeatCode}`;
@@ -23,24 +26,7 @@ function TitleArea() {
 
   return (
     <S.Container>
-      <S.Title>
-        <S.TitleText>
-          <S.TitlePointText>안 땡기는 식당</S.TitlePointText>을
-          <S.Imoji src="/images/dislikeImoji.png" alt="싫어요 이모지" />
-        </S.TitleText>
-        <S.IconTextBox>
-          <S.IconContainer>
-            <S.IconWrapper>
-              <Cross color="white" size="sm" strokeWidth={4} />
-            </S.IconWrapper>
-          </S.IconContainer>
-          <S.TitleText>
-            <S.TitlePointText>버튼</S.TitlePointText>을&nbsp;
-            <S.TitlePointText>눌러 제외</S.TitlePointText>해 주세요
-          </S.TitleText>
-        </S.IconTextBox>
-      </S.Title>
-
+      {children}
       <S.ToolContainer>
         <S.ShareContainer onClick={handleOpenModal}>
           <Share size="sm" />
@@ -62,45 +48,20 @@ function TitleArea() {
   );
 }
 
-export default TitleArea;
+export default TitleSection;
 
 const S = {
   Container: styled.div`
+    width: 100%;
+    height: 138px;
+
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
-    padding: ${({ theme }) => theme.PADDING.p7};
-    padding-left: ${({ theme }) => theme.PADDING.px6};
+    padding: 0 ${({ theme }) => theme.PADDING.px7};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-  `,
-  Imoji: styled.img`
-    width: 48px;
-    height: 48px;
-  `,
-  Title: styled.h1`
-    display: flex;
-    flex-direction: column;
-
-    color: ${({ theme }) => theme.PALETTE.primary[50]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
-  `,
-  TitleText: styled.span`
-    display: flex;
-    align-items: center;
-
-    color: ${({ theme }) => theme.PALETTE.gray[30]};
-
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
-  `,
-  TitlePointText: styled.span`
-    color: ${({ theme }) => theme.PALETTE.primary[50]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
-  `,
-  IconTextBox: styled.div`
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level2};
   `,
   DeleteButton: styled.div`
     width: 20px;

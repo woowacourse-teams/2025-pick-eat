@@ -13,7 +13,9 @@ import styled from '@emotion/styled';
 import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
-import TitleArea from './components/TitleArea';
+import TitleSection from '../components/TitleSection';
+
+import Title from './components/Title';
 
 function RestaurantExcludePage() {
   const [searchParams] = useSearchParams();
@@ -23,7 +25,9 @@ function RestaurantExcludePage() {
   return (
     <S.Container>
       {!hasRestaurants && <PickeatEndModal />}
-      <TitleArea />
+      <TitleSection>
+        <Title />
+      </TitleSection>
       <ErrorBoundary>
         <Suspense fallback={<LoadingSpinner />}>
           <RestaurantExclude

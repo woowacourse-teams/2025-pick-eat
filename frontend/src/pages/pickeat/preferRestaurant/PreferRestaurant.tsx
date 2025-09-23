@@ -1,7 +1,6 @@
 import PickeatEndButton from '@domains/matchResult/components/PickeatEndButton';
 import PickeatVoteCompleteButton from '@domains/matchResult/components/PickeatVoteCompleteButton';
 import PreferRestaurantList from '@domains/preferRestaurant/components/PreferRestaurantList';
-import TitleArea from '@domains/preferRestaurant/components/TitleArea';
 
 import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
@@ -19,6 +18,10 @@ import styled from '@emotion/styled';
 import { Suspense } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
+import TitleSection from '../components/TitleSection';
+
+import Title from './components/Title';
+
 function PreferRestaurant() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
@@ -29,7 +32,9 @@ function PreferRestaurant() {
 
   return (
     <S.Container>
-      <TitleArea />
+      <TitleSection>
+        <Title />
+      </TitleSection>
       <ErrorBoundary>
         <Suspense fallback={<LoadingSpinner />}>
           <S.RestaurantListContainer>
