@@ -17,7 +17,7 @@ const FONTS = {
     medium_style: `700 28px/150% ${fontFamilyStyle}`,
     small: `600 19px/150% ${fontFamily}`,
     small_style: `600 22px/150% ${fontFamilyStyle}`,
-    small_style_static: `600 22px/150% BM Kkubulim Static`,
+    small_style_static: `600 22px/150% ${fontFamilyStyle}`,
   },
   body: {
     large: `400 19px/150% ${fontFamily}`,

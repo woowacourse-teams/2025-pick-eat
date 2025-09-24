@@ -14,7 +14,7 @@ function Title() {
       </S.TitleBox>
       <S.Description>
         <S.Line>
-          <S.WriteText>안 땡기는 식당</S.WriteText>
+          <S.PointText>안 땡기는 식당</S.PointText>
           <S.TitleText>을</S.TitleText>
         </S.Line>
         <S.Line>
@@ -63,7 +63,7 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
   `,
-  WriteText: styled.p`
+  PointText: styled.p`
     height: 36px;
 
     padding: 0 ${({ theme }) => theme.PADDING.px3};

@@ -13,7 +13,7 @@ function Title() {
       <S.Description>
         <S.Line>
           <S.WriteBox>
-            <S.WriteText>가고 싶은 식당</S.WriteText>
+            <S.PointText>가고 싶은 식당</S.PointText>
           </S.WriteBox>
           <S.TitleText>에</S.TitleText>
         </S.Line>
@@ -69,7 +69,7 @@ const S = {
     align-items: center;
     border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[50]};
   `,
-  WriteText: styled.p`
+  PointText: styled.p`
     color: ${({ theme }) => theme.PALETTE.secondary[95]};
     font: ${({ theme }) => theme.FONTS.heading.small_style};
   `,

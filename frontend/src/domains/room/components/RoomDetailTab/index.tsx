@@ -80,10 +80,6 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p7};
   `,
 
-  Name: styled.span`
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
-  `,
-
   ButtonWrapper: styled.div`
     width: 100%;
     display: flex;
