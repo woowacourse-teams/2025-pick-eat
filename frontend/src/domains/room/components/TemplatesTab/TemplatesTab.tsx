@@ -5,11 +5,11 @@ import { use } from 'react';
 
 import WishlistCard from './WishlistCard';
 
-function PublicWishGroupTab({
-  wishGroup,
-}: {
+type Props = {
   wishGroup: Promise<WishlistType[]>;
-}) {
+};
+
+function TemplatesTab({ wishGroup }: Props) {
   const wishes = use(wishGroup);
 
   return (
@@ -23,7 +23,7 @@ function PublicWishGroupTab({
   );
 }
 
-export default PublicWishGroupTab;
+export default TemplatesTab;
 
 const S = {
   Container: styled.div``,

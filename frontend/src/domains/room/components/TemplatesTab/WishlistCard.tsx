@@ -1,30 +1,27 @@
+import Wishlist from '@domains/wishlist/components/Wishlist';
+
 import Button from '@components/actions/Button';
-import Trash from '@components/assets/icons/Trash';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
 import { pickeat } from '@apis/pickeat';
-import { wishlist, WishlistType } from '@apis/wishlist';
+import { WishlistType } from '@apis/wishlist';
 
 import { generateRouterPath } from '@routes/routePath';
 
-import { THEME } from '@styles/global';
-
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
-
-import Wishlist from './Wishlist';
 
 type Prop = {
   wishlistData: WishlistType;
   onRefetch?: () => void;
 };
 
-function WishlistCard({ wishlistData, onRefetch }: Prop) {
+function WishlistCard({ wishlistData }: Prop) {
   const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId') ?? '';
+  const roomId = Number(searchParams.get('roomId')) ?? '';
   const navigate = useNavigate();
   const { id, name, isPublic } = wishlistData;
   const {
@@ -34,18 +31,6 @@ function WishlistCard({ wishlistData, onRefetch }: Prop) {
     handleOpenModal,
     handleUnmountModal,
   } = useModal();
-
-  const deleteWishlist = async (wishId: number) => {
-    const isDelete = confirm('정말 삭제하시겠습니까?');
-    if (isDelete) {
-      try {
-        await wishlist.delete(wishId);
-        onRefetch?.();
-      } catch {
-        alert('삭제 실패!');
-      }
-    }
-  };
 
   const handlePublicWishlistClick = async (id: number) => {
     try {
@@ -68,17 +53,12 @@ function WishlistCard({ wishlistData, onRefetch }: Prop) {
           type="button"
           onClick={handleOpenModal}
         />
-        {isPublic ? (
-          <Button
-            text="픽잇 시작"
-            size="sm"
-            onClick={() => handlePublicWishlistClick(id)}
-          />
-        ) : (
-          <S.RemoveButton type="button" onClick={() => deleteWishlist(id)}>
-            <Trash size="sm" color={THEME.PALETTE.primary[90]} />
-          </S.RemoveButton>
-        )}
+
+        <Button
+          text="픽잇 시작"
+          size="sm"
+          onClick={() => handlePublicWishlistClick(id)}
+        />
       </S.ButtonWrapper>
 
       <Modal
@@ -87,7 +67,7 @@ function WishlistCard({ wishlistData, onRefetch }: Prop) {
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <Wishlist id={id} name={name} isPublic={isPublic} />
+        <Wishlist wishlistId={id} wishlistName={name} isPublic={isPublic} />
       </Modal>
     </S.Container>
   );

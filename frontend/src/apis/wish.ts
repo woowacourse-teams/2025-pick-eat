@@ -2,6 +2,8 @@ import { accessToken } from '@domains/login/utils/authStorage';
 
 import { joinAsPath } from '@utils/createUrl';
 
+import { FoodCategory } from '@constants/foodCategory';
+
 import { apiClient } from './apiClient';
 import { WishesResponse } from './wishlist';
 
@@ -10,7 +12,7 @@ const BASE_URL = 'wishes';
 export type WishFormData = {
   name: string;
   roadAddressName: string;
-  category: string;
+  category: FoodCategory;
   tags: string[];
   placeUrl?: string;
 };

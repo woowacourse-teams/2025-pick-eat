@@ -42,9 +42,9 @@ function TagSection({ tags, onFormChange }: Props) {
         onCompositionEnd={() => setIsComposing(false)}
       />
 
-      {tags && (
-        <S.TagList>
-          {tags.map(tag => (
+      <S.TagList>
+        {tags &&
+          tags.map(tag => (
             <Badge key={tag} color="primary">
               <span>{tag}</span>
               <S.RemoveBtn
@@ -56,8 +56,7 @@ function TagSection({ tags, onFormChange }: Props) {
               </S.RemoveBtn>
             </Badge>
           ))}
-        </S.TagList>
-      )}
+      </S.TagList>
     </S.TagWrapper>
   );
 }
@@ -66,13 +65,13 @@ export default TagSection;
 
 const S = {
   TagWrapper: styled.div`
-    height: 120px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
 
   TagList: styled.div`
+    min-height: 26px;
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level3};

@@ -19,7 +19,6 @@ function RestaurantItem({
   tags,
   placeUrl,
   distance,
-  category,
   pictureUrls,
 }: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
