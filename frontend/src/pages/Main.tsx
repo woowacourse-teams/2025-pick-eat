@@ -7,6 +7,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 const Main = () => {
+  const showToast = useShowToast();
   return (
     <S.Container>
       <S.Section>
