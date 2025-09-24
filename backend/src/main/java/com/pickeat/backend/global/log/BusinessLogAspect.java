@@ -1,5 +1,6 @@
 package com.pickeat.backend.global.log;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.global.log.dto.BusinessLog;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class BusinessLogAspect {
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Around("@annotation(businessLogging)")
     public Object logBusinessAction(ProceedingJoinPoint joinPoint, BusinessLogging businessLogging) throws Throwable {
@@ -20,7 +22,7 @@ public class BusinessLogAspect {
         String message = String.format("User [%s] executed [%s]", userId, action);
 
         Object result = joinPoint.proceed();
-        log.info("{}", BusinessLog.of(userId, action, message));
+        log.info(objectMapper.writeValueAsString(BusinessLog.of(userId, action, message)));
         return result;
     }
 
