@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-@Profile({"dev", "test"})
+@Profile({"dev", "prod"})
 @Configuration
 @EnableTransactionManagement
 public class DataSourceConfig {
