@@ -1,19 +1,5 @@
 import Layout from '@components/layouts/Layout';
 
-import ChooseWishlist from '@pages/ChooseWishlist';
-import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
-import CreateRoom from '@pages/CreateRoom';
-import Login from '@pages/Login';
-import Main from '@pages/Main';
-import MatchResult from '@pages/MatchResult';
-import MyRoom from '@pages/myRoom/MyRoom';
-import OauthCallback from '@pages/OauthCallback';
-import PickeatDetail from '@pages/PickeatDetail';
-import PreferRestaurant from '@pages/PreferRestaurant';
-import ProfileInit from '@pages/ProfileInit';
-import RestaurantExcludePage from '@pages/restaurantExclude/RestaurantExcludePage';
-import RoomDetail from '@pages/RoomDetail';
-
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
 import { useGA } from '@hooks/useGA';
