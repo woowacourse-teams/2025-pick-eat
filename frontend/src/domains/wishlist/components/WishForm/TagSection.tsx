@@ -1,6 +1,8 @@
 import Input from '@components/actions/Input';
 import Badge from '@components/labels/Badge';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
@@ -12,6 +14,7 @@ type Props = {
 function TagSection({ tags, onFormChange }: Props) {
   const [tag, setTag] = useState<string>();
   const [isComposing, setIsComposing] = useState(false);
+  const showToast = useShowToast();
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !isComposing) {
@@ -21,7 +24,7 @@ function TagSection({ tags, onFormChange }: Props) {
       if (!tags?.includes(trimmedTag)) {
         onFormChange([...(tags ?? []), trimmedTag]);
       } else {
-        alert('다른 태그를 입력해주세요.');
+        showToast({ mode: 'WARN', message: '다른 태그를 입력해 주세요.' });
       }
       setTag('');
     }

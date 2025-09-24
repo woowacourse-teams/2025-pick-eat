@@ -6,6 +6,8 @@ import { useGA } from '@hooks/useGA';
 
 import { generateRouterPath } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
@@ -26,6 +28,7 @@ function PickeatEndConfirm({
   const pickeatCode = searchParams.get('code') ?? '';
 
   const navigate = useNavigate();
+  const showToast = useShowToast();
 
   const endPickeat = async () => {
     onConfirm();
@@ -39,7 +42,10 @@ function PickeatEndConfirm({
       await pickeat.postResult(pickeatCode);
       navigate(generateRouterPath.matchResult(pickeatCode));
     } catch {
-      return alert('픽잇 결과를 가져오는 데 실패했습니다.');
+      return showToast({
+        mode: 'ERROR',
+        message: '픽잇 결과를 가져오는 데 실패했습니다.',
+      });
     }
   };
 

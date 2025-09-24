@@ -12,6 +12,8 @@ import { rooms } from '@apis/rooms';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
@@ -25,10 +27,11 @@ function ChoosePickeatType() {
   const { loggedIn } = useAuth();
   const navigate = useNavigate();
   const roomsData = useMemo(() => rooms.get(), []);
+  const showToast = useShowToast();
 
   const handleWishlistButtonClick = () => {
     if (!loggedIn) {
-      alert('로그인 후 이용해 주세요!');
+      showToast({ mode: 'ERROR', message: '로그인 후 이용해 주세요!' });
       navigate(ROUTE_PATH.LOGIN);
       return;
     }

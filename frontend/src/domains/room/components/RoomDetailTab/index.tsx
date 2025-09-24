@@ -10,6 +10,8 @@ import { room } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { Suspense, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
@@ -23,6 +25,7 @@ function RoomDetailTab() {
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
   const wishlistId = Number(searchParams.get('wishId')) ?? '';
+  const showToast = useShowToast();
 
   const getRoom = () => useMemo(() => room.get(roomId), [roomId]);
   const getIncludeMembers = () =>
@@ -35,7 +38,7 @@ function RoomDetailTab() {
       await pickeat.postWish(wishlistId, code);
       if (code) navigate(generateRouterPath.pickeatDetail(code));
     } catch (e) {
-      alert(e);
+      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
     }
   };
 

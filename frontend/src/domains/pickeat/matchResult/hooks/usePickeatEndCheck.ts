@@ -5,12 +5,15 @@ import { usePolling } from '@hooks/usePolling';
 
 import { generateRouterPath, ROUTE_PATH } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 export function usePickeatStateChecker(pickeatCode: string) {
   const [hasRestaurants, setHasRestaurants] = useState(true);
   const navigate = useNavigate();
+  const showToast = useShowToast();
 
   const fetchPickeatState = async (): Promise<PickeatStateResponse | null> => {
     return await pickeat.getPickeatState(pickeatCode);
@@ -34,7 +37,7 @@ export function usePickeatStateChecker(pickeatCode: string) {
     },
     errorHandler: error => {
       if (error.message === 'PICKEAT_NOT_FOUND') {
-        alert('해당 픽잇이 종료되었습니다');
+        showToast({ mode: 'ERROR', message: '해당 픽잇이 종료되었습니다' });
         navigate(ROUTE_PATH.MAIN);
       } else {
         console.error('Polling error:', error.message);

@@ -99,7 +99,7 @@ export const useRestaurantExcludeContext = () => {
   const context = useContext(RestaurantExcludeContext);
   if (!context) {
     throw new Error(
-      'useRestaurantExcludeContext 는 RestaurantExcludeProvider 안에서 사용해주세요.'
+      'useRestaurantExcludeContext 는 RestaurantExcludeProvider 안에서 사용해 주세요.'
     );
   }
   return context;

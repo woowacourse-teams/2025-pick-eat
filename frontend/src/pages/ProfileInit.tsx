@@ -8,6 +8,8 @@ import { login } from '@apis/login';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { validate } from '@utils/validate';
 
 import styled from '@emotion/styled';
@@ -22,6 +24,7 @@ function ProfileInit() {
   const navigate = useNavigate();
   const location = useLocation();
   const token = location.state?.accessToken;
+  const showToast = useShowToast();
 
   if (!token) navigate(ROUTE_PATH.MAIN, { replace: true });
 
@@ -31,7 +34,7 @@ function ProfileInit() {
 
   const handleSubmit = async () => {
     if (validate.isEmpty(nickname)) {
-      setError('닉네임을 입력해주세요.');
+      setError('닉네임을 입력해 주세요.');
       return;
     }
 
@@ -46,9 +49,9 @@ function ProfileInit() {
 
       loginUser(userToken);
       navigate(ROUTE_PATH.MAIN);
-      alert('회원가입이 완료되었습니다.');
+      showToast({ mode: 'SUCCESS', message: '회원가입이 완료되었습니다.' });
     } catch {
-      alert('회원가입에 실패하였습니다.');
+      showToast({ mode: 'ERROR', message: '회원가입에 실패하였습니다.' });
     } finally {
       setLoading(false);
     }

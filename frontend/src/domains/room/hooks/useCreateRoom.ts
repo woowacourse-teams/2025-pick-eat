@@ -3,6 +3,8 @@ import { User } from '@apis/users';
 
 import { generateRouterPath } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -11,6 +13,7 @@ import { validateCreateRoom } from '../services/validateCreateRoom';
 export const useCreateRoom = () => {
   const [error, setError] = useState<string>();
   const navigate = useNavigate();
+  const showToast = useShowToast();
 
   const createRoom = async (roomName: string, selectedMemberList: User[]) => {
     try {
@@ -31,7 +34,7 @@ export const useCreateRoom = () => {
           selectedMemberList.map(member => member.id)
         );
       }
-      alert('방생성 완료!');
+      showToast({ mode: 'SUCCESS', message: '방생성 완료!' });
       navigate(generateRouterPath.roomDetail(roomData.id, roomData.wishlistId));
     } catch {
       setError('방 생성 중 문제가 발생했습니다.');

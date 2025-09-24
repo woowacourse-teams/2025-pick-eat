@@ -8,6 +8,8 @@ import { Room } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
@@ -17,6 +19,7 @@ import { useNavigate } from 'react-router';
 function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
   const roomList = use(roomsData);
   const navigate = useNavigate();
+  const showToast = useShowToast();
 
   const enterRoomWithWishPickeat = async (
     roomId: number,
@@ -27,7 +30,7 @@ function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
       await pickeat.postWish(wishlistId, code);
       if (code) navigate(generateRouterPath.pickeatDetail(code));
     } catch (e) {
-      alert(e);
+      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
     }
   };
 

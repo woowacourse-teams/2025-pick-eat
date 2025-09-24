@@ -40,7 +40,7 @@ function Option({ value, children }: OptionProps) {
 function Bar({
   selectedValue,
   label,
-  placeholder = '선택해주세요.',
+  placeholder = '선택해 주세요.',
   onChange,
   children,
 }: BarProps) {

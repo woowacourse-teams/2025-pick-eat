@@ -11,6 +11,8 @@ import { WishlistType } from '@apis/wishlist';
 
 import { generateRouterPath } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
@@ -31,6 +33,7 @@ function WishlistCard({ wishlistData }: Prop) {
     handleOpenModal,
     handleUnmountModal,
   } = useModal();
+  const showToast = useShowToast();
 
   const handlePublicWishlistClick = async (id: number) => {
     try {
@@ -38,7 +41,7 @@ function WishlistCard({ wishlistData }: Prop) {
       await pickeat.postWish(id, code);
       if (code) navigate(generateRouterPath.pickeatDetail(code));
     } catch (e) {
-      alert(e);
+      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
     }
   };
 

@@ -1,15 +1,5 @@
 import Layout from '@components/layouts/Layout';
 
-import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
-
-import { useGA } from '@hooks/useGA';
-
-import { ROUTE_PATH } from '@routes/routePath';
-
-import { THEME } from '@styles/global';
-import reset from '@styles/reset';
-
-import { Global, ThemeProvider } from '@emotion/react';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
@@ -22,6 +12,19 @@ import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
 import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
 import ProfileInit from '@pages/ProfileInit';
 import RoomDetail from '@pages/RoomDetail';
+
+import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
+
+import { useGA } from '@hooks/useGA';
+
+import { ROUTE_PATH } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
+
+import { THEME } from '@styles/global';
+import reset from '@styles/reset';
+
+import { Global, ThemeProvider } from '@emotion/react';
 import {
   createBrowserRouter,
   Navigate,
@@ -49,11 +52,12 @@ function Wrapper() {
 function ProtectedLayout() {
   const { loggedIn, loading, hasToken, logoutUser } = useAuth();
   const location = useLocation();
+  const showToast = useShowToast();
 
   if (loading) return null;
 
   if (!loggedIn || !hasToken()) {
-    alert('로그인이 필요합니다.');
+    showToast({ mode: 'WARN', message: '로그인이 필요합니다.' });
     logoutUser();
     return (
       <Navigate to={ROUTE_PATH.LOGIN} state={{ from: location }} replace />

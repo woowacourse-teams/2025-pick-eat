@@ -1,5 +1,7 @@
 import { restaurants } from '@apis/restaurants';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
@@ -8,6 +10,7 @@ function PickeatDecisionInfo() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
   const [hasTie, setHasTie] = useState(false);
+  const showToast = useShowToast();
 
   useEffect(() => {
     const fetchRestaurants = async () => {
@@ -21,7 +24,7 @@ function PickeatDecisionInfo() {
         );
         setHasTie(topRestaurants.length > 1);
       } catch {
-        alert('현재 통신이 원활하지 않습니다');
+        showToast({ mode: 'ERROR', message: '현재 통신이 원활하지 않습니다' });
       }
     };
 

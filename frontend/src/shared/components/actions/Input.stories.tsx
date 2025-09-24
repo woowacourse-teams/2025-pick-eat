@@ -32,7 +32,7 @@ export const Default: Story = {
 
 export const WithPlaceholder: Story = {
   args: {
-    placeholder: '입력해주세요.',
+    placeholder: '입력해 주세요.',
   },
   render: args => <Template {...args} />,
 };

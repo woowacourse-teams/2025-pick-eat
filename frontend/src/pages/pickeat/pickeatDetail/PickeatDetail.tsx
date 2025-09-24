@@ -9,6 +9,8 @@ import { makeNickname } from '@domains/pickeat/utils/makeNickname';
 import { pickeat } from '@apis/pickeat';
 import { users } from '@apis/users';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
@@ -18,6 +20,7 @@ function PickeatDetail() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
   const { loggedIn } = useAuth();
+  const showToast = useShowToast();
 
   useEffect(() => {
     if (!loggedIn) return;
@@ -28,9 +31,11 @@ function PickeatDetail() {
         if (user) {
           setDefaultNickname(user.nickname);
         }
-      } catch (e) {
-        alert('닉네임을 불러오지 못해 랜덤 닉네임이 생성되었습니다.');
-        console.log(e);
+      } catch {
+        showToast({
+          mode: 'ERROR',
+          message: '닉네임을 불러오지 못해 랜덤 닉네임이 생성되었습니다.',
+        });
       }
     };
 

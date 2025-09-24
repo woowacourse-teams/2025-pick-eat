@@ -6,6 +6,8 @@ import { pickeat } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
@@ -28,6 +30,7 @@ const PublicWishlist = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
+  const showToast = useShowToast();
 
   const handlePublicWishlistClick = async (id: number) => {
     try {
@@ -35,7 +38,7 @@ const PublicWishlist = () => {
       await pickeat.postWish(id, code);
       if (code) navigate(generateRouterPath.pickeatDetail(code));
     } catch (e) {
-      alert(e);
+      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
     }
   };
 
