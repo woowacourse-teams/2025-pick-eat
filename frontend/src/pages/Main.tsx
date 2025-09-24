@@ -1,12 +1,11 @@
 import ChoosePickeatType from '@domains/pickeat/components/ChoosePickeatType';
 import PublicWishlist from '@domains/wishlist/components/PublicWishlist';
 
-import { useShowToast } from 'shared/provider/ToastProvider';
-
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { useShowToast } from 'shared/provider/ToastProvider';
 
 const Main = () => {
   const showToast = useShowToast();
