@@ -11,15 +11,19 @@ type Props = {
   isPublic: boolean;
 };
 
-function Wishlist({ wishlistId, wishlistName, isPublic }: Props) {
+function Wishlist({ wishlistId, wishlistName }: Props) {
   const [wishes, setWishes] = useState<Wishes[]>([]);
 
   useEffect(() => {
     const fetchWishes = async () => {
-      const response = await wishlist.get(wishlistId, isPublic);
+      const response = await wishlist.get(wishlistId);
       setWishes(response);
     };
-    fetchWishes();
+    try {
+      fetchWishes();
+    } catch {
+      alert('위시를 불러오던 중 에러가 발생했습니다.');
+    }
   }, []);
 
   return (

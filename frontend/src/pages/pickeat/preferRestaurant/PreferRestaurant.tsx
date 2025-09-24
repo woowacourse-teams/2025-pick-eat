@@ -80,8 +80,9 @@ const S = {
   RestaurantListContainer: styled.div`
     width: 100%;
     min-height: 580px;
-    border-top: 2px solid ${({ theme }) => theme.PALETTE.gray[20]};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-top: 2px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 
   Footer: styled.div`

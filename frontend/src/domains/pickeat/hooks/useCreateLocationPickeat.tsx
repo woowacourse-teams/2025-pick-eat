@@ -12,7 +12,7 @@ export const useCreateLocationPickeat = () => {
   const [error, setError] = useState<string>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId') ?? '';
+  const roomId = Number(searchParams.get('roomId')) ?? '';
 
   const createPickeat = async (
     formData: FormData,

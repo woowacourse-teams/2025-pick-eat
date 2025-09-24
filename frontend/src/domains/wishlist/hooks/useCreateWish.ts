@@ -14,7 +14,7 @@ export const useCreateWish = (onCreate?: () => void) => {
 
   const initialWishFormData = async (address: string) => {
     const data = await getFormDataByAddress(address);
-    if (data) setFormData({ ...data, tags: [], category: '' });
+    if (data) setFormData({ ...data, tags: [] });
   };
 
   const handleFormData = <K extends keyof WishFormDataWithImage>(

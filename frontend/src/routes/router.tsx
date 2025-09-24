@@ -10,7 +10,6 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
-import ChooseWishlist from '@pages/ChooseWishlist';
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
@@ -86,7 +85,6 @@ const routes = createBrowserRouter([
         Component: ProtectedLayout,
         children: [
           { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
-          { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
           { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
           { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
         ],
@@ -109,10 +107,6 @@ const routes = createBrowserRouter([
       {
         path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
         Component: RestaurantExcludePage,
-      },
-      {
-        path: ROUTE_PATH.PICKEAT_WITH_WISH,
-        Component: ChooseWishlist,
       },
     ],
   },

@@ -86,49 +86,56 @@ const S = {
   ButtonContainer: styled.button`
     width: 100%;
     height: 48px;
-    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    color: ${({ theme }) => theme.PALETTE.gray[0]};
+    position: relative;
+
     background-color: #ddd;
+
+    color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: 6px;
     cursor: pointer;
   `,
   ProgressBar: styled.div<{ progress: number }>`
+    width: ${({ progress }) => progress * 100}%;
+    overflow: hidden;
     position: absolute;
     top: 0;
-    left: 0;
     bottom: 0;
-    width: ${({ progress }) => progress * 100}%;
+    left: 0;
+
     background-color: ${({ theme }) => theme.PALETTE.secondary[50]};
-    border-radius: 6px 0 0 6px;
-    overflow: hidden;
+
     transition: width 0.3s ease;
+    border-radius: 6px 0 0 6px;
 
     &::after {
-      content: '';
+      width: 50%;
+      height: 100%;
       position: absolute;
       top: 0;
       left: -150%;
-      height: 100%;
-      width: 50%;
+
       background: linear-gradient(
         120deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.3) 50%,
-        rgba(255, 255, 255, 0) 100%
+        rgb(255 255 255 / 0%) 0%,
+        rgb(255 255 255 / 30%) 50%,
+        rgb(255 255 255 / 0%) 100%
       );
+
       animation: shimmer 2s infinite;
-      pointer-events: none;
       border-radius: 6px 0 0 6px;
+      content: '';
+      pointer-events: none;
     }
 
     @keyframes shimmer {
       0% {
         left: -150%;
       }
+
       100% {
         left: 150%;
       }
@@ -137,6 +144,7 @@ const S = {
   ButtonWrapper: styled.div`
     position: relative;
     z-index: 1;
+
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
   `,
 };

@@ -40,8 +40,8 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
   `,
   Title: styled.h1`
-    font: ${({ theme }) => theme.FONTS.display.medium};
     color: ${({ theme }) => theme.PALETTE.primary[50]};
+    font: ${({ theme }) => theme.FONTS.display.medium};
     ${setMobileStyle(css`
       font-size: 36px;
     `)}
@@ -65,10 +65,12 @@ const S = {
   `,
   WriteText: styled.p`
     height: 36px;
+
+    padding: 0 ${({ theme }) => theme.PADDING.px3};
+
     color: ${({ theme }) => theme.PALETTE.primary[95]};
     font: ${({ theme }) => theme.FONTS.heading.small_style};
     border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[50]};
-    padding: 0px ${({ theme }) => theme.PADDING.px3};
   `,
   TitleText: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[50]};

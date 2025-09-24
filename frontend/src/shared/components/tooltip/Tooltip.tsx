@@ -100,14 +100,17 @@ const S = {
     position: absolute;
     top: ${props => props.adjustedY}px;
     left: ${props => props.adjustedX}px;
-    background-color: ${({ theme }) => theme.PALETTE.gray[80]};
-    color: ${({ theme }) => theme.PALETTE.gray[0]};
+    z-index: ${({ theme }) => theme.Z_INDEX.tooltip};
+
     padding: 8px 12px;
-    border-radius: ${({ theme }) => theme.RADIUS.small};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[80]};
+
+    color: ${({ theme }) => theme.PALETTE.gray[0]};
+    font: ${({ theme }) => theme.FONTS.body.small};
     white-space: nowrap;
+    border-radius: ${({ theme }) => theme.RADIUS.small};
     pointer-events: auto;
     user-select: none;
-    z-index: ${({ theme }) => theme.Z_INDEX.tooltip};
-    font: ${({ theme }) => theme.FONTS.body.small};
   `,
 };

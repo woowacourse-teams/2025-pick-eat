@@ -80,8 +80,8 @@ const S = {
     text-align: center;
   `,
   PointText: styled.p`
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
     color: ${({ theme }) => theme.PALETTE.gray[60]};
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
   Wrapper: styled.div`
     width: 100%;

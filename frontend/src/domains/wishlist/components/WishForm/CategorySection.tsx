@@ -1,26 +1,26 @@
 import Badge from '@components/labels/Badge';
 
+import { FOOD_CATEGORIES, FoodCategory } from '@constants/foodCategory';
+
 import styled from '@emotion/styled';
 import { useState } from 'react';
 
-type Category = '한식' | '중식' | '일식' | '양식' | '기타';
-const CATEGORY_OPTIONS = ['한식', '중식', '일식', '양식', '기타'] as const;
-
 type Props = {
+  value: FoodCategory;
   onFormChange: (value: string) => void;
 };
 
-function CategorySection({ onFormChange }: Props) {
-  const [selectedCategory, setSelectedCategory] = useState<Category>();
+function CategorySection({ value, onFormChange }: Props) {
+  const [selectedCategory, setSelectedCategory] = useState<FoodCategory>(value);
 
-  const clickBadge = (category: Category) => {
+  const clickBadge = (category: FoodCategory) => {
     setSelectedCategory(category);
     onFormChange(category);
   };
 
   return (
     <S.Container>
-      {CATEGORY_OPTIONS.map(category => (
+      {FOOD_CATEGORIES.map(category => (
         <S.BadgeButton
           key={category}
           onClick={() => clickBadge(category)}

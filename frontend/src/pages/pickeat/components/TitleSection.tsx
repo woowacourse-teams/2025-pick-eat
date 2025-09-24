@@ -70,8 +70,9 @@ const S = {
     ${setMobileStyle(css`
       height: 210px;
       flex-direction: column;
-      align-items: flex-start;
       justify-content: space-between;
+      align-items: flex-start;
+
       padding-bottom: 16px;
     `)}
   `,
@@ -108,36 +109,12 @@ const S = {
   ShareContainer: styled.button`
     height: 36px;
   `,
-  // ToolContainer: styled.div`
-  //   display: flex;
-  //   flex-direction: column;
-  //   gap: ${({ theme }) => theme.GAP.level4};
-  //   align-items: flex-end;
-  //   justify-content: space-between;
-  //   ${setMobileStyle(css`
-  //     width: 100%;
-  //     flex-direction: row;
-  //   `)}
-  // `,
-  // ToolWrapper: styled.div`
-  //   display: flex;
-  //   flex-direction: column;
-  //   align-items: flex-end;
-
-  //   gap: ${({ theme }) => theme.GAP.level4};
-  //   ${setMobileStyle(css`
-  //     flex-direction: row-reverse;
-  //     width: 100%;
-  //     align-items: center;
-  //     justify-content: space-between;
-  //   `)}
-  // `,
   ToolContainer: styled.div`
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
-    align-items: flex-end;
     justify-content: space-between;
+    align-items: flex-end;
+    gap: ${({ theme }) => theme.GAP.level4};
     ${setMobileStyle(css`
       width: 100%;
       flex-direction: row-reverse;

@@ -42,23 +42,26 @@ const S = {
   Container: styled.div<{ borderColor: string }>`
     width: 36px;
     height: 36px;
-    border: 2px solid white;
-    border-radius: ${({ theme }) => theme.RADIUS.half};
-    border-color: ${({ borderColor }) => borderColor};
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+
+    border: 2px solid white;
+    border-color: ${({ borderColor }) => borderColor};
+    border-radius: ${({ theme }) => theme.RADIUS.half};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
   `,
   Wrapper: styled.div<{ backgroundColor: string }>`
     width: 32px;
     height: 32px;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+
     border: 2px solid white;
-    border-radius: ${({ theme }) => theme.RADIUS.half};
+
     background: ${({ backgroundColor }) => backgroundColor};
+    border-radius: ${({ theme }) => theme.RADIUS.half};
   `,
   Initial: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[0]};

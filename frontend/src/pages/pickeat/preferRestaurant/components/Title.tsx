@@ -38,8 +38,8 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
   `,
   Title: styled.h1`
-    font: ${({ theme }) => theme.FONTS.display.medium};
     color: ${({ theme }) => theme.PALETTE.secondary[60]};
+    font: ${({ theme }) => theme.FONTS.display.medium};
     ${setMobileStyle(css`
       font-size: 36px;
     `)}

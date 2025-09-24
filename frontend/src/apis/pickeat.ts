@@ -146,9 +146,9 @@ const convertResponseToParticipantsState = async (
 const BASE_PATH = 'pickeats';
 
 export const pickeat = {
-  post: async (roomId: string, name: string): Promise<string> => {
+  post: async (roomId: number, name: string): Promise<string> => {
     const url = roomId
-      ? joinAsPath('rooms', roomId, BASE_PATH)
+      ? joinAsPath('rooms', `${roomId}`, BASE_PATH)
       : joinAsPath(BASE_PATH);
     const response = await apiClient.post<PickeatResponse>(url, {
       name,

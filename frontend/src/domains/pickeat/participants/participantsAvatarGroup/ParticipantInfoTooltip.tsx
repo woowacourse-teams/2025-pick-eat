@@ -38,13 +38,14 @@ export default ParticipantInfoTooltip;
 const S = {
   Container: styled.div`
     max-height: 600px;
-    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
+
     padding: 8px 12px;
     border-radius: ${({ theme }) => theme.RADIUS.small};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level2};
+    overflow-y: scroll;
   `,
   ParticipantWrapper: styled.div`
     display: flex;
@@ -58,7 +59,7 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small_bold};
   `,
   Description: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.xsmall};
     color: ${({ theme }) => theme.PALETTE.gray[20]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };

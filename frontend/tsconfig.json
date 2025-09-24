@@ -20,7 +20,8 @@
       "@routes/*": ["routes/*"],
       "@apis/*": ["apis/*"],
       "@types/*": ["shared/types/*"],
-      "@styles/*": ["shared/styles/*"]
+      "@styles/*": ["shared/styles/*"],
+      "@constants/*":["shared/constants/*"]
     },
     "checkJs": true,
     "types": ["node", "jest", "@testing-library/jest-dom"]

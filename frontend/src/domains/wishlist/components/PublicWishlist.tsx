@@ -27,7 +27,7 @@ const WISHLIST_MOCK_DATA = [
 const PublicWishlist = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId') ?? '';
+  const roomId = Number(searchParams.get('roomId')) ?? '';
 
   const handlePublicWishlistClick = async (id: number) => {
     try {

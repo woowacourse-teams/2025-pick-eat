@@ -95,7 +95,8 @@ const S = {
     }
   `,
   AvatarWrapper: styled.div<{ index: number }>`
-    margin-left: ${({ index }) => (index === 0 ? 0 : `-${OVERLAP_OFFSET}px`)};
     z-index: ${({ index }) => 100 - index};
+
+    margin-left: ${({ index }) => (index === 0 ? 0 : `-${OVERLAP_OFFSET}px`)};
   `,
 };
