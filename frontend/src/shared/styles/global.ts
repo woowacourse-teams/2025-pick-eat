@@ -77,6 +77,16 @@ const PALETTE = {
     95: '#190E00',
     100: '#000000',
   },
+  red: {
+    50: '#FF5A5F',
+  },
+  green: {
+    50: '#69aa7fff',
+  },
+  kakao: {
+    50: '#FEE500',
+    100: '#191600',
+  },
 };
 
 export const Z_INDEX = {
