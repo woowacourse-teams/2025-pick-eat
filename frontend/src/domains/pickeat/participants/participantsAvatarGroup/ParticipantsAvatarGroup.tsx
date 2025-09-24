@@ -20,7 +20,15 @@ function ParticipantsAvatarGroup() {
   const [opened, setOpened] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
 
-  const onClickContainer = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleOpenClick = useCallback(() => {
+    setOpened(true);
+  }, [setOpened]);
+
+  const handleCloseClick = useCallback(() => {
+    setOpened(false);
+  }, [setOpened]);
+
+  const toggleShow = (e: React.MouseEvent<HTMLDivElement>) => {
     if (opened) {
       handleCloseClick();
       return;
@@ -33,19 +41,11 @@ function ParticipantsAvatarGroup() {
     handleOpenClick();
   };
 
-  const handleOpenClick = useCallback(() => {
-    setOpened(true);
-  }, [setOpened]);
-
-  const handleCloseClick = useCallback(() => {
-    setOpened(false);
-  }, [setOpened]);
-
   return (
     <>
       <S.Container
         ref={triggerRef}
-        onClick={onClickContainer}
+        onClick={toggleShow}
         opened={opened}
         data-tooltip="메인 메뉴"
         data-tooltip-offset-x="60"
