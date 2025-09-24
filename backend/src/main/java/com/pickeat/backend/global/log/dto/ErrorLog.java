@@ -1,10 +1,7 @@
 package com.pickeat.backend.global.log.dto;
 
-import org.slf4j.MDC;
-
 public record ErrorLog(
         LogType logType,
-        String requestId,
         int status,
         String message,
         String type,
@@ -18,7 +15,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.SERVER_ERROR,
-                MDC.get("request_id"),
                 status,
                 ex.getMessage(),
                 ex.getClass().getName(),
@@ -34,7 +30,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.EXTERNAL_ERROR,
-                MDC.get("request_id"),
                 status,
                 ex.getMessage(),
                 ex.getClass().getName(),
@@ -50,7 +45,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.CLIENT_ERROR,
-                MDC.get("request_id"),
                 status,
                 ex.getMessage(),
                 ex.getClass().getName(),

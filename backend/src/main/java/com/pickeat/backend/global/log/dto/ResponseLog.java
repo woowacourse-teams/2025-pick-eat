@@ -1,12 +1,10 @@
 package com.pickeat.backend.global.log.dto;
 
 import java.nio.charset.StandardCharsets;
-import org.slf4j.MDC;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 public record ResponseLog(
         LogType logType,
-        String requestId,
         String body
 ) {
     public static ResponseLog of(ContentCachingResponseWrapper response) {
@@ -19,7 +17,6 @@ public record ResponseLog(
 
         return new ResponseLog(
                 LogType.RESPONSE,
-                MDC.get("request_id"),
                 responseBody
         );
     }
