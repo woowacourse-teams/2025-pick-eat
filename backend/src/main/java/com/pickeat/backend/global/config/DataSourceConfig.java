@@ -1,6 +1,6 @@
 package com.pickeat.backend.global.config;
 
-import com.pickeat.backend.global.DataSourceRouter;
+import com.pickeat.backend.global.datasource.DataSourceRouter;
 import com.zaxxer.hikari.HikariDataSource;
 import java.util.Map;
 import javax.sql.DataSource;

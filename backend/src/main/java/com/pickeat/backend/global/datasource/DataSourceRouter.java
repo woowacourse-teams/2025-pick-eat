@@ -1,4 +1,4 @@
-package com.pickeat.backend.global;
+package com.pickeat.backend.global.datasource;
 
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
