@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=local webpack serve --config webpack.local.js --host 0.0.0.0",
-    "build:prod": "cross-env NODE_ENV=production webpack --config webpack.prod.js",
-    "build:dev": "cross-env NODE_ENV=development webpack --config webpack.dev.js",
+    "build:prod": "npm run build:font && cross-env NODE_ENV=production webpack --config webpack.prod.js",
+    "build:dev": "npm run build:font && cross-env NODE_ENV=development webpack --config webpack.dev.js",
     "test": "jest --verbose",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "lint:css": "stylelint --ignore-path .gitignore **/*.tsx",
     "css:fix": "stylelint \"src/**/*.{js,jsx,ts,tsx,css}\" --fix",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "build:font": "node tools/kkubulim/buildSubset.js"
   },
   "repository": {
     "type": "git",
@@ -41,6 +42,7 @@
     "react-dom": "^19.1.0",
     "react-ga4": "^2.1.0",
     "react-router": "^7.6.3",
+    "subset-font": "^2.4.0",
     "ts-jest": "^29.4.0"
   },
   "devDependencies": {

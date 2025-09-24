@@ -1,3 +1,5 @@
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import { ButtonHTMLAttributes } from 'react';
 
@@ -6,7 +8,11 @@ interface CheckBoxProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   onToggle?: () => void;
 }
 
-const CheckBox = ({ checked, onToggle = () => {}, ...props }: CheckBoxProps) => {
+const CheckBox = ({
+  checked,
+  onToggle = () => {},
+  ...props
+}: CheckBoxProps) => {
   return (
     <CheckButton checked={checked} onClick={onToggle} {...props}>
       <svg
@@ -18,7 +24,7 @@ const CheckBox = ({ checked, onToggle = () => {}, ...props }: CheckBoxProps) => 
       >
         <path
           d="M5.88428 11.17L1.71428 7L0.294281 8.41L5.88428 14L17.8843 2L16.4743 0.589996L5.88428 11.17Z"
-          fill={checked ? '#ffffff' : '#BDBDBD'}
+          fill={checked ? THEME.PALETTE.gray[0] : THEME.PALETTE.gray[30]}
         />
       </svg>
     </CheckButton>
@@ -34,15 +40,16 @@ const CheckButton = styled.button<{ checked: boolean }>`
   justify-content: center;
   align-items: center;
 
-  border: ${({ checked }) =>
-    checked ? 'black solid 1px' : '#BDBDBD solid 1px'};
+  border: ${({ checked, theme }) =>
+    checked ? 'black solid 1px' : `${theme.PALETTE.gray[30]} solid 1px`};
 
-  background-color: ${({ checked }) => (checked ? 'black' : 'white')};
+  background-color: ${({ checked, theme }) =>
+    checked ? theme.PALETTE.gray[100] : theme.PALETTE.gray[0]};
   border-radius: 6px;
   cursor: pointer;
 
   &:hover {
-    border: ${({ checked }) =>
-      checked ? 'black solid 1px' : '#BDBDBD solid 1px'};
+    border: ${({ checked, theme }) =>
+      checked ? 'black solid 1px' : `${theme.PALETTE.gray[30]} solid 1px`};
   }
 `;

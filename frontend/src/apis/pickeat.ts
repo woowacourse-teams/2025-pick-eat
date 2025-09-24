@@ -2,7 +2,7 @@ import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
 import { joinAsPath } from '@utils/createUrl';
 
-import { apiClient } from './apiClient';
+import { apiClient, ApiError } from './apiClient';
 
 export type PickeatType = {
   id: number;
@@ -31,6 +31,33 @@ type JoinPickeatFormData = {
 type ParticipantsResponse = {
   totalParticipants: number;
   eliminatedParticipants: number;
+};
+
+type ParticipatingResponse = {
+  id: number;
+  code: string;
+  name: string;
+  participantCount: number;
+  isActive: boolean;
+};
+
+export type Participating = {
+  id: number;
+  code: string;
+  name: string;
+  participantCount: number;
+  isActive: boolean;
+};
+
+export type ParticipantState = {
+  id: number;
+  nickname: string;
+  isCompleted: boolean;
+};
+
+export type ParticipantsState = {
+  totalParticipants: number;
+  participants: ParticipantState[];
 };
 
 type PickeatResultResponse = {
@@ -95,12 +122,33 @@ const convertResponseToResult = async (
   hasEqualLike: data.hasEqualLike,
 });
 
+const convertResponseToParticipating = async (
+  data: ParticipatingResponse
+): Promise<Participating> => ({
+  id: data.id,
+  code: data.code,
+  name: data.name,
+  participantCount: data.participantCount,
+  isActive: data.isActive,
+});
+
+const convertResponseToParticipantsState = async (
+  data: ParticipantsState
+): Promise<ParticipantsState> => ({
+  totalParticipants: data.totalParticipants,
+  participants: data.participants.map(participant => ({
+    id: participant.id,
+    nickname: participant.nickname,
+    isCompleted: participant.isCompleted,
+  })),
+});
+
 const BASE_PATH = 'pickeats';
 
 export const pickeat = {
-  post: async (roomId: string, name: string): Promise<string> => {
+  post: async (roomId: number, name: string): Promise<string> => {
     const url = roomId
-      ? joinAsPath('rooms', roomId, BASE_PATH)
+      ? joinAsPath('rooms', `${roomId}`, BASE_PATH)
       : joinAsPath(BASE_PATH);
     const response = await apiClient.post<PickeatResponse>(url, {
       name,
@@ -144,6 +192,27 @@ export const pickeat = {
     const data = await apiClient.get<ParticipantsResponse>(url);
 
     return data ?? null;
+  },
+  getParticipating: async (): Promise<ParticipatingResponse | null> => {
+    const url = joinAsPath(BASE_PATH, 'participating');
+    try {
+      const response = await apiClient.get<ParticipatingResponse>(url);
+      if (response) return convertResponseToParticipating(response);
+      return null;
+    } catch (e) {
+      if (e instanceof ApiError && (e.status === 401 || e.status === 400)) {
+        return null;
+      }
+      throw e;
+    }
+  },
+  getParticipantsState: async (
+    pickeatCode: string
+  ): Promise<ParticipantsState> => {
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'participants', 'state');
+    const response = await apiClient.get<ParticipantsState>(url);
+    if (response) return convertResponseToParticipantsState(response);
+    return { totalParticipants: 0, participants: [] };
   },
   getResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
     const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
