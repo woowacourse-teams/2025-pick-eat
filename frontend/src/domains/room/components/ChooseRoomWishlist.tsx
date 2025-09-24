@@ -18,7 +18,10 @@ function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
   const roomList = use(roomsData);
   const navigate = useNavigate();
 
-  const clickRoom = async (roomId: number, wishlistId: number) => {
+  const enterRoomWithWishPickeat = async (
+    roomId: number,
+    wishlistId: number
+  ) => {
     try {
       const code = await pickeat.post(roomId, makePickeatName());
       await pickeat.postWish(wishlistId, code);
@@ -47,7 +50,9 @@ function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
                 text="선택"
                 size="sm"
                 rightIcon="🤍"
-                onClick={() => clickRoom(room.id, room.wishlistId)}
+                onClick={() =>
+                  enterRoomWithWishPickeat(room.id, room.wishlistId)
+                }
               />
             </S.List>
           ))

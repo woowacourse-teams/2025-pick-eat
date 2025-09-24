@@ -5,7 +5,11 @@ import { use } from 'react';
 
 import WishlistCard from './WishlistCard';
 
-function TemplatesTab({ wishGroup }: { wishGroup: Promise<WishlistType[]> }) {
+type Props = {
+  wishGroup: Promise<WishlistType[]>;
+};
+
+function TemplatesTab({ wishGroup }: Props) {
   const wishes = use(wishGroup);
 
   return (
