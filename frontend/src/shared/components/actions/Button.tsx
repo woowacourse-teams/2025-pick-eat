@@ -99,7 +99,9 @@ const getButtonStyle = (
 
   background-color: ${getColor(color, theme, 'default')};
 
-  color: ${color === 'primary' ? `white` : `#1E2124`};
+  color: ${color === 'primary'
+    ? theme.PALETTE.gray[0]
+    : theme.PALETTE.gray[90]};
   font-size: ${SIZE[size].fontSize};
   font-weight: 400;
   border-radius: ${theme.RADIUS.medium2};
@@ -116,9 +118,9 @@ const getButtonStyle = (
   &:disabled {
     border: none;
 
-    background-color: #cdd1d5;
+    background-color: ${theme.PALETTE.gray[20]};
 
-    color: #6d7882;
+    color: ${theme.PALETTE.gray[50]};
     cursor: not-allowed;
   }
 `;

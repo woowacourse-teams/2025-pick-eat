@@ -47,5 +47,5 @@ export function usePolling<T>(
       isUnmounted.current = true;
       clearInterval(intervalId);
     };
-  }, [fetcher, interval, enabled, onData, errorHandler]);
+  }, []);
 }
