@@ -9,7 +9,6 @@ import org.springframework.web.util.ContentCachingRequestWrapper;
 
 public record RequestLog(
         LogType logType,
-        String timestamp,
         String requestId,
         String requestUri,
         String clientIp,
@@ -23,7 +22,6 @@ public record RequestLog(
 
         return new RequestLog(
                 LogType.REQUEST,
-                NOW_TIME,
                 MDC.get("request_id"),
                 request.getRequestURI(),
                 request.getRemoteAddr(),

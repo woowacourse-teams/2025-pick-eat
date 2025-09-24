@@ -1,7 +1,5 @@
 package com.pickeat.backend.global.exception;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.global.log.dto.ErrorLog;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +24,6 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
-    private final ObjectMapper objectMapper;
 
     @ExceptionHandler(BusinessException.class)
     public ProblemDetail handleBusinessException(BusinessException e) {
@@ -167,19 +164,11 @@ public class GlobalExceptionHandler {
     }
 
     private void logSafe(Object logObject, LogLevel level) {
-        String json;
-        try {
-            json = objectMapper.writeValueAsString(logObject);
-        } catch (JsonProcessingException e) {
-            // 직렬화 실패 시 무조건 error 레벨로 로그
-            log.error("{\"logType\":\"LOG_SERIALIZE_FAIL\",\"message\":\"{}\"}", e.getMessage());
-            return;
-        }
 
         switch (level) {
-            case INFO -> log.info(json);
-            case WARN -> log.warn(json);
-            case ERROR -> log.error(json);
+            case INFO -> log.info("{}", logObject);
+            case WARN -> log.warn("{}", logObject);
+            case ERROR -> log.error("{}", logObject);
         }
     }
 

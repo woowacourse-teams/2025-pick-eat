@@ -1,13 +1,9 @@
 package com.pickeat.backend.global.log.dto;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import org.slf4j.MDC;
 
 public record ErrorLog(
         LogType logType,
-        String timestamp,
         String requestId,
         int status,
         String message,
@@ -15,9 +11,6 @@ public record ErrorLog(
         String customCode,
         String stackTrace
 ) {
-    private static final String NOW_TIME = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
-            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-
     public static ErrorLog createServerErrorLog(
             int status,
             Throwable ex,
@@ -25,7 +18,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.SERVER_ERROR,
-                NOW_TIME,
                 MDC.get("request_id"),
                 status,
                 ex.getMessage(),
@@ -42,7 +34,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.EXTERNAL_ERROR,
-                NOW_TIME,
                 MDC.get("request_id"),
                 status,
                 ex.getMessage(),
@@ -59,7 +50,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.CLIENT_ERROR,
-                NOW_TIME,
                 MDC.get("request_id"),
                 status,
                 ex.getMessage(),

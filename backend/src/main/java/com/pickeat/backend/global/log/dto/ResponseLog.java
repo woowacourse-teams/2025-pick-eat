@@ -9,7 +9,6 @@ import org.springframework.web.util.ContentCachingResponseWrapper;
 
 public record ResponseLog(
         LogType logType,
-        String timestamp,
         String requestId,
         String body
 ) {
@@ -26,7 +25,6 @@ public record ResponseLog(
 
         return new ResponseLog(
                 LogType.RESPONSE,
-                NOW_TIME,
                 MDC.get("request_id"),
                 responseBody
         );
