@@ -19,7 +19,11 @@ function Wishlist({ wishlistId, wishlistName }: Props) {
       const response = await wishlist.get(wishlistId);
       setWishes(response);
     };
-    fetchWishes();
+    try {
+      fetchWishes();
+    } catch {
+      alert('위시를 불러오던 중 에러가 발생했습니다.');
+    }
   }, []);
 
   return (
