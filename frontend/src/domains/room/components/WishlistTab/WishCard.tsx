@@ -90,8 +90,6 @@ const S = {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    padding-right: ${({ theme }) => theme.PADDING.px2};
   `,
 
   RemoveBtn: styled.button``,
@@ -104,15 +102,12 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
   LinkButton: styled.a`
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level2};
-
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.body.xsmall};
+    text-decoration: underline;
 
     &:hover {
       color: ${({ theme }) => theme.PALETTE.gray[70]};
-      text-decoration: underline;
     }
   `,
 };
