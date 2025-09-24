@@ -1,13 +1,14 @@
 package com.pickeat.backend.global.log.dto;
 
-public record ErrorLog(
-        LogType logType,
-        int status,
-        String message,
-        String type,
-        String customCode,
-        String stackTrace
-) {
+import java.util.HashMap;
+import java.util.Map;
+
+public record ErrorLog(LogType logType,
+                       int status,
+                       String message,
+                       String type,
+                       String customCode,
+                       String stackTrace) implements Log {
     public static ErrorLog createServerErrorLog(
             int status,
             Throwable ex,
@@ -61,5 +62,16 @@ public record ErrorLog(
             sb.append(stackTrace[i]).append("\n");
         }
         return sb.toString();
+    }
+
+    public Map<String, Object> toMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("logType", logType.name());
+        map.put("status", status);
+        map.put("message", message);
+        map.put("type", type);
+        map.put("customCode", customCode);
+        map.put("stackTrace", stackTrace);
+        return map;
     }
 }

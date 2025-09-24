@@ -1,6 +1,7 @@
 package com.pickeat.backend.global.exception;
 
 import com.pickeat.backend.global.log.dto.ErrorLog;
+import com.pickeat.backend.global.log.dto.Log;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -163,12 +164,12 @@ public class GlobalExceptionHandler {
         logSafe(ErrorLog.createClientErrorLog(status.value(), e, customCode), LogLevel.WARN);
     }
 
-    private void logSafe(Object logObject, LogLevel level) {
+    private void logSafe(Log logObject, LogLevel level) {
 
         switch (level) {
-            case INFO -> log.info("{}", logObject);
-            case WARN -> log.warn("{}", logObject);
-            case ERROR -> log.error("{}", logObject);
+            case INFO -> log.info("{}", logObject.toMap());
+            case WARN -> log.warn("{}", logObject.toMap());
+            case ERROR -> log.error("{}", logObject.toMap());
         }
     }
 

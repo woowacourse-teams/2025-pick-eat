@@ -20,7 +20,7 @@ public class BusinessLogAspect {
         String message = String.format("User [%s] executed [%s]", userId, action);
 
         Object result = joinPoint.proceed();
-        log.info("{}", BusinessLog.of(userId, action, message));
+        log.info("{}", BusinessLog.of(userId, action, message).toMap());
         return result;
     }
 

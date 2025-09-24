@@ -19,12 +19,12 @@
                         {
                         "severity": "%level",
                         "logger": "%logger",
-                        "thread": "%thread"
+                        "thread": "%thread",
+                        "message": "%message"
                         }
                     </pattern>
                 </pattern>
                 <mdc/>
-                <arguments/>
             </providers>
         </encoder>
     </appender>
