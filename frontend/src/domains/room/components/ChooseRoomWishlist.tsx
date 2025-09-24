@@ -5,6 +5,7 @@ import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
 import { pickeat } from '@apis/pickeat';
 import { Room } from '@apis/room';
+import { rooms } from '@apis/rooms';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -13,11 +14,12 @@ import { useShowToast } from '@provider/ToastProvider';
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
-  const roomList = use(roomsData);
+function ChooseRoomWishlist() {
+  const [roomList, setRoomList] = useState<Room[]>([]);
+  const [error, setError] = useState<boolean>(false);
   const navigate = useNavigate();
   const showToast = useShowToast();
 
@@ -33,6 +35,21 @@ function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
       if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
     }
   };
+
+  if (error) throw new Error();
+
+  const getRoom = async () => {
+    try {
+      const response = await rooms.get();
+      if (response) setRoomList(response);
+    } catch {
+      setError(true);
+    }
+  };
+
+  useEffect(() => {
+    getRoom();
+  }, []);
 
   return (
     <S.Container>
