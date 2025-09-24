@@ -13,7 +13,7 @@ import WishCard from './WishCard';
 function WishlistTab() {
   const [searchParams] = useSearchParams();
   const wishId = Number(searchParams.get('wishId')) ?? '';
-  const { wishlistData, handleGetWish, handleDeleteWish } =
+  const { error, wishlistData, handleGetWish, handleDeleteWish } =
     useManageWishlist(wishId);
 
   const handleCreateWish = () => {
@@ -27,7 +27,7 @@ function WishlistTab() {
     handleOpenModal,
     handleUnmountModal,
   } = useModal();
-
+  if (error) throw new Error();
   return (
     <S.Container>
       <S.Description>찜({wishlistData.length})</S.Description>

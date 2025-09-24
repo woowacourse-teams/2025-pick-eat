@@ -36,7 +36,11 @@ function RoomDetail() {
             tab: '나의 찜',
             content: (
               <S.TabWrapper>
-                <WishlistTab />
+                <ErrorBoundary>
+                  <Suspense fallback={<LoadingSpinner />}>
+                    <WishlistTab />
+                  </Suspense>
+                </ErrorBoundary>
               </S.TabWrapper>
             ),
           },
@@ -45,7 +49,7 @@ function RoomDetail() {
             content: (
               <S.TabWrapper>
                 <ErrorBoundary>
-                  <Suspense fallback={<div>로딩중</div>}>
+                  <Suspense fallback={<LoadingSpinner />}>
                     <TemplatesTab wishGroup={getWishGroup} />
                   </Suspense>
                 </ErrorBoundary>

@@ -5,13 +5,15 @@ import { useEffect, useState } from 'react';
 
 export const useManageWishlist = (wishId: number) => {
   const [wishlistData, setWishlistData] = useState<Wishes[]>([]);
+  const [error, setError] = useState<boolean>(false);
 
   const handleGetWish = async () => {
     try {
       const response = await wishlist.get(wishId);
-      setWishlistData(response);
+      if (response) setWishlistData(response);
     } catch {
       alert('찜 목록을 불러오던 중 에러가 발생했습니다.');
+      setError(true);
     }
   };
 
@@ -31,5 +33,5 @@ export const useManageWishlist = (wishId: number) => {
     }
   };
 
-  return { wishlistData, handleGetWish, handleDeleteWish };
+  return { error, wishlistData, handleGetWish, handleDeleteWish };
 };
