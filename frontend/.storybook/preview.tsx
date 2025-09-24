@@ -3,6 +3,7 @@ import { Global, ThemeProvider } from '@emotion/react';
 import { THEME } from '../src/shared/styles/global';
 import reset from '../src/shared/styles/reset';
 import React from 'react';
+import ToastProvider from '../src/shared/provider/ToastProvider';
 
 const preview: Preview = {
   tags: ['autodocs'],
@@ -11,7 +12,9 @@ const preview: Preview = {
       <>
         <Global styles={reset} />
         <ThemeProvider theme={THEME}>
-          <Story />
+          <ToastProvider>
+            <Story />
+          </ToastProvider>
         </ThemeProvider>
       </>
     ),
