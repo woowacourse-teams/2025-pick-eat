@@ -2,6 +2,8 @@ import { getFormDataByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
 import { wish, WishFormData } from '@apis/wish';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { useState } from 'react';
 
 import { validateWishForm } from '../services/validateWishForm';
@@ -11,6 +13,7 @@ export type WishFormDataWithImage = WishFormData & { thumbnail?: File };
 export const useCreateWish = (onCreate?: () => void) => {
   const [formData, setFormData] = useState<WishFormDataWithImage>();
   const [error, setError] = useState('');
+  const showToast = useShowToast();
 
   const initialWishFormData = async (address: string) => {
     const data = await getFormDataByAddress(address);
@@ -54,9 +57,12 @@ export const useCreateWish = (onCreate?: () => void) => {
       }
 
       if (imageUploadError) {
-        alert('찜은 등록되었으나, 이미지 등록에 실패했습니다.');
+        showToast({
+          mode: 'WARN',
+          message: '찜은 등록되었으나, 이미지 등록에 실패했습니다.',
+        });
       } else {
-        alert('찜 등록!');
+        showToast({ mode: 'SUCCESS', message: '찜 등록!' });
       }
       onCreate?.();
       setFormData(undefined);

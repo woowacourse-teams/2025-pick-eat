@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component<Props, State> {
         <S.Container>
           <S.Wrapper>
             <S.Title>😱오류가 발생했습니다.😵</S.Title>
-            <S.Description>죄송합니다. 다시 시도해주세요.</S.Description>
+            <S.Description>죄송합니다. 다시 시도해 주세요.</S.Description>
             <Button text="새로고침" onClick={() => window.location.reload()} />
           </S.Wrapper>
         </S.Container>

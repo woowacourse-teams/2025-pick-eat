@@ -46,7 +46,7 @@ export const useParticipants = () => {
   const context = useContext(ParticipantsContext);
   if (!context) {
     throw new Error(
-      'useParticipants 훅은 반드시 ParticipantsProvider 안에서 사용해주세요.'
+      'useParticipants 훅은 반드시 ParticipantsProvider 안에서 사용해 주세요.'
     );
   }
   return context;

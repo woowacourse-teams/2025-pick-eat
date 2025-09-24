@@ -4,6 +4,8 @@ import { restaurants } from '@apis/restaurants';
 
 import { usePolling } from '@hooks/usePolling';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router';
 
@@ -13,6 +15,7 @@ const usePreferRestaurant = (
 ) => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
+  const showToast = useShowToast();
 
   const sortRestaurants = (restaurantList: Restaurant[]) => {
     return restaurantList.sort((a, b) => {
@@ -64,7 +67,10 @@ const usePreferRestaurant = (
     immediate: false,
     enabled: true,
     errorHandler: (error: Error) => {
-      alert('식당 리스트를 불러오는데 실패했습니다.' + error.message);
+      showToast({
+        mode: 'ERROR',
+        message: '식당 리스트를 불러오는데 실패했습니다.' + error.message,
+      });
     },
   });
 

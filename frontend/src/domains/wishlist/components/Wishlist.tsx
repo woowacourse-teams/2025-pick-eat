@@ -1,5 +1,7 @@
 import { Wishes, wishlist } from '@apis/wishlist';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
 
@@ -13,6 +15,7 @@ type Props = {
 
 function Wishlist({ wishlistId, wishlistName }: Props) {
   const [wishes, setWishes] = useState<Wishes[]>([]);
+  const showToast = useShowToast();
 
   useEffect(() => {
     const fetchWishes = async () => {
@@ -22,7 +25,10 @@ function Wishlist({ wishlistId, wishlistName }: Props) {
     try {
       fetchWishes();
     } catch {
-      alert('위시를 불러오던 중 에러가 발생했습니다.');
+      showToast({
+        mode: 'ERROR',
+        message: '위시를 불러오던 중 에러가 발생했습니다.',
+      });
     }
   }, []);
 

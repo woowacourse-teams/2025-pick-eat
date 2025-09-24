@@ -8,6 +8,8 @@ import { useInviteMember } from '@domains/room/hooks/useInviteMember';
 import { room } from '@apis/room';
 import { User } from '@apis/users';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { use } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
@@ -19,6 +21,7 @@ function IncludeMemberList({ members }: { members: Promise<User[]> }) {
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
   const navigate = useNavigate();
+  const showToast = useShowToast();
 
   const {
     opened,
@@ -39,10 +42,13 @@ function IncludeMemberList({ members }: { members: Promise<User[]> }) {
         roomId,
         selectedMemberList.map(member => member.id)
       );
-      alert('초대 완료!');
+      showToast({ mode: 'SUCCESS', message: '초대 완료!' });
       navigate(0);
     } catch {
-      console.log('초대 실패');
+      showToast({
+        mode: 'ERROR',
+        message: '초대에 실패했습니다. 다시 시도해 주세요.',
+      });
     }
   };
 
