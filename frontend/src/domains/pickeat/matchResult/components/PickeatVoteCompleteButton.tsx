@@ -22,11 +22,14 @@ function PickeatVoteCompleteButton({ onVoteComplete, onClick }: Props) {
     try {
       // TODO : 투표 버튼에 쓰로틀링과 로딩 UI 안에 넣어서 서버 통신임을 나타내기
       await participants.patchComplete();
-      showToast({
-        mode: 'SUCCESS',
-        message:
-          '투표 완료 상태가 되었습니다. (계속 투표에 참여하실 수 있습니다.)',
-      });
+      showToast(
+        {
+          mode: 'SUCCESS',
+          message:
+            '투표 완료 상태가 되었습니다. (계속 투표에 참여하실 수 있습니다.)',
+        },
+        3000
+      );
       onVoteComplete();
     } catch {
       showToast({
