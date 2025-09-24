@@ -1,5 +1,5 @@
 import { HEADER_HEIGHT } from '@components/layouts/Header';
-import Toast from '@components/toast/Toast';
+import Toast, { DEFAULT_TIME } from '@components/toast/Toast';
 
 import styled from '@emotion/styled';
 import {
@@ -16,19 +16,23 @@ type ToastType = {
 };
 type ToastStateType = {
   id: `${string}-${string}-${string}-${string}-${string}`;
+  timeSet: number;
 } & ToastType;
 
-type ContextType = (toast: ToastType) => void;
+type ContextType = (toast: ToastType, timeSet?: number) => void;
 
 const ToastContext = createContext<ContextType | undefined>(undefined);
 
 function ToastProvider({ children }: { children: ReactNode }) {
   const [toasts, setToasts] = useState<ToastStateType[]>([]);
 
-  const showToast = useCallback((toast: ToastType) => {
-    const id = crypto.randomUUID();
-    setToasts(prev => [{ ...toast, id: id }, ...prev]);
-  }, []);
+  const showToast = useCallback(
+    (toast: ToastType, timeSet: number = DEFAULT_TIME) => {
+      const id = crypto.randomUUID();
+      setToasts(prev => [{ ...toast, id: id, timeSet: timeSet }, ...prev]);
+    },
+    []
+  );
 
   const removeToast = (toastId: string) => {
     setToasts(prev => prev.filter(toast => toast.id !== toastId));
@@ -44,6 +48,7 @@ function ToastProvider({ children }: { children: ReactNode }) {
               message={toast.message}
               mode={toast.mode}
               onRemove={() => removeToast(toast.id)}
+              timeSet={toast.timeSet}
             />
           ))}
       </S.Container>
@@ -66,7 +71,7 @@ export const useShowToast = () => {
 
 const S = {
   Container: styled.div`
-    width:100%;  
+    width: 100%;
     max-width: 768px;
     display: flex;
     flex-direction: column;

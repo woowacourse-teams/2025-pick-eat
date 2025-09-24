@@ -1,9 +1,7 @@
 import { Wishes, wishlist } from '@apis/wishlist';
 
-import { useShowToast } from '@provider/ToastProvider';
-
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
+import { useLruCachedFetch } from 'store/useLruCachedFetch';
 
 import Wish from './Wish';
 
@@ -14,23 +12,11 @@ type Props = {
 };
 
 function Wishlist({ wishlistId, wishlistName }: Props) {
-  const [wishes, setWishes] = useState<Wishes[]>([]);
-  const showToast = useShowToast();
-
-  useEffect(() => {
-    const fetchWishes = async () => {
-      const response = await wishlist.get(wishlistId);
-      setWishes(response);
-    };
-    try {
-      fetchWishes();
-    } catch {
-      showToast({
-        mode: 'ERROR',
-        message: '위시를 불러오던 중 에러가 발생했습니다.',
-      });
-    }
-  }, []);
+  const { data: wishes } = useLruCachedFetch<Wishes[]>(
+    `wishlist-${wishlistId}`,
+    async () => await wishlist.get(wishlistId)
+  );
+  if (!wishes) return;
 
   return (
     <S.Container>

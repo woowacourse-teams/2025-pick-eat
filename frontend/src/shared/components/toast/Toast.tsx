@@ -5,6 +5,7 @@ type Props = {
   message: string;
   mode: 'ERROR' | 'SUCCESS' | 'WARN';
   onRemove: () => void;
+  timeSet: number;
 };
 
 const COLOR_MAP = {
@@ -13,17 +14,19 @@ const COLOR_MAP = {
   WARN: 'yellow',
 };
 
-function Toast({ message, mode, onRemove }: Props) {
+export const DEFAULT_TIME = 2000;
+
+function Toast({ message, mode, onRemove, timeSet }: Props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       onRemove();
-    }, 2000);
+    }, timeSet);
 
     return () => clearTimeout(timer);
   }, []);
   return (
     <S.Container>
-      <S.ProgressBar mode={mode} />
+      <S.ProgressBar timeSet={timeSet} mode={mode} />
       {message}
     </S.Container>
   );
@@ -60,7 +63,10 @@ const S = {
     }
   `,
 
-  ProgressBar: styled.div<{ mode: 'ERROR' | 'SUCCESS' | 'WARN' }>`
+  ProgressBar: styled.div<{
+    mode: 'ERROR' | 'SUCCESS' | 'WARN';
+    timeSet: number;
+  }>`
     width: 100%;
     height: 4px;
     position: absolute;
@@ -69,7 +75,8 @@ const S = {
 
     background-color: ${({ mode }) => COLOR_MAP[mode]};
 
-    animation: progress-bar-animation 2s linear forwards;
+    animation: ${({ timeSet }) =>
+      `progress-bar-animation ${timeSet / 1000}s linear forwards`};
     border-radius: ${({ theme }) => theme.RADIUS.medium2}
       ${({ theme }) => theme.RADIUS.medium2} 0 0;
 
