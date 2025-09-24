@@ -1,17 +1,15 @@
+import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Layout from '@components/layouts/Layout';
 
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
-import CreateRoom from '@pages/CreateRoom';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
-import MyRoom from '@pages/myRoom/MyRoom';
 import OauthCallback from '@pages/OauthCallback';
 import MatchResult from '@pages/pickeat/matchResult/MatchResult';
 import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
 import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
 import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
 import ProfileInit from '@pages/ProfileInit';
-import RoomDetail from '@pages/RoomDetail';
 
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
@@ -25,6 +23,7 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
+import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
   Navigate,
@@ -32,6 +31,10 @@ import {
   RouterProvider,
   useLocation,
 } from 'react-router';
+
+const MyRoom = lazy(() => import('@pages/myRoom/MyRoom'));
+const CreateRoom = lazy(() => import('@pages/CreateRoom'));
+const RoomDetail = lazy(() => import('@pages/RoomDetail'));
 
 function Wrapper() {
   useGA().useRouteChangeTracker();
@@ -118,7 +121,11 @@ const routes = createBrowserRouter([
 ]);
 
 function Router() {
-  return <RouterProvider router={routes} />;
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <RouterProvider router={routes} />
+    </Suspense>
+  );
 }
 
 export default Router;
