@@ -1,8 +1,8 @@
-import { FOOD_CATEGORIES, FoodCategory } from 'shared/constants/foodCategory';
-
 import { WishFormData } from '@apis/wish';
 
 import { createQueryString, joinAsPath } from '@utils/createUrl';
+
+import { FOOD_CATEGORIES, FoodCategory } from '@constants/foodCategory';
 
 export type AddressType = {
   id: string;

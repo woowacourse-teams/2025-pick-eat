@@ -1,6 +1,6 @@
 import Badge from '@components/labels/Badge';
 
-import { FOOD_CATEGORIES, FoodCategory } from 'shared/constants/foodCategory';
+import { FOOD_CATEGORIES, FoodCategory } from '@constants/foodCategory';
 
 import styled from '@emotion/styled';
 import { useState } from 'react';
