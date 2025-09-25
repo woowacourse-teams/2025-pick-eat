@@ -31,6 +31,7 @@ function WishlistTab() {
   return (
     <S.Container>
       <S.Description>찜({wishlistData.length})</S.Description>
+      <Button text="찜 등록" color="secondary" onClick={handleOpenModal} />
 
       <S.Wishlist>
         {wishlistData.length > 0 ? (
@@ -47,8 +48,6 @@ function WishlistTab() {
           </S.EmptyDescriptionPointText>
         )}
       </S.Wishlist>
-
-      <Button text="찜 등록" color="secondary" onClick={handleOpenModal} />
 
       <Modal
         mounted={mounted}

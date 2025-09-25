@@ -4,15 +4,10 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Confetti from '@components/Confetti';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-
-import { pickeat } from '@apis/pickeat';
-
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
 function MatchResult() {
@@ -24,11 +19,11 @@ function MatchResult() {
       <S.ResultWrapper>
         <Confetti />
         <S.Title>👏 오늘의 Pick! 👏</S.Title>
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingSpinner />}>
-            <Result resultPromise={pickeat.getResult(pickeatCode)} />
-          </Suspense>
-        </ErrorBoundary>
+        {pickeatCode ? (
+          <Result pickeatCode={pickeatCode} />
+        ) : (
+          <LoadingSpinner />
+        )}
       </S.ResultWrapper>
     </S.Container>
   );

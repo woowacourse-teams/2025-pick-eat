@@ -38,7 +38,11 @@ function RoomDetailTab() {
       await pickeat.postWish(wishlistId, code);
       if (code) navigate(generateRouterPath.pickeatDetail(code));
     } catch (e) {
-      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
+      if (e instanceof Error)
+        showToast({
+          mode: 'ERROR',
+          message: '찜 등록 후 픽잇을 시작해 주세요.',
+        });
     }
   };
 
