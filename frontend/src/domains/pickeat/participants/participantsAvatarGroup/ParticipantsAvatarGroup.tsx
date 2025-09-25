@@ -54,6 +54,10 @@ function ParticipantsAvatarGroup() {
       >
         {participantsState.participants
           .slice(0, MAX_RENDER_COUNT)
+          .sort((a, b) => {
+            if (a.isCompleted === b.isCompleted) return 0;
+            return a.isCompleted ? 1 : -1;
+          })
           .map((p, i) => (
             <S.AvatarWrapper key={p.id} index={i}>
               <ParticipantAvatar participant={p} />
