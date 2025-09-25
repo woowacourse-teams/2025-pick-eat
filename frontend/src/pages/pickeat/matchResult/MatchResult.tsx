@@ -46,17 +46,18 @@ const S = {
   `,
 
   ResultWrapper: styled.div`
-    width: 50%;
+    width: 60%;
+
     height: 400px;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     gap: ${({ theme }) => theme.GAP.level2};
-
     position: relative;
+
+    padding: ${({ theme }) => theme.PADDING.p10};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 

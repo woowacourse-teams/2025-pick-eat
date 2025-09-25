@@ -1,11 +1,6 @@
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Layout from '@components/layouts/Layout';
 
-
-
-
-
-
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
@@ -29,6 +24,15 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
+import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
+import Login from '@pages/Login';
+import Main from '@pages/Main';
+import OauthCallback from '@pages/OauthCallback';
+import MatchResult from '@pages/pickeat/matchResult/MatchResult';
+import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
+import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
+import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
+import ProfileInit from '@pages/ProfileInit';
 import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
@@ -49,11 +53,13 @@ function Wrapper() {
     <>
       <Global styles={reset} />
       <ThemeProvider theme={THEME}>
-        <AuthProvider>
-          <Layout>
-            <Outlet />
-          </Layout>
-        </AuthProvider>
+        <Suspense fallback={<LoadingSpinner />}>
+          <AuthProvider>
+            <Layout>
+              <Outlet />
+            </Layout>
+          </AuthProvider>
+        </Suspense>
       </ThemeProvider>
     </>
   );
@@ -140,11 +146,7 @@ const routes = createBrowserRouter([
 ]);
 
 function Router() {
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <RouterProvider router={routes} />
-    </Suspense>
-  );
+  return <RouterProvider router={routes} />;
 }
 
 export default Router;
