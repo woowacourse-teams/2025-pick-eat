@@ -143,6 +143,9 @@ const convertResponseToParticipantsState = async (
   })),
 });
 
+const convertResponseToReJoin = async (data: { isAvailable: boolean }) =>
+  data.isAvailable;
+
 const BASE_PATH = 'pickeats';
 
 export const pickeat = {
@@ -227,6 +230,12 @@ export const pickeat = {
     const response = await apiClient.get<PickeatStateResponse>(url);
     if (response) return response;
     return null;
+  },
+  getRejoin: async (pickeatCode: string): Promise<boolean> => {
+    const url = joinAsPath(BASE_PATH, pickeatCode, 'rejoin-available');
+    const response = await apiClient.get<{ isAvailable: boolean }>(url);
+    if (response) return convertResponseToReJoin(response);
+    return false;
   },
   postResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
     const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
