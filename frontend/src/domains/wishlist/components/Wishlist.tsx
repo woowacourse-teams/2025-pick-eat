@@ -1,5 +1,3 @@
-import { useLruCachedFetch } from 'store/useLruCachedFetch';
-
 import { Wishes, wishlist } from '@apis/wishlist';
 
 import { useLruCachedFetch } from '@store/useLruCachedFetch';
