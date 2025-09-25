@@ -43,9 +43,9 @@ function ToastProvider({ children }: { children: ReactNode }) {
 
   return (
     <ToastContext.Provider value={showToast}>
-      <S.Container>
-        {toasts &&
-          toasts.map(toast => (
+      {toasts.length > 0 && (
+        <S.Container>
+          {toasts.map(toast => (
             <Toast
               key={toast.id}
               message={toast.message}
@@ -54,7 +54,8 @@ function ToastProvider({ children }: { children: ReactNode }) {
               timeSet={toast.timeSet}
             />
           ))}
-      </S.Container>
+        </S.Container>
+      )}
       {children}
     </ToastContext.Provider>
   );
@@ -84,6 +85,7 @@ const S = {
     z-index: ${({ theme }) => theme.Z_INDEX.toast};
 
     padding: ${({ theme }) => theme.PADDING.p4};
+
     transform: translateY(calc(${HEADER_HEIGHT} + 5px));
   `,
 };
