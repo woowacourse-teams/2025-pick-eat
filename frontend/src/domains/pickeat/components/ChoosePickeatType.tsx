@@ -6,9 +6,8 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { useAuth } from '@domains/login/context/AuthProvider';
-
-import { rooms } from '@apis/rooms';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
@@ -18,15 +17,13 @@ import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ErrorBoundary } from '@sentry/react';
-import { Suspense, useMemo } from 'react';
+import { Suspense } from 'react';
 import { useNavigate } from 'react-router';
 
 function ChoosePickeatType() {
   const { opened, mounted, handleCloseModal, handleOpenModal } = useModal();
   const { loggedIn } = useAuth();
   const navigate = useNavigate();
-  const roomsData = useMemo(() => rooms.get(), []);
   const showToast = useShowToast();
 
   const handleWishlistButtonClick = () => {
@@ -64,7 +61,7 @@ function ChoosePickeatType() {
       >
         <ErrorBoundary>
           <Suspense fallback={<LoadingSpinner />}>
-            <ChooseRoomWishlist roomsData={roomsData} />
+            <ChooseRoomWishlist />
           </Suspense>
         </ErrorBoundary>
       </Modal>
