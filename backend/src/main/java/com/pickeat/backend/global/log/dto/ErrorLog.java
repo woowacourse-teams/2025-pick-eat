@@ -3,12 +3,15 @@ package com.pickeat.backend.global.log.dto;
 import java.util.HashMap;
 import java.util.Map;
 
-public record ErrorLog(LogType logType,
-                       int status,
-                       String message,
-                       String type,
-                       String customCode,
-                       String stackTrace) implements Log {
+public record ErrorLog(
+        LogType logType,
+        int status,
+        String message,
+        String type,
+        String customCode,
+        String stackTrace
+) implements Log {
+
     public static ErrorLog createServerErrorLog(
             int status,
             Throwable ex,
@@ -64,7 +67,8 @@ public record ErrorLog(LogType logType,
         return sb.toString();
     }
 
-    public Map<String, Object> toMap() {
+    @Override
+    public Map<String, Object> fields() {
         Map<String, Object> map = new HashMap<>();
         map.put("logType", logType.name());
         map.put("status", status);
@@ -73,5 +77,13 @@ public record ErrorLog(LogType logType,
         map.put("customCode", customCode);
         map.put("stackTrace", stackTrace);
         return map;
+    }
+
+    @Override
+    public String summary() {
+        if (customCode != null && !customCode.isBlank()) {
+            return String.format("[%s] %d %s occurred", logType.name(), status, customCode);
+        }
+        return String.format("%s occurred", logType.name());
     }
 }

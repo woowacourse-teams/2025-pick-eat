@@ -18,11 +18,10 @@ public class BusinessLogAspect {
 
         String action = businessLogging.value();
         Long userId = extractUserId(joinPoint.getArgs());
-        String message = String.format("User [%s] executed [%s]", userId, action);
 
         Object result = joinPoint.proceed();
-        BusinessLog businessLog = BusinessLog.of(userId, action, message);
-        log.info(Markers.appendEntries(businessLog.toMap()), message);
+        BusinessLog businessLog = BusinessLog.of(userId, action);
+        log.info(Markers.appendEntries(businessLog.fields()), businessLog.summary());
         return result;
     }
 
