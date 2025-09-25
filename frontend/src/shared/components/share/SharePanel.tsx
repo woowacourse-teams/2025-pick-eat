@@ -12,7 +12,7 @@ function SharePanel({ url, description }: Props) {
   return (
     <S.Container>
       <S.TitleArea>
-        <S.Title>공유하기</S.Title>
+        <S.TitlePointText>공유하기</S.TitlePointText>
         <S.Description>{description}</S.Description>
       </S.TitleArea>
       <QRCode url={url} />
@@ -36,7 +36,7 @@ const S = {
   TitleArea: styled.div`
     text-align: center;
   `,
-  Title: styled.h1`
+  TitlePointText: styled.h1`
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
   Description: styled.span`
