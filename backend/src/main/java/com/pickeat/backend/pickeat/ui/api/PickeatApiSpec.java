@@ -320,8 +320,7 @@ public interface PickeatApiSpec {
     })
     ResponseEntity<RestaurantResultResponse> getPickeatResult(
             @Parameter(description = 픽잇_코드_UUID_형식)
-            @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
+            @PathVariable("pickeatCode") String pickeatCode
     );
 
     @Operation(
