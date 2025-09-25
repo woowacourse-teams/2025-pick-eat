@@ -1,4 +1,4 @@
-name: CI Check Pipeline
+name: Prod CI Check Pipeline
 
 on:
   pull_request:
