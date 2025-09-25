@@ -1,10 +1,16 @@
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Layout from '@components/layouts/Layout';
 
+
+
+
+
+
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
 import OauthCallback from '@pages/OauthCallback';
+import { useRejoinRedirect } from '@pages/pickeat/hooks/useReEntry';
 import MatchResult from '@pages/pickeat/matchResult/MatchResult';
 import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
 import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
@@ -30,6 +36,7 @@ import {
   Outlet,
   RouterProvider,
   useLocation,
+  useSearchParams,
 } from 'react-router';
 
 const MyRoom = lazy(() => import('@pages/myRoom/MyRoom'));
@@ -52,7 +59,7 @@ function Wrapper() {
   );
 }
 
-function ProtectedLayout() {
+function ProtectedLogin() {
   const { loggedIn, loading, hasToken, logoutUser } = useAuth();
   const location = useLocation();
   const showToast = useShowToast();
@@ -83,15 +90,22 @@ function GuestOnlyRoute() {
   return <Outlet />;
 }
 
+function ProtectedPickeat() {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+  const loading = useRejoinRedirect(pickeatCode);
+  if (loading) return null;
+  return <Outlet />;
+}
+
 const routes = createBrowserRouter([
   {
     Component: Wrapper,
     children: [
       { path: ROUTE_PATH.MAIN, Component: Main },
       {
-        Component: ProtectedLayout,
+        Component: ProtectedLogin,
         children: [
-          { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
           { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
           { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
           { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
@@ -109,13 +123,18 @@ const routes = createBrowserRouter([
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
         Component: CreatePickeatWithLocation,
       },
-      { path: ROUTE_PATH.PICKEAT_DETAIL, Component: PickeatDetail },
-      { path: ROUTE_PATH.PREFER_RESTAURANT, Component: PreferRestaurant },
-      { path: ROUTE_PATH.MATCH_RESULT, Component: MatchResult },
       {
-        path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
-        Component: RestaurantExcludePage,
+        Component: ProtectedPickeat,
+        children: [
+          { path: ROUTE_PATH.PICKEAT_DETAIL, Component: PickeatDetail },
+          {
+            path: ROUTE_PATH.RESTAURANTS_EXCLUDE,
+            Component: RestaurantExcludePage,
+          },
+          { path: ROUTE_PATH.PREFER_RESTAURANT, Component: PreferRestaurant },
+        ],
       },
+      { path: ROUTE_PATH.MATCH_RESULT, Component: MatchResult },
     ],
   },
 ]);
