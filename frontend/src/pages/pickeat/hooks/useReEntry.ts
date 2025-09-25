@@ -5,11 +5,9 @@ import { generateRouterPath } from '@routes/routePath';
 import { useShowToast } from '@provider/ToastProvider';
 
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 export function useRejoinRedirect(pickeatCode: string) {
-  const [searchParams] = useSearchParams();
-  const hasDetail = searchParams.has('detail');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const showToast = useShowToast();
@@ -22,8 +20,7 @@ export function useRejoinRedirect(pickeatCode: string) {
           navigate(generateRouterPath.pickeatDetail(pickeatCode));
           return;
         }
-        if (hasDetail)
-          navigate(generateRouterPath.restaurantsExclude(pickeatCode));
+        navigate(generateRouterPath.restaurantsExclude(pickeatCode));
       };
       checkRejoinAndRedirect();
     } catch {
