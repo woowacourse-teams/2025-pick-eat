@@ -26,6 +26,9 @@
                 <logstashMarkers/>
                 <arguments/>
                 <mdc/>
+                <message>
+                    <fieldName>summary</fieldName>
+                </message>
             </providers>
         </encoder>
     </appender>
