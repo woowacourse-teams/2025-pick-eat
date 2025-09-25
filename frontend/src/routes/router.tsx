@@ -1,16 +1,6 @@
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Layout from '@components/layouts/Layout';
 
-import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
-import Login from '@pages/Login';
-import Main from '@pages/Main';
-import OauthCallback from '@pages/OauthCallback';
-import MatchResult from '@pages/pickeat/matchResult/MatchResult';
-import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
-import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
-import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
-import ProfileInit from '@pages/ProfileInit';
-
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
 import { useGA } from '@hooks/useGA';
@@ -23,6 +13,15 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
+import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
+import Login from '@pages/Login';
+import Main from '@pages/Main';
+import OauthCallback from '@pages/OauthCallback';
+import MatchResult from '@pages/pickeat/matchResult/MatchResult';
+import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
+import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
+import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
+import ProfileInit from '@pages/ProfileInit';
 import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
@@ -42,11 +41,13 @@ function Wrapper() {
     <>
       <Global styles={reset} />
       <ThemeProvider theme={THEME}>
-        <AuthProvider>
-          <Layout>
-            <Outlet />
-          </Layout>
-        </AuthProvider>
+        <Suspense fallback={<LoadingSpinner />}>
+          <AuthProvider>
+            <Layout>
+              <Outlet />
+            </Layout>
+          </AuthProvider>
+        </Suspense>
       </ThemeProvider>
     </>
   );
@@ -92,7 +93,6 @@ const routes = createBrowserRouter([
         Component: ProtectedLayout,
         children: [
           { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
-          { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
           { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
           { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
         ],
@@ -121,11 +121,7 @@ const routes = createBrowserRouter([
 ]);
 
 function Router() {
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
-      <RouterProvider router={routes} />
-    </Suspense>
-  );
+  return <RouterProvider router={routes} />;
 }
 
 export default Router;
