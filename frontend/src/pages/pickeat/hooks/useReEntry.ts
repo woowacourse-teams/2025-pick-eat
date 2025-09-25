@@ -13,25 +13,25 @@ export function useRejoinRedirect(pickeatCode: string) {
   const showToast = useShowToast();
 
   useEffect(() => {
-    try {
-      const checkRejoinAndRedirect = async () => {
+    const checkRejoinAndRedirect = async () => {
+      try {
         const rejoined = await pickeat.getRejoin(pickeatCode);
         if (!rejoined) {
           navigate(generateRouterPath.pickeatDetail(pickeatCode));
           return;
         }
         navigate(generateRouterPath.restaurantsExclude(pickeatCode));
-      };
-      checkRejoinAndRedirect();
-    } catch {
-      showToast({
-        mode: 'ERROR',
-        message: '유효한 접근이 아닙니다. 입장 페이지로 이동합니다.',
-      });
-      navigate(generateRouterPath.pickeatDetail(pickeatCode));
-    } finally {
-      setLoading(false);
-    }
+      } catch {
+        showToast({
+          mode: 'ERROR',
+          message: '유효한 접근이 아닙니다. 입장 페이지로 이동합니다.',
+        });
+        navigate(generateRouterPath.pickeatDetail(pickeatCode));
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkRejoinAndRedirect();
   }, []);
 
   return loading;
