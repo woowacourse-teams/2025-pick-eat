@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { validateJoinPickeat } from '../services/validateJoinPickeat';
+import { joinCode } from '../utils/joinStorage';
 
 export const useJoinPickeat = (pickeatDetail: PickeatType) => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export const useJoinPickeat = (pickeatDetail: PickeatType) => {
         pickeatId: pickeatDetail!.id,
       });
 
-      localStorage.setItem('joinCode', token);
+      joinCode.save(token);
 
       navigate(generateRouterPath.restaurantsExclude(pickeatDetail.code));
     } catch (e) {
