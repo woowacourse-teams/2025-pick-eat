@@ -1,6 +1,8 @@
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 import Toast, { DEFAULT_TIME } from '@components/toast/Toast';
 
+import { generateRandomNumber } from '@utils/generateRandomNumber';
+
 import styled from '@emotion/styled';
 import {
   createContext,
@@ -15,7 +17,7 @@ type ToastType = {
   message: string;
 };
 type ToastStateType = {
-  id: `${string}-${string}-${string}-${string}-${string}`;
+  id: `${string}-${string}`;
   timeSet: number;
 } & ToastType;
 
@@ -28,7 +30,8 @@ function ToastProvider({ children }: { children: ReactNode }) {
 
   const showToast = useCallback(
     (toast: ToastType, timeSet: number = DEFAULT_TIME) => {
-      const id = crypto.randomUUID();
+      const id: `${string}-${string}` = `${generateRandomNumber(10000, 4)}-${generateRandomNumber(10000, 4)}`;
+
       setToasts(prev => [{ ...toast, id: id, timeSet: timeSet }, ...prev]);
     },
     []
