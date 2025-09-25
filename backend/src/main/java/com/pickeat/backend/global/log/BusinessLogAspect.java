@@ -2,6 +2,7 @@ package com.pickeat.backend.global.log;
 
 import com.pickeat.backend.global.log.dto.BusinessLog;
 import lombok.extern.slf4j.Slf4j;
+import net.logstash.logback.marker.Markers;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -20,7 +21,8 @@ public class BusinessLogAspect {
         String message = String.format("User [%s] executed [%s]", userId, action);
 
         Object result = joinPoint.proceed();
-        log.info("{}", BusinessLog.of(userId, action, message).toMap());
+        BusinessLog businessLog = BusinessLog.of(userId, action, message);
+        log.info(Markers.appendEntries(businessLog.toMap()), message);
         return result;
     }
 

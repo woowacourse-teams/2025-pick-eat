@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.logstash.logback.marker.Markers;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -165,12 +166,30 @@ public class GlobalExceptionHandler {
     }
 
     private void logSafe(Log logObject, LogLevel level) {
+        Map<String, Object> logPayload = logObject.toMap();
+        String summary = resolveSummary(logPayload);
 
         switch (level) {
-            case INFO -> log.info("{}", logObject.toMap());
-            case WARN -> log.warn("{}", logObject.toMap());
-            case ERROR -> log.error("{}", logObject.toMap());
+            case INFO -> log.info(Markers.appendEntries(logPayload), summary);
+            case WARN -> log.warn(Markers.appendEntries(logPayload), summary);
+            case ERROR -> log.error(Markers.appendEntries(logPayload), summary);
         }
+    }
+
+    private String resolveSummary(Map<String, Object> payload) {
+        Object message = payload.get("message");
+        if (message instanceof String msg && !msg.isBlank()) {
+            return msg;
+        }
+        Object customCode = payload.get("customCode");
+        if (customCode instanceof String code && !code.isBlank()) {
+            return code;
+        }
+        Object logType = payload.get("logType");
+        if (logType instanceof String type && !type.isBlank()) {
+            return type;
+        }
+        return "error emitted";
     }
 
     private enum LogLevel {INFO, WARN, ERROR}

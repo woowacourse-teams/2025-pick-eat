@@ -14,16 +14,17 @@
                     <fieldName>@timestamp</fieldName>
                     <timeZone>Asia/Seoul</timeZone>
                 </timestamp>
-                <pattern>
-                    <pattern>
-                        {
-                        "severity": "%level",
-                        "logger": "%logger",
-                        "thread": "%thread",
-                        "message": "%message"
-                        }
-                    </pattern>
-                </pattern>
+                <level>
+                    <fieldName>severity</fieldName>
+                </level>
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+                <threadName>
+                    <fieldName>thread</fieldName>
+                </threadName>
+                <logstashMarkers/>
+                <arguments/>
                 <mdc/>
             </providers>
         </encoder>
