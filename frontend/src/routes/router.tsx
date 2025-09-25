@@ -24,15 +24,6 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
-import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
-import Login from '@pages/Login';
-import Main from '@pages/Main';
-import OauthCallback from '@pages/OauthCallback';
-import MatchResult from '@pages/pickeat/matchResult/MatchResult';
-import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
-import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
-import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
-import ProfileInit from '@pages/ProfileInit';
 import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
