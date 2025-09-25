@@ -18,7 +18,7 @@ function Title() {
           <S.TitleText>에</S.TitleText>
         </S.Line>
         <S.Line>
-          <S.TitleText>❤️ 를 눌러 투표해 주세요</S.TitleText>
+          <S.TitleText>❤️ 를 눌러주세요</S.TitleText>
         </S.Line>
       </S.Description>
     </S.Container>

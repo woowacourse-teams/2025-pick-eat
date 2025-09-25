@@ -15,13 +15,13 @@ function Title() {
       <S.Description>
         <S.Line>
           <S.PointText>안 땡기는 식당</S.PointText>
-          <S.TitleText>을</S.TitleText>
+          <S.TitleText>은</S.TitleText>
         </S.Line>
         <S.Line>
           <S.IconWrapper>
             <Cross color="white" size="sm" strokeWidth={4} />
           </S.IconWrapper>
-          <S.TitleText>버튼을 눌러 제외해 주세요</S.TitleText>
+          <S.TitleText>버튼을 눌러주세요</S.TitleText>
         </S.Line>
       </S.Description>
     </S.Container>
