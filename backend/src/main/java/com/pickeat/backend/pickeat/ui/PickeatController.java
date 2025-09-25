@@ -102,6 +102,16 @@ public class PickeatController implements PickeatApiSpec {
     }
 
     @Override
+    @GetMapping("/room/{roomId}/pickeats")
+    public ResponseEntity<List<PickeatResponse>> getPickeatInRoom(
+            @PathVariable("roomId") Long roomId,
+            @LoginUserId Long userId
+    ) {
+        List<PickeatResponse> responses = pickeatService.getPickeatInRoom(roomId, userId);
+        return ResponseEntity.ok().body(responses);
+    }
+
+    @Override
     @GetMapping("/room/{roomId}/pickeats/active")
     public ResponseEntity<List<PickeatResponse>> getActivePickeatsInRoom(
             @PathVariable("roomId") Long roomId,

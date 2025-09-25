@@ -542,4 +542,33 @@ public interface PickeatApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @Parameter(hidden = true) Long participantId
     );
+
+    @Operation(
+            summary = "방에 있는 픽잇 조회",
+            description = "방 ID를 통해 해당 방에 있는 모든 픽잇을 조회합니다.",
+            operationId = "getPickeatInRoom",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "픽잇 조회 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = PickeatResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증 실패",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class)
+                    )
+            )
+    })
+    ResponseEntity<List<PickeatResponse>> getPickeatInRoom(
+            @Parameter(description = "방 ID") @PathVariable Long roomId,
+            @Parameter(hidden = true) Long userId
+    );
 }

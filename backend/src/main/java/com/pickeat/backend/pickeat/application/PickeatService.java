@@ -69,6 +69,12 @@ public class PickeatService {
         return PickeatStateResponse.from(pickeat);
     }
 
+    public List<PickeatResponse> getPickeatInRoom(Long roomId, Long userId) {
+        validateUserAccessToRoom(roomId, userId);
+        List<Pickeat> pickeats = pickeatRepository.findByRoomId(roomId);
+        return PickeatResponse.from(pickeats);
+    }
+
     public List<PickeatResponse> getActivePickeatInRoom(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
         List<Pickeat> pickeats = pickeatRepository.findByRoomIdAndIsActive(roomId, true);
