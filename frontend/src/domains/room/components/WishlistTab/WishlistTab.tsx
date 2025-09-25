@@ -42,7 +42,9 @@ function WishlistTab() {
             />
           ))
         ) : (
-          <S.EmptyDescription>찜을 추가해보세요!</S.EmptyDescription>
+          <S.EmptyDescriptionPointText>
+            찜을 추가해보세요!
+          </S.EmptyDescriptionPointText>
         )}
       </S.Wishlist>
 
@@ -81,7 +83,7 @@ const S = {
     overflow: scroll;
     scrollbar-width: none;
   `,
-  EmptyDescription: styled.span`
+  EmptyDescriptionPointText: styled.span`
     width: 100%;
 
     margin-top: 20px;

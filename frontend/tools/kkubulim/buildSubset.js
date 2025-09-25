@@ -58,7 +58,7 @@ async function collectText() {
   let allText = texts.join(' ').normalize('NFC');
 
   allText = removeEmojis(allText);
-  allText = allText.replace(/\s+/g, '');
+  allText = allText.replace(/&nbsp;/g, '');
 
   // Set으로 중복 문자 제거 → 배열로 변환 → 다시 문자열로
   //  - subset-font에서 중복을 제거해주긴 하지만 콘솔에 결과를 확인해 보고 싶어서!
