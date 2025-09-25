@@ -1,4 +1,5 @@
 import { accessToken } from '@domains/login/utils/authStorage';
+import { joinCode } from '@domains/pickeat/utils/joinStorage';
 
 export type ApiHeaders = Record<string, string>;
 export type ApiBody = Record<string, unknown> | undefined;
@@ -22,14 +23,14 @@ const requestApi = async <TResponse = unknown>(
   body?: ApiBody,
   headers?: ApiHeaders
 ): Promise<TResponse | null> => {
-  const joinCode = localStorage.getItem('joinCode');
+  const code = joinCode.get();
   const token = accessToken.get();
   const response = await fetch(`${process.env.API_BASE_URL}${endPoint}`, {
     method,
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
-      'Pickeat-Participant-Token': `Bearer ${joinCode}`,
+      'Pickeat-Participant-Token': `Bearer ${code}`,
       ...headers,
     },
 
