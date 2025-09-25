@@ -440,35 +440,35 @@ public interface PickeatApiSpec {
     );
 
     @Operation(
-            summary = "사용자의 활성화된 픽잇 목록 조회",
-            description = "사용자가 참여하고 있는 방에서 진행중인 픽잇 목록을 조회합니다. (로그인 필요)",
+            summary = "사용자의 픽잇 목록 조회",
+            description = "사용자가 참여하고 있는 방에서 픽잇 목록을 조회합니다. (로그인 필요)",
             operationId = "getActivePickeatsByUser",
             security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "활성화된 픽잇 목록 조회 성공",
+                    description = "픽잇 목록 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = PickeatResponse.class)
                     )
             )
     })
-    ResponseEntity<List<PickeatResponse>> getActivePickeatsByUser(
+    ResponseEntity<List<PickeatResponse>> getPickeatsByUser(
             @Parameter(hidden = true) Long userId
     );
 
     @Operation(
-            summary = "참여자의 활성화된 픽잇 조회",
-            description = "참여자가 현재 참여하고 있는 활성화된 픽잇 정보를 조회합니다. (참여자 토큰 필요)",
+            summary = "참여자의 픽잇 조회",
+            description = "참여자가 현재 참여하고 있는 픽잇 정보를 조회합니다. (참여자 토큰 필요)",
             operationId = "getActivePickeatsByParticipant",
             security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "ParticipantAuth")
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "활성화된 픽잇 조회 성공",
+                    description = "픽잇 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = PickeatResponse.class)
@@ -476,18 +476,18 @@ public interface PickeatApiSpec {
             ),
             @ApiResponse(
                     responseCode = "404",
-                    description = "활성화된 픽잇을 찾을 수 없음",
+                    description = "픽잇을 찾을 수 없음",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ProblemDetail.class),
                             examples = @ExampleObject(
-                                    name = "활성화된 픽잇 없음",
+                                    name = "픽잇 없음",
                                     value = """
                                             {
                                               "type": "about:blank",
                                               "title": "PICKEAT_NOT_FOUND",
                                               "status": 404,
-                                              "detail": "활성화된 픽잇을 찾을 수 없습니다.",
+                                              "detail": "픽잇을 찾을 수 없습니다.",
                                               "instance": "/api/v1/participant/pickeats"
                                             }
                                             """
@@ -495,7 +495,7 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<PickeatResponse> getActivePickeatsByParticipant(
+    ResponseEntity<PickeatResponse> getPickeatsByParticipant(
             @Parameter(hidden = true) Long participantId
     );
 

@@ -134,19 +134,19 @@ public class PickeatController implements PickeatApiSpec {
 
     @Override
     @GetMapping("/rooms/pickeats")
-    public ResponseEntity<List<PickeatResponse>> getActivePickeatsByUser(
+    public ResponseEntity<List<PickeatResponse>> getPickeatsByUser(
             @LoginUserId Long userId
     ) {
-        List<PickeatResponse> pickeats = pickeatService.getActivePickeatsByUser(userId);
+        List<PickeatResponse> pickeats = pickeatService.getPickeatsByUser(userId);
         return ResponseEntity.ok().body(pickeats);
     }
 
     @Override
     @GetMapping("/pickeats/participating")
-    public ResponseEntity<PickeatResponse> getActivePickeatsByParticipant(
+    public ResponseEntity<PickeatResponse> getPickeatsByParticipant(
             @ParticipantId Long participantId
     ) {
-        PickeatResponse pickeat = pickeatService.getActivePickeatsByParticipant(participantId);
+        PickeatResponse pickeat = pickeatService.getPickeatsByParticipant(participantId);
         return ResponseEntity.ok().body(pickeat);
     }
 }
