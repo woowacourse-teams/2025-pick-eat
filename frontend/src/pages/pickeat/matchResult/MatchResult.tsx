@@ -47,7 +47,9 @@ const S = {
 
   ResultWrapper: styled.div`
     width: 60%;
+
     padding: ${({ theme }) => theme.PADDING.p10};
+
     height: 400px;
 
     display: flex;
