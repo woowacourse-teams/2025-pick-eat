@@ -20,50 +20,39 @@ function RoomList({ roomsData }: Props) {
 
   const navigate = useNavigate();
   return (
-    <S.Container>
-      <S.ListWrapper>
-        {roomList.length > 0 ? (
-          roomList.map(room => (
-            <S.List
-              key={room.id}
-              onClick={() =>
-                navigate(
-                  generateRouterPath.roomDetail(room.id, room.wishlistId)
-                )
-              }
-            >
-              <S.RoomInfo>
-                <S.Name>{room.name}</S.Name>
-                <S.MemberCount>
-                  <People size="xs" color={THEME.PALETTE.gray[60]} />
-                  {room.memberCount}명
-                </S.MemberCount>
-              </S.RoomInfo>
-              <button>
-                <Enter size="sm" color="black" />
-              </button>
-            </S.List>
-          ))
-        ) : (
-          <S.EmptyDescription>현재 참여 중인 방이 없습니다.</S.EmptyDescription>
-        )}
-      </S.ListWrapper>
-    </S.Container>
+    <S.ListWrapper>
+      {roomList.length > 0 ? (
+        roomList.map(room => (
+          <S.List
+            key={room.id}
+            onClick={() =>
+              navigate(generateRouterPath.roomDetail(room.id, room.wishlistId))
+            }
+          >
+            <S.RoomInfo>
+              <S.Name>{room.name}</S.Name>
+              <S.MemberCount>
+                <People size="xs" color={THEME.PALETTE.gray[60]} />
+                {room.memberCount}명
+              </S.MemberCount>
+            </S.RoomInfo>
+            <button>
+              <Enter size="sm" color="black" />
+            </button>
+          </S.List>
+        ))
+      ) : (
+        <S.EmptyDescription>현재 참여 중인 방이 없습니다.</S.EmptyDescription>
+      )}
+    </S.ListWrapper>
   );
 }
 
 export default RoomList;
 
 const S = {
-  Container: styled.div`
-    width: 100%;
-
-    display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
-  `,
-
   ListWrapper: styled.ul`
+    min-height: 400px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
