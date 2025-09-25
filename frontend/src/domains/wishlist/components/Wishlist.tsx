@@ -1,7 +1,8 @@
 import { Wishes, wishlist } from '@apis/wishlist';
 
+import { useLruCachedFetch } from '@store/useLruCachedFetch';
+
 import styled from '@emotion/styled';
-import { useLruCachedFetch } from 'store/useLruCachedFetch';
 
 import Wish from './Wish';
 

@@ -22,7 +22,8 @@
       "@types/*": ["shared/types/*"],
       "@styles/*": ["shared/styles/*"],
       "@provider/*": ["shared/provider/*"],
-      "@constants/*": ["shared/constants/*"]
+      "@constants/*": ["shared/constants/*"],
+      "@store/*": ["shared/store/*"]
     },
     "checkJs": true,
     "types": ["node", "jest", "@testing-library/jest-dom"]

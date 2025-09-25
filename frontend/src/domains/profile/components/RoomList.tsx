@@ -2,7 +2,6 @@ import Enter from '@components/assets/icons/Enter';
 import People from '@components/assets/icons/People';
 
 import { Room } from '@apis/room';
-import { User } from '@apis/users';
 
 import { generateRouterPath } from '@routes/routePath';
 

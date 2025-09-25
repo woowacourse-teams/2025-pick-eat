@@ -86,8 +86,8 @@
             "group": "internal",
             "position": "after"
           },
-                    {
-            "pattern": "@constants/**",
+          {
+            "pattern": "@store/**",
             "group": "internal",
             "position": "after"
           },
