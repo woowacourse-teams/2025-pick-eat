@@ -4,7 +4,7 @@ services:
     image: pickeat/pickeat:latest
     restart: always
     ports:
-      - "80:8080"
+      - "8080:8080"
     volumes:
       - ./data/springboot/logs:/var/logs
     environment:

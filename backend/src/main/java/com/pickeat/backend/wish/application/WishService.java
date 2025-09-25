@@ -39,6 +39,7 @@ public class WishService {
                 FoodCategory.getCategoryNameBy(request.category()),
                 request.roadAddressName(),
                 String.join(",", request.tags()),
+                request.placeUrl(),
                 wishList
         );
         Wish saved = wishRepository.save(wish);
@@ -59,12 +60,13 @@ public class WishService {
         wish.updateFoodCategory(FoodCategory.getCategoryNameBy(request.category()));
         wish.updateRoadAddressName(request.roadAddressName());
         wish.updateTags(String.join(",", request.tags()));
+        wish.updatePlaceUrl(request.placeUrl());
         return WishResponse.from(wish);
     }
 
     public List<WishResponse> getWishes(Long wishListId, Long userId) {
         WishList wishList = getWishList(wishListId);
-        if (!wishList.getIsPublic()) {
+        if (!wishList.getIsTemplate()) {
             validateUserAccessToRoom(wishList.getRoomId(), userId);
         }
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
@@ -73,9 +75,9 @@ public class WishService {
         return WishResponse.from(wishes);
     }
 
-    public List<WishResponse> getWishesFromPublicWishList(Long wishListId) {
+    public List<WishResponse> getWishesFromTemplates(Long wishListId) {
         WishList wishList = getWishList(wishListId);
-        validateIsPublicWishList(wishList);
+        validateIsTemplate(wishList);
         //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
         List<Wish> wishes = wishList.getWishes();
         wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
@@ -99,8 +101,8 @@ public class WishService {
         return wish;
     }
 
-    private void validateIsPublicWishList(WishList wishList) {
-        if (!wishList.getIsPublic()) {
+    private void validateIsTemplate(WishList wishList) {
+        if (!wishList.getIsTemplate()) {
             throw new BusinessException(ErrorCode.NOT_PUBLIC_WISH_LIST);
         }
     }

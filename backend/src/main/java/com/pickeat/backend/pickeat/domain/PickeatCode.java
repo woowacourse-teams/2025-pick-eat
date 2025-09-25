@@ -24,6 +24,15 @@ public class PickeatCode {
         this.value = parsePickeatCode(code);
     }
 
+    public Boolean isEqualCode(String code) {
+        return this.value.toString().equals(code);
+    }
+
+    @Override
+    public String toString() {
+        return value.toString();
+    }
+
     private UUID parsePickeatCode(String pickeatCode) {
         if (pickeatCode.length() != UUID_LENGTH) {
             throw new BusinessException(ErrorCode.INVALID_PICKEAT_CODE);
@@ -34,10 +43,5 @@ public class PickeatCode {
         } catch (IllegalArgumentException e) {
             throw new BusinessException(ErrorCode.INVALID_PICKEAT_CODE);
         }
-    }
-
-    @Override
-    public String toString() {
-        return value.toString();
     }
 }

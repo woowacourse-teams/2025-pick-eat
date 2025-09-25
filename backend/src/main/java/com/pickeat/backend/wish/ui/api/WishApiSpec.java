@@ -181,7 +181,7 @@ public interface WishApiSpec {
                     )
             )
     })
-    ResponseEntity<List<WishResponse>> getWishesInPublicWishList(
+    ResponseEntity<List<WishResponse>> getWishesInTemplates(
             @Parameter(description = "공개 위시리스트 ID", example = "1")
             @PathVariable("wishListId") Long wishListId
     );

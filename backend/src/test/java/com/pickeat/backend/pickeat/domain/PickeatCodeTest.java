@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import java.util.UUID;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -61,6 +62,36 @@ class PickeatCodeTest {
             assertThatThrownBy(() -> new PickeatCode(invalidUuid))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.INVALID_PICKEAT_CODE.getMessage());
+        }
+    }
+
+    @Nested
+    class 픽잇코드_비교 {
+
+        @Test
+        void 동일_픽잇코드_비교_성공() {
+            // given
+            String code = UUID.randomUUID().toString();
+            PickeatCode pickeatCode = new PickeatCode(code);
+
+            // when
+            Boolean isEqual = pickeatCode.isEqualCode(code);
+
+            // then
+            assertThat(isEqual).isTrue();
+        }
+
+        @Test
+        void 다른_픽잇코드_비교_성공() {
+            // given
+            String code = UUID.randomUUID().toString();
+            PickeatCode pickeatCode = new PickeatCode(code);
+
+            // when
+            Boolean isEqual = pickeatCode.isEqualCode("otherCode");
+
+            // then
+            assertThat(isEqual).isFalse();
         }
     }
 }

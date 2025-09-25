@@ -28,23 +28,29 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation platform('software.amazon.awssdk:bom:2.27.21')
-    implementation 'software.amazon.awssdk:s3'
-    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
     implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
-    implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'com.nimbusds:nimbus-jose-jwt:9.37'
 
+    implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
+
+    implementation platform('software.amazon.awssdk:bom:2.27.21')
+    implementation 'software.amazon.awssdk:s3'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'io.rest-assured:rest-assured:5.4.0'
+    testImplementation 'io.rest-assured:rest-assured:5.4.0'  // 버전 통일: 5.4.0 사용
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly 'com.h2database:h2'
 }

@@ -7,6 +7,7 @@ import com.pickeat.backend.pickeat.application.PickeatResultService;
 import com.pickeat.backend.pickeat.application.PickeatService;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
@@ -118,5 +119,34 @@ public class PickeatController implements PickeatApiSpec {
     ) {
         pickeatService.deactivatePickeat(pickeatCode, participantId);
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    @GetMapping("/pickeats/{pickeatCode}/rejoin-available")
+    public ResponseEntity<PickeatRejoinAvailableResponse> getRejoinAvailableFromNoneUser(
+            @PathVariable("pickeatCode") String pickeatCode,
+            @ParticipantId(required = false) Long participantId
+    ) {
+        PickeatRejoinAvailableResponse rejoinAvailable =
+                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantId);
+        return ResponseEntity.ok(rejoinAvailable);
+    }
+
+    @Override
+    @GetMapping("/rooms/pickeats")
+    public ResponseEntity<List<PickeatResponse>> getActivePickeatsByUser(
+            @LoginUserId Long userId
+    ) {
+        List<PickeatResponse> pickeats = pickeatService.getActivePickeatsByUser(userId);
+        return ResponseEntity.ok().body(pickeats);
+    }
+
+    @Override
+    @GetMapping("/pickeats/participating")
+    public ResponseEntity<PickeatResponse> getActivePickeatsByParticipant(
+            @ParticipantId Long participantId
+    ) {
+        PickeatResponse pickeat = pickeatService.getActivePickeatsByParticipant(participantId);
+        return ResponseEntity.ok().body(pickeat);
     }
 }

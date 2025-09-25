@@ -9,7 +9,9 @@ import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -21,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class PickeatScheduler {
 
-    private static final int DELETE_CUT_LINE = 1;
+    private static final int DELETE_CUT_LINE = 3;
 
     private final PickeatRepository pickeatRepository;
     private final PickeatResultRepository pickeatResultRepository;
@@ -32,8 +34,11 @@ public class PickeatScheduler {
     @Scheduled(cron = "0 0 0 * * *") // 매일 00:00에 실행
     @Transactional
     public void cleanupOldPickeats() {
-        LocalDateTime deleteCutLine = LocalDateTime.now().minusDays(DELETE_CUT_LINE);
-        List<Pickeat> expiredPickeats = pickeatRepository.findByUpdatedAtBefore(deleteCutLine);
+        LocalDate targetDate = LocalDate.now().minusDays(DELETE_CUT_LINE);
+        LocalDateTime startOfDay = targetDate.atStartOfDay();
+        LocalDateTime endOfDay = targetDate.atTime(LocalTime.MAX);
+
+        List<Pickeat> expiredPickeats = pickeatRepository.findByUpdatedAtBetween(startOfDay, endOfDay);
 
         if (expiredPickeats.isEmpty()) {
             return;

@@ -26,6 +26,7 @@ public class WishListController implements WishListApiSpec {
 
     private final WishListService wishListService;
 
+    //TODO: 현재 필요하지 않은 API 메서드이므로 처리 필요 (2025-09-19, 금, 21:41)
     @Override
     @BusinessLogging("위시리스트 생성")
     @PostMapping("/room/{roomId}/wishLists")
@@ -40,18 +41,18 @@ public class WishListController implements WishListApiSpec {
 
     @Override
     @GetMapping("/room/{roomId}/wishLists")
-    public ResponseEntity<List<WishListResponse>> getPrivateWishLists(
+    public ResponseEntity<WishListResponse> getWishLists(
             @PathVariable("roomId") Long roomId,
             @LoginUserId Long userId
     ) {
-        List<WishListResponse> wishLists = wishListService.getPrivateWishLists(roomId, userId);
+        WishListResponse wishLists = wishListService.getWishList(roomId, userId);
         return ResponseEntity.ok(wishLists);
     }
 
     @Override
-    @GetMapping("/wishLists")
-    public ResponseEntity<List<WishListResponse>> getPublicWishLists() {
-        List<WishListResponse> wishLists = wishListService.getPublicWishLists();
+    @GetMapping("/wishLists/templates")
+    public ResponseEntity<List<WishListResponse>> getTemplateWishLists() {
+        List<WishListResponse> wishLists = wishListService.getTemplateWishLists();
         return ResponseEntity.ok(wishLists);
     }
 

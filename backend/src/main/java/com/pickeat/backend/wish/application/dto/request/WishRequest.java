@@ -17,7 +17,9 @@ public record WishRequest(
         @NotBlank(message = "도로명주소는 공백을 허용하지 않습니다.")
         String roadAddressName,
         @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
-        List<String> tags
+        List<String> tags,
+        @Schema(description = "식당 정보 Url", example = "www.restaurant.com")
+        String placeUrl
 ) {
 
 }

@@ -13,5 +13,7 @@ public interface PickeatRepository extends JpaRepository<Pickeat, Long> {
 
     List<Pickeat> findByRoomIdAndIsActive(Long roomId, Boolean isActive);
 
-    List<Pickeat> findByUpdatedAtBefore(LocalDateTime cutoffDate);
+    List<Pickeat> findByRoomIdInAndIsActive(List<Long> roodIds, Boolean isActive);
+
+    List<Pickeat> findByUpdatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
 }

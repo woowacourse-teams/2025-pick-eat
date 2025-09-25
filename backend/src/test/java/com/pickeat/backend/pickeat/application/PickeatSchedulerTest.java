@@ -51,7 +51,7 @@ class PickeatSchedulerTest {
     @Test
     void 오래된_픽잇_삭제() {
         // given
-        LocalDateTime oldDate = LocalDateTime.now().minusDays(2);
+        LocalDateTime oldDate = LocalDateTime.now().minusDays(3);
 
         Pickeat deletePickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
         setUpdatedAt(deletePickeat.getId(), oldDate);
@@ -78,7 +78,7 @@ class PickeatSchedulerTest {
     @Test
     void 픽잇_삭제시_연관된_데이터도_함께_삭제() {
         // given
-        LocalDateTime oldDate = LocalDateTime.now().minusDays(2);
+        LocalDateTime oldDate = LocalDateTime.now().minusDays(3);
 
         Pickeat deletePickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
         setUpdatedAt(deletePickeat.getId(), oldDate);

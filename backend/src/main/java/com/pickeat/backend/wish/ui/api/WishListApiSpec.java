@@ -106,7 +106,7 @@ public interface WishListApiSpec {
                     )
             )
     })
-    ResponseEntity<List<WishListResponse>> getPrivateWishLists(
+    ResponseEntity<WishListResponse> getWishLists(
             @Parameter(description = "방 ID", example = "1")
             @PathVariable("roomId") Long roomId,
             @Parameter(hidden = true) @LoginUserId Long loginUserID
@@ -125,7 +125,7 @@ public interface WishListApiSpec {
                             array = @ArraySchema(schema = @Schema(implementation = WishListResponse.class)))
             )
     })
-    ResponseEntity<List<WishListResponse>> getPublicWishLists();
+    ResponseEntity<List<WishListResponse>> getTemplateWishLists();
 
     @Operation(
             summary = "위시리스트 삭제",
