@@ -45,7 +45,10 @@ const PublicWishlist = () => {
   return (
     <S.Container>
       {WISHLIST_MOCK_DATA.map(item => (
-        <S.ThumbnailBox key={item.id}>
+        <S.ThumbnailBox
+          key={item.id}
+          onClick={() => handlePublicWishlistClick(item.id)}
+        >
           <picture>
             <source
               type="image/webp"
@@ -58,7 +61,7 @@ const PublicWishlist = () => {
               loading="lazy"
             />
           </picture>
-          <S.TitleBox onClick={() => handlePublicWishlistClick(item.id)}>
+          <S.TitleBox>
             <S.Title>시작하기</S.Title>
             <S.LinkButton>
               <Arrow size="sm" direction="right" />
