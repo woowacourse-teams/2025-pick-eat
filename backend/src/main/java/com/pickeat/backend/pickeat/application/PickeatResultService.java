@@ -40,10 +40,8 @@ public class PickeatResultService {
                 .orElseGet(() -> createNewResultWithConcurrencyHandling(pickeat));
     }
 
-    public RestaurantResultResponse getPickeatResult(String pickeatCode, Long participantId) {
+    public RestaurantResultResponse getPickeatResult(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        validateParticipantAccessToPickeat(participantId, pickeat);
-
         PickeatResult pickeatResult = getPickeatResult(pickeat);
 
         return RestaurantResultResponse.of(pickeatResult.getRestaurant(), pickeatResult.isHasEqualLike());

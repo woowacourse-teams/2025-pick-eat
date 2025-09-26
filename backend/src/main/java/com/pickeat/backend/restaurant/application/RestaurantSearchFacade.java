@@ -17,6 +17,7 @@ public class RestaurantSearchFacade {
         restaurantService.create(locationRestaurantSearchService.searchByLocation(request), pickeatCode);
     }
 
+    // Todo: 앞서 생성된 픽잇 삭제하는 작업에 대한 보상 필요[2025-09-25 17:33:13]
     public void searchByWish(WishRestaurantRequest request, String pickeatCode) {
         restaurantService.create(wishRestaurantSearchService.searchByWish(request), pickeatCode);
     }
