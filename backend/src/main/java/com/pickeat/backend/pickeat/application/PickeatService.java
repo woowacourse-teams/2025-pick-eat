@@ -69,6 +69,12 @@ public class PickeatService {
         return PickeatStateResponse.from(pickeat);
     }
 
+    public List<PickeatResponse> getPickeatInRoom(Long roomId, Long userId) {
+        validateUserAccessToRoom(roomId, userId);
+        List<Pickeat> pickeats = pickeatRepository.findByRoomId(roomId);
+        return PickeatResponse.from(pickeats);
+    }
+
     public List<PickeatResponse> getActivePickeatInRoom(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
         List<Pickeat> pickeats = pickeatRepository.findByRoomIdAndIsActive(roomId, true);
@@ -85,17 +91,16 @@ public class PickeatService {
         return new PickeatRejoinAvailableResponse(rejoinAvailable);
     }
 
-    public List<PickeatResponse> getActivePickeatsByUser(Long userId) {
+    public List<PickeatResponse> getPickeatsByUser(Long userId) {
         List<Room> allRoom = roomUserRepository.getAllRoomByUserId(userId);
         List<Long> allRoomIds = allRoom.stream().map(Room::getId).toList();
-        List<Pickeat> roomPickeats = pickeatRepository.findByRoomIdInAndIsActive(allRoomIds, true);
+        List<Pickeat> roomPickeats = pickeatRepository.findByRoomIdIn(allRoomIds);
         return PickeatResponse.from(roomPickeats);
     }
 
-    public PickeatResponse getActivePickeatsByParticipant(Long participantId) {
+    public PickeatResponse getPickeatsByParticipant(Long participantId) {
         Participant participant = getParticipant(participantId);
         Pickeat pickeat = participant.getPickeat();
-        validateActivePickeat(pickeat);
         return PickeatResponse.from(pickeat);
     }
 
