@@ -31,6 +31,7 @@ function WishForm({ formData, onFormChange, onSubmit, errorMessage }: Props) {
       <S.InputArea>
         <S.Label>카테고리 *</S.Label>
         <CategorySection
+          value={formData.category}
           onFormChange={value => onFormChange('category', value)}
         />
 
@@ -46,7 +47,13 @@ function WishForm({ formData, onFormChange, onSubmit, errorMessage }: Props) {
           value={formData.roadAddressName}
           onChange={e => onFormChange('roadAddressName', e.target.value)}
         />
-        <S.Label htmlFor="thumbnail">위시 썸네일</S.Label>
+        <Input
+          label="링크"
+          name="placeUrl"
+          value={formData.placeUrl}
+          onChange={e => onFormChange('placeUrl', e.target.value)}
+        />
+        <S.Label htmlFor="thumbnail">찜 썸네일</S.Label>
         <input
           id="thumbnail"
           type="file"
@@ -72,15 +79,16 @@ export default WishForm;
 const S = {
   Form: styled.form`
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
   InputArea: styled.div`
-    height: 340px;
-    overflow: scroll;
+    height: 400px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
+    overflow-y: scroll;
   `,
 
   Label: styled.label`

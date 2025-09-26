@@ -1,23 +1,63 @@
 import Button from '@components/actions/Button';
 import People from '@components/assets/icons/People';
 
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
+
+import { pickeat } from '@apis/pickeat';
 import { Room } from '@apis/room';
+import { rooms } from '@apis/rooms';
 
 import { generateRouterPath } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
 
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
-  const roomList = use(roomsData);
+function ChooseRoomWishlist() {
+  const [roomList, setRoomList] = useState<Room[]>([]);
+  const [error, setError] = useState<boolean>(false);
   const navigate = useNavigate();
+  const showToast = useShowToast();
+
+  const enterRoomWithWishPickeat = async (
+    roomId: number,
+    wishlistId: number
+  ) => {
+    try {
+      const code = await pickeat.post(roomId, makePickeatName());
+      await pickeat.postWish(wishlistId, code);
+      if (code) navigate(generateRouterPath.pickeatDetail(code));
+    } catch (e) {
+      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
+    }
+  };
+
+  if (error) throw new Error();
+
+  const getRoom = async () => {
+    try {
+      const response = await rooms.get();
+      if (response) setRoomList(response);
+    } catch {
+      setError(true);
+      showToast({
+        mode: 'ERROR',
+        message: '방 정보 조회에 실패했습니다. 다시 시도해 주세요.',
+      });
+    }
+  };
+
+  useEffect(() => {
+    getRoom();
+  }, []);
 
   return (
     <S.Container>
-      <S.Description>어떤 방에 저장된 위시리스트를 선택할까요?</S.Description>
+      <S.Description>어떤 방의 찜 목록을 선택할까요?</S.Description>
       <S.ListWrapper>
         {roomList.length > 0 ? (
           roomList.map(room => (
@@ -35,7 +75,7 @@ function ChooseRoomWishlist({ roomsData }: { roomsData: Promise<Room[]> }) {
                 size="sm"
                 rightIcon="🤍"
                 onClick={() =>
-                  navigate(generateRouterPath.pickeatWithWish(room.id))
+                  enterRoomWithWishPickeat(room.id, room.wishlistId)
                 }
               />
             </S.List>

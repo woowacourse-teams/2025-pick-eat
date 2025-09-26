@@ -27,7 +27,7 @@ function InviteMember({
     <S.Container>
       <SearchBar
         label="멤버 초대"
-        placeholder="아이디를 입력해주세요."
+        placeholder="아이디를 입력해 주세요."
         value={nickname}
         onChange={e => handleInputChange(e.target.value)}
       >

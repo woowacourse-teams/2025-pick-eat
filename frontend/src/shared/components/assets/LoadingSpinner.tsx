@@ -7,21 +7,10 @@ const spin = keyframes`
   100% { transform: rotate(360deg); }
 `;
 
-const Spinner = styled.div`
-  width: 40px;
-  height: 40px;
-
-  border: 4px solid ${({ theme }) => theme.PALETTE.gray[10]};
-
-  animation: ${spin} 1s linear infinite;
-  border-radius: 50%;
-  border-top: 4px solid ${({ theme }) => theme.PALETTE.primary[50]};
-`;
-
 function LoadingSpinner() {
   return (
     <S.Container>
-      <Spinner aria-label="Loading" />
+      <S.Spinner aria-label="Loading" />
     </S.Container>
   );
 }
@@ -35,5 +24,16 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
+  `,
+
+  Spinner: styled.div`
+    width: 40px;
+    height: 40px;
+
+    border: 4px solid ${({ theme }) => theme.PALETTE.gray[10]};
+
+    animation: ${spin} 1s linear infinite;
+    border-radius: 50%;
+    border-top: 4px solid ${({ theme }) => theme.PALETTE.primary[50]};
   `,
 };

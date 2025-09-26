@@ -8,7 +8,7 @@ type ValidateType = {
 };
 
 const ERROR_MESSAGE = {
-  NICKNAME: '닉네임을 입력해주세요.',
+  NICKNAME: '닉네임을 입력해 주세요.',
   DETAIL: '픽잇 정보가 존재하지 않습니다.',
 };
 

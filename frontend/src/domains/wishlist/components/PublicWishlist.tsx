@@ -6,6 +6,8 @@ import { pickeat } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
@@ -27,7 +29,8 @@ const WISHLIST_MOCK_DATA = [
 const PublicWishlist = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const roomId = searchParams.get('roomId') ?? '';
+  const roomId = Number(searchParams.get('roomId')) ?? '';
+  const showToast = useShowToast();
 
   const handlePublicWishlistClick = async (id: number) => {
     try {
@@ -35,20 +38,30 @@ const PublicWishlist = () => {
       await pickeat.postWish(id, code);
       if (code) navigate(generateRouterPath.pickeatDetail(code));
     } catch (e) {
-      alert(e);
+      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
     }
   };
 
   return (
     <S.Container>
       {WISHLIST_MOCK_DATA.map(item => (
-        <S.ThumbnailBox key={item.id}>
-          <S.ThumbnailImg
-            key={item.id}
-            onClick={() => handlePublicWishlistClick(item.id)}
-            imgUrl={item.image}
-          />
-          <S.TitleBox onClick={() => handlePublicWishlistClick(item.id)}>
+        <S.ThumbnailBox
+          key={item.id}
+          onClick={() => handlePublicWishlistClick(item.id)}
+        >
+          <picture>
+            <source
+              type="image/webp"
+              srcSet={item.image.replace(/\.(png|jpg|jpeg)$/, '.webp')}
+            />
+            <S.ThumbnailImg
+              as="img"
+              src={item.image}
+              alt={item.name}
+              loading="lazy"
+            />
+          </picture>
+          <S.TitleBox>
             <S.Title>시작하기</S.Title>
             <S.LinkButton>
               <Arrow size="sm" direction="right" />
@@ -89,14 +102,10 @@ const S = {
     box-shadow: rgb(0 0 0 / 10%) 0 4px 12px;
     cursor: pointer;
   `,
-  ThumbnailImg: styled.div<{ imgUrl: string }>`
+  ThumbnailImg: styled.img`
     width: 140px;
     height: 140px;
 
-    border: 5px solid white;
-
-    background-image: url(${({ imgUrl }) => imgUrl});
-    background-size: cover;
     border-radius: ${({ theme }) => theme.RADIUS.medium2};
   `,
   TitleBox: styled.div`

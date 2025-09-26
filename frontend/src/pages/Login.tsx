@@ -9,9 +9,7 @@ import styled from '@emotion/styled';
 
 const kauthUrl = 'https://kauth.kakao.com/oauth/authorize';
 const REST_API_KEY = process.env.REST_API_KEY as string;
-// TODO : 리다이렉트 URL 환경변수에서 뽑아쓰도록 다시 되돌려놓기
-// const baseRedirectUrl = process.env.BASE_URL as string;
-const baseRedirectUrl = window.location.origin + '/';
+const baseRedirectUrl = process.env.BASE_URL as string;
 const redirectPath = ROUTE_PATH.OAUTH_CALLBACK.replace(/^\//, '');
 
 function Login() {
@@ -29,7 +27,7 @@ function Login() {
     <S.Container>
       <S.Title>
         <S.TitleWrapper>
-          로그인하고 <S.Point>더 빠르게</S.Point>
+          로그인하고 <S.PointText>더 빠르게</S.PointText>
         </S.TitleWrapper>
         식당을 정해보아요
       </S.Title>
@@ -54,7 +52,7 @@ const S = {
     color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
-  Point: styled.h1`
+  PointText: styled.h1`
     color: ${({ theme }) => theme.PALETTE.primary[50]};
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
