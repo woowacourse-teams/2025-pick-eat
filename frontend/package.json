@@ -1,7 +1,7 @@
 {
   "name": "2025-pick-eat",
-  "version": "1.0.0",
-  "description": "팀원들의 취향을 기억하는 PickEat",
+  "version": "1.1.1",
+  "description": "PickEat: 팀 식사 고민 해결!",
   "type": "module",
   "scripts": {
     "dev": "cross-env NODE_ENV=local webpack serve --config webpack.local.js --host 0.0.0.0",
