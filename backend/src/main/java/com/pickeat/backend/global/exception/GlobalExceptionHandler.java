@@ -1,12 +1,12 @@
 package com.pickeat.backend.global.exception;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.global.log.dto.ErrorLog;
+import com.pickeat.backend.global.log.dto.Log;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.logstash.logback.marker.Markers;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -26,7 +26,6 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @RestControllerAdvice
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
-    private final ObjectMapper objectMapper;
 
     @ExceptionHandler(BusinessException.class)
     public ProblemDetail handleBusinessException(BusinessException e) {
@@ -166,20 +165,11 @@ public class GlobalExceptionHandler {
         logSafe(ErrorLog.createClientErrorLog(status.value(), e, customCode), LogLevel.WARN);
     }
 
-    private void logSafe(Object logObject, LogLevel level) {
-        String json;
-        try {
-            json = objectMapper.writeValueAsString(logObject);
-        } catch (JsonProcessingException e) {
-            // 직렬화 실패 시 무조건 error 레벨로 로그
-            log.error("{\"logType\":\"LOG_SERIALIZE_FAIL\",\"message\":\"{}\"}", e.getMessage());
-            return;
-        }
-
+    private void logSafe(Log logObject, LogLevel level) {
         switch (level) {
-            case INFO -> log.info(json);
-            case WARN -> log.warn(json);
-            case ERROR -> log.error(json);
+            case INFO -> log.info(Markers.appendEntries(logObject.fields()), logObject.summary());
+            case WARN -> log.warn(Markers.appendEntries(logObject.fields()), logObject.summary());
+            case ERROR -> log.error(Markers.appendEntries(logObject.fields()), logObject.summary());
         }
     }
 
