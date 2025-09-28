@@ -27,6 +27,6 @@ public record BusinessLog(
 
     @Override
     public String summary() {
-        return String.format("[%s] User %d executed %s", LogType.BUSINESS.name(), userId, action);
+        return String.format("[%s] User %d executed %s", logType.name(), userId, action);
     }
 }
