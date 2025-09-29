@@ -219,8 +219,6 @@ public interface RoomApiSpec {
                     description = "방 나가기 성공 (본문 없음)"
             ),
             @ApiResponse(responseCode = "400", description = "잘못된 요청"),
-            @ApiResponse(responseCode = "401", description = "인증 필요"),
-            @ApiResponse(responseCode = "403", description = "접근 권한 없음"),
     })
     ResponseEntity<Void> exit(
             @Parameter(description = "방 ID")
