@@ -46,7 +46,7 @@ public record WishResponse(
                 wish.getFoodCategory().getName(),
                 wishPictureResponses,
                 wish.getRoadAddressName(),
-                Arrays.stream(wish.getTags().split(",")).toList(),
+                parseTags(wish.getTags()),
                 wish.getPlaceUrl(),
                 wish.getWishList().getId()
         );
@@ -54,5 +54,12 @@ public record WishResponse(
 
     public static List<WishResponse> from(List<Wish> wishes) {
         return wishes.stream().map(WishResponse::from).toList();
+    }
+
+    private static List<String> parseTags(String tags) {
+        if (tags == null || tags.isBlank()) {
+            return List.of();
+        }
+        return Arrays.stream(tags.split(",")).toList();
     }
 }
