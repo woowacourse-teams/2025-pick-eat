@@ -85,4 +85,15 @@ public interface UserApiSpec {
             )
     })
     ResponseEntity<List<UserResponse>> getUsers(@Parameter(description = "검색할 닉네임") @RequestParam String nickname);
+
+    @Operation(
+            summary = "회원 탈퇴",
+            description = "서비스에서 회원 탈퇴를 진행합니다.",
+            operationId = "deleteUser"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "좋아요 취소 성공"),
+            @ApiResponse(responseCode = "500", description = "삭제 실패")
+    })
+    ResponseEntity<Void> deleteUser(@Parameter(hidden = true) Long userId);
 }
