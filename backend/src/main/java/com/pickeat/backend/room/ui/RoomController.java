@@ -67,10 +67,11 @@ public class RoomController implements RoomApiSpec {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @Override
     @DeleteMapping("/{roomId}/exit")
     public ResponseEntity<Void> exit(@PathVariable("roomId") Long roomId, @LoginUserId Long userId) {
         roomService.exitRoom(roomId, userId);
 
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
