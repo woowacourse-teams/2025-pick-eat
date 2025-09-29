@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Import;
 class UserServiceTest {
 
     @Autowired
-    private TestEntityManager entityManager;
+    private TestEntityManager testEntityManager;
 
     @Autowired
     private UserService userService;
@@ -43,9 +43,9 @@ class UserServiceTest {
             Long providerId = 1L;
             String provider = "kakao";
             User user = new User("유저", providerId, provider);
-            entityManager.persist(user);
-            entityManager.flush();
-            entityManager.clear();
+            testEntityManager.persist(user);
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when & then
             assertThat(userService.isUserExist(providerId, provider)).isTrue();
@@ -82,7 +82,7 @@ class UserServiceTest {
         @Test
         void 닉네임_중복시_예외() {
             // given
-            entityManager.persist(new User("nickname", 1L, "kakao"));
+            testEntityManager.persist(new User("nickname", 1L, "kakao"));
             SignupRequest request = new SignupRequest("nickname");
             ProviderInfo providerInfo = new ProviderInfo(2L, "google");
 
@@ -101,9 +101,9 @@ class UserServiceTest {
         void findUserByIdSuccess() {
             // given
             User user = UserFixture.create();
-            entityManager.persist(user);
-            entityManager.flush();
-            entityManager.clear();
+            testEntityManager.persist(user);
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             UserResponse response = userService.getById(user.getId());
@@ -126,9 +126,9 @@ class UserServiceTest {
         void findUserByNicknameSuccess() {
             // given
             User user = UserFixture.create();
-            entityManager.persist(user);
-            entityManager.flush();
-            entityManager.clear();
+            testEntityManager.persist(user);
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             UserResponse response = userService.findByNickName(user.getNickname());
@@ -155,12 +155,12 @@ class UserServiceTest {
         @DisplayName("닉네임 포함으로 여러 유저 검색 성공")
         void searchUsersByNicknameSuccess() {
             // given
-            entityManager.persist(new User("테스트유저1", 1L, "kakao"));
-            entityManager.persist(new User("테스트유저2", 2L, "kakao"));
-            entityManager.persist(new User("유저", 2L, "kakao"));
-            entityManager.persist(new User("유저3", 3L, "kakao"));
-            entityManager.flush();
-            entityManager.clear();
+            testEntityManager.persist(new User("테스트유저1", 1L, "kakao"));
+            testEntityManager.persist(new User("테스트유저2", 2L, "kakao"));
+            testEntityManager.persist(new User("유저", 2L, "kakao"));
+            testEntityManager.persist(new User("유저3", 3L, "kakao"));
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             List<UserResponse> results = userService.searchByNickname("유저");
@@ -177,11 +177,11 @@ class UserServiceTest {
         @DisplayName("닉네임 검색 시 정확히 일치하는 닉네임이 맨 앞으로 정렬")
         void searchUsersByNicknameWithExactMatchFirst() {
             // given
-            entityManager.persist(new User("테스트유저1", 1L, "kakao"));
-            entityManager.persist(new User("유저", 2L, "kakao"));
-            entityManager.persist(new User("유저2", 3L, "kakao"));
-            entityManager.flush();
-            entityManager.clear();
+            testEntityManager.persist(new User("테스트유저1", 1L, "kakao"));
+            testEntityManager.persist(new User("유저", 2L, "kakao"));
+            testEntityManager.persist(new User("유저2", 3L, "kakao"));
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             List<UserResponse> results = userService.searchByNickname("유저");
@@ -214,22 +214,45 @@ class UserServiceTest {
             // given
             User user1 = new User("유저1", 1L, "kakao");
             User user2 = new User("유저2", 2L, "kakao");
-            entityManager.persist(user1);
-            entityManager.persist(user2);
+            testEntityManager.persist(user1);
+            testEntityManager.persist(user2);
 
             Room room = RoomFixture.create();
-            entityManager.persist(room);
+            testEntityManager.persist(room);
 
-            entityManager.persist(new RoomUser(room, user1));
-            entityManager.persist(new RoomUser(room, user2));
-            entityManager.flush();
-            entityManager.clear();
+            testEntityManager.persist(new RoomUser(room, user1));
+            testEntityManager.persist(new RoomUser(room, user2));
+            testEntityManager.flush();
+            testEntityManager.clear();
 
             // when
             List<UserResponse> results = userService.getByRoomId(room.getId());
 
             // then
             assertThat(results).hasSize(2);
+        }
+    }
+
+    @Nested
+    class 회원_탈퇴_케이스 {
+
+        @Test
+        @DisplayName("회원 탈퇴 성공 케이스")
+        void deleteUser() {
+            //given
+            User user = UserFixture.create();
+            testEntityManager.persist(user);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            //when
+            userService.deleteUser(user.getId());
+
+            //then
+            assertThatThrownBy(() -> userService.getById(user.getId()))
+                    .isInstanceOf(BusinessException.class)
+                    .hasMessage(USER_NOT_FOUND.getMessage());
         }
     }
 }
