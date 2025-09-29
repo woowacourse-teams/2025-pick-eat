@@ -14,9 +14,9 @@
                     <fieldName>@timestamp</fieldName>
                     <timeZone>Asia/Seoul</timeZone>
                 </timestamp>
-                <level>
+                <logLevel>
                     <fieldName>severity</fieldName>
-                </level>
+                </logLevel>
                 <loggerName>
                     <fieldName>logger</fieldName>
                 </loggerName>
