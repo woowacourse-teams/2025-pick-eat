@@ -49,12 +49,6 @@ public class UserService {
         return UserResponse.from(user);
     }
 
-    private void validateDuplicateNickname(String nickname) {
-        if (userRepository.existsByNickname(nickname)) {
-            throw new BusinessException(ErrorCode.ALREADY_NICKNAME_EXISTS);
-        }
-    }
-
     public List<UserResponse> searchByNickname(String nickname) {
         List<User> users = userRepository.findByNicknameStartsWith(nickname);
 
@@ -67,5 +61,17 @@ public class UserService {
     public List<UserResponse> getByRoomId(Long roomId) {
         List<User> users = roomUserRepository.getAllUserByRoomId(roomId);
         return UserResponse.from(users);
+    }
+
+    @Transactional
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
+        roomUserRepository.deleteAllByUserId(userId);
+    }
+
+    private void validateDuplicateNickname(String nickname) {
+        if (userRepository.existsByNickname(nickname)) {
+            throw new BusinessException(ErrorCode.ALREADY_NICKNAME_EXISTS);
+        }
     }
 }

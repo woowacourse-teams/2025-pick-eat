@@ -7,6 +7,7 @@ import com.pickeat.backend.user.ui.api.UserApiSpec;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,12 +21,15 @@ public class UserController implements UserApiSpec {
 
     private final UserService userService;
 
+    @Override
     @GetMapping("/users")
     public ResponseEntity<UserResponse> getUser(@LoginUserId Long userId) {
         UserResponse response = userService.getById(userId);
+
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @GetMapping("/rooms/{roomId}/users")
     public ResponseEntity<List<UserResponse>> getRoomUsers(@PathVariable("roomId") Long roomId) {
         List<UserResponse> response = userService.getByRoomId(roomId);
@@ -33,9 +37,19 @@ public class UserController implements UserApiSpec {
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @GetMapping("/users/search")
     public ResponseEntity<List<UserResponse>> getUsers(@RequestParam String nickname) {
         List<UserResponse> response = userService.searchByNickname(nickname);
+
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    @DeleteMapping("/users")
+    public ResponseEntity<Void> deleteUser(@LoginUserId Long userId) {
+        userService.deleteUser(userId);
+
+        return ResponseEntity.noContent().build();
     }
 }

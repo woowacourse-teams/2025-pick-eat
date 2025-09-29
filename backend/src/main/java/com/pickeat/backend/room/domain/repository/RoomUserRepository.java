@@ -27,4 +27,8 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
     List<RoomUser> findAllByRoom(Room room);
 
     boolean existsByRoomIdAndUserId(Long roomId, Long userId);
+
+    Long user(User user);
+
+    void deleteAllByUserId(Long userId);
 }
