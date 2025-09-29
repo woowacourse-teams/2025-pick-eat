@@ -1,4 +1,4 @@
-name: Dev CI Check Pipeline
+name: Back-Dev CI Check Pipeline
 
 on:
   pull_request:

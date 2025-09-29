@@ -1,22 +1,16 @@
 package com.pickeat.backend.global.log.dto;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import org.slf4j.MDC;
+import java.util.HashMap;
+import java.util.Map;
 
 public record ErrorLog(
         LogType logType,
-        String timestamp,
-        String requestId,
         int status,
         String message,
         String type,
         String customCode,
         String stackTrace
-) {
-    private static final String NOW_TIME = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
-            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+) implements Log {
 
     public static ErrorLog createServerErrorLog(
             int status,
@@ -25,8 +19,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.SERVER_ERROR,
-                NOW_TIME,
-                MDC.get("request_id"),
                 status,
                 ex.getMessage(),
                 ex.getClass().getName(),
@@ -42,8 +34,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.EXTERNAL_ERROR,
-                NOW_TIME,
-                MDC.get("request_id"),
                 status,
                 ex.getMessage(),
                 ex.getClass().getName(),
@@ -59,8 +49,6 @@ public record ErrorLog(
     ) {
         return new ErrorLog(
                 LogType.CLIENT_ERROR,
-                NOW_TIME,
-                MDC.get("request_id"),
                 status,
                 ex.getMessage(),
                 ex.getClass().getName(),
@@ -77,5 +65,25 @@ public record ErrorLog(
             sb.append(stackTrace[i]).append("\n");
         }
         return sb.toString();
+    }
+
+    @Override
+    public Map<String, Object> fields() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("logType", logType.name());
+        map.put("status", status);
+        map.put("message", message);
+        map.put("type", type);
+        map.put("customCode", customCode);
+        map.put("stackTrace", stackTrace);
+        return map;
+    }
+
+    @Override
+    public String summary() {
+        if (customCode != null && !customCode.isBlank()) {
+            return String.format("[%s] %d %s occurred", logType.name(), status, customCode);
+        }
+        return String.format("%s occurred", logType.name());
     }
 }

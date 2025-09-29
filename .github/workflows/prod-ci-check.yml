@@ -1,8 +1,10 @@
-name: Prod CI Check Pipeline
+name: Back-Prod CI Check Pipeline
 
 on:
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'backend/**'
 
 jobs:
   ci-check:

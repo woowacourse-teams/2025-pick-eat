@@ -1,8 +1,10 @@
-name: Prod Build and Deploy
+name: Back-Prod Build and Deploy
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'backend/**'
   workflow_dispatch:
 
 jobs:

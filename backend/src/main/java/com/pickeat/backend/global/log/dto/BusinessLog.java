@@ -1,29 +1,32 @@
 package com.pickeat.backend.global.log.dto;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import org.slf4j.MDC;
+import java.util.Map;
 
 public record BusinessLog(
         LogType logType,
-        String timestamp,
-        String requestId,
         Long userId,
-        String action,
-        String message
-) {
-    private static final String NOW_TIME = LocalDateTime.now(ZoneId.of("Asia/Seoul"))
-            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String action
+) implements Log {
 
-    public static BusinessLog of(Long userId, String action, String message) {
+    public static BusinessLog of(Long userId, String action) {
         return new BusinessLog(
                 LogType.BUSINESS,
-                NOW_TIME,
-                MDC.get("request_id"),
                 userId,
-                action,
-                message
+                action
         );
+    }
+
+    @Override
+    public Map<String, Object> fields() {
+        return Map.of(
+                "logType", logType.name(),
+                "userId", userId,
+                "action", action
+        );
+    }
+
+    @Override
+    public String summary() {
+        return String.format("[%s] User %d executed %s", logType.name(), userId, action);
     }
 }
