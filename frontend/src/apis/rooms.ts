@@ -6,6 +6,7 @@ const convertResponseToRooms = (data: RoomResponse[]) => {
     id: d.id,
     name: d.name,
     memberCount: d.userCount,
+    wishlistId: d.wishlistId,
   }));
 };
 

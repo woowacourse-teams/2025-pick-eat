@@ -23,6 +23,7 @@ export type WishesResponse = {
   roadAddressName: string;
   tags: string[];
   wishlistId: number;
+  placeUrl?: string;
 };
 
 export type Wishes = {
@@ -33,6 +34,7 @@ export type Wishes = {
   roadAddressName: string;
   tags: string[];
   wishlistId: number;
+  placeUrl?: string;
 };
 
 export type WishlistType = {
@@ -60,36 +62,25 @@ const convertResponseToWishes = (data: WishesResponse[]) => {
     roadAddressName: d.roadAddressName,
     tags: d.tags,
     wishlistId: d.wishlistId,
+    placeUrl: d.placeUrl,
   }));
 };
 
 const BASE_URL = 'wishLists';
 
 export const wishlist = {
-  get: async (wishlistId: number, isPublic: boolean): Promise<Wishes[]> => {
+  get: async (wishlistId: number): Promise<Wishes[]> => {
     const id = wishlistId.toString();
-    const url = isPublic
-      ? joinAsPath(BASE_URL, 'public', id, 'wishes')
-      : joinAsPath(BASE_URL, id, 'wishes');
+    const url = joinAsPath(BASE_URL, id, 'wishes');
 
     const response = await apiClient.get<WishesResponse[]>(url);
     if (response) return convertResponseToWishes(response);
     return [];
   },
-  getWishGroup: async (roomId?: number): Promise<WishlistType[]> => {
-    const url = roomId
-      ? joinAsPath('room', `${roomId}`, BASE_URL)
-      : joinAsPath(BASE_URL);
+  getWishTemplates: async (): Promise<WishlistType[]> => {
+    const url = joinAsPath(BASE_URL, 'templates');
     const response = await apiClient.get<WishlistResponse[]>(url);
     if (response) return convertResponseToWish(response);
     return [];
-  },
-  post: async (roomId: number, name: string) => {
-    const url = joinAsPath('room', `${roomId}`, BASE_URL);
-    await apiClient.post(url, { name });
-  },
-  delete: async (wishlistId: number) => {
-    const url = joinAsPath(BASE_URL, `${wishlistId}`);
-    await apiClient.delete(url);
   },
 };

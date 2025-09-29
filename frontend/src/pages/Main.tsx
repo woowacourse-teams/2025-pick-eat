@@ -5,18 +5,19 @@ import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
 const Main = () => {
   return (
     <S.Container>
       <S.Section>
         <S.PaddingBox>
-          <S.Title>
-            <S.PrimaryPoint>픽잇 추천</S.PrimaryPoint>에서&nbsp;
-            <S.PrimaryPoint>
+          <S.PointText>
+            <S.PrimaryPointText>픽잇 추천</S.PrimaryPointText>에서&nbsp;
+            <S.PrimaryPointText>
               Pick!
               <br />
-            </S.PrimaryPoint>
-          </S.Title>
+            </S.PrimaryPointText>
+          </S.PointText>
 
           <S.Description>
             원하는 맛집 리스트를 클릭해서 빠르게 시작해 보세요.
@@ -24,16 +25,15 @@ const Main = () => {
         </S.PaddingBox>
         <PublicWishlist />
       </S.Section>
-
       <S.Section>
         <S.PaddingBox
           style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
         >
           <S.TitleWrapper>
-            <S.Title>
-              <S.PrimaryPoint>맞춤 설정</S.PrimaryPoint>으로&nbsp;
-              <S.PrimaryPoint>Pick!</S.PrimaryPoint>
-            </S.Title>
+            <S.PointText>
+              <S.PrimaryPointText>맞춤 설정</S.PrimaryPointText>으로&nbsp;
+              <S.PrimaryPointText>Pick!</S.PrimaryPointText>
+            </S.PointText>
             <S.Description>
               주변 식당이나, 원하는 식당 중에서 투표를 시작해보세요.
             </S.Description>
@@ -79,7 +79,7 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level5};
   `,
 
-  Title: styled.span`
+  PointText: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.heading.medium_style};
   `,
@@ -89,7 +89,7 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
-  PrimaryPoint: styled.span`
+  PrimaryPointText: styled.span`
     color: ${({ theme }) => theme.PALETTE.primary[50]};
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,

@@ -1,7 +1,8 @@
 import { Wishes, wishlist } from '@apis/wishlist';
 
+import { useLruCachedFetch } from '@store/useLruCachedFetch';
+
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 
 import Wish from './Wish';
 
@@ -11,16 +12,12 @@ type Props = {
   isPublic: boolean;
 };
 
-function Wishlist({ wishlistId, wishlistName, isPublic }: Props) {
-  const [wishes, setWishes] = useState<Wishes[]>([]);
-
-  useEffect(() => {
-    const fetchWishes = async () => {
-      const response = await wishlist.get(wishlistId, isPublic);
-      setWishes(response);
-    };
-    fetchWishes();
-  }, []);
+function Wishlist({ wishlistId, wishlistName }: Props) {
+  const { data: wishes } = useLruCachedFetch<Wishes[]>(
+    `wishlist-${wishlistId}`,
+    async () => await wishlist.get(wishlistId)
+  );
+  if (!wishes) return;
 
   return (
     <S.Container>
@@ -41,7 +38,7 @@ function Wishlist({ wishlistId, wishlistName, isPublic }: Props) {
           )
         )
       ) : (
-        <div>위시가 존재하지 않습니다.</div>
+        <div>찜 목록이 존재하지 않습니다.</div>
       )}
     </S.Container>
   );

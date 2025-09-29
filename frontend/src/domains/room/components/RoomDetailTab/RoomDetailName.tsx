@@ -17,6 +17,6 @@ export default RoomDetailName;
 
 const S = {
   Title: styled.h2`
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+    font: ${({ theme }) => theme.FONTS.heading.large};
   `,
 };
