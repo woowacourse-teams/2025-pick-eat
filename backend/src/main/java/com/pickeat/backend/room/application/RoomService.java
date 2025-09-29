@@ -78,8 +78,6 @@ public class RoomService {
 
     @Transactional
     public void exitRoom(Long roomId, Long userId) {
-        validateUserAccessToRoom(roomId, userId);
-
         roomUserRepository.deleteByRoomIdAndUserId(roomId, userId);
     }
 
