@@ -65,8 +65,8 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userId) {
-        userRepository.deleteById(userId);
         roomUserRepository.deleteAllByUserId(userId);
+        userRepository.deleteById(userId);
     }
 
     private void validateDuplicateNickname(String nickname) {
