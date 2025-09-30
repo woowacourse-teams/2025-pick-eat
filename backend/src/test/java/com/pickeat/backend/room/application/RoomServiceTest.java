@@ -235,4 +235,31 @@ class RoomServiceTest {
 
         }
     }
+
+    @Nested
+    class 방_나가기_케이스 {
+
+        @Test
+        void 방에서_나가기_성공() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            User exitUser = testEntityManager.persist(UserFixture.create());
+
+            Room room = createRoom(user);
+
+            List<Long> userIdsForInvitation = List.of(exitUser.getId());
+            RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
+            roomService.inviteUsers(room.getId(), user.getId(), request);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            roomService.exitRoom(room.getId(), exitUser.getId());
+
+            // then
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            assertThat(roomUsers.size()).isEqualTo(1);
+        }
+    }
 }

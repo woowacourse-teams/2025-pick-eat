@@ -207,4 +207,22 @@ public interface RoomApiSpec {
             @Parameter(hidden = true) Long userId,
             @Valid @org.springframework.web.bind.annotation.RequestBody RoomInvitationRequest request
     );
+
+    @Operation(
+            summary = "방 나가기",
+            description = "로그인한 사용자가 지정한 방에서 탈퇴합니다.",
+            tags = {"Room"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "방 나가기 성공 (본문 없음)"
+            ),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+    })
+    ResponseEntity<Void> exit(
+            @Parameter(description = "방 ID")
+            @PathVariable("roomId") Long roomId,
+            @Parameter(hidden = true) Long userId
+    );
 }

@@ -76,6 +76,11 @@ public class RoomService {
         roomUserRepository.saveAll(roomUsers);
     }
 
+    @Transactional
+    public void exitRoom(Long roomId, Long userId) {
+        roomUserRepository.deleteByRoomIdAndUserId(roomId, userId);
+    }
+
     private WishList createWishList(Room room) {
         WishList wishList = new WishList(room.getName(), room.getId(), false);
         wishListRepository.save(wishList);
