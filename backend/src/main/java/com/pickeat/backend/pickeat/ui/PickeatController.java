@@ -85,10 +85,9 @@ public class PickeatController implements PickeatApiSpec {
     @Override
     @GetMapping("/pickeats/{pickeatCode}/result")
     public ResponseEntity<RestaurantResultResponse> getPickeatResult(
-            @PathVariable("pickeatCode") String pickeatCode,
-            @ParticipantId Long participantId
+            @PathVariable("pickeatCode") String pickeatCode
     ) {
-        RestaurantResultResponse response = pickeatResultService.getPickeatResult(pickeatCode, participantId);
+        RestaurantResultResponse response = pickeatResultService.getPickeatResult(pickeatCode);
         return ResponseEntity.ok().body(response);
     }
 
