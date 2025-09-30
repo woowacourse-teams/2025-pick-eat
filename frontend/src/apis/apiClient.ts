@@ -7,9 +7,9 @@ export type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
 export class ApiError extends Error {
   status: number;
-  body?: string;
+  body?: ApiBody;
 
-  constructor(message: string, status: number, body?: string) {
+  constructor(message: string, status: number, body?: ApiBody) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -37,10 +37,12 @@ const requestApi = async <TResponse = unknown>(
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  if (!response.ok)
-    throw new ApiError('요청 실패', response.status, await response.text());
-  if (response.status === 204) return null;
   const text = await response.text();
+  if (!response.ok) {
+    const body = text === '' ? undefined : JSON.parse(text);
+    throw new ApiError('요청 실패', response.status, body);
+  }
+  if (response.status === 204) return null;
   if (text === '') return null;
   return JSON.parse(text) as TResponse;
 };

@@ -26,8 +26,6 @@ function ProfileInit() {
   const token = location.state?.accessToken;
   const showToast = useShowToast();
 
-  if (!token) navigate(ROUTE_PATH.MAIN, { replace: true });
-
   const handleNicknameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickname(e.target.value);
   };
