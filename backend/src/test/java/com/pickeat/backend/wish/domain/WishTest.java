@@ -13,6 +13,29 @@ import org.junit.jupiter.api.Test;
 class WishTest {
 
     @Nested
+    class 위시_생성_케이스 {
+
+        @Test
+        void 위시_생성시_태그가_존재하지_않으면_태그필드는_null로_삽입() {
+            // given
+            Room room = RoomFixture.create();
+            WishList wishList = WishListFixture.createPrivate(room.getId());
+
+            // when
+            Wish wish = new Wish(
+                    "위시",
+                    FoodCategory.KOREAN,
+                    "도로명주소",
+                    "",
+                    "https://place.map.kakao.com/505348601",
+                    wishList);
+
+            // then
+            assertThat(wish.getTags()).isNull();
+        }
+    }
+
+    @Nested
     class 위시_이름_수정_케이스 {
 
         @Test
@@ -81,6 +104,20 @@ class WishTest {
 
             // then
             assertThat(wish.getTags()).isEqualTo("업데이트 태그1,업데이트 태그2");
+        }
+
+        @Test
+        void 위시_태그_수정시_빈_태그가_삽입되면_null로_수정() {
+            // given
+            Room room = RoomFixture.create();
+            WishList wishList = WishListFixture.createPrivate(room.getId());
+            Wish wish = WishFixture.create(wishList);
+
+            // when
+            wish.updateTags("");
+
+            // then
+            assertThat(wish.getTags()).isNull();
         }
     }
 }

@@ -54,7 +54,7 @@ public class Wish extends BaseEntity {
         this.name = name;
         this.foodCategory = foodCategory;
         this.roadAddressName = roadAddressName;
-        this.tags = tags;
+        this.tags = convertEmptyTagsToNull(tags);
         this.placeUrl = placeUrl;
         this.wishList = wishList;
     }
@@ -72,10 +72,17 @@ public class Wish extends BaseEntity {
     }
 
     public void updateTags(String tags) {
-        this.tags = tags;
+        this.tags = convertEmptyTagsToNull(tags);
     }
 
     public void updatePlaceUrl(String placeUrl) {
         this.placeUrl = placeUrl;
+    }
+
+    private String convertEmptyTagsToNull(String tags) {
+        if (tags == null || tags.isBlank()) {
+            return null;
+        }
+        return tags;
     }
 }
