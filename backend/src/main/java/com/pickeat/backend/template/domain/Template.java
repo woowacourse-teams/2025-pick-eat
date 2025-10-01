@@ -20,7 +20,8 @@ public class Template extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "template", cascade = CascadeType.REMOVE)
-    private final List<TemplateWish> wishes = new ArrayList<>();
+    private List<TemplateWish> wishes = new ArrayList<>();
+
 
     public Template(String name) {
         this.name = name;

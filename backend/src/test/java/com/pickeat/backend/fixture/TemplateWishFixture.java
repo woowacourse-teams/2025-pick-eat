@@ -1,6 +1,5 @@
 package com.pickeat.backend.fixture;
 
-import com.pickeat.backend.restaurant.domain.Distance;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
@@ -13,7 +12,7 @@ public class TemplateWishFixture {
         RestaurantInfo restaurantInfo = new RestaurantInfo(
                 "식당",
                 FoodCategory.KOREAN,
-                new Distance(10),
+                10,
                 "도로명 주소",
                 "URL",
                 "태그1,태그2",

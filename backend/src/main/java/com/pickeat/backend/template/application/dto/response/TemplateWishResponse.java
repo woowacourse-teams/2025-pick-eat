@@ -41,6 +41,9 @@ public record TemplateWishResponse(
     }
 
     public static List<TemplateWishResponse> from(List<TemplateWish> wishes) {
+        if (wishes == null) {
+            return List.of();
+        }
         return wishes.stream().map(TemplateWishResponse::from).toList();
     }
 
@@ -48,6 +51,9 @@ public record TemplateWishResponse(
         if (tags == null || tags.isBlank()) {
             return List.of();
         }
-        return Arrays.stream(tags.split(",")).toList();
+        return Arrays.stream(tags.split(","))
+                .map(String::trim)
+                .filter(tag -> !tag.isEmpty())
+                .toList();
     }
 }

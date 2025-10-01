@@ -1,7 +1,6 @@
 package com.pickeat.backend.template.ui.api;
 
 import com.pickeat.backend.template.application.dto.response.TemplateResponse;
-import com.pickeat.backend.wish.application.dto.response.WishListResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -17,7 +16,7 @@ public interface TemplateApiSpec {
 
     @Operation(
             summary = "탬플릿 목록 조회",
-            operationId = "getPublicWishLists"
+            operationId = "getTemplates"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -25,7 +24,7 @@ public interface TemplateApiSpec {
                     description = "탬플릿 목록 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = WishListResponse.class)))
+                            array = @ArraySchema(schema = @Schema(implementation = TemplateResponse.class)))
             )
     })
     ResponseEntity<List<TemplateResponse>> getTemplates();

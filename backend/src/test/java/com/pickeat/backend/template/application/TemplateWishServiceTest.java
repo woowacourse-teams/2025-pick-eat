@@ -8,6 +8,7 @@ import com.pickeat.backend.template.application.dto.response.TemplateWishRespons
 import com.pickeat.backend.template.domain.Template;
 import com.pickeat.backend.template.domain.TemplateWish;
 import com.pickeat.backend.template.domain.repository.TemplateWishRepository;
+import java.util.Comparator;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -47,11 +48,12 @@ class TemplateWishServiceTest {
 
             // then
             List<Long> templateWishIds = templateWishes.stream()
+                    .sorted(Comparator.comparing(TemplateWish::getCreatedAt).reversed())
                     .map(TemplateWish::getId)
                     .toList();
             assertThat(response)
                     .extracting(TemplateWishResponse::id)
-                    .containsExactlyInAnyOrderElementsOf(templateWishIds);
+                    .containsExactlyElementsOf(templateWishIds);
         }
     }
 }
