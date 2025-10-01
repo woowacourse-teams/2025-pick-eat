@@ -8,7 +8,7 @@ import java.util.List;
 @Schema(description = "위시 응답")
 public record WishResponse(
         @Schema(description = "위시 ID", example = "1")
-        Long id,
+        long id,
         @Schema(description = "위시 이름", example = "맛있는 떡볶이")
         String name,
         @Schema(description = "카테고리", example = "한식")
@@ -35,7 +35,7 @@ public record WishResponse(
         @Schema(description = "식당 정보 Url", example = "www.restaurant.com")
         String placeUrl,
         @Schema(description = "위시리스트 ID", example = "1")
-        Long wishListId
+        long wishListId
 ) {
 
     public static WishResponse from(Wish wish) {
