@@ -45,11 +45,12 @@ public class Restaurant extends BaseEntity {
             String roadAddressName,
             String placeUrl,
             String tags,
+            String pictureKey,
             String pictureUrls,
             RestaurantType type,
             Pickeat pickeat
     ) {
-        Picture picture = new Picture(null, pictureUrls);
+        Picture picture = new Picture(pictureKey, pictureUrls);
         this.restaurantInfo = new RestaurantInfo(
                 name,
                 foodCategory,

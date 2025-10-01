@@ -58,7 +58,7 @@ class RestaurantServiceTest {
 
         private RestaurantRequest createRestaurantRequest() {
             return new RestaurantRequest("테스트이름", FoodCategory.CHINESE, 300, "테스트도로명주소",
-                    "테스트url", "테스트태그", null, RestaurantType.LOCATION);
+                    "테스트url", "테스트태그", null, null, RestaurantType.LOCATION);
         }
     }
 
