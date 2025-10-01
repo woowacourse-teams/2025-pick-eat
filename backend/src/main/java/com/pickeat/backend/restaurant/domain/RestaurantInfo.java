@@ -25,7 +25,7 @@ public class RestaurantInfo {
 
     @Embedded
     @Column(nullable = false)
-    private Radius radius;
+    private Distance distance;
 
     @Column(name = "road_address_name", nullable = false)
     private String roadAddressName;

@@ -11,12 +11,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Radius {
+public class Distance {
 
     @Column(name = "distance", nullable = false)
     private Integer distance;
 
-    public Radius(Integer distance) {
+    public Distance(Integer distance) {
         validateDistance(distance);
         this.distance = distance;
     }

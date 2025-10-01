@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class RadiusTest {
+class DistanceTest {
 
     @Nested
     class 반경_생성 {
@@ -19,7 +19,7 @@ class RadiusTest {
         void 유효한_반경으로_반경을_생성(int distance) {
             // given
             // when
-            Radius radius = new Radius(distance);
+            Distance radius = new Distance(distance);
 
             // then
             assertThat(radius.getDistance()).isEqualTo(distance);
@@ -30,7 +30,7 @@ class RadiusTest {
         void 유효하지_않은_반경으로_생성시_예외(int invalidDistance) {
             // given
             // when & then
-            assertThatThrownBy(() -> new Radius(invalidDistance))
+            assertThatThrownBy(() -> new Distance(invalidDistance))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.INVALID_RADIUS.getMessage());
         }
