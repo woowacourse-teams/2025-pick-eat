@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/rooms")
+@RequestMapping("/api/v1/rooms")
 public class RoomController implements RoomApiSpec {
 
     private final RoomService roomService;

@@ -4,11 +4,11 @@ import com.pickeat.backend.template.domain.Template;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.List;
 
-@Schema(description = "탬플릿 응답")
+@Schema(description = "템플릿 응답")
 public record TemplateResponse(
-        @Schema(description = "탬플릿 ID", example = "1")
+        @Schema(description = "템플릿 ID", example = "1")
         long id,
-        @Schema(description = "탬플릿 이름", example = "잠실역 맛집")
+        @Schema(description = "템플릿 이름", example = "잠실역 맛집")
         String name,
         @Schema(description = "위시의 개수", example = "3")
         int wishCount

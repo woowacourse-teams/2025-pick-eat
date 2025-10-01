@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.List;
 
-@Schema(description = "탬플릿 위시 응답")
+@Schema(description = "템플릿 위시 응답")
 public record TemplateWishResponse(
         @Schema(description = "위시 ID", example = "1")
         long id,
@@ -22,7 +22,7 @@ public record TemplateWishResponse(
         List<String> tags,
         @Schema(description = "식당 정보 Url", example = "www.restaurant.com")
         String placeUrl,
-        @Schema(description = "탬플릿 ID", example = "1")
+        @Schema(description = "템플릿 ID", example = "1")
         long templateId
 ) {
 

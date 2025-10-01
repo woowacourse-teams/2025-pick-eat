@@ -5,6 +5,6 @@ import com.pickeat.backend.template.domain.Template;
 public class TemplateFixture {
 
     public static Template create() {
-        return new Template("탬플릿");
+        return new Template("템플릿");
     }
 }

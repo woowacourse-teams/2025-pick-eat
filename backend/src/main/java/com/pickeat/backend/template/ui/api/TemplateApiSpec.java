@@ -11,17 +11,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
 
-@Tag(name = "탬플릿", description = "탬플릿 관련 API")
+@Tag(name = "템플릿", description = "템플릿 관련 API")
 public interface TemplateApiSpec {
 
     @Operation(
-            summary = "탬플릿 목록 조회",
+            summary = "템플릿 목록 조회",
             operationId = "getTemplates"
     )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
-                    description = "탬플릿 목록 조회 성공",
+                    description = "템플릿 목록 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = TemplateResponse.class)))
