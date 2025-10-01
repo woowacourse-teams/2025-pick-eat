@@ -10,6 +10,16 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class FakeRestaurantSearchClient implements RestaurantSearchClient {
 
+    /**
+     * Generates a list of fake RestaurantRequest objects derived from the given search request.
+     *
+     * Each returned entry is populated with a name based on the request query and index, a category
+     * resolved from the query, a radius value between 0 and request.radius() (inclusive),
+     * and placeholder address, URL, and tags values.
+     *
+     * @param request the search request whose query, size, and radius determine the generated entries
+     * @return a list of populated RestaurantRequest objects of length request.size()
+     */
     @Override
     public List<RestaurantRequest> getRestaurants(RestaurantSearchRequest request) {
         List<RestaurantRequest> restaurants = new ArrayList<>();

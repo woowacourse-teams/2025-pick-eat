@@ -30,7 +30,13 @@ public class RestaurantService {
     private final ParticipantRepository participantRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
 
-    //TODO: 개선할 여지가 보임  (2025-07-21, 월, 20:43)
+    /**
+     * Create and persist restaurants for the Pickeat identified by the provided code.
+     *
+     * @param restaurantRequests list of restaurant creation requests containing fields for each new restaurant
+     * @param pickeatCode        the code of the Pickeat to associate the new restaurants with
+     * @throws BusinessException if no Pickeat exists for the given code
+     */
     @Transactional
     public void create(List<RestaurantRequest> restaurantRequests, String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);

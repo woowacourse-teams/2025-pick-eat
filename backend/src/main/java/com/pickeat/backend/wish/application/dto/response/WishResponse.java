@@ -38,6 +38,12 @@ public record WishResponse(
         long wishListId
 ) {
 
+    /**
+     * Creates a WishResponse DTO from a Wish domain object.
+     *
+     * @param wish the source Wish whose id, name, food category name, pictures, road address, tags, place URL, and wish list id are mapped
+     * @return a WishResponse populated with values extracted from the given wish
+     */
     public static WishResponse from(Wish wish) {
         List<WishPictureResponse> wishPictureResponses = WishPictureResponse.from(wish.getWishPictures());
         return new WishResponse(

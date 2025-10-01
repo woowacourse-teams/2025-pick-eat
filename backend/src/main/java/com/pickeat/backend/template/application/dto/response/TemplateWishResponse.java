@@ -26,6 +26,12 @@ public record TemplateWishResponse(
         long templateId
 ) {
 
+    /**
+     * Creates a TemplateWishResponse DTO from a TemplateWish domain object.
+     *
+     * @param wish the domain TemplateWish to convert
+     * @return a TemplateWishResponse containing restaurant and template details extracted from the given wish
+     */
     public static TemplateWishResponse from(TemplateWish wish) {
         RestaurantInfo restaurantInfo = wish.getRestaurantInfo();
         return new TemplateWishResponse(
@@ -40,6 +46,12 @@ public record TemplateWishResponse(
         );
     }
 
+    /**
+     * Convert a list of TemplateWish domain objects into a list of TemplateWishResponse DTOs.
+     *
+     * @param wishes the list of TemplateWish objects to convert; may be null
+     * @return a list of TemplateWishResponse objects; returns an empty list if {@code wishes} is null or empty
+     */
     public static List<TemplateWishResponse> from(List<TemplateWish> wishes) {
         if (wishes == null) {
             return List.of();
@@ -47,6 +59,12 @@ public record TemplateWishResponse(
         return wishes.stream().map(TemplateWishResponse::from).toList();
     }
 
+    /**
+     * Parse a comma-separated tag string into a list of individual tag values.
+     *
+     * @param tags a comma-separated string of tags; may be null or blank
+     * @return a list of tags with surrounding whitespace removed for each entry; empty if {@code tags} is null or blank
+     */
     private static List<String> parseTags(String tags) {
         if (tags == null || tags.isBlank()) {
             return List.of();

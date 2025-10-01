@@ -21,6 +21,12 @@ public class TemplateWish extends BaseEntity {
     @JoinColumn(name = "template_id", nullable = false)
     private Template template;
 
+    /**
+     * Creates a TemplateWish associating the given restaurant information with the specified template.
+     *
+     * @param restaurantInfo the restaurant information for this wish; must not be null
+     * @param template the template to associate with this wish; must not be null
+     */
     public TemplateWish(RestaurantInfo restaurantInfo, Template template) {
         this.restaurantInfo = restaurantInfo;
         this.template = template;

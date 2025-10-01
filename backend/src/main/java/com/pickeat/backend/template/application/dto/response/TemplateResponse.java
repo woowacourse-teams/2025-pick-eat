@@ -14,6 +14,12 @@ public record TemplateResponse(
         int wishCount
 ) {
 
+    /**
+     * Create a TemplateResponse DTO from a Template domain object.
+     *
+     * @param template the domain Template to convert
+     * @return a TemplateResponse containing the template's id, name, and the count of its wishes
+     */
     public static TemplateResponse from(Template template) {
         return new TemplateResponse(
                 template.getId(),
@@ -22,6 +28,12 @@ public record TemplateResponse(
         );
     }
 
+    /**
+     * Convert a list of Template domain objects to a list of TemplateResponse DTOs.
+     *
+     * @param wishLists the list of Template domain objects to convert
+     * @return a list of TemplateResponse objects corresponding to the input templates
+     */
     public static List<TemplateResponse> from(List<Template> wishLists) {
         return wishLists.stream()
                 .map(TemplateResponse::from)

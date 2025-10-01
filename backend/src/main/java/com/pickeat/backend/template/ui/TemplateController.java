@@ -17,6 +17,11 @@ public class TemplateController implements TemplateApiSpec {
 
     private final TemplateService templateService;
 
+    /**
+     * Retrieve all templates.
+     *
+     * @return ResponseEntity with HTTP 200 (OK) containing the list of TemplateResponse objects.
+     */
     @Override
     @GetMapping("/templates")
     public ResponseEntity<List<TemplateResponse>> getTemplates() {

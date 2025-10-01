@@ -23,6 +23,11 @@ public class Template extends BaseEntity {
     private List<TemplateWish> wishes = new ArrayList<>();
 
 
+    /**
+     * Create a Template with the specified name.
+     *
+     * @param name the template's name; must not be null
+     */
     public Template(String name) {
         this.name = name;
     }

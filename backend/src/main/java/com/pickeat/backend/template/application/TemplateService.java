@@ -15,6 +15,11 @@ public class TemplateService {
 
     private final TemplateRepository templateRepository;
 
+    /**
+     * Retrieve all template entities and convert them to response DTOs.
+     *
+     * @return a list of {@link TemplateResponse} representing every template in the repository
+     */
     public List<TemplateResponse> getTemplates() {
         List<Template> templateWishList = templateRepository.findAll();
         return TemplateResponse.from(templateWishList);

@@ -41,6 +41,13 @@ public record RestaurantResultResponse(
         boolean hasEqualLike
 ) {
 
+    /**
+     * Create a response representation of the given restaurant.
+     *
+     * @param restaurant the domain Restaurant to convert
+     * @param hasEqualLike indicator whether the restaurant's like count equals the comparison reference
+     * @return a RestaurantResultResponse populated from the restaurant; tag and picture URL strings are normalized into lists
+     */
     public static RestaurantResultResponse of(Restaurant restaurant, boolean hasEqualLike) {
         return new RestaurantResultResponse(
                 restaurant.getId(),
@@ -56,6 +63,12 @@ public record RestaurantResultResponse(
                 hasEqualLike);
     }
 
+    /**
+     * Convert a comma-separated tag string into a list of trimmed, non-empty tags.
+     *
+     * @param tags a comma-separated string of tags; may be null or blank
+     * @return a list of trimmed, non-empty tag strings; an empty list if {@code tags} is null or blank
+     */
     private static List<String> parseTags(String tags) {
         if (tags == null || tags.isBlank()) {
             return List.of();

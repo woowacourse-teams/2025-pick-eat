@@ -17,6 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Tag(name = "탬플릿", description = "탬플릿 관련 API")
 public interface TemplateWishApiSpec {
 
+    /**
+     * Retrieve wishes contained in the specified template.
+     *
+     * @param templateId the ID of the template whose wishes are being retrieved
+     * @return a ResponseEntity containing a list of TemplateWishResponse objects representing the template's wishes
+     */
     @Operation(
             summary = "탬플릿의 위시 조회",
             operationId = "getWishesInTemplates"

@@ -36,6 +36,17 @@ public class RestaurantInfo {
     @Embedded
     private Picture picture;
 
+    /**
+     * Create a RestaurantInfo with the specified attributes.
+     *
+     * @param name the restaurant name
+     * @param foodCategory the restaurant's food category
+     * @param distance the distance to the restaurant in meters, or {@code null} if unknown
+     * @param roadAddressName the road address of the restaurant
+     * @param placeUrl a URL for the restaurant's place page, or {@code null} if not available
+     * @param tags comma-separated tags for the restaurant; blank or {@code null} values are stored as {@code null}
+     * @param picture an optional Picture for the restaurant, or {@code null} if none
+     */
     public RestaurantInfo(String name,
                           FoodCategory foodCategory,
                           Integer distance,
@@ -53,6 +64,12 @@ public class RestaurantInfo {
         this.picture = picture;
     }
 
+    /**
+     * Normalize a tags string by converting blank or null input to `null`.
+     *
+     * @param tags the tags string to normalize; may be null or contain only whitespace
+     * @return the original `tags` value, or `null` if `tags` is null or contains only whitespace
+     */
     private String convertEmptyTagsToNull(String tags) {
         if (tags == null || tags.isBlank()) {
             return null;

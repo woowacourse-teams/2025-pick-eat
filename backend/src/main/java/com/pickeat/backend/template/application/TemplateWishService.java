@@ -16,6 +16,12 @@ public class TemplateWishService {
 
     private final TemplateWishRepository templateWishRepository;
 
+    /**
+     * Retrieve template wishes for the specified template, ordered by creation time descending.
+     *
+     * @param templateId the identifier of the template whose wishes should be retrieved
+     * @return a list of TemplateWishResponse representing the template's wishes ordered from newest to oldest
+     */
     public List<TemplateWishResponse> getWishesFromTemplates(Long templateId) {
         List<TemplateWish> wishes = templateWishRepository.findAllByTemplateId(templateId);
         wishes.sort(Comparator.comparing(TemplateWish::getCreatedAt).reversed());

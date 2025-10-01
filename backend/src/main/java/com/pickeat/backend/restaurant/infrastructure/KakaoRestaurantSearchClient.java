@@ -68,6 +68,12 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
         }
     }
 
+    /**
+     * Converts the Kakao Places API JSON root into a list of RestaurantRequest objects.
+     *
+     * @param root the JSON root node returned by the Kakao API; must contain a "documents" array of place entries
+     * @return a list of RestaurantRequest built from each entry in the "documents" array
+     */
     private List<RestaurantRequest> parsingResponse(JsonNode root) {
         JsonNode documents = root.path("documents");
         List<RestaurantRequest> restaurantRequests = new ArrayList<>();

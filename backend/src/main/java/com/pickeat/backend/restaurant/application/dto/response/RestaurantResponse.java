@@ -45,6 +45,13 @@ public record RestaurantResponse(
         boolean isLiked
 ) {
 
+    /**
+     * Create a RestaurantResponse DTO populated from the given Restaurant and the caller's liked state.
+     *
+     * @param restaurant the source Restaurant whose values populate the response
+     * @param isLiked    whether the current participant has liked the restaurant
+     * @return           a RestaurantResponse populated from the restaurant with its liked state set to {@code isLiked}
+     */
     public static RestaurantResponse of(Restaurant restaurant, boolean isLiked) {
         return new RestaurantResponse(
                 restaurant.getId(),
@@ -61,6 +68,12 @@ public record RestaurantResponse(
                 isLiked);
     }
 
+    /**
+     * Parse a comma-separated tag string into a list of trimmed, non-empty tags.
+     *
+     * @param tags a comma-separated string of tags; may be null or blank
+     * @return a list of trimmed tags in original order; empty list if {@code tags} is null or blank
+     */
     private static List<String> parseTags(String tags) {
         if (tags == null || tags.isBlank()) {
             return List.of();

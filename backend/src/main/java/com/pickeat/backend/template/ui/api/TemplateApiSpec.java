@@ -14,6 +14,11 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "탬플릿", description = "탬플릿 관련 API")
 public interface TemplateApiSpec {
 
+    /**
+     * Retrieve the list of templates.
+     *
+     * @return ResponseEntity containing a list of TemplateResponse objects representing the available templates.
+     */
     @Operation(
             summary = "탬플릿 목록 조회",
             operationId = "getTemplates"

@@ -18,6 +18,12 @@ public class TemplateWishController implements TemplateWishApiSpec {
 
     private final TemplateWishService templateWishService;
 
+    /**
+     * Fetches all wishes associated with the specified template.
+     *
+     * @param templateId the identifier of the template whose wishes are requested
+     * @return a ResponseEntity whose body is a list of TemplateWishResponse objects for the specified template (HTTP 200 OK)
+     */
     @Override
     @GetMapping("/templates/{templateId}/wishes")
     public ResponseEntity<List<TemplateWishResponse>> getWishesInTemplates(
