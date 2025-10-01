@@ -9,12 +9,12 @@ import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
-@Configuration
+@Configuration("ImageUploadClientConfigurationV2")
 public class ImageUploadClientConfiguration {
 
     @Bean
     @Profile({"local", "test"})
-    public ImageUploadClient localImageUploadClient(
+    public ImageUploadClient localImageUploadClientV2(
             @Value("${default.wish.image.url}") String defaultImageUrl,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
     ) {
@@ -23,7 +23,7 @@ public class ImageUploadClientConfiguration {
 
     @Bean
     @Profile({"dev", "prod"})
-    public ImageUploadClient s3ImageUploadClient(
+    public ImageUploadClient s3ImageUploadClientV2(
             @Value("${external.s3.wish.image.bucket.name}") String bucketName,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
     ) {

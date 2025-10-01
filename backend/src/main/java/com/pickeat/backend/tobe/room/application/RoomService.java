@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("RoomServiceV2")
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RoomService {

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@RestController
+@RestController("WishPictureControllerV2")
 @RequestMapping("api/v2")
 @RequiredArgsConstructor
 public class WishPictureController implements WishPictureApiSpec {

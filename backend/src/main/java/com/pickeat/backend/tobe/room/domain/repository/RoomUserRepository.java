@@ -5,7 +5,9 @@ import com.pickeat.backend.tobe.room.domain.RoomUser;
 import com.pickeat.backend.tobe.user.domain.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository("RoomUserRepositoryV2")
 public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
 
     List<RoomUser> findAllByUserId(Long userId);
