@@ -1,4 +1,4 @@
-package com.pickeat.backend.pickeat.domain;
+package com.pickeat.backend.restaurant.domain;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Radius {
 
-    @Column(name = "radius", nullable = false)
+    @Column(name = "distance", nullable = false)
     private Integer distance;
 
     public Radius(Integer distance) {

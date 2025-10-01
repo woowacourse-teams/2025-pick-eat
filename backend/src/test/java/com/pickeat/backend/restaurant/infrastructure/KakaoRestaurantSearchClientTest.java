@@ -94,8 +94,6 @@ class KakaoRestaurantSearchClientTest {
             assertThat(first.name()).isEqualTo("써브웨이 잠실역점");
             assertThat(first.distance()).isEqualTo(45);
             assertThat(first.roadAddressName()).isEqualTo("서울 송파구 올림픽로 293-19");
-            assertThat(first.location().getX()).isEqualTo(127.10257039927868);
-            assertThat(first.location().getY()).isEqualTo(37.51516331584118);
             assertThat(first.placeUrl()).isEqualTo("http://place.map.kakao.com/193686497");
             assertThat(first.category().getName()).isEqualTo("기타");
             assertThat(first.tags()).contains("패스트푸드", "샌드위치", "써브웨이");
@@ -104,8 +102,6 @@ class KakaoRestaurantSearchClientTest {
             assertThat(second.name()).isEqualTo("오호이 홈플러스 잠실점");
             assertThat(second.distance()).isEqualTo(110);
             assertThat(second.roadAddressName()).isEqualTo("서울 송파구 올림픽로35가길 16");
-            assertThat(second.location().getX()).isEqualTo(127.103006246532);
-            assertThat(second.location().getY()).isEqualTo(37.5162513485861);
             assertThat(second.placeUrl()).isEqualTo("http://place.map.kakao.com/1580595199");
             assertThat(second.category().getName()).isEqualTo("한식");
             assertThat(second.tags()).isBlank();

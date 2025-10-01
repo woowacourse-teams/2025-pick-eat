@@ -2,8 +2,8 @@ package com.pickeat.backend.fixture;
 
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Picture;
+import com.pickeat.backend.restaurant.domain.Radius;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
-import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.template.domain.Template;
 import com.pickeat.backend.template.domain.TemplateWish;
 
@@ -13,12 +13,11 @@ public class TemplateWishFixture {
         RestaurantInfo restaurantInfo = new RestaurantInfo(
                 "식당",
                 FoodCategory.KOREAN,
-                10,
+                new Radius(10),
                 "도로명 주소",
                 "URL",
                 "태그1,태그2",
-                new Picture("key", "https://place.map.kakao.com/505348601"),
-                RestaurantType.LOCATION
+                new Picture("key", "https://place.map.kakao.com/505348601")
         );
         return new TemplateWish(
                 restaurantInfo,

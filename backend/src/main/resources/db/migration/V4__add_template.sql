@@ -21,8 +21,6 @@ CREATE TABLE template_wish
     picture_key       VARCHAR(255) NULL,
     picture_url       VARCHAR(255) NULL,
 
-    restaurant_type   VARCHAR(255) NOT NULL,
-
     created_at        TIMESTAMP    NULL,
     updated_at        TIMESTAMP    NULL,
 

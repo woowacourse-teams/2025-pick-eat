@@ -1,4 +1,4 @@
-package com.pickeat.backend.pickeat.domain;
+package com.pickeat.backend.restaurant.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

@@ -23,8 +23,9 @@ public class RestaurantInfo {
     @Enumerated(EnumType.STRING)
     private FoodCategory foodCategory;
 
-    @Column(name = "distance", nullable = false)
-    private Integer distance;
+    @Embedded
+    @Column(nullable = false)
+    private Radius radius;
 
     @Column(name = "road_address_name", nullable = false)
     private String roadAddressName;
@@ -37,8 +38,4 @@ public class RestaurantInfo {
 
     @Embedded
     private Picture picture;
-
-    @Column(name = "restaurant_type", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private RestaurantType type;
 }
