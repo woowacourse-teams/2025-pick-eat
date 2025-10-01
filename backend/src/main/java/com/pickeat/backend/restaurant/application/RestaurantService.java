@@ -42,7 +42,6 @@ public class RestaurantService {
                         request.roadAddressName(),
                         request.placeUrl(),
                         request.tags(),
-                        request.location(),
                         request.pictureUrls(),
                         request.type(),
                         pickeat))

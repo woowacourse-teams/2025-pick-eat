@@ -120,10 +120,10 @@ class WishListServiceTest {
     }
 
     @Nested
-    class 탬플릿_목록_조회_케이스 {
+    class 템플릿_목록_조회_케이스 {
 
         @Test
-        void 탬플릿_목록_조회_성공() {
+        void 템플릿_목록_조회_성공() {
             // given
             Room room = entityManager.persist(RoomFixture.create());
             WishList privateWish = entityManager.persist(WishListFixture.createPrivate(room.getId()));
