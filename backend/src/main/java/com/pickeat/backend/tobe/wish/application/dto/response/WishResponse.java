@@ -1,5 +1,6 @@
 package com.pickeat.backend.tobe.wish.application.dto.response;
 
+import com.pickeat.backend.tobe.change.RestaurantInfo;
 import com.pickeat.backend.tobe.wish.domain.Wish;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
@@ -14,41 +15,32 @@ public record WishResponse(
         @Schema(description = "카테고리", example = "한식")
         String category,
         @Schema(description = "위시 이미지", example = """
-                [
-                  {
-                    "id": 1,
-                    "wishId": 1,
-                    "imageDownloadUrl": "https://example.com/image1.jpg"
-                  },
-                  {
-                    "id": 2,
-                    "wishId": 1,
-                    "imageDownloadUrl": "https://example.com/image2.jpg"
-                  }
-                ]
-                """)
-        List<WishPictureResponse> pictures,
+              {
+                "id": 1,
+                "wishId": 1,
+                "imageDownloadUrl": "https://example.com/image1.jpg"
+              }
+              """)
+        WishPictureResponse pictures,
         @Schema(description = "도로명 주소", example = "서울특별시 강남구 테헤란로 123")
         String roadAddressName,
         @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
         List<String> tags,
         @Schema(description = "식당 정보 Url", example = "www.restaurant.com")
-        String placeUrl,
-        @Schema(description = "위시리스트 ID", example = "1")
-        Long wishListId
+        String placeUrl
 ) {
 
     public static WishResponse from(Wish wish) {
-        List<WishPictureResponse> wishPictureResponses = WishPictureResponse.from(wish.getWishPictures());
+        WishPictureResponse wishPictureResponses = WishPictureResponse.from(wish);
+        RestaurantInfo restaurantInfo = wish.getRestaurantInfo();
         return new WishResponse(
                 wish.getId(),
-                wish.getName(),
-                wish.getFoodCategory().getName(),
+                restaurantInfo.getName(),
+                restaurantInfo.getFoodCategory().getName(),
                 wishPictureResponses,
-                wish.getRoadAddressName(),
-                parseTags(wish.getTags()),
-                wish.getPlaceUrl(),
-                wish.getWishList().getId()
+                restaurantInfo.getRoadAddressName(),
+                parseTags(restaurantInfo.getTags()),
+                restaurantInfo.getPlaceUrl()
         );
     }
 
