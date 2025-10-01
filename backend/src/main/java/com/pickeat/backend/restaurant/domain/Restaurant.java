@@ -6,6 +6,7 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,30 +21,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Restaurant extends BaseEntity {
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private FoodCategory foodCategory;
-
-    private Integer distance;
-
-    @Column(nullable = false)
-    private String roadAddressName;
-
-    private String placeUrl;
+    @Embedded
+    private RestaurantInfo restaurantInfo;
 
     @Column(nullable = false)
     private Boolean isExcluded = false;
 
     @Column(nullable = false)
     private Integer likeCount = 0;
-
-    @Column(nullable = false)
-    private String tags;
-
-    private String pictureUrls;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -53,16 +38,27 @@ public class Restaurant extends BaseEntity {
     @JoinColumn(name = "pickeat_id", nullable = false)
     private Pickeat pickeat;
 
-    public Restaurant(String name, FoodCategory foodCategory, Integer distance, String roadAddressName, String placeUrl,
-                      String tags, String pictureUrls, RestaurantType type, Pickeat pickeat) {
-        this.name = name;
-        this.foodCategory = foodCategory;
-        this.distance = distance;
-        this.roadAddressName = roadAddressName;
-        this.placeUrl = placeUrl;
-        this.tags = tags;
+    public Restaurant(
+            String name,
+            FoodCategory foodCategory,
+            Integer distance,
+            String roadAddressName,
+            String placeUrl,
+            String tags,
+            String pictureUrls,
+            RestaurantType type,
+            Pickeat pickeat
+    ) {
+        Picture picture = new Picture(null, pictureUrls);
+        this.restaurantInfo = new RestaurantInfo(
+                name,
+                foodCategory,
+                distance,
+                roadAddressName,
+                placeUrl,
+                tags,
+                picture);
         this.type = type;
-        this.pictureUrls = pictureUrls;
         this.pickeat = pickeat;
     }
 
@@ -85,5 +81,36 @@ public class Restaurant extends BaseEntity {
         if (!pickeat.getIsActive()) {
             throw new BusinessException(ErrorCode.PICKEAT_ALREADY_INACTIVE);
         }
+    }
+
+    public String getName() {
+        return restaurantInfo.getName();
+    }
+
+    public FoodCategory getFoodCategory() {
+        return restaurantInfo.getFoodCategory();
+    }
+
+    public Integer getDistance() {
+        return restaurantInfo.getDistance();
+    }
+
+    public String getRoadAddressName() {
+        return restaurantInfo.getRoadAddressName();
+    }
+
+    public String getPlaceUrl() {
+        return restaurantInfo.getPlaceUrl();
+    }
+
+    public String getTags() {
+        return restaurantInfo.getTags();
+    }
+
+    public String getPictureUrls() {
+        if (restaurantInfo.getPicture() == null) {
+            return null;
+        }
+        return restaurantInfo.getPicture().getPictureUrl();
     }
 }

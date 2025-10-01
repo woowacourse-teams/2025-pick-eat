@@ -41,7 +41,8 @@ public class RestaurantInfo {
                           Integer distance,
                           String roadAddressName,
                           String placeUrl,
-                          String tags, Picture picture
+                          String tags,
+                          Picture picture
     ) {
         this.name = name;
         this.foodCategory = foodCategory;
