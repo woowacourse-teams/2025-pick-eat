@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("WishControllerV2")
-@RequestMapping("api/v2")
+@RequestMapping("/api/v2")
 @RequiredArgsConstructor
 public class WishController implements WishApiSpec {
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController("UserControllerV2")
 @RequiredArgsConstructor
-@RequestMapping("api/v2")
+@RequestMapping("/api/v2")
 public class UserController implements UserApiSpec {
 
     private final UserService userService;
