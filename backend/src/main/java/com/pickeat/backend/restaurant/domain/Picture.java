@@ -17,5 +17,5 @@ public class Picture {
     private String pictureKey;
 
     @Column(name = "picture_url")
-    private String downloadUrl;
+    private String pictureUrl;
 }

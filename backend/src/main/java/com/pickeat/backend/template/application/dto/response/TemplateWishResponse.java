@@ -32,7 +32,7 @@ public record TemplateWishResponse(
                 wish.getId(),
                 restaurantInfo.getName(),
                 restaurantInfo.getFoodCategory().getName(),
-                restaurantInfo.getPicture().getDownloadUrl(),
+                restaurantInfo.getPicture().getPictureUrl(),
                 restaurantInfo.getRoadAddressName(),
                 parseTags(restaurantInfo.getTags()),
                 restaurantInfo.getPlaceUrl(),
