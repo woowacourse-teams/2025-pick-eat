@@ -59,8 +59,8 @@ public class RoomController implements RoomApiSpec {
     @BusinessLogging("방 초대")
     @PostMapping("/{roomId}/invite")
     public ResponseEntity<Void> invite(@PathVariable("roomId") Long roomId,
-                                       @LoginUserId Long userId,
-                                       @Valid @RequestBody RoomInvitationRequest request
+            @LoginUserId Long userId,
+            @Valid @RequestBody RoomInvitationRequest request
     ) {
         roomService.inviteUsers(roomId, userId, request);
 

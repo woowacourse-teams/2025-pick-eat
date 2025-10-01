@@ -10,12 +10,10 @@ public record RoomResponse(
         @Schema(description = "방 이름", example = "점심 같이 먹어요")
         String name,
         @Schema(description = "방에 참여한 인원 수", example = "3")
-        int userCount,
-        @Schema(description = "방의 위시리스트 ID", example = "1")
-        long wishlistId
+        int userCount
 ) {
 
-    public static RoomResponse of(Room room, int userCount, long wishlistId) {
-        return new RoomResponse(room.getId(), room.getName(), userCount, wishlistId);
+    public static RoomResponse of(Room room, int userCount) {
+        return new RoomResponse(room.getId(), room.getName(), userCount);
     }
 }

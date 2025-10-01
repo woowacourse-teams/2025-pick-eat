@@ -15,12 +15,12 @@ public record WishResponse(
         @Schema(description = "카테고리", example = "한식")
         String category,
         @Schema(description = "위시 이미지", example = """
-              {
-                "id": 1,
-                "wishId": 1,
-                "imageDownloadUrl": "https://example.com/image1.jpg"
-              }
-              """)
+                {
+                  "id": 1,
+                  "wishId": 1,
+                  "imageDownloadUrl": "https://example.com/image1.jpg"
+                }
+                """)
         WishPictureResponse pictures,
         @Schema(description = "도로명 주소", example = "서울특별시 강남구 테헤란로 123")
         String roadAddressName,

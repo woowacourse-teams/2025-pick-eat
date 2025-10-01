@@ -1,22 +1,13 @@
 package com.pickeat.backend.tobe.wish.domain;
 
 import com.pickeat.backend.global.BaseEntity;
-import com.pickeat.backend.pickeat.domain.Location;
-import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.tobe.change.RestaurantInfo;
 import com.pickeat.backend.tobe.room.domain.Room;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
