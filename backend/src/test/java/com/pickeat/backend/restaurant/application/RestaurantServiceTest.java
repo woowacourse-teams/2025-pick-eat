@@ -9,7 +9,6 @@ import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
@@ -58,7 +57,7 @@ class RestaurantServiceTest {
         }
 
         private RestaurantRequest createRestaurantRequest() {
-            return new RestaurantRequest("테스트이름", FoodCategory.CHINESE, 300, "테스트도로명주소", new Location(10.0, 10.0),
+            return new RestaurantRequest("테스트이름", FoodCategory.CHINESE, 300, "테스트도로명주소",
                     "테스트url", "테스트태그", null, RestaurantType.LOCATION);
         }
     }

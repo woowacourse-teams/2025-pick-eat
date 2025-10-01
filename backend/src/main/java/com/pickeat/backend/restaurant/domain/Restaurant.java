@@ -4,10 +4,8 @@ package com.pickeat.backend.restaurant.domain;
 import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -45,9 +43,6 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private String tags;
 
-    @Embedded
-    private Location location;
-
     private String pictureUrls;
 
     @Column(nullable = false)
@@ -59,14 +54,13 @@ public class Restaurant extends BaseEntity {
     private Pickeat pickeat;
 
     public Restaurant(String name, FoodCategory foodCategory, Integer distance, String roadAddressName, String placeUrl,
-                      String tags, Location location, String pictureUrls, RestaurantType type, Pickeat pickeat) {
+                      String tags, String pictureUrls, RestaurantType type, Pickeat pickeat) {
         this.name = name;
         this.foodCategory = foodCategory;
         this.distance = distance;
         this.roadAddressName = roadAddressName;
         this.placeUrl = placeUrl;
         this.tags = tags;
-        this.location = location;
         this.type = type;
         this.pictureUrls = pictureUrls;
         this.pickeat = pickeat;

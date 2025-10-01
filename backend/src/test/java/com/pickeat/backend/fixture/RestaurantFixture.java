@@ -1,6 +1,5 @@
 package com.pickeat.backend.fixture;
 
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
@@ -16,7 +15,6 @@ public class RestaurantFixture {
                 "도로명 주소",
                 "URL",
                 "태그1,태그2",
-                new Location(127.103068896795, 37.5152535228382),
                 null,
                 RestaurantType.LOCATION,
                 pickeat
@@ -31,7 +29,6 @@ public class RestaurantFixture {
                 "도로명 주소",
                 "URL",
                 "태그1,태그2",
-                new Location(127.103068896795, 37.5152535228382),
                 null,
                 RestaurantType.LOCATION,
                 pickeat
