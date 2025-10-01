@@ -3,13 +3,14 @@ package com.pickeat.backend.tobe.wish.application;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.tobe.change.RestaurantInfo;
+import com.pickeat.backend.tobe.room.domain.Room;
+import com.pickeat.backend.tobe.room.domain.repository.RoomRepository;
 import com.pickeat.backend.tobe.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.tobe.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.tobe.wish.application.dto.request.WishUpdateRequest;
 import com.pickeat.backend.tobe.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.tobe.wish.domain.Wish;
-import com.pickeat.backend.tobe.wish.domain.WishList;
-import com.pickeat.backend.tobe.wish.domain.repository.WishListRepository;
 import com.pickeat.backend.tobe.wish.domain.repository.WishRepository;
 import java.util.Comparator;
 import java.util.List;
@@ -22,26 +23,27 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class WishService {
 
-    private final WishListRepository wishListRepository;
     private final WishRepository wishRepository;
+    private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;
 
     @Transactional
     public WishResponse createWish(
-            Long wishListId,
+            Long roomId,
             WishRequest request,
             Long userId
     ) {
-        WishList wishList = getWishList(wishListId);
-        validateUserAccessToRoom(wishList.getRoomId(), userId);
-        Wish wish = new Wish(
+        validateUserAccessToRoom(roomId, userId);
+        Room room = getRoom(roomId);
+        RestaurantInfo restaurantInfo = new RestaurantInfo(
                 request.name(),
                 FoodCategory.getCategoryNameBy(request.category()),
+                null,
                 request.roadAddressName(),
-                String.join(",", request.tags()),
                 request.placeUrl(),
-                wishList
-        );
+                String.join(",", request.tags()),
+                null);
+        Wish wish = new Wish(room, restaurantInfo);
         Wish saved = wishRepository.save(wish);
         return WishResponse.from(saved);
     }
@@ -49,44 +51,31 @@ public class WishService {
     @Transactional
     public void deleteWish(Long wishId, Long userId) {
         Wish wish = getWishWithAccessValidation(wishId, userId);
-        //TODO: 위시 삭제시 위시 이미지 제거  (2025-08-4, 월, 17:59)
         wishRepository.delete(wish);
+        //TODO: 위시 삭제시 위시 이미지 제거  (2025-08-4, 월, 17:59)
     }
 
     @Transactional
     public WishResponse updateWish(Long wishId, Long userId, WishUpdateRequest request) {
         Wish wish = getWishWithAccessValidation(wishId, userId);
-        wish.updateName(request.name());
-        wish.updateFoodCategory(FoodCategory.getCategoryNameBy(request.category()));
-        wish.updateRoadAddressName(request.roadAddressName());
-        wish.updateTags(String.join(",", request.tags()));
-        wish.updatePlaceUrl(request.placeUrl());
+        RestaurantInfo restaurantInfo = new RestaurantInfo(
+                request.name(),
+                FoodCategory.getCategoryNameBy(request.category()),
+                null,
+                request.roadAddressName(),
+                request.placeUrl(),
+                String.join(",", request.tags()),
+                null);
+        wish.updateRestaurantInfo(restaurantInfo);
         return WishResponse.from(wish);
     }
 
-    public List<WishResponse> getWishes(Long wishListId, Long userId) {
-        WishList wishList = getWishList(wishListId);
-        if (!wishList.getIsTemplate()) {
-            validateUserAccessToRoom(wishList.getRoomId(), userId);
-        }
-        //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
-        List<Wish> wishes = wishList.getWishes();
+    public List<WishResponse> getWishes(Long roomId, Long userId) {
+        validateUserAccessToRoom(roomId, userId);
+        Room room = getRoom(roomId);
+        List<Wish> wishes = wishRepository.findAllByRoom(room);
         wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
         return WishResponse.from(wishes);
-    }
-
-    public List<WishResponse> getWishesFromTemplates(Long wishListId) {
-        WishList wishList = getWishList(wishListId);
-        validateIsTemplate(wishList);
-        //TODO: 양방향 조회의 쿼리 확인 후 최적화 필요하면 wishRepository.findAllByWishList  (2025-08-6, 수, 10:8)
-        List<Wish> wishes = wishList.getWishes();
-        wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
-        return WishResponse.from(wishes);
-    }
-
-    private WishList getWishList(Long wishListId) {
-        return wishListRepository.findById(wishListId)
-                .orElseThrow(() -> new BusinessException(ErrorCode.WISH_LIST_NOT_FOUND));
     }
 
     private Wish getWish(Long wishId) {
@@ -96,15 +85,14 @@ public class WishService {
 
     private Wish getWishWithAccessValidation(Long wishId, Long userId) {
         Wish wish = getWish(wishId);
-        WishList wishList = wish.getWishList();
-        validateUserAccessToRoom(wishList.getRoomId(), userId);
+        Room room = wish.getRoom();
+        validateUserAccessToRoom(room.getId(), userId);
         return wish;
     }
 
-    private void validateIsTemplate(WishList wishList) {
-        if (!wishList.getIsTemplate()) {
-            throw new BusinessException(ErrorCode.NOT_PUBLIC_WISH_LIST);
-        }
+    private Room getRoom(Long roomId) {
+        return roomRepository.findById(roomId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
     }
 
     private void validateUserAccessToRoom(Long roomId, Long userId) {

@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v2")
 @RequiredArgsConstructor
 public class WishController implements WishApiSpec {
 
@@ -30,13 +30,13 @@ public class WishController implements WishApiSpec {
 
     @Override
     @BusinessLogging("위시 생성")
-    @PostMapping(value = "/wishLists/{wishListId}/wishes")
+    @PostMapping(value = "/rooms/{roomId}/wishes")
     public ResponseEntity<WishResponse> createWish(
-            @PathVariable("wishListId") Long wishListId,
+            @PathVariable("roomId") Long roomId,
             @Valid @RequestBody WishRequest request,
             @LoginUserId Long userId
     ) {
-        WishResponse wishResponse = wishService.createWish(wishListId, request, userId);
+        WishResponse wishResponse = wishService.createWish(roomId, request, userId);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(wishResponse);
@@ -63,21 +63,12 @@ public class WishController implements WishApiSpec {
     }
 
     @Override
-    @GetMapping("/wishLists/{wishListId}/wishes")
-    public ResponseEntity<List<WishResponse>> getWishesInWishList(
-            @PathVariable("wishListId") Long wishListId,
+    @GetMapping("/rooms/{roomId}/wishes")
+    public ResponseEntity<List<WishResponse>> getWishesInRoom(
+            @PathVariable("roomId") Long roomId,
             @LoginUserId Long loginUserId
     ) {
-        List<WishResponse> wishes = wishService.getWishes(wishListId, loginUserId);
-        return ResponseEntity.ok(wishes);
-    }
-
-    @Override
-    @GetMapping("/wishLists/templates/{wishListId}/wishes")
-    public ResponseEntity<List<WishResponse>> getWishesInTemplates(
-            @PathVariable("wishListId") Long wishListId
-    ) {
-        List<WishResponse> wishes = wishService.getWishesFromTemplates(wishListId);
+        List<WishResponse> wishes = wishService.getWishes(roomId, loginUserId);
         return ResponseEntity.ok(wishes);
     }
 }

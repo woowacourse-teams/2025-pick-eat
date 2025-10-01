@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Distance {
 
-    @Column(name = "distance", nullable = false)
+    @Column(name = "distance")
     private Integer distance;
 
     public Distance(Integer distance) {

@@ -1,9 +1,13 @@
 package com.pickeat.backend.tobe.wish.domain;
 
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.tobe.change.RestaurantInfo;
+import com.pickeat.backend.tobe.room.domain.Room;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,67 +26,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Wish extends BaseEntity {
 
-    @Column(nullable = false)
-    private String name;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private FoodCategory foodCategory;
-
-    @Column(nullable = false)
-    private String roadAddressName;
-
-    private String tags;
-
-    private String placeUrl;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "wish_list_id", nullable = false)
-    private WishList wishList;
+    @Column(nullable = false)
+    private Room room;
 
-    @OneToMany(mappedBy = "wish", cascade = CascadeType.REMOVE)
-    private final List<WishPicture> wishPictures = new ArrayList<>();
+    @Column(nullable = false)
+    @Embedded
+    private RestaurantInfo restaurantInfo;
 
-    public Wish(
-            String name,
-            FoodCategory foodCategory,
-            String roadAddressName,
-            String tags,
-            String placeUrl,
-            WishList wishList
-    ) {
-        this.name = name;
-        this.foodCategory = foodCategory;
-        this.roadAddressName = roadAddressName;
-        this.tags = convertEmptyTagsToNull(tags);
-        this.placeUrl = placeUrl;
-        this.wishList = wishList;
+    public Wish(Room room, RestaurantInfo restaurantInfo) {
+        this.room = room;
+        this.restaurantInfo = restaurantInfo;
     }
 
-    public void updateName(String name) {
-        this.name = name;
-    }
-
-    public void updateFoodCategory(FoodCategory foodCategory) {
-        this.foodCategory = foodCategory;
-    }
-
-    public void updateRoadAddressName(String roadAddressName) {
-        this.roadAddressName = roadAddressName;
-    }
-
-    public void updateTags(String tags) {
-        this.tags = convertEmptyTagsToNull(tags);
-    }
-
-    public void updatePlaceUrl(String placeUrl) {
-        this.placeUrl = placeUrl;
-    }
-
-    private String convertEmptyTagsToNull(String tags) {
-        if (tags == null || tags.isBlank()) {
-            return null;
-        }
-        return tags;
+    public void updateRestaurantInfo(RestaurantInfo restaurantInfo) {
+        this.restaurantInfo = restaurantInfo;
     }
 }

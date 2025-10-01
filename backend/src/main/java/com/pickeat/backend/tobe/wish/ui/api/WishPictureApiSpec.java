@@ -11,12 +11,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "위시", description = "위시 관련 API")
+@Tag(name = "Wish", description = "위시 관련 API")
 public interface WishPictureApiSpec {
 
     @Operation(
@@ -46,11 +50,10 @@ public interface WishPictureApiSpec {
                     )
             )
     })
-    ResponseEntity<List<WishPictureResponse>> createWishPictures(
-            @Parameter(description = "위시 ID", example = "1")
-            @PathVariable("wishId") Long wishId,
-            @Parameter(description = "위시 사진 목록")
-            @RequestPart("wishPictures") @NotEmpty List<MultipartFile> wishPictures,
+    @PostMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<WishPictureResponse> createWishPictures(
+            @Parameter(description = "위시 ID", example = "1") @PathVariable("wishId") Long wishId,
+            @Parameter(description = "위시 사진 목록") @RequestPart("wishPictures") @NotEmpty MultipartFile wishPictures,
             @Parameter(hidden = true) @LoginUserId Long userId
     );
 
@@ -82,9 +85,9 @@ public interface WishPictureApiSpec {
                     )
             )
     })
+    @DeleteMapping("/wish/{wishId}/wishpictures")
     ResponseEntity<Void> deleteWishPictures(
-            @Parameter(description = "위시 ID", example = "1")
-            @PathVariable("wishId") Long wishId,
+            @Parameter(description = "위시 ID", example = "1") @PathVariable("wishId") Long wishId,
             @Parameter(hidden = true) @LoginUserId Long userId
     );
 
@@ -135,11 +138,10 @@ public interface WishPictureApiSpec {
                     )
             )
     })
-    ResponseEntity<List<WishPictureResponse>> updateWishPictures(
-            @Parameter(description = "위시 ID", example = "1")
-            @PathVariable("wishId") Long wishId,
-            @Parameter(description = "기존 위시 사진을 대체해서 새롭게 저장할 위시 사진 목록")
-            @RequestPart("wishPictures") @NotEmpty List<MultipartFile> wishPictures,
+    @PutMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<WishPictureResponse> updateWishPictures(
+            @Parameter(description = "위시 ID", example = "1") @PathVariable("wishId") Long wishId,
+            @Parameter(description = "기존 위시 사진을 대체해서 새롭게 저장할 위시 사진 목록") @RequestPart("wishPictures") @NotEmpty MultipartFile wishPictures,
             @Parameter(hidden = true) @LoginUserId Long userId
     );
 }
