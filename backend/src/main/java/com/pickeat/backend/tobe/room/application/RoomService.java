@@ -2,15 +2,15 @@ package com.pickeat.backend.tobe.room.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.tobe.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.tobe.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.tobe.room.application.dto.response.RoomResponse;
-import com.pickeat.backend.tobe.room.domain.Room;
-import com.pickeat.backend.tobe.room.domain.RoomUser;
 import com.pickeat.backend.tobe.room.domain.repository.RoomRepository;
 import com.pickeat.backend.tobe.room.domain.repository.RoomUserRepository;
-import com.pickeat.backend.tobe.user.domain.User;
 import com.pickeat.backend.tobe.user.domain.repository.UserRepository;
+import com.pickeat.backend.user.domain.User;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

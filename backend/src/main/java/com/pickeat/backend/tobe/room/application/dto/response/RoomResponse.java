@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.room.application.dto.response;
 
-import com.pickeat.backend.tobe.room.domain.Room;
+import com.pickeat.backend.room.domain.Room;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "방 정보 응답")

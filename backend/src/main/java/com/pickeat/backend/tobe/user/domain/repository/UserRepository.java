@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.user.domain.repository;
 
-import com.pickeat.backend.tobe.user.domain.User;
+import com.pickeat.backend.user.domain.User;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
