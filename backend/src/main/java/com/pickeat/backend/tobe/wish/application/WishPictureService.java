@@ -2,8 +2,8 @@ package com.pickeat.backend.tobe.wish.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.tobe.change.Picture;
-import com.pickeat.backend.tobe.change.RestaurantInfo;
+import com.pickeat.backend.restaurant.domain.Picture;
+import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.tobe.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.tobe.wish.application.dto.request.ImageRequest;
 import com.pickeat.backend.tobe.wish.application.dto.response.WishPictureResponse;

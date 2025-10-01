@@ -1,8 +1,8 @@
 package com.pickeat.backend.tobe.wish.domain;
 
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.room.domain.Room;
-import com.pickeat.backend.tobe.change.RestaurantInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

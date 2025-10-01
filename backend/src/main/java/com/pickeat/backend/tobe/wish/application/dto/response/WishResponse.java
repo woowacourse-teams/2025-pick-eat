@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.wish.application.dto.response;
 
-import com.pickeat.backend.tobe.change.RestaurantInfo;
+import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.tobe.wish.domain.Wish;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
