@@ -1,4 +1,4 @@
-package com.pickeat.backend.global.annotation;
+package com.pickeat.backend.global.config.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface DeprecatedApi {
@@ -17,8 +17,3 @@ public @interface DeprecatedApi {
 
     String alternateUrl() default "";
 }
-//@DeprecatedApi(
-//        since = "2025-09",
-//        sunset = "Fri, 28 Nov 2025 23:59:59 GMT",
-//        alternateUrl = "/api/v2/rooms"
-//)
