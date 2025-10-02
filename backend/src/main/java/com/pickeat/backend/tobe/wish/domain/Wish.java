@@ -15,8 +15,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Entity(name = "WishV2")
-@Table(name = "WishV2")
+@Entity(name = "wish_v2")
+@Table(name = "wish_v2")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Wish extends BaseEntity {
 
