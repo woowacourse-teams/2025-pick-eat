@@ -1,6 +1,7 @@
 package com.pickeat.backend.restaurant.ui;
 
 import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.global.config.annotation.DeprecatedApi;
 import com.pickeat.backend.restaurant.application.RestaurantSearchFacade;
 import com.pickeat.backend.restaurant.application.RestaurantService;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
@@ -42,6 +43,12 @@ public class RestaurantController implements RestaurantApiSpec {
     }
 
     @Override
+    @Deprecated
+    @DeprecatedApi(
+            since = "Fri, 24 Oct 2025 23:59:59 GMT",
+            sunset = "Fri, 28 Nov 2025 23:59:59 GMT",
+            alternateUrl = "/api/v2/pickeats/{pickeatCode}/restaurants/wish"
+    )
     @PostMapping("/pickeats/{pickeatCode}/restaurants/wish")
     public ResponseEntity<Void> createRestaurantsByWish(
             @PathVariable("pickeatCode") String pickeatCode,

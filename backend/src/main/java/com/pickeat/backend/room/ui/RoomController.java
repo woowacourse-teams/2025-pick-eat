@@ -1,6 +1,7 @@
 package com.pickeat.backend.room.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
+import com.pickeat.backend.global.config.annotation.DeprecatedApi;
 import com.pickeat.backend.global.log.BusinessLogging;
 import com.pickeat.backend.room.application.RoomService;
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
@@ -20,6 +21,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Deprecated
+@DeprecatedApi(
+        since = " Fri, 24 Oct 2025 23:59:59 GMT",
+        sunset = "Fri, 28 Nov 2025 23:59:59 GMT",
+        alternateUrl = "/api/v2/rooms"
+)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/rooms")

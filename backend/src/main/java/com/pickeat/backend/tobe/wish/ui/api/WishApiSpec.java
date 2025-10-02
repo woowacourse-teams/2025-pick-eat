@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Wish", description = "위시 관련 API")
+@Tag(name = "위시", description = "위시 관련 API")
 public interface WishApiSpec {
 
     @Operation(summary = "위시 생성", description = "특정 룸에 위시를 생성합니다.")

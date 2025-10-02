@@ -210,9 +210,7 @@ public interface RoomApiSpec {
 
     @Operation(
             summary = "방 나가기",
-            description = "로그인한 사용자가 지정한 방에서 탈퇴합니다.",
-            tags = {"Room"}
-    )
+            description = "로그인한 사용자가 지정한 방에서 탈퇴합니다.")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "204",
