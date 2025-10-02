@@ -16,6 +16,7 @@ public class RestaurantFixture {
                 "URL",
                 "태그1,태그2",
                 null,
+                null,
                 RestaurantType.LOCATION,
                 pickeat
         );
@@ -29,6 +30,7 @@ public class RestaurantFixture {
                 "도로명 주소",
                 "URL",
                 "태그1,태그2",
+                null,
                 null,
                 RestaurantType.LOCATION,
                 pickeat

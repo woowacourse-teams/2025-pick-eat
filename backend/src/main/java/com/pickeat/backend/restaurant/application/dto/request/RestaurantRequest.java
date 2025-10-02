@@ -11,18 +11,20 @@ public record RestaurantRequest(
         String roadAddressName,
         String placeUrl,
         String tags,
-        String pictureUrls,
+        String pictureKey,
+        String pictureUrl,
         RestaurantType type
 ) {
 
-    public static RestaurantRequest fromWish(Wish wish, String pictureUrls) {
+    public static RestaurantRequest fromWish(Wish wish, String pictureKey, String pictureUrl) {
         return new RestaurantRequest(
                 wish.getName(),
                 wish.getFoodCategory(),
                 null,
                 wish.getRoadAddressName(),
-                null,
                 wish.getPlaceUrl(),
+                pictureKey,
+                pictureUrl,
                 wish.getTags(),
                 RestaurantType.WISH
         );
@@ -43,6 +45,7 @@ public record RestaurantRequest(
                 roadAddressName,
                 placeUrl,
                 tags,
+                null,
                 null,
                 RestaurantType.LOCATION
         );
