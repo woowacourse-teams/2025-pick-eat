@@ -4,7 +4,7 @@ import com.pickeat.backend.tobe.restaurant.application.request.WishRestaurantReq
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("RestaurantSearchFacadeV2")
 @RequiredArgsConstructor
 public class RestaurantSearchFacade {
 

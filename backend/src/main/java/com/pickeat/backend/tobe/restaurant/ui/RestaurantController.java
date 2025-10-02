@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@RestController("RestaurantControllerV2")
 @RequestMapping("/api/v2")
 @RequiredArgsConstructor
 public class RestaurantController implements RestaurantApiSpec {
