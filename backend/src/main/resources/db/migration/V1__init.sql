@@ -7,6 +7,7 @@ CREATE TABLE `room`
     `deleted`    bit(1)       NOT NULL COMMENT 'Soft-delete indicator',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 54
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -22,6 +23,7 @@ CREATE TABLE `users`
     PRIMARY KEY (`id`),
     UNIQUE KEY `UK2ty1xmrrgtn89xt7kyxx6ta7h` (`nickname`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 20
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -39,6 +41,7 @@ CREATE TABLE `room_user`
     CONSTRAINT `FKaqm4k7a8o6lq80j3l1rls58ux` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
     CONSTRAINT `FKtakjqllocgakgw0os4hygxfk1` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 79
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -56,6 +59,7 @@ CREATE TABLE `pickeat`
     PRIMARY KEY (`id`),
     UNIQUE KEY `UKtb4bxvpir5n2b90ov753n5f2g` (`code`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 542
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -72,6 +76,7 @@ CREATE TABLE `participant`
     KEY `FKt0fy0xdd97i4u9om07urapp6g` (`pickeat_id`),
     CONSTRAINT `FKt0fy0xdd97i4u9om07urapp6g` FOREIGN KEY (`pickeat_id`) REFERENCES `pickeat` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 547
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -98,6 +103,7 @@ CREATE TABLE `restaurant`
     KEY `FK37vnutmwssokg056o36w5qax` (`pickeat_id`),
     CONSTRAINT `FK37vnutmwssokg056o36w5qax` FOREIGN KEY (`pickeat_id`) REFERENCES `pickeat` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 19871
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -115,6 +121,7 @@ CREATE TABLE `restaurant_like`
     CONSTRAINT `FK2bgf3jrj4mery9cnfugy8v05n` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`),
     CONSTRAINT `FKh9hu6f8de93x8m2dxrqfg4v2m` FOREIGN KEY (`participant_id`) REFERENCES `participant` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 902
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -133,6 +140,7 @@ CREATE TABLE `pickeat_result`
     CONSTRAINT `FKg5rkj84lmqukrfiuhos82thdx` FOREIGN KEY (`restaurant_id`) REFERENCES `restaurant` (`id`),
     CONSTRAINT `FKlkhf7ufetto289l3lyx35f39o` FOREIGN KEY (`pickeat_id`) REFERENCES `pickeat` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 113
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -147,6 +155,7 @@ CREATE TABLE `wish_list`
     `deleted`    bit(1)       NOT NULL COMMENT 'Soft-delete indicator',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 47
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -165,6 +174,7 @@ CREATE TABLE `wish`
     KEY `FKlco4dk9q777wn07gyhx51hjjl` (`wish_list_id`),
     CONSTRAINT `FKlco4dk9q777wn07gyhx51hjjl` FOREIGN KEY (`wish_list_id`) REFERENCES `wish_list` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 212
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
@@ -181,5 +191,6 @@ CREATE TABLE `wish_picture`
     KEY `FKb58ffd1eqxqofoini44j5f8q9` (`wish_id`),
     CONSTRAINT `FKb58ffd1eqxqofoini44j5f8q9` FOREIGN KEY (`wish_id`) REFERENCES `wish` (`id`)
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 113
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
