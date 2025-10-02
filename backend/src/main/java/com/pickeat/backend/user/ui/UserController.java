@@ -1,6 +1,7 @@
 package com.pickeat.backend.user.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
+import com.pickeat.backend.global.config.annotation.DeprecatedApi;
 import com.pickeat.backend.user.application.UserService;
 import com.pickeat.backend.user.application.dto.UserResponse;
 import com.pickeat.backend.user.ui.api.UserApiSpec;
@@ -13,6 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Deprecated
+@DeprecatedApi(
+        since = " Fri, 24 Oct 2025 23:59:59 GMT",
+        sunset = "Fri, 28 Nov 2025 23:59:59 GMT",
+        alternateUrl = "/api/v2/users"
+)
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")

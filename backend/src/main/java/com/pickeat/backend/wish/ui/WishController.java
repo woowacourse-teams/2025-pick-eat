@@ -1,6 +1,7 @@
 package com.pickeat.backend.wish.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
+import com.pickeat.backend.global.config.annotation.DeprecatedApi;
 import com.pickeat.backend.global.log.BusinessLogging;
 import com.pickeat.backend.wish.application.WishService;
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
@@ -21,6 +22,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Deprecated
+@DeprecatedApi(
+        since = "Fri, 24 Oct 2025 23:59:59 GMT",
+        sunset = "Fri, 28 Nov 2025 23:59:59 GMT",
+        alternateUrl = "/api/v2/wishes"
+)
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
