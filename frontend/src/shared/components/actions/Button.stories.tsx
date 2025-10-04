@@ -1,4 +1,6 @@
 import Button from './Button';
+import NewButton from './NewButton';
+import RoundedButton from './RoundedButton';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -16,6 +18,35 @@ const handleGreet = () => {
 export const Playground = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
+      <section>
+        <h4>New Button</h4>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            marginTop: '8px',
+          }}
+        >
+          <NewButton text="sm" size="sm" />
+          <NewButton text="disabled" size="sm" disabled={true} />
+          <NewButton text="lg" size="lg" />
+        </div>
+      </section>
+      <section>
+        <h4>Rounded Button</h4>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px',
+            marginTop: '8px',
+          }}
+        >
+          <RoundedButton text="rounded" />
+          <RoundedButton text="disabled" disabled={true} />
+        </div>
+      </section>
       <section>
         <h4>Primary Button</h4>
         <div
