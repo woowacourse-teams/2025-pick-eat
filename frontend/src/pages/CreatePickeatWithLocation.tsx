@@ -2,7 +2,7 @@ import AddressList from '@domains/pickeat/components/AddressList';
 
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input/Input';
-import SearchBar from '@components/actions/SearchBar';
+import SearchBar from '@components/actions/SearchBar/SearchBar';
 import Select from '@components/actions/Select';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
