@@ -3,7 +3,7 @@ import Search from '@components/assets/icons/Search';
 import styled from '@emotion/styled';
 import { ComponentProps, ReactNode } from 'react';
 
-import Input from './Input';
+import Input from './Input/Input';
 
 type Props = {
   label?: string;
