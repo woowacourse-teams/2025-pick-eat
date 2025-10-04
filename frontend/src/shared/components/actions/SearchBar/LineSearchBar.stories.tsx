@@ -1,6 +1,6 @@
 import Erase from '@components/assets/icons/Eraze';
 
-import { ChangeEvent, ComponentProps, ReactNode, useState } from 'react';
+import { ChangeEvent, ComponentProps, useState } from 'react';
 
 import LineSearchBar from './LineSearchBar';
 
@@ -17,7 +17,6 @@ type Story = StoryObj<typeof LineSearchBar>;
 
 type ArgsProps = {
   label?: string;
-  children?: ReactNode;
 } & ComponentProps<'input'>;
 
 const Template = (args: ArgsProps) => {
