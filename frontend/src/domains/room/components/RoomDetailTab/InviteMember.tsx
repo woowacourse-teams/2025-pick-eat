@@ -1,4 +1,4 @@
-import SearchBar from '@components/actions/SearchBar';
+import SearchBar from '@components/actions/SearchBar/SearchBar';
 
 import { useFindMember } from '@domains/room/hooks/useFindMember';
 

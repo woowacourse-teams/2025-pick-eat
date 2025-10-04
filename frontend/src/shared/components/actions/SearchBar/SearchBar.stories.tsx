@@ -20,22 +20,12 @@ type ArgsProps = {
 
 const Template = (args: ArgsProps) => {
   const [state, setState] = useState<string>();
-  const [list, setList] = useState<string[] | null>();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);
-    setList([e.target.value, e.target.value]);
-
-    if (e.target.value === '') {
-      setList(null);
-    }
   };
 
-  return (
-    <SearchBar {...args} value={state} onChange={handleChange}>
-      {list && list.map((l, index) => <div key={index}>{l}</div>)}
-    </SearchBar>
-  );
+  return <SearchBar {...args} value={state} onChange={handleChange} />;
 };
 
 export const Default: Story = {

@@ -1,5 +1,5 @@
 import Button from '@components/actions/Button';
-import Input from '@components/actions/Input';
+import Input from '@components/actions/Input/Input';
 import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import QRCode from '@components/share/QRCode';

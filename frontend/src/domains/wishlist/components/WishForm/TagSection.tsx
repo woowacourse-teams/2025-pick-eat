@@ -1,4 +1,4 @@
-import Input from '@components/actions/Input';
+import Input from '@components/actions/Input/Input';
 import Badge from '@components/labels/Badge';
 
 import { useShowToast } from '@provider/ToastProvider';
