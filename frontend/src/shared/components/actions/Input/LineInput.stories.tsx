@@ -57,7 +57,7 @@ export const LineWithIcon = () => {
 
   return (
     <LineInput
-      icon={
+      rightIcon={
         <div onClick={handleDelete}>
           <Erase />
         </div>

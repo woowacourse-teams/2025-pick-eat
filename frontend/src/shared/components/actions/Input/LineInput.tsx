@@ -4,24 +4,36 @@ import { ComponentProps, ReactNode, useId } from 'react';
 type Props = {
   label?: string;
   color?: string;
-  icon?: ReactNode;
+  rightIcon?: ReactNode;
+  leftIcon?: ReactNode;
 } & ComponentProps<'input'>;
 
-function LineInput({ label, color, icon, ...props }: Props) {
+function LineInput({ label, color, rightIcon, leftIcon, ...props }: Props) {
   const inputId = useId();
   return (
     <S.Container>
+      {leftIcon && <S.LeftIcon>{leftIcon}</S.LeftIcon>}
       {label && (
         <S.Label htmlFor={inputId} color={color}>
           {label}
         </S.Label>
       )}
-      <S.LineInput id={inputId} color={color} {...props} />
-      {icon && <S.Icon>{icon}</S.Icon>}
+      <S.LineInput
+        id={inputId}
+        leftIcon={leftIcon ? true : false}
+        color={color}
+        {...props}
+      />
+      {rightIcon && <S.RightIcon>{rightIcon}</S.RightIcon>}
     </S.Container>
   );
 }
 export default LineInput;
+
+const Icon = styled.div`
+  position: absolute;
+  bottom: 8px;
+`;
 
 const S = {
   Container: styled.div`
@@ -35,10 +47,12 @@ const S = {
     color: ${({ theme, color }) => (color ? color : theme.PALETTE.primary[50])};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
-  LineInput: styled.input<{ color?: string }>`
+  LineInput: styled.input<{ color?: string; leftIcon: boolean }>`
     width: 100%;
 
     padding-bottom: ${({ theme }) => theme.PADDING.p3};
+
+    padding-left: ${({ theme, leftIcon }) => (leftIcon ? theme.PADDING.p8 : 0)};
     border: none;
 
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
@@ -50,10 +64,11 @@ const S = {
       outline: none;
     }
   `,
-  Icon: styled.div`
-    position: absolute;
+  LeftIcon: styled(Icon)`
+    left: 0;
+  `,
+  RightIcon: styled(Icon)`
     right: 0;
-    bottom: 8px;
     cursor: pointer;
   `,
 };
