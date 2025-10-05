@@ -149,27 +149,27 @@ const S = {
   //TODO: radiusgap theme에서 뽑아쓰기
   OptionList: styled.ul`
     width: 100%;
-    position: absolute;
-    top: 110%;
 
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    top: 110%;
 
     padding: ${({ theme }) => theme.PADDING.p5}
       ${({ theme }) => theme.PADDING.p4};
-    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
-    gap: 10px;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: 16px;
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
   `,
 
   Option: styled.li`
-    cursor: pointer;
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
     font:
       600 16px/150% Pretendard,
       sans-serif;
-    color: ${({ theme }) => theme.PALETTE.gray[40]};
+    cursor: pointer;
 
     &:hover {
       background-color: ${({ theme }) => theme.PALETTE.gray[5]};
