@@ -152,9 +152,9 @@ const S = {
 
     display: flex;
     flex-direction: column;
+    gap: 10px;
     position: absolute;
     top: 110%;
-    gap: 10px;
 
     padding: ${({ theme }) => theme.PADDING.p5}
       ${({ theme }) => theme.PADDING.p4};
@@ -168,6 +168,7 @@ const S = {
     height: 35px;
     display: flex;
     align-items: center;
+
     padding: ${({ theme }) => theme.PADDING.p3};
 
     color: ${({ theme }) => theme.PALETTE.gray[40]};
