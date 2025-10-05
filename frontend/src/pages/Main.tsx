@@ -1,96 +1,100 @@
-import ChoosePickeatType from '@domains/pickeat/components/ChoosePickeatType';
-import PublicWishlist from '@domains/wishlist/components/PublicWishlist';
+import Card from '@domains/wishlist/components/Card';
 
-import { setMobileStyle } from '@styles/mediaQuery';
+import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-const Main = () => {
+function Main() {
   return (
     <S.Container>
-      <S.Section>
-        <S.PaddingBox>
-          <S.PointText>
-            <S.PrimaryPointText>픽잇 추천</S.PrimaryPointText>에서&nbsp;
-            <S.PrimaryPointText>
-              Pick!
-              <br />
-            </S.PrimaryPointText>
-          </S.PointText>
-
-          <S.Description>
-            원하는 맛집 리스트를 클릭해서 빠르게 시작해 보세요.
-          </S.Description>
-        </S.PaddingBox>
-        <PublicWishlist />
-      </S.Section>
-      <S.Section>
-        <S.PaddingBox
-          style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
-        >
-          <S.TitleWrapper>
-            <S.PointText>
-              <S.PrimaryPointText>맞춤 설정</S.PrimaryPointText>으로&nbsp;
-              <S.PrimaryPointText>Pick!</S.PrimaryPointText>
-            </S.PointText>
-            <S.Description>
-              주변 식당이나, 원하는 식당 중에서 투표를 시작해보세요.
-            </S.Description>
-          </S.TitleWrapper>
-
-          <ChoosePickeatType />
-        </S.PaddingBox>
-      </S.Section>
+      <S.ImageWrapper>
+        <S.BibimImage
+          src="/images/main/bibim.png"
+          alt="비빔밥"
+          width={122}
+          height={122}
+        />
+        <S.MainCharacterImage
+          src="/images/main/mainCharacter.png"
+          alt="메인캐릭터"
+          width={284}
+          height={284}
+        />
+        <S.RamenImage
+          src="/images/main/ramen.png"
+          alt="라멘"
+          width={103}
+          height={103}
+        />
+        <S.PizzaImage
+          src="/images/main/pizza.png"
+          alt="피자"
+          width={142}
+          height={142}
+        />
+      </S.ImageWrapper>
+      <S.BottomWrapper>
+        <S.Description>다같이 갈 식당을 정해보세요!</S.Description>
+        {/* <Carousel/> */}
+        <Card title="잠실역" imageUrl="/images/main/subway.png" />
+      </S.BottomWrapper>
     </S.Container>
   );
-};
+}
+
 export default Main;
 
 const S = {
   Container: styled.div`
+    width: 100%;
+    height: calc(100% - ${HEADER_HEIGHT});
+
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level10};
+    align-items: center;
+    position: relative;
 
-    margin: 0;
-    ${({ theme }) =>
-      setMobileStyle(css`
-        margin: ${theme.PADDING.p6} 0;
-      `)};
+    background-color: ${({ theme }) => theme.PALETTE.primary[40]};
   `,
-  PaddingBox: styled.div`
-    padding: ${({ theme }) => theme.PADDING.p8}
-      ${({ theme }) => theme.PADDING.p8} 0;
+  ImageWrapper: styled.div`
+    width: 284px;
+    height: 284px;
+    position: relative;
 
-    ${({ theme }) =>
-      setMobileStyle(css`
-        padding: ${theme.PADDING.p5} ${theme.PADDING.p5} 0;
-      `)};
+    padding: 20px 0;
   `,
-  TitleWrapper: styled.div`
-    display: flex;
-    flex-direction: column;
+  MainCharacterImage: styled.img`
+    position: absolute;
   `,
+  PizzaImage: styled.img`
+    position: absolute;
+    right: 0;
+    bottom: -20px;
 
-  Section: styled.section`
-    display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level5};
+    transform: rotate(10deg);
   `,
-
-  PointText: styled.span`
-    color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
+  BibimImage: styled.img`
+    position: absolute;
+    top: 0;
+    right: -30px;
+    transform: rotate(20deg);
   `,
-
-  Description: styled.span`
-    color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.body.small};
+  RamenImage: styled.img`
+    position: absolute;
+    bottom: 80px;
+    left: -25px;
+    transform: rotate(-20deg);
   `,
+  BottomWrapper: styled.div`
+    width: 100%;
+    flex: 1;
 
-  PrimaryPointText: styled.span`
-    color: ${({ theme }) => theme.PALETTE.primary[50]};
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+    padding: 37px 17px;
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-radius: 30px 30px 0 0;
+  `,
+  Description: styled.h1`
+    font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
 };
