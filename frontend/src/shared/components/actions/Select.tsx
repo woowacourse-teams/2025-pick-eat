@@ -146,7 +146,7 @@ const S = {
       sans-serif;
   `,
 
-  //TODO: radius, gap theme에서 뽑아쓰기
+  //TODO: radius theme에서 뽑아쓰기
   OptionList: styled.ul`
     width: 100%;
 
@@ -165,12 +165,13 @@ const S = {
 
   //TODO: padding theme에서 뽑아쓰기
   Option: styled.li`
+    padding: 5px;
+
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font:
       600 16px/150% Pretendard,
       sans-serif;
     cursor: pointer;
-    padding: 5px;
 
     &:hover {
       background-color: ${({ theme }) => theme.PALETTE.gray[5]};
