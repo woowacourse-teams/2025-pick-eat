@@ -8,7 +8,8 @@ type Props = {
 } & ComponentProps<'button'>;
 
 function ProgressButton({ text, total, current, ...props }: Props) {
-  const progress = total ? current / total : 0;
+  const progress =
+    total > 0 && current > 0 && current <= total ? current / total : 0;
 
   return (
     <S.Container progress={progress} {...props}>
