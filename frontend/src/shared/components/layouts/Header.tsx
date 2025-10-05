@@ -1,5 +1,3 @@
-import Logo from '@components/assets/identity/Logo';
-
 import { useAuth } from '@domains/login/context/AuthProvider';
 
 import { useGA } from '@hooks/useGA';
@@ -9,7 +7,7 @@ import { ROUTE_PATH } from '@routes/routePath';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 
-export const HEADER_HEIGHT = '72px';
+export const HEADER_HEIGHT = '60px';
 
 function Header() {
   const navigate = useNavigate();
@@ -34,9 +32,7 @@ function Header() {
 
   return (
     <S.Container>
-      <S.LogoWrapper onClick={handleLogoClick}>
-        <Logo />
-      </S.LogoWrapper>
+      <S.LogoWrapper onClick={handleLogoClick}>PICKEAT</S.LogoWrapper>
       <S.ButtonWrapper>
         {loggedIn ? (
           <>
@@ -67,11 +63,13 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p5};
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
   `,
   LogoWrapper: styled.button`
     width: 80px;
+
+    font-size: 18px;
+    font-weight: 800;
   `,
   ButtonWrapper: styled.div`
     display: flex;
