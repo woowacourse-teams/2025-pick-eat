@@ -146,7 +146,7 @@ const S = {
       sans-serif;
   `,
 
-  //TODO: radius theme에서 뽑아쓰기
+  //TODO: radius,gap theme에서 뽑아쓰기
   OptionList: styled.ul`
     width: 100%;
 
@@ -154,6 +154,7 @@ const S = {
     flex-direction: column;
     position: absolute;
     top: 110%;
+    gap: 10px;
 
     padding: ${({ theme }) => theme.PADDING.p5}
       ${({ theme }) => theme.PADDING.p4};
@@ -163,14 +164,17 @@ const S = {
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
   `,
 
-  //TODO: padding theme에서 뽑아쓰기
   Option: styled.li`
-    padding: 5px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    padding: ${({ theme }) => theme.PADDING.p3};
 
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font:
       600 16px/150% Pretendard,
       sans-serif;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     cursor: pointer;
 
     &:hover {
