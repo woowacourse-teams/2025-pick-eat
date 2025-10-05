@@ -18,6 +18,8 @@ const S = {
     background-color: #ffda1e;
 
     color: ${({ theme }) => theme.PALETTE.gray[100]};
+
+    //TODO:theme에서 뽑아쓰기
     font:
       600 17px/150% Pretendard,
       sans-serif;

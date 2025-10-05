@@ -16,6 +16,7 @@ function NewButton({ text, size = 'lg', fixed = false, ...props }: Props) {
 
 export default NewButton;
 
+//TODO:폰트 theme에서 뽑아쓰기
 const SIZE = {
   sm: { width: '108px', height: '40px', font: '500 16px/150% Pretendard' },
   lg: {
