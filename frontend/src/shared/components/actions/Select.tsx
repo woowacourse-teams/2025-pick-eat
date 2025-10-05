@@ -71,19 +71,32 @@ function Bar({
     };
   });
 
+  const selected = Boolean(selectedValue);
+
   return (
     <selectContext.Provider value={handleChange}>
       <S.SelectContainer onClick={e => e.stopPropagation()}>
         {label && <S.Label>{label}</S.Label>}
 
-        <S.SelectBar type="button" onClick={toggleDropdown} opened={opened}>
-          <S.SelectedValue isSelected={Boolean(selectedValue)}>
+        <S.SelectBar
+          type="button"
+          onClick={toggleDropdown}
+          opened={opened}
+          selected={selected}
+        >
+          <S.SelectedValue isSelected={selected}>
             {selectedValue ?? placeholder}
           </S.SelectedValue>
           <Arrow
             direction={opened ? 'up' : 'down'}
             size="lg"
-            color={opened ? THEME.PALETTE.primary[50] : THEME.PALETTE.gray[60]}
+            color={
+              selected
+                ? opened
+                  ? THEME.PALETTE.primary[50]
+                  : THEME.PALETTE.gray[100]
+                : THEME.PALETTE.gray[40]
+            }
           />
         </S.SelectBar>
 
@@ -112,7 +125,7 @@ const S = {
   `,
 
   //TODO: padding theme에서 뽑아쓰기
-  SelectBar: styled.button<{ opened: boolean }>`
+  SelectBar: styled.button<{ opened: boolean; selected: boolean }>`
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -120,16 +133,18 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
 
     padding: 6px;
-    border-bottom: ${({ theme, opened }) =>
-      opened
-        ? `2px solid  ${theme.PALETTE.primary[50]}`
-        : `2px solid ${theme.PALETTE.gray[60]}`};
+    border-bottom: ${({ theme, opened, selected }) =>
+      selected
+        ? opened
+          ? `2px solid ${theme.PALETTE.primary[50]}`
+          : `2px solid ${theme.PALETTE.gray[100]}`
+        : `2px solid ${theme.PALETTE.gray[40]}`};
   `,
 
   //TODO: font theme에서 뽑아쓰기
   SelectedValue: styled.span<{ isSelected: boolean }>`
     color: ${({ isSelected, theme }) =>
-      isSelected ? theme.PALETTE.gray[100] : theme.PALETTE.gray[60]};
+      isSelected ? theme.PALETTE.gray[100] : theme.PALETTE.gray[40]};
     font:
       600 20px/100% Pretendard,
       sans-serif;
