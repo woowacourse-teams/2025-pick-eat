@@ -19,7 +19,7 @@ function ProgressButton({ text, total, current, ...props }: Props) {
 }
 
 const S = {
-  //TODO: 색 theme에서 뽑아쓰기
+  //TODO: 색, 폰트 theme에서 뽑아쓰기
   Container: styled.button<{ progress: number }>`
     width: 90%;
     height: 52px;
