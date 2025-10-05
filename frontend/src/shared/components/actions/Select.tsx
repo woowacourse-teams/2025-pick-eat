@@ -146,13 +146,12 @@ const S = {
       sans-serif;
   `,
 
-  //TODO: radiusgap theme에서 뽑아쓰기
+  //TODO: radius, gap theme에서 뽑아쓰기
   OptionList: styled.ul`
     width: 100%;
 
     display: flex;
     flex-direction: column;
-    gap: 10px;
     position: absolute;
     top: 110%;
 
@@ -164,12 +163,14 @@ const S = {
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
   `,
 
+  //TODO: padding theme에서 뽑아쓰기
   Option: styled.li`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font:
       600 16px/150% Pretendard,
       sans-serif;
     cursor: pointer;
+    padding: 5px;
 
     &:hover {
       background-color: ${({ theme }) => theme.PALETTE.gray[5]};
