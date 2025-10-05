@@ -90,7 +90,7 @@ function Bar({
           opened={opened}
           selected={selected}
         >
-          <S.SelectedValue isSelected={selected}>
+          <S.SelectedValue selected={selected}>
             {selectedValue ?? placeholder}
           </S.SelectedValue>
           <Arrow
@@ -138,9 +138,9 @@ const S = {
   `,
 
   //TODO: font theme에서 뽑아쓰기
-  SelectedValue: styled.span<{ isSelected: boolean }>`
-    color: ${({ isSelected, theme }) =>
-      isSelected ? theme.PALETTE.gray[100] : theme.PALETTE.gray[40]};
+  SelectedValue: styled.span<{ selected: boolean }>`
+    color: ${({ selected, theme }) =>
+      selected ? theme.PALETTE.gray[100] : theme.PALETTE.gray[40]};
     font:
       600 20px/100% Pretendard,
       sans-serif;
