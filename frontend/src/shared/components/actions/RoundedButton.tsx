@@ -11,6 +11,7 @@ function RoundedButton({ text, ...props }: Props) {
 
 export default RoundedButton;
 
+//TODO:폰트 theme에서 뽑아쓰기
 const S = {
   Button: styled.button`
     width: 272px;
@@ -20,7 +21,6 @@ const S = {
 
     color: ${({ theme }) => theme.PALETTE.gray[100]};
 
-    //TODO:theme에서 뽑아쓰기
     font:
       600 17px/150% Pretendard,
       sans-serif;
