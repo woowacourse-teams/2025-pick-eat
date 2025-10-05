@@ -114,11 +114,10 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
 
     padding: ${({ theme }) => theme.PADDING.p3};
-    border: ${({ theme }) => `1px solid ${theme.PALETTE.gray[60]}`};
-    border-radius: ${({ theme }) => theme.RADIUS.medium};
+    border-bottom: ${({ theme }) => `2px solid ${theme.PALETTE.gray[60]}`};
 
     &:focus {
-      border: 2px solid ${({ theme }) => theme.PALETTE.primary[60]};
+      border-bottom: 2px solid ${({ theme }) => theme.PALETTE.primary[60]};
       outline: none;
     }
   `,
