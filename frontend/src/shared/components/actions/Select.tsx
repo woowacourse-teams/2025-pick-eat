@@ -129,22 +129,30 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 
+  //TODO: radius,font,gap theme에서 뽑아쓰기
   OptionList: styled.ul`
     width: 100%;
     position: absolute;
     top: 110%;
 
-    padding: ${({ theme }) => theme.PADDING.p3};
-    border: 1px solid ${({ theme }) => theme.PALETTE.gray[60]};
+    display: flex;
+    flex-direction: column;
+
+    padding: ${({ theme }) => theme.PADDING.p5}
+      ${({ theme }) => theme.PADDING.p4};
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
+    gap: 10px;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: ${({ theme }) => theme.RADIUS.medium};
+    border-radius: 16px;
   `,
 
   Option: styled.li`
-    padding: ${({ theme }) => theme.PADDING.p5} +
-      ${({ theme }) => theme.PADDING.px3};
     cursor: pointer;
+    font:
+      600 16px/150% Pretendard,
+      sans-serif;
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
 
     &:hover {
       background-color: ${({ theme }) => theme.PALETTE.gray[5]};
