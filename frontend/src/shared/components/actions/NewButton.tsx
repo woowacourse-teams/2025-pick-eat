@@ -9,9 +9,9 @@ type Props = {
 
 function NewButton({ text, size = 'lg', fixed = false, ...props }: Props) {
   return (
-    <S.Button size={size} fixed={fixed} {...props}>
+    <S.Container size={size} fixed={fixed} {...props}>
       {text}
-    </S.Button>
+    </S.Container>
   );
 }
 
@@ -28,7 +28,7 @@ const SIZE = {
 } as const;
 
 const S = {
-  Button: styled.button<
+  Container: styled.button<
     Pick<Props, 'fixed'> & { size: NonNullable<Props['size']> }
   >`
     width: ${({ size, fixed }) => (fixed ? '90%' : SIZE[size].width)};
