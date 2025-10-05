@@ -1,12 +1,12 @@
 import styled from '@emotion/styled';
-import { ComponentProps } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 type Props = {
-  text: string;
+  children?: ReactNode;
 } & ComponentProps<'button'>;
 
-function RoundedButton({ text, ...props }: Props) {
-  return <S.Button {...props}>{text}</S.Button>;
+function RoundedButton({ children, ...props }: Props) {
+  return <S.Button {...props}>{children}</S.Button>;
 }
 
 export default RoundedButton;

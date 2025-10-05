@@ -45,8 +45,8 @@ export const Playground = {
             marginTop: '8px',
           }}
         >
-          <RoundedButton text="rounded" />
-          <RoundedButton text="disabled" disabled={true} />
+          <RoundedButton>rounded</RoundedButton>
+          <RoundedButton disabled={true}>disabled</RoundedButton>
         </div>
       </section>
       <section>
