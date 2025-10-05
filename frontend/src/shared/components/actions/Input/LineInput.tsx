@@ -60,15 +60,15 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
     border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[95]};
 
+    &:placeholder-shown {
+      color: ${({ theme }) => theme.PALETTE.gray[40]};
+      border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[30]};
+    }
+
     &:focus {
       border-bottom: 2px solid
         ${({ theme, color }) => (color ? color : theme.PALETTE.primary[50])};
       outline: none;
-    }
-
-    &:placeholder-shown {
-      color: ${({ theme }) => theme.PALETTE.gray[40]};
-      border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[30]};
     }
   `,
   LeftIcon: styled(Icon)`
