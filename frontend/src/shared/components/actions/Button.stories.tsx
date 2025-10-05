@@ -28,9 +28,11 @@ export const Playground = {
             marginTop: '8px',
           }}
         >
-          <NewButton text="sm" size="sm" />
-          <NewButton text="disabled" size="sm" disabled={true} />
-          <NewButton text="lg" size="lg" />
+          <NewButton size="sm">sm</NewButton>
+          <NewButton size="sm" disabled={true}>
+            disabled
+          </NewButton>
+          <NewButton size="lg">lg</NewButton>
         </div>
       </section>
       <section>

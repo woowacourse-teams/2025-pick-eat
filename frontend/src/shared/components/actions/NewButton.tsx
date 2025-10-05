@@ -1,16 +1,16 @@
 import styled from '@emotion/styled';
-import { ComponentProps } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 type Props = {
-  text: string;
   size?: 'sm' | 'lg';
   fixed?: boolean;
+  children?: ReactNode;
 } & ComponentProps<'button'>;
 
-function NewButton({ text, size = 'lg', fixed = false, ...props }: Props) {
+function NewButton({ size = 'lg', fixed = false, children, ...props }: Props) {
   return (
     <S.Container size={size} fixed={fixed} {...props}>
-      {text}
+      {children}
     </S.Container>
   );
 }
