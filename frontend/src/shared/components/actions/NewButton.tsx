@@ -59,6 +59,4 @@ const S = {
       cursor: not-allowed;
     }
   `,
-
-  Text: styled.span<{ size: NonNullable<Props['size']> }>``,
 };
