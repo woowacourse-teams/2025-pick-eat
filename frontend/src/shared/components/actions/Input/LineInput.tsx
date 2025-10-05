@@ -55,13 +55,20 @@ const S = {
     padding-left: ${({ theme, leftIcon }) => (leftIcon ? theme.PADDING.p8 : 0)};
     border: none;
 
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
+
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
-    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.primary[100]};
+    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[95]};
 
     &:focus {
       border-bottom: 2px solid
         ${({ theme, color }) => (color ? color : theme.PALETTE.primary[50])};
       outline: none;
+    }
+
+    &:placeholder-shown {
+      color: ${({ theme }) => theme.PALETTE.gray[40]};
+      border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[30]};
     }
   `,
   LeftIcon: styled(Icon)`
