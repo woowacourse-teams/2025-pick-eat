@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
+import { ComponentProps } from 'react';
 
 type Props = {
   text: string;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+} & ComponentProps<'button'>;
 
 function RoundedButton({ text, ...props }: Props) {
   return <S.Button {...props}>{text}</S.Button>;

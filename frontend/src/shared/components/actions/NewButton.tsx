@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
+import { ComponentProps } from 'react';
 
 type Props = {
   text: string;
   size?: 'sm' | 'lg';
   fixed?: boolean;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+} & ComponentProps<'button'>;
 
 function NewButton({ text, size = 'lg', fixed = false, ...props }: Props) {
   return (
