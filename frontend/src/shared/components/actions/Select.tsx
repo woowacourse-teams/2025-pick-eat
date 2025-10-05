@@ -2,6 +2,8 @@ import Arrow from '@components/assets/icons/Arrow';
 
 import { useBoolean } from '@hooks/useBoolean';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import {
   ReactNode,
@@ -74,11 +76,15 @@ function Bar({
       <S.SelectContainer onClick={e => e.stopPropagation()}>
         {label && <S.Label>{label}</S.Label>}
 
-        <S.SelectBar type="button" onClick={toggleDropdown}>
+        <S.SelectBar type="button" onClick={toggleDropdown} opened={opened}>
           <S.SelectedValue isSelected={Boolean(selectedValue)}>
             {selectedValue ?? placeholder}
           </S.SelectedValue>
-          <Arrow direction={opened ? 'up' : 'down'} size="sm" />
+          <Arrow
+            direction={opened ? 'up' : 'down'}
+            size="sm"
+            color={opened ? THEME.PALETTE.primary[50] : THEME.PALETTE.gray[60]}
+          />
         </S.SelectBar>
 
         {opened && <S.OptionList>{children}</S.OptionList>}
@@ -105,7 +111,7 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
-  SelectBar: styled.button`
+  SelectBar: styled.button<{ opened: boolean }>`
     width: 100%;
     height: 56px;
     display: flex;
@@ -114,12 +120,10 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
 
     padding: ${({ theme }) => theme.PADDING.p3};
-    border-bottom: ${({ theme }) => `2px solid ${theme.PALETTE.gray[60]}`};
-
-    &:focus {
-      border-bottom: 2px solid ${({ theme }) => theme.PALETTE.primary[60]};
-      outline: none;
-    }
+    border-bottom: ${({ theme, opened }) =>
+      opened
+        ? `2px solid  ${theme.PALETTE.primary[50]}`
+        : `2px solid ${theme.PALETTE.gray[60]}`};
   `,
 
   SelectedValue: styled.span<{ isSelected: boolean }>`
