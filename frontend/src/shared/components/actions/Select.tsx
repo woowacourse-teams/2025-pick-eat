@@ -30,6 +30,12 @@ type OptionContextType = (option: { value: string; label: string }) => void;
 
 const selectContext = createContext<OptionContextType | undefined>(undefined);
 
+const getSelectStateColor = (selected: boolean, opened: boolean) => {
+  if (opened) return `${THEME.PALETTE.primary[50]}`;
+  if (selected) return `${THEME.PALETTE.gray[100]}`;
+  return `${THEME.PALETTE.gray[40]}`;
+};
+
 function Option({ value, children }: OptionProps) {
   const onChange = useContext(selectContext);
   const clickOption = (e: MouseEvent<HTMLLIElement>) => {
@@ -90,13 +96,7 @@ function Bar({
           <Arrow
             direction={opened ? 'up' : 'down'}
             size="lg"
-            color={
-              selected
-                ? opened
-                  ? THEME.PALETTE.primary[50]
-                  : THEME.PALETTE.gray[100]
-                : THEME.PALETTE.gray[40]
-            }
+            color={getSelectStateColor(selected, opened)}
           />
         </S.SelectBar>
 
@@ -133,12 +133,8 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
 
     padding: 6px;
-    border-bottom: ${({ theme, opened, selected }) =>
-      selected
-        ? opened
-          ? `2px solid ${theme.PALETTE.primary[50]}`
-          : `2px solid ${theme.PALETTE.gray[100]}`
-        : `2px solid ${theme.PALETTE.gray[40]}`};
+    border-bottom: ${({ opened, selected }) =>
+      `2px solid ${getSelectStateColor(selected, opened)}`};
   `,
 
   //TODO: font theme에서 뽑아쓰기
