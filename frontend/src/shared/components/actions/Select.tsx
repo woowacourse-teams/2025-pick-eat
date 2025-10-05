@@ -82,7 +82,7 @@ function Bar({
           </S.SelectedValue>
           <Arrow
             direction={opened ? 'up' : 'down'}
-            size="sm"
+            size="lg"
             color={opened ? THEME.PALETTE.primary[50] : THEME.PALETTE.gray[60]}
           />
         </S.SelectBar>
@@ -111,28 +111,31 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
+  //TODO: padding theme에서 뽑아쓰기
   SelectBar: styled.button<{ opened: boolean }>`
     width: 100%;
-    height: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
 
-    padding: ${({ theme }) => theme.PADDING.p3};
+    padding: 6px;
     border-bottom: ${({ theme, opened }) =>
       opened
         ? `2px solid  ${theme.PALETTE.primary[50]}`
         : `2px solid ${theme.PALETTE.gray[60]}`};
   `,
 
+  //TODO: font theme에서 뽑아쓰기
   SelectedValue: styled.span<{ isSelected: boolean }>`
     color: ${({ isSelected, theme }) =>
       isSelected ? theme.PALETTE.gray[100] : theme.PALETTE.gray[60]};
-    font: ${({ theme }) => theme.FONTS.body.medium};
+    font:
+      600 20px/100% Pretendard,
+      sans-serif;
   `,
 
-  //TODO: radius,font,gap theme에서 뽑아쓰기
+  //TODO: radiusgap theme에서 뽑아쓰기
   OptionList: styled.ul`
     width: 100%;
     position: absolute;
