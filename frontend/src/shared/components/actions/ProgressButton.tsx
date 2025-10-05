@@ -11,15 +11,15 @@ function ProgressButton({ text, total, current, ...props }: Props) {
   const progress = total ? current / total : 0;
 
   return (
-    <S.ButtonContainer progress={progress} {...props}>
+    <S.Container progress={progress} {...props}>
       {text}
-    </S.ButtonContainer>
+    </S.Container>
   );
 }
 
 const S = {
   //TODO: 색 theme에서 뽑아쓰기
-  ButtonContainer: styled.button<{ progress: number }>`
+  Container: styled.button<{ progress: number }>`
     width: 90%;
     height: 52px;
 
