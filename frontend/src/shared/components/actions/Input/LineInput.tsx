@@ -73,7 +73,7 @@ const S = {
   Label: styled.label<{ required?: boolean }>`
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: ${({ theme }) => theme.GAP.level2};
 
     font: ${({ theme }) => theme.FONTS.body.small};
 

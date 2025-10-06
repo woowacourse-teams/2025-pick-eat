@@ -58,7 +58,7 @@ const S = {
 
     padding-bottom: ${({ theme }) => theme.PADDING.p3};
 
-    padding-left: 30px;
+    padding-left: ${({ theme }) => theme.PADDING.p8};
 
     border: none;
 

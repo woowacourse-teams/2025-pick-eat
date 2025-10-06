@@ -69,7 +69,7 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level3};
     position: relative;
 
-    padding: 12px;
+    padding: ${({ theme }) => theme.PADDING.p4};
     border: ${({ error }) => (error ? `1px solid #f95f5f` : 'none')};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
@@ -84,7 +84,7 @@ const S = {
   Label: styled.label<{ required?: boolean }>`
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: ${({ theme }) => theme.GAP.level2};
 
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.body.small};
@@ -119,7 +119,7 @@ const S = {
     bottom: 8px;
   `,
   FeedbackMessage: styled.div<{ error: boolean }>`
-    padding-left: 12px;
+    padding-left: ${({ theme }) => theme.PADDING.p4};
 
     color: ${({ theme, error }) =>
       error ? '#F95F5F' : theme.PALETTE.gray[20]};
