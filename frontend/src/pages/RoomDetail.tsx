@@ -3,7 +3,7 @@ import TemplatesTab from '@domains/room/components/TemplatesTab/TemplatesTab';
 import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
+import { HEADER_HEIGHT } from 'widgets/Header';
 import TabMenu from '@components/tabMenus/TabMenu';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';

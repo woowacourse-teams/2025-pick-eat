@@ -2,7 +2,7 @@ import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndM
 import RestaurantExclude from '@domains/pickeat/restaurantExclude/components/RestaurantExclude';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
+import { HEADER_HEIGHT } from 'widgets/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';

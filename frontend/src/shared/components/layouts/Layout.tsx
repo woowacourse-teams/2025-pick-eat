@@ -3,7 +3,7 @@ import ToastProvider from '@provider/ToastProvider';
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
 
-import Header from './Header';
+import Header from '../../../widgets/Header';
 
 type Props = {
   children: ReactNode;

@@ -2,7 +2,7 @@ import Result from '@domains/pickeat/matchResult/components/Result';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Confetti from '@components/Confetti';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
+import { HEADER_HEIGHT } from 'widgets/Header';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 

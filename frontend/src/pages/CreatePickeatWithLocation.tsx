@@ -5,7 +5,7 @@ import Input from '@components/actions/Input';
 import SearchBar from '@components/actions/SearchBar';
 import Select from '@components/actions/Select';
 import ErrorMessage from '@components/errors/ErrorMessage';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
+import { HEADER_HEIGHT } from 'widgets/Header';
 
 import { useCreateLocationPickeat } from '@domains/pickeat/hooks/useCreateLocationPickeat';
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';

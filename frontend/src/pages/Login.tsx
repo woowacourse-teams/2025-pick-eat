@@ -1,5 +1,5 @@
 import KakaoLoginButton from '@components/actions/KakaoLoginButton';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
+import { HEADER_HEIGHT } from 'widgets/Header';
 
 import { ROUTE_PATH } from '@routes/routePath';
 

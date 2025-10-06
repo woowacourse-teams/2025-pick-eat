@@ -3,7 +3,7 @@ import PreferRestaurantList from '@domains/pickeat/preferRestaurant/components/P
 import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
+import { HEADER_HEIGHT } from 'widgets/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
