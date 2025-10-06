@@ -1,20 +1,36 @@
+import Erase from '@components/assets/icons/Erase';
 import Search from '@components/assets/icons/Search';
 
 import styled from '@emotion/styled';
-import { ComponentProps, ReactNode } from 'react';
-
-import LineInput from '../Input/LineInput';
+import { ComponentProps, ReactNode, useId } from 'react';
 
 type Props = {
   label?: string;
-  color?: string;
-  rightIcon?: ReactNode;
+  xIcon?: ReactNode;
+  onClear?: () => void;
 } & ComponentProps<'input'>;
 
-function LineSearchBar({ ...props }: Props) {
+function LineSearchBar({
+  placeholder = '검색어를 입력해 주세요.',
+  label,
+  xIcon,
+  onClear,
+  ...props
+}: Props) {
+  const inputId = useId();
+
   return (
     <S.Container>
-      <LineInput leftIcon={<Search />} {...props} />
+      {label && <S.Label htmlFor={inputId}>{label}</S.Label>}
+      <S.SearchIcon>
+        <Search />
+      </S.SearchIcon>
+      <S.LineInput id={inputId} placeholder={placeholder} {...props} />
+      {xIcon && (
+        <S.xIcon onClick={onClear}>
+          <Erase />
+        </S.xIcon>
+      )}
     </S.Container>
   );
 }
@@ -24,6 +40,45 @@ export default LineSearchBar;
 const S = {
   Container: styled.div`
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
     position: relative;
+  `,
+  Label: styled.label<{ required?: boolean }>`
+    color: ${({ theme }) => theme.PALETTE.primary[50]};
+    font: ${({ theme }) => theme.FONTS.body.small};
+  `,
+  SearchIcon: styled.div`
+    position: absolute;
+    bottom: 8px;
+  `,
+  LineInput: styled.input`
+    width: 100%;
+
+    padding-bottom: ${({ theme }) => theme.PADDING.p3};
+
+    padding-left: 30px;
+
+    border: none;
+
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
+
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.primary[50]};
+
+    &:placeholder-shown {
+      color: ${({ theme }) => theme.PALETTE.gray[30]};
+    }
+
+    &:focus {
+      outline: none;
+    }
+  `,
+  xIcon: styled.button`
+    position: absolute;
+    right: 0;
+    bottom: 8px;
+    cursor: pointer;
   `,
 };

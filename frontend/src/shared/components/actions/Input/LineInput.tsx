@@ -42,9 +42,9 @@ function LineInput({
         {...props}
       />
       {xIcon && (
-        <S.RightIcon type="button" onClick={onClear}>
+        <S.xIcon type="button" onClick={onClear}>
           <Erase />
-        </S.RightIcon>
+        </S.xIcon>
       )}
       {feedbackMessage && (
         <S.FeedbackMessage error={error}>{feedbackMessage}</S.FeedbackMessage>
@@ -100,7 +100,7 @@ const S = {
       ${({ theme, error }) => (error ? '#F95F5F' : theme.PALETTE.gray[30])};
 
     &:placeholder-shown {
-      color: ${({ theme }) => theme.PALETTE.gray[40]};
+      color: ${({ theme }) => theme.PALETTE.gray[20]};
       border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[30]};
     }
 
@@ -110,7 +110,7 @@ const S = {
       outline: none;
     }
   `,
-  RightIcon: styled.button`
+  xIcon: styled.button`
     position: absolute;
     right: 0;
     bottom: 8px;
@@ -118,7 +118,7 @@ const S = {
   `,
   FeedbackMessage: styled.div<{ error: boolean }>`
     color: ${({ theme, error }) =>
-      error ? '#F95F5F' : theme.PALETTE.gray[30]};
+      error ? '#F95F5F' : theme.PALETTE.gray[20]};
     font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };

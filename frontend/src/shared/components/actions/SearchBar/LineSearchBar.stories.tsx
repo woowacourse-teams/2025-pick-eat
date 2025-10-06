@@ -1,5 +1,3 @@
-import Erase from '@components/assets/icons/Eraze';
-
 import { ChangeEvent, ComponentProps, useState } from 'react';
 
 import LineSearchBar from './LineSearchBar';
@@ -40,7 +38,7 @@ export const LineWithLabel: Story = {
   render: args => <Template {...args} />,
 };
 
-export const LineWithIcon = () => {
+export const LineWithXicon = () => {
   const [state, setState] = useState<string>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);
@@ -51,11 +49,8 @@ export const LineWithIcon = () => {
 
   return (
     <LineSearchBar
-      rightIcon={
-        <div onClick={handleDelete}>
-          <Erase />
-        </div>
-      }
+      xIcon={true}
+      onClear={handleDelete}
       value={state}
       onChange={handleChange}
       label="레이블"
