@@ -1,6 +1,10 @@
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
+
+import Cross from './assets/icons/Cross';
 
 type Props = {
   children: ReactNode;
@@ -108,6 +112,9 @@ function BottomSheet({ opened, mounted, onClose, children }: Props) {
       >
         <S.Header>
           <S.HandleBar />
+          <S.CloseButton onClick={closeBottomSheet}>
+            <Cross color={THEME.PALETTE.gray[10]} size="sm" strokeWidth={2} />
+          </S.CloseButton>
         </S.Header>
         {children}
       </S.Container>
@@ -163,6 +170,16 @@ const S = {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+  `,
+
+  CloseButton: styled.button`
+    position: absolute;
+    right: 10px;
+
+    @media (pointer: coarse) {
+      display: none;
+    }
   `,
 
   HandleBar: styled.div`
@@ -170,10 +187,12 @@ const S = {
     height: 6px;
     display: none;
 
+    margin: 0 auto;
+
     background-color: ${({ theme }) => theme.PALETTE.gray[10]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
 
-    @media (hover: none) and (pointer: coarse) {
+    @media (pointer: coarse) {
       display: block;
     }
   `,
