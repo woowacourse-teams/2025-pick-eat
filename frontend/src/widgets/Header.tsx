@@ -63,11 +63,12 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p5};
     backdrop-filter: blur(12px) saturate(180%);
-    -webkit-backdrop-filter: blur(12px) saturate(180%);
-    box-shadow: inset 0px -1px 1px 1px rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(12px) saturate(180%);
+    box-shadow: inset 0 -1px 1px 1px rgb(255 255 255 / 50%);
   `,
   LogoWrapper: styled.button`
     width: 80px;
+
     color: ${({ theme }) => theme.PALETTE.gray[95]};
     font-size: 18px;
     font-weight: 800;
