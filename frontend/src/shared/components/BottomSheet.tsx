@@ -9,15 +9,13 @@ import Cross from './assets/icons/Cross';
 type Props = {
   children: ReactNode;
   opened: boolean;
-  mounted: boolean;
-  onUnmount: () => void;
   onClose: () => void;
 };
 
 //시트가 닫혀있을 때의 이동 거리 기준이 되기 위한바텀 시트 height를 계산
 const BOTTOM_SHEET_HEIGHT = window.innerHeight * 0.8;
 
-function BottomSheet({ opened, mounted, onClose, children }: Props) {
+function BottomSheet({ opened, onClose, children }: Props) {
   /*
     startY : 터치 드래그 시 처음 손가락을 놓은 위치
     translateY : 시트가 현재 화면에서 얼마나 아래로 이동했는지(px)
@@ -33,7 +31,7 @@ function BottomSheet({ opened, mounted, onClose, children }: Props) {
   };
 
   useEffect(() => {
-    if (!opened || !mounted) return;
+    if (!opened) return;
 
     setTranslateY(0);
 
