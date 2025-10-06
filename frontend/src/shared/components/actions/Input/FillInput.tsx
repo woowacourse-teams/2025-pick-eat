@@ -70,7 +70,8 @@ const S = {
     position: relative;
 
     padding: ${({ theme }) => theme.PADDING.p4};
-    border: ${({ error }) => (error ? `1px solid #f95f5f` : 'none')};
+    border: ${({ theme, error }) =>
+      error ? `1px solid #f95f5f` : `1px solid ${theme.PALETTE.gray[5]}`};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: 20px;
