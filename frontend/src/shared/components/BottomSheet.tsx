@@ -1,18 +1,41 @@
 import styled from '@emotion/styled';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 type Props = {
   children: ReactNode;
+  opened: boolean;
+  mounted: boolean;
+  onClose: () => void;
+  onUnmount?: () => void;
 };
 
-const modalRoot = document.querySelector('#modal') as HTMLElement;
+function BottomSheet({ opened, mounted, onClose, children }: Props) {
+  useEffect(() => {
+    if (!opened) return;
 
-function BottomSheet({ children }: Props) {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [opened]);
+
+  if (!mounted) return;
+  const modalRoot = document.querySelector('#modal') as HTMLElement;
+
   return ReactDOM.createPortal(
     <>
-      <S.Backdrop />
-      <S.Container>
+      <S.Backdrop onClick={onClose} opened={opened} />
+      <S.Container opened={opened}>
         <S.Header>
           <S.HandleBar />
         </S.Header>
@@ -27,7 +50,7 @@ export default BottomSheet;
 
 const S = {
   //TODO:radius theme에서 뽑아쓰기
-  Container: styled.div`
+  Container: styled.div<{ opened: boolean }>`
     width: 100%;
     height: 70%;
 
@@ -41,12 +64,15 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 
     border-radius: 30px 30px 0 0;
+    opacity: ${({ opened }) => (opened ? 1 : 0)};
+    pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
   `,
 
-  Backdrop: styled.div`
+  Backdrop: styled.div<{ opened: boolean }>`
     width: 100%;
     height: 100vh;
 
+    display: ${({ opened }) => (opened ? 'block' : 'none')};
     position: fixed;
     top: 0;
     left: 0;
