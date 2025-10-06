@@ -79,6 +79,5 @@ const S = {
     position: absolute;
     right: 0;
     bottom: 8px;
-    cursor: pointer;
   `,
 };

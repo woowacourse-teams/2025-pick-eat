@@ -42,9 +42,9 @@ function LineInput({
         {...props}
       />
       {xIcon && (
-        <S.xIcon type="button" onClick={onClear}>
+        <S.ClearIcon type="button" onClick={onClear}>
           <Erase />
-        </S.xIcon>
+        </S.ClearIcon>
       )}
       {feedbackMessage && (
         <S.FeedbackMessage error={error}>{feedbackMessage}</S.FeedbackMessage>
@@ -110,11 +110,10 @@ const S = {
       outline: none;
     }
   `,
-  xIcon: styled.button`
+  ClearIcon: styled.button`
     position: absolute;
     right: 0;
     bottom: 8px;
-    cursor: pointer;
   `,
   FeedbackMessage: styled.div<{ error: boolean }>`
     color: ${({ theme, error }) =>
