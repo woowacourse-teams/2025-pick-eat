@@ -1,5 +1,3 @@
-import Erase from '@components/assets/icons/Eraze';
-
 import { ChangeEvent, ComponentProps, useState } from 'react';
 
 import LineInput from './LineInput';
@@ -32,13 +30,6 @@ export const LineDefault: Story = {
   render: args => <Template {...args} />,
 };
 
-export const LineWithPlaceholder: Story = {
-  args: {
-    placeholder: '입력해 주세요.',
-  },
-  render: args => <Template {...args} />,
-};
-
 export const LineWithLabel: Story = {
   args: {
     label: '레이블',
@@ -46,7 +37,23 @@ export const LineWithLabel: Story = {
   render: args => <Template {...args} />,
 };
 
-export const LineWithIcon = () => {
+export const LineWithError: Story = {
+  args: {
+    label: '레이블',
+    error: true,
+  },
+  render: args => <Template {...args} />,
+};
+
+export const LineWithRequired: Story = {
+  args: {
+    label: '레이블',
+    required: true,
+  },
+  render: args => <Template {...args} />,
+};
+
+export const LineWithxIcon = () => {
   const [state, setState] = useState<string>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);
@@ -57,14 +64,33 @@ export const LineWithIcon = () => {
 
   return (
     <LineInput
-      rightIcon={
-        <div onClick={handleDelete}>
-          <Erase />
-        </div>
-      }
+      value={state}
+      onChange={handleChange}
+      xIcon
+      onClear={handleDelete}
+      label="레이블"
+    />
+  );
+};
+
+export const LineWithFeedbackMessage = () => {
+  const MAX_LENGTH = 12;
+  const [state, setState] = useState<string>('');
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setState(e.target.value);
+  };
+
+  return (
+    <LineInput
+      maxLength={MAX_LENGTH}
       value={state}
       onChange={handleChange}
       label="레이블"
+      feedbackMessage={
+        <div>
+          {state.length}/{MAX_LENGTH}
+        </div>
+      }
     />
   );
 };

@@ -1,30 +1,54 @@
+import Erase from '@components/assets/icons/Erase';
+
 import styled from '@emotion/styled';
 import { ComponentProps, ReactNode, useId } from 'react';
 
 type Props = {
+  placeholder?: string;
+  required?: boolean;
   label?: string;
   color?: string;
-  rightIcon?: ReactNode;
-  leftIcon?: ReactNode;
+  xIcon?: boolean;
+  onClear?: () => void;
+  feedbackMessage?: ReactNode;
+  error?: boolean;
 } & ComponentProps<'input'>;
 
-function LineInput({ label, color, rightIcon, leftIcon, ...props }: Props) {
+function LineInput({
+  placeholder = '입력해 주세요.',
+  required,
+  label,
+  color,
+  xIcon,
+  onClear,
+  feedbackMessage,
+  error = false,
+  ...props
+}: Props) {
   const inputId = useId();
   return (
     <S.Container>
-      {leftIcon && <S.LeftIcon>{leftIcon}</S.LeftIcon>}
       {label && (
-        <S.Label htmlFor={inputId} color={color}>
+        <S.Label htmlFor={inputId} color={color} required={required}>
           {label}
         </S.Label>
       )}
       <S.LineInput
         id={inputId}
-        leftIcon={leftIcon ? true : false}
+        placeholder={placeholder}
+        required={required}
+        error={error}
         color={color}
         {...props}
       />
-      {rightIcon && <S.RightIcon>{rightIcon}</S.RightIcon>}
+      {xIcon && (
+        <S.RightIcon onClick={onClear}>
+          <Erase />
+        </S.RightIcon>
+      )}
+      {feedbackMessage && (
+        <S.FeedbackMessage error={error}>{feedbackMessage}</S.FeedbackMessage>
+      )}
     </S.Container>
   );
 }
@@ -42,23 +66,43 @@ const S = {
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
     position: relative;
+
+    label {
+      color: ${({ theme }) => theme.PALETTE.gray[50]};
+    }
+
+    &:focus-within label {
+      color: ${({ theme }) => theme.PALETTE.primary[50]};
+    }
   `,
-  Label: styled.label<{ color?: string }>`
-    color: ${({ theme, color }) => (color ? color : theme.PALETTE.primary[50])};
+  Label: styled.label<{ required?: boolean }>`
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
     font: ${({ theme }) => theme.FONTS.body.small};
+
+    &::after {
+      color: #f95f5f;
+      font-weight: bold;
+      content: ${({ required }) => (required ? "'*'" : '')};
+    }
   `,
-  LineInput: styled.input<{ color?: string; leftIcon: boolean }>`
+  LineInput: styled.input<{
+    color?: string;
+    error: boolean;
+  }>`
     width: 100%;
 
     padding-bottom: ${({ theme }) => theme.PADDING.p3};
 
-    padding-left: ${({ theme, leftIcon }) => (leftIcon ? theme.PADDING.p8 : 0)};
     border: none;
 
     color: ${({ theme }) => theme.PALETTE.gray[95]};
 
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
-    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[95]};
+    border-bottom: 2px solid
+      ${({ theme, error }) => (error ? '#F95F5F' : theme.PALETTE.gray[30])};
 
     &:placeholder-shown {
       color: ${({ theme }) => theme.PALETTE.gray[40]};
@@ -77,5 +121,10 @@ const S = {
   RightIcon: styled(Icon)`
     right: 0;
     cursor: pointer;
+  `,
+  FeedbackMessage: styled.div<{ error: boolean }>`
+    color: ${({ theme, error }) =>
+      error ? '#F95F5F' : theme.PALETTE.gray[30]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };
