@@ -4,14 +4,21 @@ import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
 
+const CARD_SIZE = {
+  sm: 200,
+  lg: 260,
+};
+
 type Props = {
   title: string;
   imageUrl: string;
+  size?: 'sm' | 'lg';
 };
 
-function Card({ title, imageUrl }: Props) {
+function Card({ title, imageUrl, size = 'lg' }: Props) {
   return (
-    <S.Container>
+    <S.Container size={size}>
+      <S.Image src={imageUrl} alt="" />
       <S.TopWrapper>
         <S.TitleArea>
           <S.Title>{title}</S.Title>
@@ -19,24 +26,31 @@ function Card({ title, imageUrl }: Props) {
         </S.TitleArea>
         <Arrow size="lg" direction="right" color={THEME.PALETTE.gray[10]} />
       </S.TopWrapper>
-      <S.Image src={imageUrl} width={276} height={276} alt="" />
     </S.Container>
   );
 }
 export default Card;
 
 const S = {
-  Container: styled.div`
-    width: 260px;
-    height: 268px;
+  Container: styled.div<{ size: 'sm' | 'lg' }>`
+    width: ${({ size }) => CARD_SIZE[size]}px;
+    height: ${({ size }) => CARD_SIZE[size]}px;
     overflow: hidden;
     position: relative;
 
-    padding: 37px 26px 0;
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    padding: 37px 26px;
+    border: 1px solid red;
     border-radius: 30px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
+    cursor: pointer;
+  `,
+  Image: styled.img`
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    inset: 0;
+    object-fit: cover;
+    object-position: center;
   `,
   TopWrapper: styled.div`
     display: flex;
@@ -45,16 +59,12 @@ const S = {
   TitleArea: styled.div`
     display: flex;
     flex-direction: column;
+    z-index: 1;
   `,
   Title: styled.span`
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
   Description: styled.span`
     font: ${({ theme }) => theme.FONTS.body.large};
-  `,
-  Image: styled.img`
-    position: absolute;
-    top: 10px;
-    left: 0;
   `,
 };
