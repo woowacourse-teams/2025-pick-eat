@@ -1,8 +1,27 @@
 import Card from '@domains/wishlist/components/Card';
 
+import Carousel from '@components/Carousel';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import styled from '@emotion/styled';
+
+const CARD_CONTENT = [
+  <Card
+    key="1"
+    title="잠실역"
+    imageUrl="/images/carousel/subway_thumbnail.png"
+  />,
+  <Card
+    key="2"
+    title="선릉역"
+    imageUrl="/images/carousel/subway_thumbnail.png"
+  />,
+  <Card
+    key="3"
+    title="내 위치에서"
+    imageUrl="/images/carousel/map_thumbnail.png"
+  />,
+];
 
 function Main() {
   return (
@@ -35,8 +54,7 @@ function Main() {
       </S.ImageWrapper>
       <S.BottomWrapper>
         <S.Description>다같이 갈 식당을 정해보세요!</S.Description>
-        {/* <Carousel/> */}
-        <Card title="잠실역" imageUrl="/images/main/subway.png" />
+        <Carousel contentArr={CARD_CONTENT} />
       </S.BottomWrapper>
     </S.Container>
   );
@@ -87,7 +105,10 @@ const S = {
   `,
   BottomWrapper: styled.div`
     width: 100%;
+    display: flex;
     flex: 1;
+    flex-direction: column;
+    gap: 27px;
 
     padding: 37px 17px;
 
