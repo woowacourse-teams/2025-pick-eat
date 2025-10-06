@@ -1,4 +1,5 @@
-import { HEADER_HEIGHT } from 'widgets/Header';
+import { HEADER_HEIGHT } from '@widgets/Header';
+
 import Toast, { DEFAULT_TIME } from '@components/toast/Toast';
 
 import { generateRandomNumber } from '@utils/generateRandomNumber';
