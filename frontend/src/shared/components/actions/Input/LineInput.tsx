@@ -42,7 +42,7 @@ function LineInput({
         {...props}
       />
       {xIcon && (
-        <S.RightIcon onClick={onClear}>
+        <S.RightIcon type="button" onClick={onClear}>
           <Erase />
         </S.RightIcon>
       )}
@@ -53,11 +53,6 @@ function LineInput({
   );
 }
 export default LineInput;
-
-const Icon = styled.div`
-  position: absolute;
-  bottom: 8px;
-`;
 
 const S = {
   Container: styled.div`
@@ -115,11 +110,10 @@ const S = {
       outline: none;
     }
   `,
-  LeftIcon: styled(Icon)`
-    left: 0;
-  `,
-  RightIcon: styled(Icon)`
+  RightIcon: styled.button`
+    position: absolute;
     right: 0;
+    bottom: 8px;
     cursor: pointer;
   `,
   FeedbackMessage: styled.div<{ error: boolean }>`

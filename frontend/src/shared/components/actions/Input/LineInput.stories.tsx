@@ -53,7 +53,7 @@ export const LineWithRequired: Story = {
   render: args => <Template {...args} />,
 };
 
-export const LineWithxIcon = () => {
+export const LineWithXicon = () => {
   const [state, setState] = useState<string>();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setState(e.target.value);
