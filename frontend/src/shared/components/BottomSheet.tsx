@@ -12,9 +12,14 @@ type Props = {
   onClose: () => void;
 };
 
-//시트가 닫혀있을 때의 이동 거리 기준이 되기 위한바텀 시트 height를 계산
+/*
+    BOTTOM_SHEET_HEIGHT : 시트가 닫혀있을 때의 이동 거리 기준이 되기 위한바텀 시트 height를 계산
+    AUTO_CLOSE_MIN_DRAG : 100px 이상 아래로 드래그 시 시트 자동 닫힘
+    FADE_END : 백드롭이 완전히 투명해지는 바텀 시트 이동 거리
+*/
 const BOTTOM_SHEET_HEIGHT = window.innerHeight * 0.8;
 const AUTO_CLOSE_MIN_DRAG = 100;
+const FADE_END = 300;
 
 function BottomSheet({ opened, onClose, children }: Props) {
   /*
@@ -88,10 +93,9 @@ function BottomSheet({ opened, onClose, children }: Props) {
 
   /* 
     opacity : 바텀 시트 이동 거리에 따른 백드롭 투명도
-    FADE_END : 백드롭이 완전히 투명해지는 바텀 시트 이동 거리
     => FADE_END 만큼 이동하면 백드롭 투명해짐, 완전히 바텀 시트가 닫혔을 때 투명해지는 것 보다 자연스러워 보였음!
   */
-  const FADE_END = 300;
+
   const opacity = !opened ? 0 : 1 - Math.min(sheetOffsetY / FADE_END, 1);
 
   return ReactDOM.createPortal(
