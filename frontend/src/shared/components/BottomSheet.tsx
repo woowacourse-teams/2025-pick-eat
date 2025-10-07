@@ -14,6 +14,7 @@ type Props = {
 
 //시트가 닫혀있을 때의 이동 거리 기준이 되기 위한바텀 시트 height를 계산
 const BOTTOM_SHEET_HEIGHT = window.innerHeight * 0.8;
+const AUTO_CLOSE_MIN_DRAG = 100;
 
 function BottomSheet({ opened, onClose, children }: Props) {
   /*
@@ -55,8 +56,8 @@ function BottomSheet({ opened, onClose, children }: Props) {
   /*
     handleTouchStart : 터치를 시작한 Y 좌표 저장
     handleTouchMove : 드래그 거리를 계산하여 sheetOffsetY 값 변경(바텀 시트 위치 이동)
-    handleTouchEnd : 100px 이상 아래로 드래그 => 바텀 시트 닫힘
-                     100px 이하 => 원위치
+    handleTouchEnd : AUTO_CLOSE_MIN_DRAG 이상 아래로 드래그 => 바텀 시트 닫힘
+                     AUTO_CLOSE_MIN_DRAG 이하 => 원위치
   */
   const handleTouchStart = (e: React.TouchEvent) => {
     if (e.touches.length !== 1) return;
@@ -76,7 +77,7 @@ function BottomSheet({ opened, onClose, children }: Props) {
   const handleTouchEnd = () => {
     setIsDragging(false);
 
-    if (sheetOffsetY > 100) {
+    if (sheetOffsetY > AUTO_CLOSE_MIN_DRAG) {
       closeBottomSheet();
     } else {
       setTranslateY(0);
