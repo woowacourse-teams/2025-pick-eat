@@ -60,25 +60,25 @@ function Carousel({
   }, [interval, contentArr.length]);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
+    const container = containerRef.current;
+    if (!container) return;
     const onScroll = () => {
-      const { left, width } = el.getBoundingClientRect();
+      const { left, width } = container.getBoundingClientRect();
       const centerX = left + width / 2;
-      let best = 0;
-      let bestDist = Infinity;
-      Array.from(el.children).forEach((child, i) => {
+      let minDistanceItem = 0;
+      let minDistance = Infinity;
+      Array.from(container.children).forEach((child, i) => {
         const rect = (child as HTMLElement).getBoundingClientRect();
         const dist = Math.abs(rect.left + rect.width / 2 - centerX);
-        if (dist < bestDist) {
-          bestDist = dist;
-          best = i;
+        if (dist < minDistance) {
+          minDistance = dist;
+          minDistanceItem = i;
         }
       });
-      setFocusedIdx(best);
+      setFocusedIdx(minDistanceItem);
     };
-    el.addEventListener('scroll', onScroll, { passive: true });
-    return () => el.removeEventListener('scroll', onScroll);
+    container.addEventListener('scroll', onScroll, { passive: true });
+    return () => container.removeEventListener('scroll', onScroll);
   }, [contentArr.length]);
 
   return (
@@ -194,11 +194,11 @@ const S = {
       transform 0.3s ease,
       opacity 0.3s ease;
     opacity: ${({ focused }) => (focused ? 1 : 0.6)};
-    scroll-snap-align: center; /* 변경점: 중앙 정렬 스냅 */
-    scroll-snap-stop: always; /* 변경점: 스냅 멈춤 강제 */
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
     transform: ${({ focused }) => (focused ? 'scale(1)' : 'scale(0.85)')};
 
-    will-change: transform, opacity; /* 변경점: 성능 힌트 */
+    will-change: transform, opacity;
   `,
 
   Indicator: styled.div`
