@@ -185,8 +185,6 @@ const S = {
     height: 6px;
     display: none;
 
-    margin: 0 auto;
-
     background-color: ${({ theme }) => theme.PALETTE.gray[10]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
 
