@@ -12,12 +12,13 @@ const CARD_SIZE = {
 type Props = {
   title: string;
   imageUrl: string;
+  onClick: () => void;
   size?: 'sm' | 'lg';
 };
 
-function Card({ title, imageUrl, size = 'lg' }: Props) {
+function Card({ title, imageUrl, onClick, size = 'lg' }: Props) {
   return (
-    <S.Container size={size}>
+    <S.Container size={size} onClick={onClick}>
       <S.Image src={imageUrl} alt="" />
       <S.TopWrapper>
         <S.TitleArea>

@@ -3,27 +3,60 @@ import Card from '@domains/wishlist/components/Card';
 import Carousel from '@components/Carousel';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
 
-import styled from '@emotion/styled';
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
-const CARD_CONTENT = [
-  <Card
-    key="1"
-    title="잠실역"
-    imageUrl="/images/carousel/subway_thumbnail.png"
-  />,
-  <Card
-    key="2"
-    title="선릉역"
-    imageUrl="/images/carousel/subway_thumbnail.png"
-  />,
-  <Card
-    key="3"
-    title="내 위치에서"
-    imageUrl="/images/carousel/map_thumbnail.png"
-  />,
+import { pickeat } from '@apis/pickeat';
+
+import { generateRouterPath } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
+
+import styled from '@emotion/styled';
+import { useNavigate, useSearchParams } from 'react-router';
+
+const WISH_CONTENT = [
+  {
+    id: 1,
+    name: '잠실역',
+    imageUrl: '/images/carousel/subway_thumbnail.png',
+  },
+  {
+    id: 2,
+    name: '선릉역',
+    imageUrl: '/images/carousel/subway_thumbnail.png',
+  },
+  {
+    id: 3,
+    name: '내 위치에서',
+    imageUrl: '/images/carousel/map_thumbnail.png',
+  },
 ];
 
 function Main() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const roomId = Number(searchParams.get('roomId')) ?? '';
+  const showToast = useShowToast();
+
+  const handlePublicWishlistClick = async (id: number) => {
+    try {
+      const code = await pickeat.post(roomId, makePickeatName());
+      await pickeat.postWish(id, code);
+      if (code) navigate(generateRouterPath.pickeatDetail(code));
+    } catch (e) {
+      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
+    }
+  };
+
+  const CARD_CONTENT = WISH_CONTENT.map(item => (
+    <Card
+      key={item.id}
+      title={item.name}
+      imageUrl={item.imageUrl}
+      onClick={() => handlePublicWishlistClick(item.id)}
+    />
+  ));
+
   return (
     <S.Container>
       <S.ImageWrapper>
