@@ -112,7 +112,7 @@ const S = {
     height: 284px;
     position: relative;
 
-    padding: 20px 0;
+    padding: ${({ theme }) => theme.PADDING.p6} 0;
   `,
   MainCharacterImage: styled.img`
     position: absolute;

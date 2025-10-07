@@ -25,7 +25,7 @@ function Card({ title, imageUrl, onClick, size = 'lg' }: Props) {
           <S.Title>{title}</S.Title>
           <S.Description>식당 투표하기</S.Description>
         </S.TitleArea>
-        <Arrow size="lg" direction="right" color={THEME.PALETTE.gray[10]} />
+        <Arrow size="xlg" direction="right" color={THEME.PALETTE.gray[10]} />
       </S.TopWrapper>
     </S.Container>
   );
@@ -40,6 +40,8 @@ const S = {
     position: relative;
 
     padding: 37px 26px;
+
+    /* TODO: 사진 사이즈 맞추면 삭제될 예정 */
     border: 1px solid red;
     border-radius: 30px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
@@ -56,6 +58,7 @@ const S = {
   TopWrapper: styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: start;
   `,
   TitleArea: styled.div`
     display: flex;
