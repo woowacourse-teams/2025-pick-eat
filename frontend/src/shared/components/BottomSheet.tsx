@@ -24,22 +24,23 @@ const FADE_END = 300;
 function BottomSheet({ opened, onClose, children }: Props) {
   /*
     startY : 터치 드래그 시 처음 손가락을 놓은 위치
-    sheetOffsetY : 시트가 현재 화면에서 얼마나 아래로 이동했는지(px)
+    sheetDistanceFromBottom : 시트가 현재 화면에서 얼마나 아래로 이동했는지(px)
     isDragging: 드래그 중일 때는 부드럽게 변화하는 transition을 없애기 위해 상태 정의
   */
   const startY = useRef<number | null>(null);
-  const [sheetOffsetY, setTranslateY] = useState<number>(BOTTOM_SHEET_HEIGHT);
+  const [sheetDistanceFromBottom, setSheetDistanceFromBottom] =
+    useState<number>(BOTTOM_SHEET_HEIGHT);
   const [isDragging, setIsDragging] = useState(false);
 
   const closeBottomSheet = () => {
-    setTranslateY(BOTTOM_SHEET_HEIGHT);
+    setSheetDistanceFromBottom(BOTTOM_SHEET_HEIGHT);
     onClose();
   };
 
   useEffect(() => {
     if (!opened) return;
 
-    setTranslateY(0);
+    setSheetDistanceFromBottom(0);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -60,7 +61,7 @@ function BottomSheet({ opened, onClose, children }: Props) {
 
   /*
     handleTouchStart : 터치를 시작한 Y 좌표 저장
-    handleTouchMove : 드래그 거리를 계산하여 sheetOffsetY 값 변경(바텀 시트 위치 이동)
+    handleTouchMove : 드래그 거리를 계산하여 sheetDistanceFromBottom 값 변경(바텀 시트 위치 이동)
     handleTouchEnd : AUTO_CLOSE_MIN_DRAG 이상 아래로 드래그 => 바텀 시트 닫힘
                      AUTO_CLOSE_MIN_DRAG 이하 => 원위치
   */
@@ -75,17 +76,17 @@ function BottomSheet({ opened, onClose, children }: Props) {
 
     const delta = e.touches[0].clientY - startY.current;
     if (delta > 0) {
-      setTranslateY(delta);
+      setSheetDistanceFromBottom(delta);
     }
   };
 
   const handleTouchEnd = () => {
     setIsDragging(false);
 
-    if (sheetOffsetY > AUTO_CLOSE_MIN_DRAG) {
+    if (sheetDistanceFromBottom > AUTO_CLOSE_MIN_DRAG) {
       closeBottomSheet();
     } else {
-      setTranslateY(0);
+      setSheetDistanceFromBottom(0);
     }
 
     startY.current = null;
@@ -96,7 +97,9 @@ function BottomSheet({ opened, onClose, children }: Props) {
     => FADE_END 만큼 이동하면 백드롭 투명해짐, 완전히 바텀 시트가 닫혔을 때 투명해지는 것 보다 자연스러워 보였음!
   */
 
-  const opacity = !opened ? 0 : 1 - Math.min(sheetOffsetY / FADE_END, 1);
+  const opacity = !opened
+    ? 0
+    : 1 - Math.min(sheetDistanceFromBottom / FADE_END, 1);
 
   return ReactDOM.createPortal(
     <>
@@ -108,7 +111,7 @@ function BottomSheet({ opened, onClose, children }: Props) {
       <S.Container
         opened={opened}
         dragging={isDragging}
-        sheetOffsetY={sheetOffsetY}
+        sheetDistanceFromBottom={sheetDistanceFromBottom}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -132,7 +135,7 @@ const S = {
   Container: styled.div<{
     opened: boolean;
     dragging: boolean;
-    sheetOffsetY: number;
+    sheetDistanceFromBottom: number;
   }>`
     width: 100%;
     height: 80%;
@@ -149,7 +152,8 @@ const S = {
       dragging ? 'none' : 'transform 0.35s ease-out'};
     border-radius: 30px 30px 0 0;
 
-    transform: ${({ sheetOffsetY }) => `translateY(${sheetOffsetY}px)`};
+    transform: ${({ sheetDistanceFromBottom }) =>
+      `translateY(${sheetDistanceFromBottom}px)`};
     will-change: transform;
   `,
 
