@@ -18,11 +18,11 @@ const BOTTOM_SHEET_HEIGHT = window.innerHeight * 0.8;
 function BottomSheet({ opened, onClose, children }: Props) {
   /*
     startY : 터치 드래그 시 처음 손가락을 놓은 위치
-    translateY : 시트가 현재 화면에서 얼마나 아래로 이동했는지(px)
+    sheetOffsetY : 시트가 현재 화면에서 얼마나 아래로 이동했는지(px)
     isDragging: 드래그 중일 때는 부드럽게 변화하는 transition을 없애기 위해 상태 정의
   */
   const startY = useRef<number | null>(null);
-  const [translateY, setTranslateY] = useState<number>(BOTTOM_SHEET_HEIGHT);
+  const [sheetOffsetY, setTranslateY] = useState<number>(BOTTOM_SHEET_HEIGHT);
   const [isDragging, setIsDragging] = useState(false);
 
   const closeBottomSheet = () => {
@@ -54,7 +54,7 @@ function BottomSheet({ opened, onClose, children }: Props) {
 
   /*
     handleTouchStart : 터치를 시작한 Y 좌표 저장
-    handleTouchMove : 드래그 거리를 계산하여 translateY 값 변경(바텀 시트 위치 이동)
+    handleTouchMove : 드래그 거리를 계산하여 sheetOffsetY 값 변경(바텀 시트 위치 이동)
     handleTouchEnd : 100px 이상 아래로 드래그 => 바텀 시트 닫힘
                      100px 이하 => 원위치
   */
@@ -76,7 +76,7 @@ function BottomSheet({ opened, onClose, children }: Props) {
   const handleTouchEnd = () => {
     setIsDragging(false);
 
-    if (translateY > 100) {
+    if (sheetOffsetY > 100) {
       closeBottomSheet();
     } else {
       setTranslateY(0);
@@ -91,7 +91,7 @@ function BottomSheet({ opened, onClose, children }: Props) {
     => FADE_END 만큼 이동하면 백드롭 투명해짐, 완전히 바텀 시트가 닫혔을 때 투명해지는 것 보다 자연스러워 보였음!
   */
   const FADE_END = 300;
-  const opacity = !opened ? 0 : 1 - Math.min(translateY / FADE_END, 1);
+  const opacity = !opened ? 0 : 1 - Math.min(sheetOffsetY / FADE_END, 1);
 
   return ReactDOM.createPortal(
     <>
@@ -103,7 +103,7 @@ function BottomSheet({ opened, onClose, children }: Props) {
       <S.Container
         opened={opened}
         dragging={isDragging}
-        translateY={translateY}
+        sheetOffsetY={sheetOffsetY}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -127,7 +127,7 @@ const S = {
   Container: styled.div<{
     opened: boolean;
     dragging: boolean;
-    translateY: number;
+    sheetOffsetY: number;
   }>`
     width: 100%;
     height: 80%;
@@ -144,7 +144,7 @@ const S = {
       dragging ? 'none' : 'transform 0.35s ease-out'};
     border-radius: 30px 30px 0 0;
 
-    transform: ${({ translateY }) => `translateY(${translateY}px)`};
+    transform: ${({ sheetOffsetY }) => `translateY(${sheetOffsetY}px)`};
     will-change: transform;
   `,
 
