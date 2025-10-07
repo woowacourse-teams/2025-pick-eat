@@ -46,6 +46,9 @@ export default RestaurantCard;
     - [] like 버튼 + 투표 로직
   소거
     - [] x 버튼 + 소거 로직
+  식당 등록
+    - [] x 버튼 + 소거 로직
+    - [] 주소 추가
 
 
   padding이 16 16 14 16이라 그냥 16으로 하고 height +2함
