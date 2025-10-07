@@ -24,18 +24,19 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level3};
 
-    padding: ${({ theme }) => theme.PADDING.py3} +
-      ${({ theme }) => theme.PADDING.px4};
-
-    background-color: ${({ theme, color }) => theme.PALETTE[color][10]};
+    padding: 0 ${({ theme }) => theme.PADDING.p3};
+    border: 1px solid ${({ theme }) => theme.PALETTE.gray[10]};
     border-radius: 1000px;
   `,
+  //TODO: font theme에서 뽑아쓰기
   Text: styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
 
-    color: ${({ theme }) => theme.PALETTE.gray[70]};
-    font: ${({ theme }) => theme.FONTS.body.xsmall};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font:
+      500 11px/150% Pretendard,
+      sans-serif;
   `,
 };
