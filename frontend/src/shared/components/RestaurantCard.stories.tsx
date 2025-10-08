@@ -1,4 +1,4 @@
-import { RestaurantResponse } from '@apis/restaurant';
+import { Restaurant } from '@apis/restaurant';
 
 import RestaurantCard from './RestaurantCard';
 
@@ -15,7 +15,7 @@ type Story = StoryObj<typeof RestaurantCard>;
 
 export const Default: Story = {
   render: () => {
-    const RESTAURANT_MOCK_DATA: RestaurantResponse = {
+    const RESTAURANT_MOCK_DATA: Restaurant = {
       id: 29474,
       name: '두촌가마솥밥 잠실홈플러스점',
       category: '한식',
@@ -25,8 +25,6 @@ export const Default: Story = {
       roadAddressName: '서울 송파구 올림픽로35가길 16 홈플러스 1층',
       likeCount: 0,
       isExcluded: false,
-      x: null,
-      y: null,
       pictureUrls: [
         'https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/prod_images/jamsil_campus/gongdan.jpg',
         'https://techcourse-project-2025.s3.ap-northeast-2.amazonaws.com/pickeat/wish_images/prod_images/jamsil_campus/DuchonCauldronRice.jpeg',

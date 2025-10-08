@@ -1,11 +1,11 @@
-import { RestaurantResponse } from '@apis/restaurant';
+import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
 import Badge from './labels/Badge';
 
 type Props = {
-  restaurantData: RestaurantResponse;
+  restaurantData: Restaurant;
 };
 
 function RestaurantCard({ restaurantData }: Props) {
