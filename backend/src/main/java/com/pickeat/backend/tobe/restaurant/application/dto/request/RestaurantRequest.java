@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.restaurant.application.request;
+package com.pickeat.backend.tobe.restaurant.application.dto.request;
 
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;

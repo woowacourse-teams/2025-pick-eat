@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.acceptance_test.piece.restaurant;
 
-import com.pickeat.backend.tobe.restaurant.application.request.WishRestaurantRequest;
+import com.pickeat.backend.tobe.restaurant.application.dto.request.WishRestaurantRequest;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.springframework.http.HttpStatus;
