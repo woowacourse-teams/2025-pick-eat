@@ -1,7 +1,7 @@
 import AddressList from '@domains/pickeat/components/AddressList';
 import WishForm from '@domains/wishlist/components/WishForm';
 
-import SearchBar from '@components/actions/SearchBar/SearchBar';
+import SearchWithList from '@components/actions/SearchWithList';
 
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
@@ -30,7 +30,7 @@ function WishAddressFrom({ wishlistId, onCreate }: Props) {
     <S.Container>
       <S.TopArea>
         <S.Description>식당 이름을 검색하여 찜을 등록해 보세요.</S.Description>
-        <SearchBar
+        <SearchWithList
           value={address}
           onChange={e => handleInputChange(e.target.value)}
           name="address"
@@ -42,7 +42,7 @@ function WishAddressFrom({ wishlistId, onCreate }: Props) {
               onClick={handleAddressClick}
             />
           )}
-        </SearchBar>
+        </SearchWithList>
       </S.TopArea>
       {formData && (
         <WishForm
