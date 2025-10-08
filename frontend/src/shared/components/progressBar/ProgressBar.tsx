@@ -1,53 +1,30 @@
 import styled from '@emotion/styled';
-import { ReactNode } from 'react';
 
 type Props = {
-  percentage: number;
-  icon?: ReactNode;
+  total: number;
+  current: number;
 };
 
-function ProgressBar({ percentage, icon }: Props) {
-  const safePercentage = Math.min(100, Math.max(0, percentage));
+function ProgressBar({ total, current }: Props) {
+  const progress =
+    total > 0 && current > 0 && current <= total ? current / total : 0;
 
-  return (
-    <S.Track>
-      <S.Progress percentage={safePercentage} />
-      <S.IconWrapper percentage={safePercentage}>{icon}</S.IconWrapper>
-    </S.Track>
-  );
+  return <S.Track progress={progress} />;
 }
 
 export default ProgressBar;
 
 const S = {
-  Track: styled.div`
+  Track: styled.div<{ progress: number }>`
     width: 100%;
     height: 2px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[20]};
-  `,
+    background: linear-gradient(to right, #ffda1e 0%, #ffda1e 100%);
+    background-color: ${({ theme }) => theme.PALETTE.gray[10]};
+    background-size: ${({ progress }) => progress * 100}% 100%;
 
-  Progress: styled.div<{ percentage: number }>`
-    width: ${({ percentage }) => `${percentage}`}%;
-    height: 6px;
-    position: absolute;
+    background-repeat: no-repeat;
 
-    background-color: ${({ theme }) => theme.PALETTE.primary[60]};
-
-    transition: width 0.5s ease;
-    border-radius: ${({ theme }) => theme.RADIUS.medium2};
-  `,
-
-  IconWrapper: styled.div<{ percentage: number }>`
-    width: ${({ percentage }) => `${percentage}`}%;
-    display: flex;
-    justify-content: flex-end;
-    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
-
-    transition: width 0.5s ease;
+    transition: background-size 0.3s ease;
   `,
 };
