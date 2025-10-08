@@ -1,14 +1,16 @@
-import Button from '@components/actions/Button';
+import Plus from '@components/assets/icons/Plus';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
 import { useManageWishlist } from '@domains/room/hooks/useManageWishlist';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router';
 
+import RestaurantCard from './RestaurantCard';
 import WishAddressFrom from './WishAddressForm';
-import WishCard from './WishCard';
 
 function WishlistTab() {
   const [searchParams] = useSearchParams();
@@ -30,15 +32,17 @@ function WishlistTab() {
   if (error) throw new Error();
   return (
     <S.Container>
-      <S.Description>찜({wishlistData.length})</S.Description>
-      <Button text="찜 등록" color="secondary" onClick={handleOpenModal} />
+      <S.RegisterWrapper onClick={handleOpenModal}>
+        <Plus size="xlg" color={THEME.PALETTE.gray[30]} />
+        <S.Description>식당을 추가해 보세요!</S.Description>
+      </S.RegisterWrapper>
 
       <S.Wishlist>
         {wishlistData.length > 0 ? (
           wishlistData.map(wish => (
-            <WishCard
+            <RestaurantCard
               key={wish.id}
-              wishData={wish}
+              restaurantData={wish}
               onDelete={() => handleDeleteWish(wish.id)}
             />
           ))
@@ -69,17 +73,41 @@ const S = {
     height: 100%;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
+    gap: ${({ theme }) => theme.GAP.level5};
+  `,
+  RegisterWrapper: styled.div`
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    margin: 20px 20px 0;
+
+    border: 2px dashed ${({ theme }) => theme.PALETTE.gray[30]};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+
+    border-radius: 20px;
+    cursor: pointer;
   `,
   Description: styled.span`
-    font: ${({ theme }) => theme.FONTS.heading.small};
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
   Wishlist: styled.div`
     height: 90%;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    align-content: start;
+
     gap: ${({ theme }) => theme.GAP.level4};
+    grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
     overflow: scroll;
+
+    padding: 20px;
+
+    justify-items: center;
+
     scrollbar-width: none;
   `,
   EmptyDescriptionPointText: styled.span`
