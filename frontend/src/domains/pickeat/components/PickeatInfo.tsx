@@ -1,5 +1,5 @@
-import Button from '@components/actions/Button';
 import LineInput from '@components/actions/Input/LineInput';
+import NewButton from '@components/actions/NewButton';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import SharePanel from '@components/share/SharePanel';
 
@@ -76,7 +76,7 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
 
         <ErrorMessage message={error} />
 
-        <Button text="투표 입장하기" />
+        <NewButton>투표 입장하기</NewButton>
       </S.FormWrapper>
     </S.Wrapper>
   );
