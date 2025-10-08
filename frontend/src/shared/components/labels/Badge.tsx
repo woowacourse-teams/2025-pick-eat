@@ -1,13 +1,12 @@
 import styled from '@emotion/styled';
 
 type Props = {
-  color?: 'primary' | 'secondary' | 'gray';
   children: React.ReactNode;
 };
 
-function Badge({ children, color = 'gray' }: Props) {
+function Badge({ children }: Props) {
   return (
-    <S.Container color={color}>
+    <S.Container>
       <S.Text>{children}</S.Text>
     </S.Container>
   );
@@ -16,7 +15,7 @@ function Badge({ children, color = 'gray' }: Props) {
 export default Badge;
 
 const S = {
-  Container: styled.div<{ color: 'primary' | 'secondary' | 'gray' }>`
+  Container: styled.div`
     width: fit-content;
     height: 24px;
     display: flex;
@@ -26,6 +25,8 @@ const S = {
 
     padding: 0 ${({ theme }) => theme.PADDING.p3};
     border: 1px solid ${({ theme }) => theme.PALETTE.gray[10]};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: 1000px;
   `,
   //TODO: font theme에서 뽑아쓰기
