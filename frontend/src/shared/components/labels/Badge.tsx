@@ -27,7 +27,7 @@ const S = {
     border: 1px solid ${({ theme }) => theme.PALETTE.gray[10]};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: 1000px;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
   `,
   //TODO: font theme에서 뽑아쓰기
   Text: styled.div`
