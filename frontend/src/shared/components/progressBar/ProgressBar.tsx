@@ -25,6 +25,6 @@ const S = {
 
     background-repeat: no-repeat;
 
-    transition: background-size 0.3s ease;
+    transition: background-size 0.5s ease;
   `,
 };
