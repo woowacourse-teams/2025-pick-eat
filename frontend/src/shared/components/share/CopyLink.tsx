@@ -1,5 +1,4 @@
-import Button from '@components/actions/Button';
-import Input from '@components/actions/Input/Input';
+import Copy from '@components/assets/icons/Copy';
 
 import { copyLink } from '@utils/copyLink';
 

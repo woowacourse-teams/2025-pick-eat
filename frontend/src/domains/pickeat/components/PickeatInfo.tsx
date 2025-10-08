@@ -1,6 +1,5 @@
 import Button from '@components/actions/Button';
-import Input from '@components/actions/Input/Input';
-import Share from '@components/assets/icons/Share';
+import LineInput from '@components/actions/Input/LineInput';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import SharePanel from '@components/share/SharePanel';
 
@@ -63,20 +62,21 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
       </S.ShareBox>
 
       <S.FormWrapper>
-        <Input
+        <LineInput
           value={nickname}
           onChange={e => setNickname(e.target.value)}
           name="nickname"
           label="닉네임"
           placeholder="사용하실 닉네임을 입력하세요."
           maxLength={NICKNAME_MAX_LENGTH}
+          feedbackMessage={`${nickname.length}/${NICKNAME_MAX_LENGTH}`}
+          xIcon
+          onClear={() => setNickname('')}
         />
-        <S.CharacterCount>
-          {nickname.length}/{NICKNAME_MAX_LENGTH}
-        </S.CharacterCount>
+
         <ErrorMessage message={error} />
 
-        <Button text="입장" />
+        <Button text="투표 입장하기" />
       </S.FormWrapper>
     </S.Wrapper>
   );
@@ -116,10 +116,5 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
-  `,
-  CharacterCount: styled.div`
-    color: ${({ theme }) => theme.PALETTE.gray[30]};
-
-    font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };
