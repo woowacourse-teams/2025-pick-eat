@@ -1,4 +1,4 @@
-import Input from '@components/actions/Input/Input';
+import LineInput from '@components/actions/Input/LineInput';
 import Badge from '@components/labels/Badge';
 
 import { useShowToast } from '@provider/ToastProvider';
@@ -34,15 +34,17 @@ function TagSection({ tags, onFormChange }: Props) {
     onFormChange(tags.filter(t => t !== tagToRemove) ?? []);
   };
   return (
-    <S.TagWrapper>
-      <Input
-        label="태그"
+    <S.Container>
+      <LineInput
+        label="식당 태그"
         placeholder="태그 입력 후 엔터"
         value={tag}
         onChange={e => setTag(e.target.value)}
         onKeyDown={handleKeyDown}
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={() => setIsComposing(false)}
+        xIcon
+        onClear={() => setTag('')}
       />
 
       <S.TagList>
@@ -60,17 +62,23 @@ function TagSection({ tags, onFormChange }: Props) {
             </Badge>
           ))}
       </S.TagList>
-    </S.TagWrapper>
+    </S.Container>
   );
 }
 
 export default TagSection;
 
 const S = {
-  TagWrapper: styled.div`
+  Container: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
+
+    padding: ${({ theme }) => theme.PADDING.p4};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-radius: 20px;
   `,
 
   TagList: styled.div`
