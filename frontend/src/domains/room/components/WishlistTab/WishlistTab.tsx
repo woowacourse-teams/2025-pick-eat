@@ -8,7 +8,7 @@ import { THEME } from '@styles/global';
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router';
 
-import RegisterWish from './RegisterWish';
+import RegisterWishModal from './RegisterWishModal';
 import RestaurantCard from './RestaurantCard';
 
 function WishlistTab() {
@@ -27,10 +27,10 @@ function WishlistTab() {
 
   return (
     <S.Container>
-      <S.RegisterWrapper onClick={handleOpenModal}>
+      <S.RegisterButton onClick={handleOpenModal}>
         <Plus size="xlg" color={THEME.PALETTE.gray[30]} />
         <S.Description>식당을 추가해 보세요!</S.Description>
-      </S.RegisterWrapper>
+      </S.RegisterButton>
 
       <S.Wishlist>
         {wishlistData.length > 0 ? (
@@ -49,7 +49,10 @@ function WishlistTab() {
       </S.Wishlist>
 
       {opened && (
-        <RegisterWish onClick={handleCloseModal} onCreate={handleCreateWish} />
+        <RegisterWishModal
+          onClick={handleCloseModal}
+          onCreate={handleCreateWish}
+        />
       )}
     </S.Container>
   );
@@ -64,7 +67,7 @@ const S = {
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level5};
   `,
-  RegisterWrapper: styled.div`
+  RegisterButton: styled.div`
     height: 120px;
     display: flex;
     flex-direction: column;

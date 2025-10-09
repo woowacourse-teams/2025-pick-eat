@@ -20,11 +20,11 @@ type Props = {
   onCreate: () => void;
 };
 
-function RegisterWish({ onClick, onCreate }: Props) {
+function RegisterWishModal({ onClick, onCreate }: Props) {
+  const { opened, handleCloseModal, handleOpenModal } = useModal();
   const [searchParams] = useSearchParams();
   const wishId = Number(searchParams.get('wishId')) ?? '';
   const modalRoot = document.querySelector('#modal') as HTMLElement;
-  const { opened, handleCloseModal, handleOpenModal } = useModal();
 
   const handleCreateWish = () => {
     onCreate();
@@ -49,13 +49,15 @@ function RegisterWish({ onClick, onCreate }: Props) {
 
       <S.Wrapper>
         <S.Title>즐겨찾기 등록하기</S.Title>
-        <LineSearchBar
-          label="식당 검색"
-          placeholder="식당 이름 검색으로 간편 입력"
-          onClick={handleOpenModal}
-          value={address}
-          xIcon
-        />
+        <S.SearchButton onClick={handleOpenModal}>
+          <LineSearchBar
+            label="식당 검색"
+            placeholder="식당 이름 검색으로 간편 입력"
+            value={address}
+            xIcon
+            defenseClick
+          />
+        </S.SearchButton>
         <RegisterForm
           formData={formData}
           onFormChange={handleFormData}
@@ -79,7 +81,7 @@ function RegisterWish({ onClick, onCreate }: Props) {
     modalRoot
   );
 }
-export default RegisterWish;
+export default RegisterWishModal;
 
 const S = {
   Container: styled.div`
@@ -109,4 +111,5 @@ const S = {
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level8};
   `,
+  SearchButton: styled.div``,
 };
