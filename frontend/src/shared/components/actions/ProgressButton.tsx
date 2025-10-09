@@ -19,7 +19,6 @@ function ProgressButton({ text, total, current, ...props }: Props) {
 }
 
 const S = {
-  //TODO: 색, 폰트 theme에서 뽑아쓰기
   Container: styled.button<{ percentage: number }>`
     width: 90%;
     height: 52px;
@@ -37,12 +36,10 @@ const S = {
     background-repeat: no-repeat;
 
     color: ${({ theme }) => theme.PALETTE.gray[100]};
-    font:
-      600 17px/150% Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.large_bold};
 
     transition: background-size 0.3s ease;
-    border-radius: 12px;
+    border-radius: ${({ theme }) => theme.RADIUS.small};
     transform: translateX(-50%);
   `,
 };
