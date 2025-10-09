@@ -9,7 +9,7 @@ import ErrorMessage from '@components/errors/ErrorMessage';
 import { WishFormDataWithImage } from '@domains/wishlist/hooks/useCreateWish';
 
 import styled from '@emotion/styled';
-import { FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 type Props = {
   formData: WishFormDataWithImage;
@@ -27,27 +27,46 @@ function RegisterForm({
   onSubmit,
   errorMessage,
 }: Props) {
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      onFormChange('thumbnail', file);
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+    }
+  };
+
+  useEffect(() => {
+    if (formData.thumbnail instanceof File) {
+      setPreviewUrl(URL.createObjectURL(formData.thumbnail));
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [formData.thumbnail]);
+
   const submitForm = (e: FormEvent) => {
     e.preventDefault();
     onSubmit();
   };
-
   return (
     <S.Form onSubmit={submitForm}>
-      <S.ImageArea htmlFor="thumbnail">
+      <S.ImageArea htmlFor="thumbnail" previewUrl={previewUrl}>
         <input
           id="thumbnail"
           type="file"
           accept="image/*"
           name="thumbnail"
-          onChange={e => {
-            if (e.target.files?.[0])
-              onFormChange('thumbnail', e.target.files[0]);
-          }}
+          onChange={handleImageChange}
           style={{ display: 'none' }}
         />
-        <Thumbnail />
-        <S.Description>이 곳을 눌러 썸네일 등록</S.Description>
+        {previewUrl ? null : (
+          <>
+            <Thumbnail />
+            <S.Description>이 곳을 눌러 썸네일 등록</S.Description>
+          </>
+        )}
       </S.ImageArea>
 
       <S.InputArea>
@@ -102,7 +121,7 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level5};
   `,
-  ImageArea: styled.label`
+  ImageArea: styled.label<{ previewUrl: string | null }>`
     width: 200px;
     height: 200px;
     display: flex;
@@ -111,6 +130,12 @@ const S = {
     align-items: center;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    background-image: ${({ previewUrl }) =>
+      previewUrl ? `url(${previewUrl})` : ''};
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
     border-radius: 20px;
     cursor: pointer;
   `,
