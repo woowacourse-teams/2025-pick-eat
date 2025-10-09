@@ -26,7 +26,7 @@ function CategorySection({ value, onFormChange }: Props) {
           onClick={() => clickChip(category)}
           type="button"
         >
-          <Chip color={selectedCategory === category ? 'primary' : 'gray'}>
+          <Chip color={selectedCategory === category ? 'primary' : 'white'}>
             {category}
           </Chip>
         </S.ChipButton>
