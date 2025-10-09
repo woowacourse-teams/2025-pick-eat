@@ -18,7 +18,12 @@ const DEFAULT_FORM_DATA = {
   placeUrl: '',
 };
 
-export const useCreateWish = (onCreate?: () => void) => {
+type Props = {
+  onCreate: () => void;
+  onClose: () => void;
+};
+
+export const useCreateWish = ({ onCreate, onClose }: Props) => {
   const [formData, setFormData] =
     useState<WishFormDataWithImage>(DEFAULT_FORM_DATA);
   const [error, setError] = useState('');
@@ -27,6 +32,7 @@ export const useCreateWish = (onCreate?: () => void) => {
   const initialWishFormData = async (address: string) => {
     const data = await getFormDataByAddress(address);
     if (data) setFormData({ ...data, tags: [] });
+    onClose();
   };
 
   const handleFormData = <K extends keyof WishFormDataWithImage>(

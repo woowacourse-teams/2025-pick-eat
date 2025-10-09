@@ -1,18 +1,18 @@
 import Plus from '@components/assets/icons/Plus';
+import { useModal } from '@components/modal/useModal';
 
 import { useManageWishlist } from '@domains/room/hooks/useManageWishlist';
 
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import RegisterWish from './RegisterWish';
 import RestaurantCard from './RestaurantCard';
 
 function WishlistTab() {
-  const [isRegisterOpen, setRegisterOpen] = useState(false);
+  const { opened, handleCloseModal, handleOpenModal } = useModal();
   const [searchParams] = useSearchParams();
   const wishId = Number(searchParams.get('wishId')) ?? '';
   const { error, wishlistData, handleGetWish, handleDeleteWish } =
@@ -20,14 +20,14 @@ function WishlistTab() {
 
   const handleCreateWish = () => {
     handleGetWish();
-    setRegisterOpen(false);
+    handleCloseModal();
   };
 
   if (error) throw new Error();
 
   return (
     <S.Container>
-      <S.RegisterWrapper onClick={() => setRegisterOpen(true)}>
+      <S.RegisterWrapper onClick={handleOpenModal}>
         <Plus size="xlg" color={THEME.PALETTE.gray[30]} />
         <S.Description>식당을 추가해 보세요!</S.Description>
       </S.RegisterWrapper>
@@ -48,11 +48,8 @@ function WishlistTab() {
         )}
       </S.Wishlist>
 
-      {isRegisterOpen && (
-        <RegisterWish
-          onClick={() => setRegisterOpen(false)}
-          onCreate={handleCreateWish}
-        />
+      {opened && (
+        <RegisterWish onClick={handleCloseModal} onCreate={handleCreateWish} />
       )}
     </S.Container>
   );
