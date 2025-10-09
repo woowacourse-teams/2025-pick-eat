@@ -1,9 +1,9 @@
+import Header from '@widgets/Header';
+
 import ToastProvider from '@provider/ToastProvider';
 
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
-
-import Header from './Header';
 
 type Props = {
   children: ReactNode;

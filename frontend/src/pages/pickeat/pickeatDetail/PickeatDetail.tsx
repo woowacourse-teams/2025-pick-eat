@@ -1,6 +1,6 @@
 import PickeatInfo from '@domains/pickeat/components/PickeatInfo';
 
-import { HEADER_HEIGHT } from '@components/layouts/Header';
+import { HEADER_HEIGHT } from '@widgets/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { useAuth } from '@domains/login/context/AuthProvider';
