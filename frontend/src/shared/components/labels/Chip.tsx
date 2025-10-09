@@ -1,6 +1,4 @@
-import Cross from '@components/assets/icons/Cross';
-
-import { THEME } from '@styles/global';
+import Delete from '@components/assets/icons/Delete';
 
 import styled from '@emotion/styled';
 
@@ -25,7 +23,7 @@ function Chip({
 
       {removeButton && (
         <S.RemoveButton onClick={onRemove}>
-          <Cross size="xs" color={THEME.PALETTE.gray[40]} />
+          <Delete size="xs" />
         </S.RemoveButton>
       )}
     </S.Container>
@@ -44,6 +42,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p3}
       ${({ theme }) => theme.PADDING.p4};
+
     ${({ variant, theme }) =>
       variant === 'outlined' && `border: 1px solid ${theme.PALETTE.gray[10]}`};
 
