@@ -41,9 +41,7 @@ function Header() {
             <S.LoginButton onClick={logoutUser}>로그아웃</S.LoginButton>
           </>
         ) : (
-          <S.LoginButton onClick={handleLoginClick}>
-            로그인/회원가입
-          </S.LoginButton>
+          <S.LoginButton onClick={handleLoginClick}>로그인</S.LoginButton>
         )}
       </S.ButtonWrapper>
     </S.Container>
@@ -63,12 +61,9 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p5};
     backdrop-filter: blur(12px) saturate(180%);
-    backdrop-filter: blur(12px) saturate(180%);
     box-shadow: inset 0 -1px 1px 1px rgb(255 255 255 / 50%);
   `,
   LogoWrapper: styled.button`
-    width: 80px;
-
     color: ${({ theme }) => theme.PALETTE.gray[95]};
     font-size: 18px;
     font-weight: 800;
@@ -82,13 +77,13 @@ const S = {
 
     background: none;
 
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.body.small_bold};
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
+    font: ${({ theme }) => theme.FONTS.body.small};
     cursor: pointer;
   `,
 
   VerticalDivider: styled.p`
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
     font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 
@@ -97,8 +92,8 @@ const S = {
 
     background: none;
 
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.body.small_bold};
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
+    font: ${({ theme }) => theme.FONTS.body.small};
     cursor: pointer;
   `,
 };
