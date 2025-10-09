@@ -36,7 +36,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 768px;
+  max-width: 480px;
 
   background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 `;
