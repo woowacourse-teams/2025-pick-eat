@@ -11,24 +11,29 @@ const FONTS = {
     small: `700 36px/150% ${fontFamily}`,
   },
   heading: {
-    large: `700 32px/150% ${fontFamily}`,
-    large_style: `700 36px/150% ${fontFamilyStyle}`,
+    large: `700 28px/100% ${fontFamily}`,
+    large_style: `700 28px/100% ${fontFamilyStyle}`,
     medium: `700 24px/150% ${fontFamily}`,
-    medium_style: `700 28px/150% ${fontFamilyStyle}`,
-    small: `600 19px/150% ${fontFamily}`,
-    small_style: `600 22px/150% ${fontFamilyStyle}`,
+    medium_style: `700 24px/150% ${fontFamilyStyle}`,
+    small: `700 20px/150% ${fontFamily}`,
+    small_style: `600 20px/150% ${fontFamilyStyle}`,
     small_style_static: `600 22px/150% ${fontFamilyStyle}`,
   },
   body: {
-    large: `400 19px/150% ${fontFamily}`,
-    large_bold: `700 19px/150% ${fontFamily}`,
-    medium: `400 17px/150% ${fontFamily}`,
-    medium_bold: `700 17px/150% ${fontFamily}`,
+    xxlarge: `400 24px ${fontFamily}`,
+    xxlarge_bold: `700 24px ${fontFamily}`,
+    xlarge: `400 20px ${fontFamily}`,
+    xlarge_bold: `700 20px ${fontFamily}`,
+    large: `400 18px ${fontFamily}`,
+    large_bold: `700 18px ${fontFamily}`,
+    medium: `400 16px ${fontFamily}`,
+    medium_bold: `700 16px ${fontFamily}`,
     small: `400 15px/150% ${fontFamily}`,
     small_bold: `700 15px/150% ${fontFamily}`,
-    xsmall: `400 13px/150% ${fontFamily}`,
-    xsmall_bold: `700 13px/150% ${fontFamily}`,
+    xsmall: `400 14px/150% ${fontFamily}`,
+    xsmall_bold: `700 14px/150% ${fontFamily}`,
   },
+  logo: `800 16px ${fontFamilyStyle}`,
 };
 
 const PALETTE = {
@@ -49,17 +54,17 @@ const PALETTE = {
   },
   primary: {
     0: '#FFFFFF',
-    5: '#FDF5FC',
-    10: '#F9DCF5',
-    20: '#E3B4DC',
-    30: '#E09AD6',
-    40: '#D17CC6',
-    50: '#BD5EB0',
-    60: '#A14D95',
-    70: '#89397E',
-    80: '#692860',
-    90: '#511A4A',
-    95: '#2F0D2B',
+    5: '#FFFBE6',
+    10: '#FFF9D5',
+    20: '#FFF7C1',
+    30: '#FFF197',
+    40: '#FFE56F',
+    50: '#FFDA1E',
+    60: '#F6AD00',
+    70: '#C08600',
+    80: '#744E00',
+    90: '#2E1F00',
+    95: '#190E00',
     100: '#000000',
   },
   secondary: {
@@ -78,7 +83,8 @@ const PALETTE = {
     100: '#000000',
   },
   red: {
-    50: '#FF5A5F',
+    40: '#F95F5F',
+    50: '#D63D4A',
   },
   green: {
     50: '#69aa7fff',
@@ -105,20 +111,19 @@ export const Z_INDEX = {
 };
 
 export const BOX_SHADOW = {
-  level1: '0 1px 2px #00000014',
+  white: '0px 0px 20px 12px rgba(255,255,255,0.7)',
+  level1: '2px 4px 20px 1px rgba(186,197,201,0.25)',
   level2: '0 2px 8px #0000001A',
   level3: '0 4px 20px #0000001F',
   level4: '0 8px 32px #0000002E',
 };
 
 export const RADIUS = {
-  xsmall: '2px',
-  small: '4px',
-  medium: '6px',
-  medium2: '8px',
-  medium3: '10px',
-  large: '12px',
-  xlarge: '14px',
+  xsmall: '8px',
+  small: '14px',
+  medium: '20px',
+  large: '24px',
+  xlarge: '30px',
   half: '50%',
 };
 
