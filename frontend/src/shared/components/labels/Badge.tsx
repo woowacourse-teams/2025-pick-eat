@@ -1,15 +1,33 @@
+import Cross from '@components/assets/icons/Cross';
+
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 
 type Props = {
   variant: 'outlined' | 'filled';
   color?: 'white' | 'primary';
+  removeButton?: boolean;
+  onRemove?: () => void;
   children: React.ReactNode;
 };
 
-function Badge({ variant, color = 'white', children }: Props) {
+function Badge({
+  variant,
+  color = 'white',
+  removeButton = false,
+  onRemove,
+  children,
+}: Props) {
   return (
     <S.Container variant={variant} color={color}>
       <S.Text variant={variant}>{children}</S.Text>
+
+      {removeButton && (
+        <S.RemoveButton onClick={onRemove}>
+          <Cross size="xs" color={THEME.PALETTE.gray[40]} />
+        </S.RemoveButton>
+      )}
     </S.Container>
   );
 }
@@ -19,13 +37,13 @@ export default Badge;
 const S = {
   Container: styled.div<Pick<Props, 'variant' | 'color'>>`
     width: fit-content;
-    height: 24px;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level3};
 
-    padding: 0 ${({ theme }) => theme.PADDING.p4};
+    padding: ${({ theme }) => theme.PADDING.p3}
+      ${({ theme }) => theme.PADDING.p4};
     ${({ variant, theme }) =>
       variant === 'outlined' && `border: 1px solid ${theme.PALETTE.gray[10]}`};
 
@@ -47,7 +65,14 @@ const S = {
         ? theme.PALETTE.gray[50]
         : theme.PALETTE.gray[100]};
     font:
-      500 11px/150% Pretendard,
+      400 14px/100% Pretendard,
       sans-serif;
+  `,
+
+  RemoveButton: styled.button`
+    width: 16px;
+    height: 16px;
+    background-color: ${({ theme }) => theme.PALETTE.gray[10]};
+    border-radius: ${({ theme }) => theme.RADIUS.half};
   `,
 };

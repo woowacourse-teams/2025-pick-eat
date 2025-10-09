@@ -11,11 +11,21 @@ export default meta;
 
 type Story = StoryObj<typeof Badge>;
 
-export const filledWhite: Story = {
+export const Default: Story = {
   render: args => <Badge {...args} />,
   args: {
     variant: 'filled',
     children: 'filled white',
+  },
+};
+
+export const RemoveButton: Story = {
+  render: args => <Badge {...args} />,
+  args: {
+    variant: 'filled',
+    removeButton: true,
+    onRemove: () => {},
+    children: 'remove button',
   },
 };
 
