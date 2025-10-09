@@ -2,7 +2,6 @@ import { HEADER_HEIGHT } from '@widgets/Header';
 
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input/Input';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { useAuth } from '@domains/login/context/AuthProvider';
 
