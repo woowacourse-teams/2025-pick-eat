@@ -1,5 +1,3 @@
-import Hamburger from '@components/assets/icons/Hamburger';
-
 import Badge from './Badge';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -13,27 +11,36 @@ export default meta;
 
 type Story = StoryObj<typeof Badge>;
 
-export const Default: Story = {
-  render: () => <Badge>뱃지</Badge>,
+export const filledWhite: Story = {
+  render: args => <Badge {...args} />,
+  args: {
+    variant: 'filled',
+    children: 'filled white',
+  },
 };
 
-export const Primary: Story = {
-  render: () => <Badge>Primary Badge</Badge>,
+export const filledPrimary: Story = {
+  render: args => <Badge {...args} />,
+  args: {
+    variant: 'filled',
+    color: 'primary',
+    children: 'filled primary',
+  },
 };
 
-export const Secondary: Story = {
-  render: () => <Badge>Secondary Badge</Badge>,
+export const outlinedWhite: Story = {
+  render: args => <Badge {...args} />,
+  args: {
+    variant: 'outlined',
+    children: 'outlined white',
+  },
 };
 
-export const Gray: Story = {
-  render: () => <Badge>Gray Badge</Badge>,
-};
-
-export const WithChild: Story = {
-  render: () => (
-    <Badge>
-      <Hamburger size="sm" />
-      뱃지
-    </Badge>
-  ),
+export const outlinedPrimary: Story = {
+  render: args => <Badge {...args} />,
+  args: {
+    variant: 'outlined',
+    color: 'primary',
+    children: 'outlined primary',
+  },
 };
