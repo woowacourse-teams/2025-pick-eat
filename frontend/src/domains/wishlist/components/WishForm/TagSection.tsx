@@ -1,5 +1,5 @@
 import Input from '@components/actions/Input';
-import Badge from '@components/labels/Badge';
+import Chip from '@components/labels/Chip';
 
 import { useShowToast } from '@provider/ToastProvider';
 
@@ -48,7 +48,7 @@ function TagSection({ tags, onFormChange }: Props) {
       <S.TagList>
         {tags &&
           tags.map(tag => (
-            <Badge key={tag} color="primary">
+            <Chip key={tag} color="primary">
               <span>{tag}</span>
               <S.RemoveBtn
                 type="button"
@@ -57,7 +57,7 @@ function TagSection({ tags, onFormChange }: Props) {
               >
                 ×
               </S.RemoveBtn>
-            </Badge>
+            </Chip>
           ))}
       </S.TagList>
     </S.TagWrapper>

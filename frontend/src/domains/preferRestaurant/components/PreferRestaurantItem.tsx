@@ -1,5 +1,5 @@
 import LikeButton from '@components/actions/LikeButton/LikeButton';
-import Badge from '@components/labels/Badge';
+import Chip from '@components/labels/Chip';
 
 import { Restaurant } from '@apis/restaurant';
 
@@ -37,9 +37,9 @@ function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
       <S.Content>
         <S.TitleWrapper>
           <S.TagBox>
-            {tags.length === 0 && <Badge>{category}</Badge>}
+            {tags.length === 0 && <Chip>{category}</Chip>}
             {tags.map(tag => (
-              <Badge key={tag}>{tag}</Badge>
+              <Chip key={tag}>{tag}</Chip>
             ))}
           </S.TagBox>
           <S.RestaurantName>{name}</S.RestaurantName>

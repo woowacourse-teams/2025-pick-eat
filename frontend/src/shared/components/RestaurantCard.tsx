@@ -2,7 +2,7 @@ import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
-import Badge from './labels/Badge';
+import Chip from './labels/Chip';
 
 type Props = {
   restaurantData: Restaurant;
@@ -18,7 +18,7 @@ function RestaurantCard({ restaurantData }: Props) {
         <S.Top>
           <S.TagBox>
             {tags.map((tag: string) => (
-              <Badge key={tag}>{tag}</Badge>
+              <Chip key={tag}>{tag}</Chip>
             ))}
           </S.TagBox>
           <S.Name>{name}</S.Name>

@@ -1,53 +1,45 @@
-import Badge from './Badge';
+import Chip from './Chip';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const meta: Meta<typeof Badge> = {
-  component: Badge,
-  title: 'Badge',
+const meta: Meta<typeof Chip> = {
+  component: Chip,
+  title: 'Chip',
 };
 
 export default meta;
 
-type Story = StoryObj<typeof Badge>;
+type Story = StoryObj<typeof Chip>;
 
 export const Default: Story = {
-  render: args => <Badge {...args} />,
   args: {
-    variant: 'filled',
     children: 'filled white',
   },
 };
 
 export const RemoveButton: Story = {
-  render: args => <Badge {...args} />,
   args: {
-    variant: 'filled',
     removeButton: true,
     onRemove: () => {},
     children: 'remove button',
   },
 };
 
-export const filledPrimary: Story = {
-  render: args => <Badge {...args} />,
+export const FilledPrimary: Story = {
   args: {
-    variant: 'filled',
     color: 'primary',
     children: 'filled primary',
   },
 };
 
-export const outlinedWhite: Story = {
-  render: args => <Badge {...args} />,
+export const OutlinedWhite: Story = {
   args: {
     variant: 'outlined',
     children: 'outlined white',
   },
 };
 
-export const outlinedPrimary: Story = {
-  render: args => <Badge {...args} />,
+export const OutlinedPrimary: Story = {
   args: {
     variant: 'outlined',
     color: 'primary',

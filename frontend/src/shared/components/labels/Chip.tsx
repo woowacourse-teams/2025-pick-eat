@@ -5,15 +5,15 @@ import { THEME } from '@styles/global';
 import styled from '@emotion/styled';
 
 type Props = {
-  variant: 'outlined' | 'filled';
+  variant?: 'filled' | 'outlined';
   color?: 'white' | 'primary';
   removeButton?: boolean;
   onRemove?: () => void;
   children: React.ReactNode;
 };
 
-function Badge({
-  variant,
+function Chip({
+  variant = 'filled',
   color = 'white',
   removeButton = false,
   onRemove,
@@ -32,7 +32,7 @@ function Badge({
   );
 }
 
-export default Badge;
+export default Chip;
 
 const S = {
   Container: styled.div<Pick<Props, 'variant' | 'color'>>`
@@ -72,6 +72,7 @@ const S = {
   RemoveButton: styled.button`
     width: 16px;
     height: 16px;
+
     background-color: ${({ theme }) => theme.PALETTE.gray[10]};
     border-radius: ${({ theme }) => theme.RADIUS.half};
   `,
