@@ -15,18 +15,15 @@ type Story = StoryObj<typeof ProgressBar>;
 
 export const Default: Story = {
   render: () => {
-    const [percentage, setPercentage] = useState(0);
+    const [current, setCurrent] = useState(0);
 
     useEffect(() => {
-      setPercentage(50);
+      setCurrent(1);
     }, []);
 
     return (
       <div style={{ width: '100%' }}>
-        <ProgressBar
-          percentage={percentage}
-          icon={<p style={{ fontSize: '30px' }}>🧀</p>}
-        />
+        <ProgressBar total={3} current={current} />
       </div>
     );
   },
