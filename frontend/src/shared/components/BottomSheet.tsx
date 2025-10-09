@@ -151,6 +151,8 @@ const S = {
     transition: ${({ dragging }) =>
       dragging ? 'none' : 'transform 0.35s ease-out'};
     border-radius: 30px 30px 0 0;
+    opacity: ${({ opened }) => (opened ? 1 : 0)};
+    pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
 
     transform: ${({ sheetDistanceFromBottom }) =>
       `translateY(${sheetDistanceFromBottom}px)`};
