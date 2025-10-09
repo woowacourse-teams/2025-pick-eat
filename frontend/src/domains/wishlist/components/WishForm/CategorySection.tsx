@@ -3,7 +3,7 @@ import Badge from '@components/labels/Badge';
 import { FOOD_CATEGORIES, FoodCategory } from '@constants/foodCategory';
 
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 type Props = {
   value: FoodCategory;
@@ -11,7 +11,11 @@ type Props = {
 };
 
 function CategorySection({ value, onFormChange }: Props) {
-  const [selectedCategory, setSelectedCategory] = useState<FoodCategory>(value);
+  const [selectedCategory, setSelectedCategory] = useState<FoodCategory>();
+
+  useEffect(() => {
+    setSelectedCategory(value);
+  }, [value]);
 
   const clickBadge = (category: FoodCategory) => {
     setSelectedCategory(category);
