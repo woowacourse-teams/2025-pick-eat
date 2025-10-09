@@ -2,6 +2,8 @@ import Arrow from '@components/assets/icons/Arrow';
 
 import { useBoolean } from '@hooks/useBoolean';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import {
   ReactNode,
@@ -27,6 +29,12 @@ type OptionProps = {
 type OptionContextType = (option: { value: string; label: string }) => void;
 
 const selectContext = createContext<OptionContextType | undefined>(undefined);
+
+const getSelectStateColor = (selected: boolean, opened: boolean) => {
+  if (opened) return `${THEME.PALETTE.primary[50]}`;
+  if (selected) return `${THEME.PALETTE.gray[100]}`;
+  return `${THEME.PALETTE.gray[40]}`;
+};
 
 function Option({ value, children }: OptionProps) {
   const onChange = useContext(selectContext);
@@ -69,16 +77,27 @@ function Bar({
     };
   });
 
+  const selected = Boolean(selectedValue);
+
   return (
     <selectContext.Provider value={handleChange}>
       <S.SelectContainer onClick={e => e.stopPropagation()}>
         {label && <S.Label>{label}</S.Label>}
 
-        <S.SelectBar type="button" onClick={toggleDropdown}>
-          <S.SelectedValue isSelected={Boolean(selectedValue)}>
+        <S.SelectBar
+          type="button"
+          onClick={toggleDropdown}
+          opened={opened}
+          selected={selected}
+        >
+          <S.SelectedValue selected={selected}>
             {selectedValue ?? placeholder}
           </S.SelectedValue>
-          <Arrow direction={opened ? 'up' : 'down'} size="sm" />
+          <Arrow
+            direction={opened ? 'up' : 'down'}
+            size="lg"
+            color={getSelectStateColor(selected, opened)}
+          />
         </S.SelectBar>
 
         {opened && <S.OptionList>{children}</S.OptionList>}
@@ -105,45 +124,58 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
-  SelectBar: styled.button`
+  //TODO: padding theme에서 뽑아쓰기
+  SelectBar: styled.button<{ opened: boolean; selected: boolean }>`
     width: 100%;
-    height: 56px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
 
-    padding: ${({ theme }) => theme.PADDING.p3};
-    border: ${({ theme }) => `1px solid ${theme.PALETTE.gray[60]}`};
-    border-radius: ${({ theme }) => theme.RADIUS.medium};
-
-    &:focus {
-      border: 2px solid ${({ theme }) => theme.PALETTE.primary[60]};
-      outline: none;
-    }
+    padding: 6px;
+    border-bottom: ${({ opened, selected }) =>
+      `2px solid ${getSelectStateColor(selected, opened)}`};
   `,
 
-  SelectedValue: styled.span<{ isSelected: boolean }>`
-    color: ${({ isSelected, theme }) =>
-      isSelected ? theme.PALETTE.gray[100] : theme.PALETTE.gray[60]};
-    font: ${({ theme }) => theme.FONTS.body.medium};
+  //TODO: font theme에서 뽑아쓰기
+  SelectedValue: styled.span<{ selected: boolean }>`
+    color: ${({ selected, theme }) =>
+      selected ? theme.PALETTE.gray[100] : theme.PALETTE.gray[40]};
+    font:
+      600 20px/100% Pretendard,
+      sans-serif;
   `,
 
+  //TODO: radius,gap theme에서 뽑아쓰기
   OptionList: styled.ul`
     width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     position: absolute;
     top: 110%;
 
-    padding: ${({ theme }) => theme.PADDING.p3};
-    border: 1px solid ${({ theme }) => theme.PALETTE.gray[60]};
+    padding: ${({ theme }) => theme.PADDING.p5}
+      ${({ theme }) => theme.PADDING.p4};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: ${({ theme }) => theme.RADIUS.medium};
+    border-radius: 16px;
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
   `,
 
   Option: styled.li`
-    padding: ${({ theme }) => theme.PADDING.p5} +
-      ${({ theme }) => theme.PADDING.px3};
+    height: 35px;
+    display: flex;
+    align-items: center;
+
+    padding: ${({ theme }) => theme.PADDING.p3};
+
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font:
+      600 16px/150% Pretendard,
+      sans-serif;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     cursor: pointer;
 
     &:hover {

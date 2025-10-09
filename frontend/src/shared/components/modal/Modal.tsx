@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-export type ModalType = {
+export type Props = {
   opened: boolean;
   mounted: boolean;
   onClose: () => void;
@@ -25,7 +25,7 @@ function Modal({
   size = 'md',
   closeButton = true,
   onUnmount,
-}: ModalType) {
+}: Props) {
   useEffect(() => {
     if (!opened) return;
 
