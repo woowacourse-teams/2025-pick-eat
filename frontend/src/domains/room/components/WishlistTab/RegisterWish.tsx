@@ -1,8 +1,10 @@
-import RegisterForm from '@domains/room/components/WishlistTab/RegisterFrom';
+import RegisterForm from '@domains/wishlist/components/WishForm/RegisterFrom';
 
 import LineSearchBar from '@components/actions/SearchBar/LineSearchBar';
 import Arrow from '@components/assets/icons/Arrow';
+import BottomSheet from '@components/BottomSheet';
 import { HEADER_HEIGHT } from '@components/layouts/Header';
+import { useModal } from '@components/modal/useModal';
 
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
@@ -10,6 +12,8 @@ import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
 import { useSearchParams } from 'react-router';
+
+import SearchRestaurant from './SearchRestaurant';
 
 type Props = {
   onClick: () => void;
@@ -20,13 +24,14 @@ function RegisterWish({ onClick, onCreate }: Props) {
   const [searchParams] = useSearchParams();
   const wishId = Number(searchParams.get('wishId')) ?? '';
   const modalRoot = document.querySelector('#modal') as HTMLElement;
+  const { opened, handleCloseModal, handleOpenModal } = useModal();
 
   const handleCreateWish = () => {
     onCreate();
     handleInputChange('');
   };
   const { formData, handleFormData, initialWishFormData, createWish, error } =
-    useCreateWish(handleCreateWish);
+    useCreateWish({ onCreate: handleCreateWish, onClose: handleCloseModal });
 
   const { address, handleInputChange, addressList, handleAddressClick } =
     useFindAddress({
@@ -46,9 +51,10 @@ function RegisterWish({ onClick, onCreate }: Props) {
         <S.Title>즐겨찾기 등록하기</S.Title>
         <LineSearchBar
           label="식당 검색"
-          xIcon
           placeholder="식당 이름 검색으로 간편 입력"
+          onClick={handleOpenModal}
           value={address}
+          xIcon
         />
         <RegisterForm
           formData={formData}
@@ -57,11 +63,22 @@ function RegisterWish({ onClick, onCreate }: Props) {
           errorMessage={error}
         />
       </S.Wrapper>
+
+      <BottomSheet opened={opened} onClose={handleCloseModal}>
+        <SearchRestaurant
+          name="address"
+          value={address}
+          onChange={e => handleInputChange(e.target.value)}
+          onClear={() => handleInputChange('')}
+          placeholder="맥도날드 잠실역점, 잠실 맥도날드..."
+          addressList={addressList}
+          onClick={handleAddressClick}
+        />
+      </BottomSheet>
     </S.Container>,
     modalRoot
   );
 }
-
 export default RegisterWish;
 
 const S = {
@@ -70,7 +87,9 @@ const S = {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: ${({ theme }) => theme.Z_INDEX.overlay};
+
+    /* TODO: header 보다는 크게 bottom-sheet 보단 작게 */
+    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
     padding: 0 ${({ theme }) => theme.PADDING.p5}
       ${({ theme }) => theme.PADDING.p5};
