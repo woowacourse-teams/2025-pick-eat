@@ -77,7 +77,6 @@ AFTER INSERT ON wish
 FOR EACH ROW
 BEGIN
     INSERT INTO wish_v2 (
-        id,
         room_id,
         name,
         food_category,
@@ -90,7 +89,6 @@ BEGIN
         deleted
     )
     SELECT
-        NEW.id,
         wl.room_id,
         NEW.name,
         NEW.food_category,
