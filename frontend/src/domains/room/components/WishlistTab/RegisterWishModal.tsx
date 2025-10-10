@@ -52,6 +52,7 @@ function RegisterWishModal({ onClick, onCreate }: Props) {
         <S.Title>즐겨찾기 등록하기</S.Title>
         <S.SearchButton onClick={handleOpenModal}>
           <LineSearchBar
+            readOnly
             label="식당 검색"
             placeholder="식당 이름 검색으로 간편 입력"
             value={address}
