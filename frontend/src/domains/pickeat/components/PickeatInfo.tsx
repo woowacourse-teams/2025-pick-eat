@@ -40,7 +40,7 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
   };
 
   return (
-    <S.Container onSubmit={submitJoinPickeatForm}>
+    <S.Container>
       <S.Title>
         함께 식사할 멤버를 소환하고
         <br /> 식당을 정해봐요.
@@ -60,7 +60,7 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
         />
       </S.ShareBox>
 
-      <S.FormWrapper>
+      <S.FormWrapper onSubmit={submitJoinPickeatForm}>
         <LineInput
           value={nickname}
           onChange={e =>
@@ -87,7 +87,7 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
 export default PickeatInfo;
 
 const S = {
-  Container: styled.form`
+  Container: styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -108,7 +108,7 @@ const S = {
     border-radius: ${({ theme }) => theme.RADIUS.medium};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level2};
   `,
-  FormWrapper: styled.div`
+  FormWrapper: styled.form`
     width: 100%;
     display: flex;
     flex-direction: column;
