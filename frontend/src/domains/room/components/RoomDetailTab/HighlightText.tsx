@@ -5,17 +5,23 @@ type Props = {
   searchKeyword: string;
 };
 
-const HighlightText = ({ text, searchKeyword }: Props) => {
-  const parts = text.split(new RegExp(`(${searchKeyword})`));
+function HighlightText({ text, searchKeyword }: Props) {
+  const isPrefixMatch = text.startsWith(searchKeyword);
 
-  return parts.map((part, index) =>
-    part.toLowerCase() === searchKeyword.toLowerCase() ? (
-      <S.HighlightText key={index}>{part}</S.HighlightText>
-    ) : (
-      <S.Text key={index}>{part}</S.Text>
-    )
+  if (!isPrefixMatch) {
+    return <S.Text>{text}</S.Text>;
+  }
+
+  const matchedText = text.slice(0, searchKeyword.length);
+  const unmatchedText = text.slice(searchKeyword.length);
+
+  return (
+    <>
+      <S.HighlightText>{matchedText}</S.HighlightText>
+      <S.Text>{unmatchedText}</S.Text>
+    </>
   );
-};
+}
 
 export default HighlightText;
 
