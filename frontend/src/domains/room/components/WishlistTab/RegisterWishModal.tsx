@@ -48,7 +48,7 @@ function RegisterWishModal({ onClick, onCreate }: Props) {
         </S.BackButton>
       </S.Header>
 
-      <S.Wrapper>
+      <S.SearchWrapper>
         <S.Title>즐겨찾기 등록하기</S.Title>
         <S.SearchButton onClick={handleOpenModal}>
           <LineSearchBar
@@ -65,7 +65,7 @@ function RegisterWishModal({ onClick, onCreate }: Props) {
           onSubmit={() => createWish(wishId)}
           errorMessage={error}
         />
-      </S.Wrapper>
+      </S.SearchWrapper>
 
       <BottomSheet opened={opened} onClose={handleCloseModal}>
         <SearchRestaurant
@@ -102,12 +102,16 @@ const S = {
   Header: styled.div`
     height: ${HEADER_HEIGHT};
     display: flex;
+    position: sticky;
+    top: 0;
+
+    backdrop-filter: blur(12px) saturate(180%);
   `,
   BackButton: styled.button``,
   Title: styled.h1`
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
-  Wrapper: styled.div`
+  SearchWrapper: styled.div`
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level8};

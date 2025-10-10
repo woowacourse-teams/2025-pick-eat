@@ -1,5 +1,7 @@
 import Cross from '@components/assets/icons/Cross';
 import Chip from '@components/labels/Chip';
+import ConfirmModal from '@components/modal/ConfirmModal';
+import { useModal } from '@components/modal/useModal';
 
 import { Wishes } from '@apis/wishlist';
 
@@ -12,6 +14,13 @@ type Props = {
 
 function RestaurantCard({ restaurantData, onDelete }: Props) {
   const { tags, name, placeUrl, roadAddressName, pictures } = restaurantData;
+  const { opened, mounted, handleUnmountModal, handleOpenModal } = useModal();
+
+  const handleConfirmDelete = () => {
+    handleUnmountModal();
+    onDelete();
+  };
+
   return (
     <S.Container>
       <S.Image
@@ -41,9 +50,17 @@ function RestaurantCard({ restaurantData, onDelete }: Props) {
         )}
       </S.Info>
 
-      <S.Xicon onClick={onDelete}>
+      <S.Xicon onClick={handleOpenModal}>
         <Cross size="xs" color="white" strokeWidth={4} />
       </S.Xicon>
+
+      <ConfirmModal
+        opened={opened}
+        mounted={mounted}
+        message="정말 삭제하시겠습니까?"
+        onConfirm={handleConfirmDelete}
+        onCancel={handleUnmountModal}
+      />
     </S.Container>
   );
 }
