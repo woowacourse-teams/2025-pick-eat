@@ -7,19 +7,29 @@ type Props = {
   color?: 'white' | 'primary';
   removeButton?: boolean;
   onRemove?: () => void;
+  size?: 'sm' | 'md' | 'lg';
   children: React.ReactNode;
+};
+
+const SIZE = {
+  sm: { height: 26, font: '400 14px/100% Pretendard' },
+  md: { height: 32, font: '400 17px/100% Pretendard' },
+  lg: { height: 36, font: '400 20px/100% Pretendard' },
 };
 
 function Chip({
   variant = 'filled',
   color = 'white',
   removeButton = false,
+  size = 'md',
   onRemove,
   children,
 }: Props) {
   return (
-    <S.Container variant={variant} color={color}>
-      <S.Text variant={variant}>{children}</S.Text>
+    <S.Container variant={variant} color={color} size={size}>
+      <S.Text variant={variant} size={size}>
+        {children}
+      </S.Text>
 
       {removeButton && (
         <S.RemoveButton onClick={onRemove}>
@@ -33,8 +43,9 @@ function Chip({
 export default Chip;
 
 const S = {
-  Container: styled.div<Pick<Props, 'variant' | 'color'>>`
+  Container: styled.div<Pick<Props, 'variant' | 'color' | 'size'>>`
     width: fit-content;
+    height: ${({ size = 'md' }) => SIZE[size].height};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,7 +65,7 @@ const S = {
       variant === 'filled' && `box-shadow:${theme.BOX_SHADOW.level2}`};
   `,
   //TODO: font theme에서 뽑아쓰기
-  Text: styled.div<Pick<Props, 'variant'>>`
+  Text: styled.div<Pick<Props, 'variant' | 'size'>>`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,9 +74,7 @@ const S = {
       variant === 'outlined'
         ? theme.PALETTE.gray[50]
         : theme.PALETTE.gray[100]};
-    font:
-      400 14px/100% Pretendard,
-      sans-serif;
+    font: ${({ size = 'md' }) => SIZE[size].font};
   `,
 
   RemoveButton: styled.button`

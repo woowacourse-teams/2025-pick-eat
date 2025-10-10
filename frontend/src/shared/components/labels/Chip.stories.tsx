@@ -17,6 +17,20 @@ export const Default: Story = {
   },
 };
 
+export const DefaultSm: Story = {
+  args: {
+    children: 'sm',
+    size: 'sm',
+  },
+};
+
+export const DefaultLg: Story = {
+  args: {
+    children: 'lg',
+    size: 'lg',
+  },
+};
+
 export const RemoveButton: Story = {
   args: {
     removeButton: true,
