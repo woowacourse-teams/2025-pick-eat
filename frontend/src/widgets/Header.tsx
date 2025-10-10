@@ -65,8 +65,7 @@ const S = {
   `,
   LogoWrapper: styled.button`
     color: ${({ theme }) => theme.PALETTE.gray[95]};
-    font-size: 18px;
-    font-weight: 800;
+    font: ${({ theme }) => theme.FONTS.logo};
   `,
   ButtonWrapper: styled.div`
     display: flex;

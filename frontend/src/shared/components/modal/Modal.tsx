@@ -106,7 +106,7 @@ const S = {
 
     background-color: white;
 
-    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     opacity: ${({ opened }) => (opened ? 1 : 0)};
     pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
 
