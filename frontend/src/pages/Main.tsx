@@ -106,7 +106,7 @@ const S = {
     align-items: center;
     position: relative;
 
-    background-color: ${({ theme }) => theme.PALETTE.primary[40]};
+    background-color: ${({ theme }) => theme.PALETTE.primary[50]};
   `,
   ImageWrapper: styled.div`
     width: 284px;
@@ -150,6 +150,6 @@ const S = {
     border-radius: 30px 30px 0 0;
   `,
   Description: styled.h1`
-    font: ${({ theme }) => theme.FONTS.heading.medium};
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
 };

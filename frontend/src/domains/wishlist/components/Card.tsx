@@ -65,7 +65,7 @@ const S = {
     z-index: 1;
   `,
   Title: styled.span`
-    font: ${({ theme }) => theme.FONTS.heading.medium};
+    font: ${({ theme }) => theme.FONTS.heading.large};
   `,
   Description: styled.span`
     font: ${({ theme }) => theme.FONTS.body.large};
