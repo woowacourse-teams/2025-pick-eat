@@ -40,7 +40,7 @@ const S = {
   `,
   Title: styled.h2`
     color: ${({ theme }) => theme.PALETTE.gray[70]};
-    font: ${({ theme }) => theme.FONTS.heading.small};
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
   Description: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[50]};

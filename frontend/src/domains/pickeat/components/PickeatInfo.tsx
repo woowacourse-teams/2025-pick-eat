@@ -97,7 +97,7 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p5};
   `,
   Title: styled.h1`
-    font: ${({ theme }) => theme.FONTS.heading.small};
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
   ShareBox: styled.div`
     width: 260px;
