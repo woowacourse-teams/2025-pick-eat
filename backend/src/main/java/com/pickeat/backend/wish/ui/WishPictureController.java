@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,18 +48,4 @@ public class WishPictureController implements WishPictureApiSpec {
         wishPictureService.deleteWishPictures(wishId, userId);
         return ResponseEntity.noContent().build();
     }
-
-    @Override
-    @BusinessLogging("위시 사진 수정")
-    @PutMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<WishPictureResponse>> updateWishPictures(
-            @PathVariable("wishId") Long wishId,
-            @RequestPart("wishPictures") List<MultipartFile> wishPictures,
-            @LoginUserId Long userId
-    ) {
-        List<WishPictureResponse> wishPictureResponses =
-                wishPictureService.updateWishPictures(wishId, userId, wishPictures);
-        return ResponseEntity.ok().body(wishPictureResponses);
-    }
-
 }
