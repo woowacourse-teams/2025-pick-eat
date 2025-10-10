@@ -77,6 +77,12 @@ const S = {
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: 20px;
+
+    &:focus-within {
+      border: 1px solid ${({ theme }) => theme.PALETTE.gray[95]};
+
+      background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    }
   `,
 
   TagList: styled.div`
