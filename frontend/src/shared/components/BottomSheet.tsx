@@ -150,7 +150,8 @@ const S = {
 
     transition: ${({ dragging }) =>
       dragging ? 'none' : 'transform 0.35s ease-out'};
-    border-radius: 30px 30px 0 0;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge}
+      ${({ theme }) => theme.RADIUS.xlarge} 0 0;
 
     transform: ${({ sheetDistanceFromBottom }) =>
       `translateY(${sheetDistanceFromBottom}px)`};
@@ -164,7 +165,7 @@ const S = {
     top: 0;
     z-index: ${({ theme }) => theme.Z_INDEX.overlay};
 
-    background-color: rgb(0 0 0 / 46%);
+    background-color: rgb(0 0 0 / 50%);
 
     transition: opacity 0.3s ease;
     opacity: ${({ opacity }) => opacity};
@@ -195,7 +196,7 @@ const S = {
     display: none;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[10]};
-    border-radius: ${({ theme }) => theme.RADIUS.large};
+    border-radius: ${({ theme }) => theme.RADIUS.small};
 
     @media (pointer: coarse) {
       display: block;

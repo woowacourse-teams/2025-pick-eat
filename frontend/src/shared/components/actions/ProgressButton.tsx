@@ -30,7 +30,11 @@ const S = {
     left: 50%;
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
-    background: linear-gradient(to right, #ffda1e 0%, #ffda1e 100%);
+    background: linear-gradient(
+      to right,
+      ${({ theme }) => theme.PALETTE.primary[50]} 0%,
+      ${({ theme }) => theme.PALETTE.primary[50]} 100%
+    );
     background-color: ${({ theme }) => theme.PALETTE.gray[10]};
     background-size: ${({ percentage }) => percentage}% 100%;
     background-repeat: no-repeat;

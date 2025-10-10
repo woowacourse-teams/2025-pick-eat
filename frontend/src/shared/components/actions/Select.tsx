@@ -167,9 +167,7 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p3};
 
     color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font:
-      600 16px/150% Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     cursor: pointer;
 
