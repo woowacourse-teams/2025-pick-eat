@@ -1,7 +1,8 @@
 import Card from '@domains/wishlist/components/Card';
 
+import { HEADER_HEIGHT } from '@widgets/Header';
+
 import Carousel from '@components/Carousel';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 

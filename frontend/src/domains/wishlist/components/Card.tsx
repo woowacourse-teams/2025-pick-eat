@@ -39,11 +39,10 @@ const S = {
     overflow: hidden;
     position: relative;
 
-    padding: 37px 26px;
+    padding: ${({ theme }) => theme.PADDING.p8}
+      ${({ theme }) => theme.PADDING.p4} 0 ${({ theme }) => theme.PADDING.p7};
 
-    /* TODO: 사진 사이즈 맞추면 삭제될 예정 */
-    border: 1px solid red;
-    border-radius: 30px;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
     cursor: pointer;
   `,
