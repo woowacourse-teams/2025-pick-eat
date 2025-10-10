@@ -10,7 +10,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 @Profile("!test")
-@Configuration
+@Configuration("KakaoMapClientConfigV2")
 @RequiredArgsConstructor
 public class KakaoMapClientConfig {
 
