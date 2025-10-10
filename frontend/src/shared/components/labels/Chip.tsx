@@ -79,7 +79,9 @@ const S = {
   `,
 
   RemoveButton: styled.button`
-    all: unset;
+    display: flex;
+    justify-content: center;
+    align-itmes: center;
     cursor: pointer;
   `,
 };
