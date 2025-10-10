@@ -78,10 +78,5 @@ const S = {
     font: ${({ size = 'md' }) => SIZE[size].font};
   `,
 
-  RemoveButton: styled.button`
-    display: flex;
-    justify-content: center;
-    align-itmes: center;
-    cursor: pointer;
-  `,
+  RemoveButton: styled.button``,
 };
