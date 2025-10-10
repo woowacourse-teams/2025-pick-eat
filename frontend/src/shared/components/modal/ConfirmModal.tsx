@@ -61,7 +61,7 @@ const S = {
       ${({ theme }) => theme.PADDING.p6} 0;
   `,
   Message: styled.div`
-    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    font: ${({ theme }) => theme.FONTS.body.large_bold};
     text-align: center;
   `,
   ButtonWrapper: styled.div`
