@@ -1,4 +1,4 @@
-import Badge from '@components/labels/Badge';
+import Chip from '@components/labels/Chip';
 
 import { Restaurant } from '@apis/restaurant';
 
@@ -14,7 +14,7 @@ function ExcludedRestaurantItem({ name, tags, distance }: Props) {
           <S.TitleWrapper>
             <S.TagBox>
               {(tags ?? []).map((tag, index) => (
-                <Badge key={index}>{tag}</Badge>
+                <Chip key={index}>{tag}</Chip>
               ))}
             </S.TagBox>
             <S.RestaurantName>{name}</S.RestaurantName>

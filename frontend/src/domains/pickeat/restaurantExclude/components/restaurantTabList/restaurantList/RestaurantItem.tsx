@@ -1,6 +1,6 @@
 import Cross from '@components/assets/icons/Cross';
 import Revert from '@components/assets/icons/Revert';
-import Badge from '@components/labels/Badge';
+import Chip from '@components/labels/Chip';
 
 import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
@@ -58,7 +58,7 @@ function RestaurantItem({
           <S.TitleWrapper>
             <S.TagBox>
               {tags.map(tag => (
-                <Badge key={tag}>{tag}</Badge>
+                <Chip key={tag}>{tag}</Chip>
               ))}
             </S.TagBox>
             <S.RestaurantName>{name}</S.RestaurantName>

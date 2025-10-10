@@ -1,5 +1,5 @@
 import Trash from '@components/assets/icons/Trash';
-import Badge from '@components/labels/Badge';
+import Chip from '@components/labels/Chip';
 
 import { Wishes } from '@apis/wishlist';
 
@@ -30,12 +30,12 @@ function WishCard({ wishData, onDelete }: Props) {
 
       <S.Info>
         <S.TopArea>
-          <S.BadgeWrapper>
-            <Badge color="primary">{category}</Badge>
+          <S.ChipWrapper>
+            <Chip color="primary">{category}</Chip>
             {tags.map(tag =>
-              tag.length === 0 ? null : <Badge key={tag}>{tag}</Badge>
+              tag.length === 0 ? null : <Chip key={tag}>{tag}</Chip>
             )}
-          </S.BadgeWrapper>
+          </S.ChipWrapper>
 
           <S.RemoveBtn type="button" onClick={onDelete}>
             <Trash size="xs" color="red" />
@@ -78,7 +78,7 @@ const S = {
     flex: 1;
   `,
 
-  BadgeWrapper: styled.div`
+  ChipWrapper: styled.div`
     max-height: 54px;
     display: flex;
     flex-wrap: wrap;
