@@ -1,7 +1,7 @@
 import AddressList from '@domains/pickeat/components/AddressList';
 import WishForm from '@domains/wishlist/components/WishForm';
 
-import SearchBar from '@components/actions/SearchBar';
+import SearchBar from '@components/actions/SearchBar/SearchBar';
 
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
 import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
