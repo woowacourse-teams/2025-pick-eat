@@ -12,10 +12,9 @@ import org.springframework.http.HttpStatus;
 
 public class RestaurantPieceTest {
 
-    public static void 위치_기반_식당_생성(String pickeatCode, LocationRestaurantRequest request, String accessToken) {
+    public static void 위치_기반_식당_생성(String pickeatCode, LocationRestaurantRequest request) {
         RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
@@ -24,10 +23,9 @@ public class RestaurantPieceTest {
                 .statusCode(HttpStatus.CREATED.value());
     }
 
-    public static void 위시_기반_식당_생성(String pickeatCode, WishRestaurantRequest request, String accessToken) {
+    public static void 위시_기반_식당_생성(String pickeatCode, WishRestaurantRequest request) {
         RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
@@ -36,10 +34,10 @@ public class RestaurantPieceTest {
                 .statusCode(HttpStatus.CREATED.value());
     }
 
-    public static void 식당_제외(RestaurantExcludeRequest request, String accessToken) {
+    public static void 식당_제외(RestaurantExcludeRequest request, String participantToken) {
         RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
@@ -48,30 +46,30 @@ public class RestaurantPieceTest {
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    public static void 식당_좋아요(Long restaurantId, String accessToken) {
+    public static void 식당_좋아요(Long restaurantId, String participantToken) {
         RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
                 .when()
                 .patch("/api/v2/restaurants/{restaurantId}/like", restaurantId)
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    public static void 식당_좋아요_취소(Long restaurantId, String accessToken) {
+    public static void 식당_좋아요_취소(Long restaurantId, String participantToken) {
         RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
                 .when()
                 .patch("/api/v2/restaurants/{restaurantId}/unlike", restaurantId)
                 .then().log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value());
     }
 
-    public static List<RestaurantResponse> 식당_목록_조회(String pickeatCode, Boolean isExcluded, String accessToken) {
+    public static List<RestaurantResponse> 픽잇의_식당_조회(String pickeatCode, Boolean isExcluded, String participantToken) {
         return RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
                 .queryParam("isExcluded", isExcluded)
                 .when()
                 .get("/api/v2/pickeats/{pickeatCode}/restaurants", pickeatCode)

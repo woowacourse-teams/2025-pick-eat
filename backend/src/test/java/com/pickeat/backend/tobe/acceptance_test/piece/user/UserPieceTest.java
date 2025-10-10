@@ -21,10 +21,9 @@ public class UserPieceTest {
                 .as(UserResponse.class);
     }
 
-    public static List<UserResponse> 방_유저_목록_조회(Long roomId, String accessToken) {
+    public static List<UserResponse> 방_유저_목록_조회(Long roomId) {
         return RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
                 .when()
                 .get("/api/v2/rooms/{roomId}/users", roomId)
                 .then().log().all()
@@ -33,10 +32,9 @@ public class UserPieceTest {
                 .as(new TypeRef<List<UserResponse>>() {});
     }
 
-    public static List<UserResponse> 유저_검색(String nickname, String accessToken) {
+    public static List<UserResponse> 유저_검색(String nickname) {
         return RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
                 .queryParam("nickname", nickname)
                 .when()
                 .get("/api/v2/users/search")

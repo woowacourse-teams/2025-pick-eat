@@ -9,10 +9,9 @@ import java.util.List;
 
 public class TemplatePieceTest {
 
-    public static List<TemplateResponse> 템플릿_목록_조회(String accessToken) {
+    public static List<TemplateResponse> 템플릿_목록_조회() {
         return RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
                 .when()
                 .get("/api/v1/templates")
                 .then().log().all()

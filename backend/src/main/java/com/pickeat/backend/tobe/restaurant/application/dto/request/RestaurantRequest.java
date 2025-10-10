@@ -31,4 +31,25 @@ public record RestaurantRequest(
                 RestaurantType.WISH
         );
     }
+
+    public static RestaurantRequest fromLocation(
+            String name,
+            FoodCategory category,
+            Integer distance,
+            String roadAddressName,
+            String placeUrl,
+            String tags
+    ) {
+        return new RestaurantRequest(
+                name,
+                category,
+                distance,
+                roadAddressName,
+                placeUrl,
+                tags,
+                null,
+                null,
+                RestaurantType.LOCATION
+        );
+    }
 }

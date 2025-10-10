@@ -9,10 +9,9 @@ import java.util.List;
 
 public class TemplateWishPieceTest {
 
-    public static List<TemplateWishResponse> 템플릿_소원_목록_조회(Long templateId, String accessToken) {
+    public static List<TemplateWishResponse> 템플릿_소원_목록_조회(Long templateId) {
         return RestAssured
                 .given().log().all()
-                .header("Authorization", "Bearer " + accessToken)
                 .when()
                 .get("/api/v1/templates/{templateId}/wishes", templateId)
                 .then().log().all()
