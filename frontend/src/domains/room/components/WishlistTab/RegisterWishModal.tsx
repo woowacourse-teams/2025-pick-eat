@@ -1,9 +1,10 @@
 import RegisterForm from '@domains/wishlist/components/WishForm/RegisterFrom';
 
+import { HEADER_HEIGHT } from '@widgets/Header';
+
 import LineSearchBar from '@components/actions/SearchBar/LineSearchBar';
 import Arrow from '@components/assets/icons/Arrow';
 import BottomSheet from '@components/BottomSheet';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
 import { useModal } from '@components/modal/useModal';
 
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';

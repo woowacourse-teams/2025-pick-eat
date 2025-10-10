@@ -30,10 +30,13 @@ function CategorySection({ value, onFormChange }: Props) {
         {FOOD_CATEGORIES.map(category => (
           <S.Chip
             key={category}
-            onClick={() => clickBadge(category)}
+            onClick={() => clickChip(category)}
             type="button"
           >
-            <Chip color={selectedCategory === category ? 'primary' : 'gray'}>
+            <Chip
+              color={selectedCategory === category ? 'primary' : 'white'}
+              size="lg"
+            >
               {category}
             </Chip>
           </S.Chip>
@@ -75,10 +78,5 @@ const S = {
     display: flex;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
-  BadgeButton: styled.button`
-    padding: 0;
-    border: none;
-
-    background: none;
-  `,
+  Chip: styled.button``,
 };

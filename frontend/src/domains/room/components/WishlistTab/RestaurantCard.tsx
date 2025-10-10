@@ -1,5 +1,5 @@
 import Cross from '@components/assets/icons/Cross';
-import Badge from '@components/labels/Badge';
+import Chip from '@components/labels/Chip';
 
 import { Wishes } from '@apis/wishlist';
 
@@ -24,7 +24,9 @@ function RestaurantCard({ restaurantData, onDelete }: Props) {
           {tags?.length > 0 && (
             <S.TagBox>
               {tags.map((tag: string) => (
-                <Badge key={tag}>{tag}</Badge>
+                <Chip key={tag} variant="outlined" size="sm">
+                  {tag}
+                </Chip>
               ))}
             </S.TagBox>
           )}

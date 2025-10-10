@@ -50,15 +50,13 @@ function TagSection({ tags, onFormChange }: Props) {
       <S.TagList>
         {tags &&
           tags.map(tag => (
-            <Chip key={tag} color="primary">
-              <span>{tag}</span>
-              <S.RemoveBtn
-                type="button"
-                aria-label={`${tag} 태그 삭제`}
-                onClick={() => removeTag(tag)}
-              >
-                ×
-              </S.RemoveBtn>
+            <Chip
+              key={tag}
+              variant="outlined"
+              removeButton
+              onRemove={() => removeTag(tag)}
+            >
+              {tag}
             </Chip>
           ))}
       </S.TagList>
@@ -82,19 +80,9 @@ const S = {
   `,
 
   TagList: styled.div`
-    min-height: 26px;
+    min-height: 30px;
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level3};
-  `,
-
-  RemoveBtn: styled.button`
-    margin-left: 6px;
-    border: none;
-
-    background: none;
-
-    color: ${({ theme }) => theme.PALETTE.gray[70]};
-    font-size: 14px;
   `,
 };
