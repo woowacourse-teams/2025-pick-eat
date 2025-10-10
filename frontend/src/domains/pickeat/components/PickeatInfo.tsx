@@ -1,5 +1,5 @@
 import Button from '@components/actions/Button';
-import Input from '@components/actions/Input';
+import Input from '@components/actions/Input/Input';
 import Share from '@components/assets/icons/Share';
 import ErrorMessage from '@components/errors/ErrorMessage';
 import QRCode from '@components/share/QRCode';
@@ -116,7 +116,7 @@ const S = {
     padding: 5%;
 
     border: 2px solid ${({ theme }) => theme.PALETTE.secondary[30]};
-    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
   `,
 
   TitleWrapper: styled.div`

@@ -104,7 +104,7 @@ const getButtonStyle = (
     : theme.PALETTE.gray[90]};
   font-size: ${SIZE[size].fontSize};
   font-weight: 400;
-  border-radius: ${theme.RADIUS.medium2};
+  border-radius: ${theme.RADIUS.medium};
   cursor: pointer;
 
   &:hover {

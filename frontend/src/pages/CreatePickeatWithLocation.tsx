@@ -1,11 +1,12 @@
 import AddressList from '@domains/pickeat/components/AddressList';
 
+import { HEADER_HEIGHT } from '@widgets/Header';
+
 import Button from '@components/actions/Button';
-import Input from '@components/actions/Input';
-import SearchBar from '@components/actions/SearchBar';
+import Input from '@components/actions/Input/Input';
+import SearchBar from '@components/actions/SearchBar/SearchBar';
 import Select from '@components/actions/Select';
 import ErrorMessage from '@components/errors/ErrorMessage';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { useCreateLocationPickeat } from '@domains/pickeat/hooks/useCreateLocationPickeat';
 import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';

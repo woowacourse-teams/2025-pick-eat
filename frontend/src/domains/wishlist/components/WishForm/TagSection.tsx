@@ -1,5 +1,5 @@
-import Input from '@components/actions/Input';
-import Chip from '@components/labels/Chip';
+import Input from '@components/actions/Input/Input';
+import Badge from '@components/labels/Badge';
 
 import { useShowToast } from '@provider/ToastProvider';
 

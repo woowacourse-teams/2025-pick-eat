@@ -49,7 +49,7 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
 
     animation: fade-animation 0.5s ease-out;
-    border-radius: ${({ theme }) => theme.RADIUS.medium2};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level4};
 
     @keyframes fade-animation {
@@ -77,8 +77,8 @@ const S = {
 
     animation: ${({ timeSet }) =>
       `progress-bar-animation ${timeSet / 1000}s linear forwards`};
-    border-radius: ${({ theme }) => theme.RADIUS.medium2}
-      ${({ theme }) => theme.RADIUS.medium2} 0 0;
+    border-radius: ${({ theme }) => theme.RADIUS.medium}
+      ${({ theme }) => theme.RADIUS.medium} 0 0;
 
     @keyframes progress-bar-animation {
       from {

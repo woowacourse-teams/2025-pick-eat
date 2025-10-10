@@ -66,6 +66,7 @@ function PickeatEndButton() {
 
 export default PickeatEndButton;
 
+//TODO: 지우기
 function AnimatedResultButton({
   children,
   totalParticipants,
