@@ -45,7 +45,11 @@ function Main() {
       await pickeat.postWish(id, code);
       if (code) navigate(generateRouterPath.pickeatDetail(code));
     } catch (e) {
-      if (e instanceof Error) showToast({ mode: 'ERROR', message: e.message });
+      if (e instanceof Error)
+        showToast({
+          mode: 'ERROR',
+          message: '픽잇 생성을 실패했습니다. 다시 시도해 주세요.',
+        });
     }
   };
 
