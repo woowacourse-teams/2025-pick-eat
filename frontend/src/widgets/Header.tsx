@@ -1,5 +1,3 @@
-import Logo from '@components/assets/identity/Logo';
-
 import { useAuth } from '@domains/login/context/AuthProvider';
 
 import { useGA } from '@hooks/useGA';
@@ -9,7 +7,7 @@ import { ROUTE_PATH } from '@routes/routePath';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 
-export const HEADER_HEIGHT = '72px';
+export const HEADER_HEIGHT = '60px';
 
 function Header() {
   const navigate = useNavigate();
@@ -34,9 +32,7 @@ function Header() {
 
   return (
     <S.Container>
-      <S.LogoWrapper onClick={handleLogoClick}>
-        <Logo />
-      </S.LogoWrapper>
+      <S.LogoWrapper onClick={handleLogoClick}>PICKEAT</S.LogoWrapper>
       <S.ButtonWrapper>
         {loggedIn ? (
           <>
@@ -45,9 +41,7 @@ function Header() {
             <S.LoginButton onClick={logoutUser}>로그아웃</S.LoginButton>
           </>
         ) : (
-          <S.LoginButton onClick={handleLoginClick}>
-            로그인/회원가입
-          </S.LoginButton>
+          <S.LoginButton onClick={handleLoginClick}>로그인</S.LoginButton>
         )}
       </S.ButtonWrapper>
     </S.Container>
@@ -66,12 +60,12 @@ const S = {
     z-index: ${({ theme }) => theme.Z_INDEX.sticky};
 
     padding: ${({ theme }) => theme.PADDING.p5};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-bottom: solid 1px ${({ theme }) => theme.PALETTE.gray[20]};
+    backdrop-filter: blur(12px) saturate(180%);
+    box-shadow: inset 0 -1px 1px 1px rgb(255 255 255 / 50%);
   `,
   LogoWrapper: styled.button`
-    width: 80px;
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
+    font: ${({ theme }) => theme.FONTS.logo};
   `,
   ButtonWrapper: styled.div`
     display: flex;
@@ -82,13 +76,13 @@ const S = {
 
     background: none;
 
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.body.small_bold};
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
+    font: ${({ theme }) => theme.FONTS.body.small};
     cursor: pointer;
   `,
 
   VerticalDivider: styled.p`
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
     font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 
@@ -97,8 +91,8 @@ const S = {
 
     background: none;
 
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.body.small_bold};
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
+    font: ${({ theme }) => theme.FONTS.body.small};
     cursor: pointer;
   `,
 };

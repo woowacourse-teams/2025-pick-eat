@@ -1,4 +1,4 @@
-import Badge from '@components/labels/Badge';
+import Chip from '@components/labels/Chip';
 
 import { FOOD_CATEGORIES, FoodCategory } from '@constants/foodCategory';
 
@@ -17,7 +17,7 @@ function CategorySection({ value, onFormChange }: Props) {
     setSelectedCategory(value);
   }, [value]);
 
-  const clickBadge = (category: FoodCategory) => {
+  const clickChip = (category: FoodCategory) => {
     setSelectedCategory(category);
     onFormChange(category);
   };
@@ -33,9 +33,9 @@ function CategorySection({ value, onFormChange }: Props) {
             onClick={() => clickBadge(category)}
             type="button"
           >
-            <Badge color={selectedCategory === category ? 'primary' : 'gray'}>
+            <Chip color={selectedCategory === category ? 'primary' : 'gray'}>
               {category}
-            </Badge>
+            </Chip>
           </S.Chip>
         ))}
       </S.ChipWrapper>
@@ -75,5 +75,10 @@ const S = {
     display: flex;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
-  Chip: styled.button``,
+  BadgeButton: styled.button`
+    padding: 0;
+    border: none;
+
+    background: none;
+  `,
 };

@@ -116,7 +116,7 @@ const S = {
     padding: 5%;
 
     border: 2px solid ${({ theme }) => theme.PALETTE.secondary[30]};
-    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
   `,
 
   TitleWrapper: styled.div`

@@ -98,7 +98,7 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p3};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: ${({ theme }) => theme.RADIUS.medium3};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     box-shadow: rgb(0 0 0 / 10%) 0 4px 12px;
     cursor: pointer;
   `,
@@ -106,7 +106,7 @@ const S = {
     width: 140px;
     height: 140px;
 
-    border-radius: ${({ theme }) => theme.RADIUS.medium2};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
   `,
   TitleBox: styled.div`
     width: 100%;

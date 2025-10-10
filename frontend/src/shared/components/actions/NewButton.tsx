@@ -1,3 +1,5 @@
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import { ComponentProps, ReactNode } from 'react';
 
@@ -17,13 +19,12 @@ function NewButton({ size = 'lg', fixed = false, children, ...props }: Props) {
 
 export default NewButton;
 
-//TODO:폰트 theme에서 뽑아쓰기
 const SIZE = {
-  sm: { width: '108px', height: '40px', font: '500 16px/150% Pretendard' },
+  sm: { width: '108px', height: '40px', font: THEME.FONTS.body.medium_bold },
   lg: {
     width: '100%',
     height: '52px',
-    font: '600 17px/150% Pretendard',
+    font: THEME.FONTS.body.large_bold,
   },
 } as const;
 
@@ -34,12 +35,12 @@ const S = {
     width: ${({ size, fixed }) => (fixed ? '90%' : SIZE[size].width)};
     height: ${({ size }) => SIZE[size].height};
 
-    background-color: #ffda1e;
+    background-color: ${({ theme }) => theme.PALETTE.primary[50]};
 
     color: ${({ theme }) => theme.PALETTE.gray[100]};
     font: ${({ size }) => SIZE[size].font};
 
-    border-radius: 12px;
+    border-radius: ${({ theme }) => theme.RADIUS.small};
 
     ${({ fixed, theme }) =>
       fixed &&

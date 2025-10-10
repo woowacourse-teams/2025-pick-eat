@@ -1,5 +1,5 @@
 import LikeButton from '@components/actions/LikeButton/LikeButton';
-import Badge from '@components/labels/Badge';
+import Chip from '@components/labels/Chip';
 
 import { Restaurant } from '@apis/restaurant';
 
@@ -12,16 +12,8 @@ type Props = {
   onUnlike: (id: number) => void;
 };
 function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
-  const {
-    id,
-    name,
-    tags,
-    likeCount,
-    category,
-    pictureUrls,
-    distance,
-    placeUrl,
-  } = restaurant;
+  const { id, name, tags, likeCount, pictureUrls, distance, placeUrl } =
+    restaurant;
 
   const menuUrl = `${placeUrl}#menuInfo`;
   return (
@@ -37,9 +29,8 @@ function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
       <S.Content>
         <S.TitleWrapper>
           <S.TagBox>
-            {tags.length === 0 && <Badge>{category}</Badge>}
             {tags.map(tag => (
-              <Badge key={tag}>{tag}</Badge>
+              <Chip key={tag}>{tag}</Chip>
             ))}
           </S.TagBox>
           <S.RestaurantName>{name}</S.RestaurantName>
