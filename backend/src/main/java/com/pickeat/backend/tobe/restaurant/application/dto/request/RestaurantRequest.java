@@ -1,6 +1,7 @@
 package com.pickeat.backend.tobe.restaurant.application.dto.request;
 
 import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.template.domain.TemplateWish;
@@ -20,14 +21,15 @@ public record RestaurantRequest(
 
     public static RestaurantRequest fromWish(Wish wish) {
         RestaurantInfo restaurantInfo = wish.getRestaurantInfo();
+        Picture picture = restaurantInfo.getPicture();
         return new RestaurantRequest(
                 restaurantInfo.getName(),
                 restaurantInfo.getFoodCategory(),
                 restaurantInfo.getDistance(),
                 restaurantInfo.getRoadAddressName(),
                 restaurantInfo.getPlaceUrl(),
-                restaurantInfo.getPicture().getPictureKey(),
-                restaurantInfo.getPicture().getPictureUrl(),
+                picture == null ? null : picture.getPictureKey(),
+                picture == null ? null : picture.getPictureUrl(),
                 restaurantInfo.getTags(),
                 RestaurantType.WISH
         );
@@ -35,14 +37,15 @@ public record RestaurantRequest(
 
     public static RestaurantRequest fromTemplateWish(TemplateWish templateWish) {
         RestaurantInfo restaurantInfo = templateWish.getRestaurantInfo();
+        Picture picture = restaurantInfo.getPicture();
         return new RestaurantRequest(
                 restaurantInfo.getName(),
                 restaurantInfo.getFoodCategory(),
                 restaurantInfo.getDistance(),
                 restaurantInfo.getRoadAddressName(),
                 restaurantInfo.getPlaceUrl(),
-                restaurantInfo.getPicture().getPictureKey(),
-                restaurantInfo.getPicture().getPictureUrl(),
+                picture == null ? null : picture.getPictureKey(),
+                picture == null ? null : picture.getPictureUrl(),
                 restaurantInfo.getTags(),
                 RestaurantType.TEMPLATE_WISH
         );
