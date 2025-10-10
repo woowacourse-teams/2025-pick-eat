@@ -1,8 +1,8 @@
 package com.pickeat.backend.tobe.wish.application.dto.response;
 
+import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.tobe.wish.domain.Wish;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 
 @Schema(description = "위시 사진 응답")
 public record WishPictureResponse(
@@ -13,15 +13,7 @@ public record WishPictureResponse(
 ) {
 
     public static WishPictureResponse from(Wish wish) {
-        return new WishPictureResponse(
-                wish.getId(),
-                wish.getRestaurantInfo().getPicture().getPictureUrl()
-        );
-    }
-
-    public static List<WishPictureResponse> from(List<Wish> wishes) {
-        return wishes.stream()
-                .map(WishPictureResponse::from)
-                .toList();
+        Picture picture = wish.getRestaurantInfo().getPicture();
+        return new WishPictureResponse(wish.getId(), picture.getPictureUrl());
     }
 }

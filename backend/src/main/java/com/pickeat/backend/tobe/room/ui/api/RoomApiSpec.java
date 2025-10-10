@@ -18,7 +18,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@Tag(name = "방 관리", description = "방 생성, 조회 및 초대 API")
+@Tag(name = "방 관리 V2", description = "방 생성, 조회 및 초대 API")
 public interface RoomApiSpec {
 
     @Operation(

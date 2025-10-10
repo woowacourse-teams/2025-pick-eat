@@ -1,4 +1,4 @@
-package com.pickeat.backend.acceptance_test.scenario;
+package com.pickeat.backend.tobe.acceptance_test.scenario;
 
 import static com.pickeat.backend.acceptance_test.piece.login.LoginPieceTest.회원가입;
 import static com.pickeat.backend.acceptance_test.piece.login.LoginPieceTest.회원가입을_위한_코드_처리;
@@ -11,18 +11,17 @@ import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇_정보_조회;
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇_활성화_상태_조회;
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇의_참가자_요약_정보_조회;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_소거;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요_취소;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.위시리스트_기반으로_식당_생성;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.픽잇의_식당_조회;
-import static com.pickeat.backend.acceptance_test.piece.room.RoomPieceTest.방_생성;
-import static com.pickeat.backend.acceptance_test.piece.room.RoomPieceTest.방_정보_조회;
-import static com.pickeat.backend.acceptance_test.piece.room.RoomPieceTest.방_초대;
-import static com.pickeat.backend.acceptance_test.piece.user.UserPieceTest.유저_검색;
-import static com.pickeat.backend.acceptance_test.piece.wish.WishListPieceTest.방의_위시리스트_조회;
-import static com.pickeat.backend.acceptance_test.piece.wish.WishPieceTest.위시_생성;
-import static com.pickeat.backend.acceptance_test.piece.wish.WishPieceTest.위시리스트에_담긴_위시_조회;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_제외;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요_취소;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.위시_기반_식당_생성;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.픽잇의_식당_조회;
+import static com.pickeat.backend.tobe.acceptance_test.piece.room.RoomPieceTest.방_단일_조회;
+import static com.pickeat.backend.tobe.acceptance_test.piece.room.RoomPieceTest.방_생성;
+import static com.pickeat.backend.tobe.acceptance_test.piece.room.RoomPieceTest.방_초대;
+import static com.pickeat.backend.tobe.acceptance_test.piece.user.UserPieceTest.유저_검색;
+import static com.pickeat.backend.tobe.acceptance_test.piece.wish.WishPieceTest.위시_목록_조회;
+import static com.pickeat.backend.tobe.acceptance_test.piece.wish.WishPieceTest.위시_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -36,17 +35,16 @@ import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResp
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
-import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
-import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
-import com.pickeat.backend.room.application.dto.request.RoomRequest;
-import com.pickeat.backend.room.application.dto.response.RoomResponse;
-import com.pickeat.backend.user.application.dto.UserResponse;
-import com.pickeat.backend.wish.application.dto.request.WishRequest;
-import com.pickeat.backend.wish.application.dto.response.WishListResponse;
-import com.pickeat.backend.wish.application.dto.response.WishResponse;
+import com.pickeat.backend.tobe.restaurant.application.dto.request.WishRestaurantRequest;
+import com.pickeat.backend.tobe.room.application.dto.request.RoomInvitationRequest;
+import com.pickeat.backend.tobe.room.application.dto.request.RoomRequest;
+import com.pickeat.backend.tobe.room.application.dto.response.RoomResponse;
+import com.pickeat.backend.tobe.user.application.dto.UserResponse;
+import com.pickeat.backend.tobe.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.tobe.wish.application.dto.response.WishResponse;
 import io.restassured.RestAssured;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
@@ -90,35 +88,33 @@ public class PickeatByWishScenarioTest {
         List<Long> invitedUserIds = searchedUsers.stream().map(UserResponse::id).toList();
         방_초대(room.id(), new RoomInvitationRequest(invitedUserIds), readerAuthToken.token());
 
-        RoomResponse roomInformation = 방_정보_조회(room.id(), readerAuthToken.token());
+        RoomResponse roomInformation = 방_단일_조회(room.id(), readerAuthToken.token());
         checkUserCountInRoom(roomInformation, 3);
 
         // 위시리스트 생성
-        long wishlistId = room.wishlistId();
-        위시_생성(wishlistId,
+        위시_생성(room.id(),
                 new WishRequest("식당1", FoodCategory.KOREAN.getName(), "도로명", List.of("태그1"), "url1"),
                 readerAuthToken.token());
-        위시_생성(wishlistId,
+        위시_생성(room.id(),
                 new WishRequest("식당2", FoodCategory.KOREAN.getName(), "도로명", List.of("태그1"), "url1"),
                 readerAuthToken.token());
-        위시_생성(wishlistId,
+        위시_생성(room.id(),
                 new WishRequest("식당3", FoodCategory.KOREAN.getName(), "도로명", List.of("태그1"), "url1"),
                 readerAuthToken.token());
-        위시_생성(wishlistId,
+        위시_생성(room.id(),
                 new WishRequest("식당4", FoodCategory.KOREAN.getName(), "도로명", List.of("태그1"), "url1"),
                 readerAuthToken.token());
-        위시_생성(wishlistId,
+        위시_생성(room.id(),
                 new WishRequest("식당5", FoodCategory.KOREAN.getName(), "도로명", List.of("태그1"), "url1"),
                 readerAuthToken.token());
 
-        // 위시리스트 조회
-        WishListResponse createdWishList = 방의_위시리스트_조회(room.id(), readerAuthToken.token());
-        List<WishResponse> createdWish = 위시리스트에_담긴_위시_조회(createdWishList.id(), readerAuthToken.token());
-        checkWishSizeInWishList(createdWish, 5);
+        // 위시 조회
+        List<WishResponse> createdWish = 위시_목록_조회(room.id(), readerAuthToken.token());
+        checkWishSizeInRoom(createdWish, 5);
 
         // 픽잇 생성
         PickeatResponse createdPickeat = 방에서_픽잇_생성(room.id(), new PickeatRequest("우테코 점심 픽잇"), readerAuthToken.token());
-        위시리스트_기반으로_식당_생성(createdPickeat.code(), new WishRestaurantRequest(wishlistId));
+        위시_기반_식당_생성(createdPickeat.code(), new WishRestaurantRequest(room.id()));
 
         // 참여자 생성
         PickeatResponse pickeat = 픽잇_정보_조회(createdPickeat.code());
@@ -127,13 +123,13 @@ public class PickeatByWishScenarioTest {
         TokenResponse participant3Token = 참가자_생성(new ParticipantRequest("참여자3", pickeat.id()));
 
         // 참여자들의 식당 소거
-        List<RestaurantResponse> restaurants = 픽잇의_식당_조회(pickeat.code(), participant1Token.token(), null);
+        List<RestaurantResponse> restaurants = 픽잇의_식당_조회(pickeat.code(), null, participant1Token.token());
         List<Long> restaurantIds = restaurants.stream().map(RestaurantResponse::id).toList();
-        식당_소거(new RestaurantExcludeRequest(restaurantIds.subList(0, 1)), participant1Token.token());
-        식당_소거(new RestaurantExcludeRequest(restaurantIds.subList(1, 2)), participant2Token.token());
-        식당_소거(new RestaurantExcludeRequest(restaurantIds.subList(2, 3)), participant3Token.token());
+        식당_제외(new RestaurantExcludeRequest(restaurantIds.subList(0, 1)), participant1Token.token());
+        식당_제외(new RestaurantExcludeRequest(restaurantIds.subList(1, 2)), participant2Token.token());
+        식당_제외(new RestaurantExcludeRequest(restaurantIds.subList(2, 3)), participant3Token.token());
 
-        List<RestaurantResponse> restaurantAfterExcluded = 픽잇의_식당_조회(pickeat.code(), participant1Token.token(), null);
+        List<RestaurantResponse> restaurantAfterExcluded = 픽잇의_식당_조회(pickeat.code(), null, participant1Token.token());
         checkExcludedRestaurants(restaurantIds.subList(0, 3), restaurantAfterExcluded);
 
         참가자_선택_완료_표시(participant1Token.token());
@@ -144,7 +140,7 @@ public class PickeatByWishScenarioTest {
         ParticipantStateResponse participantStateSummary = 픽잇의_참가자_요약_정보_조회(pickeat.code());
         checkParticipantState(participantStateSummary, 3, 3);
 
-        List<RestaurantResponse> noneExcludedRestaurant = 픽잇의_식당_조회(pickeat.code(), participant1Token.token(), false);
+        List<RestaurantResponse> noneExcludedRestaurant = 픽잇의_식당_조회(pickeat.code(), false, participant1Token.token());
         식당_좋아요(noneExcludedRestaurant.get(0).id(), participant1Token.token());
         식당_좋아요(noneExcludedRestaurant.get(1).id(), participant2Token.token());
         식당_좋아요(noneExcludedRestaurant.get(1).id(), participant3Token.token());
@@ -169,7 +165,7 @@ public class PickeatByWishScenarioTest {
         assertThat(room.userCount()).isEqualTo(expectedCount);
     }
 
-    private void checkWishSizeInWishList(List<WishResponse> wishes, int size) {
+    private void checkWishSizeInRoom(List<WishResponse> wishes, int size) {
         assertThat(wishes).hasSize(size);
     }
 

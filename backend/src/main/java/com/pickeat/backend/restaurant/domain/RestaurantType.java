@@ -2,5 +2,6 @@ package com.pickeat.backend.restaurant.domain;
 
 public enum RestaurantType {
     LOCATION,
-    WISH
+    WISH,
+    TEMPLATE_WISH
 }

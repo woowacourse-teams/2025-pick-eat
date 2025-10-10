@@ -19,10 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "Wish", description = "위시 관련 API")
+@Tag(name = "위시 관리 V2", description = "위시 관련 API")
 public interface WishApiSpec {
 
-    @Operation(summary = "위시 생성", description = "특정 룸에 위시를 생성합니다.")
+    @Operation(
+            summary = "위시 생성",
+            description = "특정 룸에 위시를 생성합니다.",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "위시 생성 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청"),
@@ -35,7 +39,11 @@ public interface WishApiSpec {
             @Valid @RequestBody WishRequest request,
             @Parameter(hidden = true) @LoginUserId Long userId);
 
-    @Operation(summary = "위시 삭제", description = "특정 위시를 삭제합니다.")
+    @Operation(
+            summary = "위시 삭제",
+            description = "특정 위시를 삭제합니다.",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "위시 삭제 성공"),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
@@ -46,7 +54,11 @@ public interface WishApiSpec {
             @Parameter(description = "삭제할 위시 ID") @PathVariable("wishId") Long wishId,
             @Parameter(hidden = true) @LoginUserId Long userId);
 
-    @Operation(summary = "위시 수정", description = "특정 위시를 수정합니다.")
+    @Operation(
+            summary = "위시 수정",
+            description = "특정 위시를 수정합니다.",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "위시 수정 성공"),
             @ApiResponse(responseCode = "400", description = "잘못된 요청"),
@@ -59,7 +71,11 @@ public interface WishApiSpec {
             @Valid @RequestBody WishUpdateRequest request,
             @Parameter(hidden = true) @LoginUserId Long userId);
 
-    @Operation(summary = "룸의 위시 목록 조회", description = "특정 룸에 속한 위시 목록을 조회합니다.")
+    @Operation(
+            summary = "룸의 위시 목록 조회",
+            description = "특정 룸에 속한 위시 목록을 조회합니다.",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "조회 성공"),
             @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),

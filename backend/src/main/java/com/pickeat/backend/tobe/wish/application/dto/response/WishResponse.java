@@ -21,7 +21,7 @@ public record WishResponse(
                   "imageDownloadUrl": "https://example.com/image1.jpg"
                 }
                 """)
-        WishPictureResponse pictures,
+        WishPictureResponse picture,
         @Schema(description = "도로명 주소", example = "서울특별시 강남구 테헤란로 123")
         String roadAddressName,
         @Schema(description = "태그 목록", example = "[\"매운맛\", \"치즈추가\"]")
@@ -31,13 +31,12 @@ public record WishResponse(
 ) {
 
     public static WishResponse from(Wish wish) {
-        WishPictureResponse wishPictureResponses = WishPictureResponse.from(wish);
         RestaurantInfo restaurantInfo = wish.getRestaurantInfo();
         return new WishResponse(
                 wish.getId(),
                 restaurantInfo.getName(),
                 restaurantInfo.getFoodCategory().getName(),
-                wishPictureResponses,
+                restaurantInfo.getPicture() == null ? null : WishPictureResponse.from(wish),
                 restaurantInfo.getRoadAddressName(),
                 parseTags(restaurantInfo.getTags()),
                 restaurantInfo.getPlaceUrl()

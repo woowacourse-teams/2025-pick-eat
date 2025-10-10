@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.restaurant.application.request;
+package com.pickeat.backend.tobe.restaurant.application.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
