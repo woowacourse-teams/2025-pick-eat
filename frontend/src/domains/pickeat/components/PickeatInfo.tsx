@@ -7,9 +7,8 @@ import { PickeatType } from '@apis/pickeat';
 
 import { useGA } from '@hooks/useGA';
 
-import { setMobileStyle } from '@styles/mediaQuery';
+import { sliceInputByMaxLength } from '@utils/sliceInputByMaxLength';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FormEvent, use, useState } from 'react';
 
@@ -41,7 +40,7 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
   };
 
   return (
-    <S.Wrapper onSubmit={submitJoinPickeatForm}>
+    <S.Container onSubmit={submitJoinPickeatForm}>
       <S.Title>
         함께 식사할 멤버를 소환하고
         <br /> 식당을 정해봐요.
@@ -64,11 +63,14 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
       <S.FormWrapper>
         <LineInput
           value={nickname}
-          onChange={e => setNickname(e.target.value)}
+          onChange={e =>
+            setNickname(
+              sliceInputByMaxLength(e.target.value, NICKNAME_MAX_LENGTH)
+            )
+          }
           name="nickname"
           label="닉네임"
           placeholder="사용하실 닉네임을 입력하세요."
-          maxLength={NICKNAME_MAX_LENGTH}
           feedbackMessage={`${nickname.length}/${NICKNAME_MAX_LENGTH}`}
           xIcon
           onClear={() => setNickname('')}
@@ -78,26 +80,21 @@ function PickeatInfo({ pickeatData, defaultNickname }: Props) {
 
         <NewButton>투표 입장하기</NewButton>
       </S.FormWrapper>
-    </S.Wrapper>
+    </S.Container>
   );
 }
 
 export default PickeatInfo;
 
 const S = {
-  Wrapper: styled.form`
-    width: 70%;
+  Container: styled.form`
+    width: 100%;
     display: flex;
     flex-direction: column;
 
     gap: ${({ theme }) => theme.GAP.level5};
-    position: relative;
 
     padding: ${({ theme }) => theme.PADDING.p5};
-
-    ${setMobileStyle(css`
-      width: 100%;
-    `)}
   `,
   Title: styled.h1`
     font: ${({ theme }) => theme.FONTS.heading.small};
