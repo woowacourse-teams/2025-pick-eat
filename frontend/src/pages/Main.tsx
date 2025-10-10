@@ -103,12 +103,13 @@ export default Main;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - ${HEADER_HEIGHT});
 
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
+
+    padding-top: ${HEADER_HEIGHT};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
   `,
