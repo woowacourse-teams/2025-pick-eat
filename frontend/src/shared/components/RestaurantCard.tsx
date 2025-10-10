@@ -18,7 +18,9 @@ function RestaurantCard({ restaurantData }: Props) {
         <S.Top>
           <S.TagBox>
             {tags.map((tag: string) => (
-              <Chip key={tag}>{tag}</Chip>
+              <Chip key={tag} variant="outlined" size="sm">
+                {tag}
+              </Chip>
             ))}
           </S.TagBox>
           <S.Name>{name}</S.Name>

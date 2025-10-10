@@ -45,7 +45,7 @@ export default Chip;
 const S = {
   Container: styled.div<Pick<Props, 'variant' | 'color' | 'size'>>`
     width: fit-content;
-    height: ${({ size = 'md' }) => SIZE[size].height};
+    height: ${({ size = 'md' }) => SIZE[size].height}px;
     display: flex;
     justify-content: center;
     align-items: center;
