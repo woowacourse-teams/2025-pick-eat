@@ -108,7 +108,7 @@ const S = {
     margin: auto;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: 30px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level2};
   `,
   FormWrapper: styled.div`

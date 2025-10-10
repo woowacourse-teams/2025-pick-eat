@@ -78,7 +78,7 @@ const S = {
     height: 8px;
     position: absolute;
 
-    background: red;
+    background: ${({ theme }) => theme.PALETTE.red[40]};
 
     animation: none;
     border-radius: ${({ theme }) => theme.RADIUS.half}
@@ -92,7 +92,7 @@ const S = {
       height: 8px;
       position: absolute;
 
-      background: red;
+      background: ${({ theme }) => theme.PALETTE.red[40]};
       border-radius: ${({ theme }) => theme.RADIUS.half};
       content: '';
     }

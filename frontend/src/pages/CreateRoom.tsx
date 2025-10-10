@@ -1,9 +1,10 @@
 import InviteMember from '@domains/room/components/RoomDetailTab/InviteMember';
 
+import { HEADER_HEIGHT } from '@widgets/Header';
+
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input/Input';
 import ErrorMessage from '@components/errors/ErrorMessage';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import { useCreateRoom } from '@domains/room/hooks/useCreateRoom';
 import { useInviteMember } from '@domains/room/hooks/useInviteMember';

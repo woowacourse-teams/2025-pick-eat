@@ -124,7 +124,6 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
 
-  //TODO: padding theme에서 뽑아쓰기
   SelectBar: styled.button<{ opened: boolean; selected: boolean }>`
     width: 100%;
     display: flex;
@@ -132,27 +131,23 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
 
-    padding: 6px;
+    padding: ${({ theme }) => theme.PADDING.p3};
     border-bottom: ${({ opened, selected }) =>
       `2px solid ${getSelectStateColor(selected, opened)}`};
   `,
 
-  //TODO: font theme에서 뽑아쓰기
   SelectedValue: styled.span<{ selected: boolean }>`
     color: ${({ selected, theme }) =>
       selected ? theme.PALETTE.gray[100] : theme.PALETTE.gray[40]};
-    font:
-      600 20px/100% Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
 
-  //TODO: radius,gap theme에서 뽑아쓰기
   OptionList: styled.ul`
     width: 100%;
 
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: ${({ theme }) => theme.GAP.level3};
     position: absolute;
     top: 110%;
 
@@ -160,7 +155,7 @@ const S = {
       ${({ theme }) => theme.PADDING.p4};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: 16px;
+    border-radius: ${({ theme }) => theme.RADIUS.small};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
   `,
 
@@ -172,9 +167,7 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p3};
 
     color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font:
-      600 16px/150% Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     cursor: pointer;
 

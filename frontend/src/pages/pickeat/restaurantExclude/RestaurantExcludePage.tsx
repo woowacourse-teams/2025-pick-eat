@@ -1,8 +1,9 @@
 import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndModal';
 import RestaurantExclude from '@domains/pickeat/restaurantExclude/components/RestaurantExclude';
 
+import { HEADER_HEIGHT } from '@widgets/Header';
+
 import LoadingSpinner from '@components/assets/LoadingSpinner';
-import { HEADER_HEIGHT } from '@components/layouts/Header';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';

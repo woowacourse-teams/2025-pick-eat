@@ -1,9 +1,9 @@
+import Header from '@widgets/Header';
+
 import ToastProvider from '@provider/ToastProvider';
 
 import styled from '@emotion/styled';
 import { ReactNode } from 'react';
-
-import Header from './Header';
 
 type Props = {
   children: ReactNode;
@@ -36,7 +36,7 @@ const Container = styled.div`
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 768px;
+  max-width: 480px;
 
   background-color: ${({ theme }) => theme.PALETTE.gray[5]};
 `;

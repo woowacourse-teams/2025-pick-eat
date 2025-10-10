@@ -11,21 +11,18 @@ function RoundedButton({ children, ...props }: Props) {
 
 export default RoundedButton;
 
-//TODO:폰트 theme에서 뽑아쓰기
 const S = {
   Button: styled.button`
     width: 272px;
     height: 60px;
 
-    background-color: #ffda1e;
+    background-color: ${({ theme }) => theme.PALETTE.primary[50]};
 
     color: ${({ theme }) => theme.PALETTE.gray[100]};
 
-    font:
-      600 17px/150% Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.large_bold};
 
-    border-radius: 30px;
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
 
     &:disabled {
       border: none;

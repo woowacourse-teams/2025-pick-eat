@@ -70,11 +70,13 @@ const S = {
     position: relative;
 
     padding: ${({ theme }) => theme.PADDING.p4};
-    border: ${({ theme, error }) =>
-      error ? `1px solid #f95f5f` : `1px solid ${theme.PALETTE.gray[5]}`};
+
+    border: 1px solid
+      ${({ theme, error }) =>
+        error ? theme.PALETTE.red[40] : theme.PALETTE.gray[5]};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
 
     &:focus-within {
       border: 1px solid ${({ theme }) => theme.PALETTE.gray[95]};
@@ -91,8 +93,8 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.small};
 
     &::after {
-      color: #f95f5f;
-      font-weight: bold;
+      color: ${({ theme }) => theme.PALETTE.red[40]};
+      font: ${({ theme }) => theme.FONTS.body.small_bold};
       content: ${({ required }) => (required ? "'*'" : '')};
     }
   `,
@@ -123,7 +125,7 @@ const S = {
     padding-left: ${({ theme }) => theme.PADDING.p4};
 
     color: ${({ theme, error }) =>
-      error ? '#F95F5F' : theme.PALETTE.gray[20]};
+      error ? theme.PALETTE.red[40] : theme.PALETTE.gray[20]};
     font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };
