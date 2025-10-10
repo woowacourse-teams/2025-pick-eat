@@ -21,7 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "식당 관리", description = "식당 선택 및 관리 API")
+@Tag(name = "식당 관리 V2", description = "식당 선택 및 관리 API")
 public interface RestaurantApiSpec {
 
     String 픽잇_코드_UUID_형식 = "픽잇 코드 (UUID 형식)";
