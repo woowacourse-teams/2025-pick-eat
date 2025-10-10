@@ -41,8 +41,8 @@ function RestaurantCard({ restaurantData, onDelete }: Props) {
           )}
 
           <S.Name>{name}</S.Name>
+          <S.Address>{roadAddressName}</S.Address>
         </S.Top>
-        <S.Address>{roadAddressName}</S.Address>
         {placeUrl && (
           <S.Link href={placeUrl} target="_blank" rel="noopener noreferrer">
             메뉴 보러가기
@@ -67,23 +67,6 @@ function RestaurantCard({ restaurantData, onDelete }: Props) {
 
 export default RestaurantCard;
 
-/*
-  TODO
-  공통
-    - [] Container, Image radius theme에서 뽑아쓰기
-    - [] Link, Name font theme에서 뽑아쓰기
-  선호
-    - [] 태그 없을 시 '카테고리' 태그 표시
-    - [] like 버튼 + 투표 로직
-  소거
-    - [] x 버튼 + 소거 로직
-  식당 등록
-    - [] x 버튼 + 소거 로직
-    - [] 주소 추가
-  padding이 16 16 14 16이라 그냥 16으로 하고 height +2함
-  Info height 85=>86으로 함
- */
-
 const S = {
   Container: styled.div`
     width: 100%;
@@ -97,24 +80,25 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p5};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level2};
   `,
   Image: styled.img`
     width: 90px;
     height: 90px;
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     object-fit: cover;
   `,
   Info: styled.div`
     width: 170px;
     display: flex;
     flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
   Top: styled.div`
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level1};
+    gap: ${({ theme }) => theme.GAP.level2};
   `,
   TagBox: styled.div`
     width: 100%;
@@ -127,9 +111,8 @@ const S = {
   Name: styled.span`
     overflow: hidden;
 
-    font:
-      600 16px/120% Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.medium};
+
     white-space: nowrap;
     text-overflow: ellipsis;
   `,
@@ -139,9 +122,7 @@ const S = {
   `,
   Link: styled.a`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font:
-      400 14px/28px Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.xxsmall};
   `,
   Xicon: styled.button`
     width: 28px;

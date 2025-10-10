@@ -136,12 +136,12 @@ const S = {
     background-position: center;
     background-repeat: no-repeat;
 
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     cursor: pointer;
   `,
   Description: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.body.small};
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
   InputArea: styled.div`
     width: 100%;
