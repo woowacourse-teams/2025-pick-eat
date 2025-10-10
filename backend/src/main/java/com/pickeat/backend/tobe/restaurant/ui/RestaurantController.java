@@ -6,6 +6,7 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeR
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.tobe.restaurant.application.RestaurantSearchFacade;
 import com.pickeat.backend.tobe.restaurant.application.RestaurantService;
+import com.pickeat.backend.tobe.restaurant.application.dto.request.TemplateRestaurantRequest;
 import com.pickeat.backend.tobe.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.tobe.restaurant.ui.api.RestaurantApiSpec;
 import jakarta.validation.Valid;
@@ -36,7 +37,6 @@ public class RestaurantController implements RestaurantApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody LocationRestaurantRequest request) {
         restaurantSearchFacade.searchByLocation(request, pickeatCode);
-
         URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
         return ResponseEntity.created(location).build();
     }
@@ -47,7 +47,16 @@ public class RestaurantController implements RestaurantApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody WishRestaurantRequest request) {
         restaurantSearchFacade.searchByWish(request, pickeatCode);
+        URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
+        return ResponseEntity.created(location).build();
+    }
 
+    @Override
+    @PostMapping("/pickeats/{pickeatCode}/restaurants/template")
+    public ResponseEntity<Void> createRestaurantsByTemplate(
+            @PathVariable("pickeatCode") String pickeatCode,
+            @Valid @RequestBody TemplateRestaurantRequest request) {
+        restaurantSearchFacade.searchByTemplate(request, pickeatCode);
         URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
         return ResponseEntity.created(location).build();
     }

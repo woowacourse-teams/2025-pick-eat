@@ -3,6 +3,7 @@ package com.pickeat.backend.tobe.acceptance_test.piece.restaurant;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.tobe.restaurant.application.dto.request.TemplateRestaurantRequest;
 import com.pickeat.backend.tobe.restaurant.application.dto.request.WishRestaurantRequest;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
@@ -33,6 +34,18 @@ public class RestaurantPieceTest {
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
     }
+
+    public static void 템플릿_기반_식당_목록_생성(String pickeatCode, TemplateRestaurantRequest request) {
+        RestAssured
+                .given().log().all()
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .post("/api/v2/pickeats/{pickeatCode}/restaurants/template", pickeatCode)
+                .then().log().all()
+                .statusCode(HttpStatus.CREATED.value());
+    }
+
 
     public static void 식당_제외(RestaurantExcludeRequest request, String participantToken) {
         RestAssured

@@ -3,6 +3,7 @@ package com.pickeat.backend.tobe.restaurant.application.dto.request;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
+import com.pickeat.backend.template.domain.TemplateWish;
 import com.pickeat.backend.tobe.wish.domain.Wish;
 
 public record RestaurantRequest(
@@ -29,6 +30,21 @@ public record RestaurantRequest(
                 restaurantInfo.getPicture().getPictureUrl(),
                 restaurantInfo.getTags(),
                 RestaurantType.WISH
+        );
+    }
+
+    public static RestaurantRequest fromTemplateWish(TemplateWish templateWish) {
+        RestaurantInfo restaurantInfo = templateWish.getRestaurantInfo();
+        return new RestaurantRequest(
+                restaurantInfo.getName(),
+                restaurantInfo.getFoodCategory(),
+                restaurantInfo.getDistance(),
+                restaurantInfo.getRoadAddressName(),
+                restaurantInfo.getPlaceUrl(),
+                restaurantInfo.getPicture().getPictureKey(),
+                restaurantInfo.getPicture().getPictureUrl(),
+                restaurantInfo.getTags(),
+                RestaurantType.TEMPLATE_WISH
         );
     }
 

@@ -3,6 +3,7 @@ package com.pickeat.backend.tobe.restaurant.ui.api;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.tobe.restaurant.application.dto.request.TemplateRestaurantRequest;
 import com.pickeat.backend.tobe.restaurant.application.dto.request.WishRestaurantRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -80,6 +81,34 @@ public interface RestaurantApiSpec {
     ResponseEntity<Void> createRestaurantsByWish(
             @Parameter(description = 픽잇_코드_UUID_형식) @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody WishRestaurantRequest request);
+
+    @Operation(
+            summary = "템플릿 기반 식당 목록 생성",
+            description = "템플릿을 기반으로 식당 목록을 생성하여 픽잇에 추가합니다.",
+            operationId = "createRestaurantsByTemplate",
+            requestBody = @RequestBody(
+                    description = "템플릿으로 식당 목록을 생성하기 위한 요청 정보",
+                    required = true,
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = TemplateRestaurantRequest.class)
+                    )
+            )
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "식당 목록 생성 성공"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "존재하지 않는 픽잇",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class)
+                    )
+            )
+    })
+    ResponseEntity<Void> createRestaurantsByTemplate(
+            @Parameter(description = 픽잇_코드_UUID_형식) @PathVariable("pickeatCode") String pickeatCode,
+            @Valid @org.springframework.web.bind.annotation.RequestBody TemplateRestaurantRequest request);
 
     @Operation(
             summary = "식당 소거",
