@@ -18,7 +18,7 @@ CREATE TABLE `wish_v2` (
   PRIMARY KEY (`id`),
   KEY `FKl9er9ug7irskm894yopy11wdu` (`room_id`),
   CONSTRAINT `FKl9er9ug7irskm894yopy11wdu` FOREIGN KEY (`room_id`) REFERENCES `room` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- -------------------------------
 -- 초기 데이터 이동 : wish -> wish_v2
@@ -72,7 +72,6 @@ SET
 -- 트리거 : wish → wish_v2
 -- -------------------------------
 DELIMITER $$
-
 CREATE TRIGGER trg_wish_to_wish_v2
 AFTER INSERT ON wish
 FOR EACH ROW
@@ -105,7 +104,9 @@ BEGIN
     FROM wish_list wl
     WHERE wl.id = NEW.wish_list_id;
 END$$
+DELIMITER ;
 
+DELIMITER $$
 CREATE TRIGGER trg_wish_update_to_wish_v2
 AFTER UPDATE ON wish
 FOR EACH ROW
@@ -121,7 +122,9 @@ BEGIN
         updated_at = NEW.updated_at
     WHERE id = NEW.id;
 END$$
+DELIMITER ;
 
+DELIMITER $$
 CREATE TRIGGER trg_wish_delete_to_wish_v2
 AFTER UPDATE ON wish
 FOR EACH ROW
@@ -130,14 +133,12 @@ BEGIN
     SET deleted = b'1'
     WHERE id = NEW.id;
 END$$
-
 DELIMITER ;
 
 -- -------------------------------
 -- 트리거 : wish_picture → wish_v2
 -- -------------------------------
 DELIMITER $$
-
 CREATE TRIGGER trg_wish_picture_insert_to_wish_v2
 AFTER INSERT ON wish_picture
 FOR EACH ROW
@@ -147,19 +148,19 @@ BEGIN
         picture_url = NEW.download_url
     WHERE id = NEW.wish_id;
 END$$
+DELIMITER ;
 
+DELIMITER $$
 CREATE TRIGGER trg_wish_picture_update_delete_to_wish_v2
 AFTER UPDATE ON wish_picture
 FOR EACH ROW
 BEGIN
-    -- 소프트 삭제 처리
     IF (OLD.deleted = 0 AND NEW.deleted = 1) THEN
         UPDATE wish_v2
         SET picture_key = NULL,
             picture_url = NULL
         WHERE id = NEW.wish_id;
 
-    -- 단순 수정 처리
     ELSEIF (NEW.deleted = 0) THEN
         UPDATE wish_v2
         SET picture_key = NEW.picture_key,
@@ -167,7 +168,4 @@ BEGIN
         WHERE id = NEW.wish_id;
     END IF;
 END$$
-
 DELIMITER ;
-
-
