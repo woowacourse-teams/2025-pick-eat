@@ -77,7 +77,7 @@ export const useShowToast = () => {
 const S = {
   Container: styled.div`
     width: 100%;
-    max-width: 768px;
+    max-width: 480px;
     display: flex;
     flex-direction: column;
     align-items: center;
