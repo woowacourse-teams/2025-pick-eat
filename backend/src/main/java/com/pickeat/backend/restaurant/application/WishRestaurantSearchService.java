@@ -32,7 +32,7 @@ public class WishRestaurantSearchService {
         validateWishExists(wishes);
 
         return wishes.stream()
-                .map(wish -> RestaurantRequest.fromWish(wish, getPictureUrls(wish)))
+                .map(wish -> RestaurantRequest.fromWish(wish, getPictureKeys(wish), getPictureUrls(wish)))
                 .toList();
     }
 
@@ -50,6 +50,12 @@ public class WishRestaurantSearchService {
     private String getPictureUrls(Wish wish) {
         return wishPictureRepository.findAllByWish(wish).stream()
                 .map(WishPicture::getDownloadUrl)
+                .collect(Collectors.joining(","));
+    }
+
+    private String getPictureKeys(Wish wish) {
+        return wishPictureRepository.findAllByWish(wish).stream()
+                .map(WishPicture::getPictureKey)
                 .collect(Collectors.joining(","));
     }
 }

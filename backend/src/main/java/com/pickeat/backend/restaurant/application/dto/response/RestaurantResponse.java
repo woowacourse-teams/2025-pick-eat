@@ -35,12 +35,6 @@ public record RestaurantResponse(
         @Schema(description = "소거 여부", example = "false")
         boolean isExcluded,
 
-        @Schema(description = "식당 위치의 x 좌표 (경도)", example = "37.5670")
-        Double x,
-
-        @Schema(description = "식당 위치의 y 좌표 (위도)", example = "126.9785")
-        Double y,
-
         @Schema(description = "사진 url들")
         List<String> pictureUrls,
 
@@ -62,28 +56,9 @@ public record RestaurantResponse(
                 restaurant.getRoadAddressName(),
                 restaurant.getLikeCount(),
                 restaurant.getIsExcluded(),
-                getLocationX(restaurant),
-                getLocationY(restaurant),
                 parsePictureUrls(restaurant.getPictureUrls()),
                 restaurant.getType(),
                 isLiked);
-    }
-
-
-    private static Double getLocationX(Restaurant restaurant) {
-        if (restaurant.getLocation() != null) {
-            return restaurant.getLocation().getX();
-        }
-
-        return null;
-    }
-
-    private static Double getLocationY(Restaurant restaurant) {
-        if (restaurant.getLocation() != null) {
-            return restaurant.getLocation().getY();
-        }
-
-        return null;
     }
 
     private static List<String> parseTags(String tags) {

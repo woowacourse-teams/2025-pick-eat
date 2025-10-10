@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.global.exception.ExternalApiException;
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
@@ -79,7 +78,6 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
                             parseCategory(document.path("category_name").asText()),
                             document.path("distance").asInt(),
                             document.path("road_address_name").asText(),
-                            new Location(document.path("x").asDouble(), document.path("y").asDouble()),
                             document.path("place_url").asText(),
                             extractTags(document.path("category_name").asText())
                     )
