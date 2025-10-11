@@ -4,6 +4,7 @@ import RestaurantExclude from '@domains/pickeat/restaurantExclude/components/Res
 import { HEADER_HEIGHT } from '@widgets/Header';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
+import ProgressBar from '@components/progressBar/ProgressBar';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
@@ -27,6 +28,9 @@ function RestaurantExcludePage() {
   return (
     <ParticipantsProvider pickeatCode={pickeatCode}>
       <S.Container>
+        <S.ProgressBarWrapper>
+          <ProgressBar total={3} current={1} />
+        </S.ProgressBarWrapper>
         {!hasRestaurants && <PickeatEndModal />}
         <TitleSection>
           <Title />
@@ -54,5 +58,14 @@ const S = {
     padding-top: ${HEADER_HEIGHT};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+  `,
+  ProgressBarWrapper: styled.div`
+    width: 100vw;
+    max-width: 480px;
+    position: fixed;
+    top: ${HEADER_HEIGHT};
+    left: 50%;
+    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
+    transform: translateX(-50%);
   `,
 };
