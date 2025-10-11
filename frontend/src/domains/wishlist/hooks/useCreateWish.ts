@@ -10,14 +10,29 @@ import { validateWishForm } from '../services/validateWishForm';
 
 export type WishFormDataWithImage = WishFormData & { thumbnail?: File };
 
-export const useCreateWish = (onCreate?: () => void) => {
-  const [formData, setFormData] = useState<WishFormDataWithImage>();
+const DEFAULT_FORM_DATA = {
+  name: '',
+  roadAddressName: '',
+  category: '',
+  tags: [],
+  placeUrl: '',
+};
+
+type Props = {
+  onCreate: () => void;
+  onClose: () => void;
+};
+
+export const useCreateWish = ({ onCreate, onClose }: Props) => {
+  const [formData, setFormData] =
+    useState<WishFormDataWithImage>(DEFAULT_FORM_DATA);
   const [error, setError] = useState('');
   const showToast = useShowToast();
 
   const initialWishFormData = async (address: string) => {
     const data = await getFormDataByAddress(address);
     if (data) setFormData({ ...data, tags: [] });
+    onClose();
   };
 
   const handleFormData = <K extends keyof WishFormDataWithImage>(
@@ -65,7 +80,7 @@ export const useCreateWish = (onCreate?: () => void) => {
         showToast({ mode: 'SUCCESS', message: '찜 등록!' });
       }
       onCreate?.();
-      setFormData(undefined);
+      setFormData(DEFAULT_FORM_DATA);
       setError('');
     } catch {
       setError('찜 등록 중 에러가 발생했습니다.');

@@ -71,6 +71,7 @@ const S = {
   `,
 
   TabWrapper: styled.div`
+    /* TODO: 56px tab menu 크기 지정해서 뽑아쓰기 */
     height: calc(100vh - ${HEADER_HEIGHT} - 56px);
 
     padding: ${({ theme }) => theme.PADDING.p6};

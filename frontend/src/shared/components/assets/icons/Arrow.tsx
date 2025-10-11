@@ -12,12 +12,12 @@ const ROTATE_MAP: Record<DirectionType, string> = {
 };
 
 type Props = {
-  size: SizeType;
+  size?: SizeType;
   direction: DirectionType;
   color?: string;
 };
 
-function Arrow({ size, direction, color = 'black' }: Props) {
+function Arrow({ size = 'sm', direction, color = 'black' }: Props) {
   return (
     <Container direction={direction}>
       <svg

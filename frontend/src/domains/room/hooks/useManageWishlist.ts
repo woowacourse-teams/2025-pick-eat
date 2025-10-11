@@ -28,17 +28,14 @@ export const useManageWishlist = (wishId: number) => {
   }, []);
 
   const handleDeleteWish = async (wishId: number) => {
-    const isDelete = confirm('정말 삭제하시겠습니까?');
-    if (isDelete) {
-      try {
-        await wish.delete(wishId);
-        handleGetWish();
-      } catch {
-        showToast({
-          mode: 'ERROR',
-          message: '삭제에 실패했습니다. 다시 시도해 주세요.',
-        });
-      }
+    try {
+      await wish.delete(wishId);
+      handleGetWish();
+    } catch {
+      showToast({
+        mode: 'ERROR',
+        message: '삭제에 실패했습니다. 다시 시도해 주세요.',
+      });
     }
   };
 

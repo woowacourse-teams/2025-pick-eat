@@ -16,6 +16,7 @@ function Plus({ size, color = 'black' }: Props) {
     >
       <path
         stroke={color}
+        fill={color}
         d="m34 22.19h-8v-8a2 2 0 1 0 -4 0v8h-8a2 2 0 1 0 0 4h8v8a2 2 0 0 0 4 0v-8h8a2 2 0 0 0 0-4z"
       />
     </svg>
@@ -23,12 +24,3 @@ function Plus({ size, color = 'black' }: Props) {
 }
 
 export default Plus;
-
-<svg
-  id="Layer_2"
-  viewBox="0 0 48 48"
-  xmlns="http://www.w3.org/2000/svg"
-  data-name="Layer 2"
->
-  <path d="m34 22.19h-8v-8a2 2 0 1 0 -4 0v8h-8a2 2 0 1 0 0 4h8v8a2 2 0 0 0 4 0v-8h8a2 2 0 0 0 0-4z" />
-</svg>;

@@ -32,6 +32,8 @@ const FONTS = {
     small_bold: `600 15px/150% ${fontFamily}`,
     xsmall: `400 14px/150% ${fontFamily}`,
     xsmall_bold: `600 14px/150% ${fontFamily}`,
+    xxsmall: `400 12px/100% ${fontFamily}`,
+    xxsmall_bold: `600 12px/150% ${fontFamily}`,
   },
   logo: `800 16px ${fontFamilyStyle}`,
 };
