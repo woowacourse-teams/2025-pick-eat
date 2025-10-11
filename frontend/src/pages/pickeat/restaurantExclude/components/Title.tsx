@@ -26,6 +26,7 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level2};
+
     padding: ${({ theme }) => theme.PADDING.px6} 0;
   `,
   TitleBox: styled.div`

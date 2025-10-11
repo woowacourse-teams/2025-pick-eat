@@ -37,16 +37,23 @@ const S = {
   `,
   RestaurantTabContainer: styled.div`
     padding: ${({ theme }) => theme.PADDING.p5};
+    padding-bottom: ${footerHeight}px;
   `,
   Footer: styled.footer`
+    width: 100vw;
+    max-width: 480px;
     height: ${footerHeight}px;
+
     display: flex;
     justify-content: center;
     align-items: center;
-    position: sticky;
-    bottom: 0;
-    z-index: ${({ theme }) => theme.Z_INDEX.sticky};
+
+    position: fixed;
+    bottom: 8px;
+    left: 50%;
+    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
     padding: ${({ theme }) => theme.PADDING.py4};
+    transform: translateX(-50%);
   `,
 };
