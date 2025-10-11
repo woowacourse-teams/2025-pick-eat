@@ -108,9 +108,7 @@ const S = {
   Name: styled.span`
     overflow: hidden;
 
-    font:
-      600 16px/120% Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
     white-space: nowrap;
     text-overflow: ellipsis;
   `,

@@ -68,12 +68,12 @@ function Result({ pickeatCode }: Props) {
       </S.ImageBox>
       <S.BottomWrapper>
         <S.TitleBox>
-          <S.Name>{name}</S.Name>
           {tags.length > 0 && (
-            <Chip key={tags[0]} variant="outlined">
-              한식
+            <Chip key={tags[0]} variant="outlined" size="sm">
+              {tags[0]}
             </Chip>
           )}
+          <S.Name>{name}</S.Name>
         </S.TitleBox>
         <S.ButtonBox>
           <S.DetailBox>
@@ -102,11 +102,11 @@ export default Result;
 const S = {
   Container: styled.div`
     width: 270px;
-    height: 290px;
+    height: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level3};
+    gap: ${({ theme }) => theme.GAP.level4};
     border-radius: ${({ theme }) => theme.RADIUS.large};
     overflow: hidden;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
@@ -124,7 +124,7 @@ const S = {
 
   TitleBox: styled.div`
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level2};
   `,
   ButtonBox: styled.div`
@@ -142,8 +142,13 @@ const S = {
     height: 30px;
   `,
   Name: styled.p`
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
+
+    overflow: hidden;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
   `,
   ImageBox: styled.div`
     width: 100%;
