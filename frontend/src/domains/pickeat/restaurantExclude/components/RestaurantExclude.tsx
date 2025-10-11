@@ -36,24 +36,17 @@ const S = {
     flex-direction: column;
   `,
   RestaurantTabContainer: styled.div`
-    margin-bottom: ${footerHeight}px;
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    padding: ${({ theme }) => theme.PADDING.p5};
   `,
   Footer: styled.footer`
-    width: 100%;
-    max-width: 768px;
     height: ${footerHeight}px;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
+    position: sticky;
     bottom: 0;
-    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
+    z-index: ${({ theme }) => theme.Z_INDEX.sticky};
 
     padding: ${({ theme }) => theme.PADDING.py4};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
   `,
 };

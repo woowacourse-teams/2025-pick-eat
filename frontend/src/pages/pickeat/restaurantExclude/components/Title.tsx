@@ -1,8 +1,5 @@
 import Cross from '@components/assets/icons/Cross';
 
-import { setMobileStyle } from '@styles/mediaQuery';
-
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 function Title() {
@@ -10,19 +7,13 @@ function Title() {
     <S.Container>
       <S.TitleBox>
         <S.Title>식당 제외하기</S.Title>
-        <S.Imoji src="/images/dislikeImoji.png" alt="emoji" />
       </S.TitleBox>
       <S.Description>
-        <S.Line>
-          <S.PointText>안 땡기는 식당</S.PointText>
-          <S.TitleText>은</S.TitleText>
-        </S.Line>
-        <S.Line>
-          <S.IconWrapper>
-            <Cross color="white" size="sm" strokeWidth={4} />
-          </S.IconWrapper>
-          <S.TitleText>버튼을 눌러주세요</S.TitleText>
-        </S.Line>
+        안 땡기는 식당에
+        <S.IconWrapper>
+          <Cross color="white" size="sm" strokeWidth={4} />
+        </S.IconWrapper>
+        버튼을 눌러주세요.
       </S.Description>
     </S.Container>
   );
@@ -32,7 +23,10 @@ export default Title;
 
 const S = {
   Container: styled.div`
-    padding: ${({ theme }) => theme.PADDING.px6};
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level2};
+    padding: ${({ theme }) => theme.PADDING.px6} 0;
   `,
   TitleBox: styled.div`
     display: flex;
@@ -40,11 +34,8 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
   `,
   Title: styled.h1`
-    color: ${({ theme }) => theme.PALETTE.primary[50]};
-    font: ${({ theme }) => theme.FONTS.display.medium};
-    ${setMobileStyle(css`
-      font-size: 36px;
-    `)}
+    color: ${({ theme }) => theme.PALETTE.gray[95]};
+    font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
   Imoji: styled.img`
     width: 48px;
@@ -52,33 +43,15 @@ const S = {
   Description: styled.div`
     display: flex;
     flex-direction: row;
-    gap: ${({ theme }) => theme.GAP.level4};
-    ${setMobileStyle(css`
-      flex-direction: column;
-      gap: 4px;
-    `)}
-  `,
-  Line: styled.div`
-    display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
-  `,
-  PointText: styled.p`
-    height: 36px;
 
-    padding: 0 ${({ theme }) => theme.PADDING.px3};
-
-    color: ${({ theme }) => theme.PALETTE.primary[95]};
-    font: ${({ theme }) => theme.FONTS.heading.small_style};
-    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[50]};
-  `,
-  TitleText: styled.p`
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.heading.small};
+    color: ${({ theme }) => theme.PALETTE.gray[70]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
   IconWrapper: styled.div`
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 
     display: flex;
     justify-content: center;
@@ -86,7 +59,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p2};
 
-    background-color: ${({ theme }) => theme.PALETTE.primary[60]};
+    background-color: ${({ theme }) => theme.PALETTE.red[40]};
 
     border-radius: 1000px;
   `,

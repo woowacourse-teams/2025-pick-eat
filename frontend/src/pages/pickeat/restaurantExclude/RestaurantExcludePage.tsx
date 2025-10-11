@@ -51,6 +51,8 @@ const S = {
     height: fit-content;
     min-height: calc(100vh - ${HEADER_HEIGHT});
 
+    padding-top: ${HEADER_HEIGHT};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 };
