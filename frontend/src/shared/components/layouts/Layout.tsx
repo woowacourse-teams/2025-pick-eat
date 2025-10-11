@@ -32,12 +32,13 @@ const S = {
     display: flex;
     justify-content: center;
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,
   Wrapper: styled.div`
     width: 100%;
     max-width: 480px;
+    min-height: 100vh;
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 };
