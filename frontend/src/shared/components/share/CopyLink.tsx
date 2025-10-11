@@ -1,5 +1,4 @@
-import Button from '@components/actions/Button';
-import Input from '@components/actions/Input/Input';
+import Copy from '@components/assets/icons/Copy';
 
 import { copyLink } from '@utils/copyLink';
 
@@ -8,8 +7,10 @@ import styled from '@emotion/styled';
 function CopyLink({ url }: { url: string }) {
   return (
     <S.Container>
-      <Input value={url} disabled />
-      <Button text="복사" size="md" onClick={() => copyLink(url)} />
+      <S.Link>{url}</S.Link>
+      <S.Icon type="button" onClick={() => copyLink(url)}>
+        <Copy />
+      </S.Icon>
     </S.Container>
   );
 }
@@ -21,6 +22,20 @@ const S = {
     width: 100%;
     display: flex;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level3};
+    gap: ${({ theme }) => theme.GAP.level4};
+
+    padding: ${({ theme }) => theme.PADDING.p4}
+      ${({ theme }) => theme.PADDING.p5};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[10]};
+    border-radius: 30px;
   `,
+  Link: styled.span`
+    overflow: hidden;
+
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+
+    white-space: nowrap;
+  `,
+  Icon: styled.button``,
 };

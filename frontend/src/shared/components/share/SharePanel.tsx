@@ -1,18 +1,20 @@
 import styled from '@emotion/styled';
+import { ReactNode } from 'react';
 
 import CopyLink from './CopyLink';
 import QRCode from './QRCode';
 
 type Props = {
   url: string;
-  description: string;
+  title: string;
+  description: ReactNode;
 };
 
-function SharePanel({ url, description }: Props) {
+function SharePanel({ url, title, description }: Props) {
   return (
     <S.Container>
       <S.TitleArea>
-        <S.TitlePointText>공유하기</S.TitlePointText>
+        <S.Title>{title}</S.Title>
         <S.Description>{description}</S.Description>
       </S.TitleArea>
       <QRCode url={url} />
@@ -29,17 +31,19 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level7};
+    gap: ${({ theme }) => theme.GAP.level5};
 
-    margin: ${({ theme }) => theme.PADDING.p5} 0;
+    padding: ${({ theme }) => theme.PADDING.p5};
   `,
   TitleArea: styled.div`
     text-align: center;
   `,
-  TitlePointText: styled.h1`
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+  Title: styled.h2`
+    color: ${({ theme }) => theme.PALETTE.gray[70]};
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
   Description: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.medium};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };
