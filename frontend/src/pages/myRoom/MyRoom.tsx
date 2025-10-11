@@ -1,8 +1,9 @@
 import ParticipantPickeat from '@domains/profile/components/ParticipantPickeat';
 import RoomList from '@domains/profile/components/RoomList';
 
-import Button from '@components/actions/Button';
-import Plus from '@components/assets/icons/Plus';
+import { HEADER_HEIGHT } from '@widgets/Header';
+
+import NewButton from '@components/actions/NewButton';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
@@ -30,11 +31,11 @@ function MyRoom() {
   return (
     <S.Container>
       <Suspense fallback={<LoadingSpinner />}>
-        <S.Section>
+        <S.ProfileSection>
           <ErrorBoundary>
             <Profile user={userData} />
           </ErrorBoundary>
-        </S.Section>
+        </S.ProfileSection>
         <S.Section>
           <S.Title>참여 중인 픽잇</S.Title>
           <ErrorBoundary>
@@ -52,12 +53,9 @@ function MyRoom() {
               </S.Description>
             </S.TitleBox>
             <S.ButtonBox>
-              <Button
-                text="방 생성"
-                rightIcon={<Plus size="xs" />}
-                color="gray"
-                onClick={() => navigate(ROUTE_PATH.CREATE_ROOM)}
-              />
+              <NewButton onClick={() => navigate(ROUTE_PATH.CREATE_ROOM)}>
+                방 만들기 +
+              </NewButton>
             </S.ButtonBox>
           </S.TitleWrapper>
           <ErrorBoundary>
@@ -79,7 +77,10 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
 
-    padding: ${({ theme }) => theme.PADDING.p7};
+    padding: ${HEADER_HEIGHT} ${({ theme }) => theme.PADDING.p7}
+      ${({ theme }) => theme.PADDING.p5};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,
 
   Section: styled.section`
@@ -87,6 +88,14 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
+  `,
+
+  ProfileSection: styled.section`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    margin-top: 36px;
   `,
 
   TitleWrapper: styled.div`
@@ -101,13 +110,13 @@ const S = {
   Title: styled.h2`
     width: 100%;
 
-    font: ${({ theme }) => theme.FONTS.heading.medium};
+    font: ${({ theme }) => theme.FONTS.heading.small};
   `,
   Description: styled.h3`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
   ButtonBox: styled.div`
-    width: 90px;
+    width: 110px;
   `,
 };
