@@ -154,6 +154,7 @@ const S = {
   `,
   Description: styled.h1`
     padding: 36px 0 0 16px;
+
     font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
 };

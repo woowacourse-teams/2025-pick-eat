@@ -46,5 +46,7 @@ const S = {
 
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level6};
+    border-radius: ${({ theme }) => theme.RADIUS.small};
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.white};
   `,
 };
