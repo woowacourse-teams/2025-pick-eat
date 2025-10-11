@@ -24,15 +24,13 @@ function RestaurantItem({ restaurantData }: Props) {
         onClick={() => handleRestaurantToggle(restaurantData.id)}
         excluded={excluded}
       >
-        <S.IconContainer>
-          <S.IconWrapper excluded={excluded}>
-            {excluded ? (
-              <Revert color="white" size="sm" />
-            ) : (
-              <Cross color="white" size="sm" strokeWidth={4} />
-            )}
-          </S.IconWrapper>
-        </S.IconContainer>
+        <S.IconWrapper excluded={excluded}>
+          {excluded ? (
+            <Revert color="white" size="sm" />
+          ) : (
+            <Cross color="white" size="sm" strokeWidth={4} />
+          )}
+        </S.IconWrapper>
       </S.DeleteButton>
       <S.CardContainer>
         <RestaurantCard restaurantData={restaurantData} />
@@ -87,11 +85,11 @@ const S = {
     justify-content: center;
     align-items: center;
     position: absolute;
-    border-radius: ${({ theme }) => theme.RADIUS.medium};
 
     background: #2a2f3d8f;
 
     animation: fadeIn 0.25s;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     inset: 0;
     pointer-events: none;
   `,
@@ -131,12 +129,6 @@ const S = {
       color: ${theme.PALETTE.gray[0]};
     `}
   `,
-  IconContainer: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-  `,
   IconWrapper: styled.div<{ excluded: boolean }>`
     width: 28px;
     height: 28px;
@@ -147,7 +139,7 @@ const S = {
 
     padding: 6px;
 
-    border-radius: 1000px;
+    border-radius: ${({ theme }) => theme.RADIUS.half};
 
     ${({ excluded, theme }) =>
       excluded
