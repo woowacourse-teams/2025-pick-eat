@@ -8,7 +8,18 @@ import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
-type Props = { restaurantData: Restaurant };
+type Props = {
+  restaurantData: Pick<
+    Restaurant,
+    | 'id'
+    | 'name'
+    | 'tags'
+    | 'placeUrl'
+    | 'distance'
+    | 'category'
+    | 'pictureUrls'
+  >;
+};
 
 function RestaurantItem({ restaurantData }: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
