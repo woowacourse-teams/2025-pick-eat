@@ -62,9 +62,11 @@ const S = {
 
     border: none;
 
+    background-color: transparent;
+
     color: ${({ theme }) => theme.PALETTE.gray[95]};
 
-    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
     border-bottom: 2px solid ${({ theme }) => theme.PALETTE.primary[50]};
 
     &:placeholder-shown {
