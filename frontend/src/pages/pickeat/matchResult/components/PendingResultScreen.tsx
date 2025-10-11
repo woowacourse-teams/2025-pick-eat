@@ -23,7 +23,11 @@ const shake = keyframes`
   }
 `;
 
-function PendingResultScreen() {
+type Props = {
+  onReady: () => void;
+};
+
+function PendingResultScreen({ onReady }: Props) {
   const [dotCount, setDotCount] = useState(0);
   const [readied, setReadied] = useState(false);
 
@@ -34,6 +38,14 @@ function PendingResultScreen() {
 
     const timeout = setTimeout(() => {
       setReadied(true);
+
+      const nextTimeout = setTimeout(() => {
+        onReady();
+      }, 1000);
+
+      return () => {
+        clearTimeout(nextTimeout);
+      };
     }, 3000);
 
     return () => {
@@ -41,7 +53,6 @@ function PendingResultScreen() {
       clearTimeout(timeout);
     };
   }, []);
-
   const dots = '.'.repeat(dotCount).split('').join(' ');
 
   return (
