@@ -52,4 +52,4 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:load-test
             ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:${{ steps.meta.outputs.short_sha }}
           build-args: |
-            SPRING_ACTIVE_PROFILE=load
+            SPRING_ACTIVE_PROFILE=stress

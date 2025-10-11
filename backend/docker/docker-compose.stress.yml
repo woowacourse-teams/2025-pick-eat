@@ -8,7 +8,7 @@ services:
     volumes:
       - ./data/springboot/logs:/var/logs
     environment:
-      SPRING_ACTIVE_PROFILE: load
+      SPRING_ACTIVE_PROFILE: stress
     networks:
       - app-tier
 
@@ -21,7 +21,7 @@ services:
       - ./data/springboot/logs:/var/log/spring
       - ./data/alloy/config.alloy:/etc/alloy/config.alloy
     environment:
-      - ALLOY_ENV=load-test
+      - ALLOY_ENV=test
     networks:
       - app-tier
 
