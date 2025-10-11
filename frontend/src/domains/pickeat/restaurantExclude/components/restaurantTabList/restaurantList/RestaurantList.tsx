@@ -23,7 +23,7 @@ function RestaurantList({ restaurantList }: Props) {
             restaurant.isExcluded ? (
               <ExcludedRestaurantItem key={restaurant.id} {...restaurant} />
             ) : (
-              <RestaurantItem key={restaurant.id} {...restaurant} />
+              <RestaurantItem key={restaurant.id} restaurantData={restaurant} />
             )
           )}
         </S.Container>

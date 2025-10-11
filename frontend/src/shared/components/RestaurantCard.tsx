@@ -5,14 +5,30 @@ import styled from '@emotion/styled';
 import Chip from './labels/Chip';
 
 type Props = {
-  restaurantData: Restaurant;
+  restaurantData: Pick<
+    Restaurant,
+    | 'id'
+    | 'name'
+    | 'tags'
+    | 'placeUrl'
+    | 'distance'
+    | 'category'
+    | 'pictureUrls'
+  >;
 };
 
 function RestaurantCard({ restaurantData }: Props) {
   const { tags, name, placeUrl, pictureUrls } = restaurantData;
   return (
     <S.Container>
-      <S.Image src={pictureUrls[0]} alt={name} />
+      <S.Image
+        src={pictureUrls[0] || './images/restaurant.png'}
+        onError={e => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = './images/restaurant.png';
+        }}
+        alt={name}
+      />
 
       <S.Info>
         <S.Top>
@@ -47,7 +63,7 @@ export default RestaurantCard;
     - [] 태그 없을 시 '카테고리' 태그 표시
     - [] like 버튼 + 투표 로직
   소거
-    - [] x 버튼 + 소거 로직
+    - [x] x 버튼 + 소거 로직
   식당 등록
     - [] x 버튼 + 소거 로직
     - [] 주소 추가
