@@ -14,7 +14,7 @@ const S = {
   Wrapper: styled.span`
     height: 25px;
 
-    color: ${({ theme }) => theme.PALETTE.primary[70]};
+    color: ${({ theme }) => theme.PALETTE.red[40]};
     font: ${({ theme }) => theme.FONTS.body.small_bold};
     text-align: center;
   `,
