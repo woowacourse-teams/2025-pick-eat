@@ -85,6 +85,7 @@ const S = {
   `,
   CapsuleImage: styled.img<{ animation: boolean }>`
     width: 240px;
+
     animation: ${shake} 1s ease-in-out infinite;
     transform-origin: 50% 100%;
     ${({ animation }) => !animation && `animation: none`};

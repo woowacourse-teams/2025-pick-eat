@@ -28,6 +28,7 @@ const S = {
     position: absolute;
     top: -80px;
     left: 40px;
+
     animation: ${swing} 2s ease-in-out infinite;
   `,
   TwinkleImage2: styled.img`
@@ -35,6 +36,7 @@ const S = {
     position: absolute;
     bottom: 10px;
     left: -40px;
+
     animation: ${swing} 1s ease-in-out infinite;
   `,
   TwinkleImage3: styled.img`
@@ -42,6 +44,7 @@ const S = {
     position: absolute;
     right: -30px;
     bottom: -30px;
+
     animation: ${swing} 3s ease-in-out infinite;
   `,
 };
