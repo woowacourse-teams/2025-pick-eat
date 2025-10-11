@@ -1,6 +1,6 @@
 import Cross from '@components/assets/icons/Cross';
 import Revert from '@components/assets/icons/Revert';
-import Chip from '@components/labels/Chip';
+import RestaurantCard from '@components/RestaurantCard';
 
 import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
@@ -8,31 +8,20 @@ import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
-type Props = Pick<
-  Restaurant,
-  'id' | 'name' | 'tags' | 'placeUrl' | 'distance' | 'category' | 'pictureUrls'
->;
+type Props = { restaurantData: Restaurant };
 
-function RestaurantItem({
-  id,
-  name,
-  tags,
-  placeUrl,
-  distance,
-  pictureUrls,
-}: Props) {
+function RestaurantItem({ restaurantData }: Props) {
   const { selectedRestaurantIds, handleRestaurantToggle } =
     useRestaurantExcludeContext();
 
-  const excluded = selectedRestaurantIds.includes(id);
-  const menuUrl = `${placeUrl}#menuInfo`;
+  const excluded = selectedRestaurantIds.includes(restaurantData.id);
 
   return (
     <S.Container excluded={excluded}>
       <S.DeleteButton
-        aria-label={`소거: ${name}`}
+        aria-label={`소거: ${restaurantData.name}`}
         type="button"
-        onClick={() => handleRestaurantToggle(id)}
+        onClick={() => handleRestaurantToggle(restaurantData.id)}
         excluded={excluded}
       >
         <S.IconContainer>
@@ -46,39 +35,7 @@ function RestaurantItem({
         </S.IconContainer>
       </S.DeleteButton>
       <S.CardContainer>
-        <S.Image
-          src={pictureUrls[0] || './images/restaurant.png'}
-          onError={e => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = './images/restaurant.png';
-          }}
-        />
-
-        <S.CardContent excluded={excluded}>
-          <S.TitleWrapper>
-            <S.TagBox>
-              {tags.map(tag => (
-                <Chip key={tag}>{tag}</Chip>
-              ))}
-            </S.TagBox>
-            <S.RestaurantName>{name}</S.RestaurantName>
-          </S.TitleWrapper>
-
-          <S.DetailBox>
-            {distance && <S.DetailText>식당까지 {distance}m</S.DetailText>}
-            {placeUrl && (
-              <S.LinkButton
-                href={menuUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={e => e.stopPropagation()}
-              >
-                메뉴 보러가기
-              </S.LinkButton>
-            )}
-          </S.DetailBox>
-        </S.CardContent>
-
+        <RestaurantCard restaurantData={restaurantData} />
         {excluded && (
           <S.Overlay>
             <S.OverlayText>제외되었습니다</S.OverlayText>
@@ -113,18 +70,7 @@ const S = {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   `,
   CardContainer: styled.div`
-    width: 100%;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level4};
-    overflow: hidden;
     position: relative;
-
-    padding: ${({ theme }) => theme.PADDING.p5};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: 10px;
   `,
 
   Image: styled.img`
@@ -134,25 +80,6 @@ const S = {
     border-radius: ${({ theme }) => theme.RADIUS.medium};
     object-fit: cover;
   `,
-  CardContent: styled.div<{ excluded: boolean }>`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    ${({ excluded }) =>
-      excluded
-        ? `
-      filter: blur(1px) brightness(0.88);
-      opacity: 0.6;
-    `
-        : `
-      filter: none;
-      opacity: 1;
-    `}
-  `,
   Overlay: styled.div`
     width: 100%;
     height: 100%;
@@ -160,7 +87,7 @@ const S = {
     justify-content: center;
     align-items: center;
     position: absolute;
-    z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
 
     background: #2a2f3d8f;
 
@@ -232,56 +159,11 @@ const S = {
       }
     `
         : `
-      background-color: ${theme.PALETTE.primary[60]};
+      background-color: ${theme.PALETTE.red[40]};
       color: ${theme.PALETTE.gray[0]};
       &:hover {
-        background-color: ${theme.PALETTE.primary[70]};
+        background-color: ${theme.PALETTE.red[50]};
       }
     `}
-  `,
-  TitleWrapper: styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level1};
-  `,
-  TagBox: styled.div`
-    height: 24px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: ${({ theme }) => theme.GAP.level2};
-    overflow: hidden;
-  `,
-  RestaurantName: styled.a`
-    max-width: 180px;
-    overflow: hidden;
-
-    padding-left: ${({ theme }) => theme.PADDING.px2};
-
-    color: ${({ theme }) => theme.PALETTE.gray[100]};
-    font: ${({ theme }) => theme.FONTS.body.medium_bold};
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  `,
-  DetailBox: styled.div`
-    display: flex;
-    flex-direction: column;
-
-    padding-left: ${({ theme }) => theme.PADDING.px2};
-  `,
-  DetailText: styled.span`
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.body.xsmall};
-  `,
-  LinkButton: styled.a`
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level2};
-
-    color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font: ${({ theme }) => theme.FONTS.body.xsmall};
-
-    &:hover {
-      color: ${({ theme }) => theme.PALETTE.gray[70]};
-      text-decoration: underline;
-    }
   `,
 };

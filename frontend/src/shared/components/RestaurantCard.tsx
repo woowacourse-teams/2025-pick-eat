@@ -12,7 +12,14 @@ function RestaurantCard({ restaurantData }: Props) {
   const { tags, name, placeUrl, pictureUrls } = restaurantData;
   return (
     <S.Container>
-      <S.Image src={pictureUrls[0]} alt={name} />
+      <S.Image
+        src={pictureUrls[0] || './images/restaurant.png'}
+        onError={e => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = './images/restaurant.png';
+        }}
+        alt={name}
+      />
 
       <S.Info>
         <S.Top>
