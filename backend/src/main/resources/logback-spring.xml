@@ -8,6 +8,10 @@
         <include resource="logback-local.xml"/>
     </springProfile>
 
+    <springProfile name="load">
+        <include resource="logback-load.xml"/>
+    </springProfile>
+
     <springProfile name="dev">
         <include resource="logback-dev.xml"/>
     </springProfile>

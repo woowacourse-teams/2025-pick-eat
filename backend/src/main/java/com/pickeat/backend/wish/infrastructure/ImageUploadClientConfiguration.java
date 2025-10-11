@@ -13,7 +13,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 public class ImageUploadClientConfiguration {
 
     @Bean
-    @Profile({"local", "test"})
+    @Profile({"local", "test", "load"})
     public ImageUploadClient localImageUploadClient(
             @Value("${default.wish.image.url}") String defaultImageUrl,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
