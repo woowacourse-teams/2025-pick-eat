@@ -97,7 +97,6 @@ const S = {
     width: 100%;
 
     padding-bottom: ${({ theme }) => theme.PADDING.p3};
-
     border: none;
 
     background-color: transparent;
