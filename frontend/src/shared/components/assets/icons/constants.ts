@@ -5,6 +5,7 @@ export const SIZE_MAP = {
   xs: '16',
   sm: '24',
   lg: '32',
+  xlg: '48',
 } as const;
 
 export type SizeMapType = typeof SIZE_MAP;
