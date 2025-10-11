@@ -1,5 +1,4 @@
-import Button from '@components/actions/Button';
-import Arrow from '@components/assets/icons/Arrow';
+import NewButton from '@components/actions/NewButton';
 
 import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
@@ -28,13 +27,9 @@ function ExcludeActionButton() {
 
   return (
     <S.ButtonBox>
-      <Button
-        aria-label="제외 식당 제출"
-        text="다음"
-        size="md"
-        rightIcon={<Arrow size="sm" direction="right" color="white" />}
-        onClick={submitExcludeRestaurants}
-      />
+      <NewButton aria-label="제외 식당 제출" onClick={submitExcludeRestaurants}>
+        제출하기
+      </NewButton>
     </S.ButtonBox>
   );
 }
