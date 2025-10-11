@@ -1,5 +1,6 @@
 import Button from '@components/actions/Button';
 import Share from '@components/assets/icons/Share';
+import Chip from '@components/labels/Chip';
 
 import { ApiError } from '@apis/apiClient';
 import { pickeat, PickeatResult } from '@apis/pickeat';
@@ -9,6 +10,8 @@ import { ROUTE_PATH } from '@routes/routePath';
 import { useShowToast } from '@provider/ToastProvider';
 
 import { copyLink } from '@utils/copyLink';
+
+import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
 import { useEffect, useState } from 'react';
@@ -49,64 +52,108 @@ function Result({ pickeatCode }: Props) {
     handleFetchResult();
   }, []);
   if (!pickeatResult) return null;
-  const { name, pictureUrls, placeUrl } = pickeatResult;
+  const { name, pictureUrls, placeUrl, tags } = pickeatResult;
 
   return (
-    <>
-      <S.Wrapper>
-        <S.Name>{name}</S.Name>
+    <S.Container>
+      <S.ImageBox>
         <S.Image
           src={pictureUrls[0] || './images/restaurant.png'}
           alt={name}
-          onError={e => (e.currentTarget.src = '/images/person.svg')}
+          onError={e => {
+            e.currentTarget.onerror = null;
+            e.currentTarget.src = './images/restaurant.png';
+          }}
         />
-        <S.ButtonWrapper>
-          {placeUrl && (
-            <Button
-              color="primary"
-              text="식당 상세 정보"
-              onClick={() =>
-                placeUrl &&
-                window.open(placeUrl, '_blank', 'noopener,noreferrer')
-              }
-            />
+      </S.ImageBox>
+      <S.BottomWrapper>
+        <S.TitleBox>
+          <S.Name>{name}</S.Name>
+          {tags.length > 0 && (
+            <Chip key={tags[0]} variant="outlined">
+              한식
+            </Chip>
           )}
-          <Button
-            type="button"
-            leftIcon={<Share size="sm" />}
-            text="링크공유"
-            color="secondary"
-            onClick={() => copyLink(window.location.href)}
-          />
-        </S.ButtonWrapper>
-      </S.Wrapper>
-    </>
+        </S.TitleBox>
+        <S.ButtonBox>
+          <S.DetailBox>
+            {placeUrl && (
+              <Button
+                color="primary"
+                text="식당 상세 정보"
+                onClick={() =>
+                  placeUrl &&
+                  window.open(placeUrl, '_blank', 'noopener,noreferrer')
+                }
+              />
+            )}
+          </S.DetailBox>
+          <S.ShareBox onClick={() => copyLink(window.location.href)}>
+            <Share color={THEME.PALETTE.gray[70]} size="sm" />
+          </S.ShareBox>
+        </S.ButtonBox>
+      </S.BottomWrapper>
+    </S.Container>
   );
 }
 
 export default Result;
 
 const S = {
-  Wrapper: styled.div`
-    width: 100%;
+  Container: styled.div`
+    width: 270px;
+    height: 290px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level6};
+    gap: ${({ theme }) => theme.GAP.level3};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
+    overflow: hidden;
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,
 
-  ButtonWrapper: styled.div`
+  BottomWrapper: styled.div`
     width: 100%;
     display: flex;
+    flex-direction: column;
+    padding: 0 ${({ theme }) => theme.PADDING.p5}
+      ${({ theme }) => theme.PADDING.p8};
     gap: ${({ theme }) => theme.GAP.level4};
   `,
 
+  TitleBox: styled.div`
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level2};
+  `,
+  ButtonBox: styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: ${({ theme }) => theme.GAP.level4};
+  `,
+
+  DetailBox: styled.div`
+    width: 120px;
+  `,
+  ShareBox: styled.button`
+    width: 30px;
+    height: 30px;
+  `,
   Name: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
-
+  ImageBox: styled.div`
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `,
   Image: styled.img`
-    width: 130px;
+    width: 100%;
   `,
 };

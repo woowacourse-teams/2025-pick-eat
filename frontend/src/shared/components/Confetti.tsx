@@ -39,6 +39,7 @@ const ConfettiContainer = styled.div`
   overflow: hidden;
   position: absolute;
   top: -20%;
+  pointer-events: none;
 `;
 
 const Piece = styled.div<{
