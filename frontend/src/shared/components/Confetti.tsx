@@ -34,11 +34,12 @@ const fall = keyframes`
 `;
 
 const ConfettiContainer = styled.div`
-  width: 100%;
+  width: 100vw;
+  max-width: 480px;
   height: 200px;
   overflow: hidden;
-  position: absolute;
-  top: -20%;
+  position: fixed;
+  top: 0;
   pointer-events: none;
 `;
 

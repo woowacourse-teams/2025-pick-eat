@@ -1,5 +1,11 @@
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
+const swing = keyframes`
+  0% { transform: rotate(-45deg); }
+  50% { transform: rotate(45deg); }
+  100% { transform: rotate(-45deg); }
+`;
 function Twinkles() {
   return (
     <S.Container>
@@ -22,20 +28,20 @@ const S = {
     position: absolute;
     top: -80px;
     left: 40px;
-    transform: rotate(-20deg);
+    animation: ${swing} 2s ease-in-out infinite;
   `,
   TwinkleImage2: styled.img`
     width: 18px;
     position: absolute;
     bottom: 10px;
     left: -40px;
-    transform: rotate(-14deg);
+    animation: ${swing} 1s ease-in-out infinite;
   `,
   TwinkleImage3: styled.img`
     width: 32px;
     position: absolute;
-    right: -20px;
+    right: -30px;
     bottom: -30px;
-    transform: rotate(30deg);
+    animation: ${swing} 3s ease-in-out infinite;
   `,
 };
