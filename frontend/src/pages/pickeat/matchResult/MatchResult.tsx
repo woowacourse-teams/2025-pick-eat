@@ -2,12 +2,14 @@ import { HEADER_HEIGHT } from '@widgets/Header';
 
 import styled from '@emotion/styled';
 
+import PendingResultScreen from './components/PendingResultScreen';
 import ResultScreen from './components/ResultScreen';
 
 function MatchResult() {
   return (
     <S.Container>
-      <ResultScreen />
+      <PendingResultScreen />
+      {/* <ResultScreen /> */}
     </S.Container>
   );
 }
