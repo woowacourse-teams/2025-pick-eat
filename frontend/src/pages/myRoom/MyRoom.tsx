@@ -4,6 +4,8 @@ import RoomList from '@domains/profile/components/RoomList';
 import Button from '@components/actions/Button';
 import Plus from '@components/assets/icons/Plus';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
+import BottomSheet from '@components/BottomSheet';
+import { useModal } from '@components/modal/useModal';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
@@ -11,12 +13,10 @@ import { pickeat } from '@apis/pickeat';
 import { rooms } from '@apis/rooms';
 import { users } from '@apis/users';
 
-import { ROUTE_PATH } from '@routes/routePath';
-
 import styled from '@emotion/styled';
 import { Suspense, useMemo } from 'react';
-import { useNavigate } from 'react-router';
 
+import CreateRoom from './components/CreateRoom';
 import Profile from './components/Profile';
 
 function MyRoom() {
@@ -26,7 +26,8 @@ function MyRoom() {
     []
   );
   const roomsData = useMemo(() => rooms.get(), []);
-  const navigate = useNavigate();
+  const { opened, handleOpenModal, handleCloseModal } = useModal();
+
   return (
     <S.Container>
       <Suspense fallback={<LoadingSpinner />}>
@@ -56,7 +57,7 @@ function MyRoom() {
                 text="방 생성"
                 rightIcon={<Plus size="xs" />}
                 color="gray"
-                onClick={() => navigate(ROUTE_PATH.CREATE_ROOM)}
+                onClick={handleOpenModal}
               />
             </S.ButtonBox>
           </S.TitleWrapper>
@@ -65,6 +66,9 @@ function MyRoom() {
           </ErrorBoundary>
         </S.Section>
       </Suspense>
+      <BottomSheet opened={opened} onClose={handleCloseModal}>
+        <CreateRoom opened={opened} />
+      </BottomSheet>
     </S.Container>
   );
 }

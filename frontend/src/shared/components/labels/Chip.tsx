@@ -1,5 +1,7 @@
 import Delete from '@components/assets/icons/Delete';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 
 type Props = {
@@ -12,9 +14,9 @@ type Props = {
 };
 
 const SIZE = {
-  sm: { height: 26, font: '400 14px/100% Pretendard' },
-  md: { height: 32, font: '400 17px/100% Pretendard' },
-  lg: { height: 36, font: '400 20px/100% Pretendard' },
+  sm: { height: 24, font: THEME.FONTS.body.small },
+  md: { height: 32, font: THEME.FONTS.body.medium },
+  lg: { height: 40, font: THEME.FONTS.body.large },
 };
 
 function Chip({
@@ -30,7 +32,6 @@ function Chip({
       <S.Text variant={variant} size={size}>
         {children}
       </S.Text>
-
       {removeButton && (
         <S.RemoveButton onClick={onRemove}>
           <Delete size="xs" />
@@ -64,7 +65,7 @@ const S = {
     ${({ variant, theme }) =>
       variant === 'filled' && `box-shadow:${theme.BOX_SHADOW.level2}`};
   `,
-  //TODO: font theme에서 뽑아쓰기
+
   Text: styled.div<Pick<Props, 'variant' | 'size'>>`
     display: flex;
     justify-content: center;
@@ -77,11 +78,5 @@ const S = {
     font: ${({ size = 'md' }) => SIZE[size].font};
   `,
 
-  RemoveButton: styled.button`
-    width: 16px;
-    height: 16px;
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[10]};
-    border-radius: ${({ theme }) => theme.RADIUS.half};
-  `,
+  RemoveButton: styled.button``,
 };

@@ -9,7 +9,6 @@ export const ROUTE_PATH = {
   PROFILE_INIT: '/profile-init',
   OAUTH_CALLBACK: '/oauth/callback',
   MY_PAGE: '/my-page',
-  CREATE_ROOM: '/create-room',
   ROOM_DETAIL: '/room-detail',
 };
 

@@ -29,7 +29,7 @@ function LineSearchBar({
       </S.SearchIcon>
       <S.LineInput id={inputId} placeholder={placeholder} {...props} />
       {xIcon && (
-        <S.xIcon onClick={onClear}>
+        <S.xIcon type="button" onClick={onClear}>
           <Erase />
         </S.xIcon>
       )}

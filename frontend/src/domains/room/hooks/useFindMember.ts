@@ -20,6 +20,10 @@ export const useFindMember = () => {
     setMemberList(null);
   };
 
+  const handleCInputClear = () => {
+    setNickName('');
+  };
+
   useEffect(() => {
     const findMember = async () => {
       if (!debouncedQuery) {
@@ -37,5 +41,6 @@ export const useFindMember = () => {
     handleInputChange,
     memberList,
     handleMemberClick,
+    handleCInputClear,
   };
 };

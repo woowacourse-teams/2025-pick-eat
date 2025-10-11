@@ -1,4 +1,4 @@
-import Cross from '@components/assets/icons/Cross';
+import Chip from '@components/labels/Chip';
 
 import { User } from '@apis/users';
 
@@ -12,18 +12,16 @@ type Props = {
 function SelectedMemberList({ memberList, onDelete }: Props) {
   return (
     <S.MemberContainer>
-      {memberList.length > 0 ? (
-        memberList.map(member => (
-          <S.Member key={member.id}>
-            <S.Nickname>{member.nickname}</S.Nickname>
-            <S.DeleteIcon onClick={() => onDelete(member.id)}>
-              <Cross color="white" size="sm" strokeWidth={4} />
-            </S.DeleteIcon>
-          </S.Member>
-        ))
-      ) : (
-        <S.EmptyDescription>멤버를 초대해 보세요!</S.EmptyDescription>
-      )}
+      {memberList.map(member => (
+        <Chip
+          key={member.id}
+          size="lg"
+          removeButton
+          onRemove={() => onDelete(member.id)}
+        >
+          {member.nickname}
+        </Chip>
+      ))}
     </S.MemberContainer>
   );
 }
@@ -33,17 +31,9 @@ export default SelectedMemberList;
 const S = {
   MemberContainer: styled.ul`
     width: 100%;
-    height: 100%;
     display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
-    overflow: scroll;
-
-    padding: ${({ theme }) => theme.PADDING.p5};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-radius: ${({ theme }) => theme.RADIUS.large};
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.GAP.level4} ${({ theme }) => theme.GAP.level3};
   `,
 
   Member: styled.div`
