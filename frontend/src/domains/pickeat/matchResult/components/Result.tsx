@@ -2,55 +2,20 @@ import Button from '@components/actions/Button';
 import Share from '@components/assets/icons/Share';
 import Chip from '@components/labels/Chip';
 
-import { ApiError } from '@apis/apiClient';
-import { pickeat, PickeatResult } from '@apis/pickeat';
-
-import { ROUTE_PATH } from '@routes/routePath';
-
-import { useShowToast } from '@provider/ToastProvider';
-
 import { copyLink } from '@utils/copyLink';
 
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { usePickeatResult } from '@pages/pickeat/matchResult/hooks/usePickeatResult';
 
 type Props = {
   pickeatCode: string;
 };
 
 function Result({ pickeatCode }: Props) {
-  const [pickeatResult, setPickeatResult] = useState<PickeatResult | null>(
-    null
-  );
-  const navigate = useNavigate();
-  const showToast = useShowToast();
+  const pickeatResult = usePickeatResult(pickeatCode);
 
-  useEffect(() => {
-    const handleFetchResult = async () => {
-      try {
-        const result = await pickeat.getResult(pickeatCode);
-        setPickeatResult(result);
-      } catch (e) {
-        if (e instanceof ApiError && e.status === 401) {
-          showToast({
-            mode: 'ERROR',
-            message: '해당 픽잇에 접근할 수 없습니다.',
-          });
-          navigate(ROUTE_PATH.MAIN);
-          return;
-        }
-        showToast({
-          mode: 'ERROR',
-          message: '픽잇 결과를 불러오지 못했습니다!',
-        });
-        throw e;
-      }
-    };
-    handleFetchResult();
-  }, []);
   if (!pickeatResult) return null;
   const { name, pictureUrls, placeUrl, tags } = pickeatResult;
 
