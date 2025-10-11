@@ -23,9 +23,9 @@ public record RestaurantRequest(
                 null,
                 wish.getRoadAddressName(),
                 wish.getPlaceUrl(),
+                wish.getTags(),
                 pictureKey,
                 pictureUrl,
-                wish.getTags(),
                 RestaurantType.WISH
         );
     }
