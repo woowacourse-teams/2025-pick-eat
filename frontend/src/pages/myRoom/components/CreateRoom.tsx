@@ -1,7 +1,5 @@
 import InviteMember from '@domains/room/components/RoomDetailTab/InviteMember';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import LineInput from '@components/actions/Input/LineInput';
 import NewButton from '@components/actions/NewButton';
 
@@ -76,7 +74,6 @@ export default CreateRoom;
 
 const S = {
   Container: styled.form`
-    height: calc(100vh - ${HEADER_HEIGHT});
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level6};
