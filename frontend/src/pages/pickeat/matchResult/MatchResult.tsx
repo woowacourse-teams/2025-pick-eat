@@ -45,12 +45,15 @@ const S = {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     gap: ${({ theme }) => theme.GAP.level8};
+
     padding: ${({ theme }) => theme.PADDING.p10};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
   ResultWrapper: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -59,8 +62,6 @@ const S = {
     position: relative;
 
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
-
-    width: 100%;
     box-shadow: none;
   `,
 

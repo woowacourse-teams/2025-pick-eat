@@ -14,8 +14,8 @@ export default Twinkles;
 
 const S = {
   Container: styled.div`
-    position: relative;
     height: 100%;
+    position: relative;
   `,
   TwinkleImage1: styled.img`
     width: 30px;
@@ -34,8 +34,8 @@ const S = {
   TwinkleImage3: styled.img`
     width: 32px;
     position: absolute;
-    bottom: -30px;
     right: -20px;
+    bottom: -30px;
     transform: rotate(30deg);
   `,
 };
