@@ -12,7 +12,7 @@ const tabData = [
 
 const LargeTabData = [
   {
-    tab: '작은',
+    tab: '작고긴탭이름',
     content: (
       <div style={{ height: '100px', backgroundColor: '#eeeeee' }}>땅땅</div>
     ),
