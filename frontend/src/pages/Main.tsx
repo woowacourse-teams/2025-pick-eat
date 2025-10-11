@@ -149,12 +149,11 @@ const S = {
     flex-direction: column;
     gap: 27px;
 
-    padding: 36px 0 0 16px;
-
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: 30px 30px 0 0;
   `,
   Description: styled.h1`
+    padding: 36px 0 0 16px;
     font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
 };
