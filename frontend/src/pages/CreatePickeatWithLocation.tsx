@@ -1,22 +1,20 @@
-import AddressList from '@domains/pickeat/components/AddressList';
+import SearchAddress from '@domains/pickeat/components/SearchAddress';
 
 import { HEADER_HEIGHT } from '@widgets/Header';
 
-import Button from '@components/actions/Button';
-import Input from '@components/actions/Input/Input';
-import SearchBar from '@components/actions/SearchBar/SearchBar';
+import NewButton from '@components/actions/NewButton';
+import LineSearchBar from '@components/actions/SearchBar/LineSearchBar';
 import Select from '@components/actions/Select';
+import BottomSheet from '@components/BottomSheet';
 import ErrorMessage from '@components/errors/ErrorMessage';
+import { useModal } from '@components/modal/useModal';
 
 import { useCreateLocationPickeat } from '@domains/pickeat/hooks/useCreateLocationPickeat';
-import { useFindAddress } from '@domains/pickeat/hooks/useFindAddress';
+import { ERROR_MESSAGE } from '@domains/pickeat/services/validatePickeatForms';
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
 import { useGA } from '@hooks/useGA';
 
-import { setMobileStyle } from '@styles/mediaQuery';
-
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FormEvent, useState } from 'react';
 
@@ -27,17 +25,24 @@ const RADIUS_OPTIONS = [
 ];
 
 function CreatePickeatWithLocation() {
+  const { opened, handleOpenModal, handleCloseModal } = useModal();
+  const [address, setAddress] = useState('');
+  const handleAddressChange = (value: string) => {
+    setAddress(value);
+    handleCloseModal();
+  };
   const [selectedOption, setSelectedOption] = useState<{
     value: string;
     label: string;
-  }>();
-  const { address, handleInputChange, addressList, handleAddressClick } =
-    useFindAddress();
+  }>({ value: RADIUS_OPTIONS[0].value, label: RADIUS_OPTIONS[0].label });
   const { createPickeat, error } = useCreateLocationPickeat();
 
   const submitPickeatForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createPickeat(new FormData(e.currentTarget), selectedOption?.value);
+    const formData = new FormData(e.currentTarget);
+    formData.append('pickeatName', makePickeatName());
+    await createPickeat(formData, selectedOption.value);
+
     useGA().useGAEventTrigger({
       action: 'click',
       category: 'form_button',
@@ -49,53 +54,50 @@ function CreatePickeatWithLocation() {
   return (
     <S.Container>
       <S.Wrapper onSubmit={submitPickeatForm}>
-        <S.Title>
-          함께 식사할 멤버를 소환하고,
-          <br /> 식당을 정해봐요.
-        </S.Title>
+        <S.Address>
+          <S.SearchButton onClick={handleOpenModal} type="button">
+            <LineSearchBar
+              readOnly
+              placeholder="강남역 2호선"
+              value={address}
+              name="address"
+            />
+          </S.SearchButton>
+          <S.Text>근처의</S.Text>
+        </S.Address>
+
+        <S.Distance>
+          <S.Text>도보 약</S.Text>
+          <S.SelectWrapper>
+            <Select.Bar
+              selectedValue={selectedOption.label}
+              onChange={option => setSelectedOption(option)}
+            >
+              {RADIUS_OPTIONS.map(option => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select.Bar>
+          </S.SelectWrapper>
+          <S.Text>식당을 중에서</S.Text>
+        </S.Distance>
+
         <S.Description>
-          이미 투표가 존재한다면 초대 링크를 통해 입장하세요.
+          <S.Text>투표를 열어볼까요?</S.Text>
         </S.Description>
 
-        <S.FormWrapper>
-          <Input
-            name="pickeatName"
-            label="투표명"
-            placeholder="레전드 점심"
-            defaultValue={makePickeatName()}
-          />
-
-          <SearchBar
-            value={address}
-            onChange={e => handleInputChange(e.target.value)}
-            name="address"
-            label="식당 탐색 위치"
-            placeholder="식당 탐색 위치 검색"
-          >
-            {addressList && (
-              <AddressList
-                addressList={addressList}
-                onClick={handleAddressClick}
-              />
-            )}
-          </SearchBar>
-
-          <Select.Bar
-            label="반경"
-            selectedValue={selectedOption?.label}
-            onChange={option => setSelectedOption(option)}
-          >
-            {RADIUS_OPTIONS.map(option => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select.Bar>
-        </S.FormWrapper>
-
         <ErrorMessage message={error} />
-        <Button text="시작하기" />
+
+        <NewButton fixed disabled={!address}>
+          {address ? '투표 시작하기' : ERROR_MESSAGE.ADDRESS}
+        </NewButton>
       </S.Wrapper>
+
+      <BottomSheet opened={opened} onClose={handleCloseModal}>
+        <SearchAddress onAddressClick={handleAddressChange} />
+      </BottomSheet>
+      <S.VotingBoxImage src={'/images/vote.png'} alt="투표함" />
     </S.Container>
   );
 }
@@ -105,44 +107,55 @@ export default CreatePickeatWithLocation;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - ${HEADER_HEIGHT});
+    height: 100vh;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column;
+    justify-content: space-around;
+
+    padding: ${HEADER_HEIGHT} ${({ theme }) => theme.PADDING.p4};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
   Wrapper: styled.form`
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
-
-    padding: ${({ theme }) => theme.PADDING.p10};
-
-    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
-    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
-
-    ${setMobileStyle(css`
-      width: 100%;
-      box-shadow: none;
-    `)}
-  `,
-
-  Title: styled.h1`
-    font: ${({ theme }) => theme.FONTS.heading.medium};
-  `,
-
-  FormWrapper: styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level8};
-
-    padding-top: ${({ theme }) => theme.PADDING.p6};
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
 
-  Description: styled.p`
-    color: ${({ theme }) => theme.PALETTE.gray[60]};
-    white-space: nowrap;
+  Text: styled.span`
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
+  `,
+
+  Address: styled.section`
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level4};
+  `,
+
+  Distance: styled.section`
+    display: flex;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level4};
+  `,
+
+  Description: styled.span`
+    padding: ${({ theme }) => theme.PADDING.p3} 0;
+  `,
+
+  SearchButton: styled.button`
+    width: 168px;
+    height: 34px;
+  `,
+
+  SelectWrapper: styled.div`
+    width: 124px;
+  `,
+
+  VotingBoxImage: styled.img`
+    width: 244px;
+
+    margin: 0 auto;
   `,
 };

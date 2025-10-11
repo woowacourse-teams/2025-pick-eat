@@ -19,6 +19,7 @@ export const useCreateLocationPickeat = () => {
     radiusValue: string | undefined
   ) => {
     const data = Object.fromEntries(formData.entries());
+
     try {
       validatePickeatForms.location({
         name: data.pickeatName as string,
