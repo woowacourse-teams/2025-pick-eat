@@ -19,6 +19,8 @@ type Props = {
 
 function RestaurantCard({ restaurantData }: Props) {
   const { tags, name, placeUrl, pictureUrls } = restaurantData;
+  const menuUrl = `${placeUrl}#menuInfo`;
+
   return (
     <S.Container>
       <S.Image
@@ -43,7 +45,7 @@ function RestaurantCard({ restaurantData }: Props) {
         </S.Top>
 
         {placeUrl && (
-          <S.Link href={placeUrl} target="_blank" rel="noopener noreferrer">
+          <S.Link href={menuUrl} target="_blank" rel="noopener noreferrer">
             메뉴 보러가기
           </S.Link>
         )}
