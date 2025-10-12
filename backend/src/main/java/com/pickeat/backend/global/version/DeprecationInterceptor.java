@@ -51,7 +51,6 @@ public class DeprecationInterceptor implements HandlerInterceptor {
 
         response.setHeader("Deprecation", "@" + versionInfo.getDeprecationDate());
         response.setHeader("Link", String.format("<%s>; rel=\"alternate\"", alternateUrl));
-        response.setHeader("Sunset", versionInfo.getDeprecationDate());
     }
 
     private String extractVersion(String uri) {
