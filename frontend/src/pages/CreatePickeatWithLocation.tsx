@@ -26,6 +26,9 @@ const RADIUS_OPTIONS = [
 ];
 
 function CreatePickeatWithLocation() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [overayMessage, setOverayMessage] =
+    useState('식당을 찾아보고 있어요 , ,');
   const { opened, handleOpenModal, handleCloseModal } = useModal();
   const [address, setAddress] = useState('');
   const handleAddressChange = (value: string) => {
@@ -36,13 +39,24 @@ function CreatePickeatWithLocation() {
     value: string;
     label: string;
   }>({ value: RADIUS_OPTIONS[0].value, label: RADIUS_OPTIONS[0].label });
-  const { createPickeat, error } = useCreateLocationPickeat();
+  const handleCloseOverlay = (callback: () => void) => {
+    setTimeout(() => {
+      setIsLoading(false);
+      callback();
+    }, 2000);
+  };
+
+  const { createPickeat, error } = useCreateLocationPickeat(handleCloseOverlay);
 
   const submitPickeatForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+
     const formData = new FormData(e.currentTarget);
     formData.append('pickeatName', makePickeatName());
+
     await createPickeat(formData, selectedOption.value);
+    setOverayMessage('식당을 찾았어요 !');
 
     useGA().useGAEventTrigger({
       action: 'click',
@@ -101,7 +115,7 @@ function CreatePickeatWithLocation() {
         </BottomSheet>
         <S.VotingBoxImage src={'/images/vote.png'} alt="투표함" />
 
-        <SearchLoadingOverlay text="식당을 찾아보고 있어요 . ." />
+        {isLoading && <SearchLoadingOverlay text={overayMessage} />}
       </S.Container>
     </>
   );

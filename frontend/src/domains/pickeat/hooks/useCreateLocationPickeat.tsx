@@ -8,7 +8,9 @@ import { useSearchParams } from 'react-router';
 
 import { validatePickeatForms } from '../services/validatePickeatForms';
 
-export const useCreateLocationPickeat = () => {
+export const useCreateLocationPickeat = (
+  handleCloseOverlay: (cb: () => void) => void
+) => {
   const [error, setError] = useState<string>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -44,7 +46,10 @@ export const useCreateLocationPickeat = () => {
         code
       );
 
-      navigate(generateRouterPath.pickeatDetail(code));
+      handleCloseOverlay(() =>
+        navigate(generateRouterPath.pickeatDetail(code))
+      );
+
       setError('');
     } catch (e) {
       if (e instanceof Error) {
