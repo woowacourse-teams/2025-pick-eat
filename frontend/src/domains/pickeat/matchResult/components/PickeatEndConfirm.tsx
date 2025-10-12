@@ -54,9 +54,10 @@ function PickeatEndConfirm({
       <S.Title>잠깐✋</S.Title>
       <S.Description>
         {remainingCount === 0 || (
-          <>{remainingCount}명이 투표를 완료하지 않았어요!</>
+          <>
+            {remainingCount}명이 투표를 완료하지 않았어요! <br />
+          </>
         )}
-        <br />
         정말 종료하시겠습니까?
       </S.Description>
 
