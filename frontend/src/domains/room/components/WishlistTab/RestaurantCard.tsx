@@ -15,6 +15,7 @@ type Props = {
 function RestaurantCard({ restaurantData, onDelete }: Props) {
   const { tags, name, placeUrl, roadAddressName, pictures } = restaurantData;
   const { opened, mounted, handleUnmountModal, handleOpenModal } = useModal();
+  const menuUrl = `${placeUrl}#menuInfo`;
 
   const handleConfirmDelete = () => {
     handleUnmountModal();
@@ -44,7 +45,7 @@ function RestaurantCard({ restaurantData, onDelete }: Props) {
           <S.Address>{roadAddressName}</S.Address>
         </S.Top>
         {placeUrl && (
-          <S.Link href={placeUrl} target="_blank" rel="noopener noreferrer">
+          <S.Link href={menuUrl} target="_blank" rel="noopener noreferrer">
             메뉴 보러가기
           </S.Link>
         )}
