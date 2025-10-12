@@ -70,13 +70,13 @@ const S = {
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level3};
+    position: relative;
 
     padding: ${({ theme }) => theme.PADDING.p5};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: 20px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
-    position: relative;
   `,
 
   Image: styled.img`
@@ -128,17 +128,19 @@ const S = {
   `,
 
   LikeWrapper: styled.div`
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
     width: 66px;
     height: 36px;
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-radius: ${({ theme }) => theme.RADIUS.large};
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+
     padding: ${({ theme }) => theme.PADDING.p1}
       ${({ theme }) => theme.PADDING.p4};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 };

@@ -66,16 +66,19 @@ export default PreferRestaurant;
 const S = {
   Container: styled.div`
     width: 100%;
-    padding-top: ${HEADER_HEIGHT};
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+
+    padding-top: ${HEADER_HEIGHT};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
   RestaurantListContainer: styled.div`
     width: 100%;
     min-height: 580px;
+
     padding: ${({ theme }) => theme.PADDING.p5};
     padding-bottom: ${footerHeight}px;
   `,
