@@ -3,7 +3,7 @@ package com.pickeat.backend.global.config;
 import com.pickeat.backend.global.auth.LoginUserIdArgumentResolver;
 import com.pickeat.backend.global.auth.ParticipantIdArgumentResolver;
 import com.pickeat.backend.global.auth.ProviderArgumentResolver;
-import com.pickeat.backend.global.config.intercepter.DeprecationInterceptor;
+import com.pickeat.backend.global.config.version.DeprecationInterceptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
