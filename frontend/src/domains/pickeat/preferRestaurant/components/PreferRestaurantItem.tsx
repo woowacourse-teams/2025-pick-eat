@@ -13,7 +13,8 @@ type Props = {
 };
 
 function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
-  const { id, name, tags, likeCount, pictureUrls, placeUrl } = restaurant;
+  const { id, name, tags, likeCount, pictureUrls, placeUrl, category } =
+    restaurant;
   const menuUrl = `${placeUrl}#menuInfo`;
 
   return (
@@ -29,6 +30,7 @@ function RestaurantItem({ restaurant, liked, onLike, onUnlike }: Props) {
       <S.Info>
         <S.Top>
           <S.TagBox>
+            {tags.length === 0 && <Chip>{category}</Chip>}
             {tags.map((tag: string) => (
               <Chip key={tag} variant="outlined" size="sm">
                 {tag}
