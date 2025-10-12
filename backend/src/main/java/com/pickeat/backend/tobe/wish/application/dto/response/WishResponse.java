@@ -16,7 +16,6 @@ public record WishResponse(
         String category,
         @Schema(description = "위시 이미지", example = """
                 {
-                  "id": 1,
                   "wishId": 1,
                   "imageDownloadUrl": "https://example.com/image1.jpg"
                 }
