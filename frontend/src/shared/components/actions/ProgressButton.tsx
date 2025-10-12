@@ -1,19 +1,19 @@
 import styled from '@emotion/styled';
-import { ComponentProps } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 type Props = {
-  text: string;
   total: number;
   current: number;
+  children: ReactNode;
 } & ComponentProps<'button'>;
 
-function ProgressButton({ text, total, current, ...props }: Props) {
+function ProgressButton({ total, current, children, ...props }: Props) {
   const percentage =
     total > 0 && current > 0 && current <= total ? (current / total) * 100 : 0;
 
   return (
     <S.Container percentage={percentage} {...props}>
-      {text}
+      {children}
     </S.Container>
   );
 }
