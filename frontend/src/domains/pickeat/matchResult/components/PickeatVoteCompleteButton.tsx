@@ -1,4 +1,3 @@
-import Button from '@components/actions/Button';
 import NewButton from '@components/actions/NewButton';
 
 import { participants } from '@apis/participants';
