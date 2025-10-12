@@ -1,4 +1,5 @@
 import Button from '@components/actions/Button';
+import NewButton from '@components/actions/NewButton';
 
 import { participants } from '@apis/participants';
 
@@ -58,13 +59,15 @@ function PickeatVoteCompleteButton({ onVoteComplete, onClick }: Props) {
   }, []);
 
   return (
-    <Button
+    <NewButton
       onClick={handleVoteCompleteClick}
       aria-disabled={loading}
-      text="투표 완료하기"
       disabled={loading}
       color="primary"
-    />
+      fixed
+    >
+      투표 완료하기
+    </NewButton>
   );
 }
 
