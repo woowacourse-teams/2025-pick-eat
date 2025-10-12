@@ -57,13 +57,15 @@ const S = {
   `,
 
   Heart: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.large};
+    font: ${({ theme }) => theme.FONTS.body.xlarge};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
     cursor: pointer;
     user-select: none;
   `,
 
   Count: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.large};
+    font: ${({ theme }) => theme.FONTS.body.medium};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
   `,
 
   Explosion: styled.div`
