@@ -1,5 +1,6 @@
-package com.pickeat.backend.global.config.version;
+package com.pickeat.backend.global.version;
 
+import com.pickeat.backend.global.version.ApiVersionProperties.VersionInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
@@ -41,16 +42,16 @@ public class DeprecationInterceptor implements HandlerInterceptor {
     }
 
     private void addDeprecationHeaders(HttpServletResponse response, String currentVersion, String requestUri) {
-        ApiVersionManager.VersionInfo versionInfo = apiVersionManager.getVersionInfo(currentVersion);
-        String migrationTarget = versionInfo.migrateTo() != null
-                ? versionInfo.migrateTo()
+        VersionInfo versionInfo = apiVersionManager.getVersionInfo(currentVersion);
+        String migrationTarget = versionInfo.getMigrateTo() != null
+                ? versionInfo.getMigrateTo()
                 : apiVersionManager.getLatestVersion();
 
         String alternateUrl = requestUri.replaceFirst("/" + currentVersion + "/", "/" + migrationTarget + "/");
 
-        response.setHeader("Deprecation", "@" + versionInfo.deprecationDate());
+        response.setHeader("Deprecation", "@" + versionInfo.getDeprecationDate());
         response.setHeader("Link", String.format("<%s>; rel=\"alternate\"", alternateUrl));
-        response.setHeader("Sunset", versionInfo.deprecationDate());
+        response.setHeader("Sunset", versionInfo.getDeprecationDate());
     }
 
     private String extractVersion(String uri) {
