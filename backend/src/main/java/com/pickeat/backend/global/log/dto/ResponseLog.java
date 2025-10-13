@@ -1,6 +1,5 @@
 package com.pickeat.backend.global.log.dto;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
@@ -14,7 +13,7 @@ public record ResponseLog(
     public static ResponseLog of(ContentCachingResponseWrapper response, String requestURI) {
         String responseBody;
         try {
-            responseBody = new String(response.getContentAsByteArray(), StandardCharsets.UTF_8);
+            responseBody = "Success";
         } catch (Exception e) {
             responseBody = "Error reading response body";
         }

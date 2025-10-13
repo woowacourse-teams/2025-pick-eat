@@ -10,10 +10,12 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class LoadTestRestaurantSearchClient implements RestaurantSearchClient {
 
+    private static final Integer RESTAURANT_SIZE = 5;
+
     @Override
     public List<RestaurantRequest> getRestaurants(RestaurantSearchRequest request) {
         List<RestaurantRequest> restaurants = new ArrayList<>();
-        for (int i = 0; i < request.size(); i++) {
+        for (int i = 0; i < RESTAURANT_SIZE; i++) {
             restaurants.add(RestaurantRequest.fromLocation(
                     request.query() + "음식" + i,
                     FoodCategory.getCategoryNameBy(request.query()),
