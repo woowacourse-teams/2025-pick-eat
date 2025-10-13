@@ -28,24 +28,26 @@ function LineInput({
   const inputId = useId();
   return (
     <S.Container>
-      {label && (
-        <S.Label htmlFor={inputId} color={color} required={required}>
-          {label}
-        </S.Label>
-      )}
-      <S.LineInput
-        id={inputId}
-        placeholder={placeholder}
-        required={required}
-        error={error}
-        color={color}
-        {...props}
-      />
-      {xIcon && (
-        <S.ClearIcon type="button" onClick={onClear}>
-          <Erase />
-        </S.ClearIcon>
-      )}
+      <S.InputWrapper>
+        {label && (
+          <S.Label htmlFor={inputId} color={color} required={required}>
+            {label}
+          </S.Label>
+        )}
+        <S.Input
+          id={inputId}
+          placeholder={placeholder}
+          required={required}
+          error={error}
+          color={color}
+          {...props}
+        />
+        {xIcon && (
+          <S.ClearIcon type="button" onClick={onClear}>
+            <Erase />
+          </S.ClearIcon>
+        )}
+      </S.InputWrapper>
       {feedbackMessage && (
         <S.FeedbackMessage error={error}>{feedbackMessage}</S.FeedbackMessage>
       )}
@@ -56,6 +58,11 @@ export default LineInput;
 
 const S = {
   Container: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
+  `,
+  InputWrapper: styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -83,14 +90,13 @@ const S = {
       content: ${({ required }) => (required ? "'*'" : '')};
     }
   `,
-  LineInput: styled.input<{
+  Input: styled.input<{
     color?: string;
     error: boolean;
   }>`
     width: 100%;
 
     padding-bottom: ${({ theme }) => theme.PADDING.p3};
-
     border: none;
 
     background-color: transparent;

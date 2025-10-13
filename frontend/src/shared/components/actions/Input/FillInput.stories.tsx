@@ -1,3 +1,5 @@
+import { sliceInputByMaxLength } from '@utils/sliceInputByMaxLength';
+
 import { ChangeEvent, ComponentProps, useState } from 'react';
 
 import FillInput from './FillInput';
@@ -77,12 +79,11 @@ export const FillWithFeedbackMessage = () => {
   const MAX_LENGTH = 12;
   const [state, setState] = useState<string>('');
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setState(e.target.value);
+    setState(sliceInputByMaxLength(e.target.value, MAX_LENGTH));
   };
 
   return (
     <FillInput
-      maxLength={MAX_LENGTH}
       value={state}
       onChange={handleChange}
       label="레이블"

@@ -60,9 +60,11 @@ export default PickeatDetail;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - ${HEADER_HEIGHT});
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+
+    padding-top: ${HEADER_HEIGHT};
   `,
 };
