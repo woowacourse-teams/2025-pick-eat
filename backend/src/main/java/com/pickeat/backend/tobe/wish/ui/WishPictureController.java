@@ -54,7 +54,7 @@ public class WishPictureController implements WishPictureApiSpec {
     @PutMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<WishPictureResponse> updateWishPictures(
             @PathVariable("wishId") Long wishId,
-            @RequestPart("wishPicture") MultipartFile wishPictures,
+            @RequestPart("wishPictures") MultipartFile wishPictures,
             @LoginUserId Long userId
     ) {
         WishPictureResponse wishPictureResponse =

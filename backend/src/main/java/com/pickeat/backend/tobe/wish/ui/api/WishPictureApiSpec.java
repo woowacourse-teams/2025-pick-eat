@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
-@Tag(name = "위시 관리 V2", description = "위시 관련 API")
+@Tag(name = "위시", description = "위시 관련 API")
 public interface WishPictureApiSpec {
 
     @Operation(

@@ -18,7 +18,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@Tag(name = "방 관리 V2", description = "방 생성, 조회 및 초대 API")
+@Tag(name = "방 관리", description = "방 생성, 조회 및 초대 API")
 public interface RoomApiSpec {
 
     @Operation(
@@ -210,9 +210,7 @@ public interface RoomApiSpec {
 
     @Operation(
             summary = "방 나가기",
-            description = "로그인한 사용자가 지정한 방에서 탈퇴합니다.",
-            tags = {"Room"}
-    )
+            description = "로그인한 사용자가 지정한 방에서 탈퇴합니다.")
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "204",

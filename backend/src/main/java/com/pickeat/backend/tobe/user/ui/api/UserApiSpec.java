@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@Tag(name = "사용자 관리 V2", description = "사용자 정보 조회 및 관리 API")
+@Tag(name = "사용자 관리", description = "사용자 정보 조회 및 관리 API")
 public interface UserApiSpec {
 
     @Operation(
