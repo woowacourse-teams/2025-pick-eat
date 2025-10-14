@@ -93,11 +93,7 @@ const S = {
     top: 0;
     left: 50%;
 
-    /* TODO: header 보다는 크게 bottom-sheet 보단 작게 */
-    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
-
-    padding: 0 ${({ theme }) => theme.PADDING.p5}
-      ${({ theme }) => theme.PADDING.p5};
+    z-index: ${({ theme }) => theme.Z_INDEX.sidenav};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     transform: translateX(-50%);
@@ -108,7 +104,10 @@ const S = {
     position: sticky;
     top: 0;
     z-index: ${({ theme }) => theme.Z_INDEX.sticky};
-    backdrop-filter: blur(12px) saturate(180%);
+
+    padding-left: ${({ theme }) => theme.PADDING.p3};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,
   BackButton: styled.button``,
   Title: styled.h1`
@@ -118,6 +117,9 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level8};
+
+    padding: 0 ${({ theme }) => theme.PADDING.p5}
+      ${({ theme }) => theme.PADDING.p5};
   `,
   SearchButton: styled.div``,
 };
