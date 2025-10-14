@@ -59,19 +59,16 @@ const S = {
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     box-shadow: none;
   `,
-
   TwinkleBox: styled.div`
     width: 270px;
     height: 300px;
     position: absolute;
     pointer-events: none;
   `,
-
   Title: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[60]};
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
-
   ToMainButton: styled.div`
     width: 260px;
   `,

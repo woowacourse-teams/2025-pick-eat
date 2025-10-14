@@ -88,7 +88,6 @@ const S = {
     padding: 0 ${({ theme }) => theme.PADDING.p5}
       ${({ theme }) => theme.PADDING.p8};
   `,
-
   TitleBox: styled.div`
     display: flex;
     flex-direction: column;
@@ -100,7 +99,6 @@ const S = {
     justify-content: space-between;
     gap: ${({ theme }) => theme.GAP.level4};
   `,
-
   DetailBox: styled.div`
     width: 120px;
   `,

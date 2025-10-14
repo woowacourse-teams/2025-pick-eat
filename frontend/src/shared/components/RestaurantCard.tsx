@@ -73,14 +73,12 @@ const S = {
     border-radius: 20px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
   `,
-
   Image: styled.img`
     width: 90px;
     height: 90px;
     border-radius: 20px;
     object-fit: cover;
   `,
-
   Info: styled.div`
     width: 162px;
     height: 86px;
@@ -88,14 +86,12 @@ const S = {
     flex-direction: column;
     justify-content: space-between;
   `,
-
   Top: styled.div`
     width: 156px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level1};
   `,
-
   TagBox: styled.div`
     width: 100%;
     height: 28px;
@@ -104,7 +100,6 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level2};
     overflow: hidden;
   `,
-
   Name: styled.span`
     overflow: hidden;
 
@@ -112,7 +107,6 @@ const S = {
     white-space: nowrap;
     text-overflow: ellipsis;
   `,
-
   Link: styled.a`
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font:
