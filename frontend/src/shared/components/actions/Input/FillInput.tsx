@@ -4,8 +4,6 @@ import styled from '@emotion/styled';
 import { ComponentProps, ReactNode, useId } from 'react';
 
 type Props = {
-  placeholder?: string;
-  required?: boolean;
   label?: string;
   color?: string;
   xIcon?: boolean;
@@ -15,6 +13,7 @@ type Props = {
 } & ComponentProps<'input'>;
 
 function FillInput({
+  value,
   placeholder = '입력해 주세요.',
   required,
   label,
@@ -35,13 +34,15 @@ function FillInput({
           </S.Label>
         )}
         <S.Input
+          value={value}
           id={inputId}
           placeholder={placeholder}
           required={required}
           color={color}
+          autoComplete="off"
           {...props}
         />
-        {xIcon && (
+        {xIcon && typeof value === 'string' && value?.length > 0 && (
           <S.ClearIcon type="button" onClick={onClear}>
             <Erase />
           </S.ClearIcon>
@@ -71,7 +72,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p4};
 
-    border: 1px solid
+    border: 2px solid
       ${({ theme, error }) =>
         error ? theme.PALETTE.red[40] : theme.PALETTE.gray[5]};
 
@@ -79,7 +80,7 @@ const S = {
     border-radius: ${({ theme }) => theme.RADIUS.medium};
 
     &:focus-within {
-      border: 1px solid ${({ theme }) => theme.PALETTE.gray[95]};
+      border: 2px solid ${({ theme }) => theme.PALETTE.primary[50]};
 
       background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     }
