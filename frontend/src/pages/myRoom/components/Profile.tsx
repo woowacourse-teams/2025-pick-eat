@@ -3,21 +3,12 @@ import { User } from '@apis/users';
 import styled from '@emotion/styled';
 import { use } from 'react';
 
-const profileUrl = null;
-
 function Profile({ user }: { user: Promise<User | null> }) {
   const profile = use(user);
   return (
     <S.Container>
       <S.ProfileImageBox>
-        <S.ProfileImage
-          src={profileUrl || '/images/profile/man_profile.png'}
-          alt="프로필"
-          onError={e => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = '/images/profile/manProfile.png';
-          }}
-        />
+        <S.ProfileImage src={'/images/profile/manProfile.png'} alt="프로필" />
       </S.ProfileImageBox>
       <S.NickName>{profile?.nickname ?? '회원'}님</S.NickName>
     </S.Container>

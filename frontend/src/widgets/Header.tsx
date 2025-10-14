@@ -36,7 +36,7 @@ function Header() {
       <S.ButtonWrapper>
         {loggedIn ? (
           <>
-            <S.TextButton onClick={handleProfileClick}>내 방 보기</S.TextButton>
+            <S.TextButton onClick={handleProfileClick}>마이페이지</S.TextButton>
             <S.VerticalDivider>|</S.VerticalDivider>
             <S.LoginButton onClick={logoutUser}>로그아웃</S.LoginButton>
           </>

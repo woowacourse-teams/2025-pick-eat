@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router';
 
 import Profile from './components/Profile';
 
-function MyRoom() {
+function MyPage() {
   const userData = useMemo(() => users.get(), []);
   const participatingPickeatData = useMemo(
     () => pickeat.getParticipating(),
@@ -67,7 +67,7 @@ function MyRoom() {
   );
 }
 
-export default MyRoom;
+export default MyPage;
 
 const S = {
   Container: styled.div`
