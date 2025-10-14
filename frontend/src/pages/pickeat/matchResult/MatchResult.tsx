@@ -99,26 +99,23 @@ const S = {
   `,
   ResultScreenWrapper: styled.div`
     height: 100vh;
-    padding-top: ${HEADER_HEIGHT};
-
-    animation: ${scaleUp} 0.3s ease forwards;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
+
+    padding-top: ${HEADER_HEIGHT};
+
+    animation: ${scaleUp} 0.3s ease forwards;
   `,
   ResultWrapper: styled.div`
     width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
     position: relative;
 
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
-    box-shadow: none;
   `,
   TwinkleBox: styled.div`
     width: 270px;
