@@ -80,7 +80,7 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level5};
   `,
-  Description: styled.div`
+  Description: styled.span`
     font: ${({ theme }) => theme.FONTS.body.xlarge};
     text-align: center;
   `,
