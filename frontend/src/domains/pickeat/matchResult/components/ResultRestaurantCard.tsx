@@ -9,16 +9,16 @@ import { copyLink } from '@utils/copyLink';
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
+import { use } from 'react';
 
 type Props = {
-  restaurantData: Pick<
-    Restaurant,
-    'name' | 'pictureUrls' | 'placeUrl' | 'tags'
+  restaurantData: Promise<
+    Pick<Restaurant, 'name' | 'pictureUrls' | 'placeUrl' | 'tags'>
   >;
 };
 
 function ResultRestaurantCard({ restaurantData }: Props) {
-  const { name, pictureUrls, placeUrl, tags } = restaurantData;
+  const { name, pictureUrls, placeUrl, tags } = use(restaurantData);
   return (
     <S.Container>
       <S.ImageBox>
@@ -78,7 +78,6 @@ const S = {
     border-radius: ${({ theme }) => theme.RADIUS.large};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
   `,
-
   BottomWrapper: styled.div`
     width: 100%;
     display: flex;

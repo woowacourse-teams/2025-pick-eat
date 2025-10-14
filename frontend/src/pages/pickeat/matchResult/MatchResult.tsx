@@ -1,14 +1,11 @@
 import { HEADER_HEIGHT } from '@widgets/Header';
 
-import LoadingSpinner from '@components/assets/LoadingSpinner';
-
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { lazy, Suspense, useState } from 'react';
+import { useState } from 'react';
 
 import PendingResultScreen from './components/PendingResultScreen';
-
-const ResultScreen = lazy(() => import('./components/ResultScreen'));
+import ResultScreen from './components/ResultScreen';
 
 const scaleUp = keyframes`
   from {
@@ -26,11 +23,9 @@ function MatchResult() {
   return (
     <S.Container>
       {readied ? (
-        <Suspense fallback={<LoadingSpinner />}>
-          <S.ResultScreenWrapper>
-            <ResultScreen />
-          </S.ResultScreenWrapper>
-        </Suspense>
+        <S.ResultScreenWrapper>
+          <ResultScreen />
+        </S.ResultScreenWrapper>
       ) : (
         <PendingResultScreen onReady={() => setReadied(true)} />
       )}
