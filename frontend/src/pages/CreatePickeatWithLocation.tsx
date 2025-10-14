@@ -69,57 +69,55 @@ function CreatePickeatWithLocation() {
   };
 
   return (
-    <>
-      <S.Container>
-        <S.Wrapper onSubmit={submitPickeatForm}>
-          <S.Address>
-            <S.SearchButton onClick={handleOpenModal} type="button">
-              <LineSearchBar
-                readOnly
-                placeholder="강남역 2호선"
-                value={address}
-                name="address"
-              />
-            </S.SearchButton>
-            <S.Text>근처의</S.Text>
-          </S.Address>
+    <S.Container>
+      <S.Wrapper onSubmit={submitPickeatForm}>
+        <S.Address>
+          <S.SearchButton onClick={handleOpenModal} type="button">
+            <LineSearchBar
+              readOnly
+              placeholder="강남역 2호선"
+              value={address}
+              name="address"
+            />
+          </S.SearchButton>
+          <S.Text>근처의</S.Text>
+        </S.Address>
 
-          <S.Distance>
-            <S.Text>도보 약</S.Text>
-            <S.SelectWrapper>
-              <Select.Bar
-                selectedValue={selectedOption.label}
-                onChange={option => setSelectedOption(option)}
-              >
-                {RADIUS_OPTIONS.map(option => (
-                  <Select.Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Select.Option>
-                ))}
-              </Select.Bar>
-            </S.SelectWrapper>
-            <S.Text>식당을 중에서</S.Text>
-          </S.Distance>
+        <S.Distance>
+          <S.Text>도보 약</S.Text>
+          <S.SelectWrapper>
+            <Select.Bar
+              selectedValue={selectedOption.label}
+              onChange={option => setSelectedOption(option)}
+            >
+              {RADIUS_OPTIONS.map(option => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select.Bar>
+          </S.SelectWrapper>
+          <S.Text>식당을 중에서</S.Text>
+        </S.Distance>
 
-          <S.Description>
-            <S.Text>투표를 열어볼까요?</S.Text>
-          </S.Description>
+        <S.Description>
+          <S.Text>투표를 열어볼까요?</S.Text>
+        </S.Description>
 
-          <ErrorMessage message={error} />
+        <ErrorMessage message={error} />
 
-          <NewButton fixed disabled={!address}>
-            {address ? '투표 시작하기' : ERROR_MESSAGE.ADDRESS}
-          </NewButton>
-        </S.Wrapper>
+        <NewButton fixed disabled={!address}>
+          {address ? '투표 시작하기' : ERROR_MESSAGE.ADDRESS}
+        </NewButton>
+      </S.Wrapper>
 
-        <BottomSheet opened={opened} onClose={handleCloseModal}>
-          <SearchAddress onAddressClick={handleAddressChange} />
-        </BottomSheet>
-        <S.VotingBoxImage src={'/images/vote.png'} alt="투표함" />
+      <BottomSheet opened={opened} onClose={handleCloseModal}>
+        <SearchAddress onAddressClick={handleAddressChange} />
+      </BottomSheet>
+      <S.VotingBoxImage src={'/images/vote.png'} alt="투표함" />
 
-        {isLoading && <SearchLoadingOverlay text={overayMessage} />}
-      </S.Container>
-    </>
+      {isLoading && <SearchLoadingOverlay text={overayMessage} />}
+    </S.Container>
   );
 }
 

@@ -21,7 +21,7 @@ function SearchLoadingOverlay({ text }: Props) {
 
   return ReactDOM.createPortal(
     <S.Container>
-      <S.GlassMagnifierImage src={'/images/glassMagnifier.png'} alt="돋보기" />
+      <S.GlassMagnifierImage src="/images/glassMagnifier.png" alt="돋보기" />
       <S.Text>{text}</S.Text>
     </S.Container>,
     modalRoot
@@ -46,7 +46,6 @@ const S = {
 
   GlassMagnifierImage: styled.img`
     width: 200px;
-    transform: rotate(325deg);
     animation: ${keyframes`
       0% {
         transform: translateY(0) rotate(325deg);
