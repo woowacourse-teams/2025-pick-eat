@@ -74,12 +74,13 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level3};
 
     padding: ${({ theme }) => theme.PADDING.p4};
+    border: 2px solid ${({ theme }) => theme.PALETTE.gray[5]};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
 
     &:focus-within {
-      border: 1px solid ${({ theme }) => theme.PALETTE.gray[95]};
+      border: 2px solid ${({ theme }) => theme.PALETTE.primary[50]};
 
       background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     }

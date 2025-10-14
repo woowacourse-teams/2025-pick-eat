@@ -12,6 +12,7 @@ type Props = {
 } & ComponentProps<'input'>;
 
 function LineSearchBar({
+  value,
   placeholder = '검색어를 입력해 주세요.',
   label,
   xIcon,
@@ -27,7 +28,12 @@ function LineSearchBar({
       <S.SearchIcon>
         <Search />
       </S.SearchIcon>
-      <S.LineInput id={inputId} placeholder={placeholder} {...props} />
+      <S.LineInput
+        value={value}
+        id={inputId}
+        placeholder={placeholder}
+        {...props}
+      />
       {xIcon && (
         <S.xIcon onClick={onClear}>
           <Erase />
@@ -49,7 +55,7 @@ const S = {
     pointer-events: ${({ defenseClick }) => (defenseClick ? 'none' : '')};
   `,
   Label: styled.label<{ required?: boolean }>`
-    color: ${({ theme }) => theme.PALETTE.primary[50]};
+    color: ${({ theme }) => theme.PALETTE.primary[60]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
   SearchIcon: styled.div`

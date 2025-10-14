@@ -58,7 +58,7 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p4};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
   `,
   Label: styled.label`
     display: flex;
