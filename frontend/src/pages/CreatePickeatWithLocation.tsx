@@ -29,9 +29,7 @@ function CreatePickeatWithLocation() {
   const [isLoading, setIsLoading] = useState(false);
   const [overayMessage, setOverayMessage] =
     useState('식당을 찾아보고 있어요 , ,');
-  const { opened, handleOpenModal, handleCloseModal } = useModal({
-    defaultOpened: true,
-  });
+  const { opened, handleOpenModal, handleCloseModal } = useModal();
   const [address, setAddress] = useState('');
   const handleAddressChange = (value: string) => {
     setAddress(value);
