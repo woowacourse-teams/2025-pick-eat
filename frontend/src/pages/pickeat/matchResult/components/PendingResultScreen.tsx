@@ -23,30 +23,24 @@ const shake = keyframes`
   }
 `;
 
-type Props = {
-  onReady: () => void;
-};
-
-function PendingResultScreen({ onReady }: Props) {
+function PendingResultScreen() {
   const [dotCount, setDotCount] = useState(0);
   const [readied, setReadied] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setDotCount(prev => (prev + 1) % 4);
-    }, 300);
+    }, 200);
 
     const timeout = setTimeout(() => {
       setReadied(true);
 
-      const nextTimeout = setTimeout(() => {
-        onReady();
-      }, 1000);
+      const nextTimeout = setTimeout(() => {}, 500);
 
       return () => {
         clearTimeout(nextTimeout);
       };
-    }, 3000);
+    }, 1500);
 
     return () => {
       clearInterval(interval);
