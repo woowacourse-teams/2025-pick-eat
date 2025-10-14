@@ -14,6 +14,7 @@ import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.tobe.restaurant.application.dto.request.RestaurantRequest;
+import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantBulkRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantBulkRepository restaurantBulkRepository;
     private final PickeatRepository pickeatRepository;
     private final ParticipantRepository participantRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
@@ -46,7 +48,7 @@ public class RestaurantService {
                         request.type(),
                         pickeat))
                 .toList();
-        restaurantRepository.saveAll(restaurants);
+        restaurantBulkRepository.batchInsert(restaurants);
     }
 
     public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded, Long participantId) {

@@ -1,0 +1,2 @@
+ALTER TABLE restaurant
+    MODIFY tags VARCHAR(255) NULL;
