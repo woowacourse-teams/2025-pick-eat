@@ -67,7 +67,7 @@ export default RoomDetail;
 
 const S = {
   Container: styled.div`
-    height: calc(100vh - ${HEADER_HEIGHT});
+    padding-top: ${HEADER_HEIGHT};
   `,
 
   TabWrapper: styled.div`

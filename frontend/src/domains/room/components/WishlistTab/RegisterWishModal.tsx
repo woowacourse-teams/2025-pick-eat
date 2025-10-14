@@ -87,10 +87,11 @@ export default RegisterWishModal;
 
 const S = {
   Container: styled.div`
-    width: 100%;
+    width: 100vw;
+    max-width: 480px;
     position: absolute;
     top: 0;
-    left: 0;
+    left: 50%;
 
     /* TODO: header 보다는 크게 bottom-sheet 보단 작게 */
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
@@ -99,13 +100,14 @@ const S = {
       ${({ theme }) => theme.PADDING.p5};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    transform: translateX(-50%);
   `,
   Header: styled.div`
     height: ${HEADER_HEIGHT};
     display: flex;
     position: sticky;
     top: 0;
-
+    z-index: ${({ theme }) => theme.Z_INDEX.sticky};
     backdrop-filter: blur(12px) saturate(180%);
   `,
   BackButton: styled.button``,
