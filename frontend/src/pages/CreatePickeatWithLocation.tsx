@@ -48,7 +48,7 @@ function CreatePickeatWithLocation() {
     }, 2000);
   };
 
-  const { createPickeat, error } = useCreateLocationPickeat(handleCloseOverlay);
+  const { createPickeat, error } = useCreateLocationPickeat();
 
   const submitPickeatForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -57,7 +57,12 @@ function CreatePickeatWithLocation() {
     const formData = new FormData(e.currentTarget);
     formData.append('pickeatName', makePickeatName());
 
-    await createPickeat(formData, selectedOption.value);
+    await createPickeat({
+      formData,
+      radiusValue: selectedOption.value,
+      closeOverlay: handleCloseOverlay,
+    });
+
     setOverayMessage('식당을 찾았어요 !');
 
     useGA().useGAEventTrigger({
