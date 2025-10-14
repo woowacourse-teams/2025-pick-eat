@@ -8,7 +8,6 @@ type Props = {
   label?: string;
   xIcon?: ReactNode;
   onClear?: () => void;
-  defenseClick?: boolean;
 } & ComponentProps<'input'>;
 
 function LineSearchBar({
@@ -17,13 +16,12 @@ function LineSearchBar({
   label,
   xIcon,
   onClear,
-  defenseClick,
   ...props
 }: Props) {
   const inputId = useId();
 
   return (
-    <S.Container defenseClick={defenseClick}>
+    <S.Container>
       {label && <S.Label htmlFor={inputId}>{label}</S.Label>}
       <S.SearchIcon>
         <Search />
@@ -32,6 +30,7 @@ function LineSearchBar({
         value={value}
         id={inputId}
         placeholder={placeholder}
+        autoComplete="off"
         {...props}
       />
       {xIcon && (
@@ -46,15 +45,14 @@ function LineSearchBar({
 export default LineSearchBar;
 
 const S = {
-  Container: styled.div<{ defenseClick?: boolean }>`
+  Container: styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
     position: relative;
-    pointer-events: ${({ defenseClick }) => (defenseClick ? 'none' : '')};
   `,
-  Label: styled.label<{ required?: boolean }>`
+  Label: styled.label`
     color: ${({ theme }) => theme.PALETTE.primary[60]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,

@@ -55,9 +55,6 @@ function RegisterWishModal({ onClick, onCreate }: Props) {
             readOnly
             label="식당 검색"
             placeholder="식당 이름 검색으로 간편 입력"
-            value={address}
-            xIcon
-            defenseClick
           />
         </S.SearchButton>
         <RegisterForm

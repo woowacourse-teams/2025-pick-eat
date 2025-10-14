@@ -40,6 +40,7 @@ function LineInput({
           required={required}
           error={error}
           color={color}
+          autoComplete="off"
           {...props}
         />
         {xIcon && typeof value === 'string' && value?.length > 0 && (

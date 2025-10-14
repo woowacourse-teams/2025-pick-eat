@@ -43,7 +43,7 @@ function WishlistTab() {
           ))
         ) : (
           <S.EmptyDescriptionPointText>
-            찜을 추가해보세요!
+            즐겨찾기에 식당을 추가해보세요!
           </S.EmptyDescriptionPointText>
         )}
       </S.Wishlist>

@@ -39,6 +39,7 @@ function FillInput({
           placeholder={placeholder}
           required={required}
           color={color}
+          autoComplete="off"
           {...props}
         />
         {xIcon && typeof value === 'string' && value?.length > 0 && (
