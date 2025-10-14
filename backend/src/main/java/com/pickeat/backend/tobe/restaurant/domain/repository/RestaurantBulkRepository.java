@@ -1,6 +1,8 @@
 package com.pickeat.backend.tobe.restaurant.domain.repository;
 
+import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -25,9 +27,9 @@ public class RestaurantBulkRepository {
         final String sql = """
                 INSERT INTO restaurant
                   (name, food_category, distance, road_address_name, place_url,
-                   tags, picture_key, ppicture_url, is_excluded, like_count,
-                   "type", pickeat_id, created_at, updated_at,deleted)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                   tags, picture_key, picture_url, is_excluded, like_count,
+                   type, pickeat_id, created_at, updated_at, deleted)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         final Timestamp now = Timestamp.valueOf(LocalDateTime.now());
@@ -37,25 +39,35 @@ public class RestaurantBulkRepository {
             @Override
             public void setValues(PreparedStatement ps, int i) throws SQLException {
                 Restaurant r = restaurants.get(i);
+                RestaurantInfo info = r.getRestaurantInfo();
+                Picture pic = (info != null) ? info.getPicture() : null;
 
-                ps.setString(1, r.getRestaurantInfo().getName());
-                ps.setString(2, r.getRestaurantInfo().getFoodCategory().name());
-                ps.setObject(3, r.getRestaurantInfo().getDistance());
-                ps.setString(4, r.getRestaurantInfo().getRoadAddressName());
-                ps.setString(5, r.getRestaurantInfo().getPlaceUrl());
-                ps.setString(6, r.getRestaurantInfo().getTags());
+                // 1 ~ 6: 기본 정보
+                ps.setString(1, r.getName());
+                ps.setString(2, r.getFoodCategory().name());
+                ps.setObject(3, r.getDistance()); // NULL 허용(Integer)
+                ps.setString(4, r.getRoadAddressName());
+                ps.setString(5, r.getPlaceUrl());
+                if (r.getTags() != null) {
+                    ps.setString(6, r.getTags());
+                } else {
+                    ps.setNull(6, java.sql.Types.VARCHAR);
+                }
 
-                if (r.getRestaurantInfo().getPicture() != null) {
-                    ps.setString(7, r.getRestaurantInfo().getPicture().getPictureKey());
-                    ps.setString(8, r.getRestaurantInfo().getPicture().getPictureUrl());
+                if (pic != null) {
+                    ps.setString(7, pic.getPictureKey());
+                    ps.setString(8, pic.getPictureUrl());
                 } else {
                     ps.setNull(7, java.sql.Types.VARCHAR);
                     ps.setNull(8, java.sql.Types.VARCHAR);
                 }
+
                 ps.setBoolean(9, r.getIsExcluded());
                 ps.setInt(10, r.getLikeCount());
                 ps.setString(11, r.getType().name());
                 ps.setLong(12, r.getPickeat().getId());
+
+                // 13 ~ 15: 감사 필드 + deleted
                 ps.setTimestamp(13, now);
                 ps.setTimestamp(14, now);
                 ps.setBoolean(15, false);
