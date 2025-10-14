@@ -42,7 +42,6 @@ public class RestaurantBulkRepository {
                 RestaurantInfo info = r.getRestaurantInfo();
                 Picture pic = (info != null) ? info.getPicture() : null;
 
-                // 1 ~ 6: 기본 정보
                 ps.setString(1, r.getName());
                 ps.setString(2, r.getFoodCategory().name());
                 ps.setObject(3, r.getDistance()); // NULL 허용(Integer)
@@ -67,7 +66,6 @@ public class RestaurantBulkRepository {
                 ps.setString(11, r.getType().name());
                 ps.setLong(12, r.getPickeat().getId());
 
-                // 13 ~ 15: 감사 필드 + deleted
                 ps.setTimestamp(13, now);
                 ps.setTimestamp(14, now);
                 ps.setBoolean(15, false);
