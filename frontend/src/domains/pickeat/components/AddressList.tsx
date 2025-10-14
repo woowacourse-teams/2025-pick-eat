@@ -9,7 +9,7 @@ type Props = {
 
 function AddressList({ addressList, onClick }: Props) {
   return (
-    <S.List>
+    <S.Container>
       {addressList.length > 0 ? (
         addressList.map(address => (
           <S.Address
@@ -23,14 +23,14 @@ function AddressList({ addressList, onClick }: Props) {
       ) : (
         <div>존재하는 주소가 없습니다.</div>
       )}
-    </S.List>
+    </S.Container>
   );
 }
 
 export default AddressList;
 
 const S = {
-  List: styled.ul`
+  Container: styled.ul`
     width: 100%;
     height: 80%;
 
