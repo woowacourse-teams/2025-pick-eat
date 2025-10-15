@@ -1,8 +1,10 @@
 import LineInput from '@components/actions/Input/LineInput';
 import NewButton from '@components/actions/NewButton';
+import ErrorMessage from '@components/errors/ErrorMessage';
 
 import { useAuth } from '@domains/login/context/AuthProvider';
 
+import { ApiError } from '@apis/apiClient';
 import { login } from '@apis/login';
 
 import { ROUTE_PATH } from '@routes/routePath';
@@ -13,7 +15,7 @@ import { sliceInputByMaxLength } from '@utils/sliceInputByMaxLength';
 import { validate } from '@utils/validate';
 
 import styled from '@emotion/styled';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
 const NICKNAME_MAX_LENGTH = 12;
@@ -21,6 +23,7 @@ const NICKNAME_MAX_LENGTH = 12;
 function ProfileInit() {
   const [nickname, setNickname] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const { loginUser } = useAuth();
   const navigate = useNavigate();
@@ -39,7 +42,8 @@ function ProfileInit() {
     setNickname(sliceInputByMaxLength(e.target.value, NICKNAME_MAX_LENGTH));
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLoading(true);
     try {
       const { token: userToken } = await login.postSignUp({
@@ -50,7 +54,12 @@ function ProfileInit() {
       loginUser(userToken);
       navigate(ROUTE_PATH.MAIN);
       showToast({ mode: 'SUCCESS', message: '회원가입이 완료되었습니다.' });
-    } catch {
+    } catch (e) {
+      if (e instanceof ApiError && e.body) {
+        const detail = typeof e.body.detail === 'string' ? e.body.detail : '';
+        setError(detail);
+      }
+
       showToast({ mode: 'ERROR', message: '회원가입에 실패하였습니다.' });
     } finally {
       setLoading(false);
@@ -74,6 +83,7 @@ function ProfileInit() {
           onClear={() => setNickname('')}
           feedbackMessage={`${nickname.length}/${NICKNAME_MAX_LENGTH}`}
         />
+        <ErrorMessage message={error} />
         <NewButton disabled={buttonStatus().disabled}>
           {buttonStatus().message}
         </NewButton>
