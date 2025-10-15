@@ -1,7 +1,5 @@
 import Card from '@domains/login/components/Card';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import KakaoLoginButton from '@components/actions/KakaoLoginButton';
 import Carousel from '@components/Carousel';
 
