@@ -87,8 +87,6 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
 
-    padding: ${({ theme }) => theme.PADDING.p5};
-
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,
 
@@ -96,6 +94,7 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level2};
+    padding: ${({ theme }) => theme.PADDING.p6};
 
     margin-right: auto;
   `,
