@@ -80,7 +80,7 @@ export default Login;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - ${HEADER_HEIGHT});
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
