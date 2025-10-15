@@ -94,9 +94,9 @@ const S = {
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level2};
-    padding: ${({ theme }) => theme.PADDING.p6};
 
     margin-right: auto;
+    padding: ${({ theme }) => theme.PADDING.p6};
   `,
 
   Title: styled.h1`
