@@ -73,6 +73,20 @@ function ProfileInit() {
         <S.Description>닉네임을 정하고 회원가입을 완료하세요!</S.Description>
       </S.TitleArea>
 
+      <S.Card>
+        <S.CardTitle>이런 닉네임은 안돼요!</S.CardTitle>
+        <S.MainCharacter
+          src="/images/character/warn_character.png"
+          width={150}
+          height={150}
+        />
+        <S.CardDescription>
+          <li>12글자를 초과하는 단어</li>
+          <li>이미 존재하는 닉네임</li>
+          <li>불쾌감을 줄 수 있는 단어</li>
+        </S.CardDescription>
+      </S.Card>
+
       <S.InputArea onSubmit={handleSubmit}>
         <LineInput
           value={nickname}
@@ -109,6 +123,30 @@ const S = {
   Title: styled.h1`
     color: ${({ theme }) => theme.PALETTE.gray[95]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
+  `,
+  Card: styled.div`
+    width: 240px;
+    height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level3};
+
+    margin: 0 auto;
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    border-radius: ${({ theme }) => theme.RADIUS.xlarge};
+  `,
+  MainCharacter: styled.img``,
+  CardTitle: styled.h2`
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
+  `,
+  CardDescription: styled.ul`
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
+    list-style-type: disc;
   `,
   Description: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[70]};
