@@ -35,15 +35,6 @@ function RestaurantCard({ restaurantData }: Props) {
         }}
         alt={name}
       />
-      <S.Image
-        src={pictureUrls[0] || './images/restaurant.png'}
-        onError={e => {
-          e.currentTarget.onerror = null;
-          e.currentTarget.src = './images/restaurant.png';
-        }}
-        alt={name}
-      />
-
       <S.Info>
         <S.Top>
           <S.TagBox>
@@ -63,7 +54,6 @@ function RestaurantCard({ restaurantData }: Props) {
         </S.Top>
         <S.Address>{roadAddressName}</S.Address>
         {placeUrl && (
-          <S.Link href={menuUrl} target="_blank" rel="noopener noreferrer">
           <S.Link href={menuUrl} target="_blank" rel="noopener noreferrer">
             메뉴 보러가기
           </S.Link>
