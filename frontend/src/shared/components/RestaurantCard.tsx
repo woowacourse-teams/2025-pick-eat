@@ -13,6 +13,7 @@ export type RestaurantCardData = Pick<
   | 'category'
   | 'pictureUrls'
   | 'roadAddressName'
+  | 'category'
 >;
 
 type Props = {
@@ -20,7 +21,8 @@ type Props = {
 };
 
 function RestaurantCard({ restaurantData }: Props) {
-  const { tags, name, placeUrl, pictureUrls, roadAddressName } = restaurantData;
+  const { tags, name, placeUrl, pictureUrls, roadAddressName, category } =
+    restaurantData;
   const menuUrl = `${placeUrl}#menuInfo`;
 
   return (
@@ -45,11 +47,17 @@ function RestaurantCard({ restaurantData }: Props) {
       <S.Info>
         <S.Top>
           <S.TagBox>
-            {tags.map((tag: string) => (
-              <Chip key={tag} variant="outlined" size="sm">
-                {tag}
+            {tags.length > 0 ? (
+              tags.map((tag: string) => (
+                <Chip key={tag} variant="outlined" size="sm">
+                  {tag}
+                </Chip>
+              ))
+            ) : (
+              <Chip variant="outlined" size="sm">
+                {category}
               </Chip>
-            ))}
+            )}
           </S.TagBox>
           <S.Name>{name}</S.Name>
         </S.Top>
@@ -69,7 +77,8 @@ export default RestaurantCard;
 
 const S = {
   Container: styled.div`
-    width: 312px;
+    width: 100%;
+    max-width: 350px;
     height: 122px;
 
     display: flex;
