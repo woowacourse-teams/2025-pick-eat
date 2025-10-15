@@ -23,18 +23,18 @@ export type WishesResponse = {
   roadAddressName: string;
   tags: string[];
   wishlistId: number;
-  placeUrl?: string;
+  placeUrl: string | null;
 };
 
 export type Wishes = {
   id: number;
   name: string;
   category: '한식' | '중식' | '일식' | '양식' | '기타';
-  pictures: Picture[];
+  pictureUrls: string[];
   roadAddressName: string;
   tags: string[];
   wishlistId: number;
-  placeUrl?: string;
+  placeUrl: string | null;
 };
 
 export type WishlistType = {
@@ -44,7 +44,7 @@ export type WishlistType = {
   wishCount: number;
 };
 
-const convertResponseToWish = (data: WishlistResponse[]) => {
+const convertResponseToWishlist = (data: WishlistResponse[]) => {
   return data.map(d => ({
     id: d.id,
     name: d.name,
@@ -53,16 +53,16 @@ const convertResponseToWish = (data: WishlistResponse[]) => {
   }));
 };
 
-const convertResponseToWishes = (data: WishesResponse[]) => {
+const convertResponseToWish = (data: WishesResponse[]) => {
   return data.map(d => ({
     id: d.id,
     name: d.name,
     category: d.category,
-    pictures: d.pictures,
+    pictureUrls: [d.pictures[0]?.imageDownloadUrl],
     roadAddressName: d.roadAddressName,
     tags: d.tags,
     wishlistId: d.wishlistId,
-    placeUrl: d.placeUrl,
+    placeUrl: d.placeUrl ? d.placeUrl.toString() : null,
   }));
 };
 
@@ -74,13 +74,13 @@ export const wishlist = {
     const url = joinAsPath(BASE_URL, id, 'wishes');
 
     const response = await apiClient.get<WishesResponse[]>(url);
-    if (response) return convertResponseToWishes(response);
+    if (response) return convertResponseToWish(response);
     return [];
   },
   getWishTemplates: async (): Promise<WishlistType[]> => {
     const url = joinAsPath(BASE_URL, 'templates');
     const response = await apiClient.get<WishlistResponse[]>(url);
-    if (response) return convertResponseToWish(response);
+    if (response) return convertResponseToWishlist(response);
     return [];
   },
 };

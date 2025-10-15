@@ -84,7 +84,6 @@ const S = {
     height: 96px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
   `,
   Top: styled.div`
     width: 156px;
