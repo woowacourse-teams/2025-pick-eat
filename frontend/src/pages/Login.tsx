@@ -60,6 +60,15 @@ function Login() {
 
   return (
     <S.Container>
+      <S.TitleSection>
+        <S.Title>
+          로그인하면
+          <br />
+          이런 것들을 할 수 있어요!
+        </S.Title>
+        <S.Description>닉네임을 정하고 회원가입을 완료하세요!</S.Description>
+      </S.TitleSection>
+
       <Carousel contentArr={CARD_CONTENT} />
       <KakaoLoginButton onClick={handleKakaoLoginClick} />
     </S.Container>
@@ -77,5 +86,25 @@ const S = {
     justify-content: center;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
+
+    padding: ${({ theme }) => theme.PADDING.p5};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+  `,
+
+  TitleSection: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level2};
+
+    margin-right: auto;
+  `,
+
+  Title: styled.h1`
+    font: ${({ theme }) => theme.FONTS.heading.medium};
+  `,
+
+  Description: styled.h2`
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 };

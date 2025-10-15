@@ -40,22 +40,25 @@ const S = {
   Container: styled.div<{ isEven: boolean }>`
     width: 240px;
     height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
+
+    padding: ${({ theme }) => theme.PADDING.p5};
 
     background-color: ${({ isEven }) =>
       isEven
         ? COLOR_STYLE['even'].backgroundColor
         : COLOR_STYLE['odd'].backgroundColor};
+
     color: ${({ isEven }) =>
       isEven ? COLOR_STYLE['even'].color : COLOR_STYLE['odd'].color};
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
-    display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level3};
-    padding: ${({ theme }) => theme.PADDING.p5};
   `,
 
   Image: styled.img`
     width: 180px;
+
     margin: 0 auto;
   `,
 
