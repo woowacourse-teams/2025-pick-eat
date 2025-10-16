@@ -1,64 +1,13 @@
-import Card from '@domains/wishlist/components/Card';
+import { useWishCarousel } from '@widgets/wishCarousel/hooks/useWishCarousel';
 
 import Carousel from '@components/Carousel';
 
-import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
-
-import { pickeat } from '@apis/pickeat';
-
-import { generateRouterPath } from '@routes/routePath';
-
-import { useShowToast } from '@provider/ToastProvider';
-
 import styled from '@emotion/styled';
-import { useNavigate, useSearchParams } from 'react-router';
-
-const WISH_CONTENT = [
-  {
-    id: 1,
-    name: '잠실역',
-    imageUrl: '/images/carousel/subway_thumbnail.png',
-  },
-  {
-    id: 2,
-    name: '선릉역',
-    imageUrl: '/images/carousel/subway_thumbnail.png',
-  },
-  {
-    id: 3,
-    name: '내 위치에서',
-    imageUrl: '/images/carousel/map_thumbnail.png',
-  },
-];
+import { useMemo } from 'react';
 
 function Main() {
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const roomId = Number(searchParams.get('roomId')) ?? '';
-  const showToast = useShowToast();
-
-  const handlePublicWishlistClick = async (id: number) => {
-    try {
-      const code = await pickeat.post(roomId, makePickeatName());
-      await pickeat.postWish(id, code);
-      if (code) navigate(generateRouterPath.pickeatDetail(code));
-    } catch (e) {
-      if (e instanceof Error)
-        showToast({
-          mode: 'ERROR',
-          message: '픽잇 생성을 실패했습니다. 다시 시도해 주세요.',
-        });
-    }
-  };
-
-  const CARD_CONTENT = WISH_CONTENT.map(item => (
-    <Card
-      key={item.id}
-      title={item.name}
-      imageUrl={item.imageUrl}
-      onClick={() => handlePublicWishlistClick(item.id)}
-    />
-  ));
+  const { getWishCardContent } = useWishCarousel();
+  const wishCardContents = useMemo(() => getWishCardContent(), []);
 
   return (
     <S.Container>
@@ -90,7 +39,7 @@ function Main() {
       </S.ImageWrapper>
       <S.BottomWrapper>
         <S.Description>다같이 갈 식당을 정해보세요!</S.Description>
-        <Carousel contentArr={CARD_CONTENT} />
+        <Carousel contentArr={wishCardContents} />
       </S.BottomWrapper>
     </S.Container>
   );
