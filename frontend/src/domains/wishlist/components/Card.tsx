@@ -48,7 +48,7 @@ function Card({ templateId, title, imageUrl, onClick, size = 'lg' }: Props) {
           handleOpenModal();
         }}
       >
-        <Info size="sm" color={THEME.PALETTE.gray[30]} />
+        {templateId !== 0 && <Info size="sm" color={THEME.PALETTE.gray[30]} />}
       </S.InfoButton>
       <Modal
         opened={opened}
