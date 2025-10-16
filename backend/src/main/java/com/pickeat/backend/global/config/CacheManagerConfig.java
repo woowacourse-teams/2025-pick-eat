@@ -17,41 +17,35 @@ public class CacheManagerConfig {
     @Bean
     public CacheManager cacheManager() {
         SimpleCacheManager manager = new SimpleCacheManager();
+        //Todo: enum으로 변경 [2025-10-16 16:23:59]
         manager.setCaches(Arrays.asList(
-                buildCacheWithWrite("pickeat", 5, 100, 50, true),
-
-                buildCacheWithAccess("restaurant", 3, 4500, 500, true),
-                buildCacheWithAccess("participant", 3, 1000, 100, true),
-                buildCacheWithAccess("restaurant:like", 3, 4500, 500, true)
+                buildCacheWithWrite("pickeat", 5, 100, 50),
+                buildCacheWithAccess("restaurant", 3, 4500, 500),
+                buildCacheWithAccess("participant", 3, 1000, 100),
+                buildCacheWithAccess("restaurant:like", 3, 4500, 500)
         ));
         return manager;
     }
 
     private CaffeineCache buildCacheWithWrite(String name, long ttlMinutes, long maxSize,
-                                              int initialCapacity, boolean recordStats) {
+                                              int initialCapacity) {
         Caffeine<Object, Object> builder = Caffeine.newBuilder()
                 .expireAfterWrite(Duration.ofMinutes(ttlMinutes))
                 .maximumSize(maxSize)
-                .initialCapacity(initialCapacity);
-
-        if (recordStats) {
-            builder.recordStats();
-        }
+                .initialCapacity(initialCapacity)
+                .recordStats();
 
         return new CaffeineCache(name, builder.build());
     }
 
 
     private CaffeineCache buildCacheWithAccess(String name, long ttlMinutes, long maxSize,
-                                               int initialCapacity, boolean recordStats) {
+                                               int initialCapacity) {
         Caffeine<Object, Object> builder = Caffeine.newBuilder()
                 .expireAfterAccess(Duration.ofMinutes(ttlMinutes))
                 .maximumSize(maxSize)
-                .initialCapacity(initialCapacity);
-
-        if (recordStats) {
-            builder.recordStats();
-        }
+                .initialCapacity(initialCapacity)
+                .recordStats();
 
         return new CaffeineCache(name, builder.build());
     }

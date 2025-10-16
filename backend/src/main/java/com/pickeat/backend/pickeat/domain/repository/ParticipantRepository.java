@@ -8,10 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ParticipantRepository extends JpaRepository<Participant, Long> {
 
-    @Cacheable(
-            value = "participant",
-            key = "#pickeatIds.toString()"
-    )
     List<Participant> findByPickeatIdIn(List<Long> pickeatIds);
 
     @Cacheable(

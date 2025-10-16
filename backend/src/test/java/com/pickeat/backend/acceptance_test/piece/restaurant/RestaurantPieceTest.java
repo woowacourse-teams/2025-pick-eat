@@ -51,16 +51,6 @@ public class RestaurantPieceTest {
                 .as(new TypeRef<List<RestaurantResponse>>() {
                 });
     }
-//    public static List<RestaurantResponse> 픽잇의_식당_조회(String pickeatCode, String token, Boolean isExcluded) {
-//        return RestAssured.given().log().all()
-//                .header("Pickeat-Participant-Token", "Bearer " + token)
-//                .queryParam("isExcluded", isExcluded)
-//                .when()
-//                .get("/api/v1/pickeats/{pickeatCode}/restaurants", pickeatCode)
-//                .then().log().all()
-//                .statusCode(HttpStatus.OK.value())
-//                .extract().body().jsonPath().getList(".", RestaurantResponse.class);
-//    }
 
     public static void 식당_소거(RestaurantExcludeRequest request, String token) {
         RestAssured.given().log().all()

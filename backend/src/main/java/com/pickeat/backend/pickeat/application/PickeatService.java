@@ -17,6 +17,7 @@ import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,6 @@ public class PickeatService {
     private final RoomUserRepository roomUserRepository;
 
     @Transactional
-    @CacheEvict(value = {"pickeat", "participant"}, allEntries = true)
     public PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
         Pickeat pickeat = Pickeat.createWithoutRoom(request.name());
 
@@ -39,7 +39,6 @@ public class PickeatService {
     }
 
     @Transactional
-    @CacheEvict(value = {"pickeat", "participant"}, allEntries = true)
     public PickeatResponse createPickeatWithRoom(Long roomId, Long userId, PickeatRequest request) {
         validateUserAccessToRoom(roomId, userId);
 
@@ -50,7 +49,7 @@ public class PickeatService {
     }
 
     @Transactional
-    @CacheEvict(value = {"pickeat", "participant"}, allEntries = true)
+    @CacheEvict(value = "pickeat", key = "#pickeatCode")
     public void deactivatePickeat(String pickeatCode, Long participantId) {
         validateParticipantAccessToPickeat(participantId, pickeatCode);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
@@ -58,17 +57,20 @@ public class PickeatService {
         pickeatRepository.save(pickeat);
     }
 
+    @Cacheable(value = "pickeat", key = "#pickeatCode")
     public ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         List<Participant> participants = participantRepository.findByPickeat(pickeat);
         return ParticipantStateResponse.from(participants);
     }
 
+    @Cacheable(value = "pickeat", key = "#pickeatCode")
     public PickeatResponse getPickeat(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         return PickeatResponse.from(pickeat);
     }
 
+    @Cacheable(value = "pickeat", key = "#pickeatCode")
     public PickeatStateResponse getPickeatState(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         return PickeatStateResponse.from(pickeat);

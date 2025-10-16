@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +35,6 @@ public class RestaurantService {
     private final RestaurantLikeRepository restaurantLikeRepository;
 
     @Transactional
-    @CacheEvict(value = {"restaurant", "restaurant:like"}, allEntries = true)
     public void create(List<RestaurantRequest> restaurantRequests, String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         List<Restaurant> restaurants = restaurantRequests.stream()
@@ -66,7 +66,6 @@ public class RestaurantService {
     }
 
     @Transactional
-    @CacheEvict(value = {"restaurant", "restaurant:like"}, allEntries = true)
     public void exclude(RestaurantExcludeRequest request, Long participantId) {
         //TODO: 입력된 식당 개수만큼 UPDATE 쿼리가 발생 -> BULK나 배치사이즈를 활용한 최적화 필요  (2025-07-18, 금, 16:35)
         //TODO: (필요하다면) 누가 소거한 식당인지 저장하는 중간 테이블 구현 필요
@@ -74,11 +73,22 @@ public class RestaurantService {
 
         List<Restaurant> restaurants = restaurantRepository.findAllById(request.restaurantIds());
         validateParticipantAccessToRestaurants(restaurants, participant);
-        restaurants.forEach(Restaurant::exclude);
+
+        restaurants.forEach(this::excludeRestaurant);
+    }
+
+    @CacheEvict(value = "restaurant", key = "#restaurant.id")
+    public void excludeRestaurant(Restaurant restaurant) {
+        restaurant.exclude();
     }
 
     @Transactional
-    @CacheEvict(value = {"restaurant", "restaurant:like"}, allEntries = true)
+    @Caching(
+            evict = {
+                    @CacheEvict(value = "restaurant:like", key = "#restaurantId + ':' + #participantId"),
+                    @CacheEvict(value = "restaurant", key = "#restaurantId")
+            }
+    )
     public void like(Long restaurantId, Long participantId) {
         if (existsLike(restaurantId, participantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_ALREADY_LIKED);
@@ -92,7 +102,12 @@ public class RestaurantService {
     }
 
     @Transactional
-    @CacheEvict(value = {"restaurant", "restaurant:like"}, allEntries = true)
+    @Caching(
+            evict = {
+                    @CacheEvict(value = "restaurant:like", key = "#restaurantId + ':' + #participantId"),
+                    @CacheEvict(value = "restaurant", key = "#restaurantId")
+            }
+    )
     public void cancelLike(Long restaurantId, Long participantId) {
         if (!existsLike(restaurantId, participantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_NOT_LIKED);

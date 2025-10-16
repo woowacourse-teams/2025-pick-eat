@@ -10,6 +10,8 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,12 +35,14 @@ public class ParticipantService {
         return participantTokenProvider.createToken(participant.getId());
     }
 
+    @Cacheable(value = "participant", key = "#participantId")
     public ParticipantResponse getParticipantBy(Long participantId) {
         Participant participant = getParticipant(participantId);
         return ParticipantResponse.from(participant);
     }
 
     @Transactional
+    @CacheEvict(value = "participant", key = "#participantId")
     public void updateCompletion(Long participantId, boolean isCompleted) {
         Participant participant = getParticipant(participantId);
 
