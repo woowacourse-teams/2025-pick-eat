@@ -67,7 +67,8 @@ const S = {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: ${({ theme }) => theme.GAP.level5};
+    gap: ${({ theme }) => theme.GAP.level3};
+    padding-top: ${({ theme }) => theme.PADDING.p4};
   `,
   TitleSection: styled.div`
     display: flex;
@@ -83,11 +84,12 @@ const S = {
   `,
   RestaurantWrapper: styled.div`
     width: 100%;
-    height: 76vh;
+    height: 74vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level6};
     overflow-y: auto;
+    padding: ${({ theme }) => theme.PADDING.p6} 0;
   `,
 };
