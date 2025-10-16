@@ -51,6 +51,8 @@ services:
       - ./data/springboot/logs/blue:/var/log/spring/blue
       - ./data/springboot/logs/green:/var/log/spring/green
       - ./data/alloy/config.alloy:/etc/alloy/config.alloy
+      - ../proxy/nginx/logs:/var/log/nginx
+
     environment:
       - ALLOY_ENV=dev
     networks:
