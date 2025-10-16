@@ -138,7 +138,6 @@ const S = {
     sheetDistanceFromBottom: number;
   }>`
     ${({ theme }) => theme.POSITION.fixedCenter}
-
     height: 80%;
 
     bottom: 0;

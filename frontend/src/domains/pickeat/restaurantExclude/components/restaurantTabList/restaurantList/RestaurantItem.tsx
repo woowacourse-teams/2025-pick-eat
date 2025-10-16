@@ -6,6 +6,8 @@ import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/
 
 import { Restaurant } from '@apis/restaurant';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 
 type Props = {
@@ -38,9 +40,9 @@ function RestaurantItem({ restaurantData }: Props) {
       >
         <S.IconWrapper excluded={excluded}>
           {excluded ? (
-            <Revert color="white" size="sm" />
+            <Revert color={THEME.PALETTE.gray[0]} size="sm" />
           ) : (
-            <Cross color="white" size="sm" strokeWidth={4} />
+            <Cross color={THEME.PALETTE.gray[0]} size="sm" strokeWidth={4} />
           )}
         </S.IconWrapper>
       </S.DeleteButton>
