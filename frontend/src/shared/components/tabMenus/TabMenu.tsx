@@ -9,10 +9,18 @@ type TabData = { tab: string; content: React.ReactNode }[];
 type Props = {
   tabData: TabData;
   style?: React.CSSProperties;
+  TabBarContainer?: React.ComponentType<{ children: React.ReactNode }>;
+  TabContentContainer?: React.ComponentType<{ children: React.ReactNode }>;
   overflowHidden?: boolean;
 };
 
-function TabMenu({ tabData, style, overflowHidden = true }: Props) {
+function TabMenu({
+  tabData,
+  style,
+  TabBarContainer = S.DefaultTabBarContainer,
+  TabContentContainer = S.DefaultTabContentContainer,
+  overflowHidden = true,
+}: Props) {
   const [currentTab, setCurrentTab] = useState(0);
 
   const tabs = tabData.map(d => d.tab);
@@ -24,16 +32,20 @@ function TabMenu({ tabData, style, overflowHidden = true }: Props) {
 
   return (
     <S.Container style={style}>
-      <TabBar
-        tabs={tabs}
-        selectedIndex={currentTab}
-        onTabClick={handleTabClick}
-      />
-      <TabContent
-        selectedIndex={currentTab}
-        tabContents={tabContents}
-        overflowHidden={overflowHidden}
-      />
+      <TabBarContainer>
+        <TabBar
+          tabs={tabs}
+          selectedIndex={currentTab}
+          onTabClick={handleTabClick}
+        />
+      </TabBarContainer>
+      <TabContentContainer>
+        <TabContent
+          selectedIndex={currentTab}
+          tabContents={tabContents}
+          overflowHidden={overflowHidden}
+        />
+      </TabContentContainer>
     </S.Container>
   );
 }
@@ -47,4 +59,6 @@ const S = {
     display: flex;
     flex-direction: column;
   `,
+  DefaultTabBarContainer: styled.div``,
+  DefaultTabContentContainer: styled.div``,
 };
