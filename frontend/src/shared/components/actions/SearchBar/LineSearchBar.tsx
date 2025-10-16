@@ -8,24 +8,33 @@ type Props = {
   label?: string;
   xIcon?: ReactNode;
   onClear?: () => void;
+  defenseClick?: boolean;
 } & ComponentProps<'input'>;
 
 function LineSearchBar({
+  value,
   placeholder = '검색어를 입력해 주세요.',
   label,
   xIcon,
   onClear,
+  defenseClick,
   ...props
 }: Props) {
   const inputId = useId();
 
   return (
-    <S.Container>
+    <S.Container defenseClick={defenseClick}>
       {label && <S.Label htmlFor={inputId}>{label}</S.Label>}
       <S.SearchIcon>
         <Search />
       </S.SearchIcon>
-      <S.LineInput id={inputId} placeholder={placeholder} {...props} />
+      <S.LineInput
+        value={value}
+        id={inputId}
+        placeholder={placeholder}
+        autoComplete="off"
+        {...props}
+      />
       {xIcon && (
         <S.xIcon onClick={onClear}>
           <Erase />
@@ -38,15 +47,16 @@ function LineSearchBar({
 export default LineSearchBar;
 
 const S = {
-  Container: styled.div`
+  Container: styled.div<{ defenseClick?: boolean }>`
     width: 100%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
     position: relative;
+    pointer-events: ${({ defenseClick }) => (defenseClick ? 'none' : '')};
   `,
-  Label: styled.label<{ required?: boolean }>`
-    color: ${({ theme }) => theme.PALETTE.primary[50]};
+  Label: styled.label`
+    color: ${({ theme }) => theme.PALETTE.primary[60]};
     font: ${({ theme }) => theme.FONTS.body.small};
   `,
   SearchIcon: styled.div`
