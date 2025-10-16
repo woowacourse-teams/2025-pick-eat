@@ -9,7 +9,7 @@ import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router';
 
 import RegisterWishModal from './RegisterWishModal';
-import RestaurantCard from './RestaurantCard';
+import WishRestaurantCard from './WishRestaurantCard';
 
 function WishlistTab() {
   const { opened, handleCloseModal, handleOpenModal } = useModal();
@@ -33,9 +33,9 @@ function WishlistTab() {
       </S.RegisterButton>
 
       <S.Wishlist>
-        {wishlistData.length > 0 ? (
+        {wishlistData?.length > 0 ? (
           wishlistData.map(wish => (
-            <RestaurantCard
+            <WishRestaurantCard
               key={wish.id}
               restaurantData={wish}
               onDelete={() => handleDeleteWish(wish.id)}
@@ -65,22 +65,22 @@ const S = {
     height: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: ${({ theme }) => theme.GAP.level5};
   `,
   RegisterButton: styled.div`
+    width: 312px;
     height: 120px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 
-    margin: 20px 20px 0;
-
     border: 2px dashed ${({ theme }) => theme.PALETTE.gray[30]};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
 
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     cursor: pointer;
   `,
   Description: styled.span`
@@ -89,16 +89,12 @@ const S = {
   `,
   Wishlist: styled.div`
     height: 90%;
-    display: grid;
-    align-content: start;
-
+    display: flex;
+    flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
-    grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
     overflow: scroll;
 
-    padding: 20px;
-
-    justify-items: center;
+    padding: ${({ theme }) => theme.PADDING.p6};
 
     scrollbar-width: none;
   `,

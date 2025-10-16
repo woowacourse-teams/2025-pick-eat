@@ -72,7 +72,7 @@ function Main() {
           height={122}
         />
         <S.MainCharacterImage
-          src="/images/main/mainCharacter.png"
+          src="/images/character/main_character.png"
           alt="메인캐릭터"
           width={284}
           height={284}
