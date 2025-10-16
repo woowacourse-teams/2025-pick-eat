@@ -8,6 +8,7 @@ import com.pickeat.backend.tobe.restaurant.application.dto.request.WishRestauran
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 
@@ -80,10 +81,15 @@ public class RestaurantPieceTest {
     }
 
     public static List<RestaurantResponse> 픽잇의_식당_조회(String pickeatCode, Boolean isExcluded, String participantToken) {
-        return RestAssured
+        RequestSpecification request = RestAssured
                 .given().log().all()
-                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
-                .queryParam("isExcluded", isExcluded)
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken);
+
+        if (isExcluded != null) {
+            request.queryParam("isExcluded", isExcluded);
+        }
+
+        return request
                 .when()
                 .get("/api/v2/pickeats/{pickeatCode}/restaurants", pickeatCode)
                 .then().log().all()

@@ -64,7 +64,7 @@ public class PickeatResultService {
 
     private RestaurantResultResponse createNewPickeatResult(Pickeat pickeat) {
         List<Restaurant> availableRestaurants =
-                restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false);
+                restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false);
 
         Restaurants restaurants = new Restaurants(availableRestaurants);
         Restaurant selectedRestaurant = restaurants.getRandomTopRatedRestaurant();
