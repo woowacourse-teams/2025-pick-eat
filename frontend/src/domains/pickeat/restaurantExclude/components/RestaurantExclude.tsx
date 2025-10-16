@@ -41,11 +41,11 @@ const S = {
   FooterGradient: styled.footer`
     ${({ theme }) => theme.POSITION.fixedCenter};
     height: ${footerHeight}px;
-    z-index: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    bottom: 0px;
+    bottom: 0;
+    z-index: 0;
 
     background: linear-gradient(to top, white, transparent);
   `,

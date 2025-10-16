@@ -109,28 +109,30 @@ export default Tooltip;
 
 const S = {
   ParentContainer: styled.div`
-    position: fixed;
     width: 100%;
-    left: 50%;
-    transform: translate3d(-50%, 0, 0);
     max-width: ${({ theme }) => theme.LAYOUT.maxWidth};
-    pointer-events: none;
-    top: 0;
     height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 50%;
     z-index: ${({ theme }) => theme.Z_INDEX.tooltip};
+    pointer-events: none;
+    transform: translate3d(-50%, 0, 0);
   `,
   Container: styled.div<{ adjustedX: number; adjustedY: number }>`
     position: absolute;
     top: ${({ adjustedY }) => adjustedY}px;
     left: ${({ adjustedX }) => adjustedX}px;
-    pointer-events: auto;
-    user-select: none;
 
     padding: 8px 12px;
+
     background-color: ${({ theme }) => theme.PALETTE.gray[80]};
+
     color: ${({ theme }) => theme.PALETTE.gray[0]};
     font: ${({ theme }) => theme.FONTS.body.small};
     white-space: nowrap;
     border-radius: ${({ theme }) => theme.RADIUS.small};
+    pointer-events: auto;
+    user-select: none;
   `,
 };
