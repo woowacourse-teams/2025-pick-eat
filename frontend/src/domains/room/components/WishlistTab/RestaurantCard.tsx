@@ -13,7 +13,7 @@ type Props = {
 };
 
 function RestaurantCard({ restaurantData, onDelete }: Props) {
-  const { tags, name, placeUrl, roadAddressName, pictures } = restaurantData;
+  const { tags, name, placeUrl, roadAddressName, pictureUrls } = restaurantData;
   const { opened, mounted, handleUnmountModal, handleOpenModal } = useModal();
   const menuUrl = `${placeUrl}#menuInfo`;
 
@@ -24,10 +24,7 @@ function RestaurantCard({ restaurantData, onDelete }: Props) {
 
   return (
     <S.Container>
-      <S.Image
-        src={pictures[0]?.imageDownloadUrl || '/images/restaurant.png'}
-        alt={name}
-      />
+      <S.Image src={pictureUrls[0] ?? '/images/restaurant.png'} alt={name} />
 
       <S.Info>
         <S.Top>

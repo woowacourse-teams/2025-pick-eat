@@ -56,6 +56,7 @@ function Main() {
   const CARD_CONTENT = WISH_CONTENT.map(item => (
     <Card
       key={item.id}
+      templateId={item.id}
       title={item.name}
       imageUrl={item.imageUrl}
       onClick={() => handlePublicWishlistClick(item.id)}
