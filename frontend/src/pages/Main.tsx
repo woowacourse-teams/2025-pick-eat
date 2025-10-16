@@ -1,7 +1,5 @@
 import Card from '@domains/wishlist/components/Card';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import Carousel from '@components/Carousel';
 
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
@@ -109,7 +107,7 @@ const S = {
     align-items: center;
     position: relative;
 
-    padding-top: ${HEADER_HEIGHT};
+    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
   `,

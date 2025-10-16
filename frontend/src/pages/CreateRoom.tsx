@@ -1,7 +1,5 @@
 import InviteMember from '@domains/room/components/RoomDetailTab/InviteMember';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input/Input';
 import ErrorMessage from '@components/errors/ErrorMessage';
@@ -54,7 +52,7 @@ export default CreateRoom;
 
 const S = {
   Container: styled.div`
-    height: calc(100vh - ${HEADER_HEIGHT});
+    height: calc(100vh - ${({ theme }) => theme.LAYOUT.headerHeight});
     display: flex;
     flex-direction: column;
     justify-content: center;

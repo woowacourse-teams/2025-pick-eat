@@ -1,5 +1,3 @@
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import LineInput from '@components/actions/Input/LineInput';
 import NewButton from '@components/actions/NewButton';
 import ErrorMessage from '@components/errors/ErrorMessage';
@@ -119,7 +117,8 @@ const S = {
     justify-content: center;
     gap: ${({ theme }) => theme.GAP.level8};
 
-    padding: ${HEADER_HEIGHT} ${({ theme }) => theme.PADDING.p5};
+    padding: ${({ theme }) => theme.LAYOUT.headerHeight}
+      ${({ theme }) => theme.PADDING.p5};
   `,
   TitleArea: styled.div``,
   Title: styled.h1`

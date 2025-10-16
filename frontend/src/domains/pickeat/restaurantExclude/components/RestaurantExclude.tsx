@@ -41,19 +41,14 @@ const S = {
   `,
   Footer: styled.footer`
     width: 100vw;
-    max-width: 480px;
     height: ${footerHeight}px;
 
     display: flex;
     justify-content: center;
     align-items: center;
-
-    position: fixed;
+    ${({ theme }) => theme.POSITION.fixedCenter};
     bottom: 8px;
-    left: 50%;
-    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
     padding: ${({ theme }) => theme.PADDING.py4};
-    transform: translateX(-50%);
   `,
 };

@@ -1,7 +1,5 @@
 import RegisterForm from '@domains/wishlist/components/WishForm/RegisterFrom';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import LineSearchBar from '@components/actions/SearchBar/LineSearchBar';
 import Arrow from '@components/assets/icons/Arrow';
 import BottomSheet from '@components/BottomSheet';
@@ -85,7 +83,7 @@ export default RegisterWishModal;
 const S = {
   Container: styled.div`
     width: 100vw;
-    max-width: 480px;
+    max-width: ${({ theme }) => theme.LAYOUT.maxWidth};
     position: absolute;
     top: 0;
     left: 50%;
@@ -96,7 +94,7 @@ const S = {
     transform: translateX(-50%);
   `,
   Header: styled.div`
-    height: ${HEADER_HEIGHT};
+    height: ${({ theme }) => theme.LAYOUT.headerHeight};
     display: flex;
     position: sticky;
     top: 0;

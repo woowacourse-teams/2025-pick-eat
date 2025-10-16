@@ -1,8 +1,6 @@
 import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndModal';
 import RestaurantExclude from '@domains/pickeat/restaurantExclude/components/RestaurantExclude';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
@@ -53,19 +51,15 @@ const S = {
   Container: styled.div`
     width: 100%;
     height: fit-content;
-    min-height: calc(100vh - ${HEADER_HEIGHT});
+    min-height: calc(100vh - ${({ theme }) => theme.LAYOUT.headerHeight});
 
-    padding-top: ${HEADER_HEIGHT};
+    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
   ProgressBarWrapper: styled.div`
     width: 100vw;
-    max-width: 480px;
-    position: fixed;
-    top: ${HEADER_HEIGHT};
-    left: 50%;
-    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
-    transform: translateX(-50%);
+    ${({ theme }) => theme.POSITION.fixedCenter}
+    top: ${({ theme }) => theme.LAYOUT.headerHeight};
   `,
 };

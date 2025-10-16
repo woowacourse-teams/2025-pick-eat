@@ -22,13 +22,10 @@ const S = {
   Container: styled.button<{ percentage: number }>`
     width: 90%;
     height: 52px;
-
-    position: fixed;
+    ${({ theme }) => theme.POSITION.fixedCenter};
     bottom: calc(
       env(safe-area-inset-bottom) + ${({ theme }) => theme.PADDING.p6}
     );
-    left: 50%;
-    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
     background: linear-gradient(
       to right,
@@ -44,7 +41,6 @@ const S = {
 
     transition: background-size 0.3s ease;
     border-radius: ${({ theme }) => theme.RADIUS.small};
-    transform: translateX(-50%);
   `,
 };
 

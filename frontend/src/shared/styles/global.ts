@@ -35,7 +35,7 @@ const FONTS = {
     xxsmall: `400 12px/100% ${fontFamily}`,
     xxsmall_bold: `600 12px/150% ${fontFamily}`,
   },
-  logo: `800 16px ${fontFamilyStyle}`,
+  logo: `800 16px ${fontFamily}`,
 };
 
 const PALETTE = {
@@ -97,6 +97,11 @@ const PALETTE = {
   },
 };
 
+export const LAYOUT = {
+  maxWidth: '480px',
+  headerHeight: '60px',
+};
+
 export const Z_INDEX = {
   base: 0,
   below: -1,
@@ -110,6 +115,17 @@ export const Z_INDEX = {
   toast: 1200,
   tooltip: 1300,
   max: 9999,
+};
+
+export const POSITION = {
+  fixedCenter: `
+    width: 100%;
+    position: fixed;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    max-width: ${LAYOUT.maxWidth};
+    z-index: ${Z_INDEX.fixed};
+  `,
 };
 
 export const BOX_SHADOW = {
@@ -187,6 +203,8 @@ export const PADDING = {
 
 export const THEME = {
   PALETTE,
+  LAYOUT,
+  POSITION,
   FONTS,
   Z_INDEX,
   BOX_SHADOW,

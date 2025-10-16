@@ -40,10 +40,11 @@ const S = {
   `,
   TabItem: styled.button<{ isActive: boolean }>`
     height: 48px;
-    flex: 1 0 0;
     display: flex;
+    flex: 1 0 0;
     justify-content: center;
     align-items: center;
+
     padding: ${({ theme }) => theme.PADDING.p3};
 
     background-color: ${({ isActive, theme }) =>
