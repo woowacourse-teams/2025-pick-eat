@@ -5,13 +5,12 @@ import { ComponentProps, ReactNode } from 'react';
 
 type Props = {
   size?: 'sm' | 'lg';
-  fixed?: boolean;
   children?: ReactNode;
 } & ComponentProps<'button'>;
 
-function NewButton({ size = 'lg', fixed = false, children, ...props }: Props) {
+function NewButton({ size = 'lg', children, ...props }: Props) {
   return (
-    <S.Container size={size} fixed={fixed} {...props}>
+    <S.Container size={size} {...props}>
       {children}
     </S.Container>
   );
@@ -29,10 +28,8 @@ const SIZE = {
 } as const;
 
 const S = {
-  Container: styled.button<
-    Pick<Props, 'fixed'> & { size: NonNullable<Props['size']> }
-  >`
-    width: ${({ size, fixed }) => (fixed ? '90%' : SIZE[size].width)};
+  Container: styled.button<{ size: NonNullable<Props['size']> }>`
+    width: ${({ size }) => SIZE[size].width};
     height: ${({ size }) => SIZE[size].height};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
@@ -41,15 +38,6 @@ const S = {
     font: ${({ size }) => SIZE[size].font};
 
     border-radius: ${({ theme }) => theme.RADIUS.small};
-
-    ${({ fixed, theme }) =>
-      fixed &&
-      `position:fixed;
-       z-index:${theme.Z_INDEX.fixed};
-       left: 50%;
-       bottom: calc(env(safe-area-inset-bottom) + ${theme.PADDING.p6});
-       transform: translateX(-50%);
-       `}
 
     &:disabled {
       border: none;

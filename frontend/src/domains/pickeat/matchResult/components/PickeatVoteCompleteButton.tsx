@@ -1,4 +1,4 @@
-import NewButton from '@components/actions/NewButton';
+import FixedButton from '@components/actions/FixedButton';
 
 import { participants } from '@apis/participants';
 
@@ -58,15 +58,14 @@ function PickeatVoteCompleteButton({ onVoteComplete, onClick }: Props) {
   }, []);
 
   return (
-    <NewButton
+    <FixedButton
       onClick={handleVoteCompleteClick}
       aria-disabled={loading}
       disabled={loading}
       color="primary"
-      fixed
     >
       투표 완료하기
-    </NewButton>
+    </FixedButton>
   );
 }
 
