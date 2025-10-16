@@ -1,7 +1,5 @@
 import PreferRestaurantList from '@domains/pickeat/preferRestaurant/components/PreferRestaurantList';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import Button from '@components/actions/Button';
 import Arrow from '@components/assets/icons/Arrow';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
@@ -70,7 +68,7 @@ export default PreferRestaurant;
 const S = {
   Container: styled.div`
     width: 100%;
-    min-height: calc(100vh - ${HEADER_HEIGHT});
+    min-height: calc(100vh - ${({ theme }) => theme.LAYOUT.headerHeight});
     display: flex;
     flex-direction: column;
     justify-content: space-between;

@@ -1,5 +1,3 @@
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import KakaoLoginButton from '@components/actions/KakaoLoginButton';
 
 import { ROUTE_PATH } from '@routes/routePath';
@@ -42,7 +40,7 @@ export default Login;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - ${HEADER_HEIGHT});
+    height: calc(100% - ${({ theme }) => theme.LAYOUT.headerHeight});
     display: flex;
     flex-direction: column;
     justify-content: center;

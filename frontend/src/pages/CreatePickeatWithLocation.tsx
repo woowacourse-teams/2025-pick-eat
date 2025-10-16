@@ -1,7 +1,5 @@
 import AddressList from '@domains/pickeat/components/AddressList';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import Button from '@components/actions/Button';
 import Input from '@components/actions/Input/Input';
 import SearchBar from '@components/actions/SearchBar/SearchBar';
@@ -105,7 +103,7 @@ export default CreatePickeatWithLocation;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - ${HEADER_HEIGHT});
+    height: calc(100% - ${({ theme }) => theme.LAYOUT.headerHeight});
     display: flex;
     justify-content: center;
     align-items: center;

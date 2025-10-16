@@ -21,16 +21,12 @@ export default FixedButton;
 const S = {
   Container: styled.div`
     width: 100%;
-    max-width: 480px;
     height: fit-content;
-    position: fixed;
+    ${({ theme }) => theme.POSITION.fixedCenter};
     bottom: calc(
       env(safe-area-inset-bottom) + ${({ theme }) => theme.PADDING.p6}
     );
-    left: 50%;
-    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
 
     padding: 0 ${({ theme }) => theme.PADDING.p5};
-    transform: translateX(-50%);
   `,
 };

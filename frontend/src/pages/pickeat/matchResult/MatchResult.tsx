@@ -1,7 +1,5 @@
 import Result from '@domains/pickeat/matchResult/components/Result';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Confetti from '@components/Confetti';
 
@@ -34,7 +32,7 @@ export default MatchResult;
 
 const S = {
   Container: styled.div`
-    height: calc(100vh - ${HEADER_HEIGHT});
+    height: calc(100vh - ${({ theme }) => theme.LAYOUT.headerHeight});
     display: flex;
     flex-direction: column;
     justify-content: center;

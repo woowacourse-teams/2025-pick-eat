@@ -1,8 +1,6 @@
 import RoomDetailTab from '@domains/room/components/RoomDetailTab';
 import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import TabMenu from '@components/tabMenus/TabMenu';
 
@@ -76,7 +74,7 @@ export default RoomDetail;
 
 const S = {
   Container: styled.div`
-    padding-top: ${HEADER_HEIGHT};
+    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
   `,
   RoomName: styled.div`
     margin-top: 36px;
@@ -86,7 +84,9 @@ const S = {
     text-align: center;
   `,
   TabWrapper: styled.div`
-    height: calc(100vh - ${HEADER_HEIGHT} - ${TAB_MENU}px);
+    height: calc(
+      100vh - ${({ theme }) => theme.LAYOUT.headerHeight} - ${TAB_MENU}px
+    );
 
     padding: ${({ theme }) => theme.PADDING.p6};
   `,

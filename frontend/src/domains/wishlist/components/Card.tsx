@@ -60,10 +60,9 @@ const S = {
     align-items: start;
   `,
   TitleArea: styled.div`
-    z-index: 1;
-
     display: flex;
     flex-direction: column;
+    z-index: 1;
   `,
   Title: styled.span`
     font: ${({ theme }) => theme.FONTS.heading.large};

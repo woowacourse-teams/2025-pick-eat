@@ -1,8 +1,5 @@
 import Cross from '@components/assets/icons/Cross';
 
-import { setMobileStyle } from '@styles/mediaQuery';
-
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
@@ -94,12 +91,12 @@ const S = {
   `,
 
   Container: styled.div<{ size: 'sm' | 'md' | 'lg'; opened: boolean }>`
-    width: ${({ size }) =>
-      size === 'sm' ? '500px' : size === 'md' ? '600px' : '700px'};
+    ${({ theme }) => theme.POSITION.fixedCenter};
+    width: 90%;
+    display: flex;
+    align-items: center;
 
-    position: fixed;
     top: 50%;
-    left: 50%;
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
 
     padding: ${({ theme }) => theme.PADDING.p5};
@@ -111,10 +108,6 @@ const S = {
     pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
 
     transform: translate(-50%, -50%);
-
-    ${setMobileStyle(css`
-      width: 90%;
-    `)}
   `,
 
   IconWrapper: styled.div`
