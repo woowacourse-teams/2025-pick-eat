@@ -25,12 +25,12 @@ function Wishlist({ wishlistId, wishlistName }: Props) {
 
       {wishes.length > 0 ? (
         wishes.map(
-          ({ id, name, pictures, category, roadAddressName, tags }) => (
+          ({ id, name, pictureUrls, category, roadAddressName, tags }) => (
             <Wish
               key={id}
               id={id}
               name={name}
-              pictures={pictures}
+              pictureUrls={pictureUrls}
               category={category}
               roadAddressName={roadAddressName}
               tags={tags}

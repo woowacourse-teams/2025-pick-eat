@@ -11,7 +11,7 @@ function Wish({
   category,
   roadAddressName,
   tags,
-}: Omit<Wishes, 'wishlistId'>) {
+}: Omit<Wishes, 'wishlistId' | 'placeUrl'>) {
   return (
     <S.WishWrapper key={id}>
       <S.Image
