@@ -72,8 +72,9 @@ jobs:
       - name: Backup DB Data
         run: |
           if [ -f "/home/ubuntu/project/database_backup/backup_db.sh" ]; then
-            chmod +x /home/ubuntu/project/database_backup/backup_db.sh
-            /home/ubuntu/project/database_backup/backup_db.sh
+            sudo chmod +x /home/ubuntu/project/database_backup/backup_db.sh
+            echo "🚀 Running backup script..."
+            sudo /home/ubuntu/project/database_backup/backup_db.sh
           else
             echo "⚠️ backup_db.sh not found, skipping backup"
           fi
@@ -83,9 +84,9 @@ jobs:
         run: |
           if [ -f "/home/ubuntu/project/deploy.sh" ]; then
             echo "🚀 Running deploy script..."
-            chmod +x /home/ubuntu/project/deploy.sh
-            /home/ubuntu/project/deploy.sh
+            sudo chmod +x /home/ubuntu/project/deploy.sh
+            sudo /home/ubuntu/project/deploy.sh
           else
-            echo "❌ /home/ubuntu/project/deploy.sh not found!"
+            echo "❌ deploy.sh not found!"
             exit 1
           fi
