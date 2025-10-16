@@ -18,6 +18,7 @@ type Props = {
     | 'distance'
     | 'category'
     | 'pictureUrls'
+    | 'roadAddressName'
   >;
 };
 
