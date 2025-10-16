@@ -20,7 +20,7 @@ import TitleSection from '../components/TitleSection';
 import PickeatEndTriggerButton from './components/PickeatEndTriggerButton';
 import Title from './components/Title';
 
-const footerHeight = 74;
+const FOOTER_HEIGHT = 74;
 
 function PreferRestaurant() {
   const [step, setStep] = useState(1);
@@ -80,7 +80,7 @@ const S = {
     min-height: 580px;
 
     padding: ${({ theme }) => theme.PADDING.p5};
-    padding-bottom: ${footerHeight}px;
+    padding-bottom: ${FOOTER_HEIGHT}px;
   `,
 
   ProgressBarWrapper: styled.div`
