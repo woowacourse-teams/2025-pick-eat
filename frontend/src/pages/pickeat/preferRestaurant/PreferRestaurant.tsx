@@ -79,7 +79,6 @@ const S = {
     width: 100%;
     min-height: 580px;
 
-    padding: ${({ theme }) => theme.PADDING.p5};
     padding-bottom: ${FOOTER_HEIGHT}px;
   `,
 

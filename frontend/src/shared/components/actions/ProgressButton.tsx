@@ -54,9 +54,9 @@ const S = {
 
     color: ${({ theme }) => theme.PALETTE.gray[100]};
     font: ${({ theme }) => theme.FONTS.body.large_bold};
-    border-radius: ${({ theme }) => theme.RADIUS.small};
 
     transition: background-size 0.3s ease;
+    border-radius: ${({ theme }) => theme.RADIUS.small};
   `,
 };
 

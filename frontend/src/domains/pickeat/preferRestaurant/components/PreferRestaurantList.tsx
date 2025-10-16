@@ -1,5 +1,8 @@
 import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndModal';
 
+import LikeButton from '@components/actions/LikeButton/LikeButton';
+import RestaurantCard from '@components/RestaurantCard';
+
 import { restaurant, Restaurant } from '@apis/restaurant';
 
 import { useFlip } from '@hooks/useFlip';
@@ -9,8 +12,6 @@ import { use } from 'react';
 
 import { useOptimisticLike } from '../hooks/useOptimisticLike';
 import usePreferRestaurant from '../hooks/usePreferRestaurant';
-
-import PreferRestaurantItem from './PreferRestaurantItem';
 
 type Props = {
   preferRestaurantListPromise: Promise<Restaurant[]>;
@@ -69,12 +70,17 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
             if (el) itemRefs.current.set(restaurant.id, el);
           }}
         >
-          <PreferRestaurantItem
-            restaurant={restaurant}
-            liked={isOptimisticLike(restaurant.id)}
-            onLike={handleLike}
-            onUnlike={handleUnlike}
-          />
+          <RestaurantCard restaurantData={restaurant} />
+
+          <S.LikeWrapper>
+            <LikeButton
+              id={restaurant.id}
+              count={restaurant.likeCount}
+              onLike={() => handleLike(restaurant.id)}
+              onUnlike={() => handleUnlike(restaurant.id)}
+              liked={isOptimisticLike(restaurant.id)}
+            />
+          </S.LikeWrapper>
         </S.ItemWrapper>
       ))}
     </S.Container>
@@ -85,15 +91,35 @@ export default PreferRestaurantList;
 
 const S = {
   Container: styled.div`
-    display: grid;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level5};
-    place-items: center;
-    grid-template-columns: repeat(auto-fill, minmax(312px, 1fr));
-
-    padding: ${({ theme }) => theme.PADDING.p5};
+    align-items: center;
   `,
 
   ItemWrapper: styled.div`
     overflow-anchor: none;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  `,
+
+  LikeWrapper: styled.div`
+    width: 66px;
+    height: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 30px;
+    bottom: 10px;
+
+    padding: ${({ theme }) => theme.PADDING.p1}
+      ${({ theme }) => theme.PADDING.p4};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 };
