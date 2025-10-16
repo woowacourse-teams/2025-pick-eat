@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 function Wish({
   id,
   name,
-  pictures,
+  pictureUrls,
   category,
   roadAddressName,
   tags,
@@ -16,9 +16,7 @@ function Wish({
     <S.WishWrapper key={id}>
       <S.Image
         src={
-          pictures.length === 0
-            ? '/images/restaurant.png'
-            : pictures[0].imageDownloadUrl
+          pictureUrls.length === 0 ? '/images/restaurant.png' : pictureUrls[0]
         }
         alt={name}
         onError={e => {
