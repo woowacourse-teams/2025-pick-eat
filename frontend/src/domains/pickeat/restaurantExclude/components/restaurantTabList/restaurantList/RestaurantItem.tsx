@@ -62,8 +62,7 @@ export default RestaurantItem;
 
 const S = {
   Container: styled.div<{ excluded: boolean }>`
-    width: 312px;
-    height: fit-content;
+    width: 350px;
     display: flex;
     flex-direction: column;
     position: relative;
