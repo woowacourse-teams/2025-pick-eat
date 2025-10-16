@@ -66,7 +66,6 @@ function PickeatEndButton() {
 
 export default PickeatEndButton;
 
-//TODO: 지우기
 function AnimatedResultButton({
   children,
   totalParticipants,
@@ -144,7 +143,6 @@ const S = {
   `,
   ButtonWrapper: styled.div`
     position: relative;
-    z-index: 1;
 
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
   `,
