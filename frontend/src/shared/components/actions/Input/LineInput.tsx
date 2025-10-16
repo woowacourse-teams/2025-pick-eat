@@ -4,8 +4,6 @@ import styled from '@emotion/styled';
 import { ComponentProps, ReactNode, useId } from 'react';
 
 type Props = {
-  placeholder?: string;
-  required?: boolean;
   label?: string;
   color?: string;
   xIcon?: boolean;
@@ -15,6 +13,7 @@ type Props = {
 } & ComponentProps<'input'>;
 
 function LineInput({
+  value,
   placeholder = '입력해 주세요.',
   required,
   label,
@@ -28,24 +27,28 @@ function LineInput({
   const inputId = useId();
   return (
     <S.Container>
-      {label && (
-        <S.Label htmlFor={inputId} color={color} required={required}>
-          {label}
-        </S.Label>
-      )}
-      <S.LineInput
-        id={inputId}
-        placeholder={placeholder}
-        required={required}
-        error={error}
-        color={color}
-        {...props}
-      />
-      {xIcon && (
-        <S.ClearIcon type="button" onClick={onClear}>
-          <Erase />
-        </S.ClearIcon>
-      )}
+      <S.InputWrapper>
+        {label && (
+          <S.Label htmlFor={inputId} color={color} required={required}>
+            {label}
+          </S.Label>
+        )}
+        <S.Input
+          value={value}
+          id={inputId}
+          placeholder={placeholder}
+          required={required}
+          error={error}
+          color={color}
+          autoComplete="off"
+          {...props}
+        />
+        {xIcon && typeof value === 'string' && value?.length > 0 && (
+          <S.ClearIcon type="button" onClick={onClear}>
+            <Erase />
+          </S.ClearIcon>
+        )}
+      </S.InputWrapper>
       {feedbackMessage && (
         <S.FeedbackMessage error={error}>{feedbackMessage}</S.FeedbackMessage>
       )}
@@ -56,6 +59,11 @@ export default LineInput;
 
 const S = {
   Container: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level3};
+  `,
+  InputWrapper: styled.div`
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -67,7 +75,7 @@ const S = {
     }
 
     &:focus-within label {
-      color: ${({ theme }) => theme.PALETTE.primary[50]};
+      color: ${({ theme }) => theme.PALETTE.primary[60]};
     }
   `,
   Label: styled.label<{ required?: boolean }>`
@@ -83,15 +91,16 @@ const S = {
       content: ${({ required }) => (required ? "'*'" : '')};
     }
   `,
-  LineInput: styled.input<{
+  Input: styled.input<{
     color?: string;
     error: boolean;
   }>`
     width: 100%;
 
     padding-bottom: ${({ theme }) => theme.PADDING.p3};
-
     border: none;
+
+    background-color: transparent;
 
     color: ${({ theme }) => theme.PALETTE.gray[95]};
 

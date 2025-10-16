@@ -91,6 +91,8 @@ export const LineWithFeedbackMessage = () => {
           {state.length}/{MAX_LENGTH}
         </div>
       }
+      xIcon
+      onClear={() => setState('')}
     />
   );
 };

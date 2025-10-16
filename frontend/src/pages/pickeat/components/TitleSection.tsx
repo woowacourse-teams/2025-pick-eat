@@ -41,6 +41,7 @@ function TitleSection({ children }: Props) {
             onUnmount={handleUnmountModal}
           >
             <SharePanel
+              title="공유하기"
               url={pickeatLink}
               description="함께 픽잇하고 싶은 친구에게 공유해보세요!"
             />

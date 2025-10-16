@@ -1,4 +1,4 @@
-import Input from '@components/actions/Input/Input';
+import LineInput from '@components/actions/Input/LineInput';
 import Chip from '@components/labels/Chip';
 
 import { useShowToast } from '@provider/ToastProvider';
@@ -34,59 +34,62 @@ function TagSection({ tags, onFormChange }: Props) {
     onFormChange(tags.filter(t => t !== tagToRemove) ?? []);
   };
   return (
-    <S.TagWrapper>
-      <Input
-        label="태그"
+    <S.Container>
+      <LineInput
+        label="식당 태그"
         placeholder="태그 입력 후 엔터"
         value={tag}
         onChange={e => setTag(e.target.value)}
         onKeyDown={handleKeyDown}
         onCompositionStart={() => setIsComposing(true)}
         onCompositionEnd={() => setIsComposing(false)}
+        xIcon
+        onClear={() => setTag('')}
       />
 
       <S.TagList>
         {tags &&
           tags.map(tag => (
-            <Chip key={tag} color="primary">
-              <span>{tag}</span>
-              <S.RemoveBtn
-                type="button"
-                aria-label={`${tag} 태그 삭제`}
-                onClick={() => removeTag(tag)}
-              >
-                ×
-              </S.RemoveBtn>
+            <Chip
+              key={tag}
+              variant="outlined"
+              removeButton
+              onRemove={() => removeTag(tag)}
+            >
+              {tag}
             </Chip>
           ))}
       </S.TagList>
-    </S.TagWrapper>
+    </S.Container>
   );
 }
 
 export default TagSection;
 
 const S = {
-  TagWrapper: styled.div`
+  Container: styled.div`
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level3};
+
+    padding: ${({ theme }) => theme.PADDING.p4};
+    border: 2px solid ${({ theme }) => theme.PALETTE.gray[5]};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
+
+    &:focus-within {
+      border: 2px solid ${({ theme }) => theme.PALETTE.primary[50]};
+
+      background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    }
   `,
 
   TagList: styled.div`
-    min-height: 26px;
+    min-height: 30px;
     display: flex;
     flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level3};
-  `,
-
-  RemoveBtn: styled.button`
-    margin-left: 6px;
-    border: none;
-
-    background: none;
-
-    color: ${({ theme }) => theme.PALETTE.gray[70]};
-    font-size: 14px;
   `,
 };
