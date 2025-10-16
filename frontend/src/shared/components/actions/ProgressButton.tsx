@@ -12,15 +12,19 @@ function ProgressButton({ total, current, children, ...props }: Props) {
     total > 0 && current > 0 && current <= total ? (current / total) * 100 : 0;
 
   return (
-    <S.Container percentage={percentage} {...props}>
-      {children}
+    <S.Container>
+      <S.Button percentage={percentage} {...props}>
+        {' '}
+        {children}
+      </S.Button>
     </S.Container>
   );
 }
 
 const S = {
-  Container: styled.button<{ percentage: number }>`
-    width: 90%;
+  Container: styled.div`
+    width: 100%;
+    max-width: 480px;
     height: 52px;
 
     position: fixed;
@@ -29,6 +33,15 @@ const S = {
     );
     left: 50%;
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
+
+    padding: 0 ${({ theme }) => theme.PADDING.p5};
+
+    transform: translateX(-50%);
+  `,
+
+  Button: styled.button<{ percentage: number }>`
+    width: 100%;
+    height: 100%;
 
     background: linear-gradient(
       to right,
@@ -41,10 +54,9 @@ const S = {
 
     color: ${({ theme }) => theme.PALETTE.gray[100]};
     font: ${({ theme }) => theme.FONTS.body.large_bold};
+    border-radius: ${({ theme }) => theme.RADIUS.small};
 
     transition: background-size 0.3s ease;
-    border-radius: ${({ theme }) => theme.RADIUS.small};
-    transform: translateX(-50%);
   `,
 };
 
