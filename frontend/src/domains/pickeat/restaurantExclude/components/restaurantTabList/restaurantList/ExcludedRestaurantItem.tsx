@@ -1,29 +1,28 @@
-import Chip from '@components/labels/Chip';
+import RestaurantCard from '@components/RestaurantCard';
 
 import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
 
-type Props = Pick<Restaurant, 'name' | 'tags' | 'distance'>;
+type Props = {
+  restaurantData: Pick<
+    Restaurant,
+    | 'id'
+    | 'name'
+    | 'tags'
+    | 'placeUrl'
+    | 'distance'
+    | 'category'
+    | 'pictureUrls'
+    | 'roadAddressName'
+  >;
+};
 
-function ExcludedRestaurantItem({ name, tags, distance }: Props) {
+function ExcludedRestaurantItem({ restaurantData }: Props) {
   return (
     <S.Container>
       <S.CardContainer>
-        <S.CardContent>
-          <S.TitleWrapper>
-            <S.TagBox>
-              {(tags ?? []).map((tag, index) => (
-                <Chip key={index}>{tag}</Chip>
-              ))}
-            </S.TagBox>
-            <S.RestaurantName>{name}</S.RestaurantName>
-          </S.TitleWrapper>
-          <S.DetailBox>
-            <S.DetailText>식당까지 {distance}m</S.DetailText>
-            <S.LinkButton>메뉴 보러가기</S.LinkButton>
-          </S.DetailBox>
-        </S.CardContent>
+        <RestaurantCard restaurantData={restaurantData} />
         <S.Overlay>
           <S.OverlayText>누군가에 의해 제외된 식당입니다</S.OverlayText>
         </S.Overlay>

@@ -67,6 +67,9 @@ const S = {
     display: flex;
     flex-direction: column;
     position: relative;
+
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
     border-radius: ${({ theme }) => theme.RADIUS.medium};
 
     ${({ excluded, theme }) =>
@@ -80,8 +83,6 @@ const S = {
       transform: scale(1);
 
     `}
-
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   `,
   CardContainer: styled.div`
     position: relative;
