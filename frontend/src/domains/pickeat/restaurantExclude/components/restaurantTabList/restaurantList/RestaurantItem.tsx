@@ -63,9 +63,12 @@ export default RestaurantItem;
 const S = {
   Container: styled.div<{ excluded: boolean }>`
     width: 100%;
+    max-width: 350px;
     display: flex;
     flex-direction: column;
     position: relative;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
+
     ${({ excluded, theme }) =>
       excluded
         ? `
