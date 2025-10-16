@@ -77,7 +77,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    @CacheEvict(value = "restaurant", allEntries = true)
+    @CacheEvict(value = {"restaurant", "restaurant:like"}, allEntries = true)
     public void like(Long restaurantId, Long participantId) {
         if (existsLike(restaurantId, participantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_ALREADY_LIKED);
@@ -91,7 +91,7 @@ public class RestaurantService {
     }
 
     @Transactional
-    @CacheEvict(value = "restaurant", allEntries = true)
+    @CacheEvict(value = {"restaurant", "restaurant:like"}, allEntries = true)
     public void cancelLike(Long restaurantId, Long participantId) {
         if (!existsLike(restaurantId, participantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_NOT_LIKED);
