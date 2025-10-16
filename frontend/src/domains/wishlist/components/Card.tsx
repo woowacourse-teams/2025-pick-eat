@@ -62,7 +62,6 @@ const S = {
   TitleArea: styled.div`
     display: flex;
     flex-direction: column;
-    z-index: 1;
   `,
   Title: styled.span`
     font: ${({ theme }) => theme.FONTS.heading.large};
