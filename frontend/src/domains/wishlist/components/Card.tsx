@@ -102,8 +102,8 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.large};
   `,
   InfoButton: styled.button`
-    z-index: 1;
     position: absolute;
     top: 90px;
+    z-index: 1;
   `,
 };

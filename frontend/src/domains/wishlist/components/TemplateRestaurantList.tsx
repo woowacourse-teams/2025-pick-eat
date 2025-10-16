@@ -66,8 +66,8 @@ const S = {
     height: 90vh;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level5};
     justify-content: center;
+    gap: ${({ theme }) => theme.GAP.level5};
   `,
   TitleSection: styled.div`
     display: flex;
@@ -78,16 +78,16 @@ const S = {
     font: ${({ theme }) => theme.FONTS.heading.large};
   `,
   Description: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.medium};
     color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
   RestaurantWrapper: styled.div`
     width: 100%;
+    height: 76vh;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level6};
-    height: 76vh;
-    overflow-y: auto;
     align-items: center;
+    gap: ${({ theme }) => theme.GAP.level6};
+    overflow-y: auto;
   `,
 };
