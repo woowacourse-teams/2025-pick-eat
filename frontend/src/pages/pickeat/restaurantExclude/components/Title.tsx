@@ -1,5 +1,7 @@
 import Cross from '@components/assets/icons/Cross';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 
 function Title() {
@@ -11,7 +13,7 @@ function Title() {
       <S.Description>
         안 땡기는 식당에
         <S.IconWrapper>
-          <Cross color="white" size="sm" strokeWidth={4} />
+          <Cross color={THEME.PALETTE.gray[0]} size="sm" strokeWidth={4} />
         </S.IconWrapper>
         버튼을 눌러주세요.
       </S.Description>

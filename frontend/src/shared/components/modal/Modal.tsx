@@ -1,5 +1,7 @@
 import Cross from '@components/assets/icons/Cross';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import { ReactNode, useEffect } from 'react';
 import ReactDOM from 'react-dom';
@@ -50,7 +52,7 @@ function Modal({
       <S.Container opened={opened} size={size}>
         {closeButton && (
           <S.IconWrapper onClick={onUnmount}>
-            <Cross color="white" size="sm" strokeWidth={4} />
+            <Cross color={THEME.PALETTE.gray[0]} size="sm" strokeWidth={4} />
           </S.IconWrapper>
         )}
         {children}

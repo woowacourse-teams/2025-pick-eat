@@ -2,6 +2,8 @@ import Cross from '@components/assets/icons/Cross';
 
 import { User } from '@apis/users';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 
 type Props = {
@@ -17,7 +19,7 @@ function SelectedMemberList({ memberList, onDelete }: Props) {
           <S.Member key={member.id}>
             <S.Nickname>{member.nickname}</S.Nickname>
             <S.DeleteIcon onClick={() => onDelete(member.id)}>
-              <Cross color="white" size="sm" strokeWidth={4} />
+              <Cross color={THEME.PALETTE.gray[0]} size="sm" strokeWidth={4} />
             </S.DeleteIcon>
           </S.Member>
         ))
