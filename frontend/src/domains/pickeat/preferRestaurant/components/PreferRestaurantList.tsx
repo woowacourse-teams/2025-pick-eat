@@ -94,16 +94,16 @@ const S = {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level5};
     align-items: center;
+    gap: ${({ theme }) => theme.GAP.level5};
   `,
 
   ItemWrapper: styled.div`
-    overflow-anchor: none;
-    position: relative;
+    width: 350px;
     display: flex;
     justify-content: center;
-    width: 100%;
+    position: relative;
+    overflow-anchor: none;
   `,
 
   LikeWrapper: styled.div`
@@ -113,7 +113,7 @@ const S = {
     justify-content: center;
     align-items: center;
     position: absolute;
-    right: 30px;
+    right: 10px;
     bottom: 10px;
 
     padding: ${({ theme }) => theme.PADDING.p1}
