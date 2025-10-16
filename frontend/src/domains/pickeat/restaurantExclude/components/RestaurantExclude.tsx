@@ -12,7 +12,7 @@ type Props = {
   restaurantsPromise: Promise<Restaurant[]>;
 };
 
-const footerHeight = 74;
+const footerHeight = 90;
 
 function RestaurantExclude({ restaurantsPromise }: Props) {
   const restaurantsData = use(restaurantsPromise);
@@ -21,9 +21,8 @@ function RestaurantExclude({ restaurantsPromise }: Props) {
       <S.RestaurantTabContainer>
         <RestaurantTabList restaurantList={restaurantsData} />
       </S.RestaurantTabContainer>
-      <S.Footer>
-        <ExcludeActionButton />
-      </S.Footer>
+      <ExcludeActionButton />
+      <S.FooterGradient />
     </RestaurantExcludeProvider>
   );
 }
@@ -39,16 +38,15 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p5};
     padding-bottom: ${footerHeight}px;
   `,
-  Footer: styled.footer`
-    width: 100vw;
+  FooterGradient: styled.footer`
+    ${({ theme }) => theme.POSITION.fixedCenter};
     height: ${footerHeight}px;
-
+    z-index: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    ${({ theme }) => theme.POSITION.fixedCenter};
-    bottom: 8px;
+    bottom: 0px;
 
-    padding: ${({ theme }) => theme.PADDING.py4};
+    background: linear-gradient(to top, white, transparent);
   `,
 };
