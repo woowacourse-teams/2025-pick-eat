@@ -1,4 +1,4 @@
-import NewButton from '@components/actions/NewButton';
+import FixedButton from '@components/actions/FixedButton';
 
 import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
@@ -6,7 +6,6 @@ import { restaurants } from '@apis/restaurants';
 
 import { generateRouterPath } from '@routes/routePath';
 
-import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
 
 function ExcludeActionButton() {
@@ -26,27 +25,10 @@ function ExcludeActionButton() {
   };
 
   return (
-    <S.ButtonBox>
-      <NewButton aria-label="제외 식당 제출" onClick={submitExcludeRestaurants}>
-        제출하기
-      </NewButton>
-    </S.ButtonBox>
+    <FixedButton aria-label="제외 식당 제출" onClick={submitExcludeRestaurants}>
+      제출하기
+    </FixedButton>
   );
 }
 
 export default ExcludeActionButton;
-
-const S = {
-  ButtonBox: styled.div`
-    width: 100%;
-    height: fit-content;
-
-    display: flex;
-    justify-content: flex-end;
-
-    align-items: center;
-    gap: ${({ theme }) => theme.GAP.level6};
-    border-radius: ${({ theme }) => theme.RADIUS.small};
-    box-shadow: ${({ theme }) => theme.BOX_SHADOW.white};
-  `,
-};
