@@ -3,7 +3,7 @@ import SearchLoadingOverlay from '@domains/pickeat/components/SearchLoadingOverl
 
 import { HEADER_HEIGHT } from '@widgets/Header';
 
-import NewButton from '@components/actions/NewButton';
+import FixedButton from '@components/actions/FixedButton';
 import LineSearchBar from '@components/actions/SearchBar/LineSearchBar';
 import Select from '@components/actions/Select';
 import BottomSheet from '@components/BottomSheet';
@@ -109,9 +109,9 @@ function CreatePickeatWithLocation() {
 
         <ErrorMessage message={error} />
 
-        <NewButton fixed disabled={!address}>
+        <FixedButton disabled={!address}>
           {address ? '투표 시작하기' : ERROR_MESSAGE.ADDRESS}
-        </NewButton>
+        </FixedButton>
       </S.Wrapper>
 
       <BottomSheet opened={opened} onClose={handleCloseModal}>
