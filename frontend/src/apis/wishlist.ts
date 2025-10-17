@@ -1,14 +1,8 @@
 import { joinAsPath } from '@utils/createUrl';
 
-import { apiClient } from './apiClient';
+import { useQuery } from '@tanstack/react-query';
 
-type WishlistResponse = {
-  id: number;
-  name: string;
-  roomId: number;
-  isPublic: boolean;
-  wishCount: number;
-};
+import { apiClient } from './apiClient';
 
 type Picture = {
   id: number;
@@ -44,15 +38,6 @@ export type WishlistType = {
   wishCount: number;
 };
 
-const convertResponseToWishlist = (data: WishlistResponse[]) => {
-  return data.map(d => ({
-    id: d.id,
-    name: d.name,
-    isPublic: d.isPublic,
-    wishCount: d.wishCount,
-  }));
-};
-
 const convertResponseToWish = (data: WishesResponse[]) => {
   return data.map(d => ({
     id: d.id,
@@ -68,6 +53,7 @@ const convertResponseToWish = (data: WishesResponse[]) => {
 
 const BASE_URL = 'wishLists';
 
+// TODO: 대체 완료되면 export 제거
 export const wishlist = {
   get: async (wishlistId: number): Promise<Wishes[]> => {
     const id = wishlistId.toString();
@@ -77,10 +63,29 @@ export const wishlist = {
     if (response) return convertResponseToWish(response);
     return [];
   },
-  getWishTemplates: async (): Promise<WishlistType[]> => {
-    const url = joinAsPath(BASE_URL, 'templates');
-    const response = await apiClient.get<WishlistResponse[]>(url);
-    if (response) return convertResponseToWishlist(response);
+  getTemplate: async (templateId: number): Promise<Wishes[]> => {
+    const url = joinAsPath('templates', `${templateId}`, 'wishes');
+    const response = await apiClient.get<WishesResponse[]>(url);
+    if (response) return convertResponseToWish(response);
     return [];
+  },
+};
+
+export const wishlistQuery = {
+  useGet: (wishlistId: number) => {
+    return useQuery<Wishes[]>({
+      queryKey: ['wishlist', wishlistId],
+      queryFn: () => wishlist.get(wishlistId),
+      staleTime: Infinity,
+      gcTime: 1000 * 60 * 60 * 24,
+    });
+  },
+  useGetTemplate: (templateId: number) => {
+    return useQuery<Wishes[]>({
+      queryKey: ['templates', templateId],
+      queryFn: () => wishlist.getTemplate(templateId),
+      staleTime: Infinity,
+      gcTime: 1000 * 60 * 60 * 24,
+    });
   },
 };

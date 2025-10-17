@@ -3,6 +3,8 @@ import Info from '@components/assets/icons/Info';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
@@ -64,7 +66,9 @@ function Card({
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <TemplateRestaurantList title={title} templateId={itemId} />
+        <ErrorBoundary>
+          <TemplateRestaurantList title={title} templateId={itemId} />
+        </ErrorBoundary>
       </Modal>
     </S.Container>
   );
