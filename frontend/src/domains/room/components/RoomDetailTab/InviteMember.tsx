@@ -1,10 +1,11 @@
-import SearchBar from '@components/actions/SearchBar/SearchBar';
+import LineSearchBar from '@components/actions/SearchBar/LineSearchBar';
 
 import { useFindMember } from '@domains/room/hooks/useFindMember';
 
 import { User } from '@apis/users';
 
 import styled from '@emotion/styled';
+import { useRef } from 'react';
 
 import MemberList from './MemberList';
 import SelectedMemberList from './SelectedMemberList';
@@ -20,40 +21,48 @@ function InviteMember({
   onAddMember,
   onDeleteMember,
 }: Props) {
-  const { nickname, handleInputChange, memberList, handleMemberClick } =
-    useFindMember();
+  const {
+    nickname,
+    handleInputChange,
+    memberList,
+    handleMemberClick,
+    handleCInputClear,
+  } = useFindMember();
+  const inviteRef = useRef<HTMLInputElement>(null);
 
   return (
-    <S.Container>
-      <SearchBar
-        label="멤버 초대"
-        placeholder="아이디를 입력해 주세요."
-        value={nickname}
-        onChange={e => handleInputChange(e.target.value)}
-      >
+    <>
+      <S.SearchBarWrapper>
+        <LineSearchBar
+          ref={inviteRef}
+          label="멤버 초대"
+          xIcon
+          placeholder="아이디를 입력해 주세요."
+          value={nickname}
+          onChange={e => handleInputChange(e.target.value)}
+          onClear={handleCInputClear}
+        />
         {memberList && (
           <MemberList
             memberList={memberList}
             onClick={value => handleMemberClick(() => onAddMember(value))}
+            searchKeyword={nickname}
           />
         )}
-      </SearchBar>
+      </S.SearchBarWrapper>
+
       <SelectedMemberList
         memberList={selectedMemberList}
         onDelete={onDeleteMember}
       />
-    </S.Container>
+    </>
   );
 }
 
 export default InviteMember;
 
 const S = {
-  Container: styled.div`
-    width: 100%;
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
+  SearchBarWrapper: styled.div`
+    position: relative;
   `,
 };

@@ -1,4 +1,4 @@
-import Cross from '@components/assets/icons/Cross';
+import Chip from '@components/labels/Chip';
 
 import { User } from '@apis/users';
 
@@ -35,17 +35,9 @@ export default SelectedMemberList;
 const S = {
   MemberContainer: styled.ul`
     width: 100%;
-    height: 100%;
     display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
-    overflow: scroll;
-
-    padding: ${({ theme }) => theme.PADDING.p5};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-radius: ${({ theme }) => theme.RADIUS.large};
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.GAP.level4} ${({ theme }) => theme.GAP.level3};
   `,
 
   Member: styled.div`
