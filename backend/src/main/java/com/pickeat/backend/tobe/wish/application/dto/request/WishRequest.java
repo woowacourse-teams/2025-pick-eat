@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import java.util.List;
 
-@Schema(description = "위시 생성 요청")
+@Schema(description = "위시 생성 요청", name = "WishRequestV2")
 public record WishRequest(
 
         @Schema(description = "위시 이름", example = "맛있는 떡볶이")

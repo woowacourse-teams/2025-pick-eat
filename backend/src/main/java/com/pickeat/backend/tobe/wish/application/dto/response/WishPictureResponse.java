@@ -4,7 +4,7 @@ import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.tobe.wish.domain.Wish;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "위시 사진 응답")
+@Schema(description = "위시 사진 응답", name = "WishPictureResponseV2")
 public record WishPictureResponse(
         @Schema(description = "위시 ID", example = "1")
         long wishId,

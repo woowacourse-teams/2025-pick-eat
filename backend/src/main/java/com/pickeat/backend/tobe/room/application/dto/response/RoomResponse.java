@@ -3,7 +3,7 @@ package com.pickeat.backend.tobe.room.application.dto.response;
 import com.pickeat.backend.room.domain.Room;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "방 정보 응답")
+@Schema(description = "방 정보 응답", name = "RoomResponseV2")
 public record RoomResponse(
         @Schema(description = "방 ID", example = "1")
         long id,

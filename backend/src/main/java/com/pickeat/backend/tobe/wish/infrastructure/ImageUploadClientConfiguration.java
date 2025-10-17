@@ -12,7 +12,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 @Configuration("ImageUploadClientConfigurationV2")
 public class ImageUploadClientConfiguration {
 
-    @Bean
+    @Bean("ImageUploadClientV2")
     @Profile({"local", "test"})
     public ImageUploadClient localImageUploadClientV2(
             @Value("${default.wish.image.url}") String defaultImageUrl,
@@ -21,7 +21,7 @@ public class ImageUploadClientConfiguration {
         return new LocalImageUploadClient(defaultImageUrl, keyPrefix);
     }
 
-    @Bean
+    @Bean("ImageUploadClientV2")
     @Profile({"dev", "prod"})
     public ImageUploadClient s3ImageUploadClientV2(
             @Value("${external.s3.wish.image.bucket.name}") String bucketName,
