@@ -14,6 +14,8 @@ import ProfileInit from '@pages/ProfileInit';
 
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
+import { queryClient } from '@apis/queryClient';
+
 import { useGA } from '@hooks/useGA';
 
 import { ROUTE_PATH } from '@routes/routePath';
@@ -24,6 +26,7 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
@@ -44,11 +47,13 @@ function Wrapper() {
       <Global styles={reset} />
       <ThemeProvider theme={THEME}>
         <Suspense fallback={<LoadingSpinner />}>
-          <AuthProvider>
-            <Layout>
-              <Outlet />
-            </Layout>
-          </AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+              <Layout>
+                <Outlet />
+              </Layout>
+            </AuthProvider>
+          </QueryClientProvider>
         </Suspense>
       </ThemeProvider>
     </>
