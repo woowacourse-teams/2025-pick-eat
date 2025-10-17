@@ -14,9 +14,9 @@ type Props = {
 };
 
 const SIZE = {
-  sm: { height: 24, font: THEME.FONTS.body.small },
-  md: { height: 32, font: THEME.FONTS.body.medium },
-  lg: { height: 40, font: THEME.FONTS.body.large },
+  sm: { height: 26, font: '400 14px/100% Pretendard' },
+  md: { height: 32, font: '400 17px/100% Pretendard' },
+  lg: { height: 36, font: THEME.FONTS.body.xsmall },
 };
 
 function Chip({

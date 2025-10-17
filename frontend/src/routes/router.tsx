@@ -35,7 +35,7 @@ import {
 
 const MyPage = lazy(() => import('@pages/myRoom/MyPage'));
 const CreateRoom = lazy(() => import('@pages/CreateRoom'));
-const RoomDetail = lazy(() => import('@pages/RoomDetail'));
+const RoomDetail = lazy(() => import('@pages/roomDetail'));
 
 function Wrapper() {
   useGA().useRouteChangeTracker();

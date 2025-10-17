@@ -1,4 +1,3 @@
-import RoomDetailTab from '@domains/room/components/RoomDetailTab';
 import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
@@ -13,6 +12,8 @@ import { useShowToast } from '@provider/ToastProvider';
 import styled from '@emotion/styled';
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
+
+import DetailTab from './detailTab';
 
 const TAB_MENU = 64 + 72;
 function RoomDetail() {
@@ -39,6 +40,11 @@ function RoomDetail() {
       <S.RoomName>{roomName}</S.RoomName>
       <TabMenu
         overflowHidden={false}
+        TabBarContainer={({ children }) => (
+          <S.TabBarContainer>
+            <S.TabBarWrapper>{children}</S.TabBarWrapper>
+          </S.TabBarContainer>
+        )}
         tabData={[
           {
             tab: '방 상세',
@@ -46,14 +52,14 @@ function RoomDetail() {
               <S.TabWrapper>
                 <ErrorBoundary>
                   <Suspense fallback={<LoadingSpinner />}>
-                    <RoomDetailTab />
+                    <DetailTab />
                   </Suspense>
                 </ErrorBoundary>
               </S.TabWrapper>
             ),
           },
           {
-            tab: '나의 찜',
+            tab: '식당 즐겨찾기',
             content: (
               <S.TabWrapper>
                 <ErrorBoundary>
@@ -77,7 +83,7 @@ const S = {
     padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
   `,
   RoomName: styled.div`
-    margin-top: 36px;
+    margin: 8px 0;
 
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
@@ -89,5 +95,15 @@ const S = {
     );
 
     padding: ${({ theme }) => theme.PADDING.p6};
+  `,
+  TabBarContainer: styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  `,
+  TabBarWrapper: styled.div`
+    width: 270px;
+
+    padding-bottom: ${({ theme }) => theme.PADDING.p5};
   `,
 };

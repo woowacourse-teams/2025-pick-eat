@@ -1,5 +1,5 @@
 import Button from '@components/actions/Button';
-import People from '@components/assets/icons/People';
+import Chip from '@components/labels/Chip';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
@@ -14,6 +14,7 @@ import styled from '@emotion/styled';
 import { use } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
+import ContentTitle from './components/ContentTitle';
 import InviteMember from './InviteMember';
 
 function IncludeMemberList({ members }: { members: Promise<User[]> }) {
@@ -53,41 +54,41 @@ function IncludeMemberList({ members }: { members: Promise<User[]> }) {
   };
 
   return (
-    <S.Container>
-      <S.TitleArea>
-        <S.Description>
-          <People size="sm" />
-          멤버({memberList.length})
-        </S.Description>
-        <Button
-          text="초대"
-          size="sm"
-          color="secondary"
-          onClick={handleOpenModal}
-        />
-        <Modal
-          mounted={mounted}
-          opened={opened}
-          onClose={handleCloseModal}
-          onUnmount={handleUnmountModal}
-          size="lg"
-        >
-          <S.ModalContent>
-            <InviteMember
-              selectedMemberList={selectedMemberList}
-              onAddMember={handleAddSelectedMember}
-              onDeleteMember={handleDeleteSelectedMember}
-            />
-            <Button text="초대하기" onClick={inviteMember} />
-          </S.ModalContent>
-        </Modal>
-      </S.TitleArea>
+    <>
+      <ContentTitle
+        title={`멤버(${memberList.length})`}
+        description="함께할 멤버를 초대해보세요!"
+      />
+
+      <Modal
+        mounted={mounted}
+        opened={opened}
+        onClose={handleCloseModal}
+        onUnmount={handleUnmountModal}
+        size="lg"
+      >
+        <S.ModalContent>
+          <InviteMember
+            selectedMemberList={selectedMemberList}
+            onAddMember={handleAddSelectedMember}
+            onDeleteMember={handleDeleteSelectedMember}
+          />
+          <Button text="초대하기" onClick={inviteMember} />
+        </S.ModalContent>
+      </Modal>
       <S.List>
         {memberList.map(member => (
-          <S.Member key={member.id}>{member.nickname}</S.Member>
+          <S.Member key={member.id}>
+            <Chip size="lg">{member.nickname}</Chip>
+          </S.Member>
         ))}
+        <S.MemberAddButton onClick={handleOpenModal}>
+          <Chip size="lg" color="primary">
+            <S.ButtonText>+</S.ButtonText>
+          </Chip>
+        </S.MemberAddButton>
       </S.List>
-    </S.Container>
+    </>
   );
 }
 export default IncludeMemberList;
@@ -101,18 +102,14 @@ const S = {
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level5};
 
-    padding: ${({ theme }) => theme.PADDING.p5};
-
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
-
   TitleArea: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
   `,
-
   Description: styled.span`
     display: flex;
     align-items: center;
@@ -120,19 +117,20 @@ const S = {
 
     font: ${({ theme }) => theme.FONTS.heading.small};
   `,
-
   ModalContent: styled.div`
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
   `,
-
   List: styled.ul`
-    overflow: scroll;
-    scrollbar-width: none;
+    display: flex;
+    gap: ${({ theme }) => theme.GAP.level3};
   `,
+  Member: styled.li``,
+  MemberAddButton: styled.button``,
+  ButtonText: styled.span`
+    padding: 0 ${({ theme }) => theme.PADDING.p4};
 
-  Member: styled.li`
-    padding: ${({ theme }) => theme.PADDING.p3};
+    font: ${({ theme }) => theme.FONTS.body.xsmall_bold};
   `,
 };
