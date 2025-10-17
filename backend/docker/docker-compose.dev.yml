@@ -1,12 +1,26 @@
 version: '3.8'
 services:
-  backend:
+  backend-blue:
     image: pickeat/pickeat:latest
+    container_name: backend-blue
     restart: always
     ports:
       - "8080:8080"
     volumes:
-      - ./data/springboot/logs:/var/logs
+      - ./data/springboot/logs/blue:/var/logs
+    environment:
+      SPRING_ACTIVE_PROFILE: dev
+    networks:
+      - app-tier
+
+  backend-green:
+    image: pickeat/pickeat:latest
+    container_name: backend-green
+    restart: always
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./data/springboot/logs/green:/var/logs
     environment:
       SPRING_ACTIVE_PROFILE: dev
     networks:
@@ -28,15 +42,17 @@ services:
     networks:
       - app-tier
 
-
   alloy:
     image: grafana/alloy:latest
     container_name: alloy
     ports:
       - "12345:12345"
     volumes:
-      - ./data/springboot/logs:/var/log/spring
+      - ./data/springboot/logs/blue:/var/log/spring/blue
+      - ./data/springboot/logs/green:/var/log/spring/green
       - ./data/alloy/config.alloy:/etc/alloy/config.alloy
+      - ../proxy/nginx/logs:/var/log/nginx
+
     environment:
       - ALLOY_ENV=dev
     networks:
@@ -49,3 +65,4 @@ volumes:
 networks:
   app-tier:
     driver: bridge
+    name: docker_app-tier
