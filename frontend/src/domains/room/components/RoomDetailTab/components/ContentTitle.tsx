@@ -23,11 +23,11 @@ const S = {
     flex-direction: column;
   `,
   Title: styled.h3`
-    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
     color: ${({ theme }) => theme.PALETTE.gray[95]};
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
   Description: styled.p`
-    font: ${({ theme }) => theme.FONTS.body.medium};
     color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
 };

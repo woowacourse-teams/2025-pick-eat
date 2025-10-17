@@ -51,6 +51,7 @@ const S = {
     flex-direction: column;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
+
     margin-top: ${({ theme }) => theme.PADDING.p8};
   `,
   ContentSection: styled.section`

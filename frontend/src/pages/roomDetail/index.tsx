@@ -103,6 +103,7 @@ const S = {
   `,
   TabBarWrapper: styled.div`
     width: 270px;
+
     padding-bottom: ${({ theme }) => theme.PADDING.p5};
   `,
 };

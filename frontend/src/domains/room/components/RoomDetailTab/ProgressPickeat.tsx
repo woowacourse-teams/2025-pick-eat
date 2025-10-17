@@ -60,25 +60,27 @@ const S = {
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level5};
 
+    margin-bottom: ${({ theme }) => theme.PADDING.p4};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
-
-    margin-bottom: ${({ theme }) => theme.PADDING.p4};
   `,
   List: styled.ul`
-    overflow: scroll;
-    scrollbar-width: none;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
+    overflow: scroll;
+    scrollbar-width: none;
   `,
   ProgressPickeat: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-radius: ${({ theme }) => theme.RADIUS.small};
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+
     padding: ${({ theme }) => theme.PADDING.p5};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    border-radius: ${({ theme }) => theme.RADIUS.small};
   `,
   TitleArea: styled.div`
     display: flex;

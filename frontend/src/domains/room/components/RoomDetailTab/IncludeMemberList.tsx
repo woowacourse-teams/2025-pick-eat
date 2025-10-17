@@ -129,7 +129,8 @@ const S = {
   Member: styled.li``,
   MemberAddButton: styled.button``,
   ButtonText: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.xsmall_bold};
     padding: 0 ${({ theme }) => theme.PADDING.p4};
+
+    font: ${({ theme }) => theme.FONTS.body.xsmall_bold};
   `,
 };
