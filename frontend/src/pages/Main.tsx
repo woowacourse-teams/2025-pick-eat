@@ -24,11 +24,6 @@ const WISH_CONTENT = [
     name: '선릉역',
     imageUrl: '/images/carousel/subway_thumbnail.png',
   },
-  {
-    id: 3,
-    name: '내 위치에서',
-    imageUrl: '/images/carousel/map_thumbnail.png',
-  },
 ];
 
 function Main() {
@@ -54,11 +49,23 @@ function Main() {
   const CARD_CONTENT = WISH_CONTENT.map(item => (
     <Card
       key={item.id}
+      templateId={item.id}
       title={item.name}
       imageUrl={item.imageUrl}
       onClick={() => handlePublicWishlistClick(item.id)}
     />
   ));
+
+  const LOCATION_CARD = (
+    <Card
+      templateId={0}
+      title="내 위치에서"
+      imageUrl="/images/carousel/map_thumbnail.png"
+      onClick={() => {
+        navigate(generateRouterPath.pickeatWithLocation(roomId));
+      }}
+    />
+  );
 
   return (
     <S.Container>
@@ -90,7 +97,7 @@ function Main() {
       </S.ImageWrapper>
       <S.BottomWrapper>
         <S.Description>다같이 갈 식당을 정해보세요!</S.Description>
-        <Carousel contentArr={CARD_CONTENT} />
+        <Carousel contentArr={[...CARD_CONTENT, LOCATION_CARD]} />
       </S.BottomWrapper>
     </S.Container>
   );

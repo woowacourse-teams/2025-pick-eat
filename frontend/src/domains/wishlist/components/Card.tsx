@@ -1,8 +1,13 @@
 import Arrow from '@components/assets/icons/Arrow';
+import Info from '@components/assets/icons/Info';
+import Modal from '@components/modal/Modal';
+import { useModal } from '@components/modal/useModal';
 
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
+
+import TemplateRestaurantList from './TemplateRestaurantList';
 
 const CARD_SIZE = {
   sm: 200,
@@ -10,13 +15,22 @@ const CARD_SIZE = {
 };
 
 type Props = {
+  templateId: number;
   title: string;
   imageUrl: string;
   onClick: () => void;
   size?: 'sm' | 'lg';
 };
 
-function Card({ title, imageUrl, onClick, size = 'lg' }: Props) {
+function Card({ templateId, title, imageUrl, onClick, size = 'lg' }: Props) {
+  const {
+    opened,
+    mounted,
+    handleCloseModal,
+    handleOpenModal,
+    handleUnmountModal,
+  } = useModal();
+
   return (
     <S.Container size={size} onClick={onClick}>
       <S.Image src={imageUrl} alt="" />
@@ -27,6 +41,23 @@ function Card({ title, imageUrl, onClick, size = 'lg' }: Props) {
         </S.TitleArea>
         <Arrow size="xlg" direction="right" color={THEME.PALETTE.gray[10]} />
       </S.TopWrapper>
+
+      <S.InfoButton
+        onClick={e => {
+          e.stopPropagation();
+          handleOpenModal();
+        }}
+      >
+        {templateId !== 0 && <Info size="sm" color={THEME.PALETTE.gray[30]} />}
+      </S.InfoButton>
+      <Modal
+        opened={opened}
+        mounted={mounted}
+        onUnmount={handleUnmountModal}
+        onClose={handleCloseModal}
+      >
+        <TemplateRestaurantList title={title} templateId={templateId} />
+      </Modal>
     </S.Container>
   );
 }
@@ -69,5 +100,10 @@ const S = {
   `,
   Description: styled.span`
     font: ${({ theme }) => theme.FONTS.body.large};
+  `,
+  InfoButton: styled.button`
+    position: absolute;
+    top: 90px;
+    z-index: 1;
   `,
 };

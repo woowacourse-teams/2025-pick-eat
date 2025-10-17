@@ -5,8 +5,6 @@ import RestaurantCard from '@components/RestaurantCard';
 
 import { Wishes } from '@apis/wishlist';
 
-import { THEME } from '@styles/global';
-
 import styled from '@emotion/styled';
 
 type Props = {
@@ -27,7 +25,7 @@ function WishRestaurantCard({ restaurantData, onDelete }: Props) {
       <RestaurantCard restaurantData={restaurantData} />
 
       <S.Xicon onClick={handleOpenModal}>
-        <Cross size="xs" color={THEME.PALETTE.gray[0]} strokeWidth={4} />
+        <Cross size="xs" color="white" strokeWidth={4} />
       </S.Xicon>
 
       <ConfirmModal
