@@ -1,31 +1,44 @@
 import styled from '@emotion/styled';
-import { ComponentProps } from 'react';
+import { ComponentProps, ReactNode } from 'react';
 
 type Props = {
-  text: string;
   total: number;
   current: number;
+  children: ReactNode;
 } & ComponentProps<'button'>;
 
-function ProgressButton({ text, total, current, ...props }: Props) {
+function ProgressButton({ total, current, children, ...props }: Props) {
   const percentage =
     total > 0 && current > 0 && current <= total ? (current / total) * 100 : 0;
 
   return (
-    <S.Container percentage={percentage} {...props}>
-      {text}
+    <S.Container>
+      <S.Button percentage={percentage} {...props}>
+        {' '}
+        {children}
+      </S.Button>
     </S.Container>
   );
 }
 
 const S = {
-  Container: styled.button<{ percentage: number }>`
-    width: 90%;
+  Container: styled.div`
+    width: 100%;
+    max-width: 480px;
     height: 52px;
     ${({ theme }) => theme.POSITION.fixedCenter};
     bottom: calc(
       env(safe-area-inset-bottom) + ${({ theme }) => theme.PADDING.p6}
     );
+
+    padding: 0 ${({ theme }) => theme.PADDING.p5};
+
+    transform: translateX(-50%);
+  `,
+
+  Button: styled.button<{ percentage: number }>`
+    width: 100%;
+    height: 100%;
 
     background: linear-gradient(
       to right,

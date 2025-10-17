@@ -51,16 +51,15 @@ function PickeatEndConfirm({
 
   return (
     <S.Container>
-      <S.Title>
+      <S.Title>잠깐✋</S.Title>
+      <S.Description>
         {remainingCount === 0 || (
           <>
-            <S.PointText>잠깐✋</S.PointText>
-            {remainingCount}명이 투표를 완료하지 않았어요!
-            <br />
+            {remainingCount}명이 투표를 완료하지 않았어요! <br />
           </>
         )}
         정말 종료하시겠습니까?
-      </S.Title>
+      </S.Description>
 
       <PickeatDecisionInfo />
       <S.Wrapper>
@@ -81,13 +80,12 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level5};
   `,
-  Title: styled.p`
-    font: ${({ theme }) => theme.FONTS.heading.medium};
+  Description: styled.span`
+    font: ${({ theme }) => theme.FONTS.body.xlarge};
     text-align: center;
   `,
-  PointText: styled.p`
-    color: ${({ theme }) => theme.PALETTE.gray[60]};
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+  Title: styled.p`
+    font: ${({ theme }) => theme.FONTS.heading.large};
   `,
   Wrapper: styled.div`
     width: 100%;

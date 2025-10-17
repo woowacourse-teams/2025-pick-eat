@@ -115,6 +115,14 @@ const S = {
     white-space: nowrap;
     text-overflow: ellipsis;
   `,
+  Address: styled.span`
+    overflow: hidden;
+
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  `,
   Link: styled.a`
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.body.xsmall};
