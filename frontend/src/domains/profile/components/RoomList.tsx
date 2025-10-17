@@ -1,28 +1,23 @@
 import Enter from '@components/assets/icons/Enter';
 import People from '@components/assets/icons/People';
 
-import { Room } from '@apis/room';
+import { roomsQuery } from '@apis/rooms';
 
 import { generateRouterPath } from '@routes/routePath';
 
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
 import { useNavigate } from 'react-router';
 
-type Props = {
-  roomsData: Promise<Room[]>;
-};
-
-function RoomList({ roomsData }: Props) {
-  const roomList = use(roomsData);
+function RoomList() {
+  const { data } = roomsQuery.useGet();
 
   const navigate = useNavigate();
   return (
     <S.ListWrapper>
-      {roomList.length > 0 ? (
-        roomList.map(room => (
+      {data?.length > 0 ? (
+        data.map(room => (
           <S.List
             key={room.id}
             onClick={() =>

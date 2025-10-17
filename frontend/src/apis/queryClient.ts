@@ -4,6 +4,7 @@ export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       throwOnError: true,
+      refetchOnWindowFocus: false,
     },
   },
 });

@@ -1,3 +1,5 @@
+import { useSuspenseQuery } from '@tanstack/react-query';
+
 import { apiClient } from './apiClient';
 import { Room, RoomResponse } from './room';
 
@@ -17,5 +19,14 @@ export const rooms = {
     const response = await apiClient.get<RoomResponse[]>(basePath);
     if (response) return convertResponseToRooms(response);
     return [];
+  },
+};
+
+export const roomsQuery = {
+  useGet: () => {
+    return useSuspenseQuery({
+      queryKey: ['rooms'],
+      queryFn: async () => rooms.get(),
+    });
   },
 };
