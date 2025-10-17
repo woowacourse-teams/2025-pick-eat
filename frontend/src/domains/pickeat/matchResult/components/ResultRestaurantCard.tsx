@@ -92,14 +92,15 @@ const S = {
   ButtonBox: styled.div`
     width: 100%;
     display: flex;
-    align-items: flex-end;
     justify-content: space-between;
+    align-items: flex-end;
     gap: ${({ theme }) => theme.GAP.level4};
   `,
   LinkButton: styled.a`
-    font: ${({ theme }) => theme.FONTS.body.medium};
     color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.body.medium};
     text-decoration: underline;
+    cursor: pointer;
   `,
   ShareBox: styled.button`
     width: 30px;

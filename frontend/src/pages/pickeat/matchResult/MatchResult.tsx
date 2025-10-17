@@ -66,9 +66,9 @@ function MatchResult() {
   return (
     <S.Container>
       <Suspense fallback={<PendingResultScreen />}>
+        <Confetti />
         <S.ResultScreenWrapper>
           <S.ResultWrapper>
-            <Confetti />
             <ResultRestaurantCard restaurantData={restaurantData} />
             <S.TwinkleBox>
               <Twinkles />

@@ -49,7 +49,11 @@ function Modal({
   return ReactDOM.createPortal(
     <>
       <S.BackDrop opened={opened} onClick={onClose} />
-      <S.Container opened={opened} size={size}>
+      <S.Container
+        opened={opened}
+        size={size}
+        onClick={e => e.stopPropagation()}
+      >
         {closeButton && (
           <S.IconWrapper onClick={onUnmount}>
             <Cross color={THEME.PALETTE.gray[0]} size="sm" strokeWidth={4} />

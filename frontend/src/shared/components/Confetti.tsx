@@ -34,12 +34,10 @@ export default Confetti;
 
 const S = {
   Container: styled.div`
-    width: 100vw;
-    max-width: 480px;
+    ${({ theme }) => theme.POSITION.fixedCenter}
     height: 200px;
-    overflow: hidden;
-    position: fixed;
     top: 0;
+    z-index: ${({ theme }) => theme.Z_INDEX.fixed - 1};
     pointer-events: none;
   `,
   Piece: styled.div<{

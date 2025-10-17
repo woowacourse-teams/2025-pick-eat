@@ -1,7 +1,7 @@
 import InviteMember from '@domains/room/components/RoomDetailTab/InviteMember';
 
+import FixedButton from '@components/actions/FixedButton';
 import LineInput from '@components/actions/Input/LineInput';
-import NewButton from '@components/actions/NewButton';
 
 import { useCreateRoom } from '@domains/room/hooks/useCreateRoom';
 import { useInviteMember } from '@domains/room/hooks/useInviteMember';
@@ -58,13 +58,13 @@ function CreateRoom({ opened }: { opened: boolean }) {
         onAddMember={handleAddSelectedMember}
         onDeleteMember={handleDeleteSelectedMember}
       />
-      <NewButton
+      <FixedButton
         onClick={() => createRoom(roomName, selectedMemberList)}
         disabled={roomName.length === 0}
         type="submit"
       >
         {roomName.length === 0 ? '방 이름을 입력해 주세요.' : '방 만들기'}
-      </NewButton>
+      </FixedButton>
     </S.Container>
   );
 }

@@ -126,5 +126,6 @@ const S = {
   Link: styled.a`
     color: ${({ theme }) => theme.PALETTE.gray[50]};
     font: ${({ theme }) => theme.FONTS.body.xsmall};
+    cursor: pointer;
   `,
 };

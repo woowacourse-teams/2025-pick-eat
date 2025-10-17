@@ -63,11 +63,12 @@ export default TemplateRestaurantList;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 90vh;
+    height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: ${({ theme }) => theme.GAP.level3};
+
     padding-top: ${({ theme }) => theme.PADDING.p4};
   `,
   TitleSection: styled.div`
@@ -84,12 +85,13 @@ const S = {
   `,
   RestaurantWrapper: styled.div`
     width: 100%;
-    height: 74vh;
+    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level6};
-    overflow-y: auto;
+
     padding: ${({ theme }) => theme.PADDING.p6} 0;
+    overflow-y: scroll;
   `,
 };
