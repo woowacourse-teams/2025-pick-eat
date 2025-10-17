@@ -1,3 +1,5 @@
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
@@ -102,7 +104,7 @@ function Carousel({
             active={!focusedFirstIdx}
             aria-label="이전"
           >
-            <Arrow size="sm" direction="left" color="white" />
+            <Arrow size="sm" direction="left" color={THEME.PALETTE.gray[0]} />
           </S.LeftArrowButton>
 
           <S.RightArrowButton
@@ -110,7 +112,7 @@ function Carousel({
             active={!focusedLastIdx}
             aria-label="다음"
           >
-            <Arrow size="sm" direction="right" color="white" />
+            <Arrow size="sm" direction="right" color={THEME.PALETTE.gray[0]} />
           </S.RightArrowButton>
         </>
       )}

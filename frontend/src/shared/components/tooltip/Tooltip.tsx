@@ -1,3 +1,5 @@
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import { RefObject, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
@@ -38,6 +40,14 @@ function Tooltip({
       } else {
         x = x + width;
       }
+
+      const maxX =
+        Math.min(parseFloat(THEME.LAYOUT.maxWidth), window.innerWidth) -
+        width -
+        8;
+      if (x < 8) x = 8;
+      if (x > maxX) x = maxX;
+
       setAdjustedX(x);
       setAdjustedY(y);
     }
@@ -86,9 +96,11 @@ function Tooltip({
   const tooltipRoot = document.querySelector('#tooltip') as HTMLElement;
 
   return ReactDOM.createPortal(
-    <S.Container ref={tooltipRef} adjustedX={adjustedX} adjustedY={adjustedY}>
-      {children}
-    </S.Container>,
+    <S.ParentContainer>
+      <S.Container ref={tooltipRef} adjustedX={adjustedX} adjustedY={adjustedY}>
+        {children}
+      </S.Container>
+    </S.ParentContainer>,
     tooltipRoot
   );
 }
@@ -96,11 +108,21 @@ function Tooltip({
 export default Tooltip;
 
 const S = {
+  ParentContainer: styled.div`
+    width: 100%;
+    max-width: ${({ theme }) => theme.LAYOUT.maxWidth};
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    z-index: ${({ theme }) => theme.Z_INDEX.tooltip};
+    pointer-events: none;
+    transform: translate3d(-50%, 0, 0);
+  `,
   Container: styled.div<{ adjustedX: number; adjustedY: number }>`
     position: absolute;
-    top: ${props => props.adjustedY}px;
-    left: ${props => props.adjustedX}px;
-    z-index: ${({ theme }) => theme.Z_INDEX.tooltip};
+    top: ${({ adjustedY }) => adjustedY}px;
+    left: ${({ adjustedX }) => adjustedX}px;
 
     padding: 8px 12px;
 

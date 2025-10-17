@@ -2,9 +2,8 @@ import PreferRestaurantList from '@domains/pickeat/preferRestaurant/components/P
 
 import { HEADER_HEIGHT } from '@widgets/Header';
 
-import Button from '@components/actions/Button';
-import Arrow from '@components/assets/icons/Arrow';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
+import ProgressBar from '@components/progressBar/ProgressBar';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
@@ -12,31 +11,38 @@ import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider
 
 import { restaurants } from '@apis/restaurants';
 
-import { generateRouterPath } from '@routes/routePath';
-
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
 import TitleSection from '../components/TitleSection';
 
 import PickeatEndTriggerButton from './components/PickeatEndTriggerButton';
 import Title from './components/Title';
 
+const FOOTER_HEIGHT = 74;
+
 function PreferRestaurant() {
+  const [step, setStep] = useState(1);
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
   usePickeatStateChecker(pickeatCode);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    setStep(2);
+  }, []);
 
   return (
     <ParticipantsProvider pickeatCode={pickeatCode}>
       <S.Container>
+        <S.ProgressBarWrapper>
+          <ProgressBar total={3} current={step} />
+        </S.ProgressBarWrapper>
         <TitleSection>
           <Title />
         </TitleSection>
+
         <ErrorBoundary>
           <Suspense fallback={<LoadingSpinner />}>
             <S.RestaurantListContainer>
@@ -48,18 +54,8 @@ function PreferRestaurant() {
             </S.RestaurantListContainer>
           </Suspense>
         </ErrorBoundary>
-        <S.Footer>
-          <Button
-            text="이전"
-            color="gray"
-            size="md"
-            onClick={() =>
-              navigate(generateRouterPath.restaurantsExclude(pickeatCode))
-            }
-            leftIcon={<Arrow size="sm" direction="left" color={'black'} />}
-          />
-          <PickeatEndTriggerButton />
-        </S.Footer>
+
+        <PickeatEndTriggerButton />
       </S.Container>
     </ParticipantsProvider>
   );
@@ -70,33 +66,29 @@ export default PreferRestaurant;
 const S = {
   Container: styled.div`
     width: 100%;
-    min-height: calc(100vh - ${HEADER_HEIGHT});
+    min-height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
+
+    padding-top: ${HEADER_HEIGHT};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
 
   RestaurantListContainer: styled.div`
     width: 100%;
     min-height: 580px;
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-top: 2px solid ${({ theme }) => theme.PALETTE.gray[20]};
+    padding-bottom: ${FOOTER_HEIGHT}px;
   `,
 
-  Footer: styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    bottom: 0;
-
-    padding: ${({ theme }) => theme.PADDING.p4};
-
-    background-color: white;
-    border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
+  ProgressBarWrapper: styled.div`
+    width: 100vw;
+    max-width: 480px;
+    position: fixed;
+    top: ${HEADER_HEIGHT};
+    left: 50%;
+    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
+    transform: translateX(-50%);
   `,
 };

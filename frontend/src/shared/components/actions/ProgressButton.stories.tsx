@@ -25,11 +25,12 @@ export const Default: Story = {
         }}
       >
         <ProgressButton
-          text="프로그레스 버튼 클릭해 보세용"
           total={5}
           current={completed}
           onClick={() => setCompleted(prev => (prev !== 5 ? prev + 1 : 0))}
-        />
+        >
+          프로그레스 버튼 클릭해 보세용
+        </ProgressButton>
       </div>
     );
   },
