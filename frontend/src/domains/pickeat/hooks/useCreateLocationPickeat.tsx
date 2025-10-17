@@ -8,17 +8,25 @@ import { useSearchParams } from 'react-router';
 
 import { validatePickeatForms } from '../services/validatePickeatForms';
 
+type CreatePickeatParams = {
+  formData: FormData;
+  radiusValue: string | undefined;
+  closeOverlay: (cb: () => void) => void;
+};
+
 export const useCreateLocationPickeat = () => {
   const [error, setError] = useState<string>();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
 
-  const createPickeat = async (
-    formData: FormData,
-    radiusValue: string | undefined
-  ) => {
+  const createPickeat = async ({
+    formData,
+    radiusValue,
+    closeOverlay,
+  }: CreatePickeatParams) => {
     const data = Object.fromEntries(formData.entries());
+
     try {
       validatePickeatForms.location({
         name: data.pickeatName as string,
@@ -43,7 +51,8 @@ export const useCreateLocationPickeat = () => {
         code
       );
 
-      navigate(generateRouterPath.pickeatDetail(code));
+      closeOverlay(() => navigate(generateRouterPath.pickeatDetail(code)));
+
       setError('');
     } catch (e) {
       if (e instanceof Error) {
