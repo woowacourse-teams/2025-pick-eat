@@ -33,7 +33,8 @@ import {
   useSearchParams,
 } from 'react-router';
 
-const MyRoom = lazy(() => import('@pages/myRoom/MyRoom'));
+const MyPage = lazy(() => import('@pages/myRoom/MyPage'));
+const CreateRoom = lazy(() => import('@pages/CreateRoom'));
 const RoomDetail = lazy(() => import('@pages/RoomDetail'));
 
 function Wrapper() {
@@ -102,6 +103,7 @@ const routes = createBrowserRouter([
         Component: ProtectedLogin,
         children: [
           { path: ROUTE_PATH.MY_PAGE, Component: MyRoom },
+          { path: ROUTE_PATH.CREATE_ROOM, Component: CreateRoom },
           { path: ROUTE_PATH.ROOM_DETAIL, Component: RoomDetail },
         ],
       },
