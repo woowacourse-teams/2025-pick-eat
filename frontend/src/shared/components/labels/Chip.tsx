@@ -1,5 +1,7 @@
 import Delete from '@components/assets/icons/Delete';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 
 type Props = {
@@ -14,7 +16,7 @@ type Props = {
 const SIZE = {
   sm: { height: 26, font: '400 14px/100% Pretendard' },
   md: { height: 32, font: '400 17px/100% Pretendard' },
-  lg: { height: 36, font: '400 20px/100% Pretendard' },
+  lg: { height: 36, font: THEME.FONTS.body.xsmall },
 };
 
 function Chip({

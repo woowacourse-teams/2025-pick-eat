@@ -9,6 +9,8 @@ import styled from '@emotion/styled';
 import { use } from 'react';
 import { useNavigate } from 'react-router';
 
+import ContentTitle from './components/ContentTitle';
+
 function ProgressPickeat({
   pickeats,
 }: {
@@ -19,7 +21,10 @@ function ProgressPickeat({
 
   return (
     <S.Container>
-      <S.Description>진행 중인 픽잇({pickeatList.length})</S.Description>
+      <ContentTitle
+        title="진행 중인 투표"
+        description="현재 방에서 진행 중인 투표에 입장해보세요!"
+      />
       <S.List>
         {pickeatList.map(pickeat => (
           <S.ProgressPickeat key={pickeat.id}>
@@ -55,42 +60,37 @@ const S = {
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level5};
 
-    padding: ${({ theme }) => theme.PADDING.p5};
-
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: ${({ theme }) => theme.RADIUS.large};
-  `,
 
-  Description: styled.span`
-    font: ${({ theme }) => theme.FONTS.heading.small};
+    margin-bottom: ${({ theme }) => theme.PADDING.p4};
   `,
-
   List: styled.ul`
     overflow: scroll;
     scrollbar-width: none;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level4};
   `,
-
   ProgressPickeat: styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-radius: ${({ theme }) => theme.RADIUS.small};
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    padding: ${({ theme }) => theme.PADDING.p5};
   `,
-
   TitleArea: styled.div`
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
-
   ProgressIcon: styled.span``,
-
   Name: styled.li``,
-
   DescriptionArea: styled.div`
     display: flex;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
-
   EnterButton: styled.button``,
 };
