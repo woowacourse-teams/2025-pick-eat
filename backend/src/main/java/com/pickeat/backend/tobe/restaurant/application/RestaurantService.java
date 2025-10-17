@@ -18,8 +18,6 @@ import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantBulkRepos
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,18 +75,11 @@ public class RestaurantService {
         restaurants.forEach(this::excludeRestaurant);
     }
 
-    @CacheEvict(value = "restaurant", key = "#restaurant.id")
     public void excludeRestaurant(Restaurant restaurant) {
         restaurant.exclude();
     }
 
     @Transactional
-    @Caching(
-            evict = {
-                    @CacheEvict(value = "restaurant:like", key = "#restaurantId + ':' + #participantId"),
-                    @CacheEvict(value = "restaurant", key = "#restaurantId")
-            }
-    )
     public void like(Long restaurantId, Long participantId) {
         if (existsLike(restaurantId, participantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_ALREADY_LIKED);
@@ -102,12 +93,6 @@ public class RestaurantService {
     }
 
     @Transactional
-    @Caching(
-            evict = {
-                    @CacheEvict(value = "restaurant:like", key = "#restaurantId + ':' + #participantId"),
-                    @CacheEvict(value = "restaurant", key = "#restaurantId")
-            }
-    )
     public void cancelLike(Long restaurantId, Long participantId) {
         if (!existsLike(restaurantId, participantId)) {
             throw new BusinessException(ErrorCode.PARTICIPANT_RESTAURANT_NOT_LIKED);
@@ -123,7 +108,6 @@ public class RestaurantService {
         return participantRepository.findById(participantId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.PARTICIPANT_NOT_FOUND));
     }
-
 
     private Restaurant getRestaurantById(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)

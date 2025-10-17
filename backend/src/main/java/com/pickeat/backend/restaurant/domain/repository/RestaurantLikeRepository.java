@@ -2,15 +2,10 @@ package com.pickeat.backend.restaurant.domain.repository;
 
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import java.util.List;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, Long> {
 
-    @Cacheable(
-            value = "restaurant:like",
-            key = "#restaurantId + '_' + #participantId"
-    )
     boolean existsByRestaurantIdAndParticipantId(Long restaurantId, Long participantId);
 
     void deleteByRestaurantIdAndParticipantId(Long restaurantId, Long participantId);
