@@ -13,7 +13,7 @@ const localConfig = {
   devtool: 'inline-source-map',
   devServer: {
     port: 3000,
-    hot: true,
+    liveReload: true,
     open: true,
     historyApiFallback: true,
     client: {

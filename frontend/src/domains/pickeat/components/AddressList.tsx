@@ -9,7 +9,7 @@ type Props = {
 
 function AddressList({ addressList, onClick }: Props) {
   return (
-    <>
+    <S.Container>
       {addressList.length > 0 ? (
         addressList.map(address => (
           <S.Address
@@ -23,26 +23,18 @@ function AddressList({ addressList, onClick }: Props) {
       ) : (
         <div>존재하는 주소가 없습니다.</div>
       )}
-    </>
+    </S.Container>
   );
 }
 
 export default AddressList;
 
 const S = {
-  List: styled.ul`
+  Container: styled.ul`
     width: 100%;
-    max-height: 300px;
-    position: absolute;
-    top: 110%;
-    z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
+    height: 80%;
 
-    padding: ${({ theme }) => theme.PADDING.p3};
-    border: 1px solid ${({ theme }) => theme.PALETTE.gray[60]};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-radius: ${({ theme }) => theme.RADIUS.medium};
-    overflow-x: scroll;
+    overflow: scroll;
   `,
 
   Address: styled.li`

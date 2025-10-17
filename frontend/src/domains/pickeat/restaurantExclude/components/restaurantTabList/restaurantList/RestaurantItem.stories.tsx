@@ -25,28 +25,34 @@ type Story = StoryObj<typeof RestaurantItem>;
 
 export const Default: Story = {
   args: {
-    id: 1,
-    name: '육회바른연어 잠실점',
-    tags: ['고기', '연어', '일식'],
-    placeUrl:
-      'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
-    distance: 500,
-    category: '일식',
-    pictureUrls: [],
+    restaurantData: {
+      id: 1,
+      name: '육회바른연어 잠실점',
+      tags: ['고기', '연어', '일식'],
+      placeUrl:
+        'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
+      distance: 500,
+      category: '일식',
+      pictureUrls: [],
+      roadAddressName: '서울 송파구 올림픽로 300 롯데월드몰 지하1층',
+    },
   },
   render: args => <RestaurantItem {...args} />,
 };
 
 export const LongTitle: Story = {
   args: {
-    id: 2,
-    name: '일이삼사오육칠팔구십일이삼사오육칠팔',
-    tags: ['샌드위치'],
-    placeUrl:
-      'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
-    distance: 300,
-    category: '양식',
-    pictureUrls: [],
+    restaurantData: {
+      id: 2,
+      name: '일이삼사오육칠팔구십일이삼사오육칠팔',
+      tags: ['샌드위치'],
+      placeUrl:
+        'https://map.naver.com/p/entry/place/1993372144?c=15.00,0,0,0,dh&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202507190141&locale=ko&svcName=map_pcv5',
+      distance: 300,
+      category: '양식',
+      pictureUrls: [],
+      roadAddressName: '서울 송파구 올림픽로 300 롯데월드몰 지하1층',
+    },
   },
   render: args => <RestaurantItem {...args} />,
 };

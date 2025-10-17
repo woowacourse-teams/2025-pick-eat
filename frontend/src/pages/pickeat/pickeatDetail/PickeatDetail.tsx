@@ -1,7 +1,5 @@
 import PickeatInfo from '@domains/pickeat/components/PickeatInfo';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { useAuth } from '@domains/login/context/AuthProvider';
 import { makeNickname } from '@domains/pickeat/utils/makeNickname';
@@ -65,6 +63,6 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    padding-top: ${HEADER_HEIGHT};
+    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
   `,
 };

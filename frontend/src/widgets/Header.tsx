@@ -7,8 +7,6 @@ import { ROUTE_PATH } from '@routes/routePath';
 import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 
-export const HEADER_HEIGHT = '60px';
-
 function Header() {
   const navigate = useNavigate();
   const { loggedIn, logoutUser } = useAuth();
@@ -36,7 +34,7 @@ function Header() {
       <S.ButtonWrapper>
         {loggedIn ? (
           <>
-            <S.TextButton onClick={handleProfileClick}>내 방 보기</S.TextButton>
+            <S.TextButton onClick={handleProfileClick}>마이페이지</S.TextButton>
             <S.VerticalDivider>|</S.VerticalDivider>
             <S.LoginButton onClick={logoutUser}>로그아웃</S.LoginButton>
           </>
@@ -51,20 +49,15 @@ function Header() {
 const S = {
   Container: styled.div`
     width: 100%;
-    max-width: 480px;
-    height: ${HEADER_HEIGHT};
+    height: ${({ theme }) => theme.LAYOUT.headerHeight};
+    ${({ theme }) => theme.POSITION.fixedCenter};
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
     top: 0;
-    bottom: 16px;
-    left: 50%;
-    z-index: ${({ theme }) => theme.Z_INDEX.sticky};
 
     padding: ${({ theme }) => theme.PADDING.p5};
     backdrop-filter: blur(12px);
-    transform: translateX(-50%);
   `,
   LogoWrapper: styled.button`
     color: ${({ theme }) => theme.PALETTE.gray[95]};

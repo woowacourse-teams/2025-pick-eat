@@ -36,7 +36,7 @@ const S = {
   `,
   Wrapper: styled.div`
     width: 100%;
-    max-width: 480px;
+    max-width: ${({ theme }) => theme.LAYOUT.maxWidth};
     min-height: 100vh;
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};

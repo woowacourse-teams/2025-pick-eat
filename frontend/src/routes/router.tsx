@@ -1,22 +1,6 @@
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Layout from '@components/layouts/Layout';
 
-
-
-
-
-
-import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
-import Login from '@pages/Login';
-import Main from '@pages/Main';
-import OauthCallback from '@pages/OauthCallback';
-import { useRejoinRedirect } from '@pages/pickeat/hooks/useReEntry';
-import MatchResult from '@pages/pickeat/matchResult/MatchResult';
-import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
-import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
-import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
-import ProfileInit from '@pages/ProfileInit';
-
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
 import { useGA } from '@hooks/useGA';
@@ -29,6 +13,16 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
+import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
+import Login from '@pages/Login';
+import Main from '@pages/Main';
+import OauthCallback from '@pages/OauthCallback';
+import { useRejoinRedirect } from '@pages/pickeat/hooks/useReEntry';
+import MatchResult from '@pages/pickeat/matchResult/MatchResult';
+import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
+import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
+import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
+import ProfileInit from '@pages/ProfileInit';
 import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
@@ -39,7 +33,7 @@ import {
   useSearchParams,
 } from 'react-router';
 
-const MyRoom = lazy(() => import('@pages/myRoom/MyRoom'));
+const MyPage = lazy(() => import('@pages/myRoom/MyPage'));
 const CreateRoom = lazy(() => import('@pages/CreateRoom'));
 const RoomDetail = lazy(() => import('@pages/RoomDetail'));
 

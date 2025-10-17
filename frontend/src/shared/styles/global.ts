@@ -32,8 +32,10 @@ const FONTS = {
     small_bold: `600 15px/150% ${fontFamily}`,
     xsmall: `400 14px/150% ${fontFamily}`,
     xsmall_bold: `600 14px/150% ${fontFamily}`,
+    xxsmall: `400 12px/100% ${fontFamily}`,
+    xxsmall_bold: `600 12px/150% ${fontFamily}`,
   },
-  logo: `800 16px ${fontFamilyStyle}`,
+  logo: `800 16px ${fontFamily}`,
 };
 
 const PALETTE = {
@@ -95,19 +97,35 @@ const PALETTE = {
   },
 };
 
+export const LAYOUT = {
+  maxWidth: '480px',
+  headerHeight: '60px',
+};
+
 export const Z_INDEX = {
   base: 0,
   below: -1,
   dropdown: 100,
   sticky: 200,
   fixed: 300,
-  overlay: 400,
-  sidenav: 500,
+  sidenav: 400,
+  overlay: 500,
   modal: 1000,
   popover: 1100,
   toast: 1200,
   tooltip: 1300,
   max: 9999,
+};
+
+export const POSITION = {
+  fixedCenter: `
+    width: 100%;
+    position: fixed;
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+    max-width: ${LAYOUT.maxWidth};
+    z-index: ${Z_INDEX.fixed};
+  `,
 };
 
 export const BOX_SHADOW = {
@@ -135,7 +153,7 @@ export const GAP = {
   level5: '16px',
   level6: '20px',
   level7: '24px',
-  level8: '32px',
+  level8: '36px',
   level9: '40px',
   level10: '48px',
   level11: '64px',
@@ -185,6 +203,8 @@ export const PADDING = {
 
 export const THEME = {
   PALETTE,
+  LAYOUT,
+  POSITION,
   FONTS,
   Z_INDEX,
   BOX_SHADOW,

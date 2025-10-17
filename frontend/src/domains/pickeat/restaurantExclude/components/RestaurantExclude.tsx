@@ -12,7 +12,7 @@ type Props = {
   restaurantsPromise: Promise<Restaurant[]>;
 };
 
-const footerHeight = 74;
+const footerHeight = 90;
 
 function RestaurantExclude({ restaurantsPromise }: Props) {
   const restaurantsData = use(restaurantsPromise);
@@ -21,9 +21,8 @@ function RestaurantExclude({ restaurantsPromise }: Props) {
       <S.RestaurantTabContainer>
         <RestaurantTabList restaurantList={restaurantsData} />
       </S.RestaurantTabContainer>
-      <S.Footer>
-        <ExcludeActionButton />
-      </S.Footer>
+      <ExcludeActionButton />
+      <S.FooterGradient />
     </RestaurantExcludeProvider>
   );
 }
@@ -36,24 +35,18 @@ const S = {
     flex-direction: column;
   `,
   RestaurantTabContainer: styled.div`
-    margin-bottom: ${footerHeight}px;
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    padding: ${({ theme }) => theme.PADDING.p5};
+    padding-bottom: ${footerHeight}px;
   `,
-  Footer: styled.footer`
-    width: 100%;
-    max-width: 768px;
+  FooterGradient: styled.footer`
+    ${({ theme }) => theme.POSITION.fixedCenter};
     height: ${footerHeight}px;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: fixed;
     bottom: 0;
-    z-index: ${({ theme }) => theme.Z_INDEX.fixed};
+    z-index: 0;
 
-    padding: ${({ theme }) => theme.PADDING.py4};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-    border-top: 1px solid ${({ theme }) => theme.PALETTE.gray[20]};
+    background: linear-gradient(to top, white, transparent);
   `,
 };
