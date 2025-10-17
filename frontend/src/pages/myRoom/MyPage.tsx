@@ -9,7 +9,6 @@ import { useModal } from '@components/modal/useModal';
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { pickeat } from '@apis/pickeat';
-import { rooms } from '@apis/rooms';
 import { users } from '@apis/users';
 
 import styled from '@emotion/styled';
@@ -24,7 +23,6 @@ function MyPage() {
     () => pickeat.getParticipating(),
     []
   );
-  const roomsData = useMemo(() => rooms.get(), []);
   const { opened, handleOpenModal, handleCloseModal } = useModal();
 
   return (
@@ -35,6 +33,7 @@ function MyPage() {
             <Profile user={userData} />
           </ErrorBoundary>
         </S.ProfileSection>
+
         <S.Section>
           <S.Title>참여 중인 픽잇</S.Title>
           <ErrorBoundary>
@@ -43,6 +42,7 @@ function MyPage() {
             />
           </ErrorBoundary>
         </S.Section>
+
         <S.Section>
           <S.TitleWrapper>
             <S.TitleBox>
@@ -56,7 +56,7 @@ function MyPage() {
             </S.ButtonBox>
           </S.TitleWrapper>
           <ErrorBoundary>
-            <RoomList roomsData={roomsData} />
+            <RoomList />
           </ErrorBoundary>
         </S.Section>
       </Suspense>

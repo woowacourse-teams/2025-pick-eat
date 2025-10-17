@@ -15,18 +15,17 @@ import { useSearchParams } from 'react-router';
 import SearchRestaurant from './SearchRestaurant';
 
 type Props = {
-  onClick: () => void;
-  onCreate: () => void;
+  onClose: () => void;
 };
 
-function RegisterWishModal({ onClick, onCreate }: Props) {
+function RegisterWishModal({ onClose }: Props) {
   const { opened, handleCloseModal, handleOpenModal } = useModal();
   const [searchParams] = useSearchParams();
   const wishId = Number(searchParams.get('wishId')) ?? '';
   const modalRoot = document.querySelector('#modal') as HTMLElement;
 
   const handleCreateWish = () => {
-    onCreate();
+    onClose();
     handleInputChange('');
   };
   const { formData, handleFormData, initialWishFormData, createWish, error } =
@@ -41,7 +40,7 @@ function RegisterWishModal({ onClick, onCreate }: Props) {
   return createPortal(
     <S.Container>
       <S.Header>
-        <S.BackButton onClick={onClick}>
+        <S.BackButton onClick={onClose}>
           <Arrow direction="left" size="lg" />
         </S.BackButton>
       </S.Header>

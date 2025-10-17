@@ -3,6 +3,8 @@ import { useModal } from '@components/modal/useModal';
 
 import { useManageWishlist } from '@domains/room/hooks/useManageWishlist';
 
+import { wishlistQuery } from '@apis/wishlist';
+
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
@@ -15,15 +17,8 @@ function WishlistTab() {
   const { opened, handleCloseModal, handleOpenModal } = useModal();
   const [searchParams] = useSearchParams();
   const wishId = Number(searchParams.get('wishId')) ?? '';
-  const { error, wishlistData, handleGetWish, handleDeleteWish } =
-    useManageWishlist(wishId);
-
-  const handleCreateWish = () => {
-    handleGetWish();
-    handleCloseModal();
-  };
-
-  if (error) throw new Error();
+  const { handleDeleteWish } = useManageWishlist(wishId);
+  const { data } = wishlistQuery.useGet(wishId);
 
   return (
     <S.Container>
@@ -33,8 +28,8 @@ function WishlistTab() {
       </S.RegisterButton>
 
       <S.Wishlist>
-        {wishlistData?.length > 0 ? (
-          wishlistData.map(wish => (
+        {(data ?? [].length > 0) ? (
+          data?.map(wish => (
             <WishRestaurantCard
               key={wish.id}
               restaurantData={wish}
@@ -48,12 +43,7 @@ function WishlistTab() {
         )}
       </S.Wishlist>
 
-      {opened && (
-        <RegisterWishModal
-          onClick={handleCloseModal}
-          onCreate={handleCreateWish}
-        />
-      )}
+      {opened && <RegisterWishModal onClose={handleCloseModal} />}
     </S.Container>
   );
 }
