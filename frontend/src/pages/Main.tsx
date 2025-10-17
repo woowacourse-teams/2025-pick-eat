@@ -1,7 +1,5 @@
 import Card from '@domains/wishlist/components/Card';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import Carousel from '@components/Carousel';
 
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
@@ -109,7 +107,7 @@ const S = {
     align-items: center;
     position: relative;
 
-    padding-top: ${HEADER_HEIGHT};
+    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
 
     background-color: ${({ theme }) => theme.PALETTE.primary[50]};
   `,
@@ -149,12 +147,12 @@ const S = {
     flex-direction: column;
     gap: 27px;
 
-    padding: 37px 17px;
-
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
     border-radius: 30px 30px 0 0;
   `,
   Description: styled.h1`
+    padding: 36px 0 0 16px;
+
     font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
   `,
 };

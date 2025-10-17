@@ -1,5 +1,3 @@
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import Toast, { DEFAULT_TIME } from '@components/toast/Toast';
 
 import { generateRandomNumber } from '@utils/generateRandomNumber';
@@ -77,7 +75,7 @@ export const useShowToast = () => {
 const S = {
   Container: styled.div`
     width: 100%;
-    max-width: 768px;
+    max-width: ${({ theme }) => theme.LAYOUT.maxWidth};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -87,6 +85,8 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p4};
 
-    transform: translateY(calc(${HEADER_HEIGHT} + 5px));
+    transform: translateY(
+      calc(${({ theme }) => theme.LAYOUT.headerHeight} + 5px)
+    );
   `,
 };

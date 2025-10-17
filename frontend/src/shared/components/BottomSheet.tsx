@@ -130,9 +130,9 @@ const S = {
     dragging: boolean;
     sheetDistanceFromBottom: number;
   }>`
-    width: 100%;
+    ${({ theme }) => theme.POSITION.fixedCenter}
     height: 80%;
-    position: fixed;
+
     bottom: 0;
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
 
@@ -147,9 +147,9 @@ const S = {
       ${({ theme }) => theme.RADIUS.xlarge} 0 0;
     opacity: ${({ opened }) => (opened ? 1 : 0)};
     pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
-
     transform: ${({ sheetDistanceFromBottom }) =>
-      `translateY(${sheetDistanceFromBottom}px)`};
+      `translate3d(-50% ,${sheetDistanceFromBottom}px, 0)`};
+
     will-change: transform;
   `,
 

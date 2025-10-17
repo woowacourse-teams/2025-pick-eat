@@ -36,7 +36,7 @@ function LineSearchBar({
         {...props}
       />
       {xIcon && (
-        <S.xIcon onClick={onClear}>
+        <S.xIcon type="button" onClick={onClear}>
           <Erase />
         </S.xIcon>
       )}

@@ -1,6 +1,8 @@
-import Cross from '@components/assets/icons/Cross';
+import Chip from '@components/labels/Chip';
 
 import { User } from '@apis/users';
+
+import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
 
@@ -17,7 +19,7 @@ function SelectedMemberList({ memberList, onDelete }: Props) {
           <S.Member key={member.id}>
             <S.Nickname>{member.nickname}</S.Nickname>
             <S.DeleteIcon onClick={() => onDelete(member.id)}>
-              <Cross color="white" size="sm" strokeWidth={4} />
+              <Cross color={THEME.PALETTE.gray[0]} size="sm" strokeWidth={4} />
             </S.DeleteIcon>
           </S.Member>
         ))
@@ -33,17 +35,9 @@ export default SelectedMemberList;
 const S = {
   MemberContainer: styled.ul`
     width: 100%;
-    height: 100%;
     display: flex;
-    flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
-    overflow: scroll;
-
-    padding: ${({ theme }) => theme.PADDING.p5};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-radius: ${({ theme }) => theme.RADIUS.large};
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    gap: ${({ theme }) => theme.GAP.level4} ${({ theme }) => theme.GAP.level3};
   `,
 
   Member: styled.div`
