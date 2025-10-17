@@ -57,5 +57,6 @@ const S = {
   Description: styled.p`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.body.small};
+    text-align: center;
   `,
 };

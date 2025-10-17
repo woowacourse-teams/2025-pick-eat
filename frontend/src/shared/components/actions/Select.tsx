@@ -131,7 +131,8 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level2};
 
-    padding: ${({ theme }) => theme.PADDING.p3};
+    padding: ${({ theme }) => theme.PADDING.p2} 0
+      ${({ theme }) => theme.PADDING.p2} ${({ theme }) => theme.PADDING.p2};
     border-bottom: ${({ opened, selected }) =>
       `2px solid ${getSelectStateColor(selected, opened)}`};
   `,

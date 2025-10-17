@@ -36,7 +36,7 @@ function LineSearchBar({
         {...props}
       />
       {xIcon && (
-        <S.xIcon onClick={onClear}>
+        <S.xIcon type="button" onClick={onClear}>
           <Erase />
         </S.xIcon>
       )}
@@ -76,7 +76,7 @@ const S = {
 
     color: ${({ theme }) => theme.PALETTE.gray[95]};
 
-    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
     border-bottom: 2px solid ${({ theme }) => theme.PALETTE.primary[50]};
 
     &:placeholder-shown {

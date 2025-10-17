@@ -1,6 +1,7 @@
-import { HEADER_HEIGHT } from '@widgets/Header';
+import Card from '@domains/login/components/Card';
 
 import KakaoLoginButton from '@components/actions/KakaoLoginButton';
+import Carousel from '@components/Carousel';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
@@ -12,6 +13,37 @@ const kauthUrl = 'https://kauth.kakao.com/oauth/authorize';
 const REST_API_KEY = process.env.REST_API_KEY as string;
 const baseRedirectUrl = process.env.BASE_URL as string;
 const redirectPath = ROUTE_PATH.OAUTH_CALLBACK.replace(/^\//, '');
+
+const LOGIN_CONTENT = [
+  {
+    id: 1,
+    title: '식당 즐겨찾기',
+    description: '원하는 식당 중에서\n투표를 열어보세요!',
+    imgUrl: './images/carousel/favoriteMan.png',
+  },
+  {
+    id: 2,
+    title: '방 만들기',
+    description: '꾸준히 함께할 멤버와 더 빠르게\n투표를 열어보세요!',
+    imgUrl: './images/carousel/friendsMan.png',
+  },
+  {
+    id: 3,
+    title: '빠른 재입장',
+    description: '참여 중인 투표에 쉽게\n다시 입장할 수 있어요!',
+    imgUrl: './images/carousel/exitMan.png',
+  },
+];
+
+const CARD_CONTENT = LOGIN_CONTENT.map(item => (
+  <Card
+    id={item.id}
+    key={item.id}
+    title={item.title}
+    imgUrl={item.imgUrl}
+    description={item.description}
+  />
+));
 
 function Login() {
   const handleKakaoLoginClick = () => {
@@ -26,12 +58,16 @@ function Login() {
 
   return (
     <S.Container>
-      <S.Title>
-        <S.TitleWrapper>
-          로그인하고 <S.PointText>더 빠르게</S.PointText>
-        </S.TitleWrapper>
-        식당을 정해보아요
-      </S.Title>
+      <S.TitleSection>
+        <S.Title>
+          로그인하면
+          <br />
+          이런 것들을 할 수 있어요!
+        </S.Title>
+        <S.Description>닉네임을 정하고 회원가입을 완료하세요!</S.Description>
+      </S.TitleSection>
+
+      <Carousel contentArr={CARD_CONTENT} />
       <KakaoLoginButton onClick={handleKakaoLoginClick} />
     </S.Container>
   );
@@ -42,20 +78,30 @@ export default Login;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: calc(100% - ${HEADER_HEIGHT});
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,
+
+  TitleSection: styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level2};
+
+    margin-right: auto;
+    padding: ${({ theme }) => theme.PADDING.p6};
+  `,
+
   Title: styled.h1`
-    color: ${({ theme }) => theme.PALETTE.gray[60]};
-    font: ${({ theme }) => theme.FONTS.heading.large};
+    font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
-  PointText: styled.h1`
-    color: ${({ theme }) => theme.PALETTE.primary[50]};
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+
+  Description: styled.h2`
+    font: ${({ theme }) => theme.FONTS.body.medium};
   `,
-  TitleWrapper: styled.div``,
 };

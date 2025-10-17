@@ -1,10 +1,6 @@
-import { THEME } from '@styles/global';
-
 import styled from '@emotion/styled';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-
-import Cross from './assets/icons/Cross';
 
 type Props = {
   children: ReactNode;
@@ -118,9 +114,6 @@ function BottomSheet({ opened, onClose, children }: Props) {
       >
         <S.Header>
           <S.HandleBar />
-          <S.CloseButton onClick={closeBottomSheet}>
-            <Cross color={THEME.PALETTE.gray[10]} size="sm" strokeWidth={2} />
-          </S.CloseButton>
         </S.Header>
         {children}
       </S.Container>
@@ -137,9 +130,9 @@ const S = {
     dragging: boolean;
     sheetDistanceFromBottom: number;
   }>`
-    width: 100%;
+    ${({ theme }) => theme.POSITION.fixedCenter}
     height: 80%;
-    position: fixed;
+
     bottom: 0;
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
 
@@ -154,9 +147,9 @@ const S = {
       ${({ theme }) => theme.RADIUS.xlarge} 0 0;
     opacity: ${({ opened }) => (opened ? 1 : 0)};
     pointer-events: ${({ opened }) => (opened ? 'auto' : 'none')};
-
     transform: ${({ sheetDistanceFromBottom }) =>
-      `translateY(${sheetDistanceFromBottom}px)`};
+      `translate3d(-50% ,${sheetDistanceFromBottom}px, 0)`};
+
     will-change: transform;
   `,
 
@@ -181,15 +174,6 @@ const S = {
     justify-content: center;
     align-items: center;
     position: relative;
-  `,
-
-  CloseButton: styled.button`
-    position: absolute;
-    right: 10px;
-
-    @media (pointer: coarse) {
-      display: none;
-    }
   `,
 
   HandleBar: styled.div`
