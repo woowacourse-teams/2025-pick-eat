@@ -1,23 +1,42 @@
 import RoomDetailTab from '@domains/room/components/RoomDetailTab';
-import TemplatesTab from '@domains/room/components/TemplatesTab/TemplatesTab';
 import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
-
-import { HEADER_HEIGHT } from '@widgets/Header';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import TabMenu from '@components/tabMenus/TabMenu';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { wishlist } from '@apis/wishlist';
+import { room } from '@apis/room';
+
+import { useShowToast } from '@provider/ToastProvider';
 
 import styled from '@emotion/styled';
-import { Suspense, useMemo } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
+const TAB_MENU = 64 + 72;
 function RoomDetail() {
-  const getWishGroup = useMemo(() => wishlist.getWishTemplates(), []);
+  const [roomName, setRoomName] = useState('방 이름 없음');
+  const [searchParams] = useSearchParams();
+  const roomId = Number(searchParams.get('roomId')) ?? '';
+
+  const showToast = useShowToast();
+
+  useEffect(() => {
+    const getRoom = async () => {
+      try {
+        const response = await room.get(roomId);
+        if (response) setRoomName(response.name);
+      } catch {
+        showToast({ message: '방 이름을 불러오지 못했습니다.', mode: 'ERROR' });
+      }
+    };
+    getRoom();
+  }, []);
+
   return (
     <S.Container>
+      <S.RoomName>{roomName}</S.RoomName>
       <TabMenu
         overflowHidden={false}
         tabData={[
@@ -45,18 +64,6 @@ function RoomDetail() {
               </S.TabWrapper>
             ),
           },
-          {
-            tab: '픽잇 찜',
-            content: (
-              <S.TabWrapper>
-                <ErrorBoundary>
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <TemplatesTab wishGroup={getWishGroup} />
-                  </Suspense>
-                </ErrorBoundary>
-              </S.TabWrapper>
-            ),
-          },
         ]}
       />
     </S.Container>
@@ -67,11 +74,19 @@ export default RoomDetail;
 
 const S = {
   Container: styled.div`
-    height: calc(100vh - ${HEADER_HEIGHT});
+    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
   `,
+  RoomName: styled.div`
+    margin-top: 36px;
 
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    font: ${({ theme }) => theme.FONTS.heading.medium};
+    text-align: center;
+  `,
   TabWrapper: styled.div`
-    height: calc(100vh - ${HEADER_HEIGHT} - 56px);
+    height: calc(
+      100vh - ${({ theme }) => theme.LAYOUT.headerHeight} - ${TAB_MENU}px
+    );
 
     padding: ${({ theme }) => theme.PADDING.p6};
   `,

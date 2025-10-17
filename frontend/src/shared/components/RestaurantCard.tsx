@@ -4,30 +4,58 @@ import styled from '@emotion/styled';
 
 import Chip from './labels/Chip';
 
+export type RestaurantCardData = Pick<
+  Restaurant,
+  | 'id'
+  | 'name'
+  | 'tags'
+  | 'placeUrl'
+  | 'category'
+  | 'pictureUrls'
+  | 'roadAddressName'
+  | 'category'
+>;
+
 type Props = {
-  restaurantData: Restaurant;
+  restaurantData: RestaurantCardData;
 };
 
 function RestaurantCard({ restaurantData }: Props) {
-  const { tags, name, placeUrl, pictureUrls } = restaurantData;
+  const { tags, name, placeUrl, pictureUrls, roadAddressName, category } =
+    restaurantData;
+  const menuUrl = `${placeUrl}#menuInfo`;
+
   return (
     <S.Container>
-      <S.Image src={pictureUrls[0]} alt={name} />
+      <S.Image
+        src={pictureUrls[0] || './images/restaurant.png'}
+        onError={e => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = './images/restaurant.png';
+        }}
+        alt={name}
+      />
 
       <S.Info>
         <S.Top>
           <S.TagBox>
-            {tags.map((tag: string) => (
-              <Chip key={tag} variant="outlined" size="sm">
-                {tag}
+            {tags.length > 0 ? (
+              tags.map((tag: string) => (
+                <Chip key={tag} variant="outlined" size="sm">
+                  {tag}
+                </Chip>
+              ))
+            ) : (
+              <Chip variant="outlined" size="sm">
+                {category}
               </Chip>
-            ))}
+            )}
           </S.TagBox>
           <S.Name>{name}</S.Name>
         </S.Top>
-
+        <S.Address>{roadAddressName}</S.Address>
         {placeUrl && (
-          <S.Link href={placeUrl} target="_blank" rel="noopener noreferrer">
+          <S.Link href={menuUrl} target="_blank" rel="noopener noreferrer">
             메뉴 보러가기
           </S.Link>
         )}
@@ -38,29 +66,10 @@ function RestaurantCard({ restaurantData }: Props) {
 
 export default RestaurantCard;
 
-/*
-  TODO
-  공통
-    - [] Container, Image radius theme에서 뽑아쓰기
-    - [] Link, Name font theme에서 뽑아쓰기
-  선호
-    - [] 태그 없을 시 '카테고리' 태그 표시
-    - [] like 버튼 + 투표 로직
-  소거
-    - [] x 버튼 + 소거 로직
-  식당 등록
-    - [] x 버튼 + 소거 로직
-    - [] 주소 추가
-
-
-  padding이 16 16 14 16이라 그냥 16으로 하고 height +2함
-  Info height 85=>86으로 함
-
- */
-
 const S = {
   Container: styled.div`
-    width: 312px;
+    width: 100%;
+    max-width: 350px;
     height: 122px;
 
     display: flex;
@@ -76,15 +85,14 @@ const S = {
   Image: styled.img`
     width: 90px;
     height: 90px;
-    border-radius: 20px;
+    border-radius: ${({ theme }) => theme.RADIUS.medium};
     object-fit: cover;
   `,
   Info: styled.div`
     width: 162px;
-    height: 86px;
+    height: 96px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
   `,
   Top: styled.div`
     width: 156px;
@@ -109,8 +117,6 @@ const S = {
   `,
   Link: styled.a`
     color: ${({ theme }) => theme.PALETTE.gray[50]};
-    font:
-      400 14px/28px Pretendard,
-      sans-serif;
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
   `,
 };

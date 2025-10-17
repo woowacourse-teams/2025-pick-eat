@@ -12,13 +12,14 @@ import { generateRouterPath } from '@routes/routePath';
 
 import { useShowToast } from '@provider/ToastProvider';
 
+import { THEME } from '@styles/global';
+
 import styled from '@emotion/styled';
 import { Suspense, useMemo } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
 import IncludeMemberList from './IncludeMemberList';
 import ProgressPickeat from './ProgressPickeat';
-import RoomDetailName from './RoomDetailName';
 
 function RoomDetailTab() {
   const navigate = useNavigate();
@@ -27,7 +28,6 @@ function RoomDetailTab() {
   const wishlistId = Number(searchParams.get('wishId')) ?? '';
   const showToast = useShowToast();
 
-  const getRoom = () => useMemo(() => room.get(roomId), [roomId]);
   const getIncludeMembers = () =>
     useMemo(() => room.getIncludeMembers(roomId), [roomId]);
   const getPickeats = () => useMemo(() => room.getPickeats(roomId), [roomId]);
@@ -49,12 +49,11 @@ function RoomDetailTab() {
   return (
     <S.Container>
       <Suspense fallback={<LoadingSpinner />}>
-        <RoomDetailName roomData={getRoom()} />
         <S.ButtonWrapper>
           <Button text="찜으로 픽잇" leftIcon="🤍" onClick={clickWishPickeat} />
           <Button
             text="근처에서 픽잇"
-            leftIcon={<Location size="sm" color="white" />}
+            leftIcon={<Location size="sm" color={THEME.PALETTE.gray[0]} />}
             onClick={() =>
               navigate(generateRouterPath.pickeatWithLocation(roomId))
             }

@@ -7,22 +7,17 @@ type Props = {
 };
 
 function TabBar({ tabs, selectedIndex, onTabClick }: Props) {
-  const tabCount = tabs?.length ?? 0;
-
   return (
     <S.Container>
       {tabs.map((tab, index) => (
-        <S.TabItem key={index} onClick={() => onTabClick(index)}>
-          <S.TabContent>
-            <S.TabLabel isActive={index === selectedIndex}>
-              <p>{tab}</p>
-            </S.TabLabel>
-          </S.TabContent>
+        <S.TabItem
+          key={index}
+          onClick={() => onTabClick(index)}
+          isActive={index === selectedIndex}
+        >
+          <S.TabLabel isActive={index === selectedIndex}>{tab}</S.TabLabel>
         </S.TabItem>
       ))}
-      {tabCount > 0 && (
-        <S.Indicator tabCount={tabCount} activeTab={selectedIndex} />
-      )}
     </S.Container>
   );
 }
@@ -36,40 +31,34 @@ const S = {
     display: flex;
     position: relative;
 
-    padding: 0;
+    padding: ${({ theme }) => theme.PADDING.p3};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
+    box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
     cursor: pointer;
   `,
-  TabItem: styled.button`
-    height: 56px;
-    min-height: 1px;
+  TabItem: styled.button<{ isActive: boolean }>`
+    height: 48px;
+    display: flex;
     flex: 1 0 0;
-    border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[30]};
+    justify-content: center;
+    align-items: center;
+
+    padding: ${({ theme }) => theme.PADDING.p3};
+
+    background-color: ${({ isActive, theme }) =>
+      isActive ? theme.PALETTE.primary[50] : theme.PALETTE.gray[0]};
+
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
   TabContent: styled.div`
     width: 100%;
     height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
   `,
-  TabLabel: styled.div<{ isActive: boolean }>`
+  TabLabel: styled.p<{ isActive: boolean }>`
     color: ${({ isActive, theme }) =>
-      isActive ? theme.PALETTE.primary[70] : theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.body.large_bold};
-  `,
-  Indicator: styled.div<{ tabCount: number; activeTab: number }>`
-    height: 4px;
-    position: absolute;
-    bottom: 0;
-
-    background-color: ${({ theme }) => theme.PALETTE.primary[50]};
-
-    transition: all 0.2s cubic-bezier(0.19, 0.85, 0.66, 0.99);
-    ${({ tabCount, activeTab }) =>
-      tabCount > 0 &&
-      `
-        width: ${100 / tabCount}%;
-        left: ${(activeTab * 100) / tabCount}%;
-      `};
+      isActive ? theme.PALETTE.gray[95] : theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.heading.small};
   `,
 };

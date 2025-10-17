@@ -6,9 +6,7 @@ import SharePanel from '@components/share/SharePanel';
 import ParticipantsAvatarGroup from '@domains/pickeat/participants/participantsAvatarGroup/ParticipantsAvatarGroup';
 
 import { THEME } from '@styles/global';
-import { setMobileStyle } from '@styles/mediaQuery';
 
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router';
 
@@ -58,24 +56,12 @@ export default TitleSection;
 const S = {
   Container: styled.div`
     width: 100%;
-    height: 200px;
 
     display: flex;
-    justify-content: space-between;
-    align-items: center;
 
-    padding: 0 ${({ theme }) => theme.PADDING.px7};
+    flex-direction: column;
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[0]};
-
-    ${setMobileStyle(css`
-      height: 210px;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: flex-start;
-
-      padding-bottom: 16px;
-    `)}
+    padding: ${({ theme }) => theme.PADDING.p5};
   `,
   DeleteButton: styled.div`
     width: 20px;
@@ -111,14 +97,10 @@ const S = {
     height: 36px;
   `,
   ToolContainer: styled.div`
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: row-reverse;
     align-items: flex-end;
     gap: ${({ theme }) => theme.GAP.level4};
-    ${setMobileStyle(css`
-      width: 100%;
-      flex-direction: row-reverse;
-    `)}
   `,
 };
