@@ -16,7 +16,6 @@ import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +29,6 @@ public class PickeatService {
     private final RoomUserRepository roomUserRepository;
 
     @Transactional
-    @CacheEvict(value = {"pickeat", "participant"}, allEntries = true)
     public PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
         Pickeat pickeat = Pickeat.createWithoutRoom(request.name());
 
@@ -39,7 +37,6 @@ public class PickeatService {
     }
 
     @Transactional
-    @CacheEvict(value = {"pickeat", "participant"}, allEntries = true)
     public PickeatResponse createPickeatWithRoom(Long roomId, Long userId, PickeatRequest request) {
         validateUserAccessToRoom(roomId, userId);
 
@@ -50,7 +47,6 @@ public class PickeatService {
     }
 
     @Transactional
-    @CacheEvict(value = {"pickeat", "participant"}, allEntries = true)
     public void deactivatePickeat(String pickeatCode, Long participantId) {
         validateParticipantAccessToPickeat(participantId, pickeatCode);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
