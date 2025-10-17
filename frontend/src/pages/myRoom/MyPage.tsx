@@ -1,8 +1,6 @@
 import ParticipantPickeat from '@domains/profile/components/ParticipantPickeat';
 import RoomList from '@domains/profile/components/RoomList';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import NewButton from '@components/actions/NewButton';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import BottomSheet from '@components/BottomSheet';
@@ -54,9 +52,7 @@ function MyPage() {
               </S.Description>
             </S.TitleBox>
             <S.ButtonBox>
-              <NewButton onClick={() => navigate(ROUTE_PATH.CREATE_ROOM)}>
-                방 만들기 +
-              </NewButton>
+              <NewButton onClick={handleOpenModal}>방 만들기 +</NewButton>
             </S.ButtonBox>
           </S.TitleWrapper>
           <ErrorBoundary>
@@ -81,8 +77,8 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
 
-    padding: ${HEADER_HEIGHT} ${({ theme }) => theme.PADDING.p7}
-      ${({ theme }) => theme.PADDING.p5};
+    padding: ${({ theme }) => theme.LAYOUT.headerHeight}
+      ${({ theme }) => theme.PADDING.p7} ${({ theme }) => theme.PADDING.p5};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
   `,

@@ -1,8 +1,6 @@
 import SearchAddress from '@domains/pickeat/components/SearchAddress';
 import SearchLoadingOverlay from '@domains/pickeat/components/SearchLoadingOverlay';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import FixedButton from '@components/actions/FixedButton';
 import LineSearchBar from '@components/actions/SearchBar/LineSearchBar';
 import Select from '@components/actions/Select';
@@ -134,7 +132,8 @@ const S = {
     flex-direction: column;
     justify-content: space-around;
 
-    padding: ${HEADER_HEIGHT} ${({ theme }) => theme.PADDING.p4};
+    padding: ${({ theme }) => theme.LAYOUT.headerHeight}
+      ${({ theme }) => theme.PADDING.p4};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,

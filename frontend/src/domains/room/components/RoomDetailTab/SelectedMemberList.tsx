@@ -1,4 +1,4 @@
-import Chip from '@components/labels/Chip';
+import Cross from '@components/assets/icons/Cross';
 
 import { User } from '@apis/users';
 

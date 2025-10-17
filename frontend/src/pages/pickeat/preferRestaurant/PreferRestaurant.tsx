@@ -1,7 +1,5 @@
 import PreferRestaurantList from '@domains/pickeat/preferRestaurant/components/PreferRestaurantList';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
@@ -70,7 +68,7 @@ const S = {
     display: flex;
     flex-direction: column;
 
-    padding-top: ${HEADER_HEIGHT};
+    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
 
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
   `,
@@ -86,7 +84,7 @@ const S = {
     width: 100vw;
     max-width: 480px;
     position: fixed;
-    top: ${HEADER_HEIGHT};
+    top: ${({ theme }) => theme.LAYOUT.headerHeight};
     left: 50%;
     z-index: ${({ theme }) => theme.Z_INDEX.fixed};
     transform: translateX(-50%);

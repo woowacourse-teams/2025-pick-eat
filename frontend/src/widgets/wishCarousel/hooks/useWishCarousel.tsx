@@ -74,6 +74,8 @@ export function useWishCarousel() {
     return cardContent.map(item => (
       <Card
         key={item.id}
+        itemId={item.id}
+        isWish={item.isWish}
         title={item.name}
         imageUrl={item.imageUrl}
         onClick={() => {

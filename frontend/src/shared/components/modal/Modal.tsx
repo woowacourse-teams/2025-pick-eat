@@ -95,6 +95,7 @@ const S = {
   Container: styled.div<{ size: 'sm' | 'md' | 'lg'; opened: boolean }>`
     ${({ theme }) => theme.POSITION.fixedCenter};
     width: 90%;
+    max-width: 440px;
     display: flex;
     align-items: center;
 

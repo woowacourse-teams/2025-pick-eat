@@ -1,7 +1,5 @@
 import ResultRestaurantCard from '@domains/pickeat/matchResult/components/ResultRestaurantCard';
 
-import { HEADER_HEIGHT } from '@widgets/Header';
-
 import RoundedButton from '@components/actions/RoundedButton';
 import Confetti from '@components/Confetti';
 
@@ -105,7 +103,7 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
 
-    padding-top: ${HEADER_HEIGHT};
+    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
 
     animation: ${scaleUp} 0.3s ease forwards;
   `,

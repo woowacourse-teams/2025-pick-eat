@@ -15,14 +15,22 @@ const CARD_SIZE = {
 };
 
 type Props = {
-  templateId: number;
+  itemId: number;
+  isWish: boolean;
   title: string;
   imageUrl: string;
   onClick: () => void;
   size?: 'sm' | 'lg';
 };
 
-function Card({ templateId, title, imageUrl, onClick, size = 'lg' }: Props) {
+function Card({
+  itemId,
+  isWish,
+  title,
+  imageUrl,
+  onClick,
+  size = 'lg',
+}: Props) {
   const {
     opened,
     mounted,
@@ -48,7 +56,7 @@ function Card({ templateId, title, imageUrl, onClick, size = 'lg' }: Props) {
           handleOpenModal();
         }}
       >
-        {templateId !== 0 && <Info size="sm" color={THEME.PALETTE.gray[30]} />}
+        {isWish && <Info size="sm" color={THEME.PALETTE.gray[30]} />}
       </S.InfoButton>
       <Modal
         opened={opened}
@@ -56,7 +64,7 @@ function Card({ templateId, title, imageUrl, onClick, size = 'lg' }: Props) {
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <TemplateRestaurantList title={title} templateId={templateId} />
+        <TemplateRestaurantList title={title} templateId={itemId} />
       </Modal>
     </S.Container>
   );

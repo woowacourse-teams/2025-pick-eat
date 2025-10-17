@@ -59,7 +59,6 @@ function CreateRoom({ opened }: { opened: boolean }) {
         onDeleteMember={handleDeleteSelectedMember}
       />
       <NewButton
-        fixed
         onClick={() => createRoom(roomName, selectedMemberList)}
         disabled={roomName.length === 0}
         type="submit"
