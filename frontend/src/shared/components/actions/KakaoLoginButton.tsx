@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 const kakaoDesignGuide = {
   backgroundColor: THEME.PALETTE.kakao[50],
   textColor: THEME.PALETTE.kakao[100],
-  borderRadius: THEME.RADIUS.large,
+  borderRadius: THEME.RADIUS.small,
 };
 
 function KakaoLoginButton(
@@ -23,7 +23,7 @@ function KakaoLoginButton(
 
 const S = {
   Container: styled.button`
-    width: 248px;
+    width: 280px;
     height: 48px;
 
     display: flex;
