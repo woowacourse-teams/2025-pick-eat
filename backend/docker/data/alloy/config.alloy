@@ -4,10 +4,7 @@ logging {
 }
 
 local.file_match "spring_logs" {
-  path_targets = [
-    { __path__ = "/var/log/spring/blue/*.log" },
-    { __path__ = "/var/log/spring/green/*.log" },
-  ]
+  path_targets = [{ __path__ = "/var/log/spring/*.log" }]
 }
 
 loki.source.file "spring_source" {
@@ -31,64 +28,11 @@ loki.process "spring_labels" {
   }
 }
 
-loki.source.file "nginx_access_logs" {
-  targets = [
-    {
-      __path__ = "/var/log/nginx/access.log",
-      job      = "nginx-access",
-      service  = "nginx",
-      logtype  = "access",
-    },
-  ]
-  forward_to = [loki.process.nginx_access.receiver]
-}
-
-loki.process "nginx_access" {
-  forward_to = [loki.write.grafana_loki.receiver]
-
-  stage.static_labels {
-    values = {
-      job     = "nginx-docker",
-      service = "nginx",
-      logtype = "access",
-    }
-  }
-}
-
-loki.source.file "nginx_error_logs" {
-  targets = [
-    {
-      __path__ = "/var/log/nginx/error.log",
-      job      = "nginx-error",
-      service  = "nginx",
-      logtype  = "error",
-    },
-  ]
-  forward_to = [loki.process.nginx_error.receiver]
-}
-
-loki.process "nginx_error" {
-  forward_to = [loki.write.grafana_loki.receiver]
-
-  stage.multiline {
-    firstline = "^[0-9]{4}/[0-9]{2}/[0-9]{2}"
-    max_lines = 50
-  }
-
-  stage.static_labels {
-    values = {
-      job     = "nginx-docker",
-      service = "nginx",
-      logtype = "error",
-    }
-  }
-}
-
 loki.write "grafana_loki" {
   endpoint {
     url = "https://monitoring.pickeat.io.kr/loki/loki/api/v1/push"
-    tenant_id = "pickeat-dev"
-    batch_wait = "2s"
-    batch_size = "512KB"
+    tenant_id = "pickeat-prod"
+    batch_wait = "1s"
+    batch_size = "1MB"
   }
 }
