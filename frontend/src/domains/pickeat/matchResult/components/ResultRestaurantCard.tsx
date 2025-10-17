@@ -1,4 +1,3 @@
-import Button from '@components/actions/Button';
 import Share from '@components/assets/icons/Share';
 import Chip from '@components/labels/Chip';
 
@@ -41,18 +40,16 @@ function ResultRestaurantCard({ restaurantData }: Props) {
           <S.Name>{name}</S.Name>
         </S.TitleBox>
         <S.ButtonBox>
-          <S.DetailBox>
-            {placeUrl && (
-              <Button
-                color="primary"
-                text="식당 상세 정보"
-                onClick={() =>
-                  placeUrl &&
-                  window.open(placeUrl, '_blank', 'noopener,noreferrer')
-                }
-              />
-            )}
-          </S.DetailBox>
+          {placeUrl && (
+            <S.LinkButton
+              onClick={() =>
+                placeUrl &&
+                window.open(placeUrl, '_blank', 'noopener,noreferrer')
+              }
+            >
+              식당 상세 정보
+            </S.LinkButton>
+          )}
           <S.ShareBox onClick={() => copyLink(window.location.href)}>
             <Share color={THEME.PALETTE.gray[70]} size="sm" />
           </S.ShareBox>
@@ -95,11 +92,14 @@ const S = {
   ButtonBox: styled.div`
     width: 100%;
     display: flex;
+    align-items: flex-end;
     justify-content: space-between;
     gap: ${({ theme }) => theme.GAP.level4};
   `,
-  DetailBox: styled.div`
-    width: 120px;
+  LinkButton: styled.a`
+    font: ${({ theme }) => theme.FONTS.body.medium};
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+    text-decoration: underline;
   `,
   ShareBox: styled.button`
     width: 30px;
