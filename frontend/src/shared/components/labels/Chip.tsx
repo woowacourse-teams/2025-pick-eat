@@ -32,7 +32,6 @@ function Chip({
       <S.Text variant={variant} size={size}>
         {children}
       </S.Text>
-
       {removeButton && (
         <S.RemoveButton onClick={onRemove}>
           <Delete size="xs" />
@@ -66,7 +65,7 @@ const S = {
     ${({ variant, theme }) =>
       variant === 'filled' && `box-shadow:${theme.BOX_SHADOW.level2}`};
   `,
-  //TODO: font theme에서 뽑아쓰기
+
   Text: styled.div<Pick<Props, 'variant' | 'size'>>`
     display: flex;
     justify-content: center;
@@ -79,11 +78,5 @@ const S = {
     font: ${({ size = 'md' }) => SIZE[size].font};
   `,
 
-  RemoveButton: styled.button`
-    width: 16px;
-    height: 16px;
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[10]};
-    border-radius: ${({ theme }) => theme.RADIUS.half};
-  `,
+  RemoveButton: styled.button``,
 };

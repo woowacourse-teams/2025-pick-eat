@@ -1,8 +1,14 @@
 import { useState } from 'react';
 
-export const useModal = () => {
-  const [mounted, setMounted] = useState(false);
-  const [opened, setOpened] = useState(false);
+type ModalOptions = {
+  defaultOpened?: boolean;
+  defaultMounted?: boolean;
+};
+
+export const useModal = (options: ModalOptions = {}) => {
+  const { defaultOpened = false, defaultMounted = false } = options;
+  const [mounted, setMounted] = useState(defaultMounted);
+  const [opened, setOpened] = useState(defaultOpened);
 
   const handleCloseModal = (e?: MouseEvent) => {
     e?.stopPropagation();

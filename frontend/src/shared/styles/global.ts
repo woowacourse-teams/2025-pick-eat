@@ -153,7 +153,7 @@ export const GAP = {
   level5: '16px',
   level6: '20px',
   level7: '24px',
-  level8: '32px',
+  level8: '36px',
   level9: '40px',
   level10: '48px',
   level11: '64px',
