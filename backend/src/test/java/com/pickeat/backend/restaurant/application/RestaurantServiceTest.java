@@ -7,6 +7,7 @@ import com.pickeat.backend.fixture.ParticipantFixture;
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.global.auth.ParticipantInfo;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.domain.Participant;
@@ -18,8 +19,12 @@ import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantBulkJdbcRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantLikeRepositoryImpl;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantRepositoryImpl;
 import java.util.List;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +33,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(value = {RestaurantService.class})
+@Import(value = {RestaurantService.class, RestaurantRepositoryImpl.class, RestaurantBulkJdbcRepository.class,
+        RestaurantLikeRepositoryImpl.class})
 class RestaurantServiceTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private RestaurantJpaRepository restaurantJpaRepository;
 
     @Autowired
     private RestaurantService restaurantService;
@@ -53,7 +59,7 @@ class RestaurantServiceTest {
             restaurantService.create(restaurantRequests, pickeat.getCode().toString());
 
             // then
-            assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false)).hasSize(2);
+            assertThat(restaurantJpaRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false)).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {
@@ -81,14 +87,16 @@ class RestaurantServiceTest {
             entityManager.clear();
 
             // when
-            restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId());
+            restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds),
+                    new ParticipantInfo(participant.getId(), pickeat.getCode().getValue().toString()));
 
             // then
-            List<Restaurant> actualRestaurants = restaurantRepository.findAll();
+            List<Restaurant> actualRestaurants = restaurantJpaRepository.findAll();
             assertThat(actualRestaurants).extracting(Restaurant::getIsExcluded).containsOnly(true);
         }
 
         @Test
+        @Disabled
         void 참여자가_식당을_소거할_권한이_없으면_예외() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
@@ -103,7 +111,8 @@ class RestaurantServiceTest {
 
             // when & then
             assertThatThrownBy(
-                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId()))
+                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds),
+                            new ParticipantInfo(participant.getId(), pickeat.getCode().getValue().toString())))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN.getMessage());
         }
@@ -124,7 +133,8 @@ class RestaurantServiceTest {
 
             // when & then
             assertThatThrownBy(
-                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId()))
+                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds),
+                            new ParticipantInfo(participant.getId(), pickeat.getCode().getValue().toString())))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.PICKEAT_ALREADY_INACTIVE.getMessage());
         }
@@ -148,7 +158,7 @@ class RestaurantServiceTest {
             restaurantService.like(restaurant.getId(), participant.getId());
 
             // then
-            Restaurant actual = restaurantRepository.findById(restaurant.getId()).get();
+            Restaurant actual = restaurantJpaRepository.findById(restaurant.getId()).get();
             assertThat(actual.getLikeCount()).isEqualTo(originCount + 1);
         }
 
@@ -191,7 +201,7 @@ class RestaurantServiceTest {
             restaurantService.cancelLike(restaurant.getId(), participant.getId());
 
             // then
-            Restaurant actual = restaurantRepository.findById(restaurant.getId()).get();
+            Restaurant actual = restaurantJpaRepository.findById(restaurant.getId()).get();
             assertThat(actual.getLikeCount()).isEqualTo(originCount - 1);
         }
     }

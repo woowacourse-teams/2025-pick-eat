@@ -14,8 +14,11 @@ import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeJpaRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantBulkJdbcRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantLikeRepositoryImpl;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantRepositoryImpl;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +27,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({PickeatScheduler.class})
+@Import({PickeatScheduler.class, RestaurantLikeRepositoryImpl.class, RestaurantRepositoryImpl.class,
+        RestaurantBulkJdbcRepository.class})
 class PickeatSchedulerTest {
 
     @Autowired
@@ -40,10 +44,10 @@ class PickeatSchedulerTest {
     private ParticipantRepository participantRepository;
 
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private RestaurantJpaRepository restaurantJpaRepository;
 
     @Autowired
-    private RestaurantLikeRepository restaurantLikeRepository;
+    private RestaurantLikeJpaRepository restaurantLikeJpaRepository;
 
     @Autowired
     private PickeatResultRepository pickeatResultRepository;
@@ -98,9 +102,9 @@ class PickeatSchedulerTest {
         // then
         assertAll(
                 () -> assertThat(pickeatRepository.existsById(deletePickeat.getId())).isFalse(),
-                () -> assertThat(restaurantRepository.existsById(restaurant.getId())).isFalse(),
+                () -> assertThat(restaurantJpaRepository.existsById(restaurant.getId())).isFalse(),
                 () -> assertThat(participantRepository.existsById(participant.getId())).isFalse(),
-                () -> assertThat(restaurantLikeRepository.existsById(like.getId())).isFalse(),
+                () -> assertThat(restaurantLikeJpaRepository.existsById(like.getId())).isFalse(),
                 () -> assertThat(pickeatResultRepository.existsById(result.getId())).isFalse()
         );
     }

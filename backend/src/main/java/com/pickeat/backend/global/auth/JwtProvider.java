@@ -5,11 +5,13 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.Map;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,6 +37,24 @@ public class JwtProvider {
                         .expiration(expiryDate)
                         .signWith(secretKey)
                         .compact()
+        );
+    }
+
+    public TokenResponse createToken(Long id, long expirationMillis, Map<String, Object> extraClaims) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + expirationMillis);
+
+        JwtBuilder builder = Jwts.builder()
+                .subject(String.valueOf(id))
+                .issuedAt(now)
+                .expiration(expiryDate);
+
+        if (extraClaims != null && !extraClaims.isEmpty()) {
+            builder.claims(extraClaims);
+        }
+
+        return TokenResponse.from(
+                builder.signWith(secretKey).compact()
         );
     }
 

@@ -4,7 +4,7 @@ import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RestaurantLikeRepository extends JpaRepository<RestaurantLike, Long> {
+public interface RestaurantLikeJpaRepository extends JpaRepository<RestaurantLike, Long> {
 
     boolean existsByRestaurantIdAndParticipantId(Long restaurantId, Long participantId);
 
