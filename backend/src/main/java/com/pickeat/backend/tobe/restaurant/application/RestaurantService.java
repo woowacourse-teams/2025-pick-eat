@@ -57,8 +57,8 @@ public class RestaurantService {
         List<RestaurantResponse> response = new ArrayList<>();
 
         for (Restaurant restaurant : restaurants) {
-            boolean isLiked = existsLike(restaurant.getId(), participantId);
-            response.add(RestaurantResponse.of(restaurant, isLiked));
+            //boolean isLiked = existsLike(restaurant.getId(), participantId);
+            response.add(RestaurantResponse.of(restaurant, false));
         }
         return response;
     }
