@@ -30,7 +30,7 @@ public class ParticipantService {
         Participant participant = new Participant(request.nickname(), pickeat);
         participantRepository.save(participant);
 
-        return participantTokenProvider.createToken(participant.getId());
+        return participantTokenProvider.createToken(participant, pickeat);
     }
 
     public ParticipantResponse getParticipantBy(Long participantId) {

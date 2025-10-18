@@ -1,5 +1,6 @@
 package com.pickeat.backend.pickeat.ui.api;
 
+import com.pickeat.backend.global.auth.ParticipantInfo;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
@@ -277,7 +278,7 @@ public interface PickeatApiSpec {
     ResponseEntity<RestaurantResultResponse> createPickeatResult(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantInfo participantInfo
     );
 
     @Operation(
@@ -435,7 +436,7 @@ public interface PickeatApiSpec {
     })
     ResponseEntity<Void> deactivatePickeat(
             @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantInfo participantInfo
     );
 
     @Operation(
@@ -495,7 +496,7 @@ public interface PickeatApiSpec {
             )
     })
     ResponseEntity<PickeatResponse> getPickeatsByParticipant(
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantInfo participantInfo
     );
 
     @Operation(
@@ -539,7 +540,7 @@ public interface PickeatApiSpec {
     ResponseEntity<PickeatRejoinAvailableResponse> getRejoinAvailableFromNoneUser(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantInfo participantInfo
     );
 
     @Operation(

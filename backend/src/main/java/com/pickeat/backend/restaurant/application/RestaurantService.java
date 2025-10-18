@@ -1,5 +1,6 @@
 package com.pickeat.backend.restaurant.application;
 
+import com.pickeat.backend.global.auth.ParticipantInfo;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.domain.Participant;
@@ -12,8 +13,8 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantLikeRepository;
+import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,8 @@ public class RestaurantService {
 
     public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded, Long participantId) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        List<Restaurant> restaurants = restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, isExcluded);
+        List<Restaurant> restaurants = restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat,
+                isExcluded);
         List<RestaurantResponse> response = new ArrayList<>();
 
         for (Restaurant restaurant : restaurants) {
@@ -63,14 +65,19 @@ public class RestaurantService {
     }
 
     @Transactional
-    public void exclude(RestaurantExcludeRequest request, Long participantId) {
-        //TODO: 입력된 식당 개수만큼 UPDATE 쿼리가 발생 -> BULK나 배치사이즈를 활용한 최적화 필요  (2025-07-18, 금, 16:35)
-        //TODO: (필요하다면) 누가 소거한 식당인지 저장하는 중간 테이블 구현 필요
-        Participant participant = getParticipant(participantId);
+    public void exclude(RestaurantExcludeRequest request, ParticipantInfo participantInfo) {
+        Participant participant = getParticipant(participantInfo.id());
+        Pickeat pickeat = getPickeatByCode(participantInfo.rawPickeatCode());
 
-        List<Restaurant> restaurants = restaurantRepository.findAllById(request.restaurantIds());
-        validateParticipantAccessToRestaurants(restaurants, participant);
-        restaurants.forEach(Restaurant::exclude);
+        List<Restaurant> restaurantsInPickeat = restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat,
+                false);
+        List<Restaurant> excludeTargets = restaurantsInPickeat.stream()
+                .filter(restaurant -> request.restaurantIds().contains(restaurant.getId()))
+                .toList();
+        validateParticipantAccessToRestaurants(excludeTargets, participant);
+
+        excludeTargets.forEach(Restaurant::exclude);
+        restaurantRepository.bulkInsert(excludeTargets);
     }
 
     @Transactional
@@ -84,6 +91,7 @@ public class RestaurantService {
         validateParticipantAccessToRestaurants(List.of(restaurant), participant);
         restaurantLikeRepository.save(new RestaurantLike(participant, restaurant));
         restaurant.like();
+        restaurantRepository.save(restaurant);
     }
 
     @Transactional
@@ -96,6 +104,7 @@ public class RestaurantService {
 
         Restaurant restaurant = getRestaurantById(restaurantId);
         restaurant.cancelLike();
+        restaurantRepository.save(restaurant);
     }
 
     private Participant getParticipant(Long participantId) {
@@ -125,8 +134,7 @@ public class RestaurantService {
     }
 
     private Pickeat getPickeatByCode(String pickeatCode) {
-        Pickeat pickeat = pickeatRepository.findByCode(new PickeatCode(pickeatCode))
+        return pickeatRepository.findByCode(new PickeatCode(pickeatCode))
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
-        return pickeat;
     }
 }

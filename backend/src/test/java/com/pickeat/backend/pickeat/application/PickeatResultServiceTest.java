@@ -15,6 +15,8 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantBulkJdbcRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantRepositoryImpl;
 import java.util.UUID;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -24,7 +26,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({PickeatResultService.class})
+@Import({PickeatResultService.class, RestaurantRepositoryImpl.class, RestaurantBulkJdbcRepository.class})
 public class PickeatResultServiceTest {
 
     @Autowired

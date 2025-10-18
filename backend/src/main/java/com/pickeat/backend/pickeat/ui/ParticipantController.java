@@ -1,6 +1,7 @@
 package com.pickeat.backend.pickeat.ui;
 
-import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.global.auth.ParticipantInfo;
+import com.pickeat.backend.global.auth.annotation.ParticipantInPickeat;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.ParticipantService;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
@@ -35,22 +36,22 @@ public class ParticipantController implements ParticipantApiSpec {
 
     @Override
     @GetMapping("/participants/me")
-    public ResponseEntity<ParticipantResponse> getParticipant(@ParticipantId Long participantId) {
-        ParticipantResponse response = participantService.getParticipantBy(participantId);
+    public ResponseEntity<ParticipantResponse> getParticipant(@ParticipantInPickeat ParticipantInfo participantInfo) {
+        ParticipantResponse response = participantService.getParticipantBy(participantInfo.id());
         return ResponseEntity.ok(response);
     }
 
     @Override
     @PatchMapping("/participants/me/completion/complete")
-    public ResponseEntity<Void> markCompletion(@ParticipantId Long participantId) {
-        participantService.updateCompletion(participantId, true);
+    public ResponseEntity<Void> markCompletion(@ParticipantInPickeat ParticipantInfo participantInfo) {
+        participantService.updateCompletion(participantInfo.id(), true);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     @PatchMapping("/participants/me/completion/cancel")
-    public ResponseEntity<Void> unMarkCompletion(@ParticipantId Long participantId) {
-        participantService.updateCompletion(participantId, false);
+    public ResponseEntity<Void> unMarkCompletion(@ParticipantInPickeat ParticipantInfo participantInfo) {
+        participantService.updateCompletion(participantInfo.id(), false);
         return ResponseEntity.noContent().build();
     }
 }

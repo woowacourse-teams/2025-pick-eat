@@ -1,5 +1,6 @@
 package com.pickeat.backend.tobe.restaurant.ui.api;
 
+import com.pickeat.backend.global.auth.ParticipantInfo;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
@@ -171,7 +172,7 @@ public interface RestaurantApiSpec {
     })
     ResponseEntity<Void> excludeRestaurants(
             @org.springframework.web.bind.annotation.RequestBody RestaurantExcludeRequest request,
-            @Parameter(hidden = true) Long participantId);
+            @Parameter(hidden = true) ParticipantInfo participantInfo);
 
     @Operation(
             summary = "식당 좋아요",
@@ -204,7 +205,7 @@ public interface RestaurantApiSpec {
     ResponseEntity<Void> likeRestaurant(
             @Parameter(description = "식당 ID")
             @PathVariable("restaurantId") Long restaurantId,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantInfo participantInfo
     );
 
     @Operation(
@@ -258,7 +259,7 @@ public interface RestaurantApiSpec {
     ResponseEntity<Void> cancelLikeRestaurant(
             @Parameter(description = "식당 ID")
             @PathVariable("restaurantId") Long restaurantId,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantInfo participantInfo
     );
 
     @Operation(
@@ -302,6 +303,6 @@ public interface RestaurantApiSpec {
 
             @Parameter(description = "소거 여부 필터 ( --: 전체 식당 조회, true: 소거된 식당만, false: 소거되지 않은 식당만)")
             @RequestParam(required = false) Boolean isExcluded,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantInfo participantInfo
     );
 }

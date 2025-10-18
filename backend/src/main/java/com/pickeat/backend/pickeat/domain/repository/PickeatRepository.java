@@ -17,6 +17,5 @@ public interface PickeatRepository extends JpaRepository<Pickeat, Long> {
 
     List<Pickeat> findByRoomIdIn(List<Long> roomIds);
 
-    // 날짜 범위 조회는 캐싱하지 않는 것을 권장 (시간에 따라 계속 변하는 데이터)
     List<Pickeat> findByUpdatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
 }

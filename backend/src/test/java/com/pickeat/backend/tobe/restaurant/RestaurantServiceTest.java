@@ -6,10 +6,12 @@ import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
 import com.pickeat.backend.tobe.restaurant.application.RestaurantService;
 import com.pickeat.backend.tobe.restaurant.application.dto.request.RestaurantRequest;
-import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantBulkRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantBulkJdbcRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantLikeRepositoryImpl;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantRepositoryImpl;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,14 +21,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(value = {RestaurantService.class, RestaurantBulkRepository.class})
+@Import(value = {RestaurantService.class, RestaurantBulkJdbcRepository.class, RestaurantRepositoryImpl.class,
+        RestaurantLikeRepositoryImpl.class})
 public class RestaurantServiceTest {
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private RestaurantJpaRepository restaurantJpaRepository;
 
     @Autowired
     private RestaurantService restaurantService;
@@ -44,7 +47,7 @@ public class RestaurantServiceTest {
             restaurantService.create(restaurantRequests, pickeat.getCode().toString());
 
             // then
-            assertThat(restaurantRepository.findAll()).hasSize(2);
+            assertThat(restaurantJpaRepository.findAll()).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {

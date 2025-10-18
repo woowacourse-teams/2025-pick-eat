@@ -7,13 +7,18 @@ import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantBulkJdbcRepository;
+import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantRepositoryImpl;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
 
+@Import({RestaurantRepositoryImpl.class, RestaurantBulkJdbcRepository.class})
 @DataJpaTest
 class RestaurantRepositoryTest {
 
@@ -22,6 +27,9 @@ class RestaurantRepositoryTest {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
+
+    @Autowired
+    private RestaurantJpaRepository restaurantJpaRepository;
 
     @Test
     void 식당_조회() {
@@ -62,17 +70,17 @@ class RestaurantRepositoryTest {
             testEntityManager.flush();
             testEntityManager.clear();
 
-            long beforeCount = restaurantRepository.count();
+            long beforeCount = restaurantJpaRepository.count();
             List<Long> deletePickeatIds = List.of(pickeat1.getId(), pickeat2.getId());
 
             // when
             int deletedCount = restaurantRepository.deleteByPickeatIds(deletePickeatIds);
 
             // then
-            List<Restaurant> remainingRestaurants = restaurantRepository.findAll();
+            List<Restaurant> remainingRestaurants = restaurantJpaRepository.findAll();
             assertAll(
                     () -> assertThat(deletedCount).isEqualTo(3),
-                    () -> assertThat(restaurantRepository.count()).isEqualTo(beforeCount - deletedCount),
+                    () -> assertThat(restaurantJpaRepository.count()).isEqualTo(beforeCount - deletedCount),
                     () -> assertThat(remainingRestaurants).hasSize(1),
                     () -> assertThat(remainingRestaurants.getFirst().getName()).isEqualTo("유지될 레스토랑")
             );
