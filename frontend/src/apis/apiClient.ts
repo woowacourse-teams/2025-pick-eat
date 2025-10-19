@@ -17,6 +17,11 @@ export class ApiError extends Error {
   }
 }
 
+export const BASE_URL_VERSION = {
+  1: 'v1',
+  2: 'v2',
+} as const;
+
 const requestApi = async <TResponse = unknown>(
   method: Method,
   endPoint: string,
