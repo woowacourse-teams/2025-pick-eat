@@ -54,28 +54,7 @@ export function useWishCarousel() {
       { roomId, name: makePickeatName() },
       {
         onSuccess: code => {
-          postWishMutation.mutate(
-            { wishlistId: id, pickeatCode: code },
-            {
-              onSuccess: () => {
-                navigate(generateRouterPath.pickeatDetail(code));
-              },
-              onError: () => {
-                showToast({
-                  mode: 'ERROR',
-                  message:
-                    '위시리스트 설정에 실패했습니다. 다시 시도해 주세요.',
-                });
-                if (extraErrorMessage) {
-                  setTimeout(
-                    () =>
-                      showToast({ mode: 'WARN', message: extraErrorMessage }),
-                    700
-                  );
-                }
-              },
-            }
-          );
+          postWishMutation.mutate({ wishlistId: id, pickeatCode: code });
         },
         onError: () => {
           showToast({

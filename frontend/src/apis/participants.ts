@@ -1,3 +1,5 @@
+import { useShowToast } from '@provider/ToastProvider';
+
 import { joinAsPath } from '@utils/createUrl';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -27,20 +29,64 @@ export const participants = {
 };
 
 export const participantsQuery = {
-  useGetMyStatus: () =>
-    useQuery<Participant>({
-      queryKey: ['participants', 'status', 'me'],
-      queryFn: participants.getMyStatus,
-      gcTime: 0,
-    }),
+  useGetMyStatus: (onVoteComplete?: () => void) => {
+    const showToast = useShowToast();
 
-  usePatchComplete: () =>
-    useMutation({
+    return useQuery({
+      queryKey: ['participants', 'status', 'me'],
+      queryFn: async () => {
+        try {
+          const status = await participants.getMyStatus();
+
+          if (status?.isCompleted) {
+            onVoteComplete?.();
+          }
+
+          return status;
+        } catch (error) {
+          console.error('내 투표 상태 조회 실패', error);
+
+          showToast({
+            mode: 'ERROR',
+            message:
+              '내 투표 상태를 불러오는데 실패했습니다. 새로고침 후 다시 시도해 주세요.',
+          });
+
+          throw error;
+        }
+      },
+      gcTime: 0,
+      staleTime: 0,
+    });
+  },
+
+  usePatchComplete: (onVoteComplete: () => void) => {
+    const showToast = useShowToast();
+
+    return useMutation({
       mutationFn: participants.patchComplete,
       onSuccess: () => {
+        showToast(
+          {
+            mode: 'SUCCESS',
+            message:
+              '투표 완료 상태가 되었습니다. (계속 투표에 참여하실 수 있습니다.)',
+          },
+          3000
+        );
+
+        onVoteComplete?.();
+
         queryClient.invalidateQueries({
           queryKey: ['participants', 'status', 'me'],
         });
       },
-    }),
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '투표 완료 상태 변경에 실패했습니다. 다시 시도해 주세요.',
+        });
+      },
+    });
+  },
 };

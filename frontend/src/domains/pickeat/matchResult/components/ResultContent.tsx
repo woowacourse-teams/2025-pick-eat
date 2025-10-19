@@ -26,7 +26,6 @@ const scaleUp = keyframes`
 function ResultContent({ pickeatCode }: { pickeatCode: string }) {
   const navigate = useNavigate();
 
-  //TODO: 에러 처리
   const { data: restaurantData } = pickeatQuery.useGetResult(pickeatCode);
 
   return (

@@ -78,6 +78,8 @@ export const useCreateLocationPickeat = () => {
                   error.message === 'INVALID_ADDRESS'
                 ) {
                   setError('잘못된 위치입니다.');
+                } else {
+                  setError('위치 설정에 실패했습니다.');
                 }
               },
             }

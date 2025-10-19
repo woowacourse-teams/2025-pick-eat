@@ -259,21 +259,44 @@ export const pickeat = {
 };
 
 export const pickeatQuery = {
-  useGetResult: (pickeatCode: string) =>
-    useSuspenseQuery({
+  useGetResult: (pickeatCode: string) => {
+    const showToast = useShowToast();
+    const navigate = useNavigate();
+
+    return useSuspenseQuery({
       queryKey: ['pickeat', 'result', pickeatCode],
       queryFn: async () => {
-        const delay = new Promise(resolve => setTimeout(resolve, 2500));
-        const actual = pickeat.getResult(pickeatCode);
-        const [result] = await Promise.all([actual, delay]);
+        try {
+          const delay = new Promise(resolve => setTimeout(resolve, 2500));
+          const actual = pickeat.getResult(pickeatCode);
+          const [result] = await Promise.all([actual, delay]);
 
-        if (!result) throw new Error('투표 결과가 없습니다.');
+          if (!result) {
+            throw new Error('투표 결과가 없습니다.');
+          }
 
-        return result;
+          return result;
+        } catch (e) {
+          if (e instanceof ApiError && e.status === 401) {
+            showToast({
+              mode: 'ERROR',
+              message: '해당 픽잇에 접근할 수 없습니다.',
+            });
+            navigate(ROUTE_PATH.MAIN);
+          } else {
+            showToast({
+              mode: 'ERROR',
+              message: '투표 결과를 불러오지 못했습니다!',
+            });
+          }
+
+          throw e;
+        }
       },
-      staleTime: 1000 * 60 * 60 * 24,
+      staleTime: 1000 * 60 * 60 * 24, // 24시간
       gcTime: 1000 * 60 * 60 * 24,
-    }),
+    });
+  },
 
   useGet: (pickeatId: string) => {
     return (async () => {
@@ -301,16 +324,36 @@ export const pickeatQuery = {
       }) => pickeat.postLocation({ address, radius }, pickeatCode),
     }),
 
-  usePostWish: () =>
-    useMutation({
-      mutationFn: ({
+  usePostWish: () => {
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+
+    return useMutation({
+      mutationFn: async ({
         wishlistId,
         pickeatCode,
       }: {
         wishlistId: number;
         pickeatCode: string;
-      }) => pickeat.postWish(wishlistId, pickeatCode),
-    }),
+      }) => {
+        await pickeat.postWish(wishlistId, pickeatCode);
+        return pickeatCode;
+      },
+      onSuccess: (pickeatCode: string) => {
+        navigate(generateRouterPath.pickeatDetail(pickeatCode));
+      },
+      onError: (error: unknown) => {
+        console.error('위시리스트 설정 실패', error);
+        showToast({
+          mode: 'ERROR',
+          message:
+            error instanceof Error
+              ? error.message
+              : '위시리스트 설정에 실패했습니다. 다시 시도해 주세요.',
+        });
+      },
+    });
+  },
 
   usePostJoin: () => {
     const navigate = useNavigate();
