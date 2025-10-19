@@ -1,4 +1,4 @@
-package com.pickeat.backend.global.auth;
+package com.pickeat.backend.global.auth.info;
 
 public record ProviderInfo(Long providerId, String provider) {
 

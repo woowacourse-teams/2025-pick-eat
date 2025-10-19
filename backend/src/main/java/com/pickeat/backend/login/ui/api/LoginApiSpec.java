@@ -1,6 +1,6 @@
 package com.pickeat.backend.login.ui.api;
 
-import com.pickeat.backend.global.auth.ProviderInfo;
+import com.pickeat.backend.global.auth.info.ProviderInfo;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;

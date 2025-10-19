@@ -1,9 +1,9 @@
 package com.pickeat.backend.login.ui;
 
-import com.pickeat.backend.global.auth.JwtProvider;
-import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.global.auth.annotation.Provider;
+import com.pickeat.backend.global.auth.info.ProviderInfo;
 import com.pickeat.backend.login.application.LoginService;
+import com.pickeat.backend.login.application.ProviderTokenProvider;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
@@ -25,14 +25,14 @@ public class LoginController implements LoginApiSpec {
 
     private final LoginService loginService;
     private final UserService userService;
-    private final JwtProvider jwtProvider;
+    private final ProviderTokenProvider providerTokenProvider;
 
     @Override
     @PostMapping("/code")
     public ResponseEntity<TokenResponse> processCode(@Valid @RequestBody AuthCodeRequest request) {
         Long providerId = loginService.getProviderIdFromIdToken(request);
 
-        TokenResponse response = jwtProvider.createProviderToken(providerId, request.provider());
+        TokenResponse response = providerTokenProvider.createToken(providerId, request.provider());
 
         if (!userService.isUserExist(providerId, request.provider())) {
             return ResponseEntity

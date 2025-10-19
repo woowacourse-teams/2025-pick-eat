@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.user.application;
 
-import com.pickeat.backend.global.auth.ProviderInfo;
+import com.pickeat.backend.global.auth.info.ProviderInfo;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
