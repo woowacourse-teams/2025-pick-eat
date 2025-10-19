@@ -332,7 +332,7 @@ export const pickeatQuery = {
         joinCode.save(token);
         navigate(generateRouterPath.restaurantsExclude(pickeatCode));
       },
-      onError: (error: unknown) => {
+      onError: error => {
         console.error('픽잇 참가 실패:', error);
       },
     });
@@ -427,5 +427,27 @@ export const pickeatQuery = {
     });
 
     return { isRejoinAvailable, isLoading };
+  },
+  usePostResult: () => {
+    const showToast = useShowToast();
+    const navigate = useNavigate();
+
+    return useMutation({
+      mutationFn: async (pickeatCode: string) => {
+        const response = await pickeat.postResult(pickeatCode);
+
+        return response;
+      },
+      onSuccess: (_data, pickeatCode) => {
+        navigate(generateRouterPath.matchResult(pickeatCode));
+      },
+      onError: error => {
+        console.error('투표 결과 생성 실패', error);
+        showToast({
+          mode: 'ERROR',
+          message: '픽잇 결과를 가져오는 데 실패했습니다.',
+        });
+      },
+    });
   },
 };
