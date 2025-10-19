@@ -31,10 +31,10 @@ function IncludeMemberList() {
     handleDeleteSelectedMember,
   } = useInviteMember();
 
-  const { mutate } = roomQuery.usePostMember();
+  const { mutate } = roomQuery.usePostMember(roomId);
 
   const handleInvite = () => {
-    mutate({ roomId, userIds: selectedMemberList.map(member => member.id) });
+    mutate({ userIds: selectedMemberList.map(member => member.id) });
     handleUnmountModal();
   };
 

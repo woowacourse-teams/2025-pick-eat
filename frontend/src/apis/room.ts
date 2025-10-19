@@ -143,23 +143,18 @@ export const roomQuery = {
       },
     });
   },
-  usePostMember: () => {
+  usePostMember: (roomId: number) => {
     const showToast = useShowToast();
 
     return useMutation({
-      mutationFn: ({
-        roomId,
-        userIds,
-      }: {
-        roomId: number;
-        userIds: number[];
-      }) => room.postMember(roomId, userIds),
+      mutationFn: ({ userIds }: { userIds: number[] }) =>
+        room.postMember(roomId, userIds),
       onSuccess() {
         showToast({
           mode: 'SUCCESS',
           message: '초대 성공!',
         });
-        queryClient.invalidateQueries({ queryKey: ['includeMembers'] });
+        queryClient.invalidateQueries({ queryKey: ['includeMembers', roomId] });
       },
       onError() {
         showToast({
