@@ -5,7 +5,6 @@ on:
     branches: [ "main" ]
     paths:
       - 'backend/**'
-  workflow_dispatch:
 
 jobs:
   ci:
@@ -65,78 +64,15 @@ jobs:
 
       - name: Copy Docker Compose
         run: |
-          sudo cp ./backend/docker/docker-compose.prod.yml /home/ubuntu/docker/docker-compose.yml
+          sudo cp ./backend/docker/docker-compose.prod.yml /home/ubuntu/application/docker-compose.yml
 
-      - name: Backup DB Data
+      - name: Run Blue-Green Deploy
         run: |
-          if [ -f "/home/ubuntu/docker/backup_db.sh" ]; then
-            chmod +x /home/ubuntu/docker/backup_db.sh
-            /home/ubuntu/docker/backup_db.sh
+          if [ -f "/home/ubuntu/deploy.sh" ]; then
+            echo "🚀 Running deploy script..."
+            sudo chmod +x /home/ubuntu/deploy.sh
+            sudo /home/ubuntu/deploy.sh
           else
-            echo "⚠️ backup_db.sh not found, skipping backup"
+            echo "❌ deploy.sh not found!"
+            exit 1
           fi
-        continue-on-error: true
-
-      - name: Backup Current Image Before Deploy
-        run: |
-          CURRENT_IMAGE=$(docker inspect docker-backend-1 --format='{{.Config.Image}}' 2>/dev/null || echo "none")
-          echo "Current running image: $CURRENT_IMAGE"
-
-          if [ "$CURRENT_IMAGE" != "none" ]; then
-            docker tag "$CURRENT_IMAGE" ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:pre-release || true
-            docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:pre-release || true
-            echo "✅ Backed up current running image as pre-release"
-          else
-            echo "⚠️ No running container found"
-          fi
-
-      - name: Deploy EC2
-        run: |
-          cd /home/ubuntu/docker
-          docker-compose pull backend
-          docker-compose up -d --build backend
-          docker image prune -f
-
-      - name: Health Check with Retry
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 2
-          max_attempts: 10
-          retry_wait_seconds: 6
-          command: |
-            response=$(curl -s http://localhost:80/actuator/health)
-            status=$(echo $response | jq -r '.status' 2>/dev/null || echo "DOWN")
-            if [ "$status" = "UP" ]; then
-              echo "✅ Status is UP. Continuing..."
-              exit 0
-            else
-              echo "⏳ Status is NOT UP. Response: $response"
-              exit 1
-            fi
-
-      - name: Rollback if Health Check fails
-        if: failure()
-        run: |
-          cd /home/ubuntu/docker
-          echo "🚨 Health check failed. Rolling back to pre-release version..."
-          sed -i 's/pickeat\/pickeat:release/pickeat\/pickeat:pre-release/g' docker-compose.yml
-          docker-compose up -d --build backend
-          echo "✅ Rollback completed using pre-release image"
-
-      - name: Update release tag after successful rollback
-        if: failure()
-        run: |
-          echo "⏳ Updating release tag to match rolled back version..."
-          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:pre-release
-          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:pre-release ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:release
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:release
-          echo "✅ Release tag updated to match rollback version"
-
-      - name: Check Docker Process
-        if: always()
-        run: |
-          echo "=== Docker Compose Status ==="
-          cd /home/ubuntu/docker && docker-compose ps
-          echo "=== All Docker Processes ==="
-          docker ps
-          docker image prune -f

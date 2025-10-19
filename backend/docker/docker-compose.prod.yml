@@ -1,12 +1,26 @@
 version: '3.8'
 services:
-  backend:
+  backend-blue:
     image: pickeat/pickeat:release
+    container_name: backend-blue
     restart: always
     ports:
-      - "80:8080"
+      - "8080:8080"
     volumes:
-      - ./data/springboot/logs:/var/logs
+      - ./data/springboot/logs/blue:/var/logs
+    environment:
+      SPRING_ACTIVE_PROFILE: prod
+    networks:
+      - app-tier
+
+  backend-green:
+    image: pickeat/pickeat:release
+    container_name: backend-green
+    restart: always
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./data/springboot/logs/green:/var/logs
     environment:
       SPRING_ACTIVE_PROFILE: prod
     networks:
@@ -18,7 +32,8 @@ services:
     ports:
       - "12345:12345"
     volumes:
-      - ./data/springboot/logs:/var/log/spring
+      - ./data/springboot/logs/blue:/var/log/spring/blue
+      - ./data/springboot/logs/green:/var/log/spring/green
       - ./data/alloy/config.alloy:/etc/alloy/config.alloy
     environment:
       - ALLOY_ENV=prod
