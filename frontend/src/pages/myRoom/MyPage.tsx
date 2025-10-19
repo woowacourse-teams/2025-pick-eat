@@ -9,7 +9,6 @@ import { useModal } from '@components/modal/useModal';
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { pickeat } from '@apis/pickeat';
-import { users } from '@apis/users';
 
 import styled from '@emotion/styled';
 import { Suspense, useMemo } from 'react';
@@ -18,7 +17,6 @@ import CreateRoom from './components/CreateRoom';
 import Profile from './components/Profile';
 
 function MyPage() {
-  const userData = useMemo(() => users.get(), []);
   const participatingPickeatData = useMemo(
     () => pickeat.getParticipating(),
     []
@@ -30,7 +28,7 @@ function MyPage() {
       <Suspense fallback={<LoadingSpinner />}>
         <S.ProfileSection>
           <ErrorBoundary>
-            <Profile user={userData} />
+            <Profile />
           </ErrorBoundary>
         </S.ProfileSection>
 

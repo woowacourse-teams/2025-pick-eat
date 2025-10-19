@@ -1,10 +1,9 @@
-import { User } from '@apis/users';
+import { usersQuery } from '@apis/users';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
 
-function Profile({ user }: { user: Promise<User | null> }) {
-  const profile = use(user);
+function Profile() {
+  const { data: profile } = usersQuery.useGet();
   return (
     <S.Container>
       <S.ProfileImageBox>
