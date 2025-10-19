@@ -2,7 +2,7 @@ import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
 import { joinAsPath } from '@utils/createUrl';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery, useMutation } from '@tanstack/react-query';
 
 import { apiClient, ApiError } from './apiClient';
 
@@ -267,5 +267,30 @@ export const pickeatQuery = {
       },
       staleTime: 1000 * 60 * 60 * 24,
       gcTime: 1000 * 60 * 60 * 24,
+      retry: (failureCount, error) => {
+        if (error instanceof ApiError && error.status === 401) {
+          return false;
+        }
+        return failureCount < 2;
+      },
+    }),
+
+  usePostPickeat: () =>
+    useMutation({
+      mutationFn: ({ roomId, name }: { roomId: number; name: string }) =>
+        pickeat.post(roomId, name),
+    }),
+
+  usePostLocation: () =>
+    useMutation({
+      mutationFn: ({
+        address,
+        radius,
+        pickeatCode,
+      }: {
+        address: string;
+        radius: number;
+        pickeatCode: string;
+      }) => pickeat.postLocation({ address, radius }, pickeatCode),
     }),
 };
