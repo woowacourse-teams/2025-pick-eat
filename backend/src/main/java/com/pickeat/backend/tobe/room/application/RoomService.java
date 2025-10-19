@@ -13,7 +13,9 @@ import com.pickeat.backend.tobe.user.domain.repository.UserRepository;
 import com.pickeat.backend.user.domain.User;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,8 +47,22 @@ public class RoomService {
 
     public List<RoomResponse> getAllRoom(Long userId) {
         List<Room> rooms = roomUserRepository.getAllRoomByUserId(userId);
+
+        if (rooms.isEmpty()) {
+            return List.of();
+        }
+
+        List<Long> roomIds = rooms.stream().map(Room::getId).toList();
+
+        Map<Long, Integer> countMap = roomUserRepository.countByRoomIds(roomIds).stream()
+                .collect(Collectors.toMap(RoomUserRepository.RoomUserCount::getRoomId,
+                        RoomUserRepository.RoomUserCount::getCnt));
+
         return rooms.stream()
-                .map(room -> RoomResponse.of(room, getRoomUserCount(room)))
+                .map(room -> RoomResponse.of(
+                        room,
+                        countMap.getOrDefault(room.getId(), 0)
+                ))
                 .toList();
     }
 

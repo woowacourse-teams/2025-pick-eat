@@ -5,6 +5,8 @@ import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.user.domain.User;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository("RoomUserRepositoryV2")
@@ -35,4 +37,19 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
     void deleteByRoomIdAndUserId(Long roomId, Long userId);
 
     int countByRoomId(Long id);
+
+    interface RoomUserCount {
+
+        Long getRoomId();
+
+        int getCnt();
+    }
+
+    @Query("""
+              select ru.room.id as roomId, count(ru) as cnt
+              from RoomUser ru
+              where ru.room.id in :roomIds
+              group by ru.room.id
+            """)
+    List<RoomUserCount> countByRoomIds(@Param("roomIds") List<Long> roomIds);
 }
