@@ -33,7 +33,7 @@ public class RoomService {
         User user = getUserById(userId);
         roomRepository.save(room);
         roomUserRepository.save(new RoomUser(room, user));
-        return RoomResponse.of(room, getRoomUserCount(room));
+        return RoomResponse.of(room, 1);
     }
 
     public RoomResponse getRoom(Long roomId, Long userId) {
