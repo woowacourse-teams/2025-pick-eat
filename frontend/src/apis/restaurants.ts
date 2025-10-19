@@ -1,13 +1,16 @@
 import { createQueryString, joinAsPath } from '@utils/createUrl';
 
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+
 import { apiClient, BASE_URL_VERSION } from './apiClient';
 import {
+  convertResponseToRestaurant,
   Restaurant,
   RestaurantResponse,
-  convertResponseToRestaurant,
 } from './restaurant';
 
 type Option = {
+  suspendMode?: boolean;
   isExcluded?: 'true' | 'false';
 };
 
@@ -43,5 +46,22 @@ export const restaurants = {
     });
     if (!response) return [];
     return convertResponseToRestaurant(response);
+  },
+};
+
+export const restaurantsQuery = {
+  useGet: (pickeatCode: string, option?: Option) => {
+    const apiOption = {
+      suspendMode: false,
+      ...option,
+    };
+    const queryOption = {
+      queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, apiOption],
+      queryFn: async () => restaurants.get(pickeatCode, apiOption),
+    };
+    if (apiOption.suspendMode) {
+      return useSuspenseQuery(queryOption);
+    }
+    return useQuery(queryOption);
   },
 };
