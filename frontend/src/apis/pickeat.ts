@@ -5,7 +5,7 @@ import { generateRouterPath } from '@routes/routePath';
 
 import { joinAsPath } from '@utils/createUrl';
 
-import { useSuspenseQuery, useMutation } from '@tanstack/react-query';
+import { useSuspenseQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
 import { apiClient, ApiError } from './apiClient';
@@ -334,5 +334,22 @@ export const pickeatQuery = {
         console.error('픽잇 참가 실패:', error);
       },
     });
+  },
+
+  useParticipantCount: (pickeatCode: string) => {
+    const { data } = useQuery({
+      queryKey: ['pickeat', 'participants', pickeatCode],
+      queryFn: async () => {
+        const response = await pickeat.getParticipantsCount(pickeatCode);
+        return response ?? { totalParticipants: 0, eliminatedParticipants: 0 };
+      },
+      refetchInterval: 10000,
+      refetchOnWindowFocus: true,
+      staleTime: 0,
+    });
+
+    return {
+      participant: data ?? { totalParticipants: 0, eliminatedParticipants: 0 },
+    };
   },
 };

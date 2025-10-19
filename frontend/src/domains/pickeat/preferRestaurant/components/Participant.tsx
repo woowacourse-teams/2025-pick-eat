@@ -1,13 +1,14 @@
-import styled from '@emotion/styled';
+import { pickeatQuery } from '@apis/pickeat';
 
-import useParticipant from '../hooks/useParticipant';
+import styled from '@emotion/styled';
 
 type Props = {
   pickeatCode: string;
 };
 
 function Participant({ pickeatCode }: Props) {
-  const { participant } = useParticipant(pickeatCode);
+  const { participant } = pickeatQuery.useParticipantCount(pickeatCode);
+
   return (
     <S.Container>
       <S.Join>참여자 총{participant.totalParticipants}명</S.Join>
