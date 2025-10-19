@@ -1,6 +1,7 @@
 import { joinAsPath } from '@utils/createUrl';
 
-import { apiClient } from './apiClient';
+import { apiClient, BASE_URL_VERSION } from './apiClient';
+import { RESTAURANTS_BASE_PATH } from './restaurants';
 
 export type RestaurantResponse = {
   id: number;
@@ -62,12 +63,11 @@ export const convertResponseToRestaurant = ({
   isLiked,
 });
 
-export const RESTAURANT_BAUSE_PATH = 'restaurants';
-
 export const restaurant = {
   patchLike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
-      RESTAURANT_BAUSE_PATH,
+      BASE_URL_VERSION[2],
+      RESTAURANTS_BASE_PATH,
       restaurantId.toString(),
       'like'
     );
@@ -75,7 +75,8 @@ export const restaurant = {
   },
   patchUnlike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
-      RESTAURANT_BAUSE_PATH,
+      BASE_URL_VERSION[2],
+      RESTAURANTS_BASE_PATH,
       restaurantId.toString(),
       'unlike'
     );
