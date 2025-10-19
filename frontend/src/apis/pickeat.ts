@@ -1,8 +1,12 @@
+import { joinCode } from '@domains/pickeat/utils/joinStorage';
 import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
+
+import { generateRouterPath } from '@routes/routePath';
 
 import { joinAsPath } from '@utils/createUrl';
 
 import { useSuspenseQuery, useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 
 import { apiClient, ApiError } from './apiClient';
 
@@ -305,4 +309,30 @@ export const pickeatQuery = {
         pickeatCode: string;
       }) => pickeat.postWish(wishlistId, pickeatCode),
     }),
+
+  usePostJoin: () => {
+    const navigate = useNavigate();
+
+    return useMutation({
+      mutationFn: async ({
+        nickname,
+        pickeatId,
+        pickeatCode,
+      }: {
+        nickname: string;
+        pickeatId: number;
+        pickeatCode: string;
+      }) => {
+        const token = await pickeat.postJoin({ nickname, pickeatId });
+        return { token, pickeatCode };
+      },
+      onSuccess: ({ token, pickeatCode }) => {
+        joinCode.save(token);
+        navigate(generateRouterPath.restaurantsExclude(pickeatCode));
+      },
+      onError: (error: unknown) => {
+        console.error('픽잇 참가 실패:', error);
+      },
+    });
+  },
 };

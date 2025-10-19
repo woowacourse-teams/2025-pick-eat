@@ -1,45 +1,35 @@
-import { pickeat, PickeatType } from '@apis/pickeat';
-
-import { generateRouterPath } from '@routes/routePath';
+import { pickeatQuery, PickeatType } from '@apis/pickeat';
 
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
 
 import { validateJoinPickeat } from '../services/validateJoinPickeat';
-import { joinCode } from '../utils/joinStorage';
 
 export const useJoinPickeat = (pickeatDetail: PickeatType) => {
-  const navigate = useNavigate();
   const [error, setError] = useState<string>();
+  const { mutate } = pickeatQuery.usePostJoin();
 
-  const joinPickeat = async (nickname: string) => {
+  const joinPickeat = (nickname: string) => {
     try {
-      validateJoinPickeat({
+      validateJoinPickeat({ nickname, pickeatDetail });
+    } catch (e) {
+      if (e instanceof Error) {
+        setError(e.message);
+      }
+      return;
+    }
+
+    mutate(
+      {
         nickname,
-        pickeatDetail,
-      });
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
+        pickeatId: pickeatDetail.id,
+        pickeatCode: pickeatDetail.code,
+      },
+      {
+        onError: (error: unknown) => {
+          if (error instanceof Error) setError(error.message);
+        },
       }
-      return;
-    }
-
-    try {
-      const token = await pickeat.postJoin({
-        nickname: nickname,
-        pickeatId: pickeatDetail!.id,
-      });
-
-      joinCode.save(token);
-
-      navigate(generateRouterPath.restaurantsExclude(pickeatDetail.code));
-    } catch (e) {
-      if (e instanceof Error) {
-        setError(e.message);
-      }
-      return;
-    }
+    );
   };
 
   return { joinPickeat, error };
