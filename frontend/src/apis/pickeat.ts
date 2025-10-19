@@ -417,4 +417,15 @@ export const pickeatQuery = {
 
     return { pickeatState };
   },
+  useRejoin: (pickeatCode: string) => {
+    const { data: isRejoinAvailable, isLoading } = useQuery({
+      queryKey: ['pickeat', 'rejoin', pickeatCode],
+      queryFn: async () => {
+        const response = await pickeat.getRejoin(pickeatCode);
+        return response;
+      },
+    });
+
+    return { isRejoinAvailable, isLoading };
+  },
 };
