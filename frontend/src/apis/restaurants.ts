@@ -51,25 +51,19 @@ export const restaurants = {
 
 export const restaurantsQuery = {
   useGet: (pickeatCode: string, option?: Option) => {
-    const apiOption = {
-      pollingInterval: 0,
-      ...option,
-    };
+    const { pollingInterval = 0, ...restOption } = option ?? {};
     return useQuery({
       queryKey: [RESTAURANTS_BASE_PATH, pickeatCode],
-      queryFn: async () => restaurants.get(pickeatCode, apiOption),
-      refetchInterval: apiOption.pollingInterval,
+      queryFn: async () => restaurants.get(pickeatCode, restOption),
+      refetchInterval: pollingInterval,
     });
   },
   useSuspenseGet: (pickeatCode: string, option?: Option) => {
-    const apiOption = {
-      pollingInterval: 0,
-      ...option,
-    };
+    const { pollingInterval = 0, ...restOption } = option ?? {};
     return useSuspenseQuery({
       queryKey: [RESTAURANTS_BASE_PATH, pickeatCode],
-      queryFn: async () => restaurants.get(pickeatCode, apiOption),
-      refetchInterval: apiOption.pollingInterval,
+      queryFn: async () => restaurants.get(pickeatCode, restOption),
+      refetchInterval: pollingInterval,
     });
   },
 };
