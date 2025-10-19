@@ -3,6 +3,7 @@ package com.pickeat.backend.tobe.room.domain.repository;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.user.domain.User;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -52,4 +53,15 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
               group by ru.room.id
             """)
     List<RoomUserCount> countByRoomIds(@Param("roomIds") List<Long> roomIds);
+
+    @Query("""
+              select ru.user.id
+              from RoomUser ru
+              where ru.room.id = :roomId
+                and ru.user.id in :userIds
+            """)
+    List<Long> findExistingUserIdsInRoom(
+            @Param("roomId") Long roomId,
+            @Param("userIds") Collection<Long> userIds
+    );
 }

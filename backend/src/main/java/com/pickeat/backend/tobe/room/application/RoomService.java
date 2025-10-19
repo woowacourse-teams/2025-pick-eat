@@ -72,15 +72,15 @@ public class RoomService {
 
         Room room = getRoomById(roomId);
         Set<Long> userIds = new HashSet<>(request.userIds());
-        List<User> users = userIds
-                .stream()
-                .map(this::getUserById)
-                .toList();
+        List<User> users = getUsersByIds(userIds);
+
+        Set<Long> existingIds = new HashSet<>(
+                roomUserRepository.findExistingUserIdsInRoom(roomId, userIds)
+        );
 
         List<RoomUser> roomUsers = users.stream()
+                .filter(user -> !existingIds.contains(user.getId()))
                 .map(user -> new RoomUser(room, user))
-                .filter(roomUser -> !roomUserRepository.existsByRoomIdAndUserId(roomUser.getRoom().getId(),
-                        roomUser.getUser().getId()))
                 .toList();
 
         roomUserRepository.saveAll(roomUsers);
@@ -101,6 +101,16 @@ public class RoomService {
 
     private User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    private List<User> getUsersByIds(Set<Long> userIds) {
+        List<User> users = userRepository.findAllById(userIds);
+
+        if (users.size() != userIds.size()) {
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return users;
     }
 
     private void validateUserAccessToRoom(Long roomId, Long userId) {
