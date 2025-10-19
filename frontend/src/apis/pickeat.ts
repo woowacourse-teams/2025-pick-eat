@@ -2,6 +2,8 @@ import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
 import { joinAsPath } from '@utils/createUrl';
 
+import { useSuspenseQuery } from '@tanstack/react-query';
+
 import { apiClient, ApiError } from './apiClient';
 
 export type PickeatType = {
@@ -248,4 +250,22 @@ export const pickeat = {
     await apiClient.patch(url);
     return null;
   },
+};
+
+export const pickeatQuery = {
+  useGetResult: (pickeatCode: string) =>
+    useSuspenseQuery({
+      queryKey: ['pickeat', 'result', pickeatCode],
+      queryFn: async () => {
+        const delay = new Promise(resolve => setTimeout(resolve, 2500));
+        const actual = pickeat.getResult(pickeatCode);
+        const [result] = await Promise.all([actual, delay]);
+
+        if (!result) throw new Error('투표 결과가 없습니다.');
+
+        return result;
+      },
+      staleTime: 1000 * 60 * 60 * 24,
+      gcTime: 1000 * 60 * 60 * 24,
+    }),
 };
