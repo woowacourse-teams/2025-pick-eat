@@ -1,6 +1,7 @@
 import FixedButton from '@components/actions/FixedButton';
 
 import { participants } from '@apis/participants';
+import { participantsQuery } from '@apis/participants';
 
 import { useShowToast } from '@provider/ToastProvider';
 
@@ -14,6 +15,7 @@ type Props = {
 function PickeatVoteCompleteButton({ onVoteComplete, onClick }: Props) {
   const [loading, setLoading] = useState(false);
   const showToast = useShowToast();
+  const { data } = participantsQuery.useGetMyStatus();
 
   const handleVoteCompleteClick = async () => {
     if (loading) return;
@@ -41,21 +43,12 @@ function PickeatVoteCompleteButton({ onVoteComplete, onClick }: Props) {
     }
   };
 
+  //TODO: 에러 처리
   useEffect(() => {
-    const fetchMyStatus = async () => {
-      try {
-        const { isCompleted } = await participants.getMyStatus();
-        if (isCompleted) onVoteComplete();
-      } catch {
-        showToast({
-          mode: 'ERROR',
-          message:
-            '내 투표 상태를 불러오는데 실패했습니다. 새로고침 후 다시 시도해 주세요.',
-        });
-      }
-    };
-    fetchMyStatus();
-  }, []);
+    if (data?.isCompleted) {
+      onVoteComplete();
+    }
+  }, [data]);
 
   return (
     <FixedButton

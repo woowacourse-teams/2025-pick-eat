@@ -1,5 +1,7 @@
 import { joinAsPath } from '@utils/createUrl';
 
+import { useQuery } from '@tanstack/react-query';
+
 import { apiClient } from './apiClient';
 
 export type Participant = {
@@ -24,4 +26,12 @@ export const participants = {
     if (response) return response;
     return { id: -1, nickname: 'Unknown', isCompleted: false };
   },
+};
+
+export const participantsQuery = {
+  useGetMyStatus: () =>
+    useQuery<Participant>({
+      queryKey: ['participants', 'status', 'me'],
+      queryFn: participants.getMyStatus,
+    }),
 };
