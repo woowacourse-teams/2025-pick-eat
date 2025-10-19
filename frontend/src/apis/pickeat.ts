@@ -267,14 +267,15 @@ export const pickeatQuery = {
       },
       staleTime: 1000 * 60 * 60 * 24,
       gcTime: 1000 * 60 * 60 * 24,
-      retry: (failureCount, error) => {
-        if (error instanceof ApiError && error.status === 401) {
-          return false;
-        }
-        return failureCount < 2;
-      },
     }),
 
+  useGet: (pickeatId: string) => {
+    return (async () => {
+      const result = await pickeat.get(pickeatId);
+      if (!result) throw new Error('픽잇 정보가 존재하지 않습니다.');
+      return result;
+    })();
+  },
   usePostPickeat: () =>
     useMutation({
       mutationFn: ({ roomId, name }: { roomId: number; name: string }) =>

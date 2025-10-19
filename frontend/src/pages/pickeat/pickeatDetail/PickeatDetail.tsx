@@ -4,7 +4,7 @@ import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { useAuth } from '@domains/login/context/AuthProvider';
 import { makeNickname } from '@domains/pickeat/utils/makeNickname';
 
-import { pickeat } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 import { users } from '@apis/users';
 
 import { useShowToast } from '@provider/ToastProvider';
@@ -19,6 +19,7 @@ function PickeatDetail() {
   const pickeatCode = searchParams.get('code') ?? '';
   const { loggedIn } = useAuth();
   const showToast = useShowToast();
+  const pickeatData = pickeatQuery.useGet(pickeatCode);
 
   useEffect(() => {
     if (!loggedIn) return;
@@ -45,7 +46,7 @@ function PickeatDetail() {
       <ErrorBoundary>
         <Suspense>
           <PickeatInfo
-            pickeatData={pickeat.get(pickeatCode)}
+            pickeatData={pickeatData}
             defaultNickname={defaultNickname}
           />
         </Suspense>
