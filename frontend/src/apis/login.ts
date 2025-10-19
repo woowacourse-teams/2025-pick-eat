@@ -1,6 +1,10 @@
 import { ROUTE_PATH } from '@routes/routePath';
 
-import { apiClient, ApiError } from './apiClient';
+import { joinAsPath } from '@utils/createUrl';
+
+import { apiClient, ApiError, BASE_URL_VERSION } from './apiClient';
+
+const BASE_PATH = 'auth';
 
 export const login = {
   postKakao: async (
@@ -8,7 +12,7 @@ export const login = {
   ): Promise<{ accessToken: string; status: number }> => {
     const baseUrl = process.env.BASE_URL;
     const redirectPath = ROUTE_PATH.OAUTH_CALLBACK.replace(/^\//, '');
-    const path = 'auth/code';
+    const path = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, 'code');
 
     try {
       const data = await apiClient.post<{ token: string }>(path, {
@@ -35,7 +39,8 @@ export const login = {
     token: string;
     nickname: string;
   }) => {
-    const path = 'auth/signup';
+    const path = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, 'signup');
+
     const data = await apiClient.post<{ token: string; nickname: string }>(
       path,
       { nickname },
@@ -46,7 +51,7 @@ export const login = {
   },
 
   postLogin: async ({ token }: { token: string }) => {
-    const path = 'auth/login';
+    const path = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, 'login');
     const data = await apiClient.post<{ token: string }>(path, undefined, {
       Authorization: `Bearer ${token}`,
     });
