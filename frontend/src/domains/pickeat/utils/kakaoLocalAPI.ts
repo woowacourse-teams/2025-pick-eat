@@ -119,7 +119,7 @@ function parseCategory(categoryFullPath: string): FoodCategory {
   const parts = categoryFullPath.split(' > ').map(part => part.trim());
 
   for (const part of parts) {
-    if (FOOD_CATEGORIES.includes(part)) {
+    if (FOOD_CATEGORIES.includes(part as FoodCategory)) {
       return part as FoodCategory;
     }
   }

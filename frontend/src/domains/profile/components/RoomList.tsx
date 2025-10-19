@@ -20,9 +20,7 @@ function RoomList() {
         data.map(room => (
           <S.List
             key={room.id}
-            onClick={() =>
-              navigate(generateRouterPath.roomDetail(room.id, room.wishlistId))
-            }
+            onClick={() => navigate(generateRouterPath.roomDetail(room.id))}
           >
             <S.RoomInfo>
               <S.Name>{room.name}</S.Name>

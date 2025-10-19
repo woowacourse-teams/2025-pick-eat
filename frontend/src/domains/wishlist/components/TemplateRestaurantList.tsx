@@ -1,7 +1,7 @@
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import RestaurantCard from '@components/RestaurantCard';
 
-import { wishlistQuery } from '@apis/wishlist';
+import { templateQuery } from '@apis/template';
 
 import styled from '@emotion/styled';
 
@@ -11,8 +11,7 @@ type Props = {
 };
 
 function TemplateRestaurantList({ title, templateId }: Props) {
-  // TODO: 이거 원래 useGetTemplate임
-  const { data, isLoading } = wishlistQuery.useGet(templateId);
+  const { data, isLoading } = templateQuery.useGetTemplate(templateId);
   return (
     <S.Container>
       <S.TitleSection>
