@@ -293,4 +293,15 @@ export const pickeatQuery = {
         pickeatCode: string;
       }) => pickeat.postLocation({ address, radius }, pickeatCode),
     }),
+
+  usePostWish: () =>
+    useMutation({
+      mutationFn: ({
+        wishlistId,
+        pickeatCode,
+      }: {
+        wishlistId: number;
+        pickeatCode: string;
+      }) => pickeat.postWish(wishlistId, pickeatCode),
+    }),
 };

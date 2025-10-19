@@ -2,7 +2,7 @@ import Card from '@domains/wishlist/components/Card';
 
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
-import { pickeat } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -42,27 +42,55 @@ const WISH_CONTENT: WishContent[] = [
 
 export function useWishCarousel() {
   const [searchParams] = useSearchParams();
-  const roomId = Number(searchParams.get('roomId')) ?? null;
+  const roomId = Number(searchParams.get('roomId')) ?? 0;
   const navigate = useNavigate();
   const showToast = useShowToast();
 
-  const handleWishCardClick = async (id: number, extraErrorMessage: string) => {
-    try {
-      const code = await pickeat.post(roomId, makePickeatName());
-      await pickeat.postWish(id, code);
-      if (code) navigate(generateRouterPath.pickeatDetail(code));
-    } catch (e) {
-      if (e instanceof Error)
-        showToast({
-          mode: 'ERROR',
-          message: '투표 생성을 실패했습니다. 다시 시도해 주세요.',
-        });
-      if (extraErrorMessage)
-        setTimeout(
-          () => showToast({ mode: 'WARN', message: extraErrorMessage }),
-          700
-        );
-    }
+  const postPickeatMutation = pickeatQuery.usePostPickeat();
+  const postWishMutation = pickeatQuery.usePostWish();
+
+  const handleWishCardClick = (id: number, extraErrorMessage: string) => {
+    postPickeatMutation.mutate(
+      { roomId, name: makePickeatName() },
+      {
+        onSuccess: code => {
+          postWishMutation.mutate(
+            { wishlistId: id, pickeatCode: code },
+            {
+              onSuccess: () => {
+                navigate(generateRouterPath.pickeatDetail(code));
+              },
+              onError: () => {
+                showToast({
+                  mode: 'ERROR',
+                  message:
+                    '위시리스트 설정에 실패했습니다. 다시 시도해 주세요.',
+                });
+                if (extraErrorMessage) {
+                  setTimeout(
+                    () =>
+                      showToast({ mode: 'WARN', message: extraErrorMessage }),
+                    700
+                  );
+                }
+              },
+            }
+          );
+        },
+        onError: () => {
+          showToast({
+            mode: 'ERROR',
+            message: '투표 생성을 실패했습니다. 다시 시도해 주세요.',
+          });
+          if (extraErrorMessage) {
+            setTimeout(
+              () => showToast({ mode: 'WARN', message: extraErrorMessage }),
+              700
+            );
+          }
+        },
+      }
+    );
   };
 
   const handleLocationCardClick = () => {
@@ -89,5 +117,7 @@ export function useWishCarousel() {
     ));
   }, []);
 
-  return { getWishCardContent };
+  return {
+    getWishCardContent,
+  };
 }
