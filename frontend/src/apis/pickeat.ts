@@ -3,6 +3,8 @@ import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
 import { generateRouterPath } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { joinAsPath } from '@utils/createUrl';
 
 import { useSuspenseQuery, useMutation, useQuery } from '@tanstack/react-query';
@@ -358,5 +360,32 @@ export const pickeatQuery = {
       queryKey: ['participatingPickeat'],
       queryFn: async () => pickeat.getParticipating(),
     });
+  },
+
+  useParticipantsState: (pickeatCode: string) => {
+    const showToast = useShowToast();
+
+    const {
+      data: participantsState = { totalParticipants: 0, participants: [] },
+      error,
+    } = useQuery<ParticipantsState>({
+      queryKey: ['pickeat', 'participants-state', pickeatCode],
+      queryFn: async () => {
+        const data = await pickeat.getParticipantsState(pickeatCode);
+        return data;
+      },
+      refetchInterval: 3000,
+      refetchOnWindowFocus: false,
+      staleTime: 0,
+    });
+
+    if (error instanceof Error) {
+      showToast({
+        mode: 'ERROR',
+        message: `${error.message}: 참가자 정보를 불러오지 못했습니다.`,
+      });
+    }
+
+    return { participantsState };
   },
 };
