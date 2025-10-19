@@ -95,7 +95,7 @@ export const room = {
 export const roomQuery = {
   useGet: (roomId: number) => {
     return useQuery({
-      queryKey: ['room'],
+      queryKey: ['room', roomId],
       queryFn: async () => room.get(roomId),
       throwOnError: false,
     });
@@ -120,7 +120,7 @@ export const roomQuery = {
             await room.postMember(roomId, userIds);
           } catch {
             showToast({
-              mode: 'ERROR',
+              mode: 'WARN',
               message: '방 생성은 완료 되었지만, 초대 중 문제가 발생했습니다.',
             });
             queryClient.invalidateQueries({ queryKey: ['rooms'] });
@@ -171,14 +171,14 @@ export const roomQuery = {
   },
   useGetIncludeMembers: (roomId: number) => {
     return useSuspenseQuery({
-      queryKey: ['includeMembers'],
+      queryKey: ['includeMembers', roomId],
       queryFn: async () => room.getIncludeMembers(roomId),
     });
   },
   // TODO: pickeat domain으로 이동할지 이야기 해보기
   useGetProgressPickeats: (roomId: number) => {
     return useSuspenseQuery({
-      queryKey: ['progressPickeat'],
+      queryKey: ['progressPickeat', roomId],
       queryFn: async () => room.getProgressPickeats(roomId),
     });
   },
