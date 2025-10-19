@@ -76,7 +76,7 @@ public class RoomService {
     }
 
     private int getRoomUserCount(Room room) {
-        return roomUserRepository.findAllByRoom(room).size();
+        return roomUserRepository.countByRoomId(room.getId());
     }
 
     private Room getRoomById(Long roomId) {
