@@ -352,4 +352,11 @@ export const pickeatQuery = {
       participant: data ?? { totalParticipants: 0, eliminatedParticipants: 0 },
     };
   },
+
+  useGetParticipating: () => {
+    return useSuspenseQuery({
+      queryKey: ['participatingPickeat'],
+      queryFn: async () => pickeat.getParticipating(),
+    });
+  },
 };
