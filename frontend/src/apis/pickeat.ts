@@ -1,7 +1,7 @@
 import { joinCode } from '@domains/pickeat/utils/joinStorage';
 import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
-import { generateRouterPath } from '@routes/routePath';
+import { generateRouterPath, ROUTE_PATH } from '@routes/routePath';
 
 import { useShowToast } from '@provider/ToastProvider';
 
@@ -387,5 +387,34 @@ export const pickeatQuery = {
     }
 
     return { participantsState };
+  },
+  useGetPickeatState: (pickeatCode: string) => {
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+
+    const { data: pickeatState = { isActive: true }, error } = useQuery({
+      queryKey: ['pickeat', 'state', pickeatCode],
+      queryFn: async () => {
+        const response = await pickeat.getPickeatState(pickeatCode);
+        return response ?? { isActive: true };
+      },
+      refetchInterval: 3000,
+      refetchOnWindowFocus: false,
+      staleTime: 0,
+    });
+
+    if (error instanceof Error) {
+      if (error.message === 'PICKEAT_NOT_FOUND') {
+        showToast({
+          mode: 'ERROR',
+          message: '해당 픽잇이 종료되었습니다.',
+        });
+        navigate(ROUTE_PATH.MAIN);
+      } else {
+        console.error('Polling error:', error.message);
+      }
+    }
+
+    return { pickeatState };
   },
 };
