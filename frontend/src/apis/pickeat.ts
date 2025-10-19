@@ -428,6 +428,7 @@ export const pickeatQuery = {
 
     return { isRejoinAvailable, isLoading };
   },
+
   usePostResult: () => {
     const showToast = useShowToast();
     const navigate = useNavigate();
@@ -446,6 +447,26 @@ export const pickeatQuery = {
         showToast({
           mode: 'ERROR',
           message: '픽잇 결과를 가져오는 데 실패했습니다.',
+        });
+      },
+    });
+  },
+
+  usePatchDeactive: () => {
+    const showToast = useShowToast();
+
+    return useMutation({
+      mutationFn: async (pickeatCode: string) => {
+        await pickeat.patchDeactive(pickeatCode);
+      },
+      onError: error => {
+        console.error('픽잇 종료 실패', error);
+        showToast({
+          mode: 'ERROR',
+          message:
+            error instanceof Error
+              ? error.message
+              : '픽잇을 종료를 실패했습니다.',
         });
       },
     });
