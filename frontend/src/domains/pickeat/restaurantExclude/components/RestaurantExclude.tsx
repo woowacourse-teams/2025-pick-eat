@@ -1,25 +1,17 @@
 import { RestaurantExcludeProvider } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
-import { Restaurant } from '@apis/restaurant';
-
 import styled from '@emotion/styled';
-import { use } from 'react';
 
 import ExcludeActionButton from './actions/ExcludeActionButton';
 import RestaurantTabList from './restaurantTabList/RestaurantTabList';
 
-type Props = {
-  restaurantsPromise: Promise<Restaurant[]>;
-};
-
 const footerHeight = 90;
 
-function RestaurantExclude({ restaurantsPromise }: Props) {
-  const restaurantsData = use(restaurantsPromise);
+function RestaurantExclude() {
   return (
     <RestaurantExcludeProvider>
       <S.RestaurantTabContainer>
-        <RestaurantTabList restaurantList={restaurantsData} />
+        <RestaurantTabList />
       </S.RestaurantTabContainer>
       <ExcludeActionButton />
       <S.FooterGradient />

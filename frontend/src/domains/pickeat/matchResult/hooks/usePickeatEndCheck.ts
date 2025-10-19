@@ -1,5 +1,5 @@
 import { pickeat, PickeatStateResponse } from '@apis/pickeat';
-import { restaurants } from '@apis/restaurants';
+import { restaurantsQuery } from '@apis/restaurants';
 
 import { usePolling } from '@hooks/usePolling';
 
@@ -14,22 +14,20 @@ export function usePickeatStateChecker(pickeatCode: string) {
   const [hasRestaurants, setHasRestaurants] = useState(true);
   const navigate = useNavigate();
   const showToast = useShowToast();
+  const { data: restaurants } = restaurantsQuery.useGet(pickeatCode, {
+    isExcluded: 'false',
+    pollingInterval: 3000,
+  });
 
   const fetchPickeatState = async (): Promise<PickeatStateResponse | null> => {
     return await pickeat.getPickeatState(pickeatCode);
   };
 
-  const fetchRestaurantList = async () => {
-    return await restaurants.get(pickeatCode, {
-      isExcluded: 'false',
-    });
-  };
-
   usePolling<PickeatStateResponse | null>(fetchPickeatState, {
     onData: async data => {
       if (data?.isActive === true) return;
-      const restaurantList = await fetchRestaurantList();
-      if (restaurantList.length === 0) {
+      // TODO : 처음엔 무조건 undefined 일텐데 nullish 처리로 괜찮은지?
+      if (restaurants?.length === 0) {
         setHasRestaurants(false);
         return;
       }

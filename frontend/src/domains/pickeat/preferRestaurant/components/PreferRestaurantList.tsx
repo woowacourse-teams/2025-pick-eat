@@ -4,29 +4,37 @@ import LikeButton from '@components/actions/LikeButton/LikeButton';
 import RestaurantCard from '@components/RestaurantCard';
 
 import { restaurant, Restaurant } from '@apis/restaurant';
+import { restaurantsQuery } from '@apis/restaurants';
 
 import { useFlip } from '@hooks/useFlip';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
+import { useSearchParams } from 'react-router';
 
 import { useOptimisticLike } from '../hooks/useOptimisticLike';
 import usePreferRestaurant from '../hooks/usePreferRestaurant';
 
-type Props = {
-  preferRestaurantListPromise: Promise<Restaurant[]>;
-};
+function PreferRestaurantList() {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
 
-function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
-  const initialData = use(preferRestaurantListPromise);
+  const { data: restaurantsData } = restaurantsQuery.useSuspenseGet(
+    pickeatCode,
+    {
+      isExcluded: 'false',
+      pollingInterval: 3000,
+    }
+  );
+
   const {
     isOptimisticLike,
     syncOptimisticLikes,
     addOptimisticLike,
     removeOptimisticLike,
-  } = useOptimisticLike(initialData);
+  } = useOptimisticLike(restaurantsData);
+
   const { restaurantList, updateLikeCount } = usePreferRestaurant(
-    initialData,
+    restaurantsData,
     syncOptimisticLikes
   );
 

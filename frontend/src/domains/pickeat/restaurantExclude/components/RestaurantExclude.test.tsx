@@ -75,11 +75,7 @@ describe('RestaurantExclude 크로스 버튼 및 제외 제출 통합 테스트'
         <MemoryRouter>
           <ThemeProvider theme={THEME}>
             <RestaurantExcludeProvider>
-              <RestaurantExclude
-                restaurantsPromise={restaurantsModule.restaurants.get(
-                  'testCode'
-                )}
-              />
+              <RestaurantExclude />
             </RestaurantExcludeProvider>
           </ThemeProvider>
         </MemoryRouter>
