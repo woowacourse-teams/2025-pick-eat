@@ -10,8 +10,8 @@ import {
 } from './restaurant';
 
 type Option = {
-  suspendMode?: boolean;
   isExcluded?: 'true' | 'false';
+  pollingInterval?: number;
 };
 
 const initialOption = {};
@@ -52,16 +52,24 @@ export const restaurants = {
 export const restaurantsQuery = {
   useGet: (pickeatCode: string, option?: Option) => {
     const apiOption = {
-      suspendMode: false,
+      pollingInterval: 0,
       ...option,
     };
-    const queryOption = {
-      queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, apiOption],
+    return useQuery({
+      queryKey: [RESTAURANTS_BASE_PATH, pickeatCode],
       queryFn: async () => restaurants.get(pickeatCode, apiOption),
+      refetchInterval: apiOption.pollingInterval,
+    });
+  },
+  useSuspenseGet: (pickeatCode: string, option?: Option) => {
+    const apiOption = {
+      pollingInterval: 0,
+      ...option,
     };
-    if (apiOption.suspendMode) {
-      return useSuspenseQuery(queryOption);
-    }
-    return useQuery(queryOption);
+    return useSuspenseQuery({
+      queryKey: [RESTAURANTS_BASE_PATH, pickeatCode],
+      queryFn: async () => restaurants.get(pickeatCode, apiOption),
+      refetchInterval: apiOption.pollingInterval,
+    });
   },
 };
