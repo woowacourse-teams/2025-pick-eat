@@ -18,6 +18,7 @@ function PreferRestaurantList() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
+  // TODO : onError 처리 필요
   const { data: restaurantsData } = restaurantsQuery.useSuspenseGet(
     pickeatCode,
     {
