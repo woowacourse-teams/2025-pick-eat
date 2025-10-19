@@ -32,7 +32,7 @@ export const convertResponseToUsers = (data: UserResponse[]) => {
 
 const BASE_PATH = 'users';
 
-export const users = {
+const users = {
   get: async (): Promise<User> => {
     const path = joinAsPath(BASE_URL_VERSION[2], BASE_PATH);
     const response = await apiClient.get<UserResponse>(path);
