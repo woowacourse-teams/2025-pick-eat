@@ -13,6 +13,7 @@ import { useGA } from '@hooks/useGA';
 import { useShowToast } from '@provider/ToastProvider';
 
 import { sliceInputByMaxLength } from '@utils/sliceInputByMaxLength';
+import { validate } from '@utils/validate';
 
 import styled from '@emotion/styled';
 import { FormEvent, use, useEffect, useState } from 'react';
@@ -30,7 +31,9 @@ function PickeatInfo({ pickeatData }: Props) {
   const pickeatDetail = use(pickeatData);
   const pickeatLink = window.location.href;
   const { data: users } = usersQuery.useGet();
-  const defaultNickname = users.nickname ?? makeNickname();
+  const defaultNickname = validate.isEmpty(users.nickname)
+    ? makeNickname()
+    : users.nickname;
   const [nickname, setNickname] = useState<string>(defaultNickname);
 
   const { loggedIn } = useAuth();

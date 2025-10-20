@@ -5,7 +5,6 @@ export const useFlip = <T extends { id: number }>(arr: T[]) => {
   const prevRects = useRef(new Map<number, DOMRect>());
 
   const recordPositions = () => {
-    console.log('arr flip', arr);
     arr.forEach(item => {
       const el = itemRefs.current.get(item.id);
       if (el) {

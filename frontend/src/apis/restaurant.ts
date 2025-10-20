@@ -82,7 +82,7 @@ const restaurant = {
       BASE_URL_VERSION[2],
       RESTAURANTS_BASE_PATH,
       restaurantId.toString(),
-      'unlikesss'
+      'unlike'
     );
     await apiClient.patch(patchUrl);
   },

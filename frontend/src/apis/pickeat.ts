@@ -516,15 +516,37 @@ export const pickeatQuery = {
     return { pickeatState };
   },
   useRejoin: (pickeatCode: string) => {
-    const { data: isRejoinAvailable, isLoading } = useQuery({
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+    return useQuery({
       queryKey: [BASE_PATH, 'rejoin', pickeatCode],
       queryFn: async () => {
-        const response = await pickeat.getRejoin(pickeatCode);
-        return response;
+        try {
+          const isAvailable = await pickeat.getRejoin(pickeatCode);
+          if (!isAvailable) {
+            navigate(generateRouterPath.pickeatDetail(pickeatCode));
+            return;
+          }
+          navigate(generateRouterPath.restaurantsExclude(pickeatCode));
+        } catch (e) {
+          if (e instanceof ApiError) {
+            if (e.status === 401) {
+              navigate(generateRouterPath.pickeatDetail(pickeatCode));
+              console.error('Rejoin error:', e.message);
+            } else {
+              navigate(ROUTE_PATH.MAIN);
+              showToast({
+                mode: 'ERROR',
+                message:
+                  '픽잇 재참여 중 알 수 없는 오류가 발생했습니다. 메인 화면으로 이동합니다.',
+              });
+            }
+          }
+        }
       },
+      retry: false,
+      throwOnError: false,
     });
-
-    return { isRejoinAvailable, isLoading };
   },
 
   usePostResult: () => {

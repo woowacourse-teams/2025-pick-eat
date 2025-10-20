@@ -3,6 +3,7 @@ import Layout from '@components/layouts/Layout';
 
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
+import { pickeatQuery } from '@apis/pickeat';
 import { queryClient } from '@apis/queryClient';
 
 import { useGA } from '@hooks/useGA';
@@ -19,7 +20,6 @@ import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
 import OauthCallback from '@pages/OauthCallback';
-import { useRejoinRedirect } from '@pages/pickeat/hooks/useReEntry';
 import MatchResult from '@pages/pickeat/matchResult/MatchResult';
 import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
 import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
@@ -93,7 +93,7 @@ function GuestOnlyRoute() {
 function ProtectedPickeat() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  const { isLoading } = useRejoinRedirect(pickeatCode);
+  const { isLoading } = pickeatQuery.useRejoin(pickeatCode);
   if (isLoading) return null;
   return <Outlet />;
 }

@@ -54,7 +54,7 @@ export const usersQuery = {
       queryKey: [BASE_PATH],
       queryFn: async () => {
         try {
-          return users.get();
+          return await users.get();
         } catch {
           // TODO : 현재는 user 정보에 에러 처리를 따로 해주는 곳이 없어
           // 빈 객체로 처리하고 있는데, try catch 역할을 하는 에러바운더리를 만들 때
@@ -62,6 +62,7 @@ export const usersQuery = {
           return { id: -1, nickname: '' };
         }
       },
+      retry: false,
     });
   },
   // useSuspenseQuery 로 하면 Suspense가 promise 를 감지하여 모달 뒷페이지도 리렌더링이 발생

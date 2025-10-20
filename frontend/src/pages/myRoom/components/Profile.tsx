@@ -1,5 +1,7 @@
 import { usersQuery } from '@apis/users';
 
+import { validate } from '@utils/validate';
+
 import styled from '@emotion/styled';
 
 function Profile() {
@@ -9,7 +11,9 @@ function Profile() {
       <S.ProfileImageBox>
         <S.ProfileImage src={'/images/profile/manProfile.png'} alt="프로필" />
       </S.ProfileImageBox>
-      <S.NickName>{profile?.nickname ?? '회원'}님</S.NickName>
+      <S.NickName>
+        {validate.isEmpty(profile.nickname) ? '회원' : profile.nickname}님
+      </S.NickName>
     </S.Container>
   );
 }
