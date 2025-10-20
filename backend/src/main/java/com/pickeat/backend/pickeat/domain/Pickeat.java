@@ -19,6 +19,7 @@ public class Pickeat extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
+    //TODO: 빼도  (2025-10-20, 월, 13:7)
     @Column(nullable = false)
     private Integer participantCount = 0;
 

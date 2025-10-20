@@ -80,6 +80,7 @@ public class PickeatController implements PickeatApiSpec {
         PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(pickeatCode,
                 participantPrincipal.id());
 
+        //TODO: 분기 빼기  (2025-10-20, 월, 13:5)
         HttpStatus status = response.isNewlyCreated() ? HttpStatus.CREATED : HttpStatus.OK;
         return ResponseEntity.status(status).body(response.result());
     }
@@ -143,6 +144,7 @@ public class PickeatController implements PickeatApiSpec {
         return ResponseEntity.ok(rejoinAvailable);
     }
 
+    //TODO: 안씀 지우자 (2025-10-20, 월, 13:13)
     @Override
     @GetMapping("/rooms/pickeats")
     public ResponseEntity<List<PickeatResponse>> getPickeatsByUser(
