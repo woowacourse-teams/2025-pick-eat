@@ -13,19 +13,19 @@ export type Participant = {
   isCompleted: boolean;
 };
 
-const basePath = 'participants';
+const BASE_PATH = 'participants';
 
 export const participants = {
   getMyStatus: async (): Promise<Participant> => {
     const response = await apiClient.get<Participant>(
-      joinAsPath(BASE_URL_VERSION[1], basePath, 'me')
+      joinAsPath(BASE_URL_VERSION[1], BASE_PATH, 'me')
     );
     if (response) return response;
     return { id: -1, nickname: 'Unknown', isCompleted: false };
   },
   patchComplete: async (): Promise<void> => {
     await apiClient.patch(
-      joinAsPath(BASE_URL_VERSION[1], basePath, 'me', 'completion', 'complete')
+      joinAsPath(BASE_URL_VERSION[1], BASE_PATH, 'me', 'completion', 'complete')
     );
   },
 };
