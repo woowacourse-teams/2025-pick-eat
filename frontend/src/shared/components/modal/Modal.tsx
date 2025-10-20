@@ -100,8 +100,6 @@ const S = {
     ${({ theme }) => theme.POSITION.fixedCenter};
     width: 90%;
     max-width: 440px;
-    display: flex;
-    align-items: center;
 
     top: 50%;
     z-index: ${({ theme }) => theme.Z_INDEX.modal};
