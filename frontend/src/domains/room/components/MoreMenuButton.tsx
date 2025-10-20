@@ -1,21 +1,66 @@
 import More from '@components/assets/icons/More';
 
+import { roomQuery } from '@apis/room';
+
 import { useBoolean } from '@hooks/useBoolean';
 
+import { ROUTE_PATH } from '@routes/routePath';
+
 import styled from '@emotion/styled';
+import { useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
+
+// TODO : 코드 리팩토링
 
 function MoreMenuButton() {
+  const [searchParams] = useSearchParams();
+  const roomId = searchParams.get('roomId');
+
+  const navigate = useNavigate();
   const [opened, , , toggle] = useBoolean(false);
+  const { mutate: exitRoom } = roomQuery.useExitRoom({
+    onExit: () => {
+      navigate(ROUTE_PATH.MY_PAGE);
+    },
+  });
+  const handleClickOutside = (event: MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (!target.closest('button')) {
+      if (opened) {
+        toggle();
+      }
+    }
+  };
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'Escape' && opened) {
+      toggle();
+    }
+  };
+
+  const handleExitButtonClick = () => {
+    exitRoom(Number(roomId));
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [opened]);
 
   return (
-    <S.Container onClick={toggle}>
-      <More size="lg" />
+    <>
+      <S.Container onClick={toggle}>
+        <More size="lg" />
+      </S.Container>
       {opened && (
         <S.MenuWrapper>
-          <S.Menu>방 나가기</S.Menu>
+          <S.Menu onClick={handleExitButtonClick}>방 나가기</S.Menu>
         </S.MenuWrapper>
       )}
-    </S.Container>
+    </>
   );
 }
 
@@ -39,6 +84,8 @@ const S = {
   Menu: styled.li`
     display: flex;
     flex-direction: column;
+    align-items: center;
+
     gap: ${({ theme }) => theme.GAP.level1};
 
     padding: ${({ theme }) => theme.PADDING.px3};
