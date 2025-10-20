@@ -9,11 +9,10 @@ import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import java.util.UUID;
 import org.junit.jupiter.api.Nested;
@@ -64,37 +63,11 @@ public class PickeatResultServiceTest {
             testEntityManager.clear();
 
             // when
-            PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(
+            PickeatResultResponse response = pickeatResultService.createPickeatResult(
                     pickeat.getCode().toString(), participant.getId());
 
             // then
-            assertAll(
-                    () -> assertThat(response.result().id()).isEqualTo(restaurant2.getId()),
-                    () -> assertThat(response.result().hasEqualLike()).isFalse(),
-                    () -> assertThat(response.isNewlyCreated()).isTrue()
-            );
-        }
-
-        @Test
-        void 동점인_경우_hasEqualLike_true() {
-            // given
-            Pickeat pickeat = createWithoutRoomPickeat();
-            Participant participant = createParticipant(pickeat);
-            Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 3);
-            Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
-
-            testEntityManager.flush();
-            testEntityManager.clear();
-
-            // when
-            PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(
-                    pickeat.getCode().toString(), participant.getId());
-
-            // then
-            assertAll(
-                    () -> assertThat(response.result().hasEqualLike()).isTrue(),
-                    () -> assertThat(response.isNewlyCreated()).isTrue()
-            );
+            assertThat(response.id()).isEqualTo(restaurant2.getId());
         }
 
         @Test
@@ -108,18 +81,16 @@ public class PickeatResultServiceTest {
             testEntityManager.clear();
 
             // when
-            PickeatResultCreationResponse firstResponse = pickeatResultService.createPickeatResult(
+            PickeatResultResponse firstResponse = pickeatResultService.createPickeatResult(
                     pickeat.getCode().toString(), participant.getId());
-            PickeatResultCreationResponse secondResponse = pickeatResultService.createPickeatResult(
+            PickeatResultResponse secondResponse = pickeatResultService.createPickeatResult(
                     pickeat.getCode().toString(), participant.getId());
 
             // then
             assertAll(
-                    () -> assertThat(firstResponse.result().id()).isEqualTo(restaurant.getId()),
-                    () -> assertThat(secondResponse.result().id()).isEqualTo(restaurant.getId()),
-                    () -> assertThat(firstResponse.result().id()).isEqualTo(secondResponse.result().id()),
-                    () -> assertThat(firstResponse.isNewlyCreated()).isTrue(),
-                    () -> assertThat(secondResponse.isNewlyCreated()).isFalse()
+                    () -> assertThat(firstResponse.id()).isEqualTo(restaurant.getId()),
+                    () -> assertThat(secondResponse.id()).isEqualTo(restaurant.getId()),
+                    () -> assertThat(firstResponse.id()).isEqualTo(secondResponse.id())
             );
         }
 
@@ -219,21 +190,19 @@ public class PickeatResultServiceTest {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
             Restaurant restaurant = createRestaurantInPickeat(pickeat, 3);
-            PickeatResult pickeatResult = new PickeatResult(pickeat, restaurant, false);
+            PickeatResult pickeatResult = new PickeatResult(pickeat, restaurant);
             testEntityManager.persist(pickeatResult);
 
             testEntityManager.flush();
             testEntityManager.clear();
 
             // when
-            RestaurantResultResponse response = pickeatResultService.getPickeatResult(
+            PickeatResultResponse response = pickeatResultService.getPickeatResult(
                     pickeat.getCode().toString());
 
             // then
-            assertAll(
-                    () -> assertThat(response.id()).isEqualTo(restaurant.getId()),
-                    () -> assertThat(response.hasEqualLike()).isFalse()
-            );
+            assertThat(response.id()).isEqualTo(restaurant.getId());
+
         }
 
         @Test

@@ -24,6 +24,4 @@ public class PickeatResult extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", unique = true)
     private Restaurant restaurant;
-
-    private boolean hasEqualLike;
 }

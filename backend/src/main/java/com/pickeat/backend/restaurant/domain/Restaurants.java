@@ -23,13 +23,6 @@ public class Restaurants {
         return topRestaurants.getFirst();
     }
 
-    public boolean hasEqualLike() {
-        if (restaurants.isEmpty()) {
-            return false;
-        }
-        return getTopRestaurants().size() > 1;
-    }
-
     private List<Restaurant> getTopRestaurants() {
         int maxLikeCount = getMaxLikeCount();
         if (maxLikeCount == 0) {

@@ -10,10 +10,9 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -73,24 +72,22 @@ public class PickeatController implements PickeatApiSpec {
 
     @Override
     @PostMapping("/pickeats/{pickeatCode}/result")
-    public ResponseEntity<RestaurantResultResponse> createPickeatResult(
+    public ResponseEntity<PickeatResultResponse> createPickeatResult(
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(pickeatCode,
+        PickeatResultResponse response = pickeatResultService.createPickeatResult(pickeatCode,
                 participantPrincipal.id());
 
-        //TODO: 분기 빼기  (2025-10-20, 월, 13:5)
-        HttpStatus status = response.isNewlyCreated() ? HttpStatus.CREATED : HttpStatus.OK;
-        return ResponseEntity.status(status).body(response.result());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
     @GetMapping("/pickeats/{pickeatCode}/result")
-    public ResponseEntity<RestaurantResultResponse> getPickeatResult(
+    public ResponseEntity<PickeatResultResponse> getPickeatResult(
             @PathVariable("pickeatCode") String pickeatCode
     ) {
-        RestaurantResultResponse response = pickeatResultService.getPickeatResult(pickeatCode);
+        PickeatResultResponse response = pickeatResultService.getPickeatResult(pickeatCode);
         return ResponseEntity.ok().body(response);
     }
 
