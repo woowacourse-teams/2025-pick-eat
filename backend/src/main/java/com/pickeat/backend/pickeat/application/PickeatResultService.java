@@ -34,7 +34,7 @@ public class PickeatResultService {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         validateParticipantAccessToPickeat(participantId, pickeat);
 
-        return pickeatResultRepository.findByPickeat(pickeat)
+        return pickeatResultRepository.findByPickeatId(pickeat.getId())
                 .map(this::createExistingResultResponse)
                 .orElseGet(() -> createNewResultWithConcurrencyHandling(pickeat));
     }
@@ -42,12 +42,19 @@ public class PickeatResultService {
     public PickeatResultResponse getPickeatResult(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         PickeatResult pickeatResult = getPickeatResult(pickeat);
+        Restaurant restaurant = getRestaurant(pickeatResult);
 
-        return PickeatResultResponse.from(pickeatResult.getRestaurant());
+        return PickeatResultResponse.from(restaurant);
     }
 
     private PickeatResultResponse createExistingResultResponse(PickeatResult existingResult) {
-        return PickeatResultResponse.from(existingResult.getRestaurant());
+        Restaurant restaurant = getRestaurant(existingResult);
+        return PickeatResultResponse.from(restaurant);
+    }
+
+    private Restaurant getRestaurant(PickeatResult pickeatResult) {
+        return restaurantRepository.findById(pickeatResult.getRestaurantId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
     }
 
     private PickeatResultResponse createNewResultWithConcurrencyHandling(Pickeat pickeat) {
@@ -67,14 +74,13 @@ public class PickeatResultService {
         Restaurants restaurants = new Restaurants(availableRestaurants);
         Restaurant selectedRestaurant = restaurants.getRandomTopRatedRestaurant();
 
-        PickeatResult result = pickeatResultRepository.save(
-                new PickeatResult(pickeat, selectedRestaurant));
+        pickeatResultRepository.save(new PickeatResult(pickeat.getId(), selectedRestaurant.getId()));
 
-        return PickeatResultResponse.from(result.getRestaurant());
+        return PickeatResultResponse.from(selectedRestaurant);
     }
 
     private PickeatResult getPickeatResultByPickeat(Pickeat pickeat) {
-        return pickeatResultRepository.findByPickeat(pickeat)
+        return pickeatResultRepository.findByPickeatId(pickeat.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
     }
 
@@ -85,7 +91,7 @@ public class PickeatResultService {
     }
 
     private PickeatResult getPickeatResult(Pickeat pickeat) {
-        return pickeatResultRepository.findByPickeat(pickeat)
+        return pickeatResultRepository.findByPickeatId(pickeat.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
     }
 

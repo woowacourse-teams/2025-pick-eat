@@ -190,7 +190,7 @@ public class PickeatResultServiceTest {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
             Restaurant restaurant = createRestaurantInPickeat(pickeat, 3);
-            PickeatResult pickeatResult = new PickeatResult(pickeat, restaurant);
+            PickeatResult pickeatResult = new PickeatResult(pickeat.getId(), restaurant.getId());
             testEntityManager.persist(pickeatResult);
 
             testEntityManager.flush();
