@@ -24,42 +24,41 @@ const RADIUS_OPTIONS = [
 ];
 
 function CreatePickeatWithLocation() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [overayMessage, setOverayMessage] =
+  const [overlayMessage, setOverlayMessage] =
     useState('식당을 찾아보고 있어요 , ,');
   const { opened, handleOpenModal, handleCloseModal } = useModal();
   const [address, setAddress] = useState('');
+
   const handleAddressChange = (value: string) => {
     setAddress(value);
     handleCloseModal();
   };
+
   const [selectedOption, setSelectedOption] = useState<{
     value: string;
     label: string;
   }>({ value: RADIUS_OPTIONS[0].value, label: RADIUS_OPTIONS[0].label });
+
   const handleCloseOverlay = (callback: () => void) => {
     setTimeout(() => {
-      setIsLoading(false);
       callback();
     }, 2000);
   };
 
-  const { createPickeat, error } = useCreateLocationPickeat();
+  const { createPickeat, error, isLoading } = useCreateLocationPickeat();
 
-  const submitPickeatForm = async (e: FormEvent<HTMLFormElement>) => {
+  const submitPickeatForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
 
     const formData = new FormData(e.currentTarget);
     formData.append('pickeatName', makePickeatName());
 
-    await createPickeat({
+    createPickeat({
       formData,
       radiusValue: selectedOption.value,
       closeOverlay: handleCloseOverlay,
+      onLoadingMessageChange: setOverlayMessage,
     });
-
-    setOverayMessage('식당을 찾았어요 !');
 
     useGA().useGAEventTrigger({
       action: 'click',
@@ -107,7 +106,7 @@ function CreatePickeatWithLocation() {
 
         <ErrorMessage message={error} />
 
-        <FixedButton disabled={!address}>
+        <FixedButton disabled={!address || isLoading}>
           {address ? '투표 시작하기' : ERROR_MESSAGE.ADDRESS}
         </FixedButton>
       </S.Wrapper>
@@ -117,7 +116,7 @@ function CreatePickeatWithLocation() {
       </BottomSheet>
       <S.VotingBoxImage src={'/images/vote.png'} alt="투표함" />
 
-      {isLoading && <SearchLoadingOverlay text={overayMessage} />}
+      {isLoading && <SearchLoadingOverlay text={overlayMessage} />}
     </S.Container>
   );
 }

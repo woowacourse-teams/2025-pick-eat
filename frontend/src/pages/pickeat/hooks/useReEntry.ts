@@ -1,31 +1,24 @@
-import { pickeat } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
 export function useRejoinRedirect(pickeatCode: string) {
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkRejoinAndRedirect = async () => {
-      try {
-        const rejoined = await pickeat.getRejoin(pickeatCode);
-        if (!rejoined) {
-          navigate(generateRouterPath.pickeatDetail(pickeatCode));
-          return;
-        }
-        navigate(generateRouterPath.restaurantsExclude(pickeatCode));
-      } catch {
-        navigate(generateRouterPath.pickeatDetail(pickeatCode));
-      } finally {
-        setLoading(false);
-      }
-    };
-    checkRejoinAndRedirect();
-  }, []);
+  const { isRejoinAvailable, isLoading } = pickeatQuery.useRejoin(pickeatCode);
 
-  return loading;
+  useEffect(() => {
+    if (!isLoading && isRejoinAvailable !== undefined) {
+      if (!isRejoinAvailable) {
+        navigate(generateRouterPath.pickeatDetail(pickeatCode));
+      } else {
+        navigate(generateRouterPath.restaurantsExclude(pickeatCode));
+      }
+    }
+  }, [isLoading, isRejoinAvailable, navigate, pickeatCode]);
+
+  return { isLoading };
 }

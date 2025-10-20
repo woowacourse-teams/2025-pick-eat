@@ -8,7 +8,7 @@ import { useModal } from '@components/modal/useModal';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { pickeat } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 import { users } from '@apis/users';
 
 import styled from '@emotion/styled';
@@ -19,10 +19,7 @@ import Profile from './components/Profile';
 
 function MyPage() {
   const userData = useMemo(() => users.get(), []);
-  const participatingPickeatData = useMemo(
-    () => pickeat.getParticipating(),
-    []
-  );
+  const { data: participatingPickeatData } = pickeatQuery.useGetParticipating();
   const { opened, handleOpenModal, handleCloseModal } = useModal();
 
   return (
