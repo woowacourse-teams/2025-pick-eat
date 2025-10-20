@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.infrastructure.ParticipantRepositoryImpl;
 import com.pickeat.backend.pickeat.infrastructure.PickeatRepositoryImpl;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
@@ -23,7 +24,7 @@ import org.springframework.context.annotation.Import;
 
 @DataJpaTest
 @Import(value = {RestaurantService.class, RestaurantJdbcRepository.class, RestaurantRepositoryImpl.class,
-        RestaurantLikeRepositoryImpl.class, PickeatRepositoryImpl.class})
+        RestaurantLikeRepositoryImpl.class, PickeatRepositoryImpl.class, ParticipantRepositoryImpl.class})
 public class RestaurantServiceTest {
 
     @Autowired

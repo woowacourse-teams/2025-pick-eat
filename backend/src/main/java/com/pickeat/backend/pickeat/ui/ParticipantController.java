@@ -45,14 +45,14 @@ public class ParticipantController implements ParticipantApiSpec {
     @Override
     @PatchMapping("/participants/me/completion/complete")
     public ResponseEntity<Void> markCompletion(@ParticipantInPickeat ParticipantPrincipal participantPrincipal) {
-        participantService.updateCompletion(participantPrincipal.id(), true);
+        participantService.updateCompletion(participantPrincipal, true);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     @PatchMapping("/participants/me/completion/cancel")
     public ResponseEntity<Void> unMarkCompletion(@ParticipantInPickeat ParticipantPrincipal participantPrincipal) {
-        participantService.updateCompletion(participantPrincipal.id(), false);
+        participantService.updateCompletion(participantPrincipal, false);
         return ResponseEntity.noContent().build();
     }
 }

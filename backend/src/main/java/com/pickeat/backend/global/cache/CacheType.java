@@ -9,6 +9,7 @@ public enum CacheType {
     RESTAURANT_LIKE_COUNT("restaurant:like-count", 3L, 4500L, 500),
     PARTICIPANT_LIKES("participant:likes", 3L, 4500L, 500),
     PICKEAT("pickeat", 3L, 4500L, 500),
+    PARTICIPANT("participant", 3L, 4500L, 500),
     ;
 
     private final String name;

@@ -21,7 +21,8 @@ public class CacheManagerConfig {
                 buildCacheWithAccess(CacheType.RESTAURANT),
                 buildCacheWithAccess(CacheType.RESTAURANT_LIKE_COUNT),
                 buildCacheWithAccess(CacheType.PARTICIPANT_LIKES),
-                buildCacheWithAccess(CacheType.PICKEAT)
+                buildCacheWithAccess(CacheType.PICKEAT),
+                buildCacheWithAccess(CacheType.PARTICIPANT)
         ));
         return manager;
     }

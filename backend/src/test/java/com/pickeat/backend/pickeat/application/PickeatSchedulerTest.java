@@ -9,7 +9,7 @@ import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
-import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
+import com.pickeat.backend.pickeat.domain.repository.ParticipantJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.Restaurant;
@@ -37,7 +37,7 @@ class PickeatSchedulerTest {
     private PickeatJpaRepository pickeatJpaRepository;
 
     @Autowired
-    private ParticipantRepository participantRepository;
+    private ParticipantJpaRepository participantJpaRepository;
 
     @Autowired
     private RestaurantJpaRepository restaurantRepository;
@@ -99,7 +99,7 @@ class PickeatSchedulerTest {
         assertAll(
                 () -> assertThat(pickeatJpaRepository.existsById(deletePickeat.getId())).isFalse(),
                 () -> assertThat(restaurantRepository.existsById(restaurant.getId())).isFalse(),
-                () -> assertThat(participantRepository.existsById(participant.getId())).isFalse(),
+                () -> assertThat(participantJpaRepository.existsById(participant.getId())).isFalse(),
                 () -> assertThat(restaurantLikeRepository.existsById(like.getId())).isFalse(),
                 () -> assertThat(pickeatResultRepository.existsById(result.getId())).isFalse()
         );

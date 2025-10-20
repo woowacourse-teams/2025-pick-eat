@@ -4,7 +4,7 @@ import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
-import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
+import com.pickeat.backend.pickeat.domain.repository.ParticipantJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
@@ -28,7 +28,7 @@ public class PickeatScheduler {
 
     private final PickeatJpaRepository pickeatJpaRepository;
     private final PickeatResultRepository pickeatResultRepository;
-    private final ParticipantRepository participantRepository;
+    private final ParticipantJpaRepository participantJpaRepository;
     private final RestaurantLikeJpaRepository restaurantLikeRepository;
     private final RestaurantJpaRepository restaurantJpaRepository;
 
@@ -60,10 +60,10 @@ public class PickeatScheduler {
                 .toList();
         List<RestaurantLike> likesToDelete = restaurantLikeRepository.findByRestaurantIdIn((restaurantIds));
         List<PickeatResult> resultsToDelete = pickeatResultRepository.findByPickeatIdIn(expiredPickeatIds);
-        List<Participant> participantsToDelete = participantRepository.findByPickeatIdIn(expiredPickeatIds);
+        List<Participant> participantsToDelete = participantJpaRepository.findByPickeatIdIn(expiredPickeatIds);
 
         restaurantLikeRepository.deleteAll(likesToDelete);
         pickeatResultRepository.deleteAll(resultsToDelete);
-        participantRepository.deleteAll(participantsToDelete);
+        participantJpaRepository.deleteAll(participantsToDelete);
     }
 }

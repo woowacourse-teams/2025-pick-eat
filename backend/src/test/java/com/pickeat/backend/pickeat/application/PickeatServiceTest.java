@@ -18,6 +18,7 @@ import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.infrastructure.ParticipantRepositoryImpl;
 import com.pickeat.backend.pickeat.infrastructure.PickeatRepositoryImpl;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
@@ -33,7 +34,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({PickeatService.class, PickeatRepositoryImpl.class})
+@Import({PickeatService.class, PickeatRepositoryImpl.class, ParticipantRepositoryImpl.class})
 public class PickeatServiceTest {
 
     @Autowired

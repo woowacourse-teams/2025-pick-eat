@@ -4,14 +4,17 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.pickeat.backend.fixture.ParticipantFixture;
+import com.pickeat.backend.fixture.ParticipantPrincipalFixture;
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.global.auth.JwtProvider;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.infrastructure.ParticipantRepositoryImpl;
 import com.pickeat.backend.pickeat.infrastructure.PickeatRepositoryImpl;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,7 +24,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({ParticipantService.class, ParticipantTokenProvider.class, JwtProvider.class, PickeatRepositoryImpl.class})
+@Import({ParticipantService.class, ParticipantTokenProvider.class, JwtProvider.class, PickeatRepositoryImpl.class,
+        ParticipantRepositoryImpl.class})
 class ParticipantServiceTest {
 
     @Autowired
@@ -66,11 +70,12 @@ class ParticipantServiceTest {
             // given
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
             Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
+            ParticipantPrincipal participantPrincipal = ParticipantPrincipalFixture.create(participant, pickeat);
             testEntityManager.flush();
             testEntityManager.clear();
 
             // when
-            participantService.updateCompletion(participant.getId(), true);
+            participantService.updateCompletion(participantPrincipal, true);
 
             // then
             Participant updatedParticipant = testEntityManager.find(Participant.class, participant.getId());
@@ -82,9 +87,10 @@ class ParticipantServiceTest {
             // given
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
             Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
+            ParticipantPrincipal participantPrincipal = ParticipantPrincipalFixture.create(participant, pickeat);
 
             // when
-            participantService.updateCompletion(participant.getId(), false);
+            participantService.updateCompletion(participantPrincipal, false);
 
             // then
             assertThat(participant.getIsCompleted()).isFalse();
