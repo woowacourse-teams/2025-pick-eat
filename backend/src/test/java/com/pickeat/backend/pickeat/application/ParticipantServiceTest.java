@@ -2,7 +2,6 @@ package com.pickeat.backend.pickeat.application;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.ParticipantFixture;
 import com.pickeat.backend.fixture.PickeatFixture;
@@ -37,7 +36,6 @@ class ParticipantServiceTest {
         void 참가자_생성_성공() {
             // given
             Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
-            Integer pastCount = pickeat.getParticipantCount();
 
             ParticipantRequest request = new ParticipantRequest("테스트유저", pickeat.getId());
 
@@ -45,10 +43,7 @@ class ParticipantServiceTest {
             TokenResponse response = participantService.createParticipant(request);
 
             // then
-            assertAll(
-                    () -> assertThat(response).isNotNull(),
-                    () -> assertThat(pickeat.getParticipantCount()).isEqualTo(pastCount + 1)
-            );
+            assertThat(response).isNotNull();
         }
 
         @Test

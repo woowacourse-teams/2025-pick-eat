@@ -22,27 +22,9 @@ class PickeatTest {
             // then
             assertAll(
                     () -> assertThat(pickeat.getName()).isEqualTo(name),
-                    () -> assertThat(pickeat.getParticipantCount()).isEqualTo(0),
                     () -> assertThat(pickeat.getIsActive()).isTrue(),
                     () -> assertThat(pickeat.getCode()).isNotNull()
             );
-        }
-    }
-
-    @Nested
-    class 참가자_수_증가_케이스 {
-
-        @Test
-        void 참가자_수_증가() {
-            // given
-            String name = "맛집 찾기";
-            Pickeat pickeat = Pickeat.createWithoutRoom(name);
-
-            // when
-            pickeat.incrementParticipantCount();
-
-            // then
-            assertThat(pickeat.getParticipantCount()).isEqualTo(1);
         }
     }
 

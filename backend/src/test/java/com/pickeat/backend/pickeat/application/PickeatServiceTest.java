@@ -61,7 +61,6 @@ public class PickeatServiceTest {
                 participant.updateCompletionAs(true);
             }
 
-            pickeat.incrementParticipantCount();
             testEntityManager.persist(participant);
         }
         return participants;

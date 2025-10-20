@@ -19,14 +19,9 @@ public class Pickeat extends BaseEntity {
     @Column(nullable = false)
     private String name;
 
-    //TODO: 빼도  (2025-10-20, 월, 13:7)
-    @Column(nullable = false)
-    private Integer participantCount = 0;
-
     @Column(nullable = false)
     private Boolean isActive = true;
 
-    //TODO: 의도적으로 roomId 필드를 nullable하게 두는 것이 최선일지 의심이 드네요..  (2025-08-5, 화, 2:23)
     private Long roomId;
 
     private Pickeat(String name, Long roomId) {
@@ -41,10 +36,6 @@ public class Pickeat extends BaseEntity {
 
     public static Pickeat createWithRoom(String name, Long roomId) {
         return new Pickeat(name, roomId);
-    }
-
-    public void incrementParticipantCount() {
-        this.participantCount++;
     }
 
     public void deactivate() {
