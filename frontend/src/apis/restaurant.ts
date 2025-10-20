@@ -72,7 +72,7 @@ type MutationOption = {
   onError?: () => void;
 };
 
-export const restaurant = {
+const restaurant = {
   patchLike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
       BASE_URL_VERSION[2],

@@ -3,7 +3,7 @@ import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndM
 import LikeButton from '@components/actions/LikeButton/LikeButton';
 import RestaurantCard from '@components/RestaurantCard';
 
-import { restaurant, Restaurant } from '@apis/restaurant';
+import { Restaurant, restaurantQuery } from '@apis/restaurant';
 import { restaurantsQuery } from '@apis/restaurants';
 
 import { useFlip } from '@hooks/useFlip';
@@ -42,30 +42,33 @@ function PreferRestaurantList() {
   const { itemRefs } = useFlip(restaurantList);
 
   const handleLike = async (id: number) => {
-    addOptimisticLike(id);
-    updateLikeCount(id, +1);
+    const mutation = restaurantQuery.usePatchLike(id, {
+      onSuccess: () => {
+        addOptimisticLike(id);
+        updateLikeCount(id, +1);
+      },
+      onError: () => {
+        removeOptimisticLike(id);
+        updateLikeCount(id, -1);
+      },
+    });
 
-    try {
-      restaurant.patchLike(id);
-    } catch (error) {
-      removeOptimisticLike(id);
-      updateLikeCount(id, -1);
-
-      console.log('좋아요 실패:', error);
-    }
+    mutation.mutate();
   };
 
   const handleUnlike = async (id: number) => {
-    removeOptimisticLike(id);
-    updateLikeCount(id, -1);
+    const mutation = restaurantQuery.usePatchUnlike(id, {
+      onSuccess: () => {
+        removeOptimisticLike(id);
+        updateLikeCount(id, -1);
+      },
+      onError: () => {
+        addOptimisticLike(id);
+        updateLikeCount(id, +1);
+      },
+    });
 
-    try {
-      restaurant.patchUnlike(id);
-    } catch (error) {
-      addOptimisticLike(id);
-      updateLikeCount(id, +1);
-      console.error('좋아요 취소 실패:', error);
-    }
+    mutation.mutate();
   };
 
   return (
