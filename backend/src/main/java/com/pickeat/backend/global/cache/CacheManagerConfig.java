@@ -18,7 +18,9 @@ public class CacheManagerConfig {
     public CacheManager cacheManager() {
         SimpleCacheManager manager = new SimpleCacheManager();
         manager.setCaches(Arrays.asList(
-                buildCacheWithAccess(CacheType.RESTAURANT)
+                buildCacheWithAccess(CacheType.RESTAURANT),
+                buildCacheWithAccess(CacheType.RESTAURANT_LIKE_COUNT),
+                buildCacheWithAccess(CacheType.PARTICIPANT_LIKES)
         ));
         return manager;
     }

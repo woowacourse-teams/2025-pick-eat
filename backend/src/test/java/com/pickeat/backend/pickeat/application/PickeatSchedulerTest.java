@@ -15,7 +15,7 @@ import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeJpaRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ class PickeatSchedulerTest {
     private RestaurantJpaRepository restaurantRepository;
 
     @Autowired
-    private RestaurantLikeRepository restaurantLikeRepository;
+    private RestaurantLikeJpaRepository restaurantLikeRepository;
 
     @Autowired
     private PickeatResultRepository pickeatResultRepository;

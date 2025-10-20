@@ -9,7 +9,7 @@ import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeJpaRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -29,7 +29,7 @@ public class PickeatScheduler {
     private final PickeatRepository pickeatRepository;
     private final PickeatResultRepository pickeatResultRepository;
     private final ParticipantRepository participantRepository;
-    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final RestaurantLikeJpaRepository restaurantLikeRepository;
     private final RestaurantJpaRepository restaurantJpaRepository;
 
     @Scheduled(cron = "0 0 0 * * *") // 매일 00:00에 실행

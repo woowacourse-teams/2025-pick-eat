@@ -17,6 +17,8 @@ import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,11 +54,12 @@ public class RestaurantService {
     public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded, Long participantId) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         List<Restaurant> restaurants = restaurantRepository.findByPickeatId(pickeat.getId());
-        List<RestaurantResponse> response = new ArrayList<>();
         List<Restaurant> targets = getTargets(restaurants, isExcluded);
+        Set<Long> likedRestaurantIds = getLikedRestaurantIdsByParticipantId(participantId);
 
+        List<RestaurantResponse> response = new ArrayList<>();
         for (Restaurant restaurant : targets) {
-            boolean isLiked = existsLike(restaurant.getId(), participantId);
+            boolean isLiked = likedRestaurantIds.contains(restaurant.getId());
             Integer likeCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
             response.add(RestaurantResponse.of(restaurant, likeCount, isLiked));
         }
@@ -94,6 +97,13 @@ public class RestaurantService {
     @Transactional
     public void cancelLike(Long restaurantId, Long participantId) {
         restaurantLikeRepository.deleteByRestaurantIdAndParticipantId(restaurantId, participantId);
+    }
+
+    private Set<Long> getLikedRestaurantIdsByParticipantId(Long participantId) {
+        return restaurantLikeRepository.findAllByParticipantId(participantId)
+                .stream()
+                .map(RestaurantLike::getRestaurantId)
+                .collect(Collectors.toSet());
     }
 
     private List<Restaurant> getTargets(List<Restaurant> restaurants, Boolean isExcluded) {

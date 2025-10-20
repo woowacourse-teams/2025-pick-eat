@@ -51,8 +51,9 @@ public class PickeatService {
 
     @Transactional
     public void deactivatePickeat(String pickeatCode, Long participantId) {
-        validateParticipantAccessToPickeat(participantId, pickeatCode);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
+        validateParticipantAccessToPickeat(participantId, pickeat);
+
         pickeat.deactivate();
         applicationEventPublisher.publishEvent(new PickeatDeactivatedEvent(pickeat));
     }
@@ -120,9 +121,8 @@ public class PickeatService {
         }
     }
 
-    private void validateParticipantAccessToPickeat(Long participantId, String pickeatCode) {
+    private void validateParticipantAccessToPickeat(Long participantId, Pickeat pickeat) {
         Participant participant = getParticipant(participantId);
-        Pickeat pickeat = getPickeatByCode(pickeatCode);
         if (!participant.getPickeatId().equals(pickeat.getId())) {
             throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
         }

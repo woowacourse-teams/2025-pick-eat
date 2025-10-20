@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class RestaurantRepositoryImpl implements RestaurantRepository {
+    public static final String RESTAURANT_CACHE_NAME = "restaurant";
     private final RestaurantJpaRepository jpaRepository;
     private final RestaurantJdbcRepository jdbcRepository;
 
@@ -26,7 +27,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
     }
 
     @Override
-    @Cacheable(value = "restaurant", key = "#pickeatId")
+    @Cacheable(value = RESTAURANT_CACHE_NAME, key = "#pickeatId")
     public List<Restaurant> findByPickeatId(Long pickeatId) {
         return jpaRepository.findByPickeatId(pickeatId);
     }
@@ -51,7 +52,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
         return jpaRepository.findById(restaurantId);
     }
 
-    @CacheEvict(value = "restaurant", key = "#pickeat.id")
+    @CacheEvict(value = RESTAURANT_CACHE_NAME, key = "#pickeat.id")
     public void evictRestaurantCache(Pickeat pickeat) {
         log.info("식당 캐시 무효화 | pickeatId: {}", pickeat.getId());
     }
