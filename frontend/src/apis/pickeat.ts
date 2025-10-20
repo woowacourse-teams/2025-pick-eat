@@ -313,7 +313,7 @@ export const pickeatQuery = {
     const navigate = useNavigate();
 
     return useSuspenseQuery({
-      queryKey: ['pickeat', 'result', pickeatCode],
+      queryKey: [BASE_PATH, 'result', pickeatCode],
       queryFn: async () => {
         try {
           const delay = new Promise(resolve => setTimeout(resolve, 2500));
@@ -432,7 +432,7 @@ export const pickeatQuery = {
 
   useParticipantCount: (pickeatCode: string) => {
     const { data } = useQuery({
-      queryKey: ['pickeat', 'participants', pickeatCode],
+      queryKey: [BASE_PATH, 'participants', pickeatCode],
       queryFn: async () => {
         const response = await pickeat.getParticipantsCount(pickeatCode);
         return response ?? { totalParticipants: 0, eliminatedParticipants: 0 };
@@ -461,7 +461,7 @@ export const pickeatQuery = {
       data: participantsState = { totalParticipants: 0, participants: [] },
       error,
     } = useQuery<ParticipantsState>({
-      queryKey: ['pickeat', 'participants-state', pickeatCode],
+      queryKey: [BASE_PATH, 'participants-state', pickeatCode],
       queryFn: async () => {
         const data = await pickeat.getParticipantsState(pickeatCode);
         return data;
@@ -485,7 +485,7 @@ export const pickeatQuery = {
     const showToast = useShowToast();
 
     const { data: pickeatState = { isActive: true }, error } = useQuery({
-      queryKey: ['pickeat', 'state', pickeatCode],
+      queryKey: [BASE_PATH, 'state', pickeatCode],
       queryFn: async () => {
         const response = await pickeat.getPickeatState(pickeatCode);
         return response ?? { isActive: true };
@@ -511,7 +511,7 @@ export const pickeatQuery = {
   },
   useRejoin: (pickeatCode: string) => {
     const { data: isRejoinAvailable, isLoading } = useQuery({
-      queryKey: ['pickeat', 'rejoin', pickeatCode],
+      queryKey: [BASE_PATH, 'rejoin', pickeatCode],
       queryFn: async () => {
         const response = await pickeat.getRejoin(pickeatCode);
         return response;
