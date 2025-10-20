@@ -1,7 +1,7 @@
 package com.pickeat.backend.global.auth;
 
 import com.pickeat.backend.global.auth.annotation.ParticipantInPickeat;
-import com.pickeat.backend.global.auth.info.ParticipantInfo;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.ParticipantTokenProvider;
@@ -23,7 +23,7 @@ public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResol
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(ParticipantInPickeat.class)
-                && parameter.getParameterType().equals(ParticipantInfo.class);
+                && parameter.getParameterType().equals(ParticipantPrincipal.class);
     }
 
     @Override
@@ -50,10 +50,10 @@ public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResol
         return authHeader != null && authHeader.startsWith(PREFIX);
     }
 
-    private ParticipantInfo getParticipantIdByHeader(String authHeader) {
+    private ParticipantPrincipal getParticipantIdByHeader(String authHeader) {
         String token = authHeader.substring(PREFIX.length());
         Long participantId = participantTokenProvider.getParticipantId(token);
         String rawPickeatCode = participantTokenProvider.getRawPickeatCode(token);
-        return new ParticipantInfo(participantId, rawPickeatCode);
+        return new ParticipantPrincipal(participantId, rawPickeatCode);
     }
 }

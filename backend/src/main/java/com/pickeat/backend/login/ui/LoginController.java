@@ -1,7 +1,7 @@
 package com.pickeat.backend.login.ui;
 
 import com.pickeat.backend.global.auth.annotation.Provider;
-import com.pickeat.backend.global.auth.info.ProviderInfo;
+import com.pickeat.backend.global.auth.principal.ProviderPrincipal;
 import com.pickeat.backend.login.application.LoginService;
 import com.pickeat.backend.login.application.ProviderTokenProvider;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
@@ -44,8 +44,8 @@ public class LoginController implements LoginApiSpec {
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@Provider ProviderInfo providerInfo) {
-        TokenResponse response = loginService.login(providerInfo);
+    public ResponseEntity<TokenResponse> login(@Provider ProviderPrincipal providerPrincipal) {
+        TokenResponse response = loginService.login(providerPrincipal);
 
         return ResponseEntity.ok().body(response);
     }
@@ -53,10 +53,10 @@ public class LoginController implements LoginApiSpec {
     @Override
     @PostMapping("/signup")
     public ResponseEntity<TokenResponse> signup(@Valid @RequestBody SignupRequest request,
-                                                @Provider ProviderInfo providerInfo) {
-        userService.createUser(request, providerInfo);
+                                                @Provider ProviderPrincipal providerPrincipal) {
+        userService.createUser(request, providerPrincipal);
 
-        TokenResponse response = loginService.login(providerInfo);
+        TokenResponse response = loginService.login(providerPrincipal);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

@@ -1,7 +1,7 @@
 package com.pickeat.backend.global.auth;
 
 import com.pickeat.backend.global.auth.annotation.Provider;
-import com.pickeat.backend.global.auth.info.ProviderInfo;
+import com.pickeat.backend.global.auth.principal.ProviderPrincipal;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.ProviderTokenProvider;
@@ -23,7 +23,7 @@ public class ProviderArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
         return parameter.hasParameterAnnotation(Provider.class)
-                && parameter.getParameterType().equals(ProviderInfo.class);
+                && parameter.getParameterType().equals(ProviderPrincipal.class);
     }
 
     @Override
@@ -39,6 +39,6 @@ public class ProviderArgumentResolver implements HandlerMethodArgumentResolver {
         String token = authHeader.substring(PREFIX.length());
         Long providerId = providerTokenProvider.getProviderId(token);
         String provider = providerTokenProvider.getProvider(token);
-        return new ProviderInfo(providerId, provider);
+        return new ProviderPrincipal(providerId, provider);
     }
 }
