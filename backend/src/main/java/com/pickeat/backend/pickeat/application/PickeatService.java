@@ -10,12 +10,14 @@ import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
+import com.pickeat.backend.pickeat.domain.PickeatDeactivatedEvent;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class PickeatService {
     private final PickeatRepository pickeatRepository;
     private final ParticipantRepository participantRepository;
     private final RoomUserRepository roomUserRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
@@ -51,6 +54,7 @@ public class PickeatService {
         validateParticipantAccessToPickeat(participantId, pickeatCode);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         pickeat.deactivate();
+        applicationEventPublisher.publishEvent(new PickeatDeactivatedEvent(pickeat));
     }
 
     public ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {

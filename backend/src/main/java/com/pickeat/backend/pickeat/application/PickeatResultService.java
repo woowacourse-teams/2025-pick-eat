@@ -6,6 +6,7 @@ import com.pickeat.backend.pickeat.application.dto.response.PickeatResultRespons
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
+import com.pickeat.backend.pickeat.domain.PickeatDeactivatedEvent;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ public class PickeatResultService {
     private final ParticipantRepository participantRepository;
     private final PickeatResultRepository pickeatResultRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public PickeatResultResponse createPickeatResult(String pickeatCode, Long participantId) {
@@ -66,7 +69,7 @@ public class PickeatResultService {
         try {
             pickeat.deactivate();
             PickeatResultResponse pickeatResult = createNewPickeatResult(pickeat);
-            // todo 이벤트 떤져떤져
+            applicationEventPublisher.publishEvent(new PickeatDeactivatedEvent(pickeat));
             return pickeatResult;
         } catch (DataIntegrityViolationException e) {
             PickeatResult existingResult = getPickeatResultByPickeat(pickeat);
@@ -75,8 +78,8 @@ public class PickeatResultService {
     }
 
     private PickeatResultResponse createNewPickeatResult(Pickeat pickeat) {
-        List<Restaurant> availableRestaurants =
-                restaurantRepository.findAllByPickeatIdAndIsExcluded(pickeat.getId(), false);
+        List<Restaurant> restaurants = restaurantRepository.findByPickeatId(pickeat.getId());
+        List<Restaurant> availableRestaurants = getAvailableRestaurants(restaurants);
 
         Map<Restaurant, Integer> likeCounts = getLikeCounts(availableRestaurants);
 
@@ -84,6 +87,12 @@ public class PickeatResultService {
 
         pickeatResultRepository.save(new PickeatResult(pickeat.getId(), selectedRestaurant.getId()));
         return PickeatResultResponse.from(selectedRestaurant);
+    }
+
+    private List<Restaurant> getAvailableRestaurants(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .filter(restaurant -> restaurant.getIsExcluded().equals(false))
+                .toList();
     }
 
     private Map<Restaurant, Integer> getLikeCounts(List<Restaurant> availableRestaurants) {

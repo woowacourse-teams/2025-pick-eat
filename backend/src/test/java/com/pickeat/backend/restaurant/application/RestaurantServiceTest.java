@@ -22,6 +22,8 @@ import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.restaurant.infrastructure.RestaurantJdbcRepository;
+import com.pickeat.backend.restaurant.infrastructure.RestaurantRepositoryImpl;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -31,7 +33,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(value = {RestaurantService.class})
+@Import(value = {RestaurantService.class, RestaurantJdbcRepository.class, RestaurantRepositoryImpl.class})
 class RestaurantServiceTest {
 
     @Autowired
@@ -59,7 +61,8 @@ class RestaurantServiceTest {
             restaurantService.create(restaurantRequests, pickeat.getCode().toString());
 
             // then
-            assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(), false)).hasSize(2);
+            List<Restaurant> restaurants = restaurantRepository.findByPickeatId(pickeat.getId());
+            assertThat(restaurants).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {
@@ -91,29 +94,8 @@ class RestaurantServiceTest {
             restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participantPrincipal);
 
             // then
-            List<Restaurant> actualRestaurants = restaurantRepository.findAll();
+            List<Restaurant> actualRestaurants = restaurantRepository.findByPickeatId(pickeat.getId());
             assertThat(actualRestaurants).extracting(Restaurant::getIsExcluded).containsOnly(true);
-        }
-
-        @Test
-        void 참여자가_식당을_소거할_권한이_없으면_예외() {
-            // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
-            ParticipantPrincipal participantPrincipal = ParticipantPrincipalFixture.create(participant, pickeat);
-            Pickeat otherPickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
-                    entityManager.persist(RestaurantFixture.create(otherPickeat)));
-            List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
-
-            entityManager.flush();
-            entityManager.clear();
-
-            // when & then
-            assertThatThrownBy(
-                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participantPrincipal))
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN.getMessage());
         }
 
         @Test

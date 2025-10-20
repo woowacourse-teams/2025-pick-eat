@@ -15,13 +15,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @DataJpaTest
-class RestaurantRepositoryTest {
+class RestaurantJpaRepositoryTest {
 
     @Autowired
     private TestEntityManager testEntityManager;
 
     @Autowired
-    private RestaurantRepository restaurantRepository;
+    private RestaurantJpaRepository restaurantJpaRepository;
 
     @Test
     void 식당_조회() {
@@ -31,18 +31,9 @@ class RestaurantRepositoryTest {
         Restaurant restaurant2 = testEntityManager.persist(RestaurantFixture.create(pickeat));
         Restaurant restaurant3 = testEntityManager.persist(RestaurantFixture.create(pickeat));
 
-        restaurant2.exclude();
-
         // when & then
         Long pickeatId = pickeat.getId();
-        assertAll(
-                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeatId, true))
-                        .hasSize(1),
-                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeatId, false))
-                        .hasSize(2),
-                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeatId, null))
-                        .hasSize(3)
-        );
+        assertThat(restaurantJpaRepository.findByPickeatId(pickeatId)).hasSize(3);
     }
 
     @Nested
@@ -63,17 +54,17 @@ class RestaurantRepositoryTest {
             testEntityManager.flush();
             testEntityManager.clear();
 
-            long beforeCount = restaurantRepository.count();
+            long beforeCount = restaurantJpaRepository.count();
             List<Long> deletePickeatIds = List.of(pickeat1.getId(), pickeat2.getId());
 
             // when
-            int deletedCount = restaurantRepository.deleteByPickeatIds(deletePickeatIds);
+            int deletedCount = restaurantJpaRepository.deleteByPickeatIds(deletePickeatIds);
 
             // then
-            List<Restaurant> remainingRestaurants = restaurantRepository.findAll();
+            List<Restaurant> remainingRestaurants = restaurantJpaRepository.findAll();
             assertAll(
                     () -> assertThat(deletedCount).isEqualTo(3),
-                    () -> assertThat(restaurantRepository.count()).isEqualTo(beforeCount - deletedCount),
+                    () -> assertThat(restaurantJpaRepository.count()).isEqualTo(beforeCount - deletedCount),
                     () -> assertThat(remainingRestaurants).hasSize(1),
                     () -> assertThat(remainingRestaurants.getFirst().getName()).isEqualTo("유지될 레스토랑")
             );

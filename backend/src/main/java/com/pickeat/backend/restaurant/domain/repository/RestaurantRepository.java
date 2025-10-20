@@ -3,26 +3,19 @@ package com.pickeat.backend.restaurant.domain.repository;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import java.util.Collection;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import java.util.Optional;
 
-public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
+public interface RestaurantRepository {
 
-    List<Restaurant> findAllByPickeatIdAndIsExcluded(Long pickeatId, Boolean isExcluded);
+    void batchInsert(List<Restaurant> restaurants);
 
-    @Query("""
-            select r from Restaurant r
-            where (r.pickeatId = :pickeatId)
-                and (:isExcluded IS NULL OR r.isExcluded = :isExcluded)
-            """)
-    List<Restaurant> findByPickeatIdAndIsExcludedIfProvided(@Param("pickeatId") Long pickeatId,
-                                                            @Param("isExcluded") Boolean isExcluded);
+    List<Restaurant> findByPickeatId(Long pickeatId);
 
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query(value = "UPDATE restaurant SET deleted = true WHERE pickeat_id IN (:pickeatIds)", nativeQuery = true)
-    int deleteByPickeatIds(@Param("pickeatIds") List<Long> pickeatIds);
+    int deleteByPickeatIds(List<Long> pickeatIds);
 
     List<Restaurant> findIdsByPickeatIdIn(Collection<Long> pickeatIds);
+
+    void saveAll(List<Restaurant> restaurants);
+
+    Optional<Restaurant> findById(Long restaurantId);
 }

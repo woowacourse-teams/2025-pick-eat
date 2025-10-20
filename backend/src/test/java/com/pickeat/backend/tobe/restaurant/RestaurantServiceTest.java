@@ -7,9 +7,10 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.restaurant.infrastructure.RestaurantJdbcRepository;
+import com.pickeat.backend.restaurant.infrastructure.RestaurantRepositoryImpl;
 import com.pickeat.backend.tobe.restaurant.application.RestaurantService;
 import com.pickeat.backend.tobe.restaurant.application.dto.request.RestaurantRequest;
-import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantBulkRepository;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(value = {RestaurantService.class, RestaurantBulkRepository.class})
+@Import(value = {RestaurantService.class, RestaurantJdbcRepository.class, RestaurantRepositoryImpl.class})
 public class RestaurantServiceTest {
 
     @Autowired
@@ -44,7 +45,7 @@ public class RestaurantServiceTest {
             restaurantService.create(restaurantRequests, pickeat.getCode().toString());
 
             // then
-            assertThat(restaurantRepository.findAll()).hasSize(2);
+            assertThat(restaurantRepository.findByPickeatId(pickeat.getId())).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {

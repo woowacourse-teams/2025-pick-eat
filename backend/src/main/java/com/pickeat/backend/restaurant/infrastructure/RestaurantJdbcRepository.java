@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.restaurant.domain.repository;
+package com.pickeat.backend.restaurant.infrastructure;
 
 import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.Restaurant;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class RestaurantBulkRepository {
+public class RestaurantJdbcRepository {
 
     private final JdbcTemplate jdbcTemplate;
 

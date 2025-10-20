@@ -46,16 +46,16 @@ public class RestaurantService {
                         request.pictureUrl(),
                         pickeat.getId()))
                 .toList();
-        restaurantRepository.saveAll(restaurants);
+        restaurantRepository.batchInsert(restaurants);
     }
 
     public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded, Long participantId) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        List<Restaurant> restaurants = restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(),
-                isExcluded);
+        List<Restaurant> restaurants = restaurantRepository.findByPickeatId(pickeat.getId());
         List<RestaurantResponse> response = new ArrayList<>();
+        List<Restaurant> targets = getTargets(restaurants, isExcluded);
 
-        for (Restaurant restaurant : restaurants) {
+        for (Restaurant restaurant : targets) {
             boolean isLiked = existsLike(restaurant.getId(), participantId);
             Integer likeCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
             response.add(RestaurantResponse.of(restaurant, likeCount, isLiked));
@@ -68,11 +68,14 @@ public class RestaurantService {
         Pickeat pickeat = getPickeatByCode(participantPrincipal.rawPickeatCode());
         validatePickeatState(pickeat);
 
-        Participant participant = getParticipant(participantPrincipal.id());
-        List<Restaurant> restaurants = restaurantRepository.findAllById(request.restaurantIds());
-        validateParticipantAccessToRestaurants(restaurants, participant);
+        List<Restaurant> restaurants = restaurantRepository.findByPickeatId(pickeat.getId());
+        List<Long> targetIds = request.restaurantIds();
 
-        restaurants.forEach(Restaurant::exclude);
+        List<Restaurant> targets = restaurants.stream()
+                .filter(restaurant -> targetIds.contains(restaurant.getId()))
+                .toList();
+
+        targets.forEach(Restaurant::exclude);
         restaurantRepository.saveAll(restaurants);
     }
 
@@ -93,6 +96,16 @@ public class RestaurantService {
         restaurantLikeRepository.deleteByRestaurantIdAndParticipantId(restaurantId, participantId);
     }
 
+    private List<Restaurant> getTargets(List<Restaurant> restaurants, Boolean isExcluded) {
+        if (isExcluded == null) {
+            return restaurants;
+        }
+
+        return restaurants.stream()
+                .filter(restaurant -> restaurant.getIsExcluded().equals(isExcluded))
+                .toList();
+    }
+
     private void validatePickeatState(Pickeat pickeat) {
         if (!pickeat.getIsActive()) {
             throw new BusinessException(ErrorCode.PICKEAT_ALREADY_INACTIVE);
@@ -108,7 +121,6 @@ public class RestaurantService {
     private Restaurant getRestaurantById(Long restaurantId) {
         return restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
-
     }
 
     private boolean existsLike(Long restaurantId, Long participantId) {
@@ -120,7 +132,8 @@ public class RestaurantService {
             return;
         }
 
-        if (restaurants.stream().anyMatch((r -> !r.getPickeatId().equals(participant.getPickeatId())))) {
+        if (restaurants.stream()
+                .anyMatch((restaurant -> !restaurant.getPickeatId().equals(participant.getPickeatId())))) {
             throw new BusinessException(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN);
         }
     }
