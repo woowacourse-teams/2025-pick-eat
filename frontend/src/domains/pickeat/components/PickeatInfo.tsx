@@ -41,7 +41,7 @@ function PickeatInfo({ pickeatData }: Props) {
     // TODO : 현재는 일단 SuspenseQuery 에서 객체의 name 에 빈 문자열이
     // 에러토스트를 띄우고있는데, 이 부분을 에러바운더리 작업할 때 onError 에서
     // 렌더링할 때 toast 를 띄우는 방식으로 바꾸면 어떨까합니다.
-    if (users.nickname === '')
+    if (!users.nickname)
       showToast({
         mode: 'ERROR',
         message: '닉네임을 불러오지 못해 랜덤 닉네임이 생성되었습니다.',
