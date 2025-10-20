@@ -35,7 +35,7 @@ function LineSearchBar({
         autoComplete="off"
         {...props}
       />
-      {xIcon && (
+      {xIcon && typeof value === 'string' && value?.length > 0 && (
         <S.xIcon type="button" onClick={onClear}>
           <Erase />
         </S.xIcon>
