@@ -64,7 +64,7 @@ class ParticipantServiceTest {
         void 참가자_완료_표시_성공() {
             // given
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
-            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
             testEntityManager.flush();
             testEntityManager.clear();
 
@@ -80,7 +80,7 @@ class ParticipantServiceTest {
         void 참가자_미완료_표시_성공() {
             // given
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
-            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
 
             // when
             participantService.updateCompletion(participant.getId(), false);

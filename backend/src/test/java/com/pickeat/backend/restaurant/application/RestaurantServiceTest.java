@@ -70,7 +70,7 @@ class RestaurantServiceTest {
             // given
 
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
 
             List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(pickeat)),
@@ -92,7 +92,7 @@ class RestaurantServiceTest {
         void 참여자가_식당을_소거할_권한이_없으면_예외() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Pickeat otherPickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(otherPickeat)));
@@ -112,7 +112,7 @@ class RestaurantServiceTest {
         void 비활성화된_픽잇의_식당을_소거하려고_할_경우_예외() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(pickeat)));
             pickeat.deactivate();
@@ -137,7 +137,7 @@ class RestaurantServiceTest {
         void 식당_선호_선택_성공() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             Integer originCount = restaurant.getLikeCount();
 
@@ -156,7 +156,7 @@ class RestaurantServiceTest {
         void 이미_선호한_식당을_다시_선호할때_예외() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             entityManager.flush();
             entityManager.clear();
@@ -177,7 +177,7 @@ class RestaurantServiceTest {
         void 식당_선호_취소_성공() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
 
             entityManager.persist(new RestaurantLike(participant, restaurant));
@@ -203,7 +203,7 @@ class RestaurantServiceTest {
         void 식당_조회_성공() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant1 = entityManager.persist(RestaurantFixture.create(pickeat));
             Restaurant restaurant2 = entityManager.persist(RestaurantFixture.create(pickeat));
 
@@ -222,7 +222,7 @@ class RestaurantServiceTest {
         void 참여자의_식당_좋아요_여부_조회_성공() {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant1 = entityManager.persist(RestaurantFixture.create(pickeat));
             Restaurant restaurant2 = entityManager.persist(RestaurantFixture.create(pickeat));
 

@@ -46,14 +46,14 @@ public class PickeatServiceTest {
     }
 
     private Participant createParticipant(Pickeat pickeat) {
-        return testEntityManager.persist(ParticipantFixture.create(pickeat));
+        return testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
     }
 
     private List<Participant> createParticipantsInPickeat(Pickeat pickeat, int participantCount) {
         List<Participant> participants = new ArrayList<>();
         for (int i = 0; i < participantCount; i++) {
             String nickname = "닉네임" + i;
-            Participant participant = new Participant(nickname, pickeat);
+            Participant participant = new Participant(nickname, pickeat.getId());
             participants.add(participant);
 
             // 짝수 번째 참여자는 투표 완료 상태로 설정
@@ -177,7 +177,7 @@ public class PickeatServiceTest {
             testEntityManager.clear();
 
             // when
-            PickeatResponse pickeatResponse = pickeatService.getPickeat(pickeat.getCode().toString());
+            PickeatResponse pickeatResponse = pickeatService.getPickeatByParticipant(pickeat.getCode().toString());
 
             // then
             assertThat(pickeatResponse.id()).isEqualTo(pickeat.getId());
@@ -378,7 +378,7 @@ public class PickeatServiceTest {
         void 참가자의_픽잇_조회_성공() {
             // given
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("pickeat_test1"));
-            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
 
             testEntityManager.flush();
             testEntityManager.clear();
@@ -393,7 +393,7 @@ public class PickeatServiceTest {
         @Test
         void 비활성된_픽잇도_조회_가능() {
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("pickeat_test1"));
-            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
 
             pickeat.deactivate();
 
@@ -424,7 +424,7 @@ public class PickeatServiceTest {
             // given
             Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
             String pickeatCode = pickeat.getCode().getValue().toString();
-            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
 
             testEntityManager.flush();
             testEntityManager.clear();
@@ -461,7 +461,7 @@ public class PickeatServiceTest {
             String pickeatCode = pickeat.getCode().getValue().toString();
 
             Pickeat otherPickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = testEntityManager.persist(ParticipantFixture.create(otherPickeat));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(otherPickeat.getId()));
 
             testEntityManager.flush();
             testEntityManager.clear();

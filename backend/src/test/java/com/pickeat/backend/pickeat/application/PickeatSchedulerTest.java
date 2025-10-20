@@ -85,7 +85,7 @@ class PickeatSchedulerTest {
 
         // 연관 데이터 생성
         Restaurant restaurant = testEntityManager.persist(RestaurantFixture.create(deletePickeat));
-        Participant participant = testEntityManager.persist(ParticipantFixture.create(deletePickeat));
+        Participant participant = testEntityManager.persist(ParticipantFixture.create(deletePickeat.getId()));
         RestaurantLike like = testEntityManager.persist(new RestaurantLike(participant, restaurant));
         PickeatResult result = testEntityManager.persist(new PickeatResult(deletePickeat.getId(), restaurant.getId()));
 

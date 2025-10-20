@@ -30,7 +30,6 @@ public class RestaurantService {
     private final ParticipantRepository participantRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
 
-    //TODO: 개선할 여지가 보임  (2025-07-21, 월, 20:43)
     @Transactional
     public void create(List<RestaurantRequest> restaurantRequests, String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
@@ -62,6 +61,7 @@ public class RestaurantService {
         return response;
     }
 
+    //TODO: 픽잇이 활성화상태인지 확인해야함  (2025-10-20, 월, 17:48)
     @Transactional
     public void exclude(RestaurantExcludeRequest request, Long participantId) {
         //TODO: 입력된 식당 개수만큼 UPDATE 쿼리가 발생 -> BULK나 배치사이즈를 활용한 최적화 필요  (2025-07-18, 금, 16:35)
@@ -119,14 +119,13 @@ public class RestaurantService {
             return;
         }
 
-        if (restaurants.stream().anyMatch((r -> !r.getPickeat().equals(participant.getPickeat())))) {
+        if (restaurants.stream().anyMatch((r -> !r.getPickeat().getId().equals(participant.getPickeatId())))) {
             throw new BusinessException(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN);
         }
     }
 
     private Pickeat getPickeatByCode(String pickeatCode) {
-        Pickeat pickeat = pickeatRepository.findByCode(new PickeatCode(pickeatCode))
+        return pickeatRepository.findByCode(new PickeatCode(pickeatCode))
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
-        return pickeat;
     }
 }

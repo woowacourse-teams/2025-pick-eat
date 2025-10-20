@@ -97,7 +97,7 @@ public class PickeatResultService {
 
     private void validateParticipantAccessToPickeat(Long participantId, Pickeat pickeat) {
         Participant participant = getParticipant(participantId);
-        if (!participant.getPickeat().equals(pickeat)) {
+        if (!participant.getPickeatId().equals(pickeat.getId())) {
             throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
         }
     }

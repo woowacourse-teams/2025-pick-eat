@@ -55,11 +55,11 @@ public class PickeatService {
 
     public ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        List<Participant> participants = participantRepository.findByPickeat(pickeat);
+        List<Participant> participants = participantRepository.findByPickeatId(pickeat.getId());
         return ParticipantStateResponse.from(participants);
     }
 
-    public PickeatResponse getPickeat(String pickeatCode) {
+    public PickeatResponse getPickeatByParticipant(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         return PickeatResponse.from(pickeat);
     }
@@ -85,8 +85,9 @@ public class PickeatService {
         if (participantId == null) {
             return new PickeatRejoinAvailableResponse(false);
         }
+        //TODO: 한번만 쿼리가 나가도록 할 수 있지 않을까?  (2025-10-20, 월, 17:44)
         Participant participant = getParticipant(participantId);
-        Pickeat pickeat = participant.getPickeat();
+        Pickeat pickeat = getPickeatByParticipant(participant);
         Boolean rejoinAvailable = pickeat.isEqualPickeatCode(pickeatCode);
         return new PickeatRejoinAvailableResponse(rejoinAvailable);
     }
@@ -100,8 +101,13 @@ public class PickeatService {
 
     public PickeatResponse getPickeatsByParticipant(Long participantId) {
         Participant participant = getParticipant(participantId);
-        Pickeat pickeat = participant.getPickeat();
+        Pickeat pickeat = getPickeatByParticipant(participant);
         return PickeatResponse.from(pickeat);
+    }
+
+    private Pickeat getPickeatByParticipant(Participant participant) {
+        return pickeatRepository.findById(participant.getPickeatId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
     }
 
     private void validateUserAccessToRoom(Long roomId, Long userId) {
@@ -113,14 +119,8 @@ public class PickeatService {
     private void validateParticipantAccessToPickeat(Long participantId, String pickeatCode) {
         Participant participant = getParticipant(participantId);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        if (!participant.getPickeat().equals(pickeat)) {
+        if (!participant.getPickeatId().equals(pickeat.getId())) {
             throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
-        }
-    }
-
-    private void validateActivePickeat(Pickeat pickeat) {
-        if (!pickeat.getIsActive()) {
-            throw new BusinessException(ErrorCode.PICKEAT_ALREADY_INACTIVE);
         }
     }
 
