@@ -12,7 +12,7 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
-import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,7 @@ public class PickeatService {
     private final PickeatRepository pickeatRepository;
     private final ParticipantRepository participantRepository;
     private final RoomUserRepository roomUserRepository;
+    private final RoomRepository roomRepository;
 
     @Transactional
     public PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
@@ -92,8 +93,7 @@ public class PickeatService {
     }
 
     public List<PickeatResponse> getPickeatsByUser(Long userId) {
-        List<Room> allRoom = roomUserRepository.getAllRoomByUserId(userId);
-        List<Long> allRoomIds = allRoom.stream().map(Room::getId).toList();
+        List<Long> allRoomIds = roomUserRepository.getAllRoomIdListByUserId(userId);
         List<Pickeat> roomPickeats = pickeatRepository.findByRoomIdIn(allRoomIds);
         return PickeatResponse.from(roomPickeats);
     }

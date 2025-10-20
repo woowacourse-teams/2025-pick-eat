@@ -65,7 +65,9 @@ public class UserService {
     }
 
     public List<UserResponse> getByRoomId(Long roomId) {
-        List<User> users = roomUserRepository.getAllUserByRoomId(roomId);
+        List<Long> userIds = roomUserRepository.getAllUserIdListByRoomId(roomId);
+        List<User> users = userRepository.findAllByIdIn(userIds);
+
         return UserResponse.from(users);
     }
 }

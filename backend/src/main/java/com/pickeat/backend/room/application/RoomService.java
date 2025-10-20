@@ -9,13 +9,14 @@ import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
-import com.pickeat.backend.user.domain.User;
 import com.pickeat.backend.user.domain.repository.UserRepository;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,9 +34,8 @@ public class RoomService {
     @Transactional
     public RoomResponse createRoom(RoomRequest request, Long userId) {
         Room room = new Room(request.name());
-        User user = getUserById(userId);
         roomRepository.save(room);
-        roomUserRepository.save(new RoomUser(room, user));
+        roomUserRepository.save(new RoomUser(room.getId(), userId));
 
         WishList wishList = createWishList(room);
         return RoomResponse.of(room, getRoomUserCount(room), wishList.getId());
@@ -50,9 +50,23 @@ public class RoomService {
     }
 
     public List<RoomResponse> getAllRoom(Long userId) {
-        List<Room> rooms = roomUserRepository.getAllRoomByUserId(userId);
+        List<Long> roomIds = roomUserRepository.getAllRoomIdListByUserId(userId);
+        List<Room> rooms = roomRepository.getAllByIdIn(roomIds);
+
+        if (rooms.isEmpty()) {
+            return List.of();
+        }
+
+        Map<Long, Integer> countMap = roomUserRepository.countByRoomIdList(roomIds).stream()
+                .collect(Collectors.toMap(RoomUserRepository.RoomUserCount::getRoomId,
+                        RoomUserRepository.RoomUserCount::getCnt));
+
         return rooms.stream()
-                .map(room -> RoomResponse.of(room, getRoomUserCount(room), getWishListId(room.getId())))
+                .map(room -> RoomResponse.of(
+                        room,
+                        countMap.getOrDefault(room.getId(), 0),
+                        getWishListId(room.getId())
+                ))
                 .toList();
     }
 
@@ -60,17 +74,15 @@ public class RoomService {
     public void inviteUsers(Long roomId, Long userId, RoomInvitationRequest request) {
         validateUserAccessToRoom(roomId, userId);
 
-        Room room = getRoomById(roomId);
-        Set<Long> userIds = new HashSet<>(request.userIds());
-        List<User> users = userIds
-                .stream()
-                .map(this::getUserById)
-                .toList();
+        Set<Long> invitedUserIds = new HashSet<>(request.userIds());
 
-        List<RoomUser> roomUsers = users.stream()
-                .map(user -> new RoomUser(room, user))
-                .filter(roomUser -> !roomUserRepository.existsByRoomIdAndUserId(roomUser.getRoom().getId(),
-                        roomUser.getUser().getId()))
+        Set<Long> existingIds = new HashSet<>(
+                roomUserRepository.findExistingUserIdListInRoom(roomId, invitedUserIds)
+        );
+
+        List<RoomUser> roomUsers = invitedUserIds.stream()
+                .filter(invitedUserId -> !existingIds.contains(invitedUserId))
+                .map(checkedUserId -> new RoomUser(roomId, checkedUserId))
                 .toList();
 
         roomUserRepository.saveAll(roomUsers);
@@ -94,15 +106,11 @@ public class RoomService {
     }
 
     private int getRoomUserCount(Room room) {
-        return roomUserRepository.findAllByRoom(room).size();
+        return roomUserRepository.countByRoomId(room.getId());
     }
 
     private Room getRoomById(Long roomId) {
         return roomRepository.findById(roomId).orElseThrow(() -> new BusinessException(ErrorCode.ROOM_NOT_FOUND));
-    }
-
-    private User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
     }
 
     private void validateUserAccessToRoom(Long roomId, Long userId) {
