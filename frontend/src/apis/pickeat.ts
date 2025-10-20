@@ -175,16 +175,16 @@ export const pickeat = {
     if (response) return response.code;
     return '';
   },
-  postWish: async (wishlistId: number, pickeatCode: string) => {
+  postWish: async (roomId: number, pickeatCode: string) => {
     const getUrl = joinAsPath(
-      BASE_URL_VERSION[1],
+      BASE_URL_VERSION[2],
       BASE_PATH,
       pickeatCode,
       'restaurants',
       'wish'
     );
     await apiClient.post<PickeatResponse>(getUrl, {
-      wishListId: wishlistId,
+      roomId: roomId,
     });
   },
   postLocation: async (data: CreatePickeatFormData, pickeatCode: string) => {
@@ -202,6 +202,16 @@ export const pickeat = {
       y: coords.y,
       radius: data.radius,
     });
+  },
+  postTemplate: async (pickeatCode: string) => {
+    const url = joinAsPath(
+      BASE_URL_VERSION[2],
+      BASE_PATH,
+      pickeatCode,
+      'restaurants',
+      'template'
+    );
+    await apiClient.post<PickeatResponse>(url);
   },
   get: async (pickeatId: string) => {
     const url = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, pickeatId);
@@ -385,13 +395,13 @@ export const pickeatQuery = {
 
     return useMutation({
       mutationFn: async ({
-        wishlistId,
+        roomId,
         pickeatCode,
       }: {
-        wishlistId: number;
+        roomId: number;
         pickeatCode: string;
       }) => {
-        await pickeat.postWish(wishlistId, pickeatCode);
+        await pickeat.postWish(roomId, pickeatCode);
         return pickeatCode;
       },
       onSuccess: (pickeatCode: string) => {
@@ -410,6 +420,29 @@ export const pickeatQuery = {
     });
   },
 
+  usePostTemplate: (pickeatCode: string) => {
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+
+    return useMutation({
+      mutationFn: async () => {
+        await pickeat.postTemplate(pickeatCode);
+      },
+      onSuccess: () => {
+        navigate(generateRouterPath.pickeatDetail(pickeatCode));
+      },
+      onError: (error: unknown) => {
+        console.error('템플릿 설정 실패', error);
+        showToast({
+          mode: 'ERROR',
+          message:
+            error instanceof Error
+              ? error.message
+              : '투표 생성에 실패했습니다. 다시 시도해 주세요.',
+        });
+      },
+    });
+  },
   usePostJoin: () => {
     const navigate = useNavigate();
 
@@ -490,30 +523,28 @@ export const pickeatQuery = {
     const navigate = useNavigate();
     const showToast = useShowToast();
 
-    const { data: pickeatState = { isActive: true }, error } = useQuery({
+    return useQuery({
       queryKey: [BASE_PATH, 'state', pickeatCode],
       queryFn: async () => {
-        const response = await pickeat.getPickeatState(pickeatCode);
-        return response ?? { isActive: true };
+        try {
+          const response = await pickeat.getPickeatState(pickeatCode);
+          // if (response?.isActive === false) {
+          //   showToast({
+          //     mode: 'SUCCESS',
+          //     message: '해당 픽잇이 종료되었습니다.',
+          //   });
+          //   navigate(generateRouterPath.matchResult(pickeatCode));
+          // }
+          return response ?? { isActive: true };
+        } catch (e) {
+          if (e instanceof ApiError && e.message === 'PICKEAT_NOT_FOUND') {
+            showToast({ mode: 'ERROR', message: '해당 픽잇이 종료되었습니다' });
+            navigate(ROUTE_PATH.MAIN);
+          }
+        }
       },
       refetchInterval: 3000,
-      refetchOnWindowFocus: false,
-      staleTime: 0,
     });
-
-    if (error instanceof Error) {
-      if (error.message === 'PICKEAT_NOT_FOUND') {
-        showToast({
-          mode: 'ERROR',
-          message: '해당 픽잇이 종료되었습니다.',
-        });
-        navigate(ROUTE_PATH.MAIN);
-      } else {
-        console.error('Polling error:', error.message);
-      }
-    }
-
-    return { pickeatState };
   },
   useRejoin: (pickeatCode: string) => {
     const navigate = useNavigate();
