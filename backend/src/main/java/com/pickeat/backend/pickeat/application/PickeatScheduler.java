@@ -1,5 +1,6 @@
 package com.pickeat.backend.pickeat.application;
 
+import com.pickeat.backend.global.BaseEntity;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
@@ -54,7 +55,10 @@ public class PickeatScheduler {
     }
 
     private void deleteRelatedData(List<Long> expiredPickeatIds) {
-        List<RestaurantLike> likesToDelete = restaurantLikeRepository.findByRestaurantPickeatIdIn(expiredPickeatIds);
+        List<Long> restaurantIds = restaurantRepository.findIdsByPickeatIdIn((expiredPickeatIds)).stream()
+                .map(BaseEntity::getId)
+                .toList();
+        List<RestaurantLike> likesToDelete = restaurantLikeRepository.findByRestaurantIdIn((restaurantIds));
         List<PickeatResult> resultsToDelete = pickeatResultRepository.findByPickeatIdIn(expiredPickeatIds);
         List<Participant> participantsToDelete = participantRepository.findByPickeatIdIn(expiredPickeatIds);
 

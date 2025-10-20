@@ -11,9 +11,11 @@ import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.Restaurant;
-import com.pickeat.backend.restaurant.domain.Restaurants;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class PickeatResultService {
 
+    private final PickeatResultGenerator pickeatResultGenerator;
     private final PickeatRepository pickeatRepository;
     private final RestaurantRepository restaurantRepository;
     private final ParticipantRepository participantRepository;
     private final PickeatResultRepository pickeatResultRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
 
     @Transactional
     public PickeatResultResponse createPickeatResult(String pickeatCode, Long participantId) {
@@ -57,10 +61,13 @@ public class PickeatResultService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
     }
 
+    //TODO: 결과 만드는중에 좋아요되면 어카지?  (2025-10-20, 월, 20:25)
     private PickeatResultResponse createNewResultWithConcurrencyHandling(Pickeat pickeat) {
         try {
             pickeat.deactivate();
-            return createNewPickeatResult(pickeat);
+            PickeatResultResponse pickeatResult = createNewPickeatResult(pickeat);
+            // todo 이벤트 떤져떤져
+            return pickeatResult;
         } catch (DataIntegrityViolationException e) {
             PickeatResult existingResult = getPickeatResultByPickeat(pickeat);
             return createExistingResultResponse(existingResult);
@@ -69,14 +76,23 @@ public class PickeatResultService {
 
     private PickeatResultResponse createNewPickeatResult(Pickeat pickeat) {
         List<Restaurant> availableRestaurants =
-                restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false);
+                restaurantRepository.findAllByPickeatIdAndIsExcluded(pickeat.getId(), false);
 
-        Restaurants restaurants = new Restaurants(availableRestaurants);
-        Restaurant selectedRestaurant = restaurants.getRandomTopRatedRestaurant();
+        Map<Restaurant, Integer> likeCounts = getLikeCounts(availableRestaurants);
+
+        Restaurant selectedRestaurant = pickeatResultGenerator.generate(likeCounts);
 
         pickeatResultRepository.save(new PickeatResult(pickeat.getId(), selectedRestaurant.getId()));
-
         return PickeatResultResponse.from(selectedRestaurant);
+    }
+
+    private Map<Restaurant, Integer> getLikeCounts(List<Restaurant> availableRestaurants) {
+        Map<Restaurant, Integer> restaurantLikeCounts = new HashMap<>();
+        for (Restaurant restaurant : availableRestaurants) {
+            int likeCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            restaurantLikeCounts.put(restaurant, likeCount);
+        }
+        return restaurantLikeCounts;
     }
 
     private PickeatResult getPickeatResultByPickeat(Pickeat pickeat) {

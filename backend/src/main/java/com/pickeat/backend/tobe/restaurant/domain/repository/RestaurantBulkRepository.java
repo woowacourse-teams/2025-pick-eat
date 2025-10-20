@@ -27,9 +27,9 @@ public class RestaurantBulkRepository {
         final String sql = """
                 INSERT INTO restaurant
                   (name, food_category, distance, road_address_name, place_url,
-                   tags, picture_key, picture_url, is_excluded, like_count,
-                   type, pickeat_id, created_at, updated_at, deleted)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                   tags, picture_key, picture_url, is_excluded, pickeat_id, 
+                   created_at, updated_at, deleted)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         final Timestamp now = Timestamp.valueOf(LocalDateTime.now());
@@ -62,13 +62,11 @@ public class RestaurantBulkRepository {
                 }
 
                 ps.setBoolean(9, r.getIsExcluded());
-                ps.setInt(10, r.getLikeCount());
-                ps.setString(11, r.getType().name());
-                ps.setLong(12, r.getPickeat().getId());
+                ps.setLong(10, r.getPickeatId());
 
-                ps.setTimestamp(13, now);
-                ps.setTimestamp(14, now);
-                ps.setBoolean(15, false);
+                ps.setTimestamp(11, now);
+                ps.setTimestamp(12, now);
+                ps.setBoolean(13, false);
             }
 
             @Override

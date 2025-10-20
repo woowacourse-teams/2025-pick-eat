@@ -1,7 +1,6 @@
 package com.pickeat.backend.pickeat.application.dto.response;
 
 import com.pickeat.backend.restaurant.domain.Restaurant;
-import com.pickeat.backend.restaurant.domain.RestaurantType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.List;
@@ -28,14 +27,8 @@ public record PickeatResultResponse(
         @Schema(description = "도로명 주소", example = "서울 강남구 테헤란로 123")
         String roadAddressName,
 
-        @Schema(description = "좋아요 수", example = "3")
-        int likeCount,
-
         @Schema(description = "사진 url들")
-        List<String> pictureUrls,
-
-        @Schema(description = "식당 타입", example = "WISH / LOCATION")
-        RestaurantType type
+        List<String> pictureUrls
 ) {
 
     public static PickeatResultResponse from(Restaurant restaurant) {
@@ -47,9 +40,7 @@ public record PickeatResultResponse(
                 restaurant.getDistance(),
                 restaurant.getPlaceUrl(),
                 restaurant.getRoadAddressName(),
-                restaurant.getLikeCount(),
-                parsePictureUrls(restaurant.getPictureUrls()),
-                restaurant.getType()
+                parsePictureUrls(restaurant.getPictureUrls())
         );
     }
 

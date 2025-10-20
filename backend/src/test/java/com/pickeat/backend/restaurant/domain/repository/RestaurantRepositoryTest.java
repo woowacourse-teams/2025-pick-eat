@@ -34,12 +34,13 @@ class RestaurantRepositoryTest {
         restaurant2.exclude();
 
         // when & then
+        Long pickeatId = pickeat.getId();
         assertAll(
-                () -> assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, true))
+                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeatId, true))
                         .hasSize(1),
-                () -> assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false))
+                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeatId, false))
                         .hasSize(2),
-                () -> assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, null))
+                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeatId, null))
                         .hasSize(3)
         );
     }
@@ -54,10 +55,10 @@ class RestaurantRepositoryTest {
             Pickeat pickeat2 = testEntityManager.persist(PickeatFixture.createWithoutRoom());
             Pickeat pickeat3 = testEntityManager.persist(PickeatFixture.createWithoutRoom());
 
-            testEntityManager.persist(RestaurantFixture.create(pickeat1, "삭제될 레스토랑1"));
-            testEntityManager.persist(RestaurantFixture.create(pickeat1, "삭제될 레스토랑1-2"));
-            testEntityManager.persist(RestaurantFixture.create(pickeat2, "삭제될 레스토랑2"));
-            testEntityManager.persist(RestaurantFixture.create(pickeat3, "유지될 레스토랑"));
+            testEntityManager.persist(RestaurantFixture.createWithName(pickeat1, "삭제될 레스토랑1"));
+            testEntityManager.persist(RestaurantFixture.createWithName(pickeat1, "삭제될 레스토랑1-2"));
+            testEntityManager.persist(RestaurantFixture.createWithName(pickeat2, "삭제될 레스토랑2"));
+            testEntityManager.persist(RestaurantFixture.createWithName(pickeat3, "유지될 레스토랑"));
 
             testEntityManager.flush();
             testEntityManager.clear();

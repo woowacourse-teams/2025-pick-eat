@@ -14,6 +14,7 @@ import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import java.util.UUID;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({PickeatResultService.class})
+@Import({PickeatResultGenerator.class, PickeatResultService.class})
 public class PickeatResultServiceTest {
 
     @Autowired
@@ -40,11 +41,8 @@ public class PickeatResultServiceTest {
         return testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
     }
 
-    private Restaurant createRestaurantInPickeat(Pickeat pickeat, int likeCount) {
+    private Restaurant createRestaurantInPickeat(Pickeat pickeat) {
         Restaurant restaurant = RestaurantFixture.create(pickeat);
-        for (int i = 0; i < likeCount; i++) {
-            restaurant.like();
-        }
         return testEntityManager.persist(restaurant);
     }
 
@@ -56,8 +54,9 @@ public class PickeatResultServiceTest {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
             Participant participant = createParticipant(pickeat);
-            createRestaurantInPickeat(pickeat, 2);
-            Restaurant restaurant2 = createRestaurantInPickeat(pickeat, 3);
+            Restaurant restaurant1 = createRestaurantInPickeat(pickeat);
+            Restaurant restaurant2 = createRestaurantInPickeat(pickeat);
+            testEntityManager.persist(new RestaurantLike(participant.getId(), restaurant2.getId()));
 
             testEntityManager.flush();
             testEntityManager.clear();
@@ -75,7 +74,7 @@ public class PickeatResultServiceTest {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
             Participant participant = createParticipant(pickeat);
-            Restaurant restaurant = createRestaurantInPickeat(pickeat, 3);
+            Restaurant restaurant = createRestaurantInPickeat(pickeat);
 
             testEntityManager.flush();
             testEntityManager.clear();
@@ -99,7 +98,7 @@ public class PickeatResultServiceTest {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
             Participant participant = createParticipant(pickeat);
-            Restaurant restaurant1 = createRestaurantInPickeat(pickeat, 2);
+            Restaurant restaurant1 = createRestaurantInPickeat(pickeat);
             restaurant1.exclude();
 
             testEntityManager.flush();
@@ -116,7 +115,7 @@ public class PickeatResultServiceTest {
         void 존재하지_않는_참여자로_접근시_예외() {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
-            createRestaurantInPickeat(pickeat, 3);
+            createRestaurantInPickeat(pickeat);
             Long invalidParticipantId = 999L;
 
             testEntityManager.flush();
@@ -135,7 +134,7 @@ public class PickeatResultServiceTest {
             Pickeat pickeat = createWithoutRoomPickeat();
             Pickeat otherPickeat = createWithoutRoomPickeat();
             Participant participant = createParticipant(otherPickeat);
-            createRestaurantInPickeat(pickeat, 3);
+            createRestaurantInPickeat(pickeat);
 
             testEntityManager.flush();
             testEntityManager.clear();
@@ -168,7 +167,7 @@ public class PickeatResultServiceTest {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
             Participant participant = createParticipant(pickeat);
-            createRestaurantInPickeat(pickeat, 3);
+            createRestaurantInPickeat(pickeat);
 
             testEntityManager.flush();
             testEntityManager.clear();
@@ -189,7 +188,7 @@ public class PickeatResultServiceTest {
         void 픽잇_결과_조회_성공() {
             // given
             Pickeat pickeat = createWithoutRoomPickeat();
-            Restaurant restaurant = createRestaurantInPickeat(pickeat, 3);
+            Restaurant restaurant = createRestaurantInPickeat(pickeat);
             PickeatResult pickeatResult = new PickeatResult(pickeat.getId(), restaurant.getId());
             testEntityManager.persist(pickeatResult);
 

@@ -68,7 +68,7 @@ public class RestaurantController implements RestaurantApiSpec {
             @RequestBody RestaurantExcludeRequest request,
             @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        restaurantService.exclude(request, participantPrincipal.id());
+        restaurantService.exclude(request, participantPrincipal);
         return ResponseEntity.noContent().build();
     }
 

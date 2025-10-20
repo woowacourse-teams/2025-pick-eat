@@ -4,9 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.pickeat.backend.fixture.ParticipantFixture;
+import com.pickeat.backend.fixture.ParticipantPrincipalFixture;
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.global.BaseEntity;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.domain.Participant;
@@ -18,6 +20,7 @@ import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -40,6 +43,9 @@ class RestaurantServiceTest {
     @Autowired
     private RestaurantService restaurantService;
 
+    @Autowired
+    private RestaurantLikeRepository restaurantLikeRepository;
+
     @Nested
     class 식당_생성_케이스 {
 
@@ -53,7 +59,7 @@ class RestaurantServiceTest {
             restaurantService.create(restaurantRequests, pickeat.getCode().toString());
 
             // then
-            assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false)).hasSize(2);
+            assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(), false)).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {
@@ -71,6 +77,7 @@ class RestaurantServiceTest {
 
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
+            ParticipantPrincipal participantPrincipal = ParticipantPrincipalFixture.create(participant, pickeat);
 
             List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(pickeat)),
@@ -81,7 +88,7 @@ class RestaurantServiceTest {
             entityManager.clear();
 
             // when
-            restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId());
+            restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participantPrincipal);
 
             // then
             List<Restaurant> actualRestaurants = restaurantRepository.findAll();
@@ -93,6 +100,7 @@ class RestaurantServiceTest {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
+            ParticipantPrincipal participantPrincipal = ParticipantPrincipalFixture.create(participant, pickeat);
             Pickeat otherPickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(otherPickeat)));
@@ -103,7 +111,7 @@ class RestaurantServiceTest {
 
             // when & then
             assertThatThrownBy(
-                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId()))
+                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participantPrincipal))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN.getMessage());
         }
@@ -113,6 +121,7 @@ class RestaurantServiceTest {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
+            ParticipantPrincipal participantPrincipal = ParticipantPrincipalFixture.create(participant, pickeat);
             List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
                     entityManager.persist(RestaurantFixture.create(pickeat)));
             pickeat.deactivate();
@@ -124,7 +133,7 @@ class RestaurantServiceTest {
 
             // when & then
             assertThatThrownBy(
-                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId()))
+                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participantPrincipal))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.PICKEAT_ALREADY_INACTIVE.getMessage());
         }
@@ -139,7 +148,7 @@ class RestaurantServiceTest {
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
-            Integer originCount = restaurant.getLikeCount();
+            Integer originCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
 
             entityManager.flush();
             entityManager.clear();
@@ -148,8 +157,8 @@ class RestaurantServiceTest {
             restaurantService.like(restaurant.getId(), participant.getId());
 
             // then
-            Restaurant actual = restaurantRepository.findById(restaurant.getId()).get();
-            assertThat(actual.getLikeCount()).isEqualTo(originCount + 1);
+            Integer actualCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            assertThat(actualCount).isEqualTo(originCount + 1);
         }
 
         @Test
@@ -179,10 +188,8 @@ class RestaurantServiceTest {
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
-
-            entityManager.persist(new RestaurantLike(participant, restaurant));
-            restaurant.like();
-            Integer originCount = restaurant.getLikeCount();
+            entityManager.persist(new RestaurantLike(participant.getId(), restaurant.getId()));
+            Integer originCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
 
             entityManager.flush();
             entityManager.clear();
@@ -191,8 +198,9 @@ class RestaurantServiceTest {
             restaurantService.cancelLike(restaurant.getId(), participant.getId());
 
             // then
-            Restaurant actual = restaurantRepository.findById(restaurant.getId()).get();
-            assertThat(actual.getLikeCount()).isEqualTo(originCount - 1);
+            Integer actualCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            assertThat(actualCount).isEqualTo(originCount - 1);
+
         }
     }
 
