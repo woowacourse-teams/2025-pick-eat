@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class RoomService {
 
+    private static final int INITIAL_ROOM_COUNT = 1;
     private final RoomRepository roomRepository;
     private final RoomUserRepository roomUserRepository;
 
@@ -31,7 +32,7 @@ public class RoomService {
         Room room = new Room(request.name());
         roomRepository.save(room);
         roomUserRepository.save(new RoomUser(room.getId(), userId));
-        return RoomResponse.of(room, 1);
+        return RoomResponse.of(room, INITIAL_ROOM_COUNT);
     }
 
     public RoomResponse getRoom(Long roomId, Long userId) {
