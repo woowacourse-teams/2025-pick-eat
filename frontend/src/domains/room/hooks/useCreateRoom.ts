@@ -1,21 +1,22 @@
-import { room } from '@apis/room';
+import { roomQuery } from '@apis/room';
 import { User } from '@apis/users';
 
-import { generateRouterPath } from '@routes/routePath';
-
-import { useShowToast } from '@provider/ToastProvider';
-
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { FormEvent, useState } from 'react';
 
 import { validateCreateRoom } from '../services/validateCreateRoom';
 
-export const useCreateRoom = () => {
+type Props = () => void;
+export const useCreateRoom = (onCreate: Props) => {
   const [error, setError] = useState<string>();
-  const navigate = useNavigate();
-  const showToast = useShowToast();
 
-  const createRoom = async (roomName: string, selectedMemberList: User[]) => {
+  const { mutate } = roomQuery.usePost(onCreate);
+
+  const createRoom = async (
+    e: FormEvent<HTMLFormElement>,
+    roomName: string,
+    selectedMemberList: User[]
+  ) => {
+    e.preventDefault();
     try {
       validateCreateRoom(roomName);
     } catch (error) {
@@ -25,20 +26,10 @@ export const useCreateRoom = () => {
       }
     }
 
-    try {
-      const roomData = await room.post(roomName as string);
-      if (!roomData) return;
-      if (selectedMemberList.length > 0) {
-        await room.postMember(
-          roomData.id,
-          selectedMemberList.map(member => member.id)
-        );
-      }
-      showToast({ mode: 'SUCCESS', message: '방생성 완료!' });
-      navigate(generateRouterPath.roomDetail(roomData.id, roomData.wishlistId));
-    } catch {
-      setError('방 생성 중 문제가 발생했습니다.');
-    }
+    mutate({
+      name: roomName,
+      userIds: selectedMemberList.map(member => member.id),
+    });
   };
 
   return { createRoom, error };

@@ -16,7 +16,7 @@ type WishContent = {
   name: string;
   imageUrl: string;
   errorMessage?: string;
-  isWish: boolean;
+  isTemplate: boolean;
 };
 
 const WISH_CONTENT: WishContent[] = [
@@ -24,19 +24,19 @@ const WISH_CONTENT: WishContent[] = [
     id: 1,
     name: '잠실역',
     imageUrl: '/images/carousel/subway_thumbnail.png',
-    isWish: true,
+    isTemplate: true,
   },
   {
     id: 2,
     name: '선릉역',
     imageUrl: '/images/carousel/subway_thumbnail.png',
-    isWish: true,
+    isTemplate: true,
   },
   {
     id: 3,
     name: '내 위치에서',
     imageUrl: '/images/carousel/map_thumbnail.png',
-    isWish: false,
+    isTemplate: false,
   },
 ];
 
@@ -75,11 +75,11 @@ export function useWishCarousel() {
       <Card
         key={item.id}
         itemId={item.id}
-        isWish={item.isWish}
+        isWish={item.isTemplate}
         title={item.name}
         imageUrl={item.imageUrl}
         onClick={() => {
-          if (item.isWish) {
+          if (item.isTemplate) {
             handleWishCardClick(item.id, item.errorMessage ?? '');
             return;
           }

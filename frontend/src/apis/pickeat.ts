@@ -18,6 +18,14 @@ export type PickeatResponse = {
   isActive: boolean;
 };
 
+export type Pickeat = {
+  id: number;
+  code: string;
+  name: string;
+  participantCount: number;
+  active: boolean;
+};
+
 type CreatePickeatFormData = {
   address: string;
   radius: number;

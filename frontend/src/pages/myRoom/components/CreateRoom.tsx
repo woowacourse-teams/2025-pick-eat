@@ -13,14 +13,19 @@ import { useState, useEffect, useRef, ChangeEvent } from 'react';
 
 const MAX_LENGTH = 12;
 
-function CreateRoom({ opened }: { opened: boolean }) {
+type Props = {
+  opened: boolean;
+  onCreate: () => void;
+};
+
+function CreateRoom({ opened, onCreate }: Props) {
   const [roomName, setRoomName] = useState('');
   const {
     selectedMemberList,
     handleAddSelectedMember,
     handleDeleteSelectedMember,
   } = useInviteMember();
-  const { createRoom } = useCreateRoom();
+  const { createRoom } = useCreateRoom(onCreate);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,7 +41,7 @@ function CreateRoom({ opened }: { opened: boolean }) {
   }, [opened]);
 
   return (
-    <S.Container>
+    <S.Container onSubmit={e => createRoom(e, roomName, selectedMemberList)}>
       <S.Title>방 만들기</S.Title>
       <LineInput
         ref={inputRef}
@@ -58,11 +63,7 @@ function CreateRoom({ opened }: { opened: boolean }) {
         onAddMember={handleAddSelectedMember}
         onDeleteMember={handleDeleteSelectedMember}
       />
-      <FixedButton
-        onClick={() => createRoom(roomName, selectedMemberList)}
-        disabled={roomName.length === 0}
-        type="submit"
-      >
+      <FixedButton disabled={roomName.length === 0}>
         {roomName.length === 0 ? '방 이름을 입력해 주세요.' : '방 만들기'}
       </FixedButton>
     </S.Container>

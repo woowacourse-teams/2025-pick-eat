@@ -1,6 +1,6 @@
-import { validate } from '@utils/validate';
+import { WishFormDataWithImage } from '@apis/wish';
 
-import { WishFormDataWithImage } from '../hooks/useCreateWish';
+import { validate } from '@utils/validate';
 
 const ERROR_MESSAGE = {
   NAME: '식당 이름을 입력해 주세요.',
