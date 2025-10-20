@@ -13,11 +13,13 @@ import org.springframework.transaction.event.TransactionalEventListener;
 public class PickeatDeactivatedEventHandler {
     private final RestaurantRepositoryImpl restaurantRepositoryImpl;
     private final PickeatRepositoryImpl pickeatRepositoryImpl;
+    private final ParticipantRepositoryImpl participantRepositoryImpl;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handle(PickeatDeactivatedEvent event) {
         Pickeat pickeat = event.pickeat();
         restaurantRepositoryImpl.evictRestaurantCache(pickeat);
         pickeatRepositoryImpl.evictPickeatCache(pickeat);
+        participantRepositoryImpl.evictParticipantCache(pickeat.getId());
     }
 }

@@ -23,7 +23,7 @@ public class PickeatRepositoryImpl implements PickeatRepository {
     private final PickeatJpaRepository jpaRepository;
 
     @Override
-    @Cacheable(value = PICKEAT_CACHE_NAME, key = "#pickeatCode")
+    @Cacheable(value = PICKEAT_CACHE_NAME, key = "#pickeatCode.value.toString()")
     public Optional<Pickeat> findByCode(PickeatCode pickeatCode) {
         return jpaRepository.findByCode(pickeatCode);
     }
@@ -58,7 +58,7 @@ public class PickeatRepositoryImpl implements PickeatRepository {
         return jpaRepository.save(pickeat);
     }
 
-    @CacheEvict(value = PICKEAT_CACHE_NAME, key = "#pickeat.code")
+    @CacheEvict(value = PICKEAT_CACHE_NAME, key = "#pickeat.code.value.toString()")
     public void evictPickeatCache(Pickeat pickeat) {
         log.info("픽잇 캐시 무효화 | pickeatCode: {}", pickeat.getCode().getValue().toString());
     }
