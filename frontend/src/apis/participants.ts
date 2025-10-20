@@ -35,7 +35,7 @@ export const participantsQuery = {
     const showToast = useShowToast();
 
     return useQuery({
-      queryKey: [BASE_PATH, 'status', 'me'],
+      queryKey: [BASE_PATH],
       queryFn: async () => {
         try {
           const status = await participants.getMyStatus();
@@ -80,7 +80,7 @@ export const participantsQuery = {
         onVoteComplete?.();
 
         queryClient.invalidateQueries({
-          queryKey: [BASE_PATH, 'status', 'me'],
+          queryKey: [BASE_PATH],
         });
       },
       onError: () => {
