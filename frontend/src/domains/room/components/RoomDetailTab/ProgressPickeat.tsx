@@ -1,22 +1,20 @@
 import ActivateCircle from '@components/assets/icons/ActivateCircle';
 import Enter from '@components/assets/icons/Enter';
 
-import { ProgressPickeat } from '@apis/room';
+import { roomQuery } from '@apis/room';
 
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import ContentTitle from './components/ContentTitle';
 
-function ProgressPickeat({
-  pickeats,
-}: {
-  pickeats: Promise<ProgressPickeat[]>;
-}) {
-  const pickeatList = use(pickeats);
+function ProgressPickeat() {
+  const [searchParams] = useSearchParams();
+  const roomId = Number(searchParams.get('roomId')) ?? '';
+
+  const { data } = roomQuery.useGetProgressPickeats(roomId);
   const navigate = useNavigate();
 
   return (
@@ -26,7 +24,7 @@ function ProgressPickeat({
         description="현재 방에서 진행 중인 투표에 입장해보세요!"
       />
       <S.List>
-        {pickeatList.map(pickeat => (
+        {data?.map(pickeat => (
           <S.ProgressPickeat key={pickeat.id}>
             <S.TitleArea>
               <ActivateCircle size="xxs" activate={true} />

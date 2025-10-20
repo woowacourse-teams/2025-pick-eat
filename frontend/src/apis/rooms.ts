@@ -1,6 +1,8 @@
+import { joinAsPath } from '@utils/createUrl';
+
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-import { apiClient } from './apiClient';
+import { apiClient, BASE_URL_VERSION } from './apiClient';
 import { Room, RoomResponse } from './room';
 
 const convertResponseToRooms = (data: RoomResponse[]) => {
@@ -8,15 +10,16 @@ const convertResponseToRooms = (data: RoomResponse[]) => {
     id: d.id,
     name: d.name,
     memberCount: d.userCount,
-    wishlistId: d.wishlistId,
   }));
 };
 
-const basePath = 'rooms';
+const BASE_PATH = 'rooms';
 
 export const rooms = {
   get: async (): Promise<Room[]> => {
-    const response = await apiClient.get<RoomResponse[]>(basePath);
+    const response = await apiClient.get<RoomResponse[]>(
+      joinAsPath(BASE_URL_VERSION[2], BASE_PATH)
+    );
     if (response) return convertResponseToRooms(response);
     return [];
   },

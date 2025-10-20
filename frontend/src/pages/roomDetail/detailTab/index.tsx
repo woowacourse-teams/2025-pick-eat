@@ -4,23 +4,11 @@ import ProgressPickeat from '@domains/room/components/RoomDetailTab/ProgressPick
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 
-import { room } from '@apis/room';
-
 import styled from '@emotion/styled';
 import { ErrorBoundary } from '@sentry/react';
-import { Suspense, useMemo } from 'react';
-import { useSearchParams } from 'react-router';
+import { Suspense } from 'react';
 
 function DetailTab() {
-  const [searchParams] = useSearchParams();
-  const roomId = Number(searchParams.get('roomId')) ?? '';
-
-  const includeMembers = useMemo(
-    () => room.getIncludeMembers(roomId),
-    [roomId]
-  );
-  const pickeats = useMemo(() => room.getPickeats(roomId), [roomId]);
-
   return (
     <S.Container>
       <Suspense fallback={<LoadingSpinner />}>
@@ -29,12 +17,12 @@ function DetailTab() {
         </S.ContentSection>
         <S.ContentSection>
           <ErrorBoundary>
-            <IncludeMemberList members={includeMembers} />
+            <IncludeMemberList />
           </ErrorBoundary>
         </S.ContentSection>
         <S.ContentSection>
           <ErrorBoundary>
-            <ProgressPickeat pickeats={pickeats} />
+            <ProgressPickeat />
           </ErrorBoundary>
         </S.ContentSection>
       </Suspense>

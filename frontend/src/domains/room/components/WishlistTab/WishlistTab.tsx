@@ -1,9 +1,7 @@
 import Plus from '@components/assets/icons/Plus';
 import { useModal } from '@components/modal/useModal';
 
-import { useManageWishlist } from '@domains/room/hooks/useManageWishlist';
-
-import { wishlistQuery } from '@apis/wishlist';
+import { wishQuery } from '@apis/wish';
 
 import { THEME } from '@styles/global';
 
@@ -16,9 +14,9 @@ import WishRestaurantCard from './WishRestaurantCard';
 function WishlistTab() {
   const { opened, handleCloseModal, handleOpenModal } = useModal();
   const [searchParams] = useSearchParams();
-  const wishId = Number(searchParams.get('wishId')) ?? '';
-  const { handleDeleteWish } = useManageWishlist(wishId);
-  const { data } = wishlistQuery.useGet(wishId);
+  const roomId = Number(searchParams.get('roomId')) ?? '';
+
+  const { data } = wishQuery.useGet(roomId);
 
   return (
     <S.Container>
@@ -28,13 +26,9 @@ function WishlistTab() {
       </S.RegisterButton>
 
       <S.Wishlist>
-        {(data ?? [].length > 0) ? (
-          data?.map(wish => (
-            <WishRestaurantCard
-              key={wish.id}
-              restaurantData={wish}
-              onDelete={() => handleDeleteWish(wish.id)}
-            />
+        {data.length > 0 ? (
+          data.map(wish => (
+            <WishRestaurantCard key={wish.id} restaurantData={wish} />
           ))
         ) : (
           <S.EmptyDescriptionPointText>

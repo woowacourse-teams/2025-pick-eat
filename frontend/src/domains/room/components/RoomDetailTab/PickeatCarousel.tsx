@@ -18,7 +18,7 @@ function PickeatCarousel() {
         name: '즐겨찾기에서',
         imageUrl: '/images/carousel/room_favorite_thumbnail.png',
         errorMessage: '식당 즐겨찾기에 식당이 존재하는지 확인해 주세요.',
-        isWish: true,
+        isTemplate: false,
       },
     ];
   }, []);
