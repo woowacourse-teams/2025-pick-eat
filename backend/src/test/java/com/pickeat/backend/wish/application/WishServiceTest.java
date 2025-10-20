@@ -51,7 +51,7 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"),
@@ -72,7 +72,7 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"),
@@ -98,7 +98,7 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             Wish wish = entityManager.persist(WishFixture.create(wishList));
@@ -118,7 +118,7 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             Wish wish = entityManager.persist(WishFixture.create(wishList));
@@ -143,7 +143,7 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             Wish wish = entityManager.persist(WishFixture.create(wishList));
 
@@ -177,7 +177,7 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             Wish wish = entityManager.persist(WishFixture.create(wishList));
 
@@ -209,7 +209,7 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             List<Wish> wishes = List.of(
@@ -235,7 +235,7 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
             WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             List<Wish> wishes = List.of(

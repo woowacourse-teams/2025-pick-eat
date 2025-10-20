@@ -95,7 +95,7 @@ public class PickeatServiceTest {
             Room room = testEntityManager.persist(RoomFixture.create());
             User user = testEntityManager.persist(UserFixture.create());
 
-            testEntityManager.persist(new RoomUser(room, user));
+            testEntityManager.persist(new RoomUser(room.getId(), user.getId()));
 
             PickeatRequest pickeatRequest = new PickeatRequest("픽잇");
 
@@ -237,7 +237,7 @@ public class PickeatServiceTest {
             // given
             User user = testEntityManager.persist(UserFixture.create());
             Room room = testEntityManager.persist(RoomFixture.create());
-            RoomUser roomUser = testEntityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = testEntityManager.persist(new RoomUser(room.getId(), user.getId()));
             List<Pickeat> pickeats = List.of(
                     testEntityManager.persist(PickeatFixture.createWithRoom(room.getId())),
                     testEntityManager.persist(PickeatFixture.createWithRoom(room.getId())));
@@ -284,7 +284,7 @@ public class PickeatServiceTest {
             // given
             User user = testEntityManager.persist(UserFixture.create());
             Room room = testEntityManager.persist(RoomFixture.create());
-            RoomUser roomUser = testEntityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = testEntityManager.persist(new RoomUser(room.getId(), user.getId()));
             List<Pickeat> pickeats = List.of(
                     testEntityManager.persist(PickeatFixture.createWithRoom(room.getId())),
                     testEntityManager.persist(PickeatFixture.createWithRoom(room.getId())));
@@ -329,7 +329,7 @@ public class PickeatServiceTest {
             // given
             User user = testEntityManager.persist(UserFixture.create());
             Room room = testEntityManager.persist(RoomFixture.create());
-            RoomUser roomUser = testEntityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = testEntityManager.persist(new RoomUser(room.getId(), user.getId()));
             List<Pickeat> pickeats = List.of(
                     testEntityManager.persist(Pickeat.createWithRoom("pickeat_test1", room.getId())),
                     testEntityManager.persist(Pickeat.createWithRoom("pickeat_test1", room.getId())),
@@ -352,7 +352,7 @@ public class PickeatServiceTest {
             // given
             User user = testEntityManager.persist(UserFixture.create());
             Room room = testEntityManager.persist(RoomFixture.create());
-            RoomUser roomUser = testEntityManager.persist(new RoomUser(room, user));
+            RoomUser roomUser = testEntityManager.persist(new RoomUser(room.getId(), user.getId()));
             List<Pickeat> pickeats = List.of(
                     testEntityManager.persist(Pickeat.createWithRoom("pickeat_test1", room.getId())),
                     testEntityManager.persist(Pickeat.createWithRoom("pickeat_test1", room.getId())));
