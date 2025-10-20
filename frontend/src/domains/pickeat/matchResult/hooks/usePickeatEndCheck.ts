@@ -1,49 +1,36 @@
-import { pickeat, PickeatStateResponse } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 import { restaurantsQuery } from '@apis/restaurants';
 
-import { usePolling } from '@hooks/usePolling';
+import { generateRouterPath } from '@routes/routePath';
 
-import { generateRouterPath, ROUTE_PATH } from '@routes/routePath';
-
-import { useShowToast } from '@provider/ToastProvider';
-
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 export function usePickeatStateChecker(pickeatCode: string) {
   const [hasRestaurants, setHasRestaurants] = useState(true);
+  const { data: restaurants, isLoading: isRestaurantsLoading } =
+    restaurantsQuery.useGet(pickeatCode, {
+      isExcluded: 'false',
+      pollingInterval: 3000,
+    });
+  const { data: pickeatState, isLoading: isPickeatLoading } =
+    pickeatQuery.useGetPickeatState(pickeatCode);
+  const { mutate: patchDeactive } = pickeatQuery.usePatchDeactive();
+
   const navigate = useNavigate();
-  const showToast = useShowToast();
-  const { data: restaurants } = restaurantsQuery.useGet(pickeatCode, {
-    isExcluded: 'false',
-    pollingInterval: 3000,
-  });
-
-  const fetchPickeatState = async (): Promise<PickeatStateResponse | null> => {
-    return await pickeat.getPickeatState(pickeatCode);
-  };
-
-  usePolling<PickeatStateResponse | null>(fetchPickeatState, {
-    onData: async data => {
-      if (data?.isActive === true) return;
-      // TODO : 처음엔 무조건 undefined 일텐데 nullish 처리로 괜찮은지?
+  useEffect(() => {
+    if (!isRestaurantsLoading && !isPickeatLoading) {
       if (restaurants?.length === 0) {
+        if (pickeatState?.isActive === true) {
+          patchDeactive(pickeatCode);
+        }
         setHasRestaurants(false);
-        return;
       }
-      navigate(generateRouterPath.matchResult(pickeatCode));
-    },
-    errorHandler: error => {
-      if (error.message === 'PICKEAT_NOT_FOUND') {
-        showToast({ mode: 'ERROR', message: '해당 픽잇이 종료되었습니다' });
-        navigate(ROUTE_PATH.MAIN);
-      } else {
-        console.error('Polling error:', error.message);
+      if ((restaurants?.length ?? 0) > 0 && pickeatState?.isActive === false) {
+        navigate(generateRouterPath.matchResult(pickeatCode));
       }
-    },
-    interval: 3000,
-    immediate: true,
-  });
+    }
+  }, [isRestaurantsLoading, isPickeatLoading, restaurants, pickeatState]);
 
   return { hasRestaurants };
 }
