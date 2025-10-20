@@ -5,8 +5,10 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
+
+import { pickeatQuery } from '@apis/pickeat';
+import { restaurants } from '@apis/restaurants';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
@@ -19,7 +21,8 @@ import Title from './components/Title';
 function RestaurantExcludePage() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  const { hasRestaurants } = usePickeatStateChecker(pickeatCode);
+  const { pickeatState: hasRestaurants } =
+    pickeatQuery.useGetPickeatState(pickeatCode);
 
   return (
     <ParticipantsProvider pickeatCode={pickeatCode}>

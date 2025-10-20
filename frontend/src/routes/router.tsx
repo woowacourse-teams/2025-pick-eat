@@ -1,17 +1,6 @@
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Layout from '@components/layouts/Layout';
 
-import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
-import Login from '@pages/Login';
-import Main from '@pages/Main';
-import OauthCallback from '@pages/OauthCallback';
-import { useRejoinRedirect } from '@pages/pickeat/hooks/useReEntry';
-import MatchResult from '@pages/pickeat/matchResult/MatchResult';
-import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
-import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
-import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
-import ProfileInit from '@pages/ProfileInit';
-
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
 import { queryClient } from '@apis/queryClient';
@@ -26,6 +15,16 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
+import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
+import Login from '@pages/Login';
+import Main from '@pages/Main';
+import OauthCallback from '@pages/OauthCallback';
+import { useRejoinRedirect } from '@pages/pickeat/hooks/useReEntry';
+import MatchResult from '@pages/pickeat/matchResult/MatchResult';
+import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
+import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
+import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
+import ProfileInit from '@pages/ProfileInit';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import {
@@ -94,8 +93,8 @@ function GuestOnlyRoute() {
 function ProtectedPickeat() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  const loading = useRejoinRedirect(pickeatCode);
-  if (loading) return null;
+  const { isLoading } = useRejoinRedirect(pickeatCode);
+  if (isLoading) return null;
   return <Outlet />;
 }
 

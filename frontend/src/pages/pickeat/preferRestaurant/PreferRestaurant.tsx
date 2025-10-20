@@ -4,8 +4,9 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
-import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
+
+import { pickeatQuery } from '@apis/pickeat';
 
 import styled from '@emotion/styled';
 import { Suspense, useEffect, useState } from 'react';
@@ -23,7 +24,7 @@ function PreferRestaurant() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
-  usePickeatStateChecker(pickeatCode);
+  pickeatQuery.useGetPickeatState(pickeatCode);
 
   useEffect(() => {
     setStep(2);
@@ -35,6 +36,7 @@ function PreferRestaurant() {
         <S.ProgressBarWrapper>
           <ProgressBar total={3} current={step} />
         </S.ProgressBarWrapper>
+
         <TitleSection>
           <Title />
         </TitleSection>
@@ -70,7 +72,6 @@ const S = {
   RestaurantListContainer: styled.div`
     width: 100%;
     min-height: 580px;
-
     padding-bottom: ${FOOTER_HEIGHT}px;
   `,
 

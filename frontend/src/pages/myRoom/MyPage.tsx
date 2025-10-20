@@ -8,19 +8,16 @@ import { useModal } from '@components/modal/useModal';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { pickeat } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 
 import styled from '@emotion/styled';
-import { Suspense, useMemo } from 'react';
+import { Suspense } from 'react';
 
 import CreateRoom from './components/CreateRoom';
 import Profile from './components/Profile';
 
 function MyPage() {
-  const participatingPickeatData = useMemo(
-    () => pickeat.getParticipating(),
-    []
-  );
+  const { data: participatingPickeatData } = pickeatQuery.useGetParticipating();
   const { opened, handleOpenModal, handleCloseModal } = useModal();
 
   return (

@@ -1,4 +1,4 @@
-import { pickeat } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 import { Restaurant } from '@apis/restaurant';
 
 import { useCallback, useEffect, useState } from 'react';
@@ -10,6 +10,7 @@ const usePreferRestaurant = (
 ) => {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
+  const { mutate: deactivatePickeat } = pickeatQuery.usePatchDeactive();
 
   const sortRestaurants = (restaurantList: Restaurant[]) => {
     return restaurantList.sort((a, b) => {
@@ -56,7 +57,7 @@ const usePreferRestaurant = (
   useEffect(() => {
     if (restaurantList.length > 0) return;
     const endPickeat = async () => {
-      await pickeat.patchDeactive(pickeatCode);
+      deactivatePickeat(pickeatCode);
     };
     endPickeat();
   }, [restaurantList]);
