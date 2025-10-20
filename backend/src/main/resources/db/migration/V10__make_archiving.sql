@@ -38,6 +38,21 @@ BEGIN
     DECLARE latest_version VARCHAR(50);
 
     -- -------------------------------
+    -- 예외 처리 핸들러
+    -- -------------------------------
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+        ROLLBACK;
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Archive operation failed - transaction rolled back';
+    END;
+
+    -- -------------------------------
+    -- 트랜잭션 시작
+    -- -------------------------------
+    START TRANSACTION;
+
+    -- -------------------------------
     -- 최신 Flyway 버전 조회
     -- -------------------------------
     SELECT version
@@ -87,6 +102,11 @@ BEGIN
     PREPARE del_stmt FROM @del_sql;
     EXECUTE del_stmt;
     DEALLOCATE PREPARE del_stmt;
+
+    -- -------------------------------
+    -- 트랜잭션 커밋
+    -- -------------------------------
+    COMMIT;
 END$$
 
 DELIMITER ;
