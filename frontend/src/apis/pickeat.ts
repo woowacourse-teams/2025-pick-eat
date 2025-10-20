@@ -210,10 +210,8 @@ export const pickeat = {
     throw new Error('픽잇 정보가 존재하지 않습니다.');
   },
   postJoin: async (data: JoinPickeatFormData): Promise<string> => {
-    const response = await apiClient.post<{ token: string }>(
-      `participants`,
-      data
-    );
+    const url = joinAsPath(BASE_URL_VERSION[1], 'participants');
+    const response = await apiClient.post<{ token: string }>(url, data);
     return response?.token || '';
   },
   getParticipantsCount: async (

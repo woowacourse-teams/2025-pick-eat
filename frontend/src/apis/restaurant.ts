@@ -67,11 +67,6 @@ export const convertResponseToRestaurant = ({
   isLiked,
 });
 
-type MutationOption = {
-  onSuccess?: () => void;
-  onError?: () => void;
-};
-
 const restaurant = {
   patchLike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
@@ -87,22 +82,38 @@ const restaurant = {
       BASE_URL_VERSION[2],
       RESTAURANTS_BASE_PATH,
       restaurantId.toString(),
-      'unlike'
+      'unlikesss'
     );
     await apiClient.patch(patchUrl);
   },
 };
 
 export const restaurantQuery = {
-  usePatchLike: (restaurantId: number, option?: MutationOption) => {
+  usePatchLike: (pickeatCode: string) => {
     const showToast = useShowToast();
     return useMutation({
-      mutationFn: async () => restaurant.patchLike(restaurantId),
-      onSuccess: () => {
-        option?.onSuccess?.();
+      mutationFn: async (id: number) => await restaurant.patchLike(id),
+      onMutate: async (id: number, context) => {
+        context.client.setQueryData(
+          [RESTAURANTS_BASE_PATH, pickeatCode, { isExcluded: 'false' }],
+          (oldData: Restaurant[] | undefined) => {
+            return [
+              ...(oldData || []).map(restaurant => {
+                if (restaurant.id === id) {
+                  return {
+                    ...restaurant,
+                    isLiked: true,
+                    likeCount: restaurant.likeCount + 1,
+                  };
+                }
+                return restaurant;
+              }),
+            ];
+          }
+        );
       },
+
       onError: () => {
-        option?.onError?.();
         showToast({
           mode: 'ERROR',
           message: '좋아요 요청에 실패하였습니다.',
@@ -110,15 +121,30 @@ export const restaurantQuery = {
       },
     });
   },
-  usePatchUnlike: (restaurantId: number, option?: MutationOption) => {
+  usePatchUnlike: (pickeatCode: string) => {
     const showToast = useShowToast();
     return useMutation({
-      mutationFn: async () => restaurant.patchUnlike(restaurantId),
-      onSuccess: () => {
-        option?.onSuccess?.();
+      mutationFn: async (id: number) => restaurant.patchUnlike(id),
+      onMutate: async (id: number, context) => {
+        context.client.setQueryData(
+          [RESTAURANTS_BASE_PATH, pickeatCode, { isExcluded: 'false' }],
+          (oldData: Restaurant[] | undefined) => {
+            return [
+              ...(oldData || []).map(restaurant => {
+                if (restaurant.id === id) {
+                  return {
+                    ...restaurant,
+                    isLiked: false,
+                    likeCount: restaurant.likeCount - 1,
+                  };
+                }
+                return restaurant;
+              }),
+            ];
+          }
+        );
       },
       onError: () => {
-        option?.onError?.();
         showToast({
           mode: 'ERROR',
           message: '좋아요 취소 요청에 실패하였습니다.',

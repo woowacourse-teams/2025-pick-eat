@@ -3,7 +3,7 @@ import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndM
 import LikeButton from '@components/actions/LikeButton/LikeButton';
 import RestaurantCard from '@components/RestaurantCard';
 
-import { Restaurant, restaurantQuery } from '@apis/restaurant';
+import { Restaurant } from '@apis/restaurant';
 import { restaurantsQuery } from '@apis/restaurants';
 
 import { useFlip } from '@hooks/useFlip';
@@ -11,15 +11,11 @@ import { useFlip } from '@hooks/useFlip';
 import styled from '@emotion/styled';
 import { useSearchParams } from 'react-router';
 
-import { useOptimisticLike } from '../hooks/useOptimisticLike';
-import usePreferRestaurant from '../hooks/usePreferRestaurant';
-
 function PreferRestaurantList() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
-  // TODO : onError 처리 필요
-  const { data: restaurantsData } = restaurantsQuery.useSuspenseGet(
+  const { data: restaurantList } = restaurantsQuery.useSuspenseGet(
     pickeatCode,
     {
       isExcluded: 'false',
@@ -27,49 +23,17 @@ function PreferRestaurantList() {
     }
   );
 
-  const {
-    isOptimisticLike,
-    syncOptimisticLikes,
-    addOptimisticLike,
-    removeOptimisticLike,
-  } = useOptimisticLike(restaurantsData);
+  const sortRestaurants = (restaurantList: Restaurant[]) => {
+    return restaurantList.sort((a, b) => {
+      if (b.likeCount !== a.likeCount) {
+        return b.likeCount - a.likeCount;
+      }
 
-  const { restaurantList, updateLikeCount } = usePreferRestaurant(
-    restaurantsData,
-    syncOptimisticLikes
-  );
-
-  const { itemRefs } = useFlip(restaurantList);
-
-  const handleLike = async (id: number) => {
-    const mutation = restaurantQuery.usePatchLike(id, {
-      onSuccess: () => {
-        addOptimisticLike(id);
-        updateLikeCount(id, +1);
-      },
-      onError: () => {
-        removeOptimisticLike(id);
-        updateLikeCount(id, -1);
-      },
+      return a.name.localeCompare(b.name, 'ko');
     });
-
-    mutation.mutate();
   };
 
-  const handleUnlike = async (id: number) => {
-    const mutation = restaurantQuery.usePatchUnlike(id, {
-      onSuccess: () => {
-        removeOptimisticLike(id);
-        updateLikeCount(id, -1);
-      },
-      onError: () => {
-        addOptimisticLike(id);
-        updateLikeCount(id, +1);
-      },
-    });
-
-    mutation.mutate();
-  };
+  const { itemRefs } = useFlip(sortRestaurants(restaurantList));
 
   return (
     <S.Container>
@@ -88,9 +52,7 @@ function PreferRestaurantList() {
             <LikeButton
               id={restaurant.id}
               count={restaurant.likeCount}
-              onLike={() => handleLike(restaurant.id)}
-              onUnlike={() => handleUnlike(restaurant.id)}
-              liked={isOptimisticLike(restaurant.id)}
+              liked={restaurant.isLiked}
             />
           </S.LikeWrapper>
         </S.ItemWrapper>

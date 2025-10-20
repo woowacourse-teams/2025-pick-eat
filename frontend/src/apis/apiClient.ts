@@ -65,8 +65,3 @@ export const apiClient = {
   delete: <T = unknown>(endPoint: string, headers?: ApiHeaders) =>
     requestApi<T>('DELETE', endPoint, undefined, headers),
 };
-
-export const BASE_URL_VERSION = {
-  1: 'v1',
-  2: 'v2',
-} as const;
