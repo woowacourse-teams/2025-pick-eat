@@ -55,6 +55,7 @@ public class PickeatService {
         validateParticipantAccessToPickeat(participantId, pickeat);
 
         pickeat.deactivate();
+        pickeatRepository.save(pickeat);
         applicationEventPublisher.publishEvent(new PickeatDeactivatedEvent(pickeat));
     }
 
