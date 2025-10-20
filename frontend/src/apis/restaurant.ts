@@ -1,4 +1,8 @@
+import { useShowToast } from '@provider/ToastProvider';
+
 import { joinAsPath } from '@utils/createUrl';
+
+import { useMutation } from '@tanstack/react-query';
 
 import { apiClient, BASE_URL_VERSION } from './apiClient';
 import { RESTAURANTS_BASE_PATH } from './restaurants';
@@ -63,6 +67,11 @@ export const convertResponseToRestaurant = ({
   isLiked,
 });
 
+type MutationOption = {
+  onSuccess?: () => void;
+  onError?: () => void;
+};
+
 export const restaurant = {
   patchLike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
@@ -81,5 +90,40 @@ export const restaurant = {
       'unlike'
     );
     await apiClient.patch(patchUrl);
+  },
+};
+
+export const restaurantQuery = {
+  usePatchLike: (restaurantId: number, option?: MutationOption) => {
+    const showToast = useShowToast();
+    return useMutation({
+      mutationFn: async () => restaurant.patchLike(restaurantId),
+      onSuccess: () => {
+        option?.onSuccess?.();
+      },
+      onError: () => {
+        option?.onError?.();
+        showToast({
+          mode: 'ERROR',
+          message: '좋아요 요청에 실패하였습니다.',
+        });
+      },
+    });
+  },
+  usePatchUnlike: (restaurantId: number, option?: MutationOption) => {
+    const showToast = useShowToast();
+    return useMutation({
+      mutationFn: async () => restaurant.patchUnlike(restaurantId),
+      onSuccess: () => {
+        option?.onSuccess?.();
+      },
+      onError: () => {
+        option?.onError?.();
+        showToast({
+          mode: 'ERROR',
+          message: '좋아요 취소 요청에 실패하였습니다.',
+        });
+      },
+    });
   },
 };
