@@ -10,7 +10,7 @@ import { joinAsPath } from '@utils/createUrl';
 import { useSuspenseQuery, useMutation, useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
-import { apiClient, ApiError } from './apiClient';
+import { apiClient, ApiError, BASE_URL_VERSION } from './apiClient';
 
 export type PickeatType = {
   id: number;
@@ -159,8 +159,8 @@ const BASE_PATH = 'pickeats';
 export const pickeat = {
   post: async (roomId: number, name: string): Promise<string> => {
     const url = roomId
-      ? joinAsPath('rooms', `${roomId}`, BASE_PATH)
-      : joinAsPath(BASE_PATH);
+      ? joinAsPath(BASE_URL_VERSION[1], 'rooms', `${roomId}`, BASE_PATH)
+      : joinAsPath(BASE_URL_VERSION[1], BASE_PATH);
     const response = await apiClient.post<PickeatResponse>(url, {
       name,
     });
@@ -168,7 +168,13 @@ export const pickeat = {
     return '';
   },
   postWish: async (wishlistId: number, pickeatCode: string) => {
-    const getUrl = joinAsPath(BASE_PATH, pickeatCode, 'restaurants', 'wish');
+    const getUrl = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'restaurants',
+      'wish'
+    );
     await apiClient.post<PickeatResponse>(getUrl, {
       wishListId: wishlistId,
     });
@@ -176,7 +182,13 @@ export const pickeat = {
   postLocation: async (data: CreatePickeatFormData, pickeatCode: string) => {
     const coords = await getLatLngByAddress(data.address);
     if (!coords) throw new Error('INVALID_ADDRESS');
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'restaurants', 'location');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'restaurants',
+      'location'
+    );
     await apiClient.post(url, {
       x: coords.x,
       y: coords.y,
@@ -184,7 +196,7 @@ export const pickeat = {
     });
   },
   get: async (pickeatId: string) => {
-    const url = joinAsPath(BASE_PATH, pickeatId);
+    const url = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, pickeatId);
     const response = await apiClient.get<PickeatResponse>(url);
     if (response) return await convertResponseToPickeatDetail(response);
     throw new Error('픽잇 정보가 존재하지 않습니다.');
@@ -199,13 +211,19 @@ export const pickeat = {
   getParticipantsCount: async (
     pickeatCode: string
   ): Promise<ParticipantsResponse | null> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'participants', 'state');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'participants',
+      'state'
+    );
     const data = await apiClient.get<ParticipantsResponse>(url);
 
     return data ?? null;
   },
   getParticipating: async (): Promise<ParticipatingResponse | null> => {
-    const url = joinAsPath(BASE_PATH, 'participating');
+    const url = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, 'participating');
     try {
       const response = await apiClient.get<ParticipatingResponse>(url);
       if (response) return convertResponseToParticipating(response);
@@ -220,13 +238,24 @@ export const pickeat = {
   getParticipantsState: async (
     pickeatCode: string
   ): Promise<ParticipantsState> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'participants', 'state');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'participants',
+      'state'
+    );
     const response = await apiClient.get<ParticipantsState>(url);
     if (response) return convertResponseToParticipantsState(response);
     return { totalParticipants: 0, participants: [] };
   },
   getResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'result'
+    );
     const response = await apiClient.get<PickeatResultResponse>(url);
     if (response) return convertResponseToResult(response);
     return null;
@@ -234,25 +263,45 @@ export const pickeat = {
   getPickeatState: async (
     pickeatCode: string
   ): Promise<PickeatStateResponse | null> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'state');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'state'
+    );
     const response = await apiClient.get<PickeatStateResponse>(url);
     if (response) return response;
     return null;
   },
   getRejoin: async (pickeatCode: string): Promise<boolean> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'rejoin-available');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'rejoin-available'
+    );
     const response = await apiClient.get<{ isAvailable: boolean }>(url);
     if (response) return convertResponseToReJoin(response);
     return false;
   },
   postResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'result'
+    );
     const response = await apiClient.post<PickeatResultResponse>(url);
     if (response) return convertResponseToResult(response);
     return null;
   },
   patchDeactive: async (pickeatCode: string) => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'deactive');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'deactive'
+    );
     await apiClient.patch(url);
     return null;
   },

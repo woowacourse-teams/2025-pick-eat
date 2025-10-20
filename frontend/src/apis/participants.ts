@@ -4,7 +4,7 @@ import { joinAsPath } from '@utils/createUrl';
 
 import { useMutation, useQuery } from '@tanstack/react-query';
 
-import { apiClient } from './apiClient';
+import { apiClient, BASE_URL_VERSION } from './apiClient';
 import { queryClient } from './queryClient';
 
 export type Participant = {
@@ -18,13 +18,15 @@ const basePath = 'participants';
 export const participants = {
   getMyStatus: async (): Promise<Participant> => {
     const response = await apiClient.get<Participant>(
-      joinAsPath(basePath, 'me')
+      joinAsPath(BASE_URL_VERSION[1], basePath, 'me')
     );
     if (response) return response;
     return { id: -1, nickname: 'Unknown', isCompleted: false };
   },
   patchComplete: async (): Promise<void> => {
-    await apiClient.patch(joinAsPath(basePath, 'me', 'completion', 'complete'));
+    await apiClient.patch(
+      joinAsPath(BASE_URL_VERSION[1], basePath, 'me', 'completion', 'complete')
+    );
   },
 };
 
