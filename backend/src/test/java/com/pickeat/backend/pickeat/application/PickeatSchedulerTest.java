@@ -10,7 +10,7 @@ import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
-import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
+import com.pickeat.backend.pickeat.domain.repository.PickeatJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
@@ -34,7 +34,7 @@ class PickeatSchedulerTest {
     private PickeatScheduler scheduler;
 
     @Autowired
-    private PickeatRepository pickeatRepository;
+    private PickeatJpaRepository pickeatJpaRepository;
 
     @Autowired
     private ParticipantRepository participantRepository;
@@ -61,17 +61,17 @@ class PickeatSchedulerTest {
         testEntityManager.flush();
         testEntityManager.clear();
 
-        long pickeatCountBefore = pickeatRepository.count();
+        long pickeatCountBefore = pickeatJpaRepository.count();
 
         // when
         scheduler.cleanupOldPickeats();
 
         // then
-        long pickeatCountAfter = pickeatRepository.count();
+        long pickeatCountAfter = pickeatJpaRepository.count();
         assertAll(
                 () -> assertThat(pickeatCountAfter).isEqualTo(pickeatCountBefore - 1),
-                () -> assertThat(pickeatRepository.existsById(deletePickeat.getId())).isFalse(),
-                () -> assertThat(pickeatRepository.existsById(keepPickeat.getId())).isTrue()
+                () -> assertThat(pickeatJpaRepository.existsById(deletePickeat.getId())).isFalse(),
+                () -> assertThat(pickeatJpaRepository.existsById(keepPickeat.getId())).isTrue()
         );
     }
 
@@ -97,7 +97,7 @@ class PickeatSchedulerTest {
 
         // then
         assertAll(
-                () -> assertThat(pickeatRepository.existsById(deletePickeat.getId())).isFalse(),
+                () -> assertThat(pickeatJpaRepository.existsById(deletePickeat.getId())).isFalse(),
                 () -> assertThat(restaurantRepository.existsById(restaurant.getId())).isFalse(),
                 () -> assertThat(participantRepository.existsById(participant.getId())).isFalse(),
                 () -> assertThat(restaurantLikeRepository.existsById(like.getId())).isFalse(),

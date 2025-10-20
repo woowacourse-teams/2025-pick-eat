@@ -20,7 +20,8 @@ public class CacheManagerConfig {
         manager.setCaches(Arrays.asList(
                 buildCacheWithAccess(CacheType.RESTAURANT),
                 buildCacheWithAccess(CacheType.RESTAURANT_LIKE_COUNT),
-                buildCacheWithAccess(CacheType.PARTICIPANT_LIKES)
+                buildCacheWithAccess(CacheType.PARTICIPANT_LIKES),
+                buildCacheWithAccess(CacheType.PICKEAT)
         ));
         return manager;
     }

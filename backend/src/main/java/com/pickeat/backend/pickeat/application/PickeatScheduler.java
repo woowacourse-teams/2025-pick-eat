@@ -5,7 +5,7 @@ import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
-import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
+import com.pickeat.backend.pickeat.domain.repository.PickeatJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
@@ -26,7 +26,7 @@ public class PickeatScheduler {
 
     private static final int DELETE_CUT_LINE = 3;
 
-    private final PickeatRepository pickeatRepository;
+    private final PickeatJpaRepository pickeatJpaRepository;
     private final PickeatResultRepository pickeatResultRepository;
     private final ParticipantRepository participantRepository;
     private final RestaurantLikeJpaRepository restaurantLikeRepository;
@@ -39,7 +39,7 @@ public class PickeatScheduler {
         LocalDateTime startOfDay = targetDate.atStartOfDay();
         LocalDateTime endOfDay = targetDate.atTime(LocalTime.MAX);
 
-        List<Pickeat> expiredPickeats = pickeatRepository.findByUpdatedAtBetween(startOfDay, endOfDay);
+        List<Pickeat> expiredPickeats = pickeatJpaRepository.findByUpdatedAtBetween(startOfDay, endOfDay);
 
         if (expiredPickeats.isEmpty()) {
             return;
@@ -51,7 +51,7 @@ public class PickeatScheduler {
 
         deleteRelatedData(expiredPickeatIds);
         restaurantJpaRepository.deleteByPickeatIds(expiredPickeatIds);
-        pickeatRepository.deleteAll(expiredPickeats);
+        pickeatJpaRepository.deleteAll(expiredPickeats);
     }
 
     private void deleteRelatedData(List<Long> expiredPickeatIds) {

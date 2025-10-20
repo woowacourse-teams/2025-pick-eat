@@ -12,6 +12,7 @@ import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.infrastructure.PickeatRepositoryImpl;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import({ParticipantService.class, ParticipantTokenProvider.class, JwtProvider.class})
+@Import({ParticipantService.class, ParticipantTokenProvider.class, JwtProvider.class, PickeatRepositoryImpl.class})
 class ParticipantServiceTest {
 
     @Autowired

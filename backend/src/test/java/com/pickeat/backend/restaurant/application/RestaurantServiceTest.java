@@ -13,6 +13,7 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.infrastructure.PickeatRepositoryImpl;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
@@ -35,7 +36,7 @@ import org.springframework.context.annotation.Import;
 
 @DataJpaTest
 @Import(value = {RestaurantService.class, RestaurantJdbcRepository.class, RestaurantRepositoryImpl.class,
-        RestaurantLikeRepositoryImpl.class})
+        RestaurantLikeRepositoryImpl.class, PickeatRepositoryImpl.class})
 class RestaurantServiceTest {
 
     @Autowired

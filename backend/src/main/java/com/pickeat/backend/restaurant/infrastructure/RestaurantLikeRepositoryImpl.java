@@ -15,12 +15,14 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
 
+    public static final String RESTAURANT_LIKE_COUNT_CACHE_NAME = "restaurant:like-count";
+    public static final String PARTICIPANT_LIKES_CACHE_NAME = "participant:likes";
     private final RestaurantLikeJpaRepository jpaRepository;
 
     @Override
     @Caching(evict = {
-            @CacheEvict(value = "restaurant:like-count", key = "#restaurantLike.restaurantId"),
-            @CacheEvict(value = "participant:likes", key = "#restaurantLike.participantId")
+            @CacheEvict(value = RESTAURANT_LIKE_COUNT_CACHE_NAME, key = "#restaurantLike.restaurantId"),
+            @CacheEvict(value = PARTICIPANT_LIKES_CACHE_NAME, key = "#restaurantLike.participantId")
     })
     public RestaurantLike save(RestaurantLike restaurantLike) {
         return jpaRepository.save(restaurantLike);
@@ -32,8 +34,8 @@ public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
     }
 
     @Caching(evict = {
-            @CacheEvict(value = "restaurant:like-count", key = "#restaurantId"),
-            @CacheEvict(value = "participant:likes", key = "#participantId")
+            @CacheEvict(value = RESTAURANT_LIKE_COUNT_CACHE_NAME, key = "#restaurantId"),
+            @CacheEvict(value = PARTICIPANT_LIKES_CACHE_NAME, key = "#participantId")
     })
     @Override
     public void deleteByRestaurantIdAndParticipantId(Long restaurantId, Long participantId) {
@@ -41,7 +43,7 @@ public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
     }
 
     @Override
-    @Cacheable(value = "restaurant:like-count", key = "#restaurantId")
+    @Cacheable(value = RESTAURANT_LIKE_COUNT_CACHE_NAME, key = "#restaurantId")
     public Integer countAllByRestaurantId(Long restaurantId) {
         return jpaRepository.countAllByRestaurantId(restaurantId);
     }

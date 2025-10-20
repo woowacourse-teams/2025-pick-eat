@@ -5,8 +5,9 @@ import com.pickeat.backend.pickeat.domain.PickeatCode;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PickeatRepository {
+public interface PickeatJpaRepository extends JpaRepository<Pickeat, Long> {
 
     Optional<Pickeat> findByCode(PickeatCode pickeatCode);
 
@@ -17,8 +18,4 @@ public interface PickeatRepository {
     List<Pickeat> findByRoomIdIn(List<Long> roodIds);
 
     List<Pickeat> findByUpdatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
-
-    Optional<Pickeat> findById(Long pickeatId);
-
-    Pickeat save(Pickeat pickeat);
 }
