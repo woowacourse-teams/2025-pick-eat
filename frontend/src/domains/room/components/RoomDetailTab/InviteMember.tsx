@@ -31,7 +31,7 @@ function InviteMember({
   const inviteRef = useRef<HTMLInputElement>(null);
 
   return (
-    <>
+    <S.Container>
       <S.SearchBarWrapper>
         <LineSearchBar
           ref={inviteRef}
@@ -55,13 +55,19 @@ function InviteMember({
         memberList={selectedMemberList}
         onDelete={onDeleteMember}
       />
-    </>
+    </S.Container>
   );
 }
 
 export default InviteMember;
 
 const S = {
+  Container: styled.div`
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: ${({ theme }) => theme.GAP.level6};
+  `,
   SearchBarWrapper: styled.div`
     position: relative;
   `,

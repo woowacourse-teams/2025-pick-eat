@@ -1,4 +1,4 @@
-import Button from '@components/actions/Button';
+import NewButton from '@components/actions/NewButton';
 import Chip from '@components/labels/Chip';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
@@ -29,6 +29,7 @@ function IncludeMemberList() {
     selectedMemberList,
     handleAddSelectedMember,
     handleDeleteSelectedMember,
+    handleClearSelectedMember,
   } = useInviteMember();
 
   const { mutate } = roomQuery.usePostMember(roomId);
@@ -36,6 +37,7 @@ function IncludeMemberList() {
   const handleInvite = () => {
     mutate({ userIds: selectedMemberList.map(member => member.id) });
     handleUnmountModal();
+    handleClearSelectedMember();
   };
 
   return (
@@ -58,7 +60,7 @@ function IncludeMemberList() {
             onAddMember={handleAddSelectedMember}
             onDeleteMember={handleDeleteSelectedMember}
           />
-          <Button text="초대하기" onClick={handleInvite} />
+          <NewButton onClick={handleInvite}>초대하기</NewButton>
         </S.ModalContent>
       </Modal>
       <S.List>
@@ -103,12 +105,14 @@ const S = {
     font: ${({ theme }) => theme.FONTS.heading.small};
   `,
   ModalContent: styled.div`
+    height: 300px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
   `,
   List: styled.ul`
     display: flex;
+    flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
   Member: styled.li``,

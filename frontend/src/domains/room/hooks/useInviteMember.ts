@@ -20,9 +20,14 @@ export const useInviteMember = () => {
     setSelectedMemberList(prev => prev.filter(member => member.id !== id));
   };
 
+  const handleClearSelectedMember = () => {
+    setSelectedMemberList([]);
+  };
+
   return {
     selectedMemberList,
     handleAddSelectedMember,
     handleDeleteSelectedMember,
+    handleClearSelectedMember,
   };
 };
