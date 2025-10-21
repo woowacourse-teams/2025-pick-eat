@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  backend:
+    image: pickeat/pickeat:load-test
+    restart: always
+    ports:
+      - "80:8080"
+    volumes:
+      - ./data/springboot/logs:/var/logs
+    environment:
+      SPRING_ACTIVE_PROFILE: stress
+    networks:
+      - app-tier
+
+  alloy:
+    image: grafana/alloy:latest
+    container_name: alloy
+    ports:
+      - "12345:12345"
+    volumes:
+      - ./data/springboot/logs:/var/log/spring
+      - ./data/alloy/config.alloy:/etc/alloy/config.alloy
+    environment:
+      - ALLOY_ENV=test
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
