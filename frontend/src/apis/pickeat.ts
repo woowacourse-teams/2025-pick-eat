@@ -542,13 +542,7 @@ export const pickeatQuery = {
       queryFn: async () => {
         try {
           const response = await pickeat.getPickeatState(pickeatCode);
-          // if (response?.isActive === false) {
-          //   showToast({
-          //     mode: 'SUCCESS',
-          //     message: '해당 픽잇이 종료되었습니다.',
-          //   });
-          //   navigate(generateRouterPath.matchResult(pickeatCode));
-          // }
+
           return response ?? { isActive: true };
         } catch (e) {
           if (e instanceof ApiError && e.message === 'PICKEAT_NOT_FOUND') {
