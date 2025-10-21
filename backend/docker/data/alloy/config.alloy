@@ -8,7 +8,7 @@ local.file_match "spring_logs" {
 }
 
 loki.source.file "spring_source" {
-  targets = local.file_match.spring_logs.targets 
+  targets = local.file_match.spring_logs.targets
   forward_to = [loki.process.spring_labels.receiver]
 }
 
@@ -18,7 +18,7 @@ loki.process "spring_labels" {
   stage.static_labels {
     values = {
       service = "pickeat",
-      env = sys.env("ALLOY_ENV"), 
+      env = sys.env("ALLOY_ENV"),
     }
   }
 
@@ -30,8 +30,8 @@ loki.process "spring_labels" {
 
 loki.write "grafana_loki" {
   endpoint {
-    url = "http://3.35.147.202/loki/api/v1/push"
-    tenant_id = "fake"
+    url = "https://monitoring.pickeat.io.kr/loki/loki/api/v1/push"
+    tenant_id = "pickeat-prod"
     batch_wait = "1s"
     batch_size = "1MB"
   }

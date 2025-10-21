@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.List;
 
-@Schema(description = "위시 응답")
+@Schema(description = "위시 응답", name = "WishResponseV2")
 public record WishResponse(
         @Schema(description = "위시 ID", example = "1")
         Long id,

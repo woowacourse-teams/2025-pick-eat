@@ -30,7 +30,7 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
-    @Column(nullable = false)
+    @Column()
     @Enumerated(EnumType.STRING)
     private RestaurantType type;
 

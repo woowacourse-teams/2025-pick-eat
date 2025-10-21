@@ -10,13 +10,12 @@ import com.pickeat.backend.tobe.wish.application.dto.response.WishPictureRespons
 import com.pickeat.backend.tobe.wish.domain.Wish;
 import com.pickeat.backend.tobe.wish.domain.repository.WishRepository;
 import java.util.List;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 @Service("WishPictureServiceV2")
-@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class WishPictureService {
 
@@ -25,6 +24,16 @@ public class WishPictureService {
     private final WishRepository wishRepository;
     private final RoomUserRepository roomUserRepository;
     private final ImageUploadClient imageUploadClient;
+
+    public WishPictureService(
+            WishRepository wishRepository,
+            RoomUserRepository roomUserRepository,
+            @Qualifier("ImageUploadClientV2") ImageUploadClient imageUploadClient
+    ) {
+        this.wishRepository = wishRepository;
+        this.roomUserRepository = roomUserRepository;
+        this.imageUploadClient = imageUploadClient;
+    }
 
     @Transactional
     public WishPictureResponse createWishPicture(Long wishId, Long userId, MultipartFile picture) {

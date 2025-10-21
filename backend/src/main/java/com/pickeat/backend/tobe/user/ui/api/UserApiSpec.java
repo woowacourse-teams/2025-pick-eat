@@ -4,6 +4,7 @@ import com.pickeat.backend.tobe.user.application.dto.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,11 +34,43 @@ public interface UserApiSpec {
                     )
             ),
             @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "UNAUTHORIZED",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "UNAUTHORIZED",
+                                                "status": 401,
+                                                "detail": "인증 정보가 유효하지 않습니다.",
+                                                "instance": "/api/v1/users/me"
+                                            }
+                                            """
+                            )
+                    )
+            ),
+            @ApiResponse(
                     responseCode = "404",
                     description = "존재하지 않는 사용자",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class)
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "USER_NOT_FOUND",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "USER_NOT_FOUND",
+                                                "status": 404,
+                                                "detail": "사용자를 찾을 수 없습니다.",
+                                                "instance": "/api/v1/users/me"
+                                            }
+                                            """
+                            )
                     )
             )
     })
@@ -62,7 +95,19 @@ public interface UserApiSpec {
                     description = "존재하지 않는 방",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class)
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "ROOM_NOT_FOUND",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "ROOM_NOT_FOUND",
+                                                "status": 404,
+                                                "detail": "방을 찾을 수 없습니다.",
+                                                "instance": "/api/v1/rooms/1/users"
+                                            }
+                                            """
+                            )
                     )
             )
     })

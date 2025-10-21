@@ -3,9 +3,8 @@ package com.pickeat.backend.tobe.acceptance_test.piece.user;
 import com.pickeat.backend.tobe.user.application.dto.UserResponse;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
-import org.springframework.http.HttpStatus;
-
 import java.util.List;
+import org.springframework.http.HttpStatus;
 
 public class UserPieceTest {
 
@@ -29,7 +28,8 @@ public class UserPieceTest {
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
-                .as(new TypeRef<List<UserResponse>>() {});
+                .as(new TypeRef<List<UserResponse>>() {
+                });
     }
 
     public static List<UserResponse> 유저_검색(String nickname) {
@@ -41,6 +41,7 @@ public class UserPieceTest {
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
-                .as(new TypeRef<List<UserResponse>>() {});
+                .as(new TypeRef<List<UserResponse>>() {
+                });
     }
 }
