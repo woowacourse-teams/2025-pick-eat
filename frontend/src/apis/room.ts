@@ -100,7 +100,20 @@ export const roomQuery = {
   useGet: (roomId: number) => {
     return useQuery({
       queryKey: ['room', roomId],
-      queryFn: async () => room.get(roomId),
+      queryFn: async () => {
+        const showToast = useShowToast();
+        try {
+          const response = await room.get(roomId);
+          if (!response) throw new Error('방 정보를 불러올 수 없습니다.');
+          return response;
+        } catch {
+          showToast({
+            mode: 'ERROR',
+            message: '방 정보를 불러오는데 실패했습니다.',
+          });
+        }
+      },
+      throwOnError: false,
     });
   },
   usePost: (onCreate: () => void) => {
