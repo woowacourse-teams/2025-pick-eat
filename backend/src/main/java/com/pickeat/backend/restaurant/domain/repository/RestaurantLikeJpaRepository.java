@@ -1,6 +1,7 @@
 package com.pickeat.backend.restaurant.domain.repository;
 
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import java.util.Collection;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,6 +11,9 @@ public interface RestaurantLikeJpaRepository extends JpaRepository<RestaurantLik
 
     void deleteByRestaurantIdAndParticipantId(Long restaurantId, Long participantId);
 
-    List<RestaurantLike> findByRestaurantPickeatIdIn(List<Long> pickeatIds);
+    Integer countAllByRestaurantId(Long restaurantId);
 
+    List<RestaurantLike> findByRestaurantIdIn(Collection<Long> restaurantIds);
+
+    List<RestaurantLike> findAllByParticipantId(Long participantId);
 }

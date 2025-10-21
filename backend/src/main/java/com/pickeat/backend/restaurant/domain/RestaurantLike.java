@@ -1,27 +1,25 @@
 package com.pickeat.backend.restaurant.domain;
 
 import com.pickeat.backend.global.BaseEntity;
-import com.pickeat.backend.pickeat.domain.Participant;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RestaurantLike extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "participant_id", nullable = false)
-    private Participant participant;
+    @Column(nullable = false)
+    private Long participantId;
 
-    @ManyToOne
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
+    @Column(nullable = false)
+    private Long restaurantId;
 
-    public RestaurantLike(Participant participant, Restaurant restaurant) {
-        this.participant = participant;
-        this.restaurant = restaurant;
+    public RestaurantLike(Long participantId, Long restaurantId) {
+        this.participantId = participantId;
+        this.restaurantId = restaurantId;
     }
 }

@@ -1,7 +1,7 @@
 package com.pickeat.backend.pickeat.ui;
 
-import com.pickeat.backend.global.auth.ParticipantInfo;
 import com.pickeat.backend.global.auth.annotation.ParticipantInPickeat;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.ParticipantService;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
@@ -36,22 +36,23 @@ public class ParticipantController implements ParticipantApiSpec {
 
     @Override
     @GetMapping("/participants/me")
-    public ResponseEntity<ParticipantResponse> getParticipant(@ParticipantInPickeat ParticipantInfo participantInfo) {
-        ParticipantResponse response = participantService.getParticipantBy(participantInfo.id());
+    public ResponseEntity<ParticipantResponse> getParticipant(
+            @ParticipantInPickeat ParticipantPrincipal participantPrincipal) {
+        ParticipantResponse response = participantService.getParticipantBy(participantPrincipal.id());
         return ResponseEntity.ok(response);
     }
 
     @Override
     @PatchMapping("/participants/me/completion/complete")
-    public ResponseEntity<Void> markCompletion(@ParticipantInPickeat ParticipantInfo participantInfo) {
-        participantService.updateCompletion(participantInfo.id(), true);
+    public ResponseEntity<Void> markCompletion(@ParticipantInPickeat ParticipantPrincipal participantPrincipal) {
+        participantService.updateCompletion(participantPrincipal, true);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     @PatchMapping("/participants/me/completion/cancel")
-    public ResponseEntity<Void> unMarkCompletion(@ParticipantInPickeat ParticipantInfo participantInfo) {
-        participantService.updateCompletion(participantInfo.id(), false);
+    public ResponseEntity<Void> unMarkCompletion(@ParticipantInPickeat ParticipantPrincipal participantPrincipal) {
+        participantService.updateCompletion(participantPrincipal, false);
         return ResponseEntity.noContent().build();
     }
 }

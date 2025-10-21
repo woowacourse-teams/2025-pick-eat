@@ -7,7 +7,7 @@ import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
-import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantBulkJdbcRepository;
+import com.pickeat.backend.restaurant.infrastructure.RestaurantJdbcRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -18,7 +18,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 @DataJpaTest
-class RestaurantBulkJdbcRepositoryTest {
+class RestaurantJdbcRepositoryTest {
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -29,11 +29,11 @@ class RestaurantBulkJdbcRepositoryTest {
     @Autowired
     private RestaurantJpaRepository restaurantJpaRepository;
 
-    private RestaurantBulkJdbcRepository restaurantBulkJdbcRepository;
+    private RestaurantJdbcRepository restaurantJdbcRepository;
 
     @BeforeEach
     void setting() {
-        restaurantBulkJdbcRepository = new RestaurantBulkJdbcRepository(jdbcTemplate);
+        restaurantJdbcRepository = new RestaurantJdbcRepository(jdbcTemplate);
     }
 
     @Nested
@@ -51,7 +51,7 @@ class RestaurantBulkJdbcRepositoryTest {
                     RestaurantFixture.create(pickeat));
 
             //when
-            restaurantBulkJdbcRepository.batchInsert(restaurants);
+            restaurantJdbcRepository.batchInsert(restaurants);
 
             //then
             assertThat(restaurantJpaRepository.findAll().size()).isEqualTo(2);

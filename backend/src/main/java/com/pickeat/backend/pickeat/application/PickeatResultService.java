@@ -2,20 +2,23 @@ package com.pickeat.backend.pickeat.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
+import com.pickeat.backend.pickeat.domain.PickeatDeactivatedEvent;
 import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
-import com.pickeat.backend.restaurant.domain.Restaurants;
-import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,63 +28,84 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class PickeatResultService {
 
+    private final PickeatResultGenerator pickeatResultGenerator;
     private final PickeatRepository pickeatRepository;
     private final RestaurantRepository restaurantRepository;
     private final ParticipantRepository participantRepository;
     private final PickeatResultRepository pickeatResultRepository;
+    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
-    public PickeatResultCreationResponse createPickeatResult(String pickeatCode, Long participantId) {
+    public PickeatResultResponse createPickeatResult(String pickeatCode, Long participantId) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         validateParticipantAccessToPickeat(participantId, pickeat);
 
-        return pickeatResultRepository.findByPickeat(pickeat)
+        return pickeatResultRepository.findByPickeatId(pickeat.getId())
                 .map(this::createExistingResultResponse)
                 .orElseGet(() -> createNewResultWithConcurrencyHandling(pickeat));
     }
 
-    public RestaurantResultResponse getPickeatResult(String pickeatCode) {
+    public PickeatResultResponse getPickeatResult(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         PickeatResult pickeatResult = getPickeatResult(pickeat);
+        Restaurant restaurant = getRestaurant(pickeatResult);
 
-        return RestaurantResultResponse.of(pickeatResult.getRestaurant(), pickeatResult.isHasEqualLike());
+        return PickeatResultResponse.from(restaurant);
     }
 
-    private PickeatResultCreationResponse createExistingResultResponse(PickeatResult existingResult) {
-        return new PickeatResultCreationResponse(convertToResponse(existingResult), false);
+    private PickeatResultResponse createExistingResultResponse(PickeatResult existingResult) {
+        Restaurant restaurant = getRestaurant(existingResult);
+        return PickeatResultResponse.from(restaurant);
     }
 
-    private PickeatResultCreationResponse createNewResultWithConcurrencyHandling(Pickeat pickeat) {
+    private Restaurant getRestaurant(PickeatResult pickeatResult) {
+        return restaurantRepository.findById(pickeatResult.getRestaurantId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
+    }
+
+    //TODO: 결과 만드는중에 좋아요되면 어카지?  (2025-10-20, 월, 20:25)
+    private PickeatResultResponse createNewResultWithConcurrencyHandling(Pickeat pickeat) {
         try {
             pickeat.deactivate();
-            RestaurantResultResponse newResult = createNewPickeatResult(pickeat);
-            return new PickeatResultCreationResponse(newResult, true);
+            PickeatResultResponse pickeatResult = createNewPickeatResult(pickeat);
+            applicationEventPublisher.publishEvent(new PickeatDeactivatedEvent(pickeat));
+            return pickeatResult;
         } catch (DataIntegrityViolationException e) {
             PickeatResult existingResult = getPickeatResultByPickeat(pickeat);
             return createExistingResultResponse(existingResult);
         }
     }
 
-    private RestaurantResultResponse createNewPickeatResult(Pickeat pickeat) {
-        List<Restaurant> availableRestaurants =
-                restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false);
+    private PickeatResultResponse createNewPickeatResult(Pickeat pickeat) {
+        List<Restaurant> restaurants = restaurantRepository.findByPickeatId(pickeat.getId());
+        List<Restaurant> availableRestaurants = getAvailableRestaurants(restaurants);
 
-        Restaurants restaurants = new Restaurants(availableRestaurants);
-        Restaurant selectedRestaurant = restaurants.getRandomTopRatedRestaurant();
-        boolean hasEqualLike = restaurants.hasEqualLike();
+        Map<Restaurant, Integer> likeCounts = getLikeCounts(availableRestaurants);
 
-        PickeatResult newResult = new PickeatResult(pickeat, selectedRestaurant, hasEqualLike);
-        PickeatResult savedResult = pickeatResultRepository.save(newResult);
+        Restaurant selectedRestaurant = pickeatResultGenerator.generate(likeCounts);
 
-        return convertToResponse(savedResult);
+        pickeatResultRepository.save(new PickeatResult(pickeat.getId(), selectedRestaurant.getId()));
+        return PickeatResultResponse.from(selectedRestaurant);
     }
 
-    private RestaurantResultResponse convertToResponse(PickeatResult result) {
-        return RestaurantResultResponse.of(result.getRestaurant(), result.isHasEqualLike());
+    private List<Restaurant> getAvailableRestaurants(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .filter(restaurant -> Boolean.FALSE.equals(restaurant.getIsExcluded()))
+                .toList();
+    }
+
+    private Map<Restaurant, Integer> getLikeCounts(List<Restaurant> availableRestaurants) {
+        Map<Restaurant, Integer> restaurantLikeCounts = new HashMap<>();
+        for (Restaurant restaurant : availableRestaurants) {
+            int likeCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            restaurantLikeCounts.put(restaurant, likeCount);
+        }
+        return restaurantLikeCounts;
     }
 
     private PickeatResult getPickeatResultByPickeat(Pickeat pickeat) {
-        return pickeatResultRepository.findByPickeat(pickeat)
+        return pickeatResultRepository.findByPickeatId(pickeat.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
     }
 
@@ -92,13 +116,13 @@ public class PickeatResultService {
     }
 
     private PickeatResult getPickeatResult(Pickeat pickeat) {
-        return pickeatResultRepository.findByPickeat(pickeat)
+        return pickeatResultRepository.findByPickeatId(pickeat.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
     }
 
     private void validateParticipantAccessToPickeat(Long participantId, Pickeat pickeat) {
         Participant participant = getParticipant(participantId);
-        if (!participant.getPickeat().equals(pickeat)) {
+        if (!participant.getPickeatId().equals(pickeat.getId())) {
             throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
         }
     }

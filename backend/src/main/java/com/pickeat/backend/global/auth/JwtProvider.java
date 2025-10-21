@@ -11,7 +11,9 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -40,34 +42,30 @@ public class JwtProvider {
         );
     }
 
-    public TokenResponse createToken(Long id, long expirationMillis, Map<String, Object> extraClaims) {
+    public TokenResponse createTokenWithClaims(Long id, long expirationMillis, Map<String, Object> extraClaims) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMillis);
 
-        JwtBuilder builder = Jwts.builder()
-                .subject(String.valueOf(id))
-                .issuedAt(now)
-                .expiration(expiryDate);
+        JwtBuilder builder = Jwts.builder();
 
+        // (1) 먼저 사용자 정의 claims 추가
         if (extraClaims != null && !extraClaims.isEmpty()) {
-            builder.claims(extraClaims);
+            // 예약 클레임(sub, iat, exp) 덮어쓰기 방지
+            Map<String, Object> safeClaims = new HashMap<>(extraClaims);
+            safeClaims.keySet().removeAll(Set.of("sub", "iat", "exp"));
+            builder.claims(safeClaims);
         }
 
-        return TokenResponse.from(
-                builder.signWith(secretKey).compact()
-        );
+        // (2) 그 다음 JWT의 예약 클레임 설정
+        builder.subject(String.valueOf(id))
+                .issuedAt(now)
+                .expiration(expiryDate)
+                .signWith(secretKey);
+
+        // (3) 최종 토큰 생성
+        return TokenResponse.from(builder.compact());
     }
 
-    public TokenResponse createProviderToken(Long providerId, String provider) {
-        return TokenResponse.from(
-                Jwts.builder()
-                        .subject(String.valueOf(providerId))
-                        .claim("provider", provider)
-                        .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5)) // 5분
-                        .signWith(secretKey)
-                        .compact()
-        );
-    }
 
     public Claims getClaims(String token) {
         if (token == null || token.isEmpty()) {
@@ -85,17 +83,5 @@ public class JwtProvider {
         } catch (JwtException e) {
             throw new BusinessException(ErrorCode.INVALID_TOKEN);
         }
-    }
-
-    public ProviderInfo getProviderInfo(String token) {
-        Claims claims = getClaims(token);
-        String provider = claims.get("provider", String.class);
-        Long providerId = Long.valueOf(claims.getSubject());
-
-        if (provider == null || provider.isEmpty()) {
-            throw new BusinessException(ErrorCode.INVALID_TOKEN);
-        }
-
-        return new ProviderInfo(providerId, provider);
     }
 }

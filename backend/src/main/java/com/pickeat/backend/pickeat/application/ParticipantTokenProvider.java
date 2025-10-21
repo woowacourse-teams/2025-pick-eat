@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class ParticipantTokenProvider {
 
     private static final String PICKEAT_CODE_CLAIM_KEY = "pickeatCode";
+
     private final JwtProvider jwtProvider;
     private final long expirationMillis;
 
@@ -26,7 +27,7 @@ public class ParticipantTokenProvider {
     public TokenResponse createToken(Participant participant, Pickeat pickeat) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(PICKEAT_CODE_CLAIM_KEY, pickeat.getCode().getValue().toString());
-        return jwtProvider.createToken(participant.getId(), expirationMillis, claims);
+        return jwtProvider.createTokenWithClaims(participant.getId(), expirationMillis, claims);
     }
 
     public Long getParticipantId(String token) {

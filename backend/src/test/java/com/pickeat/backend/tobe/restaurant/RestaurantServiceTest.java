@@ -4,14 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.pickeat.infrastructure.ParticipantRepositoryImpl;
+import com.pickeat.backend.pickeat.infrastructure.PickeatRepositoryImpl;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
+import com.pickeat.backend.restaurant.infrastructure.RestaurantJdbcRepository;
+import com.pickeat.backend.restaurant.infrastructure.RestaurantLikeRepositoryImpl;
+import com.pickeat.backend.restaurant.infrastructure.RestaurantRepositoryImpl;
 import com.pickeat.backend.tobe.restaurant.application.RestaurantService;
 import com.pickeat.backend.tobe.restaurant.application.dto.request.RestaurantRequest;
-import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantBulkJdbcRepository;
-import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantLikeRepositoryImpl;
-import com.pickeat.backend.tobe.restaurant.infrastructure.RestaurantRepositoryImpl;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,8 +23,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(value = {RestaurantService.class, RestaurantBulkJdbcRepository.class, RestaurantRepositoryImpl.class,
-        RestaurantLikeRepositoryImpl.class})
+@Import(value = {RestaurantService.class, RestaurantJdbcRepository.class, RestaurantRepositoryImpl.class,
+        RestaurantLikeRepositoryImpl.class, PickeatRepositoryImpl.class, ParticipantRepositoryImpl.class})
 public class RestaurantServiceTest {
 
     @Autowired
@@ -47,7 +49,7 @@ public class RestaurantServiceTest {
             restaurantService.create(restaurantRequests, pickeat.getCode().toString());
 
             // then
-            assertThat(restaurantJpaRepository.findAll()).hasSize(2);
+            assertThat(restaurantRepository.findByPickeatId(pickeat.getId())).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {

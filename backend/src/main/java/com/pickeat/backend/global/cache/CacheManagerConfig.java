@@ -19,22 +19,13 @@ public class CacheManagerConfig {
         SimpleCacheManager manager = new SimpleCacheManager();
         manager.setCaches(Arrays.asList(
                 buildCacheWithAccess(CacheType.RESTAURANT),
-                buildCacheWithAccess(CacheType.RESTAURANT_LIKE)
+                buildCacheWithAccess(CacheType.RESTAURANT_LIKE_COUNT),
+                buildCacheWithAccess(CacheType.PARTICIPANT_LIKES),
+                buildCacheWithAccess(CacheType.PICKEAT),
+                buildCacheWithAccess(CacheType.PARTICIPANT)
         ));
         return manager;
     }
-
-//    private CaffeineCache buildCacheWithWrite(String name, long ttlMinutes, long maxSize,
-//                                              int initialCapacity) {
-//        Caffeine<Object, Object> builder = Caffeine.newBuilder()
-//                .expireAfterWrite(Duration.ofMinutes(ttlMinutes))
-//                .maximumSize(maxSize)
-//                .initialCapacity(initialCapacity)
-//                .recordStats();
-//
-//        return new CaffeineCache(name, builder.build());
-//    }
-
 
     private CaffeineCache buildCacheWithAccess(CacheType cacheType) {
         Caffeine<Object, Object> builder = Caffeine.newBuilder()
