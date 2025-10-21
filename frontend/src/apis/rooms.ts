@@ -28,7 +28,7 @@ export const rooms = {
 export const roomsQuery = {
   useSuspenseGet: () => {
     return useSuspenseQuery({
-      queryKey: ['rooms'],
+      queryKey: [BASE_PATH],
       queryFn: async () => rooms.get(),
     });
   },

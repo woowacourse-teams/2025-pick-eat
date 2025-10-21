@@ -30,7 +30,7 @@ const NICKNAME_MAX_LENGTH = 12;
 function PickeatInfo({ pickeatData }: Props) {
   const pickeatDetail = use(pickeatData);
   const pickeatLink = window.location.href;
-  const { data: users } = usersQuery.useGet();
+  const { data: users } = usersQuery.useSuspenseGet();
   const defaultNickname = validate.isEmpty(users.nickname)
     ? makeNickname()
     : users.nickname;

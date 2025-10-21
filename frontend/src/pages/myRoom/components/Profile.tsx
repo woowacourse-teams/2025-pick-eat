@@ -5,7 +5,7 @@ import { validate } from '@utils/validate';
 import styled from '@emotion/styled';
 
 function Profile() {
-  const { data: profile } = usersQuery.useGet();
+  const { data: profile } = usersQuery.useSuspenseGet();
   return (
     <S.Container>
       <S.ProfileImageBox>

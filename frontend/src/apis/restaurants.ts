@@ -67,7 +67,17 @@ export const restaurantsQuery = {
     const { pollingInterval = 0, ...restOption } = option ?? {};
     return useQuery({
       queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, restOption],
-      queryFn: async () => restaurants.get(pickeatCode, restOption),
+      queryFn: async () => {
+        const showToast = useShowToast();
+        try {
+          return restaurants.get(pickeatCode, restOption);
+        } catch {
+          showToast({
+            mode: 'ERROR',
+            message: '식당 정보를 불러오는 데 실패했습니다.',
+          });
+        }
+      },
       refetchInterval: pollingInterval,
       throwOnError: false,
     });
