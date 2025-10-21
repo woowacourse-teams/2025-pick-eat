@@ -67,7 +67,7 @@ function Login() {
         <S.Description>닉네임을 정하고 회원가입을 완료하세요!</S.Description>
       </S.TitleSection>
 
-      <Carousel contentArr={CARD_CONTENT} />
+      <Carousel contentArr={CARD_CONTENT} interval={3000} />
       <KakaoLoginButton onClick={handleKakaoLoginClick} />
     </S.Container>
   );

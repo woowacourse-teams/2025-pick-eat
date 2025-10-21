@@ -98,10 +98,10 @@ export const room = {
 
 export const roomQuery = {
   useGet: (roomId: number) => {
+    const showToast = useShowToast();
     return useQuery({
       queryKey: ['room', roomId],
       queryFn: async () => {
-        const showToast = useShowToast();
         try {
           const response = await room.get(roomId);
           if (!response) throw new Error('방 정보를 불러올 수 없습니다.');
