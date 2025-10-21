@@ -43,14 +43,14 @@ public class RoomService {
     }
 
     public List<RoomResponse> getAllRoom(Long userId) {
-        List<Long> roomIds = roomUserRepository.getAllRoomIdListByUserId(userId);
+        List<Long> roomIds = roomUserRepository.getAllRoomIdsByUserId(userId);
         List<Room> rooms = roomRepository.getAllByIdIn(roomIds);
 
         if (rooms.isEmpty()) {
             return List.of();
         }
 
-        List<RoomUserCount> roomUserCounts = roomUserRepository.countByRoomIdList(roomIds);
+        List<RoomUserCount> roomUserCounts = roomUserRepository.countByRoomIdIn(roomIds);
         Map<Long, Integer> roomUser = RoomUserCount.toMap(roomUserCounts);
 
         return rooms.stream()
@@ -68,7 +68,7 @@ public class RoomService {
         Set<Long> invitedUserIds = new HashSet<>(request.userIds());
 
         Set<Long> existingIds = new HashSet<>(
-                roomUserRepository.findExistingUserIdListInRoom(roomId, invitedUserIds)
+                roomUserRepository.findExistingUserIdsInRoom(roomId, invitedUserIds)
         );
 
         List<RoomUser> roomUsers = invitedUserIds.stream()

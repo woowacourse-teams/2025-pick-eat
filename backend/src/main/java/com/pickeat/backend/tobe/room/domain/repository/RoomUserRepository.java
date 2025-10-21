@@ -17,13 +17,13 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
 
     List<RoomUser> findAllByRoomId(Long roomId);
 
-    default List<Long> getAllRoomIdListByUserId(Long userId) {
+    default List<Long> getAllRoomIdsByUserId(Long userId) {
         return findAllByUserId(userId).stream()
                 .map(RoomUser::getRoomId)
                 .toList();
     }
 
-    default List<Long> getAllUserIdListByRoomId(Long roomId) {
+    default List<Long> getAllUserIdsByRoomId(Long roomId) {
         return findAllByRoomId(roomId).stream()
                 .map(RoomUser::getUserId)
                 .toList();
@@ -53,7 +53,7 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
               where ru.roomId in :roomIds
               group by ru.roomId
             """)
-    List<RoomUserCount> countByRoomIdList(@Param("roomIds") List<Long> roomIds);
+    List<RoomUserCount> countByRoomIdIn(@Param("roomIds") List<Long> roomIds);
 
     @Query("""
               select ru.userId
@@ -61,7 +61,7 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
               where ru.roomId = :roomId
                 and ru.userId in :userIds
             """)
-    List<Long> findExistingUserIdListInRoom(
+    List<Long> findExistingUserIdsInRoom(
             @Param("roomId") Long roomId,
             @Param("userIds") Collection<Long> userIds
     );

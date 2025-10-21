@@ -93,7 +93,7 @@ public class PickeatService {
     }
 
     public List<PickeatResponse> getPickeatsByUser(Long userId) {
-        List<Long> allRoomIds = roomUserRepository.getAllRoomIdListByUserId(userId);
+        List<Long> allRoomIds = roomUserRepository.getAllRoomIdsByUserId(userId);
         List<Pickeat> roomPickeats = pickeatRepository.findByRoomIdIn(allRoomIds);
         return PickeatResponse.from(roomPickeats);
     }

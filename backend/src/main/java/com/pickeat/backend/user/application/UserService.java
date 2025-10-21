@@ -65,7 +65,7 @@ public class UserService {
     }
 
     public List<UserResponse> getByRoomId(Long roomId) {
-        List<Long> userIds = roomUserRepository.getAllUserIdListByRoomId(roomId);
+        List<Long> userIds = roomUserRepository.getAllUserIdsByRoomId(roomId);
         List<User> users = userRepository.findAllByIdIn(userIds);
 
         return UserResponse.from(users);
