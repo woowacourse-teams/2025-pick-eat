@@ -9,6 +9,7 @@ import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
+import com.pickeat.backend.room.domain.repository.RoomUserRepository.RoomUserCount;
 import com.pickeat.backend.user.domain.repository.UserRepository;
 import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishListRepository;
@@ -16,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,14 +57,13 @@ public class RoomService {
             return List.of();
         }
 
-        Map<Long, Integer> countMap = roomUserRepository.countByRoomIdList(roomIds).stream()
-                .collect(Collectors.toMap(RoomUserRepository.RoomUserCount::getRoomId,
-                        RoomUserRepository.RoomUserCount::getCnt));
+        List<RoomUserCount> roomUserCounts = roomUserRepository.countByRoomIdList(roomIds);
+        Map<Long, Integer> roomUser = RoomUserCount.toMap(roomUserCounts);
 
         return rooms.stream()
                 .map(room -> RoomResponse.of(
                         room,
-                        countMap.getOrDefault(room.getId(), 0),
+                        roomUser.getOrDefault(room.getId(), 0),
                         getWishListId(room.getId())
                 ))
                 .toList();
