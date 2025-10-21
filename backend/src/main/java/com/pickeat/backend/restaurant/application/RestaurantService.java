@@ -72,6 +72,11 @@ public class RestaurantService {
         Pickeat pickeat = getPickeatByCode(participantPrincipal.rawPickeatCode());
         validatePickeatState(pickeat);
 
+        Participant participant = getParticipant(participantPrincipal.id());
+        if (!Objects.equals(participant.getPickeatId(), pickeat.getId())) {
+            throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
+        }
+
         List<Restaurant> restaurants = restaurantRepository.findByPickeatId(pickeat.getId());
         List<Long> targetIds = request.restaurantIds();
 
@@ -80,7 +85,7 @@ public class RestaurantService {
                 .toList();
 
         targets.forEach(Restaurant::exclude);
-        restaurantRepository.saveAll(restaurants);
+        restaurantRepository.saveAll(targets);
     }
 
     @Transactional

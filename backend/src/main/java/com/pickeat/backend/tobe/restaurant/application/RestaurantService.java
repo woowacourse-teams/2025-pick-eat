@@ -18,6 +18,7 @@ import com.pickeat.backend.restaurant.infrastructure.RestaurantJdbcRepository;
 import com.pickeat.backend.tobe.restaurant.application.dto.request.RestaurantRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +75,11 @@ public class RestaurantService {
         Pickeat pickeat = getPickeatByCode(participantPrincipal.rawPickeatCode());
         validatePickeatState(pickeat);
 
+        Participant participant = getParticipant(participantPrincipal.id());
+        if (!Objects.equals(participant.getPickeatId(), pickeat.getId())) {
+            throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
+        }
+
         List<Restaurant> restaurants = restaurantRepository.findByPickeatId(pickeat.getId());
         List<Long> targetIds = request.restaurantIds();
 
@@ -82,7 +88,7 @@ public class RestaurantService {
                 .toList();
 
         targets.forEach(Restaurant::exclude);
-        restaurantRepository.saveAll(restaurants);
+        restaurantRepository.saveAll(targets);
     }
 
     @Transactional
@@ -115,7 +121,7 @@ public class RestaurantService {
         }
 
         return restaurants.stream()
-                .filter(restaurant -> restaurant.getIsExcluded().equals(isExcluded))
+                .filter(r -> Objects.equals(r.getIsExcluded(), isExcluded))
                 .toList();
     }
 
@@ -146,7 +152,7 @@ public class RestaurantService {
             return;
         }
 
-        if (restaurants.stream().anyMatch((r -> !r.getPickeatId().equals(participant.getPickeatId())))) {
+        if (restaurants.stream().anyMatch((r -> !Objects.equals(r.getPickeatId(), participant.getPickeatId())))) {
             throw new BusinessException(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN);
         }
     }
