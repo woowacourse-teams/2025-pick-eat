@@ -45,9 +45,10 @@ export default RoomList;
 
 const S = {
   ListWrapper: styled.ul`
-    min-height: 400px;
+    min-height: 70px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: ${({ theme }) => theme.GAP.level4};
     overflow: scroll;
 
@@ -70,6 +71,7 @@ const S = {
 
   EmptyDescription: styled.span`
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
     text-align: center;
   `,
 
