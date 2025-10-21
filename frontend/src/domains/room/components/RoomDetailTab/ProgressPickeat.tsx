@@ -24,25 +24,31 @@ function ProgressPickeat() {
         description="현재 방에서 진행 중인 투표에 입장해보세요!"
       />
       <S.List>
-        {data?.map(pickeat => (
-          <S.ProgressPickeat key={pickeat.id}>
-            <S.TitleArea>
-              <ActivateCircle size="xxs" activate={true} />
-              <S.Name>{pickeat.name}</S.Name>
-            </S.TitleArea>
+        {data.length !== 0 ? (
+          data.map(pickeat => (
+            <S.ProgressPickeat key={pickeat.id}>
+              <S.TitleArea>
+                <ActivateCircle size="xxs" activate={true} />
+                <S.Name>{pickeat.name}</S.Name>
+              </S.TitleArea>
 
-            <S.DescriptionArea>
-              {pickeat.participantCount}명
-              <S.EnterButton
-                onClick={() =>
-                  navigate(generateRouterPath.pickeatDetail(pickeat.code))
-                }
-              >
-                <Enter size="sm" />
-              </S.EnterButton>
-            </S.DescriptionArea>
+              <S.DescriptionArea>
+                {pickeat.participantCount}명
+                <S.EnterButton
+                  onClick={() =>
+                    navigate(generateRouterPath.pickeatDetail(pickeat.code))
+                  }
+                >
+                  <Enter size="sm" />
+                </S.EnterButton>
+              </S.DescriptionArea>
+            </S.ProgressPickeat>
+          ))
+        ) : (
+          <S.ProgressPickeat>
+            <S.Description>진행 중인 투표가 없습니다.</S.Description>
           </S.ProgressPickeat>
-        ))}
+        )}
       </S.List>
     </S.Container>
   );
@@ -93,4 +99,7 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level3};
   `,
   EnterButton: styled.button``,
+  Description: styled.span`
+    color: ${({ theme }) => theme.PALETTE.gray[50]};
+  `,
 };
