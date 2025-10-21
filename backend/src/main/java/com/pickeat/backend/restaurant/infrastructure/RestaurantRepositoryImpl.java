@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = CacheNames.RESTAURANT)
 public class RestaurantRepositoryImpl implements RestaurantRepository {
 
     private final RestaurantJpaRepository jpaRepository;
@@ -26,7 +28,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
     }
 
     @Override
-    @Cacheable(value = CacheNames.RESTAURANT, key = "#pickeatId")
+    @Cacheable(key = "#pickeatId")
     public List<Restaurant> findByPickeatId(Long pickeatId) {
         return jpaRepository.findByPickeatId(pickeatId);
     }
@@ -41,7 +43,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
         return jpaRepository.findById(restaurantId);
     }
 
-    @CacheEvict(value = CacheNames.RESTAURANT, key = "#pickeatId")
+    @CacheEvict(key = "#pickeatId")
     public void evictRestaurantCache(Long pickeatId) {
         log.info("식당 캐시 무효화 | pickeatId: {}", pickeatId);
     }

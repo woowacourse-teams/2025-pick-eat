@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
@@ -16,12 +17,13 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = CacheNames.PICKEAT)
 public class PickeatRepositoryImpl implements PickeatRepository {
 
     private final PickeatJpaRepository jpaRepository;
 
     @Override
-    @Cacheable(value = CacheNames.PICKEAT, key = "#pickeatCode.value.toString()")
+    @Cacheable(key = "#pickeatCode.value.toString()")
     public Optional<Pickeat> findByCode(PickeatCode pickeatCode) {
         return jpaRepository.findByCode(pickeatCode);
     }
@@ -51,7 +53,7 @@ public class PickeatRepositoryImpl implements PickeatRepository {
         return jpaRepository.save(pickeat);
     }
 
-    @CacheEvict(value = CacheNames.PICKEAT, key = "#pickeatCode")
+    @CacheEvict(key = "#pickeatCode")
     public void evictPickeatCache(String pickeatCode) {
         log.info("픽잇 캐시 무효화 | pickeatCode: {}", pickeatCode);
     }

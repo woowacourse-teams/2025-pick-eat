@@ -11,6 +11,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @RequiredArgsConstructor
 public class PickeatDeactivatedEventHandler {
 
+    //Todo: 인메모리 도입 / Impl 참조의 이유 [2025-10-21 16:44:20]
     private final RestaurantRepositoryImpl restaurantRepositoryImpl;
     private final PickeatRepositoryImpl pickeatRepositoryImpl;
     private final ParticipantRepositoryImpl participantRepositoryImpl;
