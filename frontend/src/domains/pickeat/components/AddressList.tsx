@@ -44,6 +44,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.px3};
     cursor: pointer;
+    border-radius: ${({ theme }) => theme.RADIUS.small};
 
     &:hover {
       background-color: ${({ theme }) => theme.PALETTE.gray[5]};

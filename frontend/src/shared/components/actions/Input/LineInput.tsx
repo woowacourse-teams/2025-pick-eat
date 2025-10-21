@@ -104,7 +104,7 @@ const S = {
 
     color: ${({ theme }) => theme.PALETTE.gray[95]};
 
-    font: ${({ theme }) => theme.FONTS.body.medium_bold};
+    font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
     border-bottom: 2px solid
       ${({ theme, error }) => (error ? '#F95F5F' : theme.PALETTE.gray[30])};
 
