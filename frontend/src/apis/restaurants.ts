@@ -64,11 +64,11 @@ export const restaurants = {
 
 export const restaurantsQuery = {
   useGet: (pickeatCode: string, option?: QueryOption) => {
+    const showToast = useShowToast();
     const { pollingInterval = 0, ...restOption } = option ?? {};
     return useQuery({
       queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, restOption],
       queryFn: async () => {
-        const showToast = useShowToast();
         try {
           return restaurants.get(pickeatCode, restOption);
         } catch {
