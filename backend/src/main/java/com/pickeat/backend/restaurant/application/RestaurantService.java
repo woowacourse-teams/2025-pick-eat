@@ -17,6 +17,7 @@ import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +61,7 @@ public class RestaurantService {
         List<RestaurantResponse> response = new ArrayList<>();
         for (Restaurant restaurant : targets) {
             boolean isLiked = likedRestaurantIds.contains(restaurant.getId());
-            Integer likeCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            Integer likeCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
             response.add(RestaurantResponse.of(restaurant, likeCount, isLiked));
         }
         return response;
@@ -112,7 +113,7 @@ public class RestaurantService {
         }
 
         return restaurants.stream()
-                .filter(restaurant -> restaurant.getIsExcluded().equals(isExcluded))
+                .filter(restaurant -> Objects.equals(restaurant.getIsExcluded(), isExcluded))
                 .toList();
     }
 

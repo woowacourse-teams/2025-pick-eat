@@ -54,19 +54,19 @@ class RestaurantLikeRepositoryImplCachingTest {
     }
 
     @Test
-    void countAllByRestaurantId_동일_요청은_캐시를_활용한다() {
+    void countByRestaurantId_동일_요청은_캐시를_활용한다() {
         // given
         Long restaurantId = 100L;
-        when(restaurantLikeJpaRepository.countAllByRestaurantId(restaurantId)).thenReturn(3);
+        when(restaurantLikeJpaRepository.countByRestaurantId(restaurantId)).thenReturn(3);
 
         // when
-        Integer firstCall = repository.countAllByRestaurantId(restaurantId);
-        Integer secondCall = repository.countAllByRestaurantId(restaurantId);
+        Integer firstCall = repository.countByRestaurantId(restaurantId);
+        Integer secondCall = repository.countByRestaurantId(restaurantId);
 
         // then
         assertThat(firstCall).isEqualTo(3);
         assertThat(secondCall).isEqualTo(3);
-        verify(restaurantLikeJpaRepository, times(1)).countAllByRestaurantId(restaurantId);
+        verify(restaurantLikeJpaRepository, times(1)).countByRestaurantId(restaurantId);
     }
 
     @Test
@@ -93,28 +93,28 @@ class RestaurantLikeRepositoryImplCachingTest {
         Long participantId = 77L;
         RestaurantLike restaurantLike = new RestaurantLike(participantId, restaurantId);
 
-        when(restaurantLikeJpaRepository.countAllByRestaurantId(restaurantId)).thenReturn(1);
+        when(restaurantLikeJpaRepository.countByRestaurantId(restaurantId)).thenReturn(1);
         when(restaurantLikeJpaRepository.findAllByParticipantId(participantId))
                 .thenReturn(List.of(new RestaurantLike(participantId, restaurantId)));
         when(restaurantLikeJpaRepository.save(any(RestaurantLike.class))).thenReturn(restaurantLike);
 
-        repository.countAllByRestaurantId(restaurantId);
+        repository.countByRestaurantId(restaurantId);
         repository.findAllByParticipantId(participantId);
 
-        verify(restaurantLikeJpaRepository, times(1)).countAllByRestaurantId(restaurantId);
+        verify(restaurantLikeJpaRepository, times(1)).countByRestaurantId(restaurantId);
         verify(restaurantLikeJpaRepository, times(1)).findAllByParticipantId(participantId);
 
         // when
         repository.save(restaurantLike);
 
-        Integer likeCount = repository.countAllByRestaurantId(restaurantId);
+        Integer likeCount = repository.countByRestaurantId(restaurantId);
         List<RestaurantLike> participantLikes = repository.findAllByParticipantId(participantId);
 
         // then
         assertThat(likeCount).isEqualTo(1);
         assertThat(participantLikes).hasSize(1);
         verify(restaurantLikeJpaRepository, times(1)).save(restaurantLike);
-        verify(restaurantLikeJpaRepository, times(2)).countAllByRestaurantId(restaurantId);
+        verify(restaurantLikeJpaRepository, times(2)).countByRestaurantId(restaurantId);
         verify(restaurantLikeJpaRepository, times(2)).findAllByParticipantId(participantId);
     }
 
@@ -124,27 +124,27 @@ class RestaurantLikeRepositoryImplCachingTest {
         Long restaurantId = 400L;
         Long participantId = 88L;
 
-        when(restaurantLikeJpaRepository.countAllByRestaurantId(restaurantId)).thenReturn(2);
+        when(restaurantLikeJpaRepository.countByRestaurantId(restaurantId)).thenReturn(2);
         when(restaurantLikeJpaRepository.findAllByParticipantId(participantId))
                 .thenReturn(List.of(new RestaurantLike(participantId, restaurantId)));
 
-        repository.countAllByRestaurantId(restaurantId);
+        repository.countByRestaurantId(restaurantId);
         repository.findAllByParticipantId(participantId);
 
-        verify(restaurantLikeJpaRepository, times(1)).countAllByRestaurantId(restaurantId);
+        verify(restaurantLikeJpaRepository, times(1)).countByRestaurantId(restaurantId);
         verify(restaurantLikeJpaRepository, times(1)).findAllByParticipantId(participantId);
 
         // when
         repository.deleteByRestaurantIdAndParticipantId(restaurantId, participantId);
 
-        Integer likeCount = repository.countAllByRestaurantId(restaurantId);
+        Integer likeCount = repository.countByRestaurantId(restaurantId);
         List<RestaurantLike> participantLikes = repository.findAllByParticipantId(participantId);
 
         // then
         assertThat(likeCount).isEqualTo(2);
         assertThat(participantLikes).hasSize(1);
         verify(restaurantLikeJpaRepository, times(1)).deleteByRestaurantIdAndParticipantId(restaurantId, participantId);
-        verify(restaurantLikeJpaRepository, times(2)).countAllByRestaurantId(restaurantId);
+        verify(restaurantLikeJpaRepository, times(2)).countByRestaurantId(restaurantId);
         verify(restaurantLikeJpaRepository, times(2)).findAllByParticipantId(participantId);
     }
 

@@ -58,7 +58,7 @@ class RestaurantJpaRepositoryTest {
             List<Long> deletePickeatIds = List.of(pickeat1.getId(), pickeat2.getId());
 
             // when
-            int deletedCount = restaurantJpaRepository.deleteByPickeatIds(deletePickeatIds);
+            int deletedCount = restaurantJpaRepository.bulkSoftDeleteByPickeatIdIn(deletePickeatIds);
 
             // then
             List<Restaurant> remainingRestaurants = restaurantJpaRepository.findAll();

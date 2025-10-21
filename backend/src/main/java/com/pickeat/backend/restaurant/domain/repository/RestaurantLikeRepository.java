@@ -9,7 +9,7 @@ public interface RestaurantLikeRepository {
 
     void deleteByRestaurantIdAndParticipantId(Long restaurantId, Long participantId);
 
-    Integer countAllByRestaurantId(Long restaurantId);
+    Integer countByRestaurantId(Long restaurantId);
 
     List<RestaurantLike> findAllByParticipantId(Long participantId);
 

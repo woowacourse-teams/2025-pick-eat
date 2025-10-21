@@ -12,11 +12,7 @@ public interface RestaurantJpaRepository extends JpaRepository<Restaurant, Long>
 
     List<Restaurant> findByPickeatId(Long pickeatId);
 
-    List<Restaurant> findIdsByPickeatIdIn(Collection<Long> pickeatIds);
-
-    @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query(value = "UPDATE restaurant SET deleted = true WHERE pickeat_id IN (:pickeatIds)", nativeQuery = true)
-    int deleteByPickeatIds(@Param("pickeatIds") List<Long> pickeatIds);
+    List<Restaurant> findByPickeatIdIn(Collection<Long> pickeatIds);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "UPDATE restaurant SET deleted = true WHERE pickeat_id IN :pickeatIds", nativeQuery = true)

@@ -98,7 +98,7 @@ public class PickeatResultService {
     private Map<Restaurant, Integer> getLikeCounts(List<Restaurant> availableRestaurants) {
         Map<Restaurant, Integer> restaurantLikeCounts = new HashMap<>();
         for (Restaurant restaurant : availableRestaurants) {
-            int likeCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            int likeCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
             restaurantLikeCounts.put(restaurant, likeCount);
         }
         return restaurantLikeCounts;

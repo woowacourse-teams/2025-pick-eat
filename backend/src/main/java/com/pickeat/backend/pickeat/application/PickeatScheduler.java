@@ -49,7 +49,7 @@ public class PickeatScheduler {
     }
 
     private void deleteRelatedData(List<Long> expiredPickeatIds) {
-        List<Long> restaurantIds = restaurantJpaRepository.findIdsByPickeatIdIn(expiredPickeatIds).stream()
+        List<Long> restaurantIds = restaurantJpaRepository.findByPickeatIdIn(expiredPickeatIds).stream()
                 .map(BaseEntity::getId)
                 .toList();
 

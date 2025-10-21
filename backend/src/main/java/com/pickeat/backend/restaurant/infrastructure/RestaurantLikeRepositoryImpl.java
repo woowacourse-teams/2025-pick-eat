@@ -42,8 +42,8 @@ public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
 
     @Override
     @Cacheable(value = CacheNames.RESTAURANT_LIKE_COUNT, key = "#restaurantId")
-    public Integer countAllByRestaurantId(Long restaurantId) {
-        return jpaRepository.countAllByRestaurantId(restaurantId);
+    public Integer countByRestaurantId(Long restaurantId) {
+        return jpaRepository.countByRestaurantId(restaurantId);
     }
 
     @Override

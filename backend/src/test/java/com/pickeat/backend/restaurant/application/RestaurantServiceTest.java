@@ -134,7 +134,7 @@ class RestaurantServiceTest {
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
-            Integer originCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            Integer originCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
 
             entityManager.flush();
             entityManager.clear();
@@ -143,7 +143,7 @@ class RestaurantServiceTest {
             restaurantService.like(restaurant.getId(), participant.getId());
 
             // then
-            Integer actualCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            Integer actualCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
             assertThat(actualCount).isEqualTo(originCount + 1);
         }
 
@@ -175,7 +175,7 @@ class RestaurantServiceTest {
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             entityManager.persist(new RestaurantLike(participant.getId(), restaurant.getId()));
-            Integer originCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            Integer originCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
 
             entityManager.flush();
             entityManager.clear();
@@ -184,7 +184,7 @@ class RestaurantServiceTest {
             restaurantService.cancelLike(restaurant.getId(), participant.getId());
 
             // then
-            Integer actualCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            Integer actualCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
             assertThat(actualCount).isEqualTo(originCount - 1);
 
         }

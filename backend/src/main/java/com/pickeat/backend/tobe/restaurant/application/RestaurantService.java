@@ -63,7 +63,7 @@ public class RestaurantService {
         List<RestaurantResponse> response = new ArrayList<>();
         for (Restaurant restaurant : targets) {
             boolean isLiked = likedRestaurantIds.contains(restaurant.getId());
-            Integer likeCount = restaurantLikeRepository.countAllByRestaurantId(restaurant.getId());
+            Integer likeCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
             response.add(RestaurantResponse.of(restaurant, likeCount, isLiked));
         }
         return response;
