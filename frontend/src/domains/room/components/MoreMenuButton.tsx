@@ -58,15 +58,17 @@ const S = {
     position: relative;
   `,
   MenuWrapper: styled.ul`
-    position: absolute;
     width: 120px;
+    position: absolute;
     top: 36px;
     right: 0;
+    z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
+
+    padding: ${({ theme }) => theme.PADDING.p2};
+
     background-color: ${({ theme }) => theme.PALETTE.gray[80]};
     border-radius: ${({ theme }) => theme.RADIUS.small};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
-    padding: ${({ theme }) => theme.PADDING.p2};
-    z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
   `,
   Menu: styled.li`
     display: flex;
@@ -75,10 +77,10 @@ const S = {
 
     gap: ${({ theme }) => theme.GAP.level1};
 
-    cursor: pointer;
+    font: ${({ theme }) => theme.FONTS.body.xsmall_bold};
 
     border-radius: ${({ theme }) => theme.RADIUS.small};
 
-    font: ${({ theme }) => theme.FONTS.body.xsmall_bold};
+    cursor: pointer;
   `,
 };

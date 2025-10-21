@@ -69,9 +69,9 @@ export default MyPage;
 
 const S = {
   Container: styled.div`
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
 
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};

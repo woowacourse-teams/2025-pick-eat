@@ -70,8 +70,8 @@ const S = {
   `,
 
   EmptyDescription: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.medium_bold};
     color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.medium_bold};
     text-align: center;
   `,
 

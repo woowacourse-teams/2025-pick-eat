@@ -48,6 +48,7 @@ const S = {
   Container: styled.button``,
   ExitButton: styled.button`
     width: 100%;
+
     padding: ${({ theme }) => theme.PADDING.px3};
 
     color: ${({ theme }) => theme.PALETTE.red[40]};

@@ -79,11 +79,11 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
     border-bottom: 2px solid ${({ theme }) => theme.PALETTE.primary[50]};
 
-    &:placeholder-shown {
+    &::placeholder {
       color: ${({ theme }) => theme.PALETTE.gray[30]};
     }
 
-    &::placeholder {
+    &:placeholder-shown {
       color: ${({ theme }) => theme.PALETTE.gray[30]};
     }
 

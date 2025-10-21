@@ -109,11 +109,11 @@ const S = {
     color: ${({ theme }) => theme.PALETTE.gray[95]};
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
 
-    &:placeholder-shown {
+    &::placeholder {
       color: ${({ theme }) => theme.PALETTE.gray[30]};
     }
 
-    &::placeholder {
+    &:placeholder-shown {
       color: ${({ theme }) => theme.PALETTE.gray[30]};
     }
 

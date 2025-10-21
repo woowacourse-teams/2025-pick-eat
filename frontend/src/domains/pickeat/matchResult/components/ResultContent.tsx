@@ -3,8 +3,6 @@ import ResultRestaurantCard from '@domains/pickeat/matchResult/components/Result
 import RoundedButton from '@components/actions/RoundedButton';
 import Confetti from '@components/Confetti';
 
-import { pickeatQuery } from '@apis/pickeat';
-
 import { ROUTE_PATH } from '@routes/routePath';
 
 import { keyframes } from '@emotion/react';

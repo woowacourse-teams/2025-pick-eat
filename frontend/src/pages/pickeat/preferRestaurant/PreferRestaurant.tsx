@@ -71,6 +71,7 @@ const S = {
   RestaurantListContainer: styled.div`
     width: 100%;
     min-height: 580px;
+
     padding-bottom: ${FOOTER_HEIGHT}px;
   `,
 
