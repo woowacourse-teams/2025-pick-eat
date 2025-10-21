@@ -120,8 +120,9 @@ public class PickeatController implements PickeatApiSpec {
         return ResponseEntity.ok().body(responses);
     }
 
+    //Todo: 오타로 인한 호환성 문제 해결 이후 단일화 필요 [2025-10-21 17:05:37]
     @Override
-    @PatchMapping("/pickeats/{pickeatCode}/deactive")
+    @PatchMapping({"/pickeats/{pickeatCode}/deactivate", "/pickeats/{pickeatCode}/deactive"})
     public ResponseEntity<Void> deactivatePickeat(
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantInPickeat ParticipantPrincipal participantPrincipal
