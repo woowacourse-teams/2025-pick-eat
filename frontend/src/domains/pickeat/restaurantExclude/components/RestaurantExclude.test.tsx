@@ -1,11 +1,15 @@
+import { queryClient } from '@apis/queryClient';
 import { Restaurant } from '@apis/restaurant';
 import * as restaurantsModule from '@apis/restaurants';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
+import ToastProvider from '@provider/ToastProvider';
+
 import { THEME } from '@styles/global';
 
 import { ThemeProvider } from '@emotion/react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import {
   act,
   fireEvent,
@@ -72,13 +76,17 @@ describe('RestaurantExclude 크로스 버튼 및 제외 제출 통합 테스트'
   it('크로스 버튼 클릭 시 selectedRestaurantIds에 id가 추가되고 제외 버튼 클릭 시 서버에 제출 및 네비게이션 호출', async () => {
     await act(async () => {
       render(
-        <MemoryRouter>
-          <ThemeProvider theme={THEME}>
-            <RestaurantExcludeProvider>
-              <RestaurantExclude />
-            </RestaurantExcludeProvider>
-          </ThemeProvider>
-        </MemoryRouter>
+        <QueryClientProvider client={queryClient}>
+          <ToastProvider>
+            <MemoryRouter>
+              <ThemeProvider theme={THEME}>
+                <RestaurantExcludeProvider>
+                  <RestaurantExclude />
+                </RestaurantExcludeProvider>
+              </ThemeProvider>
+            </MemoryRouter>
+          </ToastProvider>
+        </QueryClientProvider>
       );
     });
 
