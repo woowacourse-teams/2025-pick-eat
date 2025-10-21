@@ -116,7 +116,7 @@ function DetailTab() {
       title={item.name}
       imageUrl={item.imageUrl}
       onClick={item.onClick}
-      size="lg"
+      size="sm"
     />
   ));
 
