@@ -113,6 +113,10 @@ const S = {
       border-bottom: 2px solid ${({ theme }) => theme.PALETTE.gray[30]};
     }
 
+    &::placeholder {
+      color: ${({ theme }) => theme.PALETTE.gray[30]};
+    }
+
     &:focus {
       border-bottom: 2px solid
         ${({ theme, color }) => (color ? color : theme.PALETTE.primary[50])};

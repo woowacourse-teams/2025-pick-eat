@@ -113,6 +113,10 @@ const S = {
       color: ${({ theme }) => theme.PALETTE.gray[30]};
     }
 
+    &::placeholder {
+      color: ${({ theme }) => theme.PALETTE.gray[30]};
+    }
+
     &:focus {
       outline: none;
     }
