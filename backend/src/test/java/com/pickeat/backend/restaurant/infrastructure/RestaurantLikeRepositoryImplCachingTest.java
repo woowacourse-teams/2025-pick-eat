@@ -7,6 +7,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.pickeat.backend.global.cache.CacheNames;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeJpaRepository;
 import java.util.List;
@@ -41,8 +42,8 @@ class RestaurantLikeRepositoryImplCachingTest {
 
     @BeforeEach
     void setUp() {
-        Cache likeCountCache = cacheManager.getCache("restaurant:like-count");
-        Cache participantLikesCache = cacheManager.getCache("participant:likes");
+        Cache likeCountCache = cacheManager.getCache(CacheNames.RESTAURANT_LIKE_COUNT);
+        Cache participantLikesCache = cacheManager.getCache(CacheNames.PARTICIPANT_LIKES);
         if (likeCountCache != null) {
             likeCountCache.clear();
         }
@@ -156,8 +157,8 @@ class RestaurantLikeRepositoryImplCachingTest {
         CacheManager cacheManager() {
             SimpleCacheManager manager = new SimpleCacheManager();
             manager.setCaches(List.of(
-                    new ConcurrentMapCache("restaurant:like-count"),
-                    new ConcurrentMapCache("participant:likes")
+                    new ConcurrentMapCache(CacheNames.RESTAURANT_LIKE_COUNT),
+                    new ConcurrentMapCache(CacheNames.PARTICIPANT_LIKES)
             ));
             return manager;
         }

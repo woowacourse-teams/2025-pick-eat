@@ -17,8 +17,7 @@ public class Participant extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean isCompleted = false;
-
-    //TODO: 인덱싱 플라이웨이로 걸기  (2025-10-20, 월, 17:31)
+    
     @Column(name = "pickeat_id", nullable = false)
     private Long pickeatId;
 

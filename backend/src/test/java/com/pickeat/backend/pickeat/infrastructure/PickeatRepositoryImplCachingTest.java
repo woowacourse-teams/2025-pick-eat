@@ -6,6 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.pickeat.backend.global.cache.CacheNames;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.PickeatJpaRepository;
@@ -44,7 +45,7 @@ class PickeatRepositoryImplCachingTest {
 
     @BeforeEach
     void setUp() {
-        Cache cache = cacheManager.getCache(PickeatRepositoryImpl.PICKEAT_CACHE_NAME);
+        Cache cache = cacheManager.getCache(CacheNames.PICKEAT);
         if (cache != null) {
             cache.clear();
         }
@@ -96,7 +97,7 @@ class PickeatRepositoryImplCachingTest {
         @Bean
         CacheManager cacheManager() {
             SimpleCacheManager manager = new SimpleCacheManager();
-            manager.setCaches(List.of(new ConcurrentMapCache(PickeatRepositoryImpl.PICKEAT_CACHE_NAME)));
+            manager.setCaches(List.of(new ConcurrentMapCache(CacheNames.PICKEAT)));
             return manager;
         }
 
