@@ -413,14 +413,10 @@ export const pickeatQuery = {
       onSuccess: (pickeatCode: string) => {
         navigate(generateRouterPath.pickeatDetail(pickeatCode));
       },
-      onError: (error: unknown) => {
-        console.error('위시리스트 설정 실패', error);
+      onError: () => {
         showToast({
           mode: 'ERROR',
-          message:
-            error instanceof Error
-              ? error.message
-              : '위시리스트 설정에 실패했습니다. 다시 시도해 주세요.',
+          message: '즐겨찾기에 식당을 추가했는지 확인해 주세요!',
         });
       },
     });
