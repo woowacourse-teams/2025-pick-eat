@@ -1,7 +1,6 @@
 package com.pickeat.backend.restaurant.infrastructure;
 
 import com.pickeat.backend.global.cache.CacheNames;
-import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
@@ -42,8 +41,8 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
         return jpaRepository.findById(restaurantId);
     }
 
-    @CacheEvict(value = CacheNames.RESTAURANT, key = "#pickeat.id")
-    public void evictRestaurantCache(Pickeat pickeat) {
-        log.info("식당 캐시 무효화 | pickeatId: {}", pickeat.getId());
+    @CacheEvict(value = CacheNames.RESTAURANT, key = "#pickeatId")
+    public void evictRestaurantCache(Long pickeatId) {
+        log.info("식당 캐시 무효화 | pickeatId: {}", pickeatId);
     }
 }

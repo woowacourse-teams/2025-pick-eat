@@ -83,7 +83,7 @@ class RestaurantRepositoryImplCachingTest {
         ReflectionTestUtils.setField(pickeat, "id", pickeatId);
 
         // when
-        repository.evictRestaurantCache(pickeat);
+        repository.evictRestaurantCache(pickeat.getId());
         repository.findByPickeatId(pickeatId);
 
         // then

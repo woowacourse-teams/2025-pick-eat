@@ -26,6 +26,8 @@ public class ParticipantRepositoryImpl implements ParticipantRepository {
     }
 
     @Override
+    //Todo: 인메모리 도입, 이벤트 처리 대신, save 호출시 직접 캐시 만료 시키기 고려 [2025-10-21 14:56:39]
+    //@CacheEvict(value = CacheNames.PARTICIPANT, key = "#participant.pickeatId")
     public Participant save(Participant participant) {
         return jpaRepository.save(participant);
     }

@@ -47,6 +47,8 @@ public class ParticipantService {
     public void updateCompletion(ParticipantPrincipal participantPrincipal, boolean isCompleted) {
         Participant participant = getParticipant(participantPrincipal.id());
         participant.updateCompletionAs(isCompleted);
+
+        //Todo: 인메모리 도입 / 식당 소거와 같이 핸들링 가능하지 않을까? [2025-10-21 14:58:44]
         applicationEventPublisher.publishEvent(new ParticipantStateUpdatedEvent(participant.getPickeatId()));
     }
 

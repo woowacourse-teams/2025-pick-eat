@@ -56,7 +56,7 @@ public class PickeatService {
 
         pickeat.deactivate();
         pickeatRepository.save(pickeat);
-        applicationEventPublisher.publishEvent(new PickeatDeactivatedEvent(pickeat));
+        applicationEventPublisher.publishEvent(PickeatDeactivatedEvent.from(pickeat));
     }
 
     public ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {

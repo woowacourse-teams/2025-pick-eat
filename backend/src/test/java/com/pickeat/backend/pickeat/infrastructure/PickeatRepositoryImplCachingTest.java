@@ -82,7 +82,7 @@ class PickeatRepositoryImplCachingTest {
         when(cachedPickeat.getCode()).thenReturn(PICKEAT_CODE);
 
         // when
-        repository.evictPickeatCache(cachedPickeat);
+        repository.evictPickeatCache(cachedPickeat.getCode().toString());
         repository.findByCode(PICKEAT_CODE);
 
         // then

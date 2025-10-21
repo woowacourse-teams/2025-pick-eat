@@ -51,9 +51,9 @@ public class PickeatRepositoryImpl implements PickeatRepository {
         return jpaRepository.save(pickeat);
     }
 
-    @CacheEvict(value = CacheNames.PICKEAT, key = "#pickeat.code.value.toString()")
-    public void evictPickeatCache(Pickeat pickeat) {
-        log.info("픽잇 캐시 무효화 | pickeatCode: {}", pickeat.getCode().getValue().toString());
+    @CacheEvict(value = CacheNames.PICKEAT, key = "#pickeatCode")
+    public void evictPickeatCache(String pickeatCode) {
+        log.info("픽잇 캐시 무효화 | pickeatCode: {}", pickeatCode);
     }
 }
 

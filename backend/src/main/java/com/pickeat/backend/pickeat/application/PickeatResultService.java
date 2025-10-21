@@ -69,7 +69,7 @@ public class PickeatResultService {
         try {
             pickeat.deactivate();
             PickeatResultResponse pickeatResult = createNewPickeatResult(pickeat);
-            applicationEventPublisher.publishEvent(new PickeatDeactivatedEvent(pickeat));
+            applicationEventPublisher.publishEvent(PickeatDeactivatedEvent.from(pickeat));
             return pickeatResult;
         } catch (DataIntegrityViolationException e) {
             PickeatResult existingResult = getPickeatResultByPickeat(pickeat);
