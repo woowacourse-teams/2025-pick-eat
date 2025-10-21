@@ -191,7 +191,7 @@ export const pickeat = {
     const coords = await getLatLngByAddress(data.address);
     if (!coords) throw new Error('INVALID_ADDRESS');
     const url = joinAsPath(
-      BASE_URL_VERSION[1],
+      BASE_URL_VERSION[2],
       BASE_PATH,
       pickeatCode,
       'restaurants',
@@ -203,7 +203,13 @@ export const pickeat = {
       radius: data.radius,
     });
   },
-  postTemplate: async (pickeatCode: string) => {
+  postTemplate: async ({
+    pickeatCode,
+    templateId,
+  }: {
+    pickeatCode: string;
+    templateId: number;
+  }) => {
     const url = joinAsPath(
       BASE_URL_VERSION[2],
       BASE_PATH,
@@ -211,7 +217,7 @@ export const pickeat = {
       'restaurants',
       'template'
     );
-    await apiClient.post<PickeatResponse>(url);
+    await apiClient.post<PickeatResponse>(url, { templateId });
   },
   get: async (pickeatId: string) => {
     const url = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, pickeatId);
@@ -420,15 +426,22 @@ export const pickeatQuery = {
     });
   },
 
-  usePostTemplate: (pickeatCode: string) => {
+  usePostTemplate: () => {
     const navigate = useNavigate();
     const showToast = useShowToast();
 
     return useMutation({
-      mutationFn: async () => {
-        await pickeat.postTemplate(pickeatCode);
+      mutationFn: async ({
+        pickeatCode,
+        templateId,
+      }: {
+        pickeatCode: string;
+        templateId: number;
+      }) => {
+        await pickeat.postTemplate({ pickeatCode, templateId });
+        return pickeatCode;
       },
-      onSuccess: () => {
+      onSuccess: (pickeatCode: string) => {
         navigate(generateRouterPath.pickeatDetail(pickeatCode));
       },
       onError: (error: unknown) => {
@@ -443,6 +456,7 @@ export const pickeatQuery = {
       },
     });
   },
+
   usePostJoin: () => {
     const navigate = useNavigate();
 
