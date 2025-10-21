@@ -5,7 +5,6 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.PickeatJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -40,11 +39,6 @@ public class PickeatRepositoryImpl implements PickeatRepository {
     @Override
     public List<Pickeat> findByRoomIdIn(List<Long> roodIds) {
         return jpaRepository.findByRoomIdIn(roodIds);
-    }
-
-    @Override
-    public List<Pickeat> findByUpdatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay) {
-        return jpaRepository.findByUpdatedAtBetween(startOfDay, endOfDay);
     }
 
     @Override

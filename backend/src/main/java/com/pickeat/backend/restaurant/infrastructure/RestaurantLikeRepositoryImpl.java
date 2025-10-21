@@ -4,7 +4,6 @@ import com.pickeat.backend.global.cache.CacheNames;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeJpaRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
-import java.util.Collection;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -45,11 +44,6 @@ public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
     @Cacheable(value = CacheNames.RESTAURANT_LIKE_COUNT, key = "#restaurantId")
     public Integer countAllByRestaurantId(Long restaurantId) {
         return jpaRepository.countAllByRestaurantId(restaurantId);
-    }
-
-    @Override
-    public List<RestaurantLike> findByRestaurantIdIn(Collection<Long> restaurantIds) {
-        return jpaRepository.findByRestaurantIdIn(restaurantIds);
     }
 
     @Override

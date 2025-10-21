@@ -1,13 +1,9 @@
 package com.pickeat.backend.pickeat.application;
 
 import com.pickeat.backend.global.BaseEntity;
-import com.pickeat.backend.pickeat.domain.Participant;
-import com.pickeat.backend.pickeat.domain.Pickeat;
-import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
-import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeJpaRepository;
 import java.time.LocalDate;
@@ -39,31 +35,26 @@ public class PickeatScheduler {
         LocalDateTime startOfDay = targetDate.atStartOfDay();
         LocalDateTime endOfDay = targetDate.atTime(LocalTime.MAX);
 
-        List<Pickeat> expiredPickeats = pickeatJpaRepository.findByUpdatedAtBetween(startOfDay, endOfDay);
+        List<Long> expiredPickeatIds = pickeatJpaRepository.findByUpdatedAtBetween(startOfDay, endOfDay).stream()
+                .map(BaseEntity::getId)
+                .toList();
 
-        if (expiredPickeats.isEmpty()) {
+        if (expiredPickeatIds.isEmpty()) {
             return;
         }
 
-        List<Long> expiredPickeatIds = expiredPickeats.stream()
-                .map(Pickeat::getId)
-                .toList();
-
         deleteRelatedData(expiredPickeatIds);
-        restaurantJpaRepository.deleteByPickeatIds(expiredPickeatIds);
-        pickeatJpaRepository.deleteAll(expiredPickeats);
+        restaurantJpaRepository.bulkSoftDeleteByPickeatIdIn(expiredPickeatIds);
+        pickeatJpaRepository.bulkSoftDeleteByIdIn(expiredPickeatIds);
     }
 
     private void deleteRelatedData(List<Long> expiredPickeatIds) {
-        List<Long> restaurantIds = restaurantJpaRepository.findIdsByPickeatIdIn((expiredPickeatIds)).stream()
+        List<Long> restaurantIds = restaurantJpaRepository.findIdsByPickeatIdIn(expiredPickeatIds).stream()
                 .map(BaseEntity::getId)
                 .toList();
-        List<RestaurantLike> likesToDelete = restaurantLikeRepository.findByRestaurantIdIn((restaurantIds));
-        List<PickeatResult> resultsToDelete = pickeatResultRepository.findByPickeatIdIn(expiredPickeatIds);
-        List<Participant> participantsToDelete = participantJpaRepository.findByPickeatIdIn(expiredPickeatIds);
 
-        restaurantLikeRepository.deleteAll(likesToDelete);
-        pickeatResultRepository.deleteAll(resultsToDelete);
-        participantJpaRepository.deleteAll(participantsToDelete);
+        restaurantLikeRepository.bulkSoftDeleteByRestaurantIdIn(restaurantIds);
+        pickeatResultRepository.bulkSoftDeleteByPickeatIdIn(expiredPickeatIds);
+        participantJpaRepository.bulkSoftDeleteByPickeatIdIn(expiredPickeatIds);
     }
 }

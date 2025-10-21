@@ -2,7 +2,6 @@ package com.pickeat.backend.pickeat.domain.repository;
 
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,8 +14,6 @@ public interface PickeatRepository {
     List<Pickeat> findByRoomIdAndIsActive(Long roomId, Boolean isActive);
 
     List<Pickeat> findByRoomIdIn(List<Long> roodIds);
-
-    List<Pickeat> findByUpdatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
 
     Optional<Pickeat> findById(Long pickeatId);
 

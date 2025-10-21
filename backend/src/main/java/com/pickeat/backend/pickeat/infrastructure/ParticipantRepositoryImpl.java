@@ -20,11 +20,6 @@ public class ParticipantRepositoryImpl implements ParticipantRepository {
     private final ParticipantJpaRepository jpaRepository;
 
     @Override
-    public List<Participant> findByPickeatIdIn(List<Long> pickeatIds) {
-        return jpaRepository.findByPickeatIdIn(pickeatIds);
-    }
-
-    @Override
     @Cacheable(value = CacheNames.PARTICIPANT, key = "#pickeatId")
     public List<Participant> findByPickeatId(Long pickeatId) {
         return jpaRepository.findByPickeatId(pickeatId);

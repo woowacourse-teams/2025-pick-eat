@@ -67,6 +67,9 @@ class PickeatSchedulerTest {
         scheduler.cleanupOldPickeats();
 
         // then
+        testEntityManager.flush();
+        testEntityManager.clear();
+
         long pickeatCountAfter = pickeatJpaRepository.count();
         assertAll(
                 () -> assertThat(pickeatCountAfter).isEqualTo(pickeatCountBefore - 1),
@@ -96,6 +99,9 @@ class PickeatSchedulerTest {
         scheduler.cleanupOldPickeats();
 
         // then
+        testEntityManager.flush();
+        testEntityManager.clear();
+
         assertAll(
                 () -> assertThat(pickeatJpaRepository.existsById(deletePickeat.getId())).isFalse(),
                 () -> assertThat(restaurantRepository.existsById(restaurant.getId())).isFalse(),
@@ -111,5 +117,6 @@ class PickeatSchedulerTest {
                 .setParameter("oldDate", oldDate)
                 .setParameter("id", pickeatId)
                 .executeUpdate();
+        testEntityManager.flush();
     }
 }
