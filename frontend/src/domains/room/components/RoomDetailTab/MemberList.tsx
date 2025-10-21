@@ -49,7 +49,7 @@ const S = {
   `,
 
   List: styled.li`
-    width: 342px;
+    width: 100%;
     height: 36px;
     display: flex;
     align-items: center;
@@ -58,6 +58,7 @@ const S = {
 
     font: ${({ theme }) => theme.FONTS.body.medium};
     border-radius: ${({ theme }) => theme.RADIUS.small};
+    cursor: pointer;
 
     &:hover {
       background-color: ${({ theme }) => theme.PALETTE.gray[5]};

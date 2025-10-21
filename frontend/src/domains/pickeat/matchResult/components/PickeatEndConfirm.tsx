@@ -22,7 +22,7 @@ function PickeatEndConfirm({
 }: Props) {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  const { mutateAsync: postResult } = pickeatQuery.usePostResult();
+  const { mutate: postResult } = pickeatQuery.usePostResult();
 
   const endPickeat = async () => {
     onConfirm();
@@ -33,7 +33,7 @@ function PickeatEndConfirm({
       value: 1,
     });
 
-    await postResult(pickeatCode);
+    postResult(pickeatCode);
   };
 
   return (

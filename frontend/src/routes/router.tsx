@@ -93,7 +93,7 @@ function GuestOnlyRoute() {
 function ProtectedPickeat() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  const { isLoading } = pickeatQuery.useRejoin(pickeatCode);
+  const { isLoading } = pickeatQuery.usePostRejoin(pickeatCode);
   if (isLoading) return null;
   return <Outlet />;
 }

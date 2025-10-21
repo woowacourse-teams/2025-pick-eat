@@ -19,8 +19,10 @@ const ParticipantsContext = createContext<ParticipantsContextType | undefined>(
 );
 
 function ParticipantsProvider({ pickeatCode, children }: Props) {
-  const { participantsState } = pickeatQuery.useParticipantsState(pickeatCode);
+  const { data: participantsState } =
+    pickeatQuery.useGetParticipantState(pickeatCode);
 
+  if (!participantsState) return null;
   const completedCount = participantsState.participants.reduce(
     (count, participant) => (participant.isCompleted ? count + 1 : count),
     0

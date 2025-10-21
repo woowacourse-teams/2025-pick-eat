@@ -2,22 +2,15 @@ import PickeatInfo from '@domains/pickeat/components/PickeatInfo';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { pickeatQuery } from '@apis/pickeat';
-
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
-import { useSearchParams } from 'react-router';
 
 function PickeatDetail() {
-  const [searchParams] = useSearchParams();
-  const pickeatCode = searchParams.get('code') ?? '';
-  const pickeatData = pickeatQuery.useGet(pickeatCode);
-
   return (
     <S.Container>
       <ErrorBoundary>
         <Suspense>
-          <PickeatInfo pickeatData={pickeatData} />
+          <PickeatInfo />
         </Suspense>
       </ErrorBoundary>
     </S.Container>
