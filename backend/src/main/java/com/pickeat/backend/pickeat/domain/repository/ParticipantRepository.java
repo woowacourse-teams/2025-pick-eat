@@ -1,12 +1,15 @@
 package com.pickeat.backend.pickeat.domain.repository;
 
 import com.pickeat.backend.pickeat.domain.Participant;
-import com.pickeat.backend.pickeat.domain.Pickeat;
 import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Optional;
 
-public interface ParticipantRepository extends JpaRepository<Participant, Long> {
+public interface ParticipantRepository {
     List<Participant> findByPickeatIdIn(List<Long> pickeatIds);
 
-    List<Participant> findByPickeat(Pickeat pickeat);
+    List<Participant> findByPickeatId(Long pickeatId);
+
+    Participant save(Participant participant);
+
+    Optional<Participant> findById(Long participantId);
 }

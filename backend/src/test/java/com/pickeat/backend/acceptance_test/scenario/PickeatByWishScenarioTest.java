@@ -34,11 +34,11 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
@@ -155,13 +155,13 @@ public class PickeatByWishScenarioTest {
         PickeatStateResponse pickeatState = 픽잇_활성화_상태_조회(pickeat.code());
         checkoutPickeatState(pickeatState, false);
 
-        RestaurantResultResponse pickeatResult = 픽잇_결과_생성(pickeat.code(), participant1Token.token());
+        PickeatResultResponse pickeatResult = 픽잇_결과_생성(pickeat.code(), participant1Token.token());
 
-        RestaurantResultResponse pickeatResultFromParticipant1 = 픽잇_결과_조회(pickeat.code(), participant1Token.token());
+        PickeatResultResponse pickeatResultFromParticipant1 = 픽잇_결과_조회(pickeat.code(), participant1Token.token());
         checkoutPickeatResult(pickeatResultFromParticipant1, pickeatResult);
-        RestaurantResultResponse pickeatResultFromParticipant2 = 픽잇_결과_조회(pickeat.code(), participant2Token.token());
+        PickeatResultResponse pickeatResultFromParticipant2 = 픽잇_결과_조회(pickeat.code(), participant2Token.token());
         checkoutPickeatResult(pickeatResultFromParticipant2, pickeatResult);
-        RestaurantResultResponse pickeatResultFromParticipant3 = 픽잇_결과_조회(pickeat.code(), participant3Token.token());
+        PickeatResultResponse pickeatResultFromParticipant3 = 픽잇_결과_조회(pickeat.code(), participant3Token.token());
         checkoutPickeatResult(pickeatResultFromParticipant3, pickeatResult);
     }
 
@@ -184,7 +184,7 @@ public class PickeatByWishScenarioTest {
         assertThat(pickeatState.isActive()).isEqualTo(isActive);
     }
 
-    private void checkoutPickeatResult(RestaurantResultResponse actual, RestaurantResultResponse expected) {
+    private void checkoutPickeatResult(PickeatResultResponse actual, PickeatResultResponse expected) {
         assertThat(actual).isEqualTo(expected);
     }
 

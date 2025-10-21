@@ -1,12 +1,11 @@
-package com.pickeat.backend.restaurant.application.dto.response;
+package com.pickeat.backend.pickeat.application.dto.response;
 
 import com.pickeat.backend.restaurant.domain.Restaurant;
-import com.pickeat.backend.restaurant.domain.RestaurantType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.List;
 
-public record RestaurantResultResponse(
+public record PickeatResultResponse(
         @Schema(description = "식당 ID", example = "1")
         long id,
 
@@ -28,21 +27,12 @@ public record RestaurantResultResponse(
         @Schema(description = "도로명 주소", example = "서울 강남구 테헤란로 123")
         String roadAddressName,
 
-        @Schema(description = "좋아요 수", example = "3")
-        int likeCount,
-
         @Schema(description = "사진 url들")
-        List<String> pictureUrls,
-
-        @Schema(description = "식당 타입", example = "WISH / LOCATION")
-        RestaurantType type,
-
-        @Schema(description = "동점 여부", example = "true")
-        boolean hasEqualLike
+        List<String> pictureUrls
 ) {
 
-    public static RestaurantResultResponse of(Restaurant restaurant, boolean hasEqualLike) {
-        return new RestaurantResultResponse(
+    public static PickeatResultResponse from(Restaurant restaurant) {
+        return new PickeatResultResponse(
                 restaurant.getId(),
                 restaurant.getName(),
                 restaurant.getFoodCategory().getName(),
@@ -50,10 +40,8 @@ public record RestaurantResultResponse(
                 restaurant.getDistance(),
                 restaurant.getPlaceUrl(),
                 restaurant.getRoadAddressName(),
-                restaurant.getLikeCount(),
-                parsePictureUrls(restaurant.getPictureUrls()),
-                restaurant.getType(),
-                hasEqualLike);
+                parsePictureUrls(restaurant.getPictureUrls())
+        );
     }
 
     private static List<String> parseTags(String tags) {

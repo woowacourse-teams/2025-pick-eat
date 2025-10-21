@@ -1,11 +1,12 @@
 package com.pickeat.backend.pickeat.ui.api;
 
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatResultResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
-import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -240,7 +241,7 @@ public interface PickeatApiSpec {
                     description = "새로운 결과 생성 성공",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = RestaurantResultResponse.class)
+                            schema = @Schema(implementation = PickeatResultResponse.class)
                     )
             ),
             @ApiResponse(
@@ -248,7 +249,7 @@ public interface PickeatApiSpec {
                     description = "기존 결과 반환",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = RestaurantResultResponse.class)
+                            schema = @Schema(implementation = PickeatResultResponse.class)
                     )
             ),
             @ApiResponse(
@@ -274,10 +275,10 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<RestaurantResultResponse> createPickeatResult(
+    ResponseEntity<PickeatResultResponse> createPickeatResult(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantPrincipal participantPrincipal
     );
 
     @Operation(
@@ -292,7 +293,7 @@ public interface PickeatApiSpec {
                     description = "결과 조회 성공",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = RestaurantResultResponse.class)
+                            schema = @Schema(implementation = PickeatResultResponse.class)
                     )
             ),
             @ApiResponse(
@@ -318,7 +319,7 @@ public interface PickeatApiSpec {
                     )
             )
     })
-    ResponseEntity<RestaurantResultResponse> getPickeatResult(
+    ResponseEntity<PickeatResultResponse> getPickeatResult(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode
     );
@@ -435,7 +436,7 @@ public interface PickeatApiSpec {
     })
     ResponseEntity<Void> deactivatePickeat(
             @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantPrincipal participantPrincipal
     );
 
     @Operation(
@@ -495,7 +496,7 @@ public interface PickeatApiSpec {
             )
     })
     ResponseEntity<PickeatResponse> getPickeatsByParticipant(
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantPrincipal participantPrincipal
     );
 
     @Operation(
@@ -539,7 +540,7 @@ public interface PickeatApiSpec {
     ResponseEntity<PickeatRejoinAvailableResponse> getRejoinAvailableFromNoneUser(
             @Parameter(description = 픽잇_코드_UUID_형식)
             @PathVariable("pickeatCode") String pickeatCode,
-            @Parameter(hidden = true) Long participantId
+            @Parameter(hidden = true) ParticipantPrincipal participantPrincipal
     );
 
     @Operation(
