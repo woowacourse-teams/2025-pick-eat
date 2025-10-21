@@ -10,14 +10,6 @@ import { generateRouterPath } from '@routes/routePath';
 
 import { useShowToast } from '@provider/ToastProvider';
 
-import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
-
-import { pickeatQuery } from '@apis/pickeat';
-
-import { generateRouterPath } from '@routes/routePath';
-
-import { useShowToast } from '@provider/ToastProvider';
-
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useNavigate, useSearchParams } from 'react-router';
