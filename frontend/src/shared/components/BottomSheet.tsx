@@ -53,6 +53,8 @@ function BottomSheet({ opened, onClose, children }: Props) {
     };
   }, [opened]);
 
+  if (!opened) return;
+
   const modalRoot = document.querySelector('#modal') as HTMLElement;
 
   /*

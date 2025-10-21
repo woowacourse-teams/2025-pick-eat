@@ -64,8 +64,6 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level8};
 
-    padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
-
     animation: ${scaleUp} 0.3s ease forwards;
   `,
   ResultWrapper: styled.div`

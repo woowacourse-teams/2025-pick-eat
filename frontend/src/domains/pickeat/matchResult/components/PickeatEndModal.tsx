@@ -37,8 +37,10 @@ function PickeatEndModal() {
       size="sm"
     >
       <S.Container>
-        <S.PointText>이런!😥</S.PointText>
-        <S.Text> 모든 음식점이 소거되어 픽잇이 종료되었습니다.</S.Text>
+        <S.Title>이런!😥</S.Title>
+        <S.Description>
+          모든 음식점이 소거되어 픽잇이 종료되었습니다.
+        </S.Description>
         <NewButton onClick={endPickeat}>메인 페이지로 이동</NewButton>
       </S.Container>
     </Modal>
@@ -57,11 +59,11 @@ const S = {
 
     text-align: center;
   `,
-  PointText: styled.span`
+  Title: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
-  Text: styled.span`
+  Description: styled.span`
     color: black;
     font: ${({ theme }) => theme.FONTS.body.small};
   `,

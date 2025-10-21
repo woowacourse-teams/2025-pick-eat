@@ -30,7 +30,7 @@ function PickeatInfo() {
   const { data: pickeatData } = pickeatQuery.useSuspenseGet(pickeatCode);
 
   const pickeatLink = window.location.href;
-  const { data: users } = usersQuery.useGet();
+  const { data: users } = usersQuery.useSuspenseGet();
   const defaultNickname = validate.isEmpty(users.nickname)
     ? makeNickname()
     : users.nickname;

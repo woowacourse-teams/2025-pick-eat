@@ -26,15 +26,10 @@ function WishlistTab() {
       </S.RegisterButton>
 
       <S.Wishlist>
-        {data.length > 0 ? (
+        {data.length > 0 &&
           data.map(wish => (
             <WishRestaurantCard key={wish.id} restaurantData={wish} />
-          ))
-        ) : (
-          <S.EmptyDescriptionPointText>
-            즐겨찾기에 식당을 추가해보세요!
-          </S.EmptyDescriptionPointText>
-        )}
+          ))}
       </S.Wishlist>
 
       {opened && <RegisterWishModal onClose={handleCloseModal} />}
@@ -50,11 +45,10 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level5};
   `,
   RegisterButton: styled.div`
-    width: 312px;
-    height: 120px;
+    width: 292px;
+    height: 122px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -75,20 +69,11 @@ const S = {
     height: 90%;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
+    gap: ${({ theme }) => theme.GAP.level5};
     overflow: scroll;
 
     padding: ${({ theme }) => theme.PADDING.p6};
 
     scrollbar-width: none;
-  `,
-  EmptyDescriptionPointText: styled.span`
-    width: 100%;
-
-    margin-top: 20px;
-
-    color: ${({ theme }) => theme.PALETTE.gray[30]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
-    text-align: center;
   `,
 };

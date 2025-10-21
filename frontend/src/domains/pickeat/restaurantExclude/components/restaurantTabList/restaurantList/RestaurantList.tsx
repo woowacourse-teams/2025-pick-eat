@@ -13,10 +13,10 @@ function RestaurantList({ restaurantList }: Props) {
   return (
     <>
       {restaurantList.length === 0 ? (
-        <S.NoContentPointText>
+        <S.NoContent>
           해당 카테고리에
-          <br /> 식당이 없어요ㅠㅠ
-        </S.NoContentPointText>
+          <br /> 식당이 없습니다.
+        </S.NoContent>
       ) : (
         <S.Container>
           {restaurantList.map(restaurant =>
@@ -46,15 +46,15 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p5};
   `,
-  NoContentPointText: styled.p`
+  NoContent: styled.p`
     width: 100%;
     height: 240px;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+    color: ${({ theme }) => theme.PALETTE.gray[30]};
+    font: ${({ theme }) => theme.FONTS.body.xxlarge_bold};
     text-align: center;
   `,
 };

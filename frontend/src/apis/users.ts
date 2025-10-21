@@ -35,9 +35,13 @@ const BASE_PATH = 'users';
 const users = {
   get: async (): Promise<User> => {
     const path = joinAsPath(BASE_URL_VERSION[2], BASE_PATH);
-    const response = await apiClient.get<UserResponse>(path);
-    if (response) return convertResponseToUser(response);
-    throw new Error('유저를 찾을 수 없습니다.');
+    try {
+      const response = await apiClient.get<UserResponse>(path);
+      if (response) return convertResponseToUser(response);
+      throw new Error('유저를 찾을 수 없습니다.');
+    } catch {
+      throw new Error('유저를 찾을 수 없습니다.');
+    }
   },
   getMembers: async (nickname: string): Promise<User[]> => {
     const url = joinAsPath(BASE_URL_VERSION[2], BASE_PATH, 'search');
@@ -49,7 +53,7 @@ const users = {
 };
 
 export const usersQuery = {
-  useGet: () => {
+  useSuspenseGet: () => {
     return useSuspenseQuery({
       queryKey: [BASE_PATH],
       queryFn: async () => {
