@@ -26,15 +26,10 @@ function WishlistTab() {
       </S.RegisterButton>
 
       <S.Wishlist>
-        {data.length > 0 ? (
+        {data.length > 0 &&
           data.map(wish => (
             <WishRestaurantCard key={wish.id} restaurantData={wish} />
-          ))
-        ) : (
-          <S.EmptyDescriptionPointText>
-            즐겨찾기에 식당을 추가해보세요!
-          </S.EmptyDescriptionPointText>
-        )}
+          ))}
       </S.Wishlist>
 
       {opened && <RegisterWishModal onClose={handleCloseModal} />}
@@ -80,14 +75,5 @@ const S = {
     padding: ${({ theme }) => theme.PADDING.p6};
 
     scrollbar-width: none;
-  `,
-  EmptyDescriptionPointText: styled.span`
-    width: 100%;
-
-    margin-top: 20px;
-
-    color: ${({ theme }) => theme.PALETTE.gray[30]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
-    text-align: center;
   `,
 };

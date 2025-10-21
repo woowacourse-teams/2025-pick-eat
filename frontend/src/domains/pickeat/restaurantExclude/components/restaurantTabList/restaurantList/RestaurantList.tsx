@@ -15,7 +15,7 @@ function RestaurantList({ restaurantList }: Props) {
       {restaurantList.length === 0 ? (
         <S.NoContentPointText>
           해당 카테고리에
-          <br /> 식당이 없어요ㅠㅠ
+          <br /> 식당이 없습니다.
         </S.NoContentPointText>
       ) : (
         <S.Container>
@@ -53,8 +53,8 @@ const S = {
     justify-content: center;
     align-items: center;
 
-    color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.heading.large_style};
+    color: ${({ theme }) => theme.PALETTE.gray[30]};
+    font: ${({ theme }) => theme.FONTS.body.xxlarge_bold};
     text-align: center;
   `,
 };
