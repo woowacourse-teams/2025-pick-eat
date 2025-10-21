@@ -2,6 +2,7 @@ import { useWishCarousel } from '@widgets/wishCarousel/hooks/useWishCarousel';
 
 import Carousel from '@components/Carousel';
 
+import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 import { useMemo } from 'react';
 
@@ -47,6 +48,14 @@ function Main() {
 
 export default Main;
 
+const floatUpDown = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }`;
+
 const S = {
   Container: styled.div`
     width: 100%;
@@ -75,18 +84,23 @@ const S = {
     right: 0;
     bottom: -20px;
 
+    animation: ${floatUpDown} 1.5s ease-in-out infinite;
     transform: rotate(10deg);
   `,
   BibimImage: styled.img`
     position: absolute;
     top: 0;
     right: -30px;
+
+    animation: ${floatUpDown} 2.5s ease-in-out infinite;
     transform: rotate(20deg);
   `,
   RamenImage: styled.img`
     position: absolute;
     bottom: 80px;
     left: -25px;
+
+    animation: ${floatUpDown} 3.5s ease-in-out infinite;
     transform: rotate(-20deg);
   `,
   BottomWrapper: styled.div`
