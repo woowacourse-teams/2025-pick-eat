@@ -97,7 +97,7 @@ function CreatePickeatWithLocation() {
               ))}
             </Select.Bar>
           </S.SelectWrapper>
-          <S.Text>식당을 중에서</S.Text>
+          <S.Text>식당들 중에서</S.Text>
         </S.Distance>
 
         <S.Description>
