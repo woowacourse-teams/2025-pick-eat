@@ -57,7 +57,9 @@ function MyPage() {
       </Suspense>
       {/* TODO: 바톰시트 언마운트 처리 */}
       <BottomSheet opened={opened} onClose={handleCloseModal}>
-        <CreateRoom opened={opened} onCreate={handleCloseModal} />
+        <ErrorBoundary>
+          <CreateRoom opened={opened} onCreate={handleCloseModal} />
+        </ErrorBoundary>
       </BottomSheet>
     </S.Container>
   );

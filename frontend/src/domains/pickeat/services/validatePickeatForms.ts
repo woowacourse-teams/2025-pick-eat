@@ -15,7 +15,7 @@ export const ERROR_MESSAGE = {
   NAME: '픽잇 이름을 입력해 주세요.',
   ADDRESS: '위치를 입력해 주세요.',
   RADIUS: '반경을 선택해 주세요.',
-  WISHLIST: '찜 목록을 선택해 주세요.',
+  WISHLIST: '즐겨찾기 목록을 선택해 주세요.',
 };
 
 export const validatePickeatForms = {
