@@ -9,11 +9,12 @@ import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
+@Profile({"local", "dev", "prod"})
 @Configuration("ImageUploadClientConfigurationV2")
 public class ImageUploadClientConfiguration {
 
     @Bean("ImageUploadClientV2")
-    @Profile({"local", "test", "stress"})
+    @Profile({"local"})
     public ImageUploadClient localImageUploadClientV2(
             @Value("${default.wish.image.url}") String defaultImageUrl,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix

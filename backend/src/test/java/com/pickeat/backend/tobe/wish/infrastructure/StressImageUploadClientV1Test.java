@@ -1,18 +1,19 @@
-package com.pickeat.backend.wish.infrastructure;
+package com.pickeat.backend.tobe.wish.infrastructure;
 
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-import com.pickeat.backend.wish.application.dto.request.ImageRequest;
+import com.pickeat.backend.tobe.wish.application.dto.request.ImageRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
-class LocalImageUploadClientTest {
+class StressImageUploadClientV1Test {
 
     private final String defaultImageUrl = "default_image_url";
     private final String keyPrefix = "/dir1/dir2/";
-    private final LocalImageUploadClient localImageUploadClient = new LocalImageUploadClient(defaultImageUrl,
+    private final LocalImageUploadClient localImageUploadClient = new LocalImageUploadClient(
+            defaultImageUrl,
             keyPrefix);
 
     @Test
