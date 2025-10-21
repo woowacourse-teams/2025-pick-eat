@@ -4,9 +4,8 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
-
-import { pickeatQuery } from '@apis/pickeat';
 
 import styled from '@emotion/styled';
 import { Suspense, useEffect, useState } from 'react';
@@ -24,7 +23,7 @@ function PreferRestaurant() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
-  pickeatQuery.useGetPickeatState(pickeatCode);
+  usePickeatStateChecker(pickeatCode);
 
   useEffect(() => {
     setStep(2);

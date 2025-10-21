@@ -45,20 +45,15 @@ export const participantsQuery = {
           }
 
           return status;
-        } catch (error) {
-          console.error('내 투표 상태 조회 실패', error);
-
+        } catch {
           showToast({
             mode: 'ERROR',
             message:
               '내 투표 상태를 불러오는데 실패했습니다. 새로고침 후 다시 시도해 주세요.',
           });
-
-          throw error;
         }
       },
-      gcTime: 0,
-      staleTime: 0,
+      throwOnError: false,
     });
   },
 
