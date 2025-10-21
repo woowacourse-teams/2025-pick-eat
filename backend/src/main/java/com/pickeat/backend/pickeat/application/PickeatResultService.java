@@ -91,7 +91,7 @@ public class PickeatResultService {
 
     private List<Restaurant> getAvailableRestaurants(List<Restaurant> restaurants) {
         return restaurants.stream()
-                .filter(restaurant -> restaurant.getIsExcluded().equals(false))
+                .filter(restaurant -> Boolean.FALSE.equals(restaurant.getIsExcluded()))
                 .toList();
     }
 
