@@ -18,18 +18,11 @@ export const useJoinPickeat = (pickeatDetail: PickeatType) => {
       return;
     }
 
-    mutate(
-      {
-        nickname,
-        pickeatId: pickeatDetail.id,
-        pickeatCode: pickeatDetail.code,
-      },
-      {
-        onError: (error: unknown) => {
-          if (error instanceof Error) setError(error.message);
-        },
-      }
-    );
+    mutate({
+      nickname,
+      pickeatId: pickeatDetail.id,
+      pickeatCode: pickeatDetail.code,
+    });
   };
 
   return { joinPickeat, error };

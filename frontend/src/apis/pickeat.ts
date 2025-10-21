@@ -44,11 +44,6 @@ type JoinPickeatFormData = {
   pickeatId: number;
 };
 
-type ParticipantsResponse = {
-  totalParticipants: number;
-  eliminatedParticipants: number;
-};
-
 type ParticipatingResponse = {
   id: number;
   code: string;
@@ -230,20 +225,6 @@ export const pickeat = {
     const response = await apiClient.post<{ token: string }>(url, data);
     return response?.token || '';
   },
-  getParticipantsCount: async (
-    pickeatCode: string
-  ): Promise<ParticipantsResponse | null> => {
-    const url = joinAsPath(
-      BASE_URL_VERSION[1],
-      BASE_PATH,
-      pickeatCode,
-      'participants',
-      'state'
-    );
-    const data = await apiClient.get<ParticipantsResponse>(url);
-
-    return data ?? null;
-  },
   getParticipating: async (): Promise<ParticipatingResponse | null> => {
     const url = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, 'participating');
     try {
@@ -330,7 +311,7 @@ export const pickeat = {
 };
 
 export const pickeatQuery = {
-  useGetSuspenseResult: (pickeatCode: string) => {
+  useSuspenseGetResult: (pickeatCode: string) => {
     const showToast = useShowToast();
     const navigate = useNavigate();
 
@@ -367,13 +348,11 @@ export const pickeatQuery = {
       gcTime: 1000 * 60 * 60 * 24,
     });
   },
-
-  useGet: (pickeatId: string) => {
-    return (async () => {
-      const result = await pickeat.get(pickeatId);
-      if (!result) throw new Error('픽잇 정보가 존재하지 않습니다.');
-      return result;
-    })();
+  useSuspenseGet: (pickeatCode: string) => {
+    return useSuspenseQuery<PickeatType>({
+      queryKey: [BASE_PATH, pickeatCode],
+      queryFn: () => pickeat.get(pickeatCode),
+    });
   },
   usePostPickeat: () =>
     useMutation({
@@ -439,14 +418,10 @@ export const pickeatQuery = {
       onSuccess: (pickeatCode: string) => {
         navigate(generateRouterPath.pickeatDetail(pickeatCode));
       },
-      onError: (error: unknown) => {
-        console.error('템플릿 설정 실패', error);
+      onError: () => {
         showToast({
           mode: 'ERROR',
-          message:
-            error instanceof Error
-              ? error.message
-              : '투표 생성에 실패했습니다. 다시 시도해 주세요.',
+          message: '투표 생성에 실패했습니다. 다시 시도해 주세요.',
         });
       },
     });
@@ -454,6 +429,7 @@ export const pickeatQuery = {
 
   usePostJoin: () => {
     const navigate = useNavigate();
+    const showToast = useShowToast();
 
     return useMutation({
       mutationFn: async ({
@@ -472,61 +448,39 @@ export const pickeatQuery = {
         joinCode.save(token);
         navigate(generateRouterPath.restaurantsExclude(pickeatCode));
       },
-      onError: error => {
-        console.error('픽잇 참가 실패:', error);
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '투표 생성에 실패했습니다. 다시 시도해 주세요',
+        });
       },
     });
   },
-
-  useParticipantCount: (pickeatCode: string) => {
-    const { data } = useQuery({
-      queryKey: [BASE_PATH, 'participants', pickeatCode],
-      queryFn: async () => {
-        const response = await pickeat.getParticipantsCount(pickeatCode);
-        return response ?? { totalParticipants: 0, eliminatedParticipants: 0 };
-      },
-      refetchInterval: 10000,
-      refetchOnWindowFocus: true,
-      staleTime: 0,
-    });
-
-    return {
-      participant: data ?? { totalParticipants: 0, eliminatedParticipants: 0 },
-    };
-  },
-
   useGetParticipating: () => {
     return useSuspenseQuery({
       queryKey: ['participatingPickeat'],
       queryFn: async () => pickeat.getParticipating(),
     });
   },
-
-  useParticipantsState: (pickeatCode: string) => {
+  useGetParticipantState: (pickeatCode: string) => {
     const showToast = useShowToast();
 
-    const {
-      data: participantsState = { totalParticipants: 0, participants: [] },
-      error,
-    } = useQuery<ParticipantsState>({
+    return useQuery<ParticipantsState>({
       queryKey: [BASE_PATH, 'participants-state', pickeatCode],
       queryFn: async () => {
-        const data = await pickeat.getParticipantsState(pickeatCode);
-        return data;
+        try {
+          return await pickeat.getParticipantsState(pickeatCode);
+        } catch {
+          showToast({
+            mode: 'ERROR',
+            message: `참가자 정보를 불러오지 못했습니다.`,
+          });
+          return { totalParticipants: 0, participants: [] };
+        }
       },
       refetchInterval: 3000,
-      refetchOnWindowFocus: false,
-      staleTime: 0,
+      throwOnError: false,
     });
-
-    if (error instanceof Error) {
-      showToast({
-        mode: 'ERROR',
-        message: `${error.message}: 참가자 정보를 불러오지 못했습니다.`,
-      });
-    }
-
-    return { participantsState };
   },
   useGetPickeatState: (pickeatCode: string) => {
     const navigate = useNavigate();
@@ -549,7 +503,7 @@ export const pickeatQuery = {
       refetchInterval: 3000,
     });
   },
-  useRejoin: (pickeatCode: string) => {
+  usePostRejoin: (pickeatCode: string) => {
     const navigate = useNavigate();
     const showToast = useShowToast();
     return useQuery({
@@ -567,7 +521,6 @@ export const pickeatQuery = {
           if (e instanceof ApiError) {
             if (e.status === 401) {
               navigate(generateRouterPath.pickeatDetail(pickeatCode));
-              console.error('Rejoin error:', e.message);
             } else {
               navigate(ROUTE_PATH.MAIN);
               showToast({
@@ -589,16 +542,12 @@ export const pickeatQuery = {
     const navigate = useNavigate();
 
     return useMutation({
-      mutationFn: async (pickeatCode: string) => {
-        const response = await pickeat.postResult(pickeatCode);
-
-        return response;
-      },
+      mutationFn: async (pickeatCode: string) =>
+        await pickeat.postResult(pickeatCode),
       onSuccess: (_data, pickeatCode) => {
         navigate(generateRouterPath.matchResult(pickeatCode));
       },
-      onError: error => {
-        console.error('투표 결과 생성 실패', error);
+      onError: () => {
         showToast({
           mode: 'ERROR',
           message: '픽잇 결과를 가져오는 데 실패했습니다.',
@@ -611,17 +560,11 @@ export const pickeatQuery = {
     const showToast = useShowToast();
 
     return useMutation({
-      mutationFn: async (pickeatCode: string) => {
-        await pickeat.patchDeactive(pickeatCode);
-      },
-      onError: error => {
-        console.error('픽잇 종료 실패', error);
+      mutationFn: (pickeatCode: string) => pickeat.patchDeactive(pickeatCode),
+      onError: () => {
         showToast({
           mode: 'ERROR',
-          message:
-            error instanceof Error
-              ? error.message
-              : '픽잇을 종료를 실패했습니다.',
+          message: '픽잇을 종료를 실패했습니다.',
         });
       },
     });

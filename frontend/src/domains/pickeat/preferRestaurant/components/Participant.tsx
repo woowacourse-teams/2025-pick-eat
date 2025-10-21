@@ -7,11 +7,12 @@ type Props = {
 };
 
 function Participant({ pickeatCode }: Props) {
-  const { participant } = pickeatQuery.useParticipantCount(pickeatCode);
+  const { data: participant } =
+    pickeatQuery.useGetParticipantState(pickeatCode);
 
   return (
     <S.Container>
-      <S.Join>참여자 총{participant.totalParticipants}명</S.Join>
+      <S.Join>참여자 총{participant?.totalParticipants}명</S.Join>
     </S.Container>
   );
 }

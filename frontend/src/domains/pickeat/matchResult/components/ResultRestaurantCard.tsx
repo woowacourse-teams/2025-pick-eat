@@ -15,7 +15,7 @@ function ResultRestaurantCard() {
   const pickeatCode = searchParams.get('code') ?? '';
 
   const { data: restaurantData } =
-    pickeatQuery.useGetSuspenseResult(pickeatCode);
+    pickeatQuery.useSuspenseGetResult(pickeatCode);
   const { name, pictureUrls, placeUrl, tags } = restaurantData;
 
   return (

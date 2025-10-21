@@ -63,14 +63,11 @@ export const participantsQuery = {
     return useMutation({
       mutationFn: participants.patchComplete,
       onSuccess: () => {
-        showToast(
-          {
-            mode: 'SUCCESS',
-            message:
-              '투표 완료 상태가 되었습니다. (계속 투표에 참여하실 수 있습니다.)',
-          },
-          3000
-        );
+        showToast({
+          mode: 'SUCCESS',
+          message:
+            '투표 완료 상태가 되었습니다. (계속 투표에 참여하실 수 있습니다.)',
+        });
 
         onVoteComplete?.();
 

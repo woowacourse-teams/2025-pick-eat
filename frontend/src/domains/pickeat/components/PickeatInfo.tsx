@@ -5,7 +5,7 @@ import SharePanel from '@components/share/SharePanel';
 
 import { useAuth } from '@domains/login/context/AuthProvider';
 
-import { PickeatType } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 import { usersQuery } from '@apis/users';
 
 import { useGA } from '@hooks/useGA';
@@ -16,19 +16,19 @@ import { sliceInputByMaxLength } from '@utils/sliceInputByMaxLength';
 import { validate } from '@utils/validate';
 
 import styled from '@emotion/styled';
-import { FormEvent, use, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router';
 
 import { useJoinPickeat } from '../hooks/useJoinPickeat';
 import { makeNickname } from '../utils/makeNickname';
 
-type Props = {
-  pickeatData: Promise<PickeatType>;
-};
-
 const NICKNAME_MAX_LENGTH = 12;
 
-function PickeatInfo({ pickeatData }: Props) {
-  const pickeatDetail = use(pickeatData);
+function PickeatInfo() {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+  const { data: pickeatData } = pickeatQuery.useSuspenseGet(pickeatCode);
+
   const pickeatLink = window.location.href;
   const { data: users } = usersQuery.useGet();
   const defaultNickname = validate.isEmpty(users.nickname)
@@ -51,7 +51,7 @@ function PickeatInfo({ pickeatData }: Props) {
       });
   }, [loggedIn]);
 
-  const { joinPickeat, error } = useJoinPickeat(pickeatDetail);
+  const { joinPickeat, error } = useJoinPickeat(pickeatData);
 
   const submitJoinPickeatForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
