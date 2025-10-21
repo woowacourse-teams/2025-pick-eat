@@ -137,8 +137,11 @@ public class PickeatController implements PickeatApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantInPickeat(required = false) ParticipantPrincipal participantPrincipal
     ) {
+        Long participantId = (participantPrincipal != null) ? participantPrincipal.id() : null;
+
         PickeatRejoinAvailableResponse rejoinAvailable =
-                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantPrincipal.id());
+                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantId);
+
         return ResponseEntity.ok(rejoinAvailable);
     }
 
