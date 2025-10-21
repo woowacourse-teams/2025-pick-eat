@@ -1,5 +1,6 @@
 package com.pickeat.backend.restaurant.infrastructure;
 
+import com.pickeat.backend.global.cache.CacheNames;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantJpaRepository;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class RestaurantRepositoryImpl implements RestaurantRepository {
-    public static final String RESTAURANT_CACHE_NAME = "restaurant";
+
     private final RestaurantJpaRepository jpaRepository;
     private final RestaurantJdbcRepository jdbcRepository;
 
@@ -27,7 +28,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
     }
 
     @Override
-    @Cacheable(value = RESTAURANT_CACHE_NAME, key = "#pickeatId")
+    @Cacheable(value = CacheNames.RESTAURANT, key = "#pickeatId")
     public List<Restaurant> findByPickeatId(Long pickeatId) {
         return jpaRepository.findByPickeatId(pickeatId);
     }
@@ -52,7 +53,7 @@ public class RestaurantRepositoryImpl implements RestaurantRepository {
         return jpaRepository.findById(restaurantId);
     }
 
-    @CacheEvict(value = RESTAURANT_CACHE_NAME, key = "#pickeat.id")
+    @CacheEvict(value = CacheNames.RESTAURANT, key = "#pickeat.id")
     public void evictRestaurantCache(Pickeat pickeat) {
         log.info("식당 캐시 무효화 | pickeatId: {}", pickeat.getId());
     }

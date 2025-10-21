@@ -1,5 +1,6 @@
 package com.pickeat.backend.pickeat.infrastructure;
 
+import com.pickeat.backend.global.cache.CacheNames;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantJpaRepository;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class ParticipantRepositoryImpl implements ParticipantRepository {
 
-    public static final String PARTICIPANT_CACHE_NAME = "participant";
     private final ParticipantJpaRepository jpaRepository;
 
     @Override
@@ -25,7 +25,7 @@ public class ParticipantRepositoryImpl implements ParticipantRepository {
     }
 
     @Override
-    @Cacheable(value = PARTICIPANT_CACHE_NAME, key = "#pickeatId")
+    @Cacheable(value = CacheNames.PARTICIPANT, key = "#pickeatId")
     public List<Participant> findByPickeatId(Long pickeatId) {
         return jpaRepository.findByPickeatId(pickeatId);
     }
@@ -40,7 +40,7 @@ public class ParticipantRepositoryImpl implements ParticipantRepository {
         return jpaRepository.findById(participantId);
     }
 
-    @CacheEvict(value = PARTICIPANT_CACHE_NAME, key = "#pickeatId")
+    @CacheEvict(value = CacheNames.PARTICIPANT, key = "#pickeatId")
     public void evictParticipantCache(Long pickeatId) {
         log.info("참가자 캐시 무효화 | pickeatId: {}", pickeatId);
     }

@@ -1,5 +1,6 @@
 package com.pickeat.backend.restaurant.infrastructure;
 
+import com.pickeat.backend.global.cache.CacheNames;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeJpaRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
@@ -15,14 +16,12 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
 
-    public static final String RESTAURANT_LIKE_COUNT_CACHE_NAME = "restaurant:like-count";
-    public static final String PARTICIPANT_LIKES_CACHE_NAME = "participant:likes";
     private final RestaurantLikeJpaRepository jpaRepository;
 
     @Override
     @Caching(evict = {
-            @CacheEvict(value = RESTAURANT_LIKE_COUNT_CACHE_NAME, key = "#restaurantLike.restaurantId"),
-            @CacheEvict(value = PARTICIPANT_LIKES_CACHE_NAME, key = "#restaurantLike.participantId")
+            @CacheEvict(value = CacheNames.RESTAURANT_LIKE_COUNT, key = "#restaurantLike.restaurantId"),
+            @CacheEvict(value = CacheNames.PARTICIPANT_LIKES, key = "#restaurantLike.participantId")
     })
     public RestaurantLike save(RestaurantLike restaurantLike) {
         return jpaRepository.save(restaurantLike);
@@ -34,8 +33,8 @@ public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
     }
 
     @Caching(evict = {
-            @CacheEvict(value = RESTAURANT_LIKE_COUNT_CACHE_NAME, key = "#restaurantId"),
-            @CacheEvict(value = PARTICIPANT_LIKES_CACHE_NAME, key = "#participantId")
+            @CacheEvict(value = CacheNames.RESTAURANT_LIKE_COUNT, key = "#restaurantId"),
+            @CacheEvict(value = CacheNames.PARTICIPANT_LIKES, key = "#participantId")
     })
     @Override
     public void deleteByRestaurantIdAndParticipantId(Long restaurantId, Long participantId) {
@@ -43,7 +42,7 @@ public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
     }
 
     @Override
-    @Cacheable(value = RESTAURANT_LIKE_COUNT_CACHE_NAME, key = "#restaurantId")
+    @Cacheable(value = CacheNames.RESTAURANT_LIKE_COUNT, key = "#restaurantId")
     public Integer countAllByRestaurantId(Long restaurantId) {
         return jpaRepository.countAllByRestaurantId(restaurantId);
     }
@@ -54,7 +53,7 @@ public class RestaurantLikeRepositoryImpl implements RestaurantLikeRepository {
     }
 
     @Override
-    @Cacheable(value = "participant:likes", key = "#participantId")
+    @Cacheable(value = CacheNames.PARTICIPANT_LIKES, key = "#participantId")
     public List<RestaurantLike> findAllByParticipantId(Long participantId) {
         return jpaRepository.findAllByParticipantId(participantId);
     }

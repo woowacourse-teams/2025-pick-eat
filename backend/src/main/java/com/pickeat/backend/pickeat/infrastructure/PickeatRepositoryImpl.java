@@ -1,5 +1,6 @@
 package com.pickeat.backend.pickeat.infrastructure;
 
+import com.pickeat.backend.global.cache.CacheNames;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.PickeatJpaRepository;
@@ -18,12 +19,10 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class PickeatRepositoryImpl implements PickeatRepository {
 
-    public static final String PICKEAT_CACHE_NAME = "pickeat";
-
     private final PickeatJpaRepository jpaRepository;
 
     @Override
-    @Cacheable(value = PICKEAT_CACHE_NAME, key = "#pickeatCode.value.toString()")
+    @Cacheable(value = CacheNames.PICKEAT, key = "#pickeatCode.value.toString()")
     public Optional<Pickeat> findByCode(PickeatCode pickeatCode) {
         return jpaRepository.findByCode(pickeatCode);
     }
@@ -58,8 +57,9 @@ public class PickeatRepositoryImpl implements PickeatRepository {
         return jpaRepository.save(pickeat);
     }
 
-    @CacheEvict(value = PICKEAT_CACHE_NAME, key = "#pickeat.code.value.toString()")
+    @CacheEvict(value = CacheNames.PICKEAT, key = "#pickeat.code.value.toString()")
     public void evictPickeatCache(Pickeat pickeat) {
         log.info("픽잇 캐시 무효화 | pickeatCode: {}", pickeat.getCode().getValue().toString());
     }
 }
+
