@@ -330,7 +330,7 @@ export const pickeat = {
 };
 
 export const pickeatQuery = {
-  useGetResult: (pickeatCode: string) => {
+  useGetSuspenseResult: (pickeatCode: string) => {
     const showToast = useShowToast();
     const navigate = useNavigate();
 
@@ -360,7 +360,6 @@ export const pickeatQuery = {
               message: '투표 결과를 불러오지 못했습니다!',
             });
           }
-
           throw e;
         }
       },

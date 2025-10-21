@@ -101,7 +101,6 @@ export const roomQuery = {
     return useQuery({
       queryKey: ['room', roomId],
       queryFn: async () => room.get(roomId),
-      throwOnError: false,
     });
   },
   usePost: (onCreate: () => void) => {

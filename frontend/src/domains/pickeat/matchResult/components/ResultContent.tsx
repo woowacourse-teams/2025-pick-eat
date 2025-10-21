@@ -23,19 +23,15 @@ const scaleUp = keyframes`
   }
 `;
 
-function ResultContent({ pickeatCode }: { pickeatCode: string }) {
+function ResultContent() {
   const navigate = useNavigate();
-
-  const { data: restaurantData } = pickeatQuery.useGetResult(pickeatCode);
 
   return (
     <>
       <Confetti />
       <S.ResultScreenWrapper>
         <S.ResultWrapper>
-          <ResultRestaurantCard
-            restaurantData={Promise.resolve(restaurantData)}
-          />
+          <ResultRestaurantCard />
           <S.TwinkleBox>
             <Twinkles />
           </S.TwinkleBox>

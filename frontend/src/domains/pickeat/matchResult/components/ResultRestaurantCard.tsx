@@ -1,23 +1,23 @@
 import Share from '@components/assets/icons/Share';
 import Chip from '@components/labels/Chip';
 
-import { Restaurant } from '@apis/restaurant';
+import { pickeatQuery } from '@apis/pickeat';
 
 import { copyLink } from '@utils/copyLink';
 
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
+import { useSearchParams } from 'react-router';
 
-type Props = {
-  restaurantData: Promise<
-    Pick<Restaurant, 'name' | 'pictureUrls' | 'placeUrl' | 'tags'>
-  >;
-};
+function ResultRestaurantCard() {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
 
-function ResultRestaurantCard({ restaurantData }: Props) {
-  const { name, pictureUrls, placeUrl, tags } = use(restaurantData);
+  const { data: restaurantData } =
+    pickeatQuery.useGetSuspenseResult(pickeatCode);
+  const { name, pictureUrls, placeUrl, tags } = restaurantData;
+
   return (
     <S.Container>
       <S.ImageBox>

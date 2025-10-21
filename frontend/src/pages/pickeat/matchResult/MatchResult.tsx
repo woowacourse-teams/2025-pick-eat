@@ -4,19 +4,15 @@ import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
-import { useSearchParams } from 'react-router';
 
 import PendingResultScreen from './components/PendingResultScreen';
 
 function MatchResult() {
-  const [searchParams] = useSearchParams();
-  const pickeatCode = searchParams.get('code') ?? '';
-
   return (
     <S.Container>
       <ErrorBoundary>
         <Suspense fallback={<PendingResultScreen />}>
-          <ResultContent pickeatCode={pickeatCode} />
+          <ResultContent />
         </Suspense>
       </ErrorBoundary>
     </S.Container>

@@ -69,6 +69,7 @@ export const restaurantsQuery = {
       queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, restOption],
       queryFn: async () => restaurants.get(pickeatCode, restOption),
       refetchInterval: pollingInterval,
+      throwOnError: false,
     });
   },
   useSuspenseGet: (pickeatCode: string, option?: QueryOption) => {

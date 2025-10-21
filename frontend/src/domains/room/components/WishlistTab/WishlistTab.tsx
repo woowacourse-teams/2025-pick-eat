@@ -16,7 +16,7 @@ function WishlistTab() {
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
 
-  const { data } = wishQuery.useGet(roomId);
+  const { data } = wishQuery.useSuspenseGet(roomId);
 
   return (
     <S.Container>

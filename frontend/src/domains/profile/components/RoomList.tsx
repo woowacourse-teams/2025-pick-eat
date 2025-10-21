@@ -11,7 +11,7 @@ import styled from '@emotion/styled';
 import { useNavigate } from 'react-router';
 
 function RoomList() {
-  const { data } = roomsQuery.useGet();
+  const { data } = roomsQuery.useSuspenseGet();
 
   const navigate = useNavigate();
   return (

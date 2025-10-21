@@ -26,7 +26,7 @@ export const rooms = {
 };
 
 export const roomsQuery = {
-  useGet: () => {
+  useSuspenseGet: () => {
     return useSuspenseQuery({
       queryKey: ['rooms'],
       queryFn: async () => rooms.get(),
