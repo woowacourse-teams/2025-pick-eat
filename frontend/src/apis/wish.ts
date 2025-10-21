@@ -112,7 +112,7 @@ export const wish = {
 };
 
 export const wishQuery = {
-  useGet: (roomId: number) => {
+  useSuspenseGet: (roomId: number) => {
     return useSuspenseQuery<Wish[]>({
       queryKey: ['wish', roomId],
       queryFn: () => wish.get(roomId),

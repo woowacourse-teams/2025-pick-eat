@@ -559,9 +559,10 @@ export const pickeatQuery = {
           const isAvailable = await pickeat.getRejoin(pickeatCode);
           if (!isAvailable) {
             navigate(generateRouterPath.pickeatDetail(pickeatCode));
-            return;
+            return isAvailable;
           }
           navigate(generateRouterPath.restaurantsExclude(pickeatCode));
+          return isAvailable;
         } catch (e) {
           if (e instanceof ApiError) {
             if (e.status === 401) {
