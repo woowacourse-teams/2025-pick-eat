@@ -1,28 +1,22 @@
-import Button from '@components/actions/Button';
+import NewButton from '@components/actions/NewButton';
 import Chip from '@components/labels/Chip';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
 import { useInviteMember } from '@domains/room/hooks/useInviteMember';
 
-import { room } from '@apis/room';
-import { User } from '@apis/users';
-
-import { useShowToast } from '@provider/ToastProvider';
+import { roomQuery } from '@apis/room';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 import ContentTitle from './components/ContentTitle';
 import InviteMember from './InviteMember';
 
-function IncludeMemberList({ members }: { members: Promise<User[]> }) {
-  const memberList = use(members);
+function IncludeMemberList() {
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
-  const navigate = useNavigate();
-  const showToast = useShowToast();
+  const { data } = roomQuery.useGetIncludeMembers(roomId);
 
   const {
     opened,
@@ -35,28 +29,21 @@ function IncludeMemberList({ members }: { members: Promise<User[]> }) {
     selectedMemberList,
     handleAddSelectedMember,
     handleDeleteSelectedMember,
+    handleClearSelectedMember,
   } = useInviteMember();
 
-  const inviteMember = async () => {
-    try {
-      await room.postMember(
-        roomId,
-        selectedMemberList.map(member => member.id)
-      );
-      showToast({ mode: 'SUCCESS', message: '초대 완료!' });
-      navigate(0);
-    } catch {
-      showToast({
-        mode: 'ERROR',
-        message: '초대에 실패했습니다. 다시 시도해 주세요.',
-      });
-    }
+  const { mutate } = roomQuery.usePostMember(roomId);
+
+  const handleInvite = () => {
+    mutate({ userIds: selectedMemberList.map(member => member.id) });
+    handleUnmountModal();
+    handleClearSelectedMember();
   };
 
   return (
     <>
       <ContentTitle
-        title={`멤버(${memberList.length})`}
+        title={`멤버(${data.length})`}
         description="함께할 멤버를 초대해보세요!"
       />
 
@@ -73,11 +60,11 @@ function IncludeMemberList({ members }: { members: Promise<User[]> }) {
             onAddMember={handleAddSelectedMember}
             onDeleteMember={handleDeleteSelectedMember}
           />
-          <Button text="초대하기" onClick={inviteMember} />
+          <NewButton onClick={handleInvite}>초대하기</NewButton>
         </S.ModalContent>
       </Modal>
       <S.List>
-        {memberList.map(member => (
+        {data.map(member => (
           <S.Member key={member.id}>
             <Chip size="lg">{member.nickname}</Chip>
           </S.Member>
@@ -118,12 +105,14 @@ const S = {
     font: ${({ theme }) => theme.FONTS.heading.small};
   `,
   ModalContent: styled.div`
+    height: 300px;
     display: flex;
     flex-direction: column;
     gap: ${({ theme }) => theme.GAP.level4};
   `,
   List: styled.ul`
     display: flex;
+    flex-wrap: wrap;
     gap: ${({ theme }) => theme.GAP.level3};
   `,
   Member: styled.li``,

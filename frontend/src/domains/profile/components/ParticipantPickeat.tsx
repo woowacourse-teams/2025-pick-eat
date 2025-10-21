@@ -6,31 +6,32 @@ import { Participating } from '@apis/pickeat';
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
 import { useNavigate } from 'react-router';
 
 type Props = {
-  participatingPickeatData: Promise<Participating | null>;
+  participatingPickeatData: Participating | null;
 };
 
 function ParticipantPickeat({ participatingPickeatData }: Props) {
-  const participantPickeat = use(participatingPickeatData);
   const navigate = useNavigate();
+
   return (
     <S.Container>
-      {participantPickeat ? (
+      {participatingPickeatData ? (
         <>
           <S.TitleBox>
             <ActivateCircle
               size="xxs"
-              activate={participantPickeat?.isActive}
+              activate={participatingPickeatData?.isActive}
             />
-            <S.Name>{participantPickeat?.name ?? '픽잇'}</S.Name>
+            <S.Name>{participatingPickeatData?.name ?? '픽잇'}</S.Name>
           </S.TitleBox>
           <button
             onClick={() =>
               navigate(
-                generateRouterPath.pickeatDetail(participantPickeat?.code || '')
+                generateRouterPath.pickeatDetail(
+                  participatingPickeatData?.code || ''
+                )
               )
             }
           >

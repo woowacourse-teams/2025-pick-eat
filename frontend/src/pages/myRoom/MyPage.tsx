@@ -8,23 +8,16 @@ import { useModal } from '@components/modal/useModal';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { pickeat } from '@apis/pickeat';
-import { rooms } from '@apis/rooms';
-import { users } from '@apis/users';
+import { pickeatQuery } from '@apis/pickeat';
 
 import styled from '@emotion/styled';
-import { Suspense, useMemo } from 'react';
+import { Suspense } from 'react';
 
 import CreateRoom from './components/CreateRoom';
 import Profile from './components/Profile';
 
 function MyPage() {
-  const userData = useMemo(() => users.get(), []);
-  const participatingPickeatData = useMemo(
-    () => pickeat.getParticipating(),
-    []
-  );
-  const roomsData = useMemo(() => rooms.get(), []);
+  const { data: participatingPickeatData } = pickeatQuery.useGetParticipating();
   const { opened, handleOpenModal, handleCloseModal } = useModal();
 
   return (
@@ -32,9 +25,10 @@ function MyPage() {
       <Suspense fallback={<LoadingSpinner />}>
         <S.ProfileSection>
           <ErrorBoundary>
-            <Profile user={userData} />
+            <Profile />
           </ErrorBoundary>
         </S.ProfileSection>
+
         <S.Section>
           <S.Title>참여 중인 픽잇</S.Title>
           <ErrorBoundary>
@@ -43,6 +37,7 @@ function MyPage() {
             />
           </ErrorBoundary>
         </S.Section>
+
         <S.Section>
           <S.TitleWrapper>
             <S.TitleBox>
@@ -56,12 +51,15 @@ function MyPage() {
             </S.ButtonBox>
           </S.TitleWrapper>
           <ErrorBoundary>
-            <RoomList roomsData={roomsData} />
+            <RoomList />
           </ErrorBoundary>
         </S.Section>
       </Suspense>
+      {/* TODO: 바톰시트 언마운트 처리 */}
       <BottomSheet opened={opened} onClose={handleCloseModal}>
-        <CreateRoom opened={opened} />
+        <ErrorBoundary>
+          <CreateRoom opened={opened} onCreate={handleCloseModal} />
+        </ErrorBoundary>
       </BottomSheet>
     </S.Container>
   );
@@ -71,6 +69,7 @@ export default MyPage;
 
 const S = {
   Container: styled.div`
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
 

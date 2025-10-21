@@ -1,7 +1,7 @@
 import Plus from '@components/assets/icons/Plus';
 import { useModal } from '@components/modal/useModal';
 
-import { useManageWishlist } from '@domains/room/hooks/useManageWishlist';
+import { wishQuery } from '@apis/wish';
 
 import { THEME } from '@styles/global';
 
@@ -14,16 +14,9 @@ import WishRestaurantCard from './WishRestaurantCard';
 function WishlistTab() {
   const { opened, handleCloseModal, handleOpenModal } = useModal();
   const [searchParams] = useSearchParams();
-  const wishId = Number(searchParams.get('wishId')) ?? '';
-  const { error, wishlistData, handleGetWish, handleDeleteWish } =
-    useManageWishlist(wishId);
+  const roomId = Number(searchParams.get('roomId')) ?? '';
 
-  const handleCreateWish = () => {
-    handleGetWish();
-    handleCloseModal();
-  };
-
-  if (error) throw new Error();
+  const { data } = wishQuery.useSuspenseGet(roomId);
 
   return (
     <S.Container>
@@ -33,27 +26,13 @@ function WishlistTab() {
       </S.RegisterButton>
 
       <S.Wishlist>
-        {wishlistData?.length > 0 ? (
-          wishlistData.map(wish => (
-            <WishRestaurantCard
-              key={wish.id}
-              restaurantData={wish}
-              onDelete={() => handleDeleteWish(wish.id)}
-            />
-          ))
-        ) : (
-          <S.EmptyDescriptionPointText>
-            즐겨찾기에 식당을 추가해보세요!
-          </S.EmptyDescriptionPointText>
-        )}
+        {data.length > 0 &&
+          data.map(wish => (
+            <WishRestaurantCard key={wish.id} restaurantData={wish} />
+          ))}
       </S.Wishlist>
 
-      {opened && (
-        <RegisterWishModal
-          onClick={handleCloseModal}
-          onCreate={handleCreateWish}
-        />
-      )}
+      {opened && <RegisterWishModal onClose={handleCloseModal} />}
     </S.Container>
   );
 }
@@ -66,11 +45,10 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level5};
   `,
   RegisterButton: styled.div`
-    width: 312px;
-    height: 120px;
+    width: 292px;
+    height: 122px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -91,20 +69,11 @@ const S = {
     height: 90%;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
+    gap: ${({ theme }) => theme.GAP.level5};
     overflow: scroll;
 
     padding: ${({ theme }) => theme.PADDING.p6};
 
     scrollbar-width: none;
-  `,
-  EmptyDescriptionPointText: styled.span`
-    width: 100%;
-
-    margin-top: 20px;
-
-    color: ${({ theme }) => theme.PALETTE.gray[30]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
-    text-align: center;
   `,
 };

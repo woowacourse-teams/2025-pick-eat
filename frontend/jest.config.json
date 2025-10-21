@@ -20,6 +20,7 @@
     "^@routes/(.*)$": "<rootDir>/src/routes/$1",
     "^@apis/(.*)$": "<rootDir>/src/apis/$1",
     "^@types/(.*)$": "<rootDir>/src/shared/types/$1",
-    "^@styles/(.*)$": "<rootDir>/src/shared/styles/$1"
+    "^@styles/(.*)$": "<rootDir>/src/shared/styles/$1",
+    "^@provider/(.*)$": "<rootDir>/src/shared/provider/$1"
   }
 }

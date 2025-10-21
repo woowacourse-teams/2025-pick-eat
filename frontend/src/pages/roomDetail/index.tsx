@@ -1,3 +1,4 @@
+import MoreMenuButton from '@domains/room/components/MoreMenuButton';
 import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
@@ -5,44 +6,33 @@ import TabMenu from '@components/tabMenus/TabMenu';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { room } from '@apis/room';
-
-import { useShowToast } from '@provider/ToastProvider';
+import { roomQuery } from '@apis/room';
 
 import styled from '@emotion/styled';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
 import DetailTab from './detailTab';
 
 const TAB_MENU = 64 + 72;
 function RoomDetail() {
-  const [roomName, setRoomName] = useState('방 이름 없음');
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
-
-  const showToast = useShowToast();
-
-  useEffect(() => {
-    const getRoom = async () => {
-      try {
-        const response = await room.get(roomId);
-        if (response) setRoomName(response.name);
-      } catch {
-        showToast({ message: '방 이름을 불러오지 못했습니다.', mode: 'ERROR' });
-      }
-    };
-    getRoom();
-  }, []);
+  const { data } = roomQuery.useGet(roomId);
 
   return (
     <S.Container>
-      <S.RoomName>{roomName}</S.RoomName>
+      <S.RoomName>{data?.name || '방 이름 없음'}</S.RoomName>
       <TabMenu
         overflowHidden={false}
         TabBarContainer={({ children }) => (
           <S.TabBarContainer>
-            <S.TabBarWrapper>{children}</S.TabBarWrapper>
+            <S.TabBarWrapper>
+              {children}
+              <S.MoreButton>
+                <MoreMenuButton />
+              </S.MoreButton>
+            </S.TabBarWrapper>
           </S.TabBarContainer>
         )}
         tabData={[
@@ -82,6 +72,11 @@ const S = {
   Container: styled.div`
     padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
   `,
+  MoreButton: styled.div`
+    position: absolute;
+    top: 16px;
+    right: -36px;
+  `,
   RoomName: styled.div`
     margin: 8px 0;
 
@@ -103,6 +98,7 @@ const S = {
   `,
   TabBarWrapper: styled.div`
     width: 270px;
+    position: relative;
 
     padding-bottom: ${({ theme }) => theme.PADDING.p5};
   `,

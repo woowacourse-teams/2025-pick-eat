@@ -43,6 +43,7 @@ const S = {
     gap: ${({ theme }) => theme.GAP.level1};
 
     padding: ${({ theme }) => theme.PADDING.px3};
+    border-radius: ${({ theme }) => theme.RADIUS.small};
     cursor: pointer;
 
     &:hover {

@@ -4,9 +4,8 @@ import TagSection from '@domains/wishlist/components/WishForm/TagSection';
 import FillInput from '@components/actions/Input/FillInput';
 import NewButton from '@components/actions/NewButton';
 import Thumbnail from '@components/assets/icons/Thumbnail';
-import ErrorMessage from '@components/errors/ErrorMessage';
 
-import { WishFormDataWithImage } from '@domains/wishlist/hooks/useCreateWish';
+import { WishFormDataWithImage } from '@apis/wish';
 
 import styled from '@emotion/styled';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
@@ -18,15 +17,9 @@ type Props = {
     value: WishFormDataWithImage[K]
   ) => void;
   onSubmit: () => void;
-  errorMessage: string;
 };
 
-function RegisterForm({
-  formData,
-  onFormChange,
-  onSubmit,
-  errorMessage,
-}: Props) {
+function RegisterForm({ formData, onFormChange, onSubmit }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +43,7 @@ function RegisterForm({
     e.preventDefault();
     onSubmit();
   };
+
   return (
     <S.Form onSubmit={submitForm}>
       <S.ImageArea htmlFor="thumbnail" previewUrl={previewUrl}>
@@ -106,7 +100,6 @@ function RegisterForm({
         />
       </S.InputArea>
 
-      <ErrorMessage message={errorMessage} />
       <NewButton>식당 등록하기</NewButton>
     </S.Form>
   );

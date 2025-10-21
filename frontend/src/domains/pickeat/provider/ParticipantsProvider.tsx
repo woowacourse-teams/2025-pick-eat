@@ -1,8 +1,7 @@
 import { ParticipantsState } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 
 import { createContext, useContext } from 'react';
-
-import { useParticipantsPolling } from '../participants/participantsAvatarGroup/hooks/useParticipantsState';
 
 type ParticipantsContextType = {
   participantsState: ParticipantsState;
@@ -20,8 +19,10 @@ const ParticipantsContext = createContext<ParticipantsContextType | undefined>(
 );
 
 function ParticipantsProvider({ pickeatCode, children }: Props) {
-  const { participantsState } = useParticipantsPolling(pickeatCode);
+  const { data: participantsState } =
+    pickeatQuery.useGetParticipantState(pickeatCode);
 
+  if (!participantsState) return null;
   const completedCount = participantsState.participants.reduce(
     (count, participant) => (participant.isCompleted ? count + 1 : count),
     0

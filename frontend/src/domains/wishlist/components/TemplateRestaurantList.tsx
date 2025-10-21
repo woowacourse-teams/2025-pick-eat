@@ -1,10 +1,9 @@
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import RestaurantCard from '@components/RestaurantCard';
 
-import { Wishes, wishlist } from '@apis/wishlist';
+import { templateQuery } from '@apis/template';
 
 import styled from '@emotion/styled';
-import { useEffect, useState } from 'react';
 
 type Props = {
   title: string;
@@ -12,30 +11,7 @@ type Props = {
 };
 
 function TemplateRestaurantList({ title, templateId }: Props) {
-  const [restaurantList, setRestaurantList] = useState<Wishes[]>([
-    {
-      id: 0,
-      name: '',
-      category: '한식',
-      pictureUrls: [''],
-      roadAddressName: '',
-      tags: [''],
-      wishlistId: 0,
-      placeUrl: '',
-    },
-  ]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const getTemplateRestaurantList = async () => {
-      setLoading(true);
-      const res = await wishlist.get(templateId);
-      setRestaurantList(res);
-      setLoading(false);
-    };
-
-    getTemplateRestaurantList();
-  }, [templateId]);
+  const { data, isLoading } = templateQuery.useGetTemplate(templateId);
   return (
     <S.Container>
       <S.TitleSection>
@@ -45,11 +21,11 @@ function TemplateRestaurantList({ title, templateId }: Props) {
         </S.Description>
       </S.TitleSection>
 
-      {loading ? (
+      {isLoading ? (
         <LoadingSpinner />
       ) : (
         <S.RestaurantWrapper>
-          {restaurantList.map(item => (
+          {data?.map(item => (
             <RestaurantCard key={item.id} restaurantData={item} />
           ))}
         </S.RestaurantWrapper>

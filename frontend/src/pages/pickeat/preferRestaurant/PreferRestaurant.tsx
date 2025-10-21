@@ -7,8 +7,6 @@ import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
 
-import { restaurants } from '@apis/restaurants';
-
 import styled from '@emotion/styled';
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
@@ -37,6 +35,7 @@ function PreferRestaurant() {
         <S.ProgressBarWrapper>
           <ProgressBar total={3} current={step} />
         </S.ProgressBarWrapper>
+
         <TitleSection>
           <Title />
         </TitleSection>
@@ -44,11 +43,7 @@ function PreferRestaurant() {
         <ErrorBoundary>
           <Suspense fallback={<LoadingSpinner />}>
             <S.RestaurantListContainer>
-              <PreferRestaurantList
-                preferRestaurantListPromise={restaurants.get(pickeatCode, {
-                  isExcluded: 'false',
-                })}
-              />
+              <PreferRestaurantList />
             </S.RestaurantListContainer>
           </Suspense>
         </ErrorBoundary>

@@ -35,7 +35,7 @@ function LineSearchBar({
         autoComplete="off"
         {...props}
       />
-      {xIcon && (
+      {xIcon && typeof value === 'string' && value?.length > 0 && (
         <S.xIcon type="button" onClick={onClear}>
           <Erase />
         </S.xIcon>
@@ -78,6 +78,10 @@ const S = {
 
     font: ${({ theme }) => theme.FONTS.body.xlarge_bold};
     border-bottom: 2px solid ${({ theme }) => theme.PALETTE.primary[50]};
+
+    &::placeholder {
+      color: ${({ theme }) => theme.PALETTE.gray[30]};
+    }
 
     &:placeholder-shown {
       color: ${({ theme }) => theme.PALETTE.gray[30]};

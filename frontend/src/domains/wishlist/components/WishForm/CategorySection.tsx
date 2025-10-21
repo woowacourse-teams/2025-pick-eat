@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 
 type Props = {
   value: FoodCategory;
-  onFormChange: (value: string) => void;
+  onFormChange: (value: FoodCategory) => void;
 };
 
 function CategorySection({ value, onFormChange }: Props) {

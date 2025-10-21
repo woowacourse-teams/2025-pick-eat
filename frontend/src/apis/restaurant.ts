@@ -1,6 +1,11 @@
+import { useShowToast } from '@provider/ToastProvider';
+
 import { joinAsPath } from '@utils/createUrl';
 
-import { apiClient } from './apiClient';
+import { useMutation } from '@tanstack/react-query';
+
+import { apiClient, BASE_URL_VERSION } from './apiClient';
+import { RESTAURANTS_BASE_PATH } from './restaurants';
 
 export type RestaurantResponse = {
   id: number;
@@ -62,12 +67,11 @@ export const convertResponseToRestaurant = ({
   isLiked,
 });
 
-export const RESTAURANT_BAUSE_PATH = 'restaurants';
-
-export const restaurant = {
+const restaurant = {
   patchLike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
-      RESTAURANT_BAUSE_PATH,
+      BASE_URL_VERSION[2],
+      RESTAURANTS_BASE_PATH,
       restaurantId.toString(),
       'like'
     );
@@ -75,10 +79,77 @@ export const restaurant = {
   },
   patchUnlike: async (restaurantId: number) => {
     const patchUrl = joinAsPath(
-      RESTAURANT_BAUSE_PATH,
+      BASE_URL_VERSION[2],
+      RESTAURANTS_BASE_PATH,
       restaurantId.toString(),
       'unlike'
     );
     await apiClient.patch(patchUrl);
+  },
+};
+
+export const restaurantQuery = {
+  usePatchLike: (pickeatCode: string) => {
+    const showToast = useShowToast();
+    return useMutation({
+      mutationFn: async (id: number) => await restaurant.patchLike(id),
+      onMutate: async (id: number, context) => {
+        context.client.setQueryData(
+          [RESTAURANTS_BASE_PATH, pickeatCode, { isExcluded: 'false' }],
+          (oldData: Restaurant[] | undefined) => {
+            return [
+              ...(oldData || []).map(restaurant => {
+                if (restaurant.id === id) {
+                  return {
+                    ...restaurant,
+                    isLiked: true,
+                    likeCount: restaurant.likeCount + 1,
+                  };
+                }
+                return restaurant;
+              }),
+            ];
+          }
+        );
+      },
+
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '좋아요 요청에 실패하였습니다.',
+        });
+      },
+    });
+  },
+  usePatchUnlike: (pickeatCode: string) => {
+    const showToast = useShowToast();
+    return useMutation({
+      mutationFn: async (id: number) => restaurant.patchUnlike(id),
+      onMutate: async (id: number, context) => {
+        context.client.setQueryData(
+          [RESTAURANTS_BASE_PATH, pickeatCode, { isExcluded: 'false' }],
+          (oldData: Restaurant[] | undefined) => {
+            return [
+              ...(oldData || []).map(restaurant => {
+                if (restaurant.id === id) {
+                  return {
+                    ...restaurant,
+                    isLiked: false,
+                    likeCount: restaurant.likeCount - 1,
+                  };
+                }
+                return restaurant;
+              }),
+            ];
+          }
+        );
+      },
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '좋아요 취소 요청에 실패하였습니다.',
+        });
+      },
+    });
   },
 };

@@ -2,7 +2,7 @@ import FixedButton from '@components/actions/FixedButton';
 
 import { useRestaurantExcludeContext } from '@domains/pickeat/restaurantExclude/context/RestaurantExcludeProvider';
 
-import { restaurants } from '@apis/restaurants';
+import { restaurantsQuery } from '@apis/restaurants';
 
 import { generateRouterPath } from '@routes/routePath';
 
@@ -14,14 +14,16 @@ function ExcludeActionButton() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
+  const mutation = restaurantsQuery.usePatch(selectedRestaurantIds, {
+    onSuccess: () => {
+      navigate(generateRouterPath.preferRestaurant(pickeatCode));
+    },
+  });
+
   const navigate = useNavigate();
-  const navigateToPrefer = () => {
-    navigate(generateRouterPath.preferRestaurant(pickeatCode));
-  };
 
   const submitExcludeRestaurants = () => {
-    restaurants.patch(selectedRestaurantIds);
-    navigateToPrefer();
+    mutation.mutate();
   };
 
   return (

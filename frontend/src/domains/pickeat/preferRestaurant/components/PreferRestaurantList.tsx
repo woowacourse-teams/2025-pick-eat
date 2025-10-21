@@ -3,61 +3,37 @@ import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndM
 import LikeButton from '@components/actions/LikeButton/LikeButton';
 import RestaurantCard from '@components/RestaurantCard';
 
-import { restaurant, Restaurant } from '@apis/restaurant';
+import { Restaurant } from '@apis/restaurant';
+import { restaurantsQuery } from '@apis/restaurants';
 
 import { useFlip } from '@hooks/useFlip';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
+import { useSearchParams } from 'react-router';
 
-import { useOptimisticLike } from '../hooks/useOptimisticLike';
-import usePreferRestaurant from '../hooks/usePreferRestaurant';
+function PreferRestaurantList() {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
 
-type Props = {
-  preferRestaurantListPromise: Promise<Restaurant[]>;
-};
-
-function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
-  const initialData = use(preferRestaurantListPromise);
-  const {
-    isOptimisticLike,
-    syncOptimisticLikes,
-    addOptimisticLike,
-    removeOptimisticLike,
-  } = useOptimisticLike(initialData);
-  const { restaurantList, updateLikeCount } = usePreferRestaurant(
-    initialData,
-    syncOptimisticLikes
+  const { data: restaurantList } = restaurantsQuery.useSuspenseGet(
+    pickeatCode,
+    {
+      isExcluded: 'false',
+      pollingInterval: 3000,
+    }
   );
 
-  const { itemRefs } = useFlip(restaurantList);
+  const sortRestaurants = (restaurantList: Restaurant[]) => {
+    return restaurantList.sort((a, b) => {
+      if (b.likeCount !== a.likeCount) {
+        return b.likeCount - a.likeCount;
+      }
 
-  const handleLike = async (id: number) => {
-    addOptimisticLike(id);
-    updateLikeCount(id, +1);
-
-    try {
-      restaurant.patchLike(id);
-    } catch (error) {
-      removeOptimisticLike(id);
-      updateLikeCount(id, -1);
-
-      console.log('좋아요 실패:', error);
-    }
+      return a.name.localeCompare(b.name, 'ko');
+    });
   };
 
-  const handleUnlike = async (id: number) => {
-    removeOptimisticLike(id);
-    updateLikeCount(id, -1);
-
-    try {
-      restaurant.patchUnlike(id);
-    } catch (error) {
-      addOptimisticLike(id);
-      updateLikeCount(id, +1);
-      console.error('좋아요 취소 실패:', error);
-    }
-  };
+  const { itemRefs } = useFlip(sortRestaurants(restaurantList));
 
   return (
     <S.Container>
@@ -76,9 +52,7 @@ function PreferRestaurantList({ preferRestaurantListPromise }: Props) {
             <LikeButton
               id={restaurant.id}
               count={restaurant.likeCount}
-              onLike={() => handleLike(restaurant.id)}
-              onUnlike={() => handleUnlike(restaurant.id)}
-              liked={isOptimisticLike(restaurant.id)}
+              liked={restaurant.isLiked}
             />
           </S.LikeWrapper>
         </S.ItemWrapper>

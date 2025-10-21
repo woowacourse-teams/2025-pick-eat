@@ -3,21 +3,25 @@ import ConfirmModal from '@components/modal/ConfirmModal';
 import { useModal } from '@components/modal/useModal';
 import RestaurantCard from '@components/RestaurantCard';
 
-import { Wishes } from '@apis/wishlist';
+import { Wish, wishQuery } from '@apis/wish';
 
 import styled from '@emotion/styled';
+import { useSearchParams } from 'react-router';
 
 type Props = {
-  restaurantData: Wishes;
-  onDelete: () => void;
+  restaurantData: Wish;
 };
 
-function WishRestaurantCard({ restaurantData, onDelete }: Props) {
+function WishRestaurantCard({ restaurantData }: Props) {
   const { opened, mounted, handleUnmountModal, handleOpenModal } = useModal();
+  const [searchParams] = useSearchParams();
+  const roomId = Number(searchParams.get('roomId')) ?? '';
+
+  const { mutate } = wishQuery.useDelete(roomId);
 
   const handleConfirmDelete = () => {
     handleUnmountModal();
-    onDelete();
+    mutate(restaurantData.id);
   };
 
   return (

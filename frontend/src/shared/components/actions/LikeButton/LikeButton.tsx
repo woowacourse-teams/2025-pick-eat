@@ -1,25 +1,32 @@
+import { restaurantQuery } from '@apis/restaurant';
+
 import styled from '@emotion/styled';
+import { useSearchParams } from 'react-router';
 
 import { useExplosion } from './hooks/useExplosion';
 
 type Props = {
   id: number;
   count: number;
-  onLike: (id: number) => void;
-  onUnlike: (id: number) => void;
   liked: boolean;
 };
 
-function LikeButton({ id, count, onLike, onUnlike, liked }: Props) {
+function LikeButton({ id, count, liked }: Props) {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+
+  const { mutate: mutateLike } = restaurantQuery.usePatchLike(pickeatCode);
+  const { mutate: mutateUnlike } = restaurantQuery.usePatchUnlike(pickeatCode);
+
   const { explosionRef, trigger, removeAnimation } = useExplosion();
 
   const handleClick = () => {
     removeAnimation();
     if (liked) {
-      onUnlike(id);
+      mutateUnlike(id);
     } else {
       trigger();
-      onLike(id);
+      mutateLike(id);
     }
   };
 

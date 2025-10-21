@@ -38,6 +38,10 @@ const S = {
     font: ${({ theme }) => theme.FONTS.body.medium};
     border-radius: ${({ theme }) => theme.RADIUS.medium};
 
+    &::placeholder {
+      color: ${({ theme }) => theme.PALETTE.gray[30]};
+    }
+
     &:focus {
       border: 2px solid ${({ theme }) => theme.PALETTE.primary[60]};
       outline: none;

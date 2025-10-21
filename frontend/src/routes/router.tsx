@@ -5,7 +5,6 @@ import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
 import OauthCallback from '@pages/OauthCallback';
-import { useRejoinRedirect } from '@pages/pickeat/hooks/useReEntry';
 import MatchResult from '@pages/pickeat/matchResult/MatchResult';
 import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
 import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
@@ -13,6 +12,9 @@ import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantEx
 import ProfileInit from '@pages/ProfileInit';
 
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
+
+import { pickeatQuery } from '@apis/pickeat';
+import { queryClient } from '@apis/queryClient';
 
 import { useGA } from '@hooks/useGA';
 
@@ -24,6 +26,7 @@ import { THEME } from '@styles/global';
 import reset from '@styles/reset';
 
 import { Global, ThemeProvider } from '@emotion/react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
@@ -44,11 +47,13 @@ function Wrapper() {
       <Global styles={reset} />
       <ThemeProvider theme={THEME}>
         <Suspense fallback={<LoadingSpinner />}>
-          <AuthProvider>
-            <Layout>
-              <Outlet />
-            </Layout>
-          </AuthProvider>
+          <QueryClientProvider client={queryClient}>
+            <AuthProvider>
+              <Layout>
+                <Outlet />
+              </Layout>
+            </AuthProvider>
+          </QueryClientProvider>
         </Suspense>
       </ThemeProvider>
     </>
@@ -89,8 +94,8 @@ function GuestOnlyRoute() {
 function ProtectedPickeat() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-  const loading = useRejoinRedirect(pickeatCode);
-  if (loading) return null;
+  const { isLoading } = pickeatQuery.usePostRejoin(pickeatCode);
+  if (isLoading) return null;
   return <Outlet />;
 }
 

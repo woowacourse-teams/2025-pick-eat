@@ -1,8 +1,16 @@
+import { joinCode } from '@domains/pickeat/utils/joinStorage';
 import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
+
+import { generateRouterPath, ROUTE_PATH } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
 
 import { joinAsPath } from '@utils/createUrl';
 
-import { apiClient, ApiError } from './apiClient';
+import { useSuspenseQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
+
+import { apiClient, ApiError, BASE_URL_VERSION } from './apiClient';
 
 export type PickeatType = {
   id: number;
@@ -18,6 +26,14 @@ export type PickeatResponse = {
   isActive: boolean;
 };
 
+export type Pickeat = {
+  id: number;
+  code: string;
+  name: string;
+  participantCount: number;
+  active: boolean;
+};
+
 type CreatePickeatFormData = {
   address: string;
   radius: number;
@@ -26,11 +42,6 @@ type CreatePickeatFormData = {
 type JoinPickeatFormData = {
   nickname: string;
   pickeatId: number;
-};
-
-type ParticipantsResponse = {
-  totalParticipants: number;
-  eliminatedParticipants: number;
 };
 
 type ParticipatingResponse = {
@@ -151,53 +162,71 @@ const BASE_PATH = 'pickeats';
 export const pickeat = {
   post: async (roomId: number, name: string): Promise<string> => {
     const url = roomId
-      ? joinAsPath('rooms', `${roomId}`, BASE_PATH)
-      : joinAsPath(BASE_PATH);
+      ? joinAsPath(BASE_URL_VERSION[1], 'rooms', `${roomId}`, BASE_PATH)
+      : joinAsPath(BASE_URL_VERSION[1], BASE_PATH);
     const response = await apiClient.post<PickeatResponse>(url, {
       name,
     });
     if (response) return response.code;
     return '';
   },
-  postWish: async (wishlistId: number, pickeatCode: string) => {
-    const getUrl = joinAsPath(BASE_PATH, pickeatCode, 'restaurants', 'wish');
+  postWish: async (roomId: number, pickeatCode: string) => {
+    const getUrl = joinAsPath(
+      BASE_URL_VERSION[2],
+      BASE_PATH,
+      pickeatCode,
+      'restaurants',
+      'wish'
+    );
     await apiClient.post<PickeatResponse>(getUrl, {
-      wishListId: wishlistId,
+      roomId: roomId,
     });
   },
   postLocation: async (data: CreatePickeatFormData, pickeatCode: string) => {
     const coords = await getLatLngByAddress(data.address);
     if (!coords) throw new Error('INVALID_ADDRESS');
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'restaurants', 'location');
+    const url = joinAsPath(
+      BASE_URL_VERSION[2],
+      BASE_PATH,
+      pickeatCode,
+      'restaurants',
+      'location'
+    );
     await apiClient.post(url, {
       x: coords.x,
       y: coords.y,
       radius: data.radius,
     });
   },
+  postTemplate: async ({
+    pickeatCode,
+    templateId,
+  }: {
+    pickeatCode: string;
+    templateId: number;
+  }) => {
+    const url = joinAsPath(
+      BASE_URL_VERSION[2],
+      BASE_PATH,
+      pickeatCode,
+      'restaurants',
+      'template'
+    );
+    await apiClient.post<PickeatResponse>(url, { templateId });
+  },
   get: async (pickeatId: string) => {
-    const url = joinAsPath(BASE_PATH, pickeatId);
+    const url = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, pickeatId);
     const response = await apiClient.get<PickeatResponse>(url);
     if (response) return await convertResponseToPickeatDetail(response);
     throw new Error('픽잇 정보가 존재하지 않습니다.');
   },
   postJoin: async (data: JoinPickeatFormData): Promise<string> => {
-    const response = await apiClient.post<{ token: string }>(
-      `participants`,
-      data
-    );
+    const url = joinAsPath(BASE_URL_VERSION[1], 'participants');
+    const response = await apiClient.post<{ token: string }>(url, data);
     return response?.token || '';
   },
-  getParticipantsCount: async (
-    pickeatCode: string
-  ): Promise<ParticipantsResponse | null> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'participants', 'state');
-    const data = await apiClient.get<ParticipantsResponse>(url);
-
-    return data ?? null;
-  },
   getParticipating: async (): Promise<ParticipatingResponse | null> => {
-    const url = joinAsPath(BASE_PATH, 'participating');
+    const url = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, 'participating');
     try {
       const response = await apiClient.get<ParticipatingResponse>(url);
       if (response) return convertResponseToParticipating(response);
@@ -212,13 +241,24 @@ export const pickeat = {
   getParticipantsState: async (
     pickeatCode: string
   ): Promise<ParticipantsState> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'participants', 'state');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'participants',
+      'state'
+    );
     const response = await apiClient.get<ParticipantsState>(url);
     if (response) return convertResponseToParticipantsState(response);
     return { totalParticipants: 0, participants: [] };
   },
   getResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'result'
+    );
     const response = await apiClient.get<PickeatResultResponse>(url);
     if (response) return convertResponseToResult(response);
     return null;
@@ -226,26 +266,307 @@ export const pickeat = {
   getPickeatState: async (
     pickeatCode: string
   ): Promise<PickeatStateResponse | null> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'state');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'state'
+    );
     const response = await apiClient.get<PickeatStateResponse>(url);
     if (response) return response;
     return null;
   },
   getRejoin: async (pickeatCode: string): Promise<boolean> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'rejoin-available');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'rejoin-available'
+    );
     const response = await apiClient.get<{ isAvailable: boolean }>(url);
     if (response) return convertResponseToReJoin(response);
     return false;
   },
   postResult: async (pickeatCode: string): Promise<PickeatResult | null> => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'result');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'result'
+    );
     const response = await apiClient.post<PickeatResultResponse>(url);
     if (response) return convertResponseToResult(response);
     return null;
   },
   patchDeactive: async (pickeatCode: string) => {
-    const url = joinAsPath(BASE_PATH, pickeatCode, 'deactive');
+    const url = joinAsPath(
+      BASE_URL_VERSION[1],
+      BASE_PATH,
+      pickeatCode,
+      'deactive'
+    );
     await apiClient.patch(url);
     return null;
+  },
+};
+
+export const pickeatQuery = {
+  useSuspenseGetResult: (pickeatCode: string) => {
+    const showToast = useShowToast();
+    const navigate = useNavigate();
+
+    return useSuspenseQuery({
+      queryKey: [BASE_PATH, 'result', pickeatCode],
+      queryFn: async () => {
+        try {
+          const delay = new Promise(resolve => setTimeout(resolve, 2500));
+          const actual = pickeat.getResult(pickeatCode);
+          const [result] = await Promise.all([actual, delay]);
+
+          if (!result) {
+            throw new Error('투표 결과가 없습니다.');
+          }
+
+          return result;
+        } catch (e) {
+          if (e instanceof ApiError && e.status === 401) {
+            showToast({
+              mode: 'ERROR',
+              message: '해당 픽잇에 접근할 수 없습니다.',
+            });
+            navigate(ROUTE_PATH.MAIN);
+          } else {
+            showToast({
+              mode: 'ERROR',
+              message: '투표 결과를 불러오지 못했습니다!',
+            });
+          }
+          throw e;
+        }
+      },
+      staleTime: 1000 * 60 * 60 * 24, // 24시간
+      gcTime: 1000 * 60 * 60 * 24,
+    });
+  },
+  useSuspenseGet: (pickeatCode: string) => {
+    return useSuspenseQuery<PickeatType>({
+      queryKey: [BASE_PATH, pickeatCode],
+      queryFn: () => pickeat.get(pickeatCode),
+    });
+  },
+  usePostPickeat: () =>
+    useMutation({
+      mutationFn: ({ roomId, name }: { roomId: number; name: string }) =>
+        pickeat.post(roomId, name),
+    }),
+
+  usePostLocation: () =>
+    useMutation({
+      mutationFn: ({
+        address,
+        radius,
+        pickeatCode,
+      }: {
+        address: string;
+        radius: number;
+        pickeatCode: string;
+      }) => pickeat.postLocation({ address, radius }, pickeatCode),
+    }),
+
+  usePostWish: () => {
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+
+    return useMutation({
+      mutationFn: async ({
+        roomId,
+        pickeatCode,
+      }: {
+        roomId: number;
+        pickeatCode: string;
+      }) => {
+        await pickeat.postWish(roomId, pickeatCode);
+        return pickeatCode;
+      },
+      onSuccess: (pickeatCode: string) => {
+        navigate(generateRouterPath.pickeatDetail(pickeatCode));
+      },
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '즐겨찾기에 식당을 추가했는지 확인해 주세요!',
+        });
+      },
+    });
+  },
+
+  usePostTemplate: () => {
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+
+    return useMutation({
+      mutationFn: async ({
+        pickeatCode,
+        templateId,
+      }: {
+        pickeatCode: string;
+        templateId: number;
+      }) => {
+        await pickeat.postTemplate({ pickeatCode, templateId });
+        return pickeatCode;
+      },
+      onSuccess: (pickeatCode: string) => {
+        navigate(generateRouterPath.pickeatDetail(pickeatCode));
+      },
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '투표 생성에 실패했습니다. 다시 시도해 주세요.',
+        });
+      },
+    });
+  },
+
+  usePostJoin: () => {
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+
+    return useMutation({
+      mutationFn: async ({
+        nickname,
+        pickeatId,
+        pickeatCode,
+      }: {
+        nickname: string;
+        pickeatId: number;
+        pickeatCode: string;
+      }) => {
+        const token = await pickeat.postJoin({ nickname, pickeatId });
+        return { token, pickeatCode };
+      },
+      onSuccess: ({ token, pickeatCode }) => {
+        joinCode.save(token);
+        navigate(generateRouterPath.restaurantsExclude(pickeatCode));
+      },
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '투표 생성에 실패했습니다. 다시 시도해 주세요',
+        });
+      },
+    });
+  },
+  useGetParticipating: () => {
+    return useSuspenseQuery({
+      queryKey: ['participatingPickeat'],
+      queryFn: async () => pickeat.getParticipating(),
+    });
+  },
+  useGetParticipantState: (pickeatCode: string) => {
+    const showToast = useShowToast();
+
+    return useQuery<ParticipantsState>({
+      queryKey: [BASE_PATH, 'participants-state', pickeatCode],
+      queryFn: async () => {
+        try {
+          return await pickeat.getParticipantsState(pickeatCode);
+        } catch {
+          showToast({
+            mode: 'ERROR',
+            message: `참가자 정보를 불러오지 못했습니다.`,
+          });
+          return { totalParticipants: 0, participants: [] };
+        }
+      },
+      refetchInterval: 3000,
+      throwOnError: false,
+    });
+  },
+  useGetPickeatState: (pickeatCode: string) => {
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+
+    return useQuery({
+      queryKey: [BASE_PATH, 'state', pickeatCode],
+      queryFn: async () => {
+        try {
+          const response = await pickeat.getPickeatState(pickeatCode);
+
+          return response ?? { isActive: true };
+        } catch (e) {
+          if (e instanceof ApiError && e.message === 'PICKEAT_NOT_FOUND') {
+            showToast({ mode: 'ERROR', message: '해당 픽잇이 종료되었습니다' });
+            navigate(ROUTE_PATH.MAIN);
+          }
+        }
+      },
+      refetchInterval: 3000,
+    });
+  },
+  usePostRejoin: (pickeatCode: string) => {
+    const navigate = useNavigate();
+    const showToast = useShowToast();
+    return useQuery({
+      queryKey: [BASE_PATH, 'rejoin', pickeatCode],
+      queryFn: async () => {
+        try {
+          const isAvailable = await pickeat.getRejoin(pickeatCode);
+          if (!isAvailable) {
+            navigate(generateRouterPath.pickeatDetail(pickeatCode));
+            return isAvailable;
+          }
+          navigate(generateRouterPath.restaurantsExclude(pickeatCode));
+          return isAvailable;
+        } catch (e) {
+          if (e instanceof ApiError) {
+            if (e.status === 401) {
+              navigate(generateRouterPath.pickeatDetail(pickeatCode));
+            } else {
+              navigate(ROUTE_PATH.MAIN);
+              showToast({
+                mode: 'ERROR',
+                message:
+                  '픽잇 재참여 중 알 수 없는 오류가 발생했습니다. 메인 화면으로 이동합니다.',
+              });
+            }
+          }
+        }
+      },
+      retry: false,
+      throwOnError: false,
+    });
+  },
+
+  usePostResult: () => {
+    const showToast = useShowToast();
+    const navigate = useNavigate();
+
+    return useMutation({
+      mutationFn: async (pickeatCode: string) =>
+        await pickeat.postResult(pickeatCode),
+      onSuccess: (_data, pickeatCode) => {
+        navigate(generateRouterPath.matchResult(pickeatCode));
+      },
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '픽잇 결과를 가져오는 데 실패했습니다.',
+        });
+      },
+    });
+  },
+
+  usePatchDeactive: () => {
+    const showToast = useShowToast();
+
+    return useMutation({
+      mutationFn: (pickeatCode: string) => pickeat.patchDeactive(pickeatCode),
+      onError: () => {
+        showToast({
+          mode: 'ERROR',
+          message: '픽잇을 종료를 실패했습니다.',
+        });
+      },
+    });
   },
 };

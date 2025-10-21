@@ -1,3 +1,9 @@
-export const FOOD_CATEGORIES = ['한식', '중식', '일식', '양식', '기타'];
+export const FOOD_CATEGORIES: FoodCategory[] = [
+  '한식',
+  '중식',
+  '일식',
+  '양식',
+  '기타',
+];
 
-export type FoodCategory = (typeof FOOD_CATEGORIES)[number];
+export type FoodCategory = '한식' | '중식' | '일식' | '양식' | '기타';

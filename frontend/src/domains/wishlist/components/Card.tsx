@@ -3,6 +3,8 @@ import Info from '@components/assets/icons/Info';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
@@ -10,8 +12,16 @@ import styled from '@emotion/styled';
 import TemplateRestaurantList from './TemplateRestaurantList';
 
 const CARD_SIZE = {
-  sm: 200,
-  lg: 260,
+  size: { sm: 200, lg: 260 },
+  titleFont: {
+    sm: THEME.FONTS.body.xxlarge_bold,
+    lg: THEME.FONTS.heading.large,
+  },
+  descriptionFont: { sm: THEME.FONTS.body.medium, lg: THEME.FONTS.body.large },
+  padding: {
+    sm: `${THEME.PADDING.py6} ${THEME.PADDING.py2} 0 ${THEME.PADDING.py5}`,
+    lg: `${THEME.PADDING.py8} ${THEME.PADDING.py4} 0 ${THEME.PADDING.py7}`,
+  },
 };
 
 type Props = {
@@ -44,8 +54,8 @@ function Card({
       <S.Image src={imageUrl} alt="" />
       <S.TopWrapper>
         <S.TitleArea>
-          <S.Title>{title}</S.Title>
-          <S.Description>식당 투표하기</S.Description>
+          <S.Title size={size}>{title}</S.Title>
+          <S.Description size={size}>식당 투표하기</S.Description>
         </S.TitleArea>
         <Arrow size="xlg" direction="right" color={THEME.PALETTE.gray[10]} />
       </S.TopWrapper>
@@ -64,7 +74,9 @@ function Card({
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <TemplateRestaurantList title={title} templateId={itemId} />
+        <ErrorBoundary>
+          <TemplateRestaurantList title={title} templateId={itemId} />
+        </ErrorBoundary>
       </Modal>
     </S.Container>
   );
@@ -73,13 +85,12 @@ export default Card;
 
 const S = {
   Container: styled.div<{ size: 'sm' | 'lg' }>`
-    width: ${({ size }) => CARD_SIZE[size]}px;
-    height: ${({ size }) => CARD_SIZE[size]}px;
+    width: ${({ size }) => CARD_SIZE.size[size]}px;
+    height: ${({ size }) => CARD_SIZE.size[size]}px;
     overflow: hidden;
     position: relative;
 
-    padding: ${({ theme }) => theme.PADDING.p8}
-      ${({ theme }) => theme.PADDING.p4} 0 ${({ theme }) => theme.PADDING.p7};
+    padding: ${({ size }) => CARD_SIZE.padding[size]};
 
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
@@ -103,11 +114,11 @@ const S = {
     flex-direction: column;
     z-index: 1;
   `,
-  Title: styled.span`
-    font: ${({ theme }) => theme.FONTS.heading.large};
+  Title: styled.span<{ size: 'sm' | 'lg' }>`
+    font: ${({ size }) => CARD_SIZE.titleFont[size]};
   `,
-  Description: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.large};
+  Description: styled.span<{ size: 'sm' | 'lg' }>`
+    font: ${({ size }) => CARD_SIZE.descriptionFont[size]};
   `,
   InfoButton: styled.button`
     position: absolute;

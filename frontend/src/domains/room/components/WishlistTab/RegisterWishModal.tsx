@@ -10,27 +10,22 @@ import { useCreateWish } from '@domains/wishlist/hooks/useCreateWish';
 
 import styled from '@emotion/styled';
 import { createPortal } from 'react-dom';
-import { useSearchParams } from 'react-router';
 
 import SearchRestaurant from './SearchRestaurant';
 
 type Props = {
-  onClick: () => void;
-  onCreate: () => void;
+  onClose: () => void;
 };
 
-function RegisterWishModal({ onClick, onCreate }: Props) {
+function RegisterWishModal({ onClose }: Props) {
   const { opened, handleCloseModal, handleOpenModal } = useModal();
-  const [searchParams] = useSearchParams();
-  const wishId = Number(searchParams.get('wishId')) ?? '';
   const modalRoot = document.querySelector('#modal') as HTMLElement;
 
-  const handleCreateWish = () => {
-    onCreate();
-    handleInputChange('');
-  };
-  const { formData, handleFormData, initialWishFormData, createWish, error } =
-    useCreateWish({ onCreate: handleCreateWish, onClose: handleCloseModal });
+  const { formData, handleFormData, initialWishFormData, handleCreateWish } =
+    useCreateWish({
+      onCreate: onClose,
+      onCloseBottomSheet: handleCloseModal,
+    });
 
   const { address, handleInputChange, addressList, handleAddressClick } =
     useFindAddress({
@@ -41,7 +36,7 @@ function RegisterWishModal({ onClick, onCreate }: Props) {
   return createPortal(
     <S.Container>
       <S.Header>
-        <S.BackButton onClick={onClick}>
+        <S.BackButton onClick={onClose}>
           <Arrow direction="left" size="lg" />
         </S.BackButton>
       </S.Header>
@@ -58,8 +53,7 @@ function RegisterWishModal({ onClick, onCreate }: Props) {
         <RegisterForm
           formData={formData}
           onFormChange={handleFormData}
-          onSubmit={() => createWish(wishId)}
-          errorMessage={error}
+          onSubmit={handleCreateWish}
         />
       </S.SearchWrapper>
 

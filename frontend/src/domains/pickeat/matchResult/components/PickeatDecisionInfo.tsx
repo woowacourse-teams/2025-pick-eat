@@ -1,4 +1,4 @@
-import { restaurants } from '@apis/restaurants';
+import { restaurantsQuery } from '@apis/restaurants';
 
 import { useShowToast } from '@provider/ToastProvider';
 
@@ -9,17 +9,17 @@ import { useSearchParams } from 'react-router';
 function PickeatDecisionInfo() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
+  const { data: restaurantsData } = restaurantsQuery.useGet(pickeatCode);
   const [hasTie, setHasTie] = useState(false);
   const showToast = useShowToast();
 
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const restaurantsData = await restaurants.get(pickeatCode);
         const maxLikeCount = Math.max(
-          ...restaurantsData.map(restaurant => restaurant.likeCount)
+          ...(restaurantsData ?? []).map(restaurant => restaurant.likeCount)
         );
-        const topRestaurants = restaurantsData.filter(
+        const topRestaurants = (restaurantsData ?? []).filter(
           restaurant => restaurant.likeCount === maxLikeCount
         );
         setHasTie(topRestaurants.length > 1);

@@ -1,15 +1,11 @@
 import Button from '@components/actions/Button';
 
-import { pickeat } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 
 import { useGA } from '@hooks/useGA';
 
-import { generateRouterPath } from '@routes/routePath';
-
-import { useShowToast } from '@provider/ToastProvider';
-
 import styled from '@emotion/styled';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useSearchParams } from 'react-router';
 
 import PickeatDecisionInfo from './PickeatDecisionInfo';
 
@@ -26,9 +22,7 @@ function PickeatEndConfirm({
 }: Props) {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
-
-  const navigate = useNavigate();
-  const showToast = useShowToast();
+  const { mutate: postResult } = pickeatQuery.usePostResult();
 
   const endPickeat = async () => {
     onConfirm();
@@ -38,15 +32,8 @@ function PickeatEndConfirm({
       label: '결과 페이지 이동 버튼',
       value: 1,
     });
-    try {
-      await pickeat.postResult(pickeatCode);
-      navigate(generateRouterPath.matchResult(pickeatCode));
-    } catch {
-      return showToast({
-        mode: 'ERROR',
-        message: '픽잇 결과를 가져오는 데 실패했습니다.',
-      });
-    }
+
+    postResult(pickeatCode);
   };
 
   return (

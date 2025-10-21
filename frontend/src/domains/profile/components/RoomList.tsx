@@ -1,33 +1,26 @@
 import Enter from '@components/assets/icons/Enter';
 import People from '@components/assets/icons/People';
 
-import { Room } from '@apis/room';
+import { roomsQuery } from '@apis/rooms';
 
 import { generateRouterPath } from '@routes/routePath';
 
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { use } from 'react';
 import { useNavigate } from 'react-router';
 
-type Props = {
-  roomsData: Promise<Room[]>;
-};
-
-function RoomList({ roomsData }: Props) {
-  const roomList = use(roomsData);
+function RoomList() {
+  const { data } = roomsQuery.useSuspenseGet();
 
   const navigate = useNavigate();
   return (
     <S.ListWrapper>
-      {roomList.length > 0 ? (
-        roomList.map(room => (
+      {data?.length > 0 ? (
+        data.map(room => (
           <S.List
             key={room.id}
-            onClick={() =>
-              navigate(generateRouterPath.roomDetail(room.id, room.wishlistId))
-            }
+            onClick={() => navigate(generateRouterPath.roomDetail(room.id))}
           >
             <S.RoomInfo>
               <S.Name>{room.name}</S.Name>
@@ -52,9 +45,10 @@ export default RoomList;
 
 const S = {
   ListWrapper: styled.ul`
-    min-height: 400px;
+    min-height: 70px;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: ${({ theme }) => theme.GAP.level4};
     overflow: scroll;
 
@@ -76,6 +70,7 @@ const S = {
   `,
 
   EmptyDescription: styled.span`
+    color: ${({ theme }) => theme.PALETTE.gray[40]};
     font: ${({ theme }) => theme.FONTS.body.medium_bold};
     text-align: center;
   `,

@@ -34,18 +34,20 @@ const S = {
   Container: styled.div`
     width: 100%;
     height: 100vh;
-    background-color: #00000075;
-    position: fixed;
-    z-index: ${({ theme }) => theme.Z_INDEX.modal};
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: fixed;
     top: 0;
+    z-index: ${({ theme }) => theme.Z_INDEX.modal};
+
+    background-color: #00000075;
   `,
 
   GlassMagnifierImage: styled.img`
     width: 200px;
+
     animation: ${keyframes`
       0% {
         transform: translateY(0) rotate(325deg);
@@ -60,7 +62,7 @@ const S = {
   `,
 
   Text: styled.span`
-    font: ${({ theme }) => theme.FONTS.body.xxlarge_bold};
     color: ${({ theme }) => theme.PALETTE.gray[0]};
+    font: ${({ theme }) => theme.FONTS.body.xxlarge_bold};
   `,
 };
