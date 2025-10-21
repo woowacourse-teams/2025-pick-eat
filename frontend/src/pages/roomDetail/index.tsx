@@ -1,3 +1,4 @@
+import MoreMenuButton from '@domains/room/components/MoreMenuButton';
 import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
@@ -26,7 +27,12 @@ function RoomDetail() {
         overflowHidden={false}
         TabBarContainer={({ children }) => (
           <S.TabBarContainer>
-            <S.TabBarWrapper>{children}</S.TabBarWrapper>
+            <S.TabBarWrapper>
+              {children}
+              <S.MoreButton>
+                <MoreMenuButton />
+              </S.MoreButton>
+            </S.TabBarWrapper>
           </S.TabBarContainer>
         )}
         tabData={[
@@ -66,6 +72,11 @@ const S = {
   Container: styled.div`
     padding-top: ${({ theme }) => theme.LAYOUT.headerHeight};
   `,
+  MoreButton: styled.div`
+    position: absolute;
+    top: 16px;
+    right: -36px;
+  `,
   RoomName: styled.div`
     margin: 8px 0;
 
@@ -87,6 +98,7 @@ const S = {
   `,
   TabBarWrapper: styled.div`
     width: 270px;
+    position: relative;
 
     padding-bottom: ${({ theme }) => theme.PADDING.p5};
   `,

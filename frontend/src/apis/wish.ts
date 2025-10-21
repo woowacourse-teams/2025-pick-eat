@@ -135,7 +135,8 @@ export const wishQuery = {
           } catch {
             showToast({
               mode: 'WARN',
-              message: '찜 등록은 완료 되었지만, 이미지 등록에 실패했습니다.',
+              message:
+                '식당 즐겨찾기 등록은 완료 되었지만, 이미지 등록에 실패했습니다.',
             });
             queryClient.invalidateQueries({ queryKey: ['wish', roomId] });
             onCreate();
@@ -145,14 +146,14 @@ export const wishQuery = {
         queryClient.invalidateQueries({ queryKey: ['wish', roomId] });
         showToast({
           mode: 'SUCCESS',
-          message: '찜 생성 완료!',
+          message: '식당 즐겨찾기 등록 완료!',
         });
         onCreate();
       },
       onError() {
         showToast({
           mode: 'ERROR',
-          message: '찜 생성 중 문제가 발생했습니다.',
+          message: '식당 즐겨찾기 등록 중 문제가 발생했습니다.',
         });
       },
     });

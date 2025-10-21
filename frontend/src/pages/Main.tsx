@@ -1,14 +1,102 @@
-import { useWishCarousel } from '@widgets/wishCarousel/hooks/useWishCarousel';
+import Card from '@domains/wishlist/components/Card';
 
 import Carousel from '@components/Carousel';
 
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
+
+import { pickeatQuery } from '@apis/pickeat';
+
+import { generateRouterPath } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
+
+import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
+
+import { pickeatQuery } from '@apis/pickeat';
+
+import { generateRouterPath } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
+
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
-import { useMemo } from 'react';
+import { useNavigate, useSearchParams } from 'react-router';
+
+type Content = {
+  id: number;
+  name: string;
+  imageUrl: string;
+  errorMessage?: string;
+  isTemplate: boolean;
+  onClick: () => void;
+};
 
 function Main() {
-  const { getWishCardContent } = useWishCarousel();
-  const wishCardContents = useMemo(() => getWishCardContent(), []);
+  const navigate = useNavigate();
+  const showToast = useShowToast();
+  const [searchParams] = useSearchParams();
+  const roomId = Number(searchParams.get('roomId')) ?? 0;
+
+  const postPickeatMutation = pickeatQuery.usePostPickeat();
+  const postTemplateMutation = pickeatQuery.usePostTemplate();
+
+  const handleTemplateCardClick = (roomId: number, templateId: number) => {
+    postPickeatMutation.mutate(
+      { roomId, name: makePickeatName() },
+      {
+        onSuccess: code => {
+          postTemplateMutation.mutate({ pickeatCode: code, templateId });
+          navigate(generateRouterPath.pickeatDetail(code));
+        },
+        onError: () => {
+          showToast({
+            mode: 'ERROR',
+            message: '투표 생성을 실패했습니다. 다시 시도해 주세요.',
+          });
+        },
+      }
+    );
+  };
+
+  const handleLocationCardClick = () => {
+    navigate(generateRouterPath.pickeatWithLocation(roomId));
+  };
+
+  const CONTENT: Content[] = [
+    {
+      id: 1,
+      name: '잠실역',
+      imageUrl: '/images/carousel/subway_thumbnail.png',
+      isTemplate: true,
+      onClick: () => handleTemplateCardClick(roomId, 1),
+    },
+    {
+      id: 2,
+      name: '선릉역',
+      imageUrl: '/images/carousel/subway_thumbnail.png',
+      isTemplate: true,
+      onClick: () => handleTemplateCardClick(roomId, 2),
+    },
+    {
+      id: 3,
+      name: '내 위치에서',
+      imageUrl: '/images/carousel/map_thumbnail.png',
+      isTemplate: false,
+      onClick: () => handleLocationCardClick(),
+    },
+  ];
+
+  const getCardContent = CONTENT.map(item => (
+    <Card
+      key={item.id}
+      itemId={item.id}
+      isWish={item.isTemplate}
+      title={item.name}
+      imageUrl={item.imageUrl}
+      onClick={item.onClick}
+      size="lg"
+    />
+  ));
 
   return (
     <S.Container>
@@ -40,7 +128,7 @@ function Main() {
       </S.ImageWrapper>
       <S.BottomWrapper>
         <S.Description>다같이 갈 식당을 정해보세요!</S.Description>
-        <Carousel contentArr={wishCardContents} />
+        <Carousel contentArr={getCardContent} />
       </S.BottomWrapper>
     </S.Container>
   );

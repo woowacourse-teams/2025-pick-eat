@@ -191,7 +191,7 @@ export const pickeat = {
     const coords = await getLatLngByAddress(data.address);
     if (!coords) throw new Error('INVALID_ADDRESS');
     const url = joinAsPath(
-      BASE_URL_VERSION[1],
+      BASE_URL_VERSION[2],
       BASE_PATH,
       pickeatCode,
       'restaurants',
@@ -203,7 +203,13 @@ export const pickeat = {
       radius: data.radius,
     });
   },
-  postTemplate: async (pickeatCode: string) => {
+  postTemplate: async ({
+    pickeatCode,
+    templateId,
+  }: {
+    pickeatCode: string;
+    templateId: number;
+  }) => {
     const url = joinAsPath(
       BASE_URL_VERSION[2],
       BASE_PATH,
@@ -211,7 +217,7 @@ export const pickeat = {
       'restaurants',
       'template'
     );
-    await apiClient.post<PickeatResponse>(url);
+    await apiClient.post<PickeatResponse>(url, { templateId });
   },
   get: async (pickeatId: string) => {
     const url = joinAsPath(BASE_URL_VERSION[1], BASE_PATH, pickeatId);
@@ -407,28 +413,31 @@ export const pickeatQuery = {
       onSuccess: (pickeatCode: string) => {
         navigate(generateRouterPath.pickeatDetail(pickeatCode));
       },
-      onError: (error: unknown) => {
-        console.error('위시리스트 설정 실패', error);
+      onError: () => {
         showToast({
           mode: 'ERROR',
-          message:
-            error instanceof Error
-              ? error.message
-              : '위시리스트 설정에 실패했습니다. 다시 시도해 주세요.',
+          message: '즐겨찾기에 식당을 추가했는지 확인해 주세요!',
         });
       },
     });
   },
 
-  usePostTemplate: (pickeatCode: string) => {
+  usePostTemplate: () => {
     const navigate = useNavigate();
     const showToast = useShowToast();
 
     return useMutation({
-      mutationFn: async () => {
-        await pickeat.postTemplate(pickeatCode);
+      mutationFn: async ({
+        pickeatCode,
+        templateId,
+      }: {
+        pickeatCode: string;
+        templateId: number;
+      }) => {
+        await pickeat.postTemplate({ pickeatCode, templateId });
+        return pickeatCode;
       },
-      onSuccess: () => {
+      onSuccess: (pickeatCode: string) => {
         navigate(generateRouterPath.pickeatDetail(pickeatCode));
       },
       onError: (error: unknown) => {
@@ -443,6 +452,7 @@ export const pickeatQuery = {
       },
     });
   },
+
   usePostJoin: () => {
     const navigate = useNavigate();
 
@@ -528,13 +538,7 @@ export const pickeatQuery = {
       queryFn: async () => {
         try {
           const response = await pickeat.getPickeatState(pickeatCode);
-          // if (response?.isActive === false) {
-          //   showToast({
-          //     mode: 'SUCCESS',
-          //     message: '해당 픽잇이 종료되었습니다.',
-          //   });
-          //   navigate(generateRouterPath.matchResult(pickeatCode));
-          // }
+
           return response ?? { isActive: true };
         } catch (e) {
           if (e instanceof ApiError && e.message === 'PICKEAT_NOT_FOUND') {
