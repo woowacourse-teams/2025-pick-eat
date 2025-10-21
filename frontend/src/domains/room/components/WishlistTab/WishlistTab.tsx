@@ -50,11 +50,10 @@ const S = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: ${({ theme }) => theme.GAP.level5};
   `,
   RegisterButton: styled.div`
-    width: 312px;
-    height: 120px;
+    width: 292px;
+    height: 122px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -75,7 +74,7 @@ const S = {
     height: 90%;
     display: flex;
     flex-direction: column;
-    gap: ${({ theme }) => theme.GAP.level4};
+    gap: ${({ theme }) => theme.GAP.level5};
     overflow: scroll;
 
     padding: ${({ theme }) => theme.PADDING.p6};
