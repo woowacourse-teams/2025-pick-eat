@@ -1,4 +1,4 @@
-import Button from '@components/actions/Button';
+import NewButton from '@components/actions/NewButton';
 import Modal from '@components/modal/Modal';
 
 import { pickeatQuery } from '@apis/pickeat';
@@ -38,8 +38,8 @@ function PickeatEndModal() {
     >
       <S.Container>
         <S.PointText>이런!😥</S.PointText>
-        <S.Text> 모든 음식점이 소거되어 픽잇이 종료 되었습니다.</S.Text>
-        <Button text="메인 페이지로 이동" color="gray" onClick={endPickeat} />
+        <S.Text> 모든 음식점이 소거되어 픽잇이 종료되었습니다.</S.Text>
+        <NewButton onClick={endPickeat}>메인 페이지로 이동</NewButton>
       </S.Container>
     </Modal>
   );
@@ -52,13 +52,14 @@ const S = {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     gap: ${({ theme }) => theme.GAP.level3};
 
     text-align: center;
   `,
   PointText: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};
-    font: ${({ theme }) => theme.FONTS.heading.medium_style};
+    font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
   Text: styled.span`
     color: black;

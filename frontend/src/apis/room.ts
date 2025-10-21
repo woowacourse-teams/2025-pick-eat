@@ -90,6 +90,10 @@ export const room = {
     if (response) return convertResponseToProgressPickeat(response);
     return [];
   },
+  exitRoom: async (roomId: number): Promise<void> => {
+    const url = joinAsPath(BASE_URL_VERSION[2], BASE_PATH, `${roomId}`, 'exit');
+    await apiClient.delete<void>(url);
+  },
 };
 
 export const roomQuery = {
@@ -175,6 +179,28 @@ export const roomQuery = {
     return useSuspenseQuery({
       queryKey: ['progressPickeat', roomId],
       queryFn: async () => room.getProgressPickeats(roomId),
+    });
+  },
+  useExitRoom: ({ onExit }: { onExit: () => void }) => {
+    const showToast = useShowToast();
+
+    return useMutation({
+      mutationFn: async (roomId: number) => room.exitRoom(roomId),
+      onSuccess() {
+        showToast({
+          mode: 'SUCCESS',
+          message: '방을 탈퇴하였습니다.',
+        });
+        onExit();
+        // rooms api 의 쿼리를 이렇게 상수화 안해도 되는걸까?
+        queryClient.invalidateQueries({ queryKey: ['rooms'] });
+      },
+      onError() {
+        showToast({
+          mode: 'ERROR',
+          message: '방 나가기 중 문제가 발생했습니다.',
+        });
+      },
     });
   },
 };
