@@ -29,8 +29,8 @@ public class PickeatRepositoryImpl implements PickeatRepository {
     }
 
     @Override
-    public List<Pickeat> findByRoomId(Long rooId) {
-        return jpaRepository.findByRoomId(rooId);
+    public List<Pickeat> findByRoomId(Long roomId) {
+        return jpaRepository.findByRoomId(roomId);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class PickeatRepositoryImpl implements PickeatRepository {
     }
 
     @Override
-    public List<Pickeat> findByRoomIdIn(List<Long> roodIds) {
-        return jpaRepository.findByRoomIdIn(roodIds);
+    public List<Pickeat> findByRoomIdIn(List<Long> roomIds) {
+        return jpaRepository.findByRoomIdIn(roomIds);
     }
 
     @Override

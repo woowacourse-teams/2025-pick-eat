@@ -9,11 +9,11 @@ public interface PickeatRepository {
 
     Optional<Pickeat> findByCode(PickeatCode pickeatCode);
 
-    List<Pickeat> findByRoomId(Long rooId);
+    List<Pickeat> findByRoomId(Long roomId);
 
     List<Pickeat> findByRoomIdAndIsActive(Long roomId, Boolean isActive);
 
-    List<Pickeat> findByRoomIdIn(List<Long> roodIds);
+    List<Pickeat> findByRoomIdIn(List<Long> roomIds);
 
     Optional<Pickeat> findById(Long pickeatId);
 

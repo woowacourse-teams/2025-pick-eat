@@ -14,11 +14,11 @@ public interface PickeatJpaRepository extends JpaRepository<Pickeat, Long> {
 
     Optional<Pickeat> findByCode(PickeatCode pickeatCode);
 
-    List<Pickeat> findByRoomId(Long rooId);
+    List<Pickeat> findByRoomId(Long roomId);
 
     List<Pickeat> findByRoomIdAndIsActive(Long roomId, Boolean isActive);
 
-    List<Pickeat> findByRoomIdIn(List<Long> roodIds);
+    List<Pickeat> findByRoomIdIn(List<Long> roomIds);
 
     List<Pickeat> findByUpdatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
 
