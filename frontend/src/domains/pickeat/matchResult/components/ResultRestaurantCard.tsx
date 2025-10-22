@@ -4,7 +4,7 @@ import Chip from '@components/labels/Chip';
 
 import { pickeatQuery } from '@apis/pickeat';
 
-import { copyLink } from '@utils/copyLink';
+import useCopyLink from '@hooks/useCopyLinkt';
 
 import { THEME } from '@styles/global';
 
@@ -14,6 +14,7 @@ import { useSearchParams } from 'react-router';
 function ResultRestaurantCard() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
+  const copyLink = useCopyLink();
 
   const { data: restaurantData } =
     pickeatQuery.useSuspenseGetResult(pickeatCode);
