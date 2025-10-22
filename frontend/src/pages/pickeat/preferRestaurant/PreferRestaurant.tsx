@@ -27,7 +27,6 @@ function PreferRestaurant() {
   const pickeatCode = searchParams.get('code') ?? '';
 
   usePickeatStateChecker(pickeatCode);
-  usePreventGoBack('투표하기 페이지에서는 이전 단계로 이동할 수 없습니다.');
 
   useEffect(() => {
     setStep(2);
