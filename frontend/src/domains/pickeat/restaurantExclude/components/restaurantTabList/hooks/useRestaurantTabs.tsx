@@ -58,7 +58,6 @@ export function useRestaurantTabs(restaurantsData: Restaurant[]) {
     content: (
       <S.Container>
         <S.CheckBoxWrapper
-          aria-label={`${tab} 식당 전체 소거`}
           onClick={() => handleRestaurantAllSelectionToggle(tab)}
         >
           <CheckBox
@@ -67,6 +66,7 @@ export function useRestaurantTabs(restaurantsData: Restaurant[]) {
                 ?.map(r => r.id)
                 .every(id => selectedRestaurantIds.includes(id)) ?? false
             }
+            aria-label={`${tab} 식당 전체 소거`}
           />
           <S.CheckLabelText> {tab} 식당 전체 소거</S.CheckLabelText>
         </S.CheckBoxWrapper>
