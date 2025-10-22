@@ -21,6 +21,7 @@ import com.pickeat.backend.restaurant.application.dto.response.RestaurantRespons
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.RestaurantLikeCount;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
@@ -134,7 +135,7 @@ class RestaurantServiceTest {
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
-            Integer originCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            RestaurantLikeCount originCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
 
             entityManager.flush();
             entityManager.clear();
@@ -143,8 +144,8 @@ class RestaurantServiceTest {
             restaurantService.like(restaurant.getId(), participant.getId());
 
             // then
-            Integer actualCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
-            assertThat(actualCount).isEqualTo(originCount + 1);
+            RestaurantLikeCount actualCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            assertThat(actualCount.getCount()).isEqualTo(originCount.getCount() + 1);
         }
 
         @Test
@@ -175,7 +176,7 @@ class RestaurantServiceTest {
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             entityManager.persist(new RestaurantLike(participant.getId(), restaurant.getId()));
-            Integer originCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            RestaurantLikeCount originCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
 
             entityManager.flush();
             entityManager.clear();
@@ -184,8 +185,8 @@ class RestaurantServiceTest {
             restaurantService.cancelLike(restaurant.getId(), participant.getId());
 
             // then
-            Integer actualCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
-            assertThat(actualCount).isEqualTo(originCount - 1);
+            RestaurantLikeCount actualCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            assertThat(actualCount.getCount()).isEqualTo(originCount.getCount() - 1);
 
         }
     }

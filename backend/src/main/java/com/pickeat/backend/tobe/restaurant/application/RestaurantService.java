@@ -12,6 +12,7 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeR
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.RestaurantLikeCount;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.restaurant.infrastructure.RestaurantJdbcRepository;
@@ -64,8 +65,8 @@ public class RestaurantService {
         List<RestaurantResponse> response = new ArrayList<>();
         for (Restaurant restaurant : targets) {
             boolean isLiked = likedRestaurantIds.contains(restaurant.getId());
-            Integer likeCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
-            response.add(RestaurantResponse.of(restaurant, likeCount, isLiked));
+            RestaurantLikeCount likeCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            response.add(RestaurantResponse.of(restaurant, likeCount.getCount(), isLiked));
         }
         return response;
     }

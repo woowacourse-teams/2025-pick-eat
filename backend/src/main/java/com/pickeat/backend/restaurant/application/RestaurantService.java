@@ -13,6 +13,7 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.RestaurantLikeCount;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.ArrayList;
@@ -61,8 +62,8 @@ public class RestaurantService {
         List<RestaurantResponse> response = new ArrayList<>();
         for (Restaurant restaurant : targets) {
             boolean isLiked = likedRestaurantIds.contains(restaurant.getId());
-            Integer likeCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
-            response.add(RestaurantResponse.of(restaurant, likeCount, isLiked));
+            RestaurantLikeCount likeCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            response.add(RestaurantResponse.of(restaurant, likeCount.getCount(), isLiked));
         }
         return response;
     }
@@ -97,12 +98,16 @@ public class RestaurantService {
         Participant participant = getParticipant(participantId);
         Restaurant restaurant = getRestaurantById(restaurantId);
         validateParticipantAccessToRestaurants(List.of(restaurant), participant);
+        RestaurantLikeCount likeCount = restaurantLikeRepository.countByRestaurantId(restaurantId);
         restaurantLikeRepository.save(new RestaurantLike(participant.getId(), restaurant.getId()));
+        likeCount.increaseCount();
     }
 
     @Transactional
     public void cancelLike(Long restaurantId, Long participantId) {
+        RestaurantLikeCount likeCount = restaurantLikeRepository.countByRestaurantId(restaurantId);
         restaurantLikeRepository.deleteByRestaurantIdAndParticipantId(restaurantId, participantId);
+        likeCount.decreaseCount();
     }
 
     private Set<Long> getLikedRestaurantIdsByParticipantId(Long participantId) {

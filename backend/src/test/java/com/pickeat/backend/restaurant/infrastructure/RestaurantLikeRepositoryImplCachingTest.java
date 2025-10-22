@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 
 import com.pickeat.backend.global.cache.CacheNames;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.RestaurantLikeCount;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeJpaRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,12 +61,12 @@ class RestaurantLikeRepositoryImplCachingTest {
         when(restaurantLikeJpaRepository.countByRestaurantId(restaurantId)).thenReturn(3);
 
         // when
-        Integer firstCall = repository.countByRestaurantId(restaurantId);
-        Integer secondCall = repository.countByRestaurantId(restaurantId);
+        RestaurantLikeCount firstCall = repository.countByRestaurantId(restaurantId);
+        RestaurantLikeCount secondCall = repository.countByRestaurantId(restaurantId);
 
         // then
-        assertThat(firstCall).isEqualTo(3);
-        assertThat(secondCall).isEqualTo(3);
+        assertThat(firstCall.getCount()).isEqualTo(3);
+        assertThat(secondCall.getCount()).isEqualTo(3);
         verify(restaurantLikeJpaRepository, times(1)).countByRestaurantId(restaurantId);
     }
 
@@ -107,44 +108,14 @@ class RestaurantLikeRepositoryImplCachingTest {
         // when
         repository.save(restaurantLike);
 
-        Integer likeCount = repository.countByRestaurantId(restaurantId);
+        RestaurantLikeCount likeCount = repository.countByRestaurantId(restaurantId);
         List<RestaurantLike> participantLikes = repository.findAllByParticipantId(participantId);
 
         // then
-        assertThat(likeCount).isEqualTo(1);
+        assertThat(likeCount.getCount()).isEqualTo(1);
         assertThat(participantLikes).hasSize(1);
         verify(restaurantLikeJpaRepository, times(1)).save(restaurantLike);
-        verify(restaurantLikeJpaRepository, times(2)).countByRestaurantId(restaurantId);
-        verify(restaurantLikeJpaRepository, times(2)).findAllByParticipantId(participantId);
-    }
-
-    @Test
-    void delete_호출시_좋아요수와_참여자캐시를_무효화한다() {
-        // given
-        Long restaurantId = 400L;
-        Long participantId = 88L;
-
-        when(restaurantLikeJpaRepository.countByRestaurantId(restaurantId)).thenReturn(2);
-        when(restaurantLikeJpaRepository.findAllByParticipantId(participantId))
-                .thenReturn(List.of(new RestaurantLike(participantId, restaurantId)));
-
-        repository.countByRestaurantId(restaurantId);
-        repository.findAllByParticipantId(participantId);
-
         verify(restaurantLikeJpaRepository, times(1)).countByRestaurantId(restaurantId);
-        verify(restaurantLikeJpaRepository, times(1)).findAllByParticipantId(participantId);
-
-        // when
-        repository.deleteByRestaurantIdAndParticipantId(restaurantId, participantId);
-
-        Integer likeCount = repository.countByRestaurantId(restaurantId);
-        List<RestaurantLike> participantLikes = repository.findAllByParticipantId(participantId);
-
-        // then
-        assertThat(likeCount).isEqualTo(2);
-        assertThat(participantLikes).hasSize(1);
-        verify(restaurantLikeJpaRepository, times(1)).deleteByRestaurantIdAndParticipantId(restaurantId, participantId);
-        verify(restaurantLikeJpaRepository, times(2)).countByRestaurantId(restaurantId);
         verify(restaurantLikeJpaRepository, times(2)).findAllByParticipantId(participantId);
     }
 

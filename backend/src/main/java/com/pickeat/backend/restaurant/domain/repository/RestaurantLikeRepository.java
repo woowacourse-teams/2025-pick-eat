@@ -1,6 +1,7 @@
 package com.pickeat.backend.restaurant.domain.repository;
 
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.RestaurantLikeCount;
 import java.util.List;
 
 public interface RestaurantLikeRepository {
@@ -9,7 +10,7 @@ public interface RestaurantLikeRepository {
 
     void deleteByRestaurantIdAndParticipantId(Long restaurantId, Long participantId);
 
-    Integer countByRestaurantId(Long restaurantId);
+    RestaurantLikeCount countByRestaurantId(Long restaurantId);
 
     List<RestaurantLike> findAllByParticipantId(Long participantId);
 
