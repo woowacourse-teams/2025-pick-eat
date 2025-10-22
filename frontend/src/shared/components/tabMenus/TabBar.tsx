@@ -14,6 +14,7 @@ function TabBar({ tabs, selectedIndex, onTabClick }: Props) {
           key={index}
           onClick={() => onTabClick(index)}
           isActive={index === selectedIndex}
+          aria-label={`${tab} 식당 보기`}
         >
           <S.TabLabel isActive={index === selectedIndex}>{tab}</S.TabLabel>
         </S.TabItem>

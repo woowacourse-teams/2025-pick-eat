@@ -37,9 +37,9 @@ function PickeatEndConfirm({
   };
 
   return (
-    <S.Container>
-      <S.Title>잠깐✋</S.Title>
-      <S.Description>
+    <S.Container role="dialog" aria-modal="true" aria-describedby="dialog-desc">
+      <S.Title id="dialog-title">잠깐✋</S.Title>
+      <S.Description aria-live="polite" id="dialog-desc">
         {remainingCount === 0 || (
           <>
             {remainingCount}명이 투표를 완료하지 않았어요! <br />

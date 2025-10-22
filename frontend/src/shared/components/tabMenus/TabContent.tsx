@@ -35,6 +35,7 @@ function TabContent({
               contentRefs.current[idx] = el!;
             }}
             offset={offset}
+            aria-hidden={idx !== selectedIndex}
           >
             {content}
           </S.ContentBox>

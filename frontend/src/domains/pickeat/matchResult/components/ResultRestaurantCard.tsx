@@ -1,3 +1,4 @@
+import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
 import Share from '@components/assets/icons/Share';
 import Chip from '@components/labels/Chip';
 
@@ -20,6 +21,9 @@ function ResultRestaurantCard() {
 
   return (
     <S.Container>
+      <VisuallyHiddenWithFocus>
+        {restaurantData.name}가 식당으로 선정됐습니다.
+      </VisuallyHiddenWithFocus>
       <S.ImageBox>
         <S.Image
           src={pictureUrls[0] || './images/restaurant.png'}

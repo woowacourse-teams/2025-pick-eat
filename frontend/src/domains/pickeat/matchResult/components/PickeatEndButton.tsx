@@ -36,6 +36,7 @@ function PickeatEndButton() {
         total={totalParticipants}
         current={completedCount}
         onClick={openEndModal}
+        aria-live="polite"
       >
         {remainingCount === 0
           ? `투표 종료하기`
