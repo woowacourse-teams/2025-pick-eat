@@ -8,7 +8,7 @@ import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 
-class LocalImageUploadClientTest {
+class FakeImageUploadClientTest {
 
     private final String defaultImageUrl = "default_image_url";
     private final String keyPrefix = "/dir1/dir2/";
