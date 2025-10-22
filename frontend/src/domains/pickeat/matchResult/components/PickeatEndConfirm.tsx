@@ -24,7 +24,7 @@ function PickeatEndConfirm({
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
   const { mutate: postResult } = pickeatQuery.usePostResult();
-  const ref = useRef<HTMLSpanElement>(null);
+  // const ref = useRef<HTMLSpanElement>(null);
 
   const endPickeat = async () => {
     onConfirm();
@@ -38,17 +38,17 @@ function PickeatEndConfirm({
     postResult(pickeatCode);
   };
 
-  useEffect(() => {
-    if (ref.current) {
-      console.log(ref.current);
-      ref.current.focus();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (ref.current) {
+  //     console.log(ref.current);
+  //     ref.current.focus();
+  //   }
+  // }, []);
 
   return (
-    <S.Container>
-      <S.Title>잠깐✋</S.Title>
-      <S.Description ref={ref} aria-live="polite" role="status">
+    <S.Container role="dialog" aria-modal="true" aria-describedby="dialog-desc">
+      <S.Title id="dialog-title">잠깐✋</S.Title>
+      <S.Description aria-live="polite" id="dialog-desc">
         {remainingCount === 0 || (
           <>
             {remainingCount}명이 투표를 완료하지 않았어요! <br />
