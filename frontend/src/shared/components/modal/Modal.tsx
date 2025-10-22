@@ -115,7 +115,7 @@ const S = {
     transform: translate(-50%, -50%);
   `,
 
-  IconWrapper: styled.div`
+  IconWrapper: styled.button`
     width: 30px;
     height: 30px;
 
