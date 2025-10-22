@@ -47,14 +47,12 @@ function PreferRestaurantList() {
           }}
         >
           <RestaurantCard restaurantData={restaurant} />
-
-          <S.LikeWrapper aria-label={`${restaurant.name} 좋아요`}>
-            <LikeButton
-              id={restaurant.id}
-              count={restaurant.likeCount}
-              liked={restaurant.isLiked}
-            />
-          </S.LikeWrapper>
+          <LikeButton
+            id={restaurant.id}
+            count={restaurant.likeCount}
+            liked={restaurant.isLiked}
+            name={restaurant.name}
+          />
         </S.ItemWrapper>
       ))}
     </S.Container>
@@ -78,22 +76,5 @@ const S = {
     justify-content: center;
     position: relative;
     overflow-anchor: none;
-  `,
-
-  LikeWrapper: styled.div`
-    width: 66px;
-    height: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-
-    padding: ${({ theme }) => theme.PADDING.p1}
-      ${({ theme }) => theme.PADDING.p4};
-
-    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 };
