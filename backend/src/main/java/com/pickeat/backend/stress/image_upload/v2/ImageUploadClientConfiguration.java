@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Profile({"stress"})
-@Configuration("ImageUploadClientConfigurationV2")
+@Configuration("StressImageUploadClientConfigurationV2")
 public class ImageUploadClientConfiguration {
 
     @Bean("ImageUploadClientV2")

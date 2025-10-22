@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Profile({"stress"})
-@Configuration
+@Configuration("StressKakaoMapClientConfig")
 @RequiredArgsConstructor
 public class KakaoMapClientConfig {
 
