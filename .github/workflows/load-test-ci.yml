@@ -2,7 +2,7 @@ name: load-test-ci.yml
 
 on:
   push:
-    branches: [ "load-test-inmemory" ]
+    branches: [ "load-test-inmeory" ]
 
 jobs:
   ci:
