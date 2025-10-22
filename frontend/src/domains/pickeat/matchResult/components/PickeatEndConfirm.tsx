@@ -5,6 +5,7 @@ import { pickeatQuery } from '@apis/pickeat';
 import { useGA } from '@hooks/useGA';
 
 import styled from '@emotion/styled';
+import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 
 import PickeatDecisionInfo from './PickeatDecisionInfo';
@@ -23,6 +24,7 @@ function PickeatEndConfirm({
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
   const { mutate: postResult } = pickeatQuery.usePostResult();
+  const ref = useRef<HTMLSpanElement>(null);
 
   const endPickeat = async () => {
     onConfirm();
@@ -36,10 +38,17 @@ function PickeatEndConfirm({
     postResult(pickeatCode);
   };
 
+  useEffect(() => {
+    if (ref.current) {
+      console.log(ref.current);
+      ref.current.focus();
+    }
+  }, []);
+
   return (
     <S.Container>
       <S.Title>잠깐✋</S.Title>
-      <S.Description>
+      <S.Description ref={ref}>
         {remainingCount === 0 || (
           <>
             {remainingCount}명이 투표를 완료하지 않았어요! <br />
