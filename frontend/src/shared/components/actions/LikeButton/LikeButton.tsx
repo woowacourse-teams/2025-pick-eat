@@ -9,9 +9,10 @@ type Props = {
   id: number;
   count: number;
   liked: boolean;
+  name: string;
 };
 
-function LikeButton({ id, count, liked }: Props) {
+function LikeButton({ id, count, liked, name }: Props) {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
 
@@ -31,9 +32,9 @@ function LikeButton({ id, count, liked }: Props) {
   };
 
   return (
-    <S.Container>
+    <S.Container aria-label={`${name} 좋아요`} onClick={handleClick}>
       <S.HeartWrapper>
-        <S.Heart onClick={handleClick}>{liked ? '❤️' : '♡'}</S.Heart>
+        <S.Heart>{liked ? '❤️' : '♡'}</S.Heart>
         <S.Explosion ref={explosionRef}>
           {Array.from({ length: 5 }).map((_, i) => (
             <S.SmallHeart key={i} />
@@ -48,14 +49,23 @@ function LikeButton({ id, count, liked }: Props) {
 export default LikeButton;
 
 const S = {
-  Container: styled.div`
-    width: 36px;
+  Container: styled.button`
+    width: 66px;
+    height: 36px;
     display: flex;
-    flex-shrink: 0;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 
-    gap: ${({ theme }) => theme.GAP.level2};
+    gap: ${({ theme }) => theme.GAP.level3};
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+
+    padding: ${({ theme }) => theme.PADDING.p1}
+      ${({ theme }) => theme.PADDING.p4};
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[5]};
+    border-radius: ${({ theme }) => theme.RADIUS.large};
   `,
 
   HeartWrapper: styled.div`
