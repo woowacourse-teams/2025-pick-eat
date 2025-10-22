@@ -26,8 +26,9 @@ function RestaurantCard({ restaurantData }: Props) {
   const menuUrl = `${placeUrl}#menuInfo`;
 
   return (
-    <S.Container>
+    <S.Container aria-label={`${name} ${tags.join('')} 메뉴가 있습니다.`}>
       <S.Image
+        aria-hidden="true"
         src={pictureUrls[0] || './images/restaurant.png'}
         onError={e => {
           e.currentTarget.onerror = null;
@@ -36,7 +37,7 @@ function RestaurantCard({ restaurantData }: Props) {
         alt={name}
       />
 
-      <S.Info>
+      <S.Info aria-hidden="true">
         <S.Top>
           <S.TagBox>
             {tags.length > 0 ? (
