@@ -1,6 +1,7 @@
 package com.pickeat.backend.tobe.restaurant.ui;
 
-import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.global.auth.annotation.ParticipantInPickeat;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
@@ -65,9 +66,9 @@ public class RestaurantController implements RestaurantApiSpec {
     @PatchMapping("/restaurants/exclude")
     public ResponseEntity<Void> excludeRestaurants(
             @RequestBody RestaurantExcludeRequest request,
-            @ParticipantId Long participantId
+            @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        restaurantService.exclude(request, participantId);
+        restaurantService.exclude(request, participantPrincipal);
         return ResponseEntity.noContent().build();
     }
 
@@ -75,9 +76,9 @@ public class RestaurantController implements RestaurantApiSpec {
     @PatchMapping("/restaurants/{restaurantId}/like")
     public ResponseEntity<Void> likeRestaurant(
             @PathVariable("restaurantId") Long restaurantId,
-            @ParticipantId Long participantId
+            @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        restaurantService.like(restaurantId, participantId);
+        restaurantService.like(restaurantId, participantPrincipal.id());
         return ResponseEntity.noContent().build();
     }
 
@@ -85,9 +86,9 @@ public class RestaurantController implements RestaurantApiSpec {
     @PatchMapping("/restaurants/{restaurantId}/unlike")
     public ResponseEntity<Void> cancelLikeRestaurant(
             @PathVariable("restaurantId") Long restaurantId,
-            @ParticipantId Long participantId
+            @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        restaurantService.cancelLike(restaurantId, participantId);
+        restaurantService.cancelLike(restaurantId, participantPrincipal.id());
         return ResponseEntity.noContent().build();
     }
 
@@ -97,10 +98,10 @@ public class RestaurantController implements RestaurantApiSpec {
     public ResponseEntity<List<RestaurantResponse>> getPickeatRestaurants(
             @PathVariable("pickeatCode") String pickeatCode,
             @RequestParam(required = false) Boolean isExcluded,
-            @ParticipantId Long participantId
+            @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
         List<RestaurantResponse> response = restaurantService.getPickeatRestaurants(pickeatCode, isExcluded,
-                participantId);
+                participantPrincipal.id());
         return ResponseEntity.ok().body(response);
     }
 }

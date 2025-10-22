@@ -1,6 +1,7 @@
 package com.pickeat.backend.global.auth;
 
-import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.global.auth.annotation.ParticipantInPickeat;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.ParticipantTokenProvider;
@@ -21,16 +22,17 @@ public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResol
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(ParticipantId.class)
-                && parameter.getParameterType().equals(Long.class);
+        return parameter.hasParameterAnnotation(ParticipantInPickeat.class)
+                && parameter.getParameterType().equals(ParticipantPrincipal.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-            NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
-        ParticipantId participantIdAnnotation = parameter.getParameterAnnotation(ParticipantId.class);
-        boolean required = participantIdAnnotation.required();
+        ParticipantInPickeat participantInPickeatAnnotation = parameter.getParameterAnnotation(
+                ParticipantInPickeat.class);
+        boolean required = participantInPickeatAnnotation.required();
 
         String authHeader = webRequest.getHeader("Pickeat-Participant-Token");
 
@@ -48,8 +50,10 @@ public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResol
         return authHeader != null && authHeader.startsWith(PREFIX);
     }
 
-    private Long getParticipantIdByHeader(String authHeader) {
+    private ParticipantPrincipal getParticipantIdByHeader(String authHeader) {
         String token = authHeader.substring(PREFIX.length());
-        return participantTokenProvider.getParticipantId(token);
+        Long participantId = participantTokenProvider.getParticipantId(token);
+        String rawPickeatCode = participantTokenProvider.getRawPickeatCode(token);
+        return new ParticipantPrincipal(participantId, rawPickeatCode);
     }
 }
