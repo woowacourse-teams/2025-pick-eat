@@ -13,7 +13,6 @@ import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.PickeatDeactivatedEvent;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
-import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

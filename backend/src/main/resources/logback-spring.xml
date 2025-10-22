@@ -4,6 +4,10 @@
         <include resource="logback-local.xml"/>
     </springProfile>
 
+    <springProfile name="stress">
+        <include resource="logback-stress.xml"/>
+    </springProfile>
+
     <springProfile name="test">
         <include resource="logback-local.xml"/>
     </springProfile>
