@@ -16,7 +16,7 @@ function ExitRoomButton() {
   const roomId = searchParams.get('roomId');
   const { mutate: exitRoom } = roomQuery.useExitRoom({
     onExit: () => {
-      navigate(ROUTE_PATH.MY_PAGE);
+      navigate(ROUTE_PATH.MY_PAGE, { replace: true });
     },
   });
 

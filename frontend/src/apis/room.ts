@@ -1,8 +1,11 @@
+import { ROUTE_PATH } from '@routes/routePath';
+
 import { useShowToast } from '@provider/ToastProvider';
 
 import { joinAsPath } from '@utils/createUrl';
 
 import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 
 import { apiClient, BASE_URL_VERSION } from './apiClient';
 import { Pickeat, PickeatResponse } from './pickeat';
@@ -99,6 +102,7 @@ export const room = {
 export const roomQuery = {
   useGet: (roomId: number) => {
     const showToast = useShowToast();
+    const navigate = useNavigate();
     return useQuery({
       queryKey: ['room', roomId],
       queryFn: async () => {
@@ -111,6 +115,7 @@ export const roomQuery = {
             mode: 'ERROR',
             message: '방 정보를 불러오는데 실패했습니다.',
           });
+          navigate(ROUTE_PATH.MY_PAGE, { replace: true });
         }
       },
       throwOnError: false,
