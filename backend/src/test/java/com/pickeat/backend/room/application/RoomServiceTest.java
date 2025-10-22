@@ -40,7 +40,7 @@ class RoomServiceTest {
 
     private Room createRoom(User user) {
         Room room = testEntityManager.persist(RoomFixture.create());
-        testEntityManager.persist(new RoomUser(room, user));
+        testEntityManager.persist(new RoomUser(room.getId(), user.getId()));
         return room;
     }
 
@@ -162,7 +162,7 @@ class RoomServiceTest {
             roomService.inviteUsers(room.getId(), user.getId(), request);
 
             // then
-            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
             assertThat(roomUsers).hasSize(4);
         }
 
@@ -186,7 +186,7 @@ class RoomServiceTest {
             roomService.inviteUsers(room.getId(), user.getId(), request);
 
             // then
-            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
             assertThat(roomUsers).hasSize(3);
         }
 
@@ -210,7 +210,7 @@ class RoomServiceTest {
             roomService.inviteUsers(room.getId(), user.getId(), request);
 
             // then
-            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
             assertThat(roomUsers).hasSize(2);
         }
 
@@ -258,7 +258,7 @@ class RoomServiceTest {
             roomService.exitRoom(room.getId(), exitUser.getId());
 
             // then
-            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
             assertThat(roomUsers.size()).isEqualTo(1);
         }
     }

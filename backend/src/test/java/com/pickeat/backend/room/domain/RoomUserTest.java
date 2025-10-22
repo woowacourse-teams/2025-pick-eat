@@ -20,7 +20,7 @@ class RoomUserTest {
             User user = UserFixture.create();
 
             // when & then
-            assertThatCode(() -> new RoomUser(room, user))
+            assertThatCode(() -> new RoomUser(room.getId(), user.getId()))
                     .doesNotThrowAnyException();
         }
     }

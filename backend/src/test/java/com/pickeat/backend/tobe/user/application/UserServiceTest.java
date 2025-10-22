@@ -220,8 +220,8 @@ class UserServiceTest {
             Room room = RoomFixture.create();
             entityManager.persist(room);
 
-            entityManager.persist(new RoomUser(room, user1));
-            entityManager.persist(new RoomUser(room, user2));
+            entityManager.persist(new RoomUser(room.getId(), user1.getId()));
+            entityManager.persist(new RoomUser(room.getId(), user2.getId()));
             entityManager.flush();
             entityManager.clear();
 
