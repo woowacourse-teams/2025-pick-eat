@@ -60,7 +60,12 @@ function IncludeMemberList() {
             onAddMember={handleAddSelectedMember}
             onDeleteMember={handleDeleteSelectedMember}
           />
-          <NewButton onClick={handleInvite}>초대하기</NewButton>
+          <NewButton
+            onClick={handleInvite}
+            disabled={selectedMemberList.length === 0}
+          >
+            초대하기
+          </NewButton>
         </S.ModalContent>
       </Modal>
       <S.List>
