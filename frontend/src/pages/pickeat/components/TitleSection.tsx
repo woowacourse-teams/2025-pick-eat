@@ -30,7 +30,7 @@ function TitleSection({ children }: Props) {
     <S.Container>
       {children}
       <S.ToolContainer>
-        <S.ShareContainer onClick={handleOpenModal}>
+        <S.ShareContainer onClick={handleOpenModal} aria-label="공유하기">
           <Share color={THEME.PALETTE.gray[70]} size="sm" />
           <Modal
             opened={opened}
@@ -62,36 +62,6 @@ const S = {
     flex-direction: column;
 
     padding: ${({ theme }) => theme.PADDING.p5};
-  `,
-  DeleteButton: styled.div`
-    width: 20px;
-    height: 20px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    color: ${({ theme }) => theme.PALETTE.gray[0]};
-  `,
-  IconContainer: styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-end;
-  `,
-  IconWrapper: styled.div`
-    width: 24px;
-    height: 24px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: ${({ theme }) => theme.PADDING.p1};
-
-    background-color: ${({ theme }) => theme.PALETTE.primary[50]};
-
-    border-radius: 1000px;
   `,
   ShareContainer: styled.button`
     height: 36px;

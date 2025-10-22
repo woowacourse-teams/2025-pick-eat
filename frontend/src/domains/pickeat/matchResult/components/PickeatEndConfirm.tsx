@@ -24,7 +24,6 @@ function PickeatEndConfirm({
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
   const { mutate: postResult } = pickeatQuery.usePostResult();
-  // const ref = useRef<HTMLSpanElement>(null);
 
   const endPickeat = async () => {
     onConfirm();
@@ -37,13 +36,6 @@ function PickeatEndConfirm({
 
     postResult(pickeatCode);
   };
-
-  // useEffect(() => {
-  //   if (ref.current) {
-  //     console.log(ref.current);
-  //     ref.current.focus();
-  //   }
-  // }, []);
 
   return (
     <S.Container role="dialog" aria-modal="true" aria-describedby="dialog-desc">
