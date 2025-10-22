@@ -33,11 +33,8 @@ SET @drop_fk_sql = (
          )
   FROM tmp_fk_names
 );
-
 SET @drop_fk_sql = IF(@drop_fk_sql IS NULL OR @drop_fk_sql = '', 'SELECT 1;', @drop_fk_sql);
-PREPARE stmt FROM @drop_fk_sql;
-EXECUTE stmt;
-DEALLOCATE PREPARE stmt;
+PREPARE stmt FROM @drop_fk_sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
 SET @drop_idx_sql = (
   SELECT CONCAT(
@@ -50,17 +47,10 @@ SET @drop_idx_sql = (
     AND s.TABLE_NAME   = 'room_user'
     AND s.INDEX_NAME IN (SELECT name FROM tmp_fk_names)
 );
-
 SET @drop_idx_sql = IF(@drop_idx_sql IS NULL OR @drop_idx_sql = '', 'SELECT 1;', @drop_idx_sql);
-PREPARE stmt2 FROM @drop_idx_sql;
-EXECUTE stmt2;
-DEALLOCATE PREPARE stmt2;
+PREPARE stmt2 FROM @drop_idx_sql; EXECUTE stmt2; DEALLOCATE PREPARE stmt2;
 
 DROP TEMPORARY TABLE IF EXISTS tmp_fk_names;
 
-ALTER TABLE room_user
-    ADD UNIQUE KEY `uq_room_user_roomid_userid_deleted` (`room_id`, `user_id`, `deleted`);
-
-ALTER TABLE room_user
-    ADD INDEX `idx_room_user_room_deleted` (`room_id`, `deleted`),
-  ADD INDEX `idx_room_user_user_deleted` (`user_id`, `deleted`);
+CREATE INDEX idx_room_user_room_deleted ON room_user (room_id, deleted);
+CREATE INDEX idx_room_user_user_deleted ON room_user (user_id, deleted);
