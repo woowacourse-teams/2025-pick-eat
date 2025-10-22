@@ -21,11 +21,16 @@ function RegisterWishModal({ onClose }: Props) {
   const { opened, handleCloseModal, handleOpenModal } = useModal();
   const modalRoot = document.querySelector('#modal') as HTMLElement;
 
-  const { formData, handleFormData, initialWishFormData, handleCreateWish } =
-    useCreateWish({
-      onCreate: onClose,
-      onCloseBottomSheet: handleCloseModal,
-    });
+  const {
+    formData,
+    handleFormData,
+    initialWishFormData,
+    handleCreateWish,
+    isPending,
+  } = useCreateWish({
+    onCreate: onClose,
+    onCloseBottomSheet: handleCloseModal,
+  });
 
   const { address, handleInputChange, addressList, handleAddressClick } =
     useFindAddress({
@@ -54,6 +59,7 @@ function RegisterWishModal({ onClose }: Props) {
           formData={formData}
           onFormChange={handleFormData}
           onSubmit={handleCreateWish}
+          isLoading={isPending}
         />
       </S.SearchWrapper>
 

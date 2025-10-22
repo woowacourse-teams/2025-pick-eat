@@ -12,6 +12,7 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 
 type Props = {
   formData: WishFormDataWithImage;
+  isLoading: boolean;
   onFormChange: <K extends keyof WishFormDataWithImage>(
     key: K,
     value: WishFormDataWithImage[K]
@@ -19,7 +20,7 @@ type Props = {
   onSubmit: () => void;
 };
 
-function RegisterForm({ formData, onFormChange, onSubmit }: Props) {
+function RegisterForm({ formData, isLoading, onFormChange, onSubmit }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -105,7 +106,9 @@ function RegisterForm({ formData, onFormChange, onSubmit }: Props) {
         />
       </S.InputArea>
 
-      <NewButton>식당 등록하기</NewButton>
+      <NewButton disabled={isLoading}>
+        {isLoading ? '식당 등록 중...' : '식당 등록하기'}
+      </NewButton>
     </S.Form>
   );
 }
