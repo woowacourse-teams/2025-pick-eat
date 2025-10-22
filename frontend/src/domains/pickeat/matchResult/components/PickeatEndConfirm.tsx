@@ -48,7 +48,7 @@ function PickeatEndConfirm({
   return (
     <S.Container>
       <S.Title>잠깐✋</S.Title>
-      <S.Description ref={ref}>
+      <S.Description ref={ref} aria-live="polite" role="status">
         {remainingCount === 0 || (
           <>
             {remainingCount}명이 투표를 완료하지 않았어요! <br />
