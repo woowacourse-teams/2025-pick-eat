@@ -28,9 +28,9 @@ public record RestaurantRequest(
                 restaurantInfo.getDistance(),
                 restaurantInfo.getRoadAddressName(),
                 restaurantInfo.getPlaceUrl(),
+                restaurantInfo.getTags(),
                 picture == null ? null : picture.getPictureKey(),
                 picture == null ? null : picture.getPictureUrl(),
-                restaurantInfo.getTags(),
                 RestaurantType.WISH
         );
     }
@@ -44,9 +44,9 @@ public record RestaurantRequest(
                 restaurantInfo.getDistance(),
                 restaurantInfo.getRoadAddressName(),
                 restaurantInfo.getPlaceUrl(),
+                restaurantInfo.getTags(),
                 picture == null ? null : picture.getPictureKey(),
                 picture == null ? null : picture.getPictureUrl(),
-                restaurantInfo.getTags(),
                 RestaurantType.TEMPLATE_WISH
         );
     }

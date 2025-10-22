@@ -1,10 +1,8 @@
 package com.pickeat.backend.room.domain;
 
 import com.pickeat.backend.global.BaseEntity;
-import com.pickeat.backend.user.domain.User;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,16 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomUser extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
-    private Room room;
+    @Column(name = "room_id", nullable = false)
+    private Long roomId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    public RoomUser(Room room, User user) {
-        this.room = room;
-        this.user = user;
+    public RoomUser(Long roomId, Long userId) {
+        this.roomId = roomId;
+        this.userId = userId;
     }
 }

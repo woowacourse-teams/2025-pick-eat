@@ -15,7 +15,9 @@ import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.tobe.fixture.WishFixture;
+import com.pickeat.backend.tobe.room.domain.repository.RoomRepository;
 import com.pickeat.backend.tobe.room.domain.repository.RoomUserRepository;
+import com.pickeat.backend.tobe.user.domain.repository.UserRepository;
 import com.pickeat.backend.tobe.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.tobe.wish.domain.Wish;
 import com.pickeat.backend.tobe.wish.domain.repository.WishRepository;
@@ -44,6 +46,12 @@ class WishPictureServiceTest {
     @Autowired
     private RoomUserRepository roomUserRepository;
 
+    @Autowired
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
     private WishPictureService wishPictureService;
 
     @BeforeEach
@@ -60,7 +68,8 @@ class WishPictureServiceTest {
         void 위시_사진_생성_성공() {
             // given
             RoomUser roomUser = makeRoomUser();
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom()));
+            Room room = roomRepository.getById(roomUser.getRoomId());
+            Wish wish = entityManager.persist(WishFixture.create(room));
             MultipartFile picture = makeMockImageFile();
 
             entityManager.flush();
@@ -69,7 +78,7 @@ class WishPictureServiceTest {
             // when
             WishPictureResponse response = wishPictureService.createWishPicture(
                     wish.getId(),
-                    roomUser.getUser().getId(),
+                    roomUser.getUserId(),
                     picture
             );
 
@@ -88,7 +97,8 @@ class WishPictureServiceTest {
         void 허용하지_않는_형식이_입력될_경우() {
             // given
             RoomUser roomUser = makeRoomUser();
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom()));
+            Room room = roomRepository.getById(roomUser.getRoomId());
+            Wish wish = entityManager.persist(WishFixture.create(room));
 
             MultipartFile mockFile = mock(MultipartFile.class);
             when(mockFile.getContentType()).thenReturn("image/gif");
@@ -99,7 +109,7 @@ class WishPictureServiceTest {
 
             // when & then
             assertThatThrownBy(
-                    () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUser().getId(), picture))
+                    () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getId(), picture))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.NOT_ALLOWED_CONTENT_TYPE.getMessage());
         }
@@ -132,7 +142,9 @@ class WishPictureServiceTest {
             wishPictureService = setupWishPictureService(imageUploadClient);
 
             RoomUser roomUser = makeRoomUser();
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom()));
+            Room room = roomRepository.getById(roomUser.getRoomId());
+
+            Wish wish = entityManager.persist(WishFixture.create(room));
             MultipartFile picture = makeMockImageFile();
 
             entityManager.flush();
@@ -140,7 +152,7 @@ class WishPictureServiceTest {
 
             // when & then
             assertThatThrownBy(
-                    () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUser().getId(), picture))
+                    () -> wishPictureService.createWishPicture(wish.getId(), roomUser.getUserId(), picture))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage("이미지 업로드 실패");
         }
@@ -153,14 +165,15 @@ class WishPictureServiceTest {
         void 위시_사진_생성_성공() {
             // given
             RoomUser roomUser = makeRoomUser();
+            Room room = roomRepository.getById(roomUser.getRoomId());
             Picture picture = new Picture(DEFAULT_IMAGE_KEY_PREFIX, DEFAULT_IMAGE_URL);
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom(), picture));
+            Wish wish = entityManager.persist(WishFixture.create(room, picture));
 
             entityManager.flush();
             entityManager.clear();
 
             // when
-            wishPictureService.deleteWishPictures(wish.getId(), roomUser.getUser().getId());
+            wishPictureService.deleteWishPictures(wish.getId(), roomUser.getUserId());
 
             // then
             Wish updatedWish = entityManager.find(Wish.class, wish.getId());
@@ -171,8 +184,10 @@ class WishPictureServiceTest {
         void 방에_참가하지_않은_회원이_위시이미지를_삭제할_경우_예외_발생() {
             // given
             RoomUser roomUser = makeRoomUser();
+            Room room = roomRepository.getById(roomUser.getRoomId());
+
             Picture picture = new Picture(DEFAULT_IMAGE_KEY_PREFIX, DEFAULT_IMAGE_URL);
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom(), picture));
+            Wish wish = entityManager.persist(WishFixture.create(room, picture));
 
             User otherUser = UserFixture.create();
 
@@ -193,8 +208,10 @@ class WishPictureServiceTest {
         void 위시_사진_수정_성공() {
             // given
             RoomUser roomUser = makeRoomUser();
+            Room room = roomRepository.getById(roomUser.getRoomId());
+
             Picture originPicture = new Picture("origin_key", "origin_download_url");
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom(), originPicture));
+            Wish wish = entityManager.persist(WishFixture.create(room, originPicture));
 
             entityManager.flush();
             entityManager.clear();
@@ -204,7 +221,7 @@ class WishPictureServiceTest {
             // when
             WishPictureResponse response = wishPictureService.updateWishPictures(
                     wish.getId(),
-                    roomUser.getUser().getId(),
+                    roomUser.getId(),
                     newPicture);
 
             // then
@@ -223,8 +240,10 @@ class WishPictureServiceTest {
         void 허용하지_않는_형식이_입력될_경우() {
             // given
             RoomUser roomUser = makeRoomUser();
+            Room room = roomRepository.getById(roomUser.getRoomId());
+
             Picture originPicture = new Picture("origin_key", "origin_download_url");
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom(), originPicture));
+            Wish wish = entityManager.persist(WishFixture.create(room, originPicture));
 
             entityManager.flush();
             entityManager.clear();
@@ -234,7 +253,7 @@ class WishPictureServiceTest {
 
             // when & then
             assertThatThrownBy(
-                    () -> wishPictureService.updateWishPictures(wish.getId(), roomUser.getUser().getId(), newPicture))
+                    () -> wishPictureService.updateWishPictures(wish.getId(), roomUser.getId(), newPicture))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.NOT_ALLOWED_CONTENT_TYPE.getMessage());
         }
@@ -243,8 +262,9 @@ class WishPictureServiceTest {
         void 방에_참가하지_않은_회원이_위시이미지를_생성할_경우_예외_발생() {
             // given
             RoomUser roomUser = makeRoomUser();
+            Room room = roomRepository.getById(roomUser.getRoomId());
             Picture originPicture = new Picture("origin_key", "origin_download_url");
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom(), originPicture));
+            Wish wish = entityManager.persist(WishFixture.create(room, originPicture));
 
             User otherUser = entityManager.persist(UserFixture.create());
 
@@ -269,8 +289,9 @@ class WishPictureServiceTest {
             wishPictureService = setupWishPictureService(imageUploadClient);
 
             RoomUser roomUser = makeRoomUser();
+            Room room = roomRepository.getById(roomUser.getRoomId());
             Picture originPicture = new Picture("origin_key", "origin_download_url");
-            Wish wish = entityManager.persist(WishFixture.create(roomUser.getRoom(), originPicture));
+            Wish wish = entityManager.persist(WishFixture.create(room, originPicture));
 
             MultipartFile newPicture = makeMockImageFile();
 
@@ -279,7 +300,7 @@ class WishPictureServiceTest {
 
             // when & then
             assertThatThrownBy(
-                    () -> wishPictureService.updateWishPictures(wish.getId(), roomUser.getUser().getId(), newPicture))
+                    () -> wishPictureService.updateWishPictures(wish.getId(), roomUser.getId(), newPicture))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage("이미지 업로드 실패");
         }
@@ -302,6 +323,6 @@ class WishPictureServiceTest {
     RoomUser makeRoomUser() {
         Room room = entityManager.persist(RoomFixture.create());
         User user = entityManager.persist(UserFixture.create());
-        return entityManager.persist(new RoomUser(room, user));
+        return entityManager.persist(new RoomUser(room.getId(), user.getId()));
     }
 }
