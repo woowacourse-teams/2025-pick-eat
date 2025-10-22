@@ -1,6 +1,7 @@
 import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndModal';
 import RestaurantExclude from '@domains/pickeat/restaurantExclude/components/RestaurantExclude';
 
+import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
@@ -24,6 +25,9 @@ function RestaurantExcludePage() {
   return (
     <ParticipantsProvider pickeatCode={pickeatCode}>
       <S.Container>
+        <VisuallyHiddenWithFocus aria-live="polite" role="status">
+          제외하기 페이지 입니다.
+        </VisuallyHiddenWithFocus>
         <S.ProgressBarWrapper>
           <ProgressBar total={3} current={1} />
         </S.ProgressBarWrapper>

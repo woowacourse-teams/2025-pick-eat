@@ -1,5 +1,7 @@
 import PickeatInfo from '@domains/pickeat/components/PickeatInfo';
 
+import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
+
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import styled from '@emotion/styled';
@@ -8,6 +10,9 @@ import { Suspense } from 'react';
 function PickeatDetail() {
   return (
     <S.Container>
+      <VisuallyHiddenWithFocus aria-live="polite" role="status">
+        입장 페이지 입니다.
+      </VisuallyHiddenWithFocus>
       <ErrorBoundary>
         <Suspense>
           <PickeatInfo />

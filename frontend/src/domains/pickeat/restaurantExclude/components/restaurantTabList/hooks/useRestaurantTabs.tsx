@@ -58,6 +58,7 @@ export function useRestaurantTabs(restaurantsData: Restaurant[]) {
     content: (
       <S.Container>
         <S.CheckBoxWrapper
+          aria-label={`${tab} 식당 전체 소거`}
           onClick={() => handleRestaurantAllSelectionToggle(tab)}
         >
           <CheckBox

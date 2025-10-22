@@ -1,5 +1,6 @@
 import PreferRestaurantList from '@domains/pickeat/preferRestaurant/components/PreferRestaurantList';
 
+import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
@@ -32,6 +33,9 @@ function PreferRestaurant() {
   return (
     <ParticipantsProvider pickeatCode={pickeatCode}>
       <S.Container>
+        <VisuallyHiddenWithFocus aria-live="polite" role="status">
+          식당 투표하기
+        </VisuallyHiddenWithFocus>
         <S.ProgressBarWrapper>
           <ProgressBar total={3} current={step} />
         </S.ProgressBarWrapper>

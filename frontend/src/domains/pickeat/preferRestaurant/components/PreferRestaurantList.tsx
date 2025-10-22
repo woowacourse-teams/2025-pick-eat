@@ -48,7 +48,7 @@ function PreferRestaurantList() {
         >
           <RestaurantCard restaurantData={restaurant} />
 
-          <S.LikeWrapper>
+          <S.LikeWrapper aria-label={`${restaurant.name} 좋아요`}>
             <LikeButton
               id={restaurant.id}
               count={restaurant.likeCount}
