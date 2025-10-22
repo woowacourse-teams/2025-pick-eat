@@ -12,9 +12,7 @@ import PendingResultScreen from './components/PendingResultScreen';
 function MatchResult() {
   return (
     <S.Container>
-      <VisuallyHiddenWithFocus aria-live="polite" role="status">
-        결과보기 페이지 입니다.
-      </VisuallyHiddenWithFocus>
+      <VisuallyHiddenWithFocus>결과보기 페이지 입니다.</VisuallyHiddenWithFocus>
       <ErrorBoundary>
         <Suspense fallback={<PendingResultScreen />}>
           <ResultContent />

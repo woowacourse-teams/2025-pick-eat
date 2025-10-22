@@ -25,7 +25,7 @@ function RestaurantExcludePage() {
   return (
     <ParticipantsProvider pickeatCode={pickeatCode}>
       <S.Container>
-        <VisuallyHiddenWithFocus aria-live="polite" role="status">
+        <VisuallyHiddenWithFocus>
           제외하기 페이지 입니다.
         </VisuallyHiddenWithFocus>
         <S.ProgressBarWrapper>

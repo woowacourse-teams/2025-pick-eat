@@ -10,9 +10,7 @@ import { Suspense } from 'react';
 function PickeatDetail() {
   return (
     <S.Container>
-      <VisuallyHiddenWithFocus aria-live="polite" role="status">
-        입장 페이지 입니다.
-      </VisuallyHiddenWithFocus>
+      <VisuallyHiddenWithFocus>입장 페이지 입니다.</VisuallyHiddenWithFocus>
       <ErrorBoundary>
         <Suspense>
           <PickeatInfo />

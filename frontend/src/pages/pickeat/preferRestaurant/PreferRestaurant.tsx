@@ -33,8 +33,8 @@ function PreferRestaurant() {
   return (
     <ParticipantsProvider pickeatCode={pickeatCode}>
       <S.Container>
-        <VisuallyHiddenWithFocus aria-live="polite" role="status">
-          식당 투표하기
+        <VisuallyHiddenWithFocus>
+          식당 투표하기 페이지입니다.
         </VisuallyHiddenWithFocus>
         <S.ProgressBarWrapper>
           <ProgressBar total={3} current={step} />

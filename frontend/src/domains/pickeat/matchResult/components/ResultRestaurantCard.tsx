@@ -21,7 +21,7 @@ function ResultRestaurantCard() {
 
   return (
     <S.Container>
-      <VisuallyHiddenWithFocus aria-live="polite" role="status">
+      <VisuallyHiddenWithFocus>
         {restaurantData.name}가 식당으로 선정됐습니다.
       </VisuallyHiddenWithFocus>
       <S.ImageBox>
