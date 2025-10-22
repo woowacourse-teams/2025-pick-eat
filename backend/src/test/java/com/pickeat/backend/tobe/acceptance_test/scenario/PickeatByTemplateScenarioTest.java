@@ -59,7 +59,7 @@ public class PickeatByTemplateScenarioTest {
     }
 
     @Test
-    void 텤플릿_기반_픽잇_플로우() {
+    void 템플릿_기반_픽잇_플로우() {
         // 템플릿 조회
         List<TemplateResponse> templates = 템플릿_목록_조회();
 

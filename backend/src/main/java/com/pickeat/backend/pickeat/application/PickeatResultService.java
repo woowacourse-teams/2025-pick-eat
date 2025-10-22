@@ -11,9 +11,9 @@ import com.pickeat.backend.pickeat.domain.PickeatResult;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatResultRepository;
+import com.pickeat.backend.restaurant.domain.ParticipantLikes;
 import com.pickeat.backend.restaurant.domain.Restaurant;
-import com.pickeat.backend.restaurant.domain.RestaurantLikeCount;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
+import com.pickeat.backend.restaurant.domain.repository.ParticipantLikesRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +34,7 @@ public class PickeatResultService {
     private final RestaurantRepository restaurantRepository;
     private final ParticipantRepository participantRepository;
     private final PickeatResultRepository pickeatResultRepository;
-    private final RestaurantLikeRepository restaurantLikeRepository;
+    private final ParticipantLikesRepository participantLikesRepository;
     private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
@@ -83,7 +83,6 @@ public class PickeatResultService {
         List<Restaurant> availableRestaurants = getAvailableRestaurants(restaurants);
 
         Map<Restaurant, Integer> likeCounts = getLikeCounts(availableRestaurants);
-
         Restaurant selectedRestaurant = pickeatResultGenerator.generate(likeCounts);
 
         pickeatResultRepository.save(new PickeatResult(pickeat.getId(), selectedRestaurant.getId()));
@@ -99,8 +98,8 @@ public class PickeatResultService {
     private Map<Restaurant, Integer> getLikeCounts(List<Restaurant> availableRestaurants) {
         Map<Restaurant, Integer> restaurantLikeCounts = new HashMap<>();
         for (Restaurant restaurant : availableRestaurants) {
-            RestaurantLikeCount likeCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
-            restaurantLikeCounts.put(restaurant, likeCount.getCount());
+            ParticipantLikes participantLikes = participantLikesRepository.findByRestaurantId(restaurant.getId());
+            restaurantLikeCounts.put(restaurant, participantLikes.getCount());
         }
         return restaurantLikeCounts;
     }

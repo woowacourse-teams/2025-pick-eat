@@ -17,6 +17,7 @@ import com.pickeat.backend.pickeat.infrastructure.ParticipantRepositoryImpl;
 import com.pickeat.backend.pickeat.infrastructure.PickeatRepositoryImpl;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.repository.ParticipantLikesRepository;
 import com.pickeat.backend.restaurant.infrastructure.RestaurantJdbcRepository;
 import com.pickeat.backend.restaurant.infrastructure.RestaurantLikeRepositoryImpl;
 import com.pickeat.backend.restaurant.infrastructure.RestaurantRepositoryImpl;
@@ -31,7 +32,7 @@ import org.springframework.context.annotation.Import;
 @DataJpaTest
 @Import({PickeatResultGenerator.class, PickeatResultService.class, RestaurantJdbcRepository.class,
         RestaurantRepositoryImpl.class, RestaurantLikeRepositoryImpl.class, PickeatRepositoryImpl.class,
-        ParticipantRepositoryImpl.class})
+        ParticipantRepositoryImpl.class, ParticipantLikesRepository.class, ParticipantLikesRepository.class})
 public class PickeatResultServiceTest {
 
     @Autowired

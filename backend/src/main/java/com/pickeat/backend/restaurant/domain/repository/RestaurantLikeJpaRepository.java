@@ -21,4 +21,6 @@ public interface RestaurantLikeJpaRepository extends JpaRepository<RestaurantLik
     @Query(value = "UPDATE restaurant_like SET deleted = true WHERE restaurant_id IN :restaurantIds",
             nativeQuery = true)
     int bulkSoftDeleteByRestaurantIdIn(@Param("restaurantIds") List<Long> restaurantIds);
+
+    List<RestaurantLike> findAllByRestaurantId(Long restaurantId);
 }

@@ -19,11 +19,11 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeR
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.restaurant.domain.ParticipantLikes;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
-import com.pickeat.backend.restaurant.domain.RestaurantLikeCount;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
-import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
+import com.pickeat.backend.restaurant.domain.repository.ParticipantLikesRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import com.pickeat.backend.restaurant.infrastructure.RestaurantJdbcRepository;
 import com.pickeat.backend.restaurant.infrastructure.RestaurantLikeRepositoryImpl;
@@ -38,7 +38,8 @@ import org.springframework.context.annotation.Import;
 
 @DataJpaTest
 @Import(value = {RestaurantService.class, RestaurantJdbcRepository.class, RestaurantRepositoryImpl.class,
-        RestaurantLikeRepositoryImpl.class, PickeatRepositoryImpl.class, ParticipantRepositoryImpl.class})
+        PickeatRepositoryImpl.class, ParticipantRepositoryImpl.class, ParticipantLikesRepository.class,
+        RestaurantLikeRepositoryImpl.class})
 class RestaurantServiceTest {
 
     @Autowired
@@ -51,7 +52,7 @@ class RestaurantServiceTest {
     private RestaurantService restaurantService;
 
     @Autowired
-    private RestaurantLikeRepository restaurantLikeRepository;
+    private ParticipantLikesRepository participantLikesRepository;
 
     @Nested
     class 식당_생성_케이스 {
@@ -135,7 +136,7 @@ class RestaurantServiceTest {
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
-            RestaurantLikeCount originCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            ParticipantLikes originCount = participantLikesRepository.findByRestaurantId(restaurant.getId());
 
             entityManager.flush();
             entityManager.clear();
@@ -144,7 +145,7 @@ class RestaurantServiceTest {
             restaurantService.like(restaurant.getId(), participant.getId());
 
             // then
-            RestaurantLikeCount actualCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            ParticipantLikes actualCount = participantLikesRepository.findByRestaurantId(restaurant.getId());
             assertThat(actualCount.getCount()).isEqualTo(originCount.getCount() + 1);
         }
 
@@ -176,7 +177,7 @@ class RestaurantServiceTest {
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat.getId()));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
             entityManager.persist(new RestaurantLike(participant.getId(), restaurant.getId()));
-            RestaurantLikeCount originCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            ParticipantLikes originCount = participantLikesRepository.findByRestaurantId(restaurant.getId());
 
             entityManager.flush();
             entityManager.clear();
@@ -185,7 +186,7 @@ class RestaurantServiceTest {
             restaurantService.cancelLike(restaurant.getId(), participant.getId());
 
             // then
-            RestaurantLikeCount actualCount = restaurantLikeRepository.countByRestaurantId(restaurant.getId());
+            ParticipantLikes actualCount = participantLikesRepository.findByRestaurantId(restaurant.getId());
             assertThat(actualCount.getCount()).isEqualTo(originCount.getCount() - 1);
 
         }
