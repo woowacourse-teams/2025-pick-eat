@@ -8,7 +8,7 @@ import Thumbnail from '@components/assets/icons/Thumbnail';
 import { WishFormDataWithImage } from '@apis/wish';
 
 import styled from '@emotion/styled';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 
 type Props = {
   formData: WishFormDataWithImage;
@@ -21,6 +21,7 @@ type Props = {
 
 function RegisterForm({ formData, onFormChange, onSubmit }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -34,7 +35,10 @@ function RegisterForm({ formData, onFormChange, onSubmit }: Props) {
   useEffect(() => {
     if (formData.thumbnail instanceof File) {
       setPreviewUrl(URL.createObjectURL(formData.thumbnail));
-    } else {
+      return;
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
       setPreviewUrl(null);
     }
   }, [formData.thumbnail]);
@@ -54,6 +58,7 @@ function RegisterForm({ formData, onFormChange, onSubmit }: Props) {
           name="thumbnail"
           onChange={handleImageChange}
           style={{ display: 'none' }}
+          ref={fileInputRef}
         />
         {previewUrl ? null : (
           <>

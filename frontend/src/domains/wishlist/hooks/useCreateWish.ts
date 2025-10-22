@@ -30,7 +30,7 @@ export const useCreateWish = ({ onCreate, onCloseBottomSheet }: Props) => {
 
   const initialWishFormData = async (address: string) => {
     const data = await getFormDataByAddress(address);
-    if (data) setFormData({ ...data, tags: [] });
+    if (data) setFormData({ ...data, thumbnail: undefined, tags: [] });
     onCloseBottomSheet();
   };
 
