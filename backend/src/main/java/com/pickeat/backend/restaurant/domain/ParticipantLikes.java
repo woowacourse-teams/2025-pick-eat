@@ -1,11 +1,11 @@
 package com.pickeat.backend.restaurant.domain;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class ParticipantLikes {
-    private final Set<Long> participantIds = ConcurrentHashMap.newKeySet();
+    private final Set<Long> participantIds = new HashSet<>();
 
     public void addAll(List<Long> participantIds) {
         this.participantIds.addAll(participantIds);
