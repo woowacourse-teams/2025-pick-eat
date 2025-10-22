@@ -94,9 +94,11 @@ describe('RestaurantExclude 크로스 버튼 및 제외 제출 통합 테스트'
       expect(screen.getByText(r.name)).toBeInTheDocument();
     }
 
-    const crossBtn = screen.getByLabelText(
-      `소거: ${sampleRestaurants[0].name}`
+    const crossBtn = screen.getByTestId(
+      `delete-btn-${sampleRestaurants[0].id}`
     );
+    expect(crossBtn).toBeInTheDocument();
+
     await act(async () => fireEvent.click(crossBtn));
 
     const nextButton = screen.getByLabelText(`제외 식당 제출`);
