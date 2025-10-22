@@ -13,7 +13,7 @@ function MatchResult() {
   return (
     <S.Container>
       <VisuallyHiddenWithFocus aria-live="polite" role="status">
-        제외하기 페이지 입니다.
+        결과보기 페이지 입니다.
       </VisuallyHiddenWithFocus>
       <ErrorBoundary>
         <Suspense fallback={<PendingResultScreen />}>
