@@ -8,6 +8,8 @@ import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
 
+import { usePreventGoBack } from '@hooks/usePreventGoBack';
+
 import styled from '@emotion/styled';
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
@@ -25,6 +27,7 @@ function PreferRestaurant() {
   const pickeatCode = searchParams.get('code') ?? '';
 
   usePickeatStateChecker(pickeatCode);
+  usePreventGoBack('투표하기 페이지에서는 이전 단계로 이동할 수 없습니다.');
 
   useEffect(() => {
     setStep(2);

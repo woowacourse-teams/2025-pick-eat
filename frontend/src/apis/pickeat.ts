@@ -522,7 +522,7 @@ export const pickeatQuery = {
             if (e.status === 401) {
               navigate(generateRouterPath.pickeatDetail(pickeatCode));
             } else {
-              navigate(ROUTE_PATH.MAIN);
+              navigate(ROUTE_PATH.MAIN, { replace: true });
               showToast({
                 mode: 'ERROR',
                 message:

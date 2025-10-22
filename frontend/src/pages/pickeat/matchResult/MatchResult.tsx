@@ -4,12 +4,15 @@ import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWit
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
+import { usePreventGoBack } from '@hooks/usePreventGoBack';
+
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
 
 import PendingResultScreen from './components/PendingResultScreen';
 
 function MatchResult() {
+  usePreventGoBack('결과보기 페이지에서는 이전 단계로 이동할 수 없습니다.');
   return (
     <S.Container>
       <VisuallyHiddenWithFocus>결과보기 페이지 입니다.</VisuallyHiddenWithFocus>
