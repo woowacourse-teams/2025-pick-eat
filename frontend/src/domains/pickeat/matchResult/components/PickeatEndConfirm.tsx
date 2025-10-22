@@ -5,7 +5,6 @@ import { pickeatQuery } from '@apis/pickeat';
 import { useGA } from '@hooks/useGA';
 
 import styled from '@emotion/styled';
-import { useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router';
 
 import PickeatDecisionInfo from './PickeatDecisionInfo';
