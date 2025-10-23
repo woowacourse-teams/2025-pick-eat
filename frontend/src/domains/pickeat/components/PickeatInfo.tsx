@@ -67,7 +67,7 @@ function PickeatInfo() {
   return (
     <S.Container>
       <S.Title>
-        함께 식사할 멤버를 소환하고
+        함께 식사할 멤버를 초대하고
         <br /> 식당을 정해봐요.
       </S.Title>
 
@@ -78,7 +78,7 @@ function PickeatInfo() {
             <p>
               QR코드나 링크 공유로
               <br />
-              식사 멤버를 소환하고 식당을 투표해요
+              식사 멤버를 초대하고 식당을 투표해요
             </p>
           }
           url={pickeatLink}
