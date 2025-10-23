@@ -22,7 +22,8 @@ function PickeatVoteCompleteButton({ onVoteComplete, onClick }: Props) {
   };
 
   useEffect(() => {
-    if (data?.isCompleted) {
+    if (!data) return;
+    if (data.isCompleted) {
       onVoteComplete();
     }
   }, [data, onVoteComplete]);
