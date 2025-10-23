@@ -57,8 +57,8 @@ public enum ErrorCode {
     HEADER_IS_EMPTY(HttpStatus.UNAUTHORIZED, "인증 헤더가 존재하지 않습니다."),
 
     // Jwt 관련 에러
-    TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."),
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 인증 정보입니다."),
+    TOKEN_IS_EMPTY(HttpStatus.FORBIDDEN, "인증되지 않은 사용자입니다."),
+    INVALID_TOKEN(HttpStatus.FORBIDDEN, "잘못된 인증 정보입니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
 
     // 시스템 에러
