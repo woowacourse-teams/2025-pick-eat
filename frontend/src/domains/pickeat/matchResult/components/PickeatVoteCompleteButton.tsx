@@ -4,6 +4,7 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import { participantsQuery } from '@apis/participants';
 
 import { useEffect } from 'react';
+import { useSearchParams } from 'react-router';
 
 type Props = {
   onVoteComplete: () => void;
@@ -11,9 +12,12 @@ type Props = {
 };
 
 function PickeatVoteCompleteButton({ onVoteComplete, onClick }: Props) {
-  const { data } = participantsQuery.useGetMyStatus();
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+
+  const { data } = participantsQuery.useGetMyStatus(pickeatCode);
   const { mutate: patchComplete, isPending } =
-    participantsQuery.usePatchComplete(onVoteComplete);
+    participantsQuery.usePatchComplete(pickeatCode, onVoteComplete);
 
   const handleVoteCompleteClick = () => {
     onClick?.();

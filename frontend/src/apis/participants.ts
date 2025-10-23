@@ -31,18 +31,14 @@ export const participants = {
 };
 
 export const participantsQuery = {
-  useGetMyStatus: (onVoteComplete?: () => void) => {
+  useGetMyStatus: (pickeatCode: string) => {
     const showToast = useShowToast();
 
     return useQuery({
-      queryKey: [BASE_PATH],
+      queryKey: [BASE_PATH, pickeatCode, 'me'],
       queryFn: async () => {
         try {
           const status = await participants.getMyStatus();
-
-          if (status?.isCompleted) {
-            onVoteComplete?.();
-          }
 
           return status;
         } catch {
@@ -57,7 +53,7 @@ export const participantsQuery = {
     });
   },
 
-  usePatchComplete: (onVoteComplete: () => void) => {
+  usePatchComplete: (pickeatCode: string, onVoteComplete: () => void) => {
     const showToast = useShowToast();
 
     return useMutation({
@@ -72,7 +68,7 @@ export const participantsQuery = {
         onVoteComplete?.();
 
         queryClient.invalidateQueries({
-          queryKey: [BASE_PATH],
+          queryKey: [BASE_PATH, pickeatCode, 'me'],
         });
       },
       onError: () => {

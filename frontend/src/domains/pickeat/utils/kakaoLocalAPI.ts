@@ -88,7 +88,6 @@ export const getAddressByLatLng = async (
     const address = data.documents[0].address;
     return address?.address_name ?? null;
   } else {
-    console.log('주소 없음');
     return null;
   }
 };
