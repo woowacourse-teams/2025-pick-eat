@@ -17,7 +17,7 @@ export default ProgressBar;
 const S = {
   Track: styled.div<{ percentage: number }>`
     width: 100%;
-    height: 2px;
+    height: 4px;
 
     background: linear-gradient(to right, #ffda1e 0%, #ffda1e 100%);
     background-color: ${({ theme }) => theme.PALETTE.gray[10]};

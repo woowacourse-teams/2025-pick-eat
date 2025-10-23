@@ -1,6 +1,7 @@
 import Card from '@domains/wishlist/components/Card';
 
 import Carousel from '@components/Carousel';
+import Footer from '@components/layouts/Footer';
 
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
@@ -122,6 +123,7 @@ function Main() {
         <S.Description>다같이 갈 식당을 정해보세요!</S.Description>
         <Carousel contentArr={getCardContent} />
       </S.BottomWrapper>
+      <Footer />
     </S.Container>
   );
 }

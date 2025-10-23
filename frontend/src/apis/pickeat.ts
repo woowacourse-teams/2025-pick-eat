@@ -232,7 +232,8 @@ export const pickeat = {
       if (response) return convertResponseToParticipating(response);
       return null;
     } catch (e) {
-      if (e instanceof ApiError && (e.status === 401 || e.status === 400)) {
+      if (e instanceof ApiError && (e.status === 403 || e.status === 400)) {
+        // TODO : 참여중인 픽잇 에러처리 보충
         return null;
       }
       throw e;
@@ -329,7 +330,7 @@ export const pickeatQuery = {
 
           return result;
         } catch (e) {
-          if (e instanceof ApiError && e.status === 401) {
+          if (e instanceof ApiError && e.status === 403) {
             showToast({
               mode: 'ERROR',
               message: '해당 픽잇에 접근할 수 없습니다.',
@@ -519,7 +520,7 @@ export const pickeatQuery = {
           return isAvailable;
         } catch (e) {
           if (e instanceof ApiError) {
-            if (e.status === 401) {
+            if (e.status === 401 || e.status === 403) {
               navigate(generateRouterPath.pickeatDetail(pickeatCode));
             } else {
               navigate(ROUTE_PATH.MAIN, { replace: true });
