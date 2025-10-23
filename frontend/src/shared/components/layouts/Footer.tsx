@@ -45,27 +45,31 @@ export default Footer;
 
 const S = {
   Container: styled.footer`
+    width: 100%;
     height: ${({ theme }) => theme.LAYOUT.footerHeight};
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
+
     padding-bottom: 24px;
+
     background-color: ${({ theme }) => theme.PALETTE.gray[5]};
-    width: 100%;
   `,
   Wrapper: styled.div``,
   LinkText: styled.a`
-    font: ${({ theme }) => theme.FONTS.body.xsmall};
     position: relative;
+
     padding-right: 12px;
+
     color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font: ${({ theme }) => theme.FONTS.body.xsmall};
     text-decoration: none;
 
     &::after {
-      content: '|';
       position: absolute;
       right: 4px;
+      content: '|';
     }
 
     &:last-of-type::after {
