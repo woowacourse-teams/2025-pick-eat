@@ -3,8 +3,9 @@ import styled from '@emotion/styled';
 const HREF = {
   serviceIntro:
     'https://github.com/woowacourse-teams/2025-pick-eat?tab=readme-ov-file#-pickeat-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%86%8C%EA%B0%9C',
-  feedback: '',
-  contact: '',
+  feedback:
+    'https://docs.google.com/forms/d/e/1FAIpQLSdmbeTkNaI7ptamRMVlvuljlBDyDZ_06qPMAJAQKMiw4SI5Mw/viewform',
+  contact: 'mailto:woowa.pickeat@gmail.com',
 };
 
 function LinkButton({
