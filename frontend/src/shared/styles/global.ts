@@ -93,6 +93,7 @@ const PALETTE = {
 export const LAYOUT = {
   maxWidth: '480px',
   headerHeight: '60px',
+  footerHeight: '120px',
 };
 
 export const Z_INDEX = {
