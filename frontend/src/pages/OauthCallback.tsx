@@ -28,7 +28,7 @@ const OauthCallback = () => {
       try {
         const { accessToken, status } = await login.postKakao(code);
         switch (status) {
-          case 401:
+          case 403:
             navigate(ROUTE_PATH.PROFILE_INIT, {
               replace: true,
               state: { accessToken },
