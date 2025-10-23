@@ -1,12 +1,14 @@
 import Arrow from '@components/assets/icons/Arrow';
-import Tooltip from '@components/tooltip/Tooltip';
 
 import { useParticipants } from '@domains/pickeat/provider/ParticipantsProvider';
+
+import { useBoolean } from '@hooks/useBoolean';
+import { useOutsideClickAndEscape } from '@hooks/useOutsideClickAndEscape';
 
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
-import { useCallback, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import ParticipantAvatar from './ParticipantAvatar';
 import ParticipantInfoTooltip from './ParticipantInfoTooltip';
@@ -14,44 +16,23 @@ import ParticipantInfoTooltip from './ParticipantInfoTooltip';
 const MAX_RENDER_COUNT = 8;
 
 function ParticipantsAvatarGroup() {
-  const triggerRef = useRef<HTMLDivElement | null>(null);
+  const [opened, , closeTooltip, toggleTooltip] = useBoolean(false);
+  const tooltipRef = useRef<HTMLDivElement>(null);
   const { participantsState } = useParticipants();
 
-  const [opened, setOpened] = useState(false);
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
+  useOutsideClickAndEscape({
+    onClose: closeTooltip,
+    shouldIgnoreClick: target => tooltipRef.current?.contains(target) ?? false,
+  });
 
-  const handleOpenClick = useCallback(() => {
-    setOpened(true);
-  }, [setOpened]);
-
-  const handleCloseClick = useCallback(() => {
-    setOpened(false);
-  }, [setOpened]);
-
-  const toggleShow = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (opened) {
-      handleCloseClick();
-      return;
-    }
-    const rect = e.currentTarget.getBoundingClientRect();
-    setCoords({
-      x: rect.left + window.scrollX,
-      y: rect.bottom + window.scrollY,
-    });
-    handleOpenClick();
+  const handleTooltipToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleTooltip();
   };
 
   return (
-    <>
-      <S.Container
-        ref={triggerRef}
-        onClick={toggleShow}
-        opened={opened}
-        data-tooltip="메인 메뉴"
-        data-tooltip-offset-x="60"
-        data-tooltip-show-right="false"
-        data-tooltip-type="lookup"
-      >
+    <S.Container>
+      <S.Wrapper onClick={handleTooltipToggle} opened={opened}>
         {participantsState.participants
           .slice(0, MAX_RENDER_COUNT)
           .sort((a, b) => {
@@ -64,18 +45,16 @@ function ParticipantsAvatarGroup() {
             </S.AvatarWrapper>
           ))}
         <Arrow size="xs" direction="down" color={THEME.PALETTE.gray[30]} />
-      </S.Container>
-      <Tooltip
-        opened={opened}
-        coords={coords}
-        offsetX={60}
-        showRight={false}
-        onClose={handleCloseClick}
-        excludeRefs={triggerRef ? [triggerRef] : []}
-      >
-        <ParticipantInfoTooltip participantsData={participantsState} />
-      </Tooltip>
-    </>
+      </S.Wrapper>
+      {opened && (
+        <S.TooltipWrapper>
+          <ParticipantInfoTooltip
+            ref={tooltipRef}
+            participantsData={participantsState}
+          />
+        </S.TooltipWrapper>
+      )}
+    </S.Container>
   );
 }
 
@@ -84,7 +63,10 @@ export default ParticipantsAvatarGroup;
 const OVERLAP_OFFSET = 8;
 
 const S = {
-  Container: styled.div<{ opened?: boolean }>`
+  Container: styled.div`
+    position: relative;
+  `,
+  Wrapper: styled.div<{ opened?: boolean }>`
     display: flex;
     align-items: center;
 
@@ -102,5 +84,21 @@ const S = {
     z-index: ${({ index }) => 100 - index};
 
     margin-left: ${({ index }) => (index === 0 ? 0 : `-${OVERLAP_OFFSET}px`)};
+  `,
+  TooltipWrapper: styled.div`
+    position: absolute;
+    top: 44px;
+    right: 0;
+    z-index: ${({ theme }) => theme.Z_INDEX.dropdown};
+
+    padding: 8px 12px;
+
+    background-color: ${({ theme }) => theme.PALETTE.gray[80]};
+
+    color: ${({ theme }) => theme.PALETTE.gray[0]};
+    font: ${({ theme }) => theme.FONTS.body.small};
+    white-space: nowrap;
+    border-radius: ${({ theme }) => theme.RADIUS.small};
+    user-select: none;
   `,
 };

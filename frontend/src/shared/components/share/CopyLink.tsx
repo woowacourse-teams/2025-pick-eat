@@ -1,10 +1,11 @@
 import Copy from '@components/assets/icons/Copy';
 
-import { copyLink } from '@utils/copyLink';
+import useCopyLink from '@hooks/useCopyLinkt';
 
 import styled from '@emotion/styled';
 
 function CopyLink({ url }: { url: string }) {
+  const copyLink = useCopyLink();
   return (
     <S.Container>
       <S.Link>{url}</S.Link>

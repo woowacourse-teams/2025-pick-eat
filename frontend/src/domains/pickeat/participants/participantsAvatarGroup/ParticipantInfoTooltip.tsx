@@ -6,6 +6,7 @@ import ParticipantAvatar from './ParticipantAvatar';
 
 type Props = {
   participantsData: ParticipantsState;
+  ref?: React.Ref<HTMLDivElement>;
 };
 
 function Participant({ participant }: { participant: ParticipantState }) {
@@ -22,9 +23,9 @@ function Participant({ participant }: { participant: ParticipantState }) {
   );
 }
 
-function ParticipantInfoTooltip({ participantsData }: Props) {
+function ParticipantInfoTooltip({ participantsData, ...props }: Props) {
   return (
-    <S.Container>
+    <S.Container {...props}>
       총 참여자 {participantsData.totalParticipants}명
       {participantsData.participants.map(p => (
         <Participant key={p.id} participant={p} />

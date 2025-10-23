@@ -26,11 +26,11 @@ export const useCreateWish = ({ onCreate, onCloseBottomSheet }: Props) => {
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
 
-  const { mutate } = wishQuery.usePost(roomId, onCreate);
+  const { mutate, isPending } = wishQuery.usePost(roomId, onCreate);
 
   const initialWishFormData = async (address: string) => {
     const data = await getFormDataByAddress(address);
-    if (data) setFormData({ ...data, tags: [] });
+    if (data) setFormData({ ...data, thumbnail: undefined, tags: [] });
     onCloseBottomSheet();
   };
 
@@ -47,7 +47,6 @@ export const useCreateWish = ({ onCreate, onCloseBottomSheet }: Props) => {
     } catch {
       return;
     }
-
     mutate({ formData });
   };
 
@@ -56,5 +55,6 @@ export const useCreateWish = ({ onCreate, onCloseBottomSheet }: Props) => {
     handleFormData,
     initialWishFormData,
     handleCreateWish,
+    isPending,
   };
 };
