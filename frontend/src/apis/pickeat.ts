@@ -457,9 +457,9 @@ export const pickeatQuery = {
       },
     });
   },
-  useGetParticipating: () => {
+  useGetParticipating: (pickeatCode: string) => {
     return useSuspenseQuery({
-      queryKey: ['participatingPickeat'],
+      queryKey: [BASE_PATH, 'participatingPickeat', pickeatCode],
       queryFn: async () => pickeat.getParticipating(),
     });
   },

@@ -116,8 +116,6 @@ export const wishQuery = {
     return useSuspenseQuery<Wish[]>({
       queryKey: ['wish', roomId],
       queryFn: () => wish.get(roomId),
-      staleTime: Infinity,
-      gcTime: 1000 * 60 * 60 * 24,
     });
   },
   usePost: (roomId: number, onCreate: () => void) => {

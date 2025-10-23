@@ -12,12 +12,17 @@ import { pickeatQuery } from '@apis/pickeat';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
+import { useSearchParams } from 'react-router';
 
 import CreateRoom from './components/CreateRoom';
 import Profile from './components/Profile';
 
 function MyPage() {
-  const { data: participatingPickeatData } = pickeatQuery.useGetParticipating();
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+
+  const { data: participatingPickeatData } =
+    pickeatQuery.useGetParticipating(pickeatCode);
   const { opened, handleOpenModal, handleCloseModal } = useModal();
 
   return (
