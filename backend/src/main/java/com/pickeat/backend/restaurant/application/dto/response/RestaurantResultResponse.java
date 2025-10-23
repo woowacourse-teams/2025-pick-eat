@@ -31,12 +31,6 @@ public record RestaurantResultResponse(
         @Schema(description = "좋아요 수", example = "3")
         int likeCount,
 
-        @Schema(description = "식당 위치의 x 좌표 (경도)", example = "37.5670")
-        Double x,
-
-        @Schema(description = "식당 위치의 y 좌표 (위도)", example = "126.9785")
-        Double y,
-
         @Schema(description = "사진 url들")
         List<String> pictureUrls,
 
@@ -57,28 +51,9 @@ public record RestaurantResultResponse(
                 restaurant.getPlaceUrl(),
                 restaurant.getRoadAddressName(),
                 restaurant.getLikeCount(),
-                getLocationX(restaurant),
-                getLocationY(restaurant),
                 parsePictureUrls(restaurant.getPictureUrls()),
                 restaurant.getType(),
                 hasEqualLike);
-    }
-
-
-    private static Double getLocationX(Restaurant restaurant) {
-        if (restaurant.getLocation() != null) {
-            return restaurant.getLocation().getX();
-        }
-
-        return null;
-    }
-
-    private static Double getLocationY(Restaurant restaurant) {
-        if (restaurant.getLocation() != null) {
-            return restaurant.getLocation().getY();
-        }
-
-        return null;
     }
 
     private static List<String> parseTags(String tags) {

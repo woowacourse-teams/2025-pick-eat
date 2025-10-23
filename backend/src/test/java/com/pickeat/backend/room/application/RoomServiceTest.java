@@ -40,7 +40,7 @@ class RoomServiceTest {
 
     private Room createRoom(User user) {
         Room room = testEntityManager.persist(RoomFixture.create());
-        testEntityManager.persist(new RoomUser(room, user));
+        testEntityManager.persist(new RoomUser(room.getId(), user.getId()));
         return room;
     }
 
@@ -162,7 +162,7 @@ class RoomServiceTest {
             roomService.inviteUsers(room.getId(), user.getId(), request);
 
             // then
-            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
             assertThat(roomUsers).hasSize(4);
         }
 
@@ -186,7 +186,7 @@ class RoomServiceTest {
             roomService.inviteUsers(room.getId(), user.getId(), request);
 
             // then
-            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
             assertThat(roomUsers).hasSize(3);
         }
 
@@ -210,7 +210,7 @@ class RoomServiceTest {
             roomService.inviteUsers(room.getId(), user.getId(), request);
 
             // then
-            List<RoomUser> roomUsers = roomUserRepository.findAllByRoom(room);
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
             assertThat(roomUsers).hasSize(2);
         }
 
@@ -233,6 +233,33 @@ class RoomServiceTest {
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.ROOM_ACCESS_DENIED.getMessage());
 
+        }
+    }
+
+    @Nested
+    class 방_나가기_케이스 {
+
+        @Test
+        void 방에서_나가기_성공() {
+            // given
+            User user = testEntityManager.persist(UserFixture.create());
+            User exitUser = testEntityManager.persist(UserFixture.create());
+
+            Room room = createRoom(user);
+
+            List<Long> userIdsForInvitation = List.of(exitUser.getId());
+            RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
+            roomService.inviteUsers(room.getId(), user.getId(), request);
+
+            testEntityManager.flush();
+            testEntityManager.clear();
+
+            // when
+            roomService.exitRoom(room.getId(), exitUser.getId());
+
+            // then
+            List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
+            assertThat(roomUsers.size()).isEqualTo(1);
         }
     }
 }

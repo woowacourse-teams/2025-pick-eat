@@ -4,10 +4,7 @@ logging {
 }
 
 local.file_match "spring_logs" {
-  path_targets = [
-    { __path__ = "/var/log/spring/blue/*.log" },
-    { __path__ = "/var/log/spring/green/*.log" },
-  ]
+  path_targets = [{ __path__ = "/var/log/spring/*.log" }]
 }
 
 loki.source.file "spring_source" {
@@ -21,24 +18,13 @@ loki.process "spring_labels" {
   stage.static_labels {
     values = {
       service = "pickeat",
-      env     = sys.env("ALLOY_ENV"),
+      env = sys.env("ALLOY_ENV"),
     }
   }
 
   stage.multiline {
     firstline = "^\\[\\d{4}-\\d{2}-\\d{2}"
     max_wait_time = "3s"
-  }
-
-  stage.regex {
-    expression = "^/var/log/spring/(?P<deployment>[^/]+)/"
-    source     = "filename"
-  }
-
-  stage.labels {
-    values = {
-      deployment = "",
-    }
   }
 }
 

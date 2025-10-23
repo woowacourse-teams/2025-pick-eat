@@ -31,11 +31,6 @@ public enum ErrorCode {
     NOT_ALLOWED_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "허용하지 않은 위시 사진 타입입니다"),
     WISH_PICTURE_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 위시 이미지에 접근할 권한이 없습니다."),
 
-    // 도메인 검증 에러
-    INVALID_RADIUS(HttpStatus.BAD_REQUEST, "반지름은 1 ~ 20000 사이 양수여야 합니다."),
-    INVALID_LATITUDE(HttpStatus.BAD_REQUEST, "위도는 -90도에서 90도 사이여야 합니다."),
-    INVALID_LONGITUDE(HttpStatus.BAD_REQUEST, "경도는 -180도에서 180도 사이여야 합니다."),
-
     // Restaurant 관련 에러
     RESTAURANT_ELIMINATION_FORBIDDEN(HttpStatus.FORBIDDEN, "식당 소거 권한이 없습니다."),
     RESTAURANT_NOT_FOUND(HttpStatus.NOT_FOUND, "식당을 찾을 수 없습니다."),
@@ -52,6 +47,9 @@ public enum ErrorCode {
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "방을 찾을 없습니다."),
     ROOM_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 방에 접근할 권한이 없습니다."),
 
+    // Template 관련 에로
+    TEMPLATE_NOT_FOUND(HttpStatus.NOT_FOUND, "템플릿을 찾을 수 없습니다."),
+
     //입력 검증 에러
     VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "입력 데이터 검증에 실패했습니다."),
 
@@ -59,8 +57,8 @@ public enum ErrorCode {
     HEADER_IS_EMPTY(HttpStatus.UNAUTHORIZED, "인증 헤더가 존재하지 않습니다."),
 
     // Jwt 관련 에러
-    TOKEN_IS_EMPTY(HttpStatus.UNAUTHORIZED, "인증되지 않은 사용자입니다."),
-    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "잘못된 인증 정보입니다."),
+    TOKEN_IS_EMPTY(HttpStatus.FORBIDDEN, "인증되지 않은 사용자입니다."),
+    INVALID_TOKEN(HttpStatus.FORBIDDEN, "잘못된 인증 정보입니다."),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다."),
 
     // 시스템 에러

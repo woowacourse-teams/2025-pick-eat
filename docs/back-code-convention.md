@@ -286,3 +286,94 @@ public class GlobalExceptionHandler {
 - **구조화된 로그 데이터** 생성
 - 필드별 검색 및 분석 용이성 제공
 - JSON 형태 로그 출력으로 파싱 효율성 증대
+
+### 9. 데이터 검증 규칙
+
+#### 9.1 검증 계층 분리
+
+- **DTO 계층에서 형식 검증 수행**: null 체크, 타입 검증, 포맷 검증 등
+- **도메인 계층에서 비즈니스 규칙 검증 수행**: 상태 전이, 도메인 제약사항 등
+
+#### 9.2 DTO 검증 구현
+
+Bean Validation 어노테이션을 활용하여 DTO 레벨에서 데이터 유효성을 검증합니다. 이를 통해 잘못된 데이터가 서비스 계층으로 전달되는 것을 사전에 방지할 수 있습니다.
+
+```java
+
+@Schema(description = "위치 기반 식당 생성 요청")
+public record LocationRestaurantRequest(
+        @Schema(description = "중심 위치의 x 좌표 (경도)", example = "127.134233269327")
+        @NotNull(message = "x 좌표는 NULL일 수 없습니다.")
+        Double x,
+
+        @Schema(description = "중심 위치의 y 좌표 (위도)", example = "37.4098787808312")
+        @NotNull(message = "y 좌표는 NULL일 수 없습니다.")
+        Double y,
+
+        @Schema(description = "검색 반경 (미터 단위)", example = "500")
+        @NotNull(message = "반경 범위는 NULL일 수 없습니다.")
+        @Positive(message = "반경은 양수여야 합니다.")
+        Integer radius
+) {
+
+}
+```
+
+#### 9.3 검증 활성화
+
+Controller 메서드 파라미터에 `@Valid` 또는 `@Validated` 어노테이션을 추가하여 자동 검증을 수행합니다. 검증 실패 시 `MethodArgumentNotValidException`이 발생하며,
+이는 GlobalExceptionHandler에서 일괄 처리됩니다.
+
+```java
+
+@PostMapping("/restaurants/location")
+public ResponseEntity<List<RestaurantResponse>> createLocationRestaurants(
+        @Valid @RequestBody LocationRestaurantRequest request) {
+    // 검증을 통과한 데이터만 서비스 계층으로 전달됨
+}
+```
+
+---
+
+### 10. 하위 호환성 관리
+
+#### 10.1 API 버저닝 전략
+
+레거시 코드의 하위 호환성을 유지하기 위해 API 버전 관리 전략을 수립합니다. 동일한 엔드포인트에서 요청/응답 스키마가 변경되는 경우, URI 경로에 버전을 명시하여 기존 클라이언트의 동작을 보장합니다.
+
+**버저닝이 필요한 경우:**
+
+- 요청/응답 DTO 구조 변경
+- 필수 파라미터 추가 또는 제거
+- 응답 데이터 형식 변경
+
+**버저닝 방식:**
+
+- URI 경로에 버전 명시: `/api/v1/...`, `/api/v2/...`
+- 기존 버전은 deprecation 공지 후 일정 기간 유지
+- 주요 변경사항은 API 문서에 명확히 기재
+
+```java
+// v1 - 기존 API
+@GetMapping("/api/v1/restaurants")
+public List<RestaurantResponse> getRestaurants() {
+    // 기존 로직
+}
+
+// v2 - 응답 구조 변경 (페이징 추가)
+@GetMapping("/api/v2/restaurants")
+public PageResponse<RestaurantResponse> getRestaurants(Pageable pageable) {
+    // 새로운 로직
+}
+```
+
+#### 10.2 데이터베이스 스키마 마이그레이션
+
+스키마 변경이 필요한 경우 새로운 컬럼 혹 테이블을 생성하여 마이그레이션을 수행합니다. 이는 롤백 가능성을 확보하고, 운영 중인 서비스에 대한 영향을 최소화하기 위함입니다.
+
+**마이그레이션 절차**
+
+1. 새로운 스키마로 테이블 생성 (예: `users_v2`)
+2. 데이터 마이그레이션 스크립트 작성 및 실행
+3. 애플리케이션 코드에서 새 테이블 참조로 변경
+4. 충분한 검증 기간 후 기존 테이블 제거

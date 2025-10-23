@@ -32,12 +32,11 @@ public class WishRestaurantSearchService {
         validateWishExists(wishes);
 
         return wishes.stream()
-                .map(wish -> RestaurantRequest.fromWish(wish, getPictureUrls(wish)))
+                .map(wish -> RestaurantRequest.fromWish(wish, getPictureKeys(wish), getPictureUrls(wish)))
                 .toList();
     }
 
     private void validateWishExists(List<Wish> wishes) {
-        //TODO: 앞서 생성된 픽잇 삭제하는 보상 트랜잭션 필요  (2025-08-21, 목, 11:36)
         if (wishes.isEmpty()) {
             throw new BusinessException(ErrorCode.WISH_LIST_HAS_NO_WISHES);
         }
@@ -51,6 +50,12 @@ public class WishRestaurantSearchService {
     private String getPictureUrls(Wish wish) {
         return wishPictureRepository.findAllByWish(wish).stream()
                 .map(WishPicture::getDownloadUrl)
+                .collect(Collectors.joining(","));
+    }
+
+    private String getPictureKeys(Wish wish) {
+        return wishPictureRepository.findAllByWish(wish).stream()
+                .map(WishPicture::getPictureKey)
                 .collect(Collectors.joining(","));
     }
 }

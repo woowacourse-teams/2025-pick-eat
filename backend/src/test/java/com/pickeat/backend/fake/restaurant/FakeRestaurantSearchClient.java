@@ -1,6 +1,5 @@
 package com.pickeat.backend.fake.restaurant;
 
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
@@ -20,7 +19,6 @@ public class FakeRestaurantSearchClient implements RestaurantSearchClient {
                     FoodCategory.getCategoryNameBy(request.query()),
                     ThreadLocalRandom.current().nextInt(0, request.radius() + 1),
                     "도로명 주소" + i,
-                    new Location(request.x() + (i * 0.001), request.y() + (i * 0.001)),
                     "식당 URL" + i,
                     "태그" + i
             ));

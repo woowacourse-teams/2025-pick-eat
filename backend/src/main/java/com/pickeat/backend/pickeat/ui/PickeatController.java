@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class PickeatController implements PickeatApiSpec {
 
@@ -85,10 +85,9 @@ public class PickeatController implements PickeatApiSpec {
     @Override
     @GetMapping("/pickeats/{pickeatCode}/result")
     public ResponseEntity<RestaurantResultResponse> getPickeatResult(
-            @PathVariable("pickeatCode") String pickeatCode,
-            @ParticipantId Long participantId
+            @PathVariable("pickeatCode") String pickeatCode
     ) {
-        RestaurantResultResponse response = pickeatResultService.getPickeatResult(pickeatCode, participantId);
+        RestaurantResultResponse response = pickeatResultService.getPickeatResult(pickeatCode);
         return ResponseEntity.ok().body(response);
     }
 
@@ -99,6 +98,16 @@ public class PickeatController implements PickeatApiSpec {
     ) {
         PickeatStateResponse response = pickeatService.getPickeatState(pickeatCode);
         return ResponseEntity.ok().body(response);
+    }
+
+    @Override
+    @GetMapping("/room/{roomId}/pickeats")
+    public ResponseEntity<List<PickeatResponse>> getPickeatInRoom(
+            @PathVariable("roomId") Long roomId,
+            @LoginUserId Long userId
+    ) {
+        List<PickeatResponse> responses = pickeatService.getPickeatInRoom(roomId, userId);
+        return ResponseEntity.ok().body(responses);
     }
 
     @Override
@@ -134,19 +143,19 @@ public class PickeatController implements PickeatApiSpec {
 
     @Override
     @GetMapping("/rooms/pickeats")
-    public ResponseEntity<List<PickeatResponse>> getActivePickeatsByUser(
+    public ResponseEntity<List<PickeatResponse>> getPickeatsByUser(
             @LoginUserId Long userId
     ) {
-        List<PickeatResponse> pickeats = pickeatService.getActivePickeatsByUser(userId);
+        List<PickeatResponse> pickeats = pickeatService.getPickeatsByUser(userId);
         return ResponseEntity.ok().body(pickeats);
     }
 
     @Override
     @GetMapping("/pickeats/participating")
-    public ResponseEntity<PickeatResponse> getActivePickeatsByParticipant(
+    public ResponseEntity<PickeatResponse> getPickeatsByParticipant(
             @ParticipantId Long participantId
     ) {
-        PickeatResponse pickeat = pickeatService.getActivePickeatsByParticipant(participantId);
+        PickeatResponse pickeat = pickeatService.getPickeatsByParticipant(participantId);
         return ResponseEntity.ok().body(pickeat);
     }
 }

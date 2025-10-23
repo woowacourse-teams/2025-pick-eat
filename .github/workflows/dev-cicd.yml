@@ -67,77 +67,26 @@ jobs:
 
       - name: Copy Docker Compose
         run: |
-          sudo cp ./backend/docker/docker-compose.dev.yml /home/ubuntu/docker/docker-compose.yml
+          sudo cp ./backend/docker/docker-compose.dev.yml /home/ubuntu/project/application/docker-compose.yml
 
       - name: Backup DB Data
         run: |
-          if [ -f "/home/ubuntu/docker/backup_db.sh" ]; then
-            chmod +x /home/ubuntu/docker/backup_db.sh
-            /home/ubuntu/docker/backup_db.sh
+          if [ -f "/home/ubuntu/project/database_backup/backup_db.sh" ]; then
+            sudo chmod +x /home/ubuntu/project/database_backup/backup_db.sh
+            echo "🚀 Running backup script..."
+            sudo /home/ubuntu/project/database_backup/backup_db.sh
           else
             echo "⚠️ backup_db.sh not found, skipping backup"
           fi
         continue-on-error: true
 
-      - name: Backup Current Image Before Deploy
+      - name: Run Blue-Green Deploy
         run: |
-          CURRENT_IMAGE=$(docker inspect docker-backend-1 --format='{{.Config.Image}}' 2>/dev/null || echo "none")
-          echo "Current running image: $CURRENT_IMAGE"
-
-          if [ "$CURRENT_IMAGE" != "none" ]; then
-            docker tag "$CURRENT_IMAGE" ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous || true
-            docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous || true
-            echo "✅ Backed up current running image as previous"
+          if [ -f "/home/ubuntu/project/deploy.sh" ]; then
+            echo "🚀 Running deploy script..."
+            sudo chmod +x /home/ubuntu/project/deploy.sh
+            sudo /home/ubuntu/project/deploy.sh
           else
-            echo "⚠️ No running container found"
+            echo "❌ deploy.sh not found!"
+            exit 1
           fi
-      - name: Deploy EC2
-        run: |
-          cd /home/ubuntu/docker
-          docker-compose pull backend
-          docker-compose up -d --build backend
-          docker image prune -f
-
-      - name: Health Check with Retry
-        uses: nick-invision/retry@v2
-        with:
-          timeout_minutes: 2
-          max_attempts: 10
-          retry_wait_seconds: 6
-          command: |
-            response=$(curl -s http://localhost:8080/actuator/health)
-            status=$(echo $response | jq -r '.status')
-            if [ "$status" = "UP" ]; then
-              echo "✅ Status is UP. Continuing..."
-              exit 0
-            else
-              echo "⏳ Status is NOT UP. Response: $response"
-              exit 1
-            fi
-
-      - name: Rollback if Health Check fails
-        if: failure()
-        run: |
-          cd /home/ubuntu/docker
-          echo "🤔 Health check failed. Rolling back to previous version..."
-          sed -i 's/pickeat\/pickeat:latest/pickeat\/pickeat:previous/g' docker-compose.yml
-          docker-compose up -d --build backend
-          echo "✅ Rollback completed using previous image"
-
-      - name: Update latest tag after successful rollback
-        if: failure()
-        run: |
-          echo "⏳ Updating latest tag to match rolled back version..."
-          docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous
-          docker tag ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:previous ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPOSITORY }}:latest
-          echo "✅ Latest tag updated to match rollback version"
-
-      - name: Check Docker Process
-        if: always()
-        run: |
-          echo "=== Docker Compose Status ==="
-          cd /home/ubuntu/docker && docker-compose ps
-          echo "=== All Docker Processes ==="
-          docker ps
-          docker image prune -f

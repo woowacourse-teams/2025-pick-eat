@@ -1,6 +1,5 @@
 package com.pickeat.backend.restaurant.application.dto.request;
 
-import com.pickeat.backend.pickeat.domain.Location;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.wish.domain.Wish;
@@ -10,23 +9,23 @@ public record RestaurantRequest(
         FoodCategory category,
         Integer distance,
         String roadAddressName,
-        Location location,
         String placeUrl,
         String tags,
-        String pictureUrls,
+        String pictureKey,
+        String pictureUrl,
         RestaurantType type
 ) {
 
-    public static RestaurantRequest fromWish(Wish wish, String pictureUrls) {
+    public static RestaurantRequest fromWish(Wish wish, String pictureKey, String pictureUrl) {
         return new RestaurantRequest(
                 wish.getName(),
                 wish.getFoodCategory(),
                 null,
                 wish.getRoadAddressName(),
-                null,
                 wish.getPlaceUrl(),
                 wish.getTags(),
-                pictureUrls,
+                pictureKey,
+                pictureUrl,
                 RestaurantType.WISH
         );
     }
@@ -36,7 +35,6 @@ public record RestaurantRequest(
             FoodCategory category,
             Integer distance,
             String roadAddressName,
-            Location location,
             String placeUrl,
             String tags
     ) {
@@ -45,9 +43,9 @@ public record RestaurantRequest(
                 category,
                 distance,
                 roadAddressName,
-                location,
                 placeUrl,
                 tags,
+                null,
                 null,
                 RestaurantType.LOCATION
         );
