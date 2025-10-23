@@ -2,9 +2,14 @@ import useDebounce from '@hooks/useDebounce';
 
 import { useEffect, useState } from 'react';
 
-import { AddressType, getAddressListByKeyword } from '../utils/convertAddress';
+import { AddressType, getAddressListByKeyword } from '../utils/kakaoLocalAPI';
 
-export const useFindAddress = (onSelectedAddress?: (value: string) => void) => {
+type Params = {
+  onSelectedAddress?: (value: string) => void;
+  option?: Record<string, string>;
+};
+
+export const useFindAddress = ({ onSelectedAddress, option }: Params = {}) => {
   const [address, setAddress] = useState<string>('');
   const [addressList, setAddressList] = useState<AddressType[] | null>(null);
 
@@ -30,7 +35,7 @@ export const useFindAddress = (onSelectedAddress?: (value: string) => void) => {
         setAddressList(null);
         return;
       }
-      const data = await getAddressListByKeyword(debouncedQuery);
+      const data = await getAddressListByKeyword(debouncedQuery, option);
       setAddressList(data);
     };
     findAddress();

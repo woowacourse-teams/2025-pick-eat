@@ -4,6 +4,8 @@ import { login } from '@apis/login';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
+import { useShowToast } from '@provider/ToastProvider';
+
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 
@@ -14,6 +16,7 @@ const OauthCallback = () => {
   const { loginUser, logoutUser } = useAuth();
   const query = new URLSearchParams(location.search);
   const code = query.get('code');
+  const showToast = useShowToast();
 
   useEffect(() => {
     if (!code) {
@@ -36,14 +39,17 @@ const OauthCallback = () => {
               token: accessToken,
             });
             loginUser(userToken);
-            navigate(ROUTE_PATH.MAIN, { replace: true });
+            navigate(ROUTE_PATH.MY_PAGE);
             break;
           }
           default:
             break;
         }
       } catch {
-        alert('인증에 실패했습니다. 다시 로그인해주세요.');
+        showToast({
+          mode: 'ERROR',
+          message: '인증에 실패했습니다. 다시 로그인해 주세요.',
+        });
         logoutUser();
         navigate(ROUTE_PATH.LOGIN, { replace: true });
       } finally {

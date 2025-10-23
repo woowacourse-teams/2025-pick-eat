@@ -1,8 +1,21 @@
 import { accessToken } from '@domains/login/utils/authStorage';
+import { joinCode } from '@domains/pickeat/utils/joinStorage';
 
 export type ApiHeaders = Record<string, string>;
 export type ApiBody = Record<string, unknown> | undefined;
 export type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
+
+export class ApiError extends Error {
+  status: number;
+  body?: string;
+
+  constructor(message: string, status: number, body?: string) {
+    super(message);
+    this.name = 'ApiError';
+    this.status = status;
+    this.body = body;
+  }
+}
 
 const requestApi = async <TResponse = unknown>(
   method: Method,
@@ -10,21 +23,22 @@ const requestApi = async <TResponse = unknown>(
   body?: ApiBody,
   headers?: ApiHeaders
 ): Promise<TResponse | null> => {
-  const joinCode = localStorage.getItem('joinCode');
+  const code = joinCode.get();
   const token = accessToken.get();
   const response = await fetch(`${process.env.API_BASE_URL}${endPoint}`, {
     method,
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
-      'Pickeat-Participant-Token': `Bearer ${joinCode}`,
+      'Pickeat-Participant-Token': `Bearer ${code}`,
       ...headers,
     },
 
     body: body ? JSON.stringify(body) : undefined,
   });
 
-  if (!response.ok) throw new Error('요청 실패');
+  if (!response.ok)
+    throw new ApiError('요청 실패', response.status, await response.text());
   if (response.status === 204) return null;
   const text = await response.text();
   if (text === '') return null;

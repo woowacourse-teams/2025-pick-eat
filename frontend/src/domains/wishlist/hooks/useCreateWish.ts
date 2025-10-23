@@ -1,6 +1,8 @@
-import { getFormDataByAddress } from '@domains/pickeat/utils/convertAddress';
+import { getFormDataByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
 import { wish, WishFormData } from '@apis/wish';
+
+import { useShowToast } from '@provider/ToastProvider';
 
 import { useState } from 'react';
 
@@ -11,10 +13,11 @@ export type WishFormDataWithImage = WishFormData & { thumbnail?: File };
 export const useCreateWish = (onCreate?: () => void) => {
   const [formData, setFormData] = useState<WishFormDataWithImage>();
   const [error, setError] = useState('');
+  const showToast = useShowToast();
 
   const initialWishFormData = async (address: string) => {
     const data = await getFormDataByAddress(address);
-    if (data) setFormData({ ...data, tags: [], category: '' });
+    if (data) setFormData({ ...data, tags: [] });
   };
 
   const handleFormData = <K extends keyof WishFormDataWithImage>(
@@ -41,6 +44,7 @@ export const useCreateWish = (onCreate?: () => void) => {
         category: formData.category as string,
         roadAddressName: formData.roadAddressName as string,
         tags: formData.tags as string[],
+        placeUrl: formData.placeUrl as string,
       });
 
       let imageUploadError = false;
@@ -53,15 +57,18 @@ export const useCreateWish = (onCreate?: () => void) => {
       }
 
       if (imageUploadError) {
-        alert('위시는 등록되었으나, 이미지 등록에 실패했습니다.');
+        showToast({
+          mode: 'WARN',
+          message: '찜은 등록되었으나, 이미지 등록에 실패했습니다.',
+        });
       } else {
-        alert('위시 등록!');
+        showToast({ mode: 'SUCCESS', message: '찜 등록!' });
       }
       onCreate?.();
       setFormData(undefined);
       setError('');
     } catch {
-      setError('위시 등록 중 에러가 발생했습니다.');
+      setError('찜 등록 중 에러가 발생했습니다.');
     }
   };
 

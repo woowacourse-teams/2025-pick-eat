@@ -22,7 +22,7 @@ function CreateRoom() {
 
   return (
     <S.Container>
-      <S.Title>방 만들기</S.Title>
+      <S.TitlePointText>방 만들기</S.TitlePointText>
       <S.Description>
         함께 식사할 멤버를 초대하여 방을 만들어봐요.
       </S.Description>
@@ -63,7 +63,7 @@ const S = {
     padding: 0 ${({ theme }) => theme.PADDING.p7};
   `,
 
-  Title: styled.span`
+  TitlePointText: styled.span`
     font: ${({ theme }) => theme.FONTS.heading.large_style};
   `,
 

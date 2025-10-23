@@ -1,6 +1,7 @@
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -13,6 +14,7 @@ interface AuthContextType {
   loading: boolean;
   loginUser: (token: string) => Promise<void>;
   logoutUser: () => void;
+  hasToken: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -52,21 +54,30 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  const loginUser = async (token: string) => {
-    accessToken.save(token);
-    setLoggedIn(true);
-  };
+  const loginUser = useCallback(
+    async (token: string) => {
+      accessToken.save(token);
+      setLoggedIn(true);
+    },
+    [accessToken, setLoggedIn]
+  );
 
-  const logoutUser = () => {
+  const logoutUser = useCallback(() => {
     accessToken.remove();
     setLoggedIn(false);
-  };
+  }, [accessToken, setLoggedIn]);
+
+  const hasToken = useCallback(() => {
+    const token = accessToken.get();
+    return !!token;
+  }, [accessToken]);
 
   const value = {
     loggedIn,
     loading,
     loginUser,
     logoutUser,
+    hasToken,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

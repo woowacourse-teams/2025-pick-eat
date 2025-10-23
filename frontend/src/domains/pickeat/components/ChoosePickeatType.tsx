@@ -6,29 +6,29 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
+import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { useAuth } from '@domains/login/context/AuthProvider';
 
-import { rooms } from '@apis/rooms';
-
 import { ROUTE_PATH } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
 
 import { setMobileStyle } from '@styles/mediaQuery';
 
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ErrorBoundary } from '@sentry/react';
-import { Suspense, useMemo } from 'react';
+import { Suspense } from 'react';
 import { useNavigate } from 'react-router';
 
 function ChoosePickeatType() {
   const { opened, mounted, handleCloseModal, handleOpenModal } = useModal();
   const { loggedIn } = useAuth();
   const navigate = useNavigate();
-  const roomsData = useMemo(() => rooms.get(), []);
+  const showToast = useShowToast();
 
   const handleWishlistButtonClick = () => {
     if (!loggedIn) {
-      alert('로그인 후 이용해 주세요!');
+      showToast({ mode: 'ERROR', message: '로그인 후 이용해 주세요!' });
       navigate(ROUTE_PATH.LOGIN);
       return;
     }
@@ -40,13 +40,13 @@ function ChoosePickeatType() {
     <>
       <S.ButtonWrapper>
         <Button
-          text="위치/반경 선택"
+          text="근처에서 픽잇 시작"
           color="gray"
           leftIcon={<Location size="sm" color="black" />}
           onClick={() => navigate(ROUTE_PATH.PICKEAT_WITH_LOCATION)}
         />
         <Button
-          text="위시리스트 선택"
+          text="방에서 픽잇 시작"
           color="gray"
           leftIcon="❤️"
           onClick={handleWishlistButtonClick}
@@ -61,7 +61,7 @@ function ChoosePickeatType() {
       >
         <ErrorBoundary>
           <Suspense fallback={<LoadingSpinner />}>
-            <ChooseRoomWishlist roomsData={roomsData} />
+            <ChooseRoomWishlist />
           </Suspense>
         </ErrorBoundary>
       </Modal>

@@ -1,0 +1,97 @@
+import Button from '@components/actions/Button';
+
+import { pickeat } from '@apis/pickeat';
+
+import { useGA } from '@hooks/useGA';
+
+import { generateRouterPath } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
+
+import styled from '@emotion/styled';
+import { useNavigate, useSearchParams } from 'react-router';
+
+import PickeatDecisionInfo from './PickeatDecisionInfo';
+
+type Props = {
+  onCancel?: () => void;
+  onConfirm?: () => void;
+  remainingCount: number;
+};
+
+function PickeatEndConfirm({
+  onCancel = () => {},
+  onConfirm = () => {},
+  remainingCount,
+}: Props) {
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+
+  const navigate = useNavigate();
+  const showToast = useShowToast();
+
+  const endPickeat = async () => {
+    onConfirm();
+    useGA().useGAEventTrigger({
+      action: 'click',
+      category: 'button',
+      label: '결과 페이지 이동 버튼',
+      value: 1,
+    });
+    try {
+      await pickeat.postResult(pickeatCode);
+      navigate(generateRouterPath.matchResult(pickeatCode));
+    } catch {
+      return showToast({
+        mode: 'ERROR',
+        message: '픽잇 결과를 가져오는 데 실패했습니다.',
+      });
+    }
+  };
+
+  return (
+    <S.Container>
+      <S.Title>
+        {remainingCount === 0 || (
+          <>
+            <S.PointText>잠깐✋</S.PointText>
+            {remainingCount}명이 투표를 완료하지 않았어요!
+            <br />
+          </>
+        )}
+        정말 종료하시겠습니까?
+      </S.Title>
+
+      <PickeatDecisionInfo />
+      <S.Wrapper>
+        <Button text="취소" color="gray" onClick={onCancel} />
+        <Button text="종료" onClick={endPickeat} />
+      </S.Wrapper>
+    </S.Container>
+  );
+}
+
+export default PickeatEndConfirm;
+
+const S = {
+  Container: styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: ${({ theme }) => theme.GAP.level5};
+  `,
+  Title: styled.p`
+    font: ${({ theme }) => theme.FONTS.heading.medium};
+    text-align: center;
+  `,
+  PointText: styled.p`
+    color: ${({ theme }) => theme.PALETTE.gray[60]};
+    font: ${({ theme }) => theme.FONTS.heading.large_style};
+  `,
+  Wrapper: styled.div`
+    width: 100%;
+    display: flex;
+    gap: ${({ theme }) => theme.GAP.level5};
+  `,
+};

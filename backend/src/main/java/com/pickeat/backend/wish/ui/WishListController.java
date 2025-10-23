@@ -27,6 +27,7 @@ public class WishListController implements WishListApiSpec {
 
     private final WishListService wishListService;
 
+    //TODO: 현재 필요하지 않은 API 메서드이므로 처리 필요 (2025-09-19, 금, 21:41)
     @Override
     @BusinessLogging("위시리스트 생성")
     @PostMapping("/room/{roomId}/wishLists")
