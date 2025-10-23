@@ -31,7 +31,6 @@ public class LoginUserIdArgumentResolver implements HandlerMethodArgumentResolve
 
         String authHeader = webRequest.getHeader("Authorization");
 
-        //TODO: return null 방식 추가 고려
         if (authHeader == null || !authHeader.startsWith(PREFIX)) {
             throw new BusinessException(ErrorCode.HEADER_IS_EMPTY);
         }

@@ -15,9 +15,6 @@ public record PickeatResponse(
         @Schema(description = "픽잇 이름", example = "점심 맛집 찾기")
         String name,
 
-        @Schema(description = "참여자 수", example = "5")
-        int participantCount,
-
         @Schema(description = "픽잇 활성화 상태", example = "true")
         boolean isActive
 ) {
@@ -27,7 +24,6 @@ public record PickeatResponse(
                 pickeat.getId(),
                 pickeat.getCode().toString(),
                 pickeat.getName(),
-                pickeat.getParticipantCount(),
                 pickeat.getIsActive()
         );
     }
