@@ -46,7 +46,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.p2};
 
-    background-color: ${({ theme }) => theme.PALETTE.gray[80]};
+    background-color: ${({ theme }) => theme.PALETTE.red[40]};
     border-radius: ${({ theme }) => theme.RADIUS.small};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
   `,

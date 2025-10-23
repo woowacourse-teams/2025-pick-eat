@@ -51,6 +51,7 @@ const S = {
 
     padding: ${({ theme }) => theme.PADDING.px3};
 
-    color: ${({ theme }) => theme.PALETTE.red[40]};
+    color: ${({ theme }) => theme.PALETTE.gray[0]};
+    font: ${({ theme }) => theme.FONTS.body.small_bold};
   `,
 };
