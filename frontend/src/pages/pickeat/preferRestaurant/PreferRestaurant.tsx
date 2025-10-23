@@ -8,8 +8,6 @@ import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
 
-import { usePreventGoBack } from '@hooks/usePreventGoBack';
-
 import styled from '@emotion/styled';
 import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
