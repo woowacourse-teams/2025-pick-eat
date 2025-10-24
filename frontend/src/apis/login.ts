@@ -23,10 +23,10 @@ export const login = {
       if (data && data.token) return { accessToken: data.token, status: 200 };
       return { accessToken: '', status: 403 };
     } catch (error) {
-      if (error instanceof ApiError && error.status === 403 && error.body) {
+      if (error instanceof ApiError && error.status === 401 && error.body) {
         const token =
           typeof error.body.token === 'string' ? error.body.token : '';
-        return { accessToken: token, status: 403 };
+        return { accessToken: token, status: 401 };
       }
       throw error;
     }
