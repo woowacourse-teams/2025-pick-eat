@@ -15,7 +15,7 @@ public class ImageUploadClientConfiguration {
 
     @Bean
     @Profile({"local"})
-    public ImageUploadClient localImageUploadClientV2(
+    public ImageUploadClient localImageUploadClient(
             @Value("${default.wish.image.url}") String defaultImageUrl,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
     ) {
@@ -24,7 +24,7 @@ public class ImageUploadClientConfiguration {
 
     @Bean
     @Profile({"dev", "prod"})
-    public ImageUploadClient s3ImageUploadClientV2(
+    public ImageUploadClient s3ImageUploadClient(
             @Value("${external.s3.wish.image.bucket.name}") String bucketName,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
     ) {
