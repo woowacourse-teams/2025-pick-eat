@@ -8,20 +8,26 @@ import java.util.stream.Collectors;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository("RoomUserRepositoryV2")
 public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
 
     List<RoomUser> findAllByUserId(Long userId);
 
+    List<RoomUser> findAllByRoomId(Long roomId);
+
     default List<Long> getAllRoomIdsByUserId(Long userId) {
-        return findAllByUserId(userId).stream().map(RoomUser::getRoomId).toList();
+        return findAllByUserId(userId).stream()
+                .map(RoomUser::getRoomId)
+                .toList();
     }
 
     default List<Long> getAllUserIdsByRoomId(Long roomId) {
-        return findAllByRoomId(roomId).stream().map(RoomUser::getUserId).toList();
+        return findAllByRoomId(roomId).stream()
+                .map(RoomUser::getUserId)
+                .toList();
     }
-
-    List<RoomUser> findAllByRoomId(Long roomId);
 
     boolean existsByRoomIdAndUserId(Long roomId, Long userId);
 
@@ -55,5 +61,8 @@ public interface RoomUserRepository extends JpaRepository<RoomUser, Long> {
               where ru.roomId = :roomId
                 and ru.userId in :userIds
             """)
-    List<Long> findExistingUserIdsInRoom(@Param("roomId") Long roomId, @Param("userIds") Collection<Long> userIds);
+    List<Long> findExistingUserIdsInRoom(
+            @Param("roomId") Long roomId,
+            @Param("userIds") Collection<Long> userIds
+    );
 }

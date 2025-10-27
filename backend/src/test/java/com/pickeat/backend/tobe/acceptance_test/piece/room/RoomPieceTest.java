@@ -1,14 +1,13 @@
 package com.pickeat.backend.tobe.acceptance_test.piece.room;
 
-import com.pickeat.backend.tobe.room.application.dto.request.RoomInvitationRequest;
-import com.pickeat.backend.tobe.room.application.dto.request.RoomRequest;
-import com.pickeat.backend.tobe.room.application.dto.response.RoomResponse;
+import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
+import com.pickeat.backend.room.application.dto.request.RoomRequest;
+import com.pickeat.backend.room.application.dto.response.RoomResponse;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
-import org.springframework.http.HttpStatus;
-
 import java.util.List;
+import org.springframework.http.HttpStatus;
 
 public class RoomPieceTest {
 
@@ -47,7 +46,8 @@ public class RoomPieceTest {
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
-                .as(new TypeRef<List<RoomResponse>>() {});
+                .as(new TypeRef<List<RoomResponse>>() {
+                });
     }
 
     public static void 방_초대(Long roomId, RoomInvitationRequest request, String accessToken) {

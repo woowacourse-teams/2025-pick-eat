@@ -1,12 +1,11 @@
-package com.pickeat.backend.tobe.room.ui;
+package com.pickeat.backend.room.ui.api;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
 import com.pickeat.backend.global.log.BusinessLogging;
-import com.pickeat.backend.tobe.room.application.RoomService;
-import com.pickeat.backend.tobe.room.application.dto.request.RoomInvitationRequest;
-import com.pickeat.backend.tobe.room.application.dto.request.RoomRequest;
-import com.pickeat.backend.tobe.room.application.dto.response.RoomResponse;
-import com.pickeat.backend.tobe.room.ui.api.RoomApiSpec;
+import com.pickeat.backend.room.application.dto.RoomService;
+import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
+import com.pickeat.backend.room.application.dto.request.RoomRequest;
+import com.pickeat.backend.room.application.dto.response.RoomResponse;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

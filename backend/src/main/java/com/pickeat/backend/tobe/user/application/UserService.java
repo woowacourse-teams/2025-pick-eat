@@ -4,7 +4,7 @@ import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
-import com.pickeat.backend.tobe.room.domain.repository.RoomUserRepository;
+import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.tobe.user.application.dto.UserResponse;
 import com.pickeat.backend.tobe.user.domain.repository.UserRepository;
 import com.pickeat.backend.user.domain.User;

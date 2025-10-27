@@ -5,7 +5,7 @@ import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.room.domain.Room;
-import com.pickeat.backend.tobe.room.domain.repository.RoomRepository;
+import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.tobe.wish.domain.Wish;
 import com.pickeat.backend.tobe.wish.domain.repository.WishRepository;
 import java.util.List;
