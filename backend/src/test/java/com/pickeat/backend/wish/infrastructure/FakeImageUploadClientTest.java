@@ -12,7 +12,8 @@ class FakeImageUploadClientTest {
 
     private final String defaultImageUrl = "default_image_url";
     private final String keyPrefix = "/dir1/dir2/";
-    private final LocalImageUploadClient localImageUploadClient = new LocalImageUploadClient(defaultImageUrl,
+    private final LocalImageUploadClient localImageUploadClient = new LocalImageUploadClient(
+            defaultImageUrl,
             keyPrefix);
 
     @Test
