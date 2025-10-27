@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository("UserRepositoryV2")
 public interface UserRepository extends JpaRepository<User, Long> {
 
+    Optional<User> findByProviderIdAndProvider(Long providerId, String provider);
+
     boolean existsByProviderIdAndProvider(Long providerId, String provider);
 
     boolean existsByNickname(String nickname);
