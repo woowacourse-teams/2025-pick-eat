@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.acceptance_test.piece.user;
 
-import com.pickeat.backend.tobe.user.application.dto.UserResponse;
+import com.pickeat.backend.user.application.dto.UserResponse;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import java.util.List;
