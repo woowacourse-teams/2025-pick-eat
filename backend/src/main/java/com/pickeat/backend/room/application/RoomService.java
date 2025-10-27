@@ -1,4 +1,4 @@
-package com.pickeat.backend.room.application.dto;
+package com.pickeat.backend.room.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
