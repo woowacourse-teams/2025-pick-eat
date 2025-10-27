@@ -1,9 +1,9 @@
 package com.pickeat.backend.tobe.fake.restaurant;
 
+import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
-import com.pickeat.backend.tobe.restaurant.application.RestaurantSearchClient;
-import com.pickeat.backend.tobe.restaurant.application.dto.request.RestaurantRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;

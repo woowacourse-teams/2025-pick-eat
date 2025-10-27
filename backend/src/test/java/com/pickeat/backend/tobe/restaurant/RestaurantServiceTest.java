@@ -4,12 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.restaurant.application.RestaurantService;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantBulkRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
-import com.pickeat.backend.tobe.restaurant.application.RestaurantService;
-import com.pickeat.backend.tobe.restaurant.application.dto.request.RestaurantRequest;
-import com.pickeat.backend.tobe.restaurant.domain.repository.RestaurantBulkRepository;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

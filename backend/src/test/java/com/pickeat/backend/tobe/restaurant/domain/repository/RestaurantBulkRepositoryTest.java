@@ -6,6 +6,7 @@ import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.Restaurant;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantBulkRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

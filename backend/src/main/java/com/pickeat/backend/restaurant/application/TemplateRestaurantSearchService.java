@@ -1,13 +1,13 @@
-package com.pickeat.backend.tobe.restaurant.application;
+package com.pickeat.backend.restaurant.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
+import com.pickeat.backend.restaurant.application.dto.request.TemplateRestaurantRequest;
 import com.pickeat.backend.template.domain.Template;
 import com.pickeat.backend.template.domain.TemplateWish;
 import com.pickeat.backend.template.domain.repository.TemplateRepository;
 import com.pickeat.backend.template.domain.repository.TemplateWishRepository;
-import com.pickeat.backend.tobe.restaurant.application.dto.request.RestaurantRequest;
-import com.pickeat.backend.tobe.restaurant.application.dto.request.TemplateRestaurantRequest;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

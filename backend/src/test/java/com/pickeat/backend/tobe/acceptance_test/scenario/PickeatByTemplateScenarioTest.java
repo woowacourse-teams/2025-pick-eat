@@ -26,10 +26,10 @@ import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResp
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.TemplateRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.template.application.dto.response.TemplateResponse;
-import com.pickeat.backend.tobe.restaurant.application.dto.request.TemplateRestaurantRequest;
 import io.restassured.RestAssured;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;

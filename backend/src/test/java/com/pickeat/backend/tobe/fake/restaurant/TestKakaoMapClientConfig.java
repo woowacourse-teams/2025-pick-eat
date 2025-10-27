@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.fake.restaurant;
 
-import com.pickeat.backend.tobe.restaurant.application.RestaurantSearchClient;
+import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

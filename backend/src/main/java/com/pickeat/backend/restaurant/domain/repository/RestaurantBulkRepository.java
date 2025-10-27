@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.restaurant.domain.repository;
+package com.pickeat.backend.restaurant.domain.repository;
 
 import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.Restaurant;

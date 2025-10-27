@@ -1,6 +1,7 @@
 package com.pickeat.backend.restaurant.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,14 +10,15 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 @Profile({"local", "dev", "prod"})
-@Configuration
+@Configuration("KakaoMapClientConfigV2")
 @RequiredArgsConstructor
 public class KakaoMapClientConfig {
 
     private final ObjectMapper objectMapper;
 
-    @Bean
-    public KakaoRestaurantSearchClient kakaoRestaurantSearchClient(KakaoMapApiProperties properties) {
+    @Bean("RestaurantSearchClientV2")
+    public RestaurantSearchClient kakaoRestaurantSearchClient(
+            KakaoMapApiProperties properties) {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(properties.getConnectTimeout());
         factory.setReadTimeout(properties.getReadTimeout());

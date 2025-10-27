@@ -2,9 +2,9 @@ package com.pickeat.backend.tobe.acceptance_test.piece.restaurant;
 
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.TemplateRestaurantRequest;
+import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
-import com.pickeat.backend.tobe.restaurant.application.dto.request.TemplateRestaurantRequest;
-import com.pickeat.backend.tobe.restaurant.application.dto.request.WishRestaurantRequest;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;

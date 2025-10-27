@@ -12,6 +12,7 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantBulkRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantLikeRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.ArrayList;
@@ -20,17 +21,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("RestaurantServiceV2")
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
+    private final RestaurantBulkRepository restaurantBulkRepository;
     private final PickeatRepository pickeatRepository;
     private final ParticipantRepository participantRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
 
-    //TODO: 개선할 여지가 보임  (2025-07-21, 월, 20:43)
     @Transactional
     public void create(List<RestaurantRequest> restaurantRequests, String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
@@ -47,7 +48,7 @@ public class RestaurantService {
                         request.type(),
                         pickeat))
                 .toList();
-        restaurantRepository.saveAll(restaurants);
+        restaurantBulkRepository.batchInsert(restaurants);
     }
 
     public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded, Long participantId) {
@@ -125,8 +126,7 @@ public class RestaurantService {
     }
 
     private Pickeat getPickeatByCode(String pickeatCode) {
-        Pickeat pickeat = pickeatRepository.findByCode(new PickeatCode(pickeatCode))
+        return pickeatRepository.findByCode(new PickeatCode(pickeatCode))
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
-        return pickeat;
     }
 }

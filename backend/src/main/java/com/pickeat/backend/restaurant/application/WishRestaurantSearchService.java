@@ -4,58 +4,42 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
-import com.pickeat.backend.wish.domain.Wish;
-import com.pickeat.backend.wish.domain.WishList;
-import com.pickeat.backend.wish.domain.WishPicture;
-import com.pickeat.backend.wish.domain.repository.WishListRepository;
-import com.pickeat.backend.wish.domain.repository.WishPictureRepository;
-import com.pickeat.backend.wish.domain.repository.WishRepository;
+import com.pickeat.backend.room.domain.Room;
+import com.pickeat.backend.tobe.room.domain.repository.RoomRepository;
+import com.pickeat.backend.tobe.wish.domain.Wish;
+import com.pickeat.backend.tobe.wish.domain.repository.WishRepository;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service("WishRestaurantSearchServiceV2")
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class WishRestaurantSearchService {
 
-    private final WishListRepository wishListRepository;
     private final WishRepository wishRepository;
-    private final WishPictureRepository wishPictureRepository;
+    private final RoomRepository roomRepository;
 
     public List<RestaurantRequest> searchByWish(WishRestaurantRequest request) {
-        WishList wishList = getWishList(request);
+        Room room = getRoom(request);
 
-        List<Wish> wishes = wishRepository.findAllByWishList(wishList);
+        List<Wish> wishes = wishRepository.findAllByRoom(room);
         validateWishExists(wishes);
 
         return wishes.stream()
-                .map(wish -> RestaurantRequest.fromWish(wish, getPictureKeys(wish), getPictureUrls(wish)))
+                .map(RestaurantRequest::fromWish)
                 .toList();
+    }
+
+    private Room getRoom(WishRestaurantRequest request) {
+        return roomRepository.findById(request.roomId())
+                .orElseThrow(() -> new BusinessException(ErrorCode.WISH_LIST_NOT_FOUND));
     }
 
     private void validateWishExists(List<Wish> wishes) {
         if (wishes.isEmpty()) {
             throw new BusinessException(ErrorCode.WISH_LIST_HAS_NO_WISHES);
         }
-    }
-
-    private WishList getWishList(WishRestaurantRequest request) {
-        return wishListRepository.findById(request.wishListId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.WISH_LIST_NOT_FOUND));
-    }
-
-    private String getPictureUrls(Wish wish) {
-        return wishPictureRepository.findAllByWish(wish).stream()
-                .map(WishPicture::getDownloadUrl)
-                .collect(Collectors.joining(","));
-    }
-
-    private String getPictureKeys(Wish wish) {
-        return wishPictureRepository.findAllByWish(wish).stream()
-                .map(WishPicture::getPictureKey)
-                .collect(Collectors.joining(","));
     }
 }

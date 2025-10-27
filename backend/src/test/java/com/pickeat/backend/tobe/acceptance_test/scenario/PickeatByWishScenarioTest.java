@@ -35,10 +35,10 @@ import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResp
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
-import com.pickeat.backend.tobe.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.tobe.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.tobe.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.tobe.room.application.dto.response.RoomResponse;
