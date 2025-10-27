@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.fake.restaurant;
+package com.pickeat.backend.fake.restaurant;
 
 import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import org.springframework.context.annotation.Bean;

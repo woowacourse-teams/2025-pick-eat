@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.acceptance_test.piece.restaurant;
+package com.pickeat.backend.acceptance_test.piece.restaurant;
 
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;

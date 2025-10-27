@@ -1,11 +1,10 @@
-package com.pickeat.backend.tobe.acceptance_test.piece.template;
+package com.pickeat.backend.acceptance_test.piece.template;
 
 import com.pickeat.backend.template.application.dto.response.TemplateWishResponse;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
-import org.springframework.http.HttpStatus;
-
 import java.util.List;
+import org.springframework.http.HttpStatus;
 
 public class TemplateWishPieceTest {
 
@@ -17,6 +16,7 @@ public class TemplateWishPieceTest {
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
-                .as(new TypeRef<List<TemplateWishResponse>>() {});
+                .as(new TypeRef<List<TemplateWishResponse>>() {
+                });
     }
 }

@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.fake.wish;
+package com.pickeat.backend.fake.wish;
 
 import com.pickeat.backend.wish.application.ImageUploadClient;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.acceptance_test.piece.wish;
+package com.pickeat.backend.acceptance_test.piece.wish;
 
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import io.restassured.RestAssured;

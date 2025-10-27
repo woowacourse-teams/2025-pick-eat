@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.acceptance_test.piece.user;
+package com.pickeat.backend.acceptance_test.piece.user;
 
 import com.pickeat.backend.user.application.dto.UserResponse;
 import io.restassured.RestAssured;

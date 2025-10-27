@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.acceptance_test.scenario;
+package com.pickeat.backend.acceptance_test.scenario;
 
 import static com.pickeat.backend.acceptance_test.piece.login.LoginPieceTest.회원가입;
 import static com.pickeat.backend.acceptance_test.piece.login.LoginPieceTest.회원가입을_위한_코드_처리;
@@ -11,17 +11,17 @@ import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇_정보_조회;
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇_활성화_상태_조회;
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇의_참가자_요약_정보_조회;
-import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_제외;
-import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요;
-import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요_취소;
-import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.위시_기반_식당_생성;
-import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.픽잇의_식당_조회;
-import static com.pickeat.backend.tobe.acceptance_test.piece.room.RoomPieceTest.방_단일_조회;
-import static com.pickeat.backend.tobe.acceptance_test.piece.room.RoomPieceTest.방_생성;
-import static com.pickeat.backend.tobe.acceptance_test.piece.room.RoomPieceTest.방_초대;
-import static com.pickeat.backend.tobe.acceptance_test.piece.user.UserPieceTest.유저_검색;
-import static com.pickeat.backend.tobe.acceptance_test.piece.wish.WishPieceTest.위시_목록_조회;
-import static com.pickeat.backend.tobe.acceptance_test.piece.wish.WishPieceTest.위시_생성;
+import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_제외;
+import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요;
+import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요_취소;
+import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.위시_기반_식당_생성;
+import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.픽잇의_식당_조회;
+import static com.pickeat.backend.acceptance_test.piece.room.RoomPieceTest.방_단일_조회;
+import static com.pickeat.backend.acceptance_test.piece.room.RoomPieceTest.방_생성;
+import static com.pickeat.backend.acceptance_test.piece.room.RoomPieceTest.방_초대;
+import static com.pickeat.backend.acceptance_test.piece.user.UserPieceTest.유저_검색;
+import static com.pickeat.backend.acceptance_test.piece.wish.WishPieceTest.위시_목록_조회;
+import static com.pickeat.backend.acceptance_test.piece.wish.WishPieceTest.위시_생성;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

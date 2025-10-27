@@ -1,4 +1,4 @@
-package com.pickeat.backend.tobe.acceptance_test.piece.room;
+package com.pickeat.backend.acceptance_test.piece.room;
 
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
