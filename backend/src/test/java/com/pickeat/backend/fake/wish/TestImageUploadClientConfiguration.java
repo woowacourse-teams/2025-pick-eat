@@ -7,10 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Profile("test")
-@Configuration("TestImageUploadClientConfigurationV2")
+@Configuration
 public class TestImageUploadClientConfiguration {
 
-    @Bean("ImageUploadClientV2")
+    @Bean
     public ImageUploadClient localImageUploadClient(
             @Value("${default.wish.image.url}") String defaultImageUrl,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix

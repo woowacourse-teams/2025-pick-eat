@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 @Profile("test")
-@Configuration("TestKakaoMapClientConfigV2")
+@Configuration
 public class TestKakaoMapClientConfig {
 
-    @Bean("RestaurantSearchClientV2")
+    @Bean
     public RestaurantSearchClient restaurantSearchClient() {
         return new FakeRestaurantSearchClient();
     }

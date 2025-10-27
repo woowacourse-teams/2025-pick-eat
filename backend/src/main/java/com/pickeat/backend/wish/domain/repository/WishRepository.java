@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository("WishRepositoryV2")
+@Repository
 public interface WishRepository extends JpaRepository<Wish, Long> {
 
     List<Wish> findAllByRoom(Room room);

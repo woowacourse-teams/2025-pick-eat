@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("UserControllerV2")
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v2")
 public class UserController implements UserApiSpec {

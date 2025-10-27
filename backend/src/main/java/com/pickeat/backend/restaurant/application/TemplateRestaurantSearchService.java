@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("TemplateRestaurantSearchServiceV2")
+@Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class TemplateRestaurantSearchService {

@@ -5,20 +5,17 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component("LocationRestaurantSearchServiceV2")
+@Service
+@RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LocationRestaurantSearchService {
 
     private static final int RESTAURANT_SEARCH_SIZE = 10;
     private final RestaurantSearchClient restaurantSearchClient;
-
-    public LocationRestaurantSearchService(
-            @Qualifier("RestaurantSearchClientV2") RestaurantSearchClient restaurantSearchClient
-    ) {
-        this.restaurantSearchClient = restaurantSearchClient;
-    }
 
     //TODO: 분명 개선 여지가 있을텐데... + 테스트 (2025-07-21, 월, 20:32)
     public List<RestaurantRequest> searchByLocation(LocationRestaurantRequest request) {

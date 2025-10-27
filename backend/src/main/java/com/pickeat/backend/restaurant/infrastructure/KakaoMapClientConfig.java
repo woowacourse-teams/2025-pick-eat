@@ -10,13 +10,13 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 @Profile({"local", "dev", "prod"})
-@Configuration("KakaoMapClientConfigV2")
+@Configuration
 @RequiredArgsConstructor
 public class KakaoMapClientConfig {
 
     private final ObjectMapper objectMapper;
 
-    @Bean("RestaurantSearchClientV2")
+    @Bean
     public RestaurantSearchClient kakaoRestaurantSearchClient(
             KakaoMapApiProperties properties) {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
