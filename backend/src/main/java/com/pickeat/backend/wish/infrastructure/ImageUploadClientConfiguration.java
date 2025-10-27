@@ -10,21 +10,21 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Profile({"local", "dev", "prod"})
-@Configuration
+@Configuration("ImageUploadClientConfigurationV2")
 public class ImageUploadClientConfiguration {
 
-    @Bean
+    @Bean("ImageUploadClientV2")
     @Profile({"local"})
-    public ImageUploadClient localImageUploadClient(
+    public ImageUploadClient localImageUploadClientV2(
             @Value("${default.wish.image.url}") String defaultImageUrl,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
     ) {
         return new LocalImageUploadClient(defaultImageUrl, keyPrefix);
     }
 
-    @Bean
+    @Bean("ImageUploadClientV2")
     @Profile({"dev", "prod"})
-    public ImageUploadClient s3ImageUploadClient(
+    public ImageUploadClient s3ImageUploadClientV2(
             @Value("${external.s3.wish.image.bucket.name}") String bucketName,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
     ) {

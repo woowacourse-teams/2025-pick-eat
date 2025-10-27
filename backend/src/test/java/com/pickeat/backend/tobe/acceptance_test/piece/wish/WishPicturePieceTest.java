@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.acceptance_test.piece.wish;
 
-import com.pickeat.backend.tobe.wish.application.dto.response.WishPictureResponse;
+import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import io.restassured.RestAssured;
 import java.io.File;
 import org.springframework.http.HttpStatus;

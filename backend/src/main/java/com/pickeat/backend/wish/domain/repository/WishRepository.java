@@ -1,11 +1,13 @@
 package com.pickeat.backend.wish.domain.repository;
 
+import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.wish.domain.Wish;
-import com.pickeat.backend.wish.domain.WishList;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+@Repository("WishRepositoryV2")
 public interface WishRepository extends JpaRepository<Wish, Long> {
 
-    List<Wish> findAllByWishList(WishList wishList);
+    List<Wish> findAllByRoom(Room room);
 }

@@ -5,7 +5,7 @@ import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.template.domain.TemplateWish;
-import com.pickeat.backend.tobe.wish.domain.Wish;
+import com.pickeat.backend.wish.domain.Wish;
 
 public record RestaurantRequest(
         String name,

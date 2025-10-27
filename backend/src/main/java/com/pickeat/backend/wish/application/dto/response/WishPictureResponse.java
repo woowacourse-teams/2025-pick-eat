@@ -1,30 +1,19 @@
 package com.pickeat.backend.wish.application.dto.response;
 
-import com.pickeat.backend.wish.domain.WishPicture;
+import com.pickeat.backend.restaurant.domain.Picture;
+import com.pickeat.backend.wish.domain.Wish;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 
-@Schema(description = "위시 사진 응답")
+@Schema(description = "위시 사진 응답", name = "WishPictureResponseV2")
 public record WishPictureResponse(
-        @Schema(description = "위시 사진 ID", example = "1")
-        long id,
         @Schema(description = "위시 ID", example = "1")
         long wishId,
         @Schema(description = "이미지 다운로드 URL", example = "https://example.com/image.jpg")
         String imageDownloadUrl
 ) {
 
-    public static WishPictureResponse from(WishPicture wishPicture) {
-        return new WishPictureResponse(
-                wishPicture.getId(),
-                wishPicture.getWish().getId(),
-                wishPicture.getDownloadUrl()
-        );
-    }
-
-    public static List<WishPictureResponse> from(List<WishPicture> wishPictures) {
-        return wishPictures.stream()
-                .map(WishPictureResponse::from)
-                .toList();
+    public static WishPictureResponse from(Wish wish) {
+        Picture picture = wish.getRestaurantInfo().getPicture();
+        return new WishPictureResponse(wish.getId(), picture.getPictureUrl());
     }
 }

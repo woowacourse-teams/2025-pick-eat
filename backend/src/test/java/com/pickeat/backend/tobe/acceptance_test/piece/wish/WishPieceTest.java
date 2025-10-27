@@ -1,8 +1,8 @@
 package com.pickeat.backend.tobe.acceptance_test.piece.wish;
 
-import com.pickeat.backend.tobe.wish.application.dto.request.WishRequest;
-import com.pickeat.backend.tobe.wish.application.dto.request.WishUpdateRequest;
-import com.pickeat.backend.tobe.wish.application.dto.response.WishResponse;
+import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.request.WishUpdateRequest;
+import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;

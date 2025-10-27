@@ -8,6 +8,7 @@ import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.tobe.fixture.RestaurantInfoFixture;
 import com.pickeat.backend.tobe.fixture.WishFixture;
+import com.pickeat.backend.wish.domain.Wish;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 

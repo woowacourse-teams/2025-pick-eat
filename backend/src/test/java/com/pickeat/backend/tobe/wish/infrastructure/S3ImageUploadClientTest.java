@@ -9,7 +9,8 @@ import static org.mockito.Mockito.when;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ExternalApiException;
-import com.pickeat.backend.tobe.wish.application.dto.request.ImageRequest;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
+import com.pickeat.backend.wish.infrastructure.S3ImageUploadClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

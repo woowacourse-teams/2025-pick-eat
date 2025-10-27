@@ -4,7 +4,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.Mockito.mock;
 
-import com.pickeat.backend.tobe.wish.application.dto.request.ImageRequest;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
+import com.pickeat.backend.wish.infrastructure.LocalImageUploadClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.web.multipart.MultipartFile;
 

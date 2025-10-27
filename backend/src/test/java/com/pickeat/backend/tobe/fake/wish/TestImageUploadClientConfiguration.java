@@ -1,6 +1,6 @@
 package com.pickeat.backend.tobe.fake.wish;
 
-import com.pickeat.backend.tobe.wish.application.ImageUploadClient;
+import com.pickeat.backend.wish.application.ImageUploadClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

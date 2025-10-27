@@ -3,7 +3,7 @@ package com.pickeat.backend.tobe.fixture;
 import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.room.domain.Room;
-import com.pickeat.backend.tobe.wish.domain.Wish;
+import com.pickeat.backend.wish.domain.Wish;
 
 public class WishFixture {
 

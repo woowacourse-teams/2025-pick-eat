@@ -1,7 +1,7 @@
 package com.pickeat.backend.tobe.fake.wish;
 
-import com.pickeat.backend.tobe.wish.application.ImageUploadClient;
-import com.pickeat.backend.tobe.wish.application.dto.request.ImageRequest;
+import com.pickeat.backend.wish.application.ImageUploadClient;
+import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import java.util.UUID;
 import org.springframework.web.multipart.MultipartFile;
 
