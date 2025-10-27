@@ -1,10 +1,12 @@
-package com.pickeat.backend.acceptance_test.piece.room;
+package com.pickeat.backend.tobe.acceptance_test.piece.room;
 
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
 import com.pickeat.backend.room.application.dto.request.RoomRequest;
 import com.pickeat.backend.room.application.dto.response.RoomResponse;
 import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 
 public class RoomPieceTest {
@@ -16,11 +18,36 @@ public class RoomPieceTest {
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
-                .post("/api/v1/rooms")
+                .post("/api/v2/rooms")
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(RoomResponse.class);
+    }
+
+    public static RoomResponse 방_단일_조회(Long roomId, String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .get("/api/v2/rooms/{roomId}", roomId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(RoomResponse.class);
+    }
+
+    public static List<RoomResponse> 방_전체_조회(String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .get("/api/v2/rooms")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(new TypeRef<List<RoomResponse>>() {
+                });
     }
 
     public static void 방_초대(Long roomId, RoomInvitationRequest request, String accessToken) {
@@ -30,20 +57,18 @@ public class RoomPieceTest {
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
-                .post("/api/v1/rooms/{roomId}/invite", roomId)
+                .post("/api/v2/rooms/{roomId}/invite", roomId)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value());
     }
 
-    public static RoomResponse 방_정보_조회(Long roomId, String accessToken) {
-        return RestAssured
+    public static void 방_나가기(Long roomId, String accessToken) {
+        RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
-                .get("/api/v1/rooms/{roomId}", roomId)
+                .delete("/api/v2/rooms/{roomId}/exit", roomId)
                 .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .extract()
-                .as(RoomResponse.class);
+                .statusCode(HttpStatus.NO_CONTENT.value());
     }
 }

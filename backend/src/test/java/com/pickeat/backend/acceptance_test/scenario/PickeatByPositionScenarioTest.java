@@ -1,4 +1,4 @@
-package com.pickeat.backend.acceptance_test.scenario;
+package com.pickeat.backend.tobe.acceptance_test.scenario;
 
 import static com.pickeat.backend.acceptance_test.piece.participant.ParticipantPieceTest.참가자_생성;
 import static com.pickeat.backend.acceptance_test.piece.participant.ParticipantPieceTest.참가자_선택_완료_표시;
@@ -9,11 +9,11 @@ import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇_정보_조회;
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇_활성화_상태_조회;
 import static com.pickeat.backend.acceptance_test.piece.pickeat.PickeatPieceTest.픽잇의_참가자_요약_정보_조회;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_소거;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요_취소;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.위치_기반으로_식당_생성;
-import static com.pickeat.backend.acceptance_test.piece.restaurant.RestaurantPieceTest.픽잇의_식당_조회;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_제외;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.식당_좋아요_취소;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.위치_기반_식당_생성;
+import static com.pickeat.backend.tobe.acceptance_test.piece.restaurant.RestaurantPieceTest.픽잇의_식당_조회;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -59,7 +59,7 @@ public class PickeatByPositionScenarioTest {
 
         // 픽잇 생성
         PickeatResponse createdPickeat = 외부용_픽잇_생성(new PickeatRequest("우테코 점심 픽잇"));
-        위치_기반으로_식당_생성(createdPickeat.code(), new LocationRestaurantRequest(127.123, 37.123, 500));
+        위치_기반_식당_생성(createdPickeat.code(), new LocationRestaurantRequest(127.123, 37.123, 500));
 
         // 참여자 생성
         PickeatResponse pickeat = 픽잇_정보_조회(createdPickeat.code());
@@ -68,13 +68,13 @@ public class PickeatByPositionScenarioTest {
         TokenResponse participant3Token = 참가자_생성(new ParticipantRequest("참여자3", pickeat.id()));
 
         // 참여자들의 식당 소거
-        List<RestaurantResponse> restaurants = 픽잇의_식당_조회(pickeat.code(), participant1Token.token(), null);
+        List<RestaurantResponse> restaurants = 픽잇의_식당_조회(pickeat.code(), null, participant1Token.token());
         List<Long> restaurantIds = restaurants.stream().map(RestaurantResponse::id).toList();
-        식당_소거(new RestaurantExcludeRequest(restaurantIds.subList(0, 4)), participant1Token.token());
-        식당_소거(new RestaurantExcludeRequest(restaurantIds.subList(3, 7)), participant2Token.token());
-        식당_소거(new RestaurantExcludeRequest(restaurantIds.subList(6, 10)), participant3Token.token());
+        식당_제외(new RestaurantExcludeRequest(restaurantIds.subList(0, 4)), participant1Token.token());
+        식당_제외(new RestaurantExcludeRequest(restaurantIds.subList(3, 7)), participant2Token.token());
+        식당_제외(new RestaurantExcludeRequest(restaurantIds.subList(6, 10)), participant3Token.token());
 
-        List<RestaurantResponse> restaurantAfterExcluded = 픽잇의_식당_조회(pickeat.code(), participant1Token.token(), null);
+        List<RestaurantResponse> restaurantAfterExcluded = 픽잇의_식당_조회(pickeat.code(), null, participant1Token.token());
         checkExcludedRestaurants(restaurantIds.subList(0, 10), restaurantAfterExcluded);
 
         참가자_선택_완료_표시(participant1Token.token());
@@ -85,7 +85,7 @@ public class PickeatByPositionScenarioTest {
         ParticipantStateResponse participantStateSummary = 픽잇의_참가자_요약_정보_조회(pickeat.code());
         checkParticipantState(participantStateSummary, 3, 3);
 
-        List<RestaurantResponse> noneExcludedRestaurant = 픽잇의_식당_조회(pickeat.code(), participant1Token.token(), false);
+        List<RestaurantResponse> noneExcludedRestaurant = 픽잇의_식당_조회(pickeat.code(), false, participant1Token.token());
         식당_좋아요(noneExcludedRestaurant.get(0).id(), participant1Token.token());
         식당_좋아요(noneExcludedRestaurant.get(1).id(), participant2Token.token());
         식당_좋아요(noneExcludedRestaurant.get(1).id(), participant3Token.token());
