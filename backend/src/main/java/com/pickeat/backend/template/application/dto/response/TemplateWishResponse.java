@@ -1,5 +1,6 @@
 package com.pickeat.backend.template.application.dto.response;
 
+import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.template.domain.TemplateWish;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,11 +29,12 @@ public record TemplateWishResponse(
 
     public static TemplateWishResponse from(TemplateWish wish) {
         RestaurantInfo restaurantInfo = wish.getRestaurantInfo();
+        Picture picture = restaurantInfo.getPicture();
         return new TemplateWishResponse(
                 wish.getId(),
                 restaurantInfo.getName(),
                 restaurantInfo.getFoodCategory().getName(),
-                restaurantInfo.getPicture().getPictureUrl(),
+                picture == null ? null : picture.getPictureUrl(),
                 restaurantInfo.getRoadAddressName(),
                 parseTags(restaurantInfo.getTags()),
                 restaurantInfo.getPlaceUrl(),

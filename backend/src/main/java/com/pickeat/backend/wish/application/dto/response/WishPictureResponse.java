@@ -14,6 +14,9 @@ public record WishPictureResponse(
 
     public static WishPictureResponse from(Wish wish) {
         Picture picture = wish.getRestaurantInfo().getPicture();
-        return new WishPictureResponse(wish.getId(), picture.getPictureUrl());
+        return new WishPictureResponse(
+                wish.getId(),
+                picture == null ? null : picture.getPictureUrl()
+        );
     }
 }
