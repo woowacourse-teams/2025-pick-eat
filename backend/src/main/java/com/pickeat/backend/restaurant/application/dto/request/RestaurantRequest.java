@@ -3,7 +3,6 @@ package com.pickeat.backend.restaurant.application.dto.request;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
-import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.template.domain.TemplateWish;
 import com.pickeat.backend.wish.domain.Wish;
 
@@ -15,40 +14,17 @@ public record RestaurantRequest(
         String placeUrl,
         String tags,
         String pictureKey,
-        String pictureUrl,
-        RestaurantType type
+        String pictureUrl
 ) {
 
     public static RestaurantRequest fromWish(Wish wish) {
         RestaurantInfo restaurantInfo = wish.getRestaurantInfo();
-        Picture picture = restaurantInfo.getPicture();
-        return new RestaurantRequest(
-                restaurantInfo.getName(),
-                restaurantInfo.getFoodCategory(),
-                restaurantInfo.getDistance(),
-                restaurantInfo.getRoadAddressName(),
-                restaurantInfo.getPlaceUrl(),
-                restaurantInfo.getTags(),
-                picture == null ? null : picture.getPictureKey(),
-                picture == null ? null : picture.getPictureUrl(),
-                RestaurantType.WISH
-        );
+        return createRestaurantRequest(restaurantInfo);
     }
 
     public static RestaurantRequest fromTemplateWish(TemplateWish templateWish) {
         RestaurantInfo restaurantInfo = templateWish.getRestaurantInfo();
-        Picture picture = restaurantInfo.getPicture();
-        return new RestaurantRequest(
-                restaurantInfo.getName(),
-                restaurantInfo.getFoodCategory(),
-                restaurantInfo.getDistance(),
-                restaurantInfo.getRoadAddressName(),
-                restaurantInfo.getPlaceUrl(),
-                restaurantInfo.getTags(),
-                picture == null ? null : picture.getPictureKey(),
-                picture == null ? null : picture.getPictureUrl(),
-                RestaurantType.TEMPLATE_WISH
-        );
+        return createRestaurantRequest(restaurantInfo);
     }
 
     public static RestaurantRequest fromLocation(
@@ -67,8 +43,21 @@ public record RestaurantRequest(
                 placeUrl,
                 tags,
                 null,
-                null,
-                RestaurantType.LOCATION
+                null
+        );
+    }
+
+    private static RestaurantRequest createRestaurantRequest(RestaurantInfo restaurantInfo) {
+        Picture picture = restaurantInfo.getPicture();
+        return new RestaurantRequest(
+                restaurantInfo.getName(),
+                restaurantInfo.getFoodCategory(),
+                restaurantInfo.getDistance(),
+                restaurantInfo.getRoadAddressName(),
+                restaurantInfo.getPlaceUrl(),
+                restaurantInfo.getTags(),
+                picture == null ? null : picture.getPictureKey(),
+                picture == null ? null : picture.getPictureUrl()
         );
     }
 }

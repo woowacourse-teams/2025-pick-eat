@@ -17,7 +17,6 @@ import com.pickeat.backend.restaurant.application.dto.response.RestaurantRespons
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
-import com.pickeat.backend.restaurant.domain.RestaurantType;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantBulkRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.List;
@@ -58,8 +57,7 @@ class RestaurantServiceTest {
         }
 
         private RestaurantRequest createRestaurantRequest() {
-            return new RestaurantRequest("테스트이름", FoodCategory.CHINESE, 300, "테스트도로명주소", "테스트url", "테스트태그", null, null,
-                    RestaurantType.LOCATION);
+            return new RestaurantRequest("테스트이름", FoodCategory.CHINESE, 300, "테스트도로명주소", "테스트url", "테스트태그", null, null);
         }
     }
 
@@ -181,7 +179,7 @@ class RestaurantServiceTest {
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
             Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
 
-            entityManager.persist(new RestaurantLike(participant, restaurant));
+            entityManager.persist(new RestaurantLike(participant.getId(), restaurant.getId()));
             restaurant.like();
             Integer originCount = restaurant.getLikeCount();
 

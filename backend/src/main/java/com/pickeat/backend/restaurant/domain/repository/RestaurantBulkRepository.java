@@ -28,8 +28,8 @@ public class RestaurantBulkRepository {
                 INSERT INTO restaurant
                   (name, food_category, distance, road_address_name, place_url,
                    tags, picture_key, picture_url, is_excluded, like_count,
-                   type, pickeat_id, created_at, updated_at, deleted)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                   pickeat_id, created_at, updated_at, deleted)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
         final Timestamp now = Timestamp.valueOf(LocalDateTime.now());
@@ -63,12 +63,11 @@ public class RestaurantBulkRepository {
 
                 ps.setBoolean(9, r.getIsExcluded());
                 ps.setInt(10, r.getLikeCount());
-                ps.setString(11, r.getType().name());
-                ps.setLong(12, r.getPickeat().getId());
+                ps.setLong(11, r.getPickeat().getId());
 
+                ps.setTimestamp(12, now);
                 ps.setTimestamp(13, now);
-                ps.setTimestamp(14, now);
-                ps.setBoolean(15, false);
+                ps.setBoolean(14, false);
             }
 
             @Override

@@ -45,7 +45,6 @@ public class RestaurantService {
                         request.tags(),
                         request.pictureKey(),
                         request.pictureUrl(),
-                        request.type(),
                         pickeat))
                 .toList();
         restaurantBulkRepository.batchInsert(restaurants);
@@ -82,7 +81,7 @@ public class RestaurantService {
         Participant participant = getParticipant(participantId);
         Restaurant restaurant = getRestaurantById(restaurantId);
         validateParticipantAccessToRestaurants(List.of(restaurant), participant);
-        restaurantLikeRepository.save(new RestaurantLike(participant, restaurant));
+        restaurantLikeRepository.save(new RestaurantLike(participantId, restaurantId));
         restaurant.like();
     }
 

@@ -1,7 +1,6 @@
 package com.pickeat.backend.restaurant.application.dto.response;
 
 import com.pickeat.backend.restaurant.domain.Restaurant;
-import com.pickeat.backend.restaurant.domain.RestaurantType;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.List;
@@ -38,9 +37,6 @@ public record RestaurantResponse(
         @Schema(description = "사진 url들")
         List<String> pictureUrls,
 
-        @Schema(description = "식당 타입", example = "WISH / LOCATION")
-        RestaurantType type,
-
         @Schema(description = "현재 참여자의 좋아요 여부", example = "true")
         boolean isLiked
 ) {
@@ -57,7 +53,6 @@ public record RestaurantResponse(
                 restaurant.getLikeCount(),
                 restaurant.getIsExcluded(),
                 parsePictureUrls(restaurant.getPictureUrls()),
-                restaurant.getType(),
                 isLiked);
     }
 
