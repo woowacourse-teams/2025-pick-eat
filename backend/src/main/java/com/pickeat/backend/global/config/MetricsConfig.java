@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 
 @Configuration
 @Slf4j
-@Profile("!test")
+@Profile({"local", "dev", "prod", "stress"})
 public class MetricsConfig {
 
     @Bean
