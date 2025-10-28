@@ -66,7 +66,6 @@ public class RestaurantService {
     @Transactional
     public void exclude(RestaurantExcludeRequest request, Long participantId) {
         //TODO: 입력된 식당 개수만큼 UPDATE 쿼리가 발생 -> BULK나 배치사이즈를 활용한 최적화 필요  (2025-07-18, 금, 16:35)
-        //TODO: (필요하다면) 누가 소거한 식당인지 저장하는 중간 테이블 구현 필요
         Participant participant = getParticipant(participantId);
 
         List<Restaurant> restaurants = restaurantRepository.findAllById(request.restaurantIds());

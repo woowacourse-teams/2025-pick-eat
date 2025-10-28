@@ -1,6 +1,6 @@
 package com.pickeat.backend.user.application;
 
-import com.pickeat.backend.global.auth.ProviderInfo;
+import com.pickeat.backend.global.auth.principal.ProviderPrincipal;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
@@ -27,14 +27,13 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponse createUser(SignupRequest request, ProviderInfo providerInfo) {
+    public UserResponse createUser(SignupRequest request, ProviderPrincipal providerPrincipal) {
         validateDuplicateNickname(request.nickname());
-        User user = new User(request.nickname(), providerInfo.providerId(), providerInfo.provider());
+        User user = new User(request.nickname(), providerPrincipal.providerId(), providerPrincipal.provider());
         userRepository.save(user);
         return UserResponse.from(user);
     }
 
-    //TODO: 이미 방에 참여중인지 구분이 필요할지.. (2025-08-5, 화, 17:44)
     public UserResponse findByNickName(String nickname) {
         User user = userRepository.findByNickname(nickname)
                 .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
