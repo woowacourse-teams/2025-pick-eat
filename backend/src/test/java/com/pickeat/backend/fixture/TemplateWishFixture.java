@@ -3,12 +3,11 @@ package com.pickeat.backend.fixture;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Picture;
 import com.pickeat.backend.restaurant.domain.RestaurantInfo;
-import com.pickeat.backend.template.domain.Template;
 import com.pickeat.backend.template.domain.TemplateWish;
 
 public class TemplateWishFixture {
 
-    public static TemplateWish create(Template template) {
+    public static TemplateWish create(Long templateId) {
         RestaurantInfo restaurantInfo = new RestaurantInfo(
                 "식당",
                 FoodCategory.KOREAN,
@@ -20,7 +19,7 @@ public class TemplateWishFixture {
         );
         return new TemplateWish(
                 restaurantInfo,
-                template
+                templateId
         );
     }
 }

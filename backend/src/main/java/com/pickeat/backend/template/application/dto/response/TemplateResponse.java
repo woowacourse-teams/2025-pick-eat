@@ -9,16 +9,13 @@ public record TemplateResponse(
         @Schema(description = "템플릿 ID", example = "1")
         long id,
         @Schema(description = "템플릿 이름", example = "잠실역 맛집")
-        String name,
-        @Schema(description = "위시의 개수", example = "3")
-        int wishCount
+        String name
 ) {
 
     public static TemplateResponse from(Template template) {
         return new TemplateResponse(
                 template.getId(),
-                template.getName(),
-                template.getWishes().size()
+                template.getName()
         );
     }
 

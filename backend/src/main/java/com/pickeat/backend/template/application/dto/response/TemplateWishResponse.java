@@ -27,18 +27,18 @@ public record TemplateWishResponse(
         long templateId
 ) {
 
-    public static TemplateWishResponse from(TemplateWish wish) {
-        RestaurantInfo restaurantInfo = wish.getRestaurantInfo();
+    public static TemplateWishResponse from(TemplateWish templateWish) {
+        RestaurantInfo restaurantInfo = templateWish.getRestaurantInfo();
         Picture picture = restaurantInfo.getPicture();
         return new TemplateWishResponse(
-                wish.getId(),
+                templateWish.getId(),
                 restaurantInfo.getName(),
                 restaurantInfo.getFoodCategory().getName(),
                 picture == null ? null : picture.getPictureUrl(),
                 restaurantInfo.getRoadAddressName(),
                 parseTags(restaurantInfo.getTags()),
                 restaurantInfo.getPlaceUrl(),
-                wish.getTemplate().getId()
+                templateWish.getTemplateId()
         );
     }
 
