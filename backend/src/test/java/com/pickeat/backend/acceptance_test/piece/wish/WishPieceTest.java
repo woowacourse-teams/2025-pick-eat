@@ -1,8 +1,7 @@
 package com.pickeat.backend.acceptance_test.piece.wish;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import com.pickeat.backend.wish.application.dto.request.WishRequest;
+import com.pickeat.backend.wish.application.dto.request.WishUpdateRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
@@ -12,31 +11,54 @@ import org.springframework.http.HttpStatus;
 
 public class WishPieceTest {
 
-    public static WishResponse 위시_생성(Long wishListId, WishRequest request, String accessToken) {
+    public static WishResponse 위시_생성(Long roomId, WishRequest request, String accessToken) {
         return RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .contentType(ContentType.JSON)
                 .body(request)
                 .when()
-                .post("/api/v1/wishLists/{wishListId}/wishes", wishListId)
+                .post("/api/v2/rooms/{roomId}/wishes", roomId)
                 .then().log().all()
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(WishResponse.class);
     }
 
-    public static List<WishResponse> 위시리스트에_담긴_위시_조회(Long wishListId, String accessToken) {
+    public static void 위시_삭제(Long wishId, String accessToken) {
+        RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .delete("/api/v2/wishes/{wishId}", wishId)
+                .then().log().all()
+                .statusCode(HttpStatus.NO_CONTENT.value());
+    }
+
+    public static WishResponse 위시_수정(Long wishId, WishUpdateRequest request, String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .contentType(ContentType.JSON)
+                .body(request)
+                .when()
+                .put("/api/v2/wishes/{wishId}", wishId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(WishResponse.class);
+    }
+
+    public static List<WishResponse> 위시_목록_조회(Long roomId, String accessToken) {
         return RestAssured
                 .given().log().all()
                 .header("Authorization", "Bearer " + accessToken)
                 .when()
-                .get("/api/v1/wishLists/{wishListId}/wishes", wishListId)
+                .get("/api/v2/rooms/{roomId}/wishes", roomId)
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .body("$", notNullValue())
                 .extract()
-                .as(new TypeRef<>() {
+                .as(new TypeRef<List<WishResponse>>() {
                 });
     }
 }

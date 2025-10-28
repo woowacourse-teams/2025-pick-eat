@@ -20,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@Deprecated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/rooms")
+@RequestMapping("/api/v2/rooms")
 public class RoomController implements RoomApiSpec {
 
     private final RoomService roomService;
@@ -59,9 +58,10 @@ public class RoomController implements RoomApiSpec {
     @Override
     @BusinessLogging("방 초대")
     @PostMapping("/{roomId}/invite")
-    public ResponseEntity<Void> invite(@PathVariable("roomId") Long roomId,
-                                       @LoginUserId Long userId,
-                                       @Valid @RequestBody RoomInvitationRequest request
+    public ResponseEntity<Void> invite(
+            @PathVariable("roomId") Long roomId,
+            @LoginUserId Long userId,
+            @Valid @RequestBody RoomInvitationRequest request
     ) {
         roomService.inviteUsers(roomId, userId, request);
 

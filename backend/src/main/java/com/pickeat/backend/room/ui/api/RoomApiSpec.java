@@ -65,6 +65,26 @@ public interface RoomApiSpec {
                                             """
                             )
                     )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "UNAUTHORIZED",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "UNAUTHORIZED",
+                                                "status": 401,
+                                                "detail": "인증 정보가 유효하지 않습니다.",
+                                                "instance": "/api/v1/rooms"
+                                            }
+                                            """
+                            )
+                    )
             )
     })
     ResponseEntity<RoomResponse> create(
@@ -83,6 +103,26 @@ public interface RoomApiSpec {
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = RoomResponse.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "UNAUTHORIZED",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "UNAUTHORIZED",
+                                                "status": 401,
+                                                "detail": "인증 정보가 유효하지 않습니다.",
+                                                "instance": "/api/v1/rooms/1"
+                                            }
+                                            """
+                            )
                     )
             ),
             @ApiResponse(
@@ -125,6 +165,26 @@ public interface RoomApiSpec {
                             mediaType = "application/json",
                             schema = @Schema(implementation = RoomResponse[].class)
                     )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "UNAUTHORIZED",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "UNAUTHORIZED",
+                                                "status": 401,
+                                                "detail": "인증 정보가 유효하지 않습니다.",
+                                                "instance": "/api/v1/rooms"
+                                            }
+                                            """
+                            )
+                    )
             )
     })
     ResponseEntity<List<RoomResponse>> getAll(@Parameter(hidden = true) Long userId);
@@ -143,6 +203,49 @@ public interface RoomApiSpec {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "사용자 초대 성공"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청 데이터 (초대된 사용자 정보 누락 등)",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "검증 실패",
+                                    value = """
+                                            {
+                                              "type": "about:blank",
+                                              "title": "VALIDATION_FAILED",
+                                              "status": 400,
+                                              "detail": "입력 데이터 검증에 실패했습니다.",
+                                              "instance": "/api/v1/rooms/1/invite",
+                                              "fieldErrors": {
+                                                "userIds": "초대할 사용자 ID 목록은 비어 있을 수 없습니다."
+                                              }
+                                            }
+                                            """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "UNAUTHORIZED",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "UNAUTHORIZED",
+                                                "status": 401,
+                                                "detail": "인증 정보가 유효하지 않습니다.",
+                                                "instance": "/api/v1/rooms/1/invite"
+                                            }
+                                            """
+                            )
+                    )
+            ),
             @ApiResponse(
                     responseCode = "404",
                     description = "존재하지 않는 방 또는 존재하지 않는 사용자",
@@ -176,29 +279,6 @@ public interface RoomApiSpec {
                                     )
                             }
                     )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "잘못된 요청 데이터 (초대된 사용자 정보 누락 등)",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ProblemDetail.class),
-                            examples = @ExampleObject(
-                                    name = "검증 실패",
-                                    value = """
-                                            {
-                                              "type": "about:blank",
-                                              "title": "VALIDATION_FAILED",
-                                              "status": 400,
-                                              "detail": "입력 데이터 검증에 실패했습니다.",
-                                              "instance": "/api/v1/rooms/1/invite",
-                                              "fieldErrors": {
-                                                "userIds": "초대할 사용자 ID 목록은 비어 있을 수 없습니다."
-                                              }
-                                            }
-                                            """
-                            )
-                    )
             )
     })
     ResponseEntity<Void> invite(
@@ -210,13 +290,74 @@ public interface RoomApiSpec {
 
     @Operation(
             summary = "방 나가기",
-            description = "로그인한 사용자가 지정한 방에서 탈퇴합니다.")
+            description = "로그인한 사용자가 지정한 방에서 탈퇴합니다.",
+            security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
+    )
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "204",
                     description = "방 나가기 성공 (본문 없음)"
             ),
-            @ApiResponse(responseCode = "400", description = "잘못된 요청"),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "잘못된 요청",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "방장인 경우",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "BAD_REQUEST",
+                                                "status": 400,
+                                                "detail": "방장은 방을 나갈 수 없습니다.",
+                                                "instance": "/api/v1/rooms/1/exit"
+                                            }
+                                            """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "인증되지 않은 사용자",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "UNAUTHORIZED",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "UNAUTHORIZED",
+                                                "status": 401,
+                                                "detail": "인증 정보가 유효하지 않습니다.",
+                                                "instance": "/api/v1/rooms/1/exit"
+                                            }
+                                            """
+                            )
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "존재하지 않는 방",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProblemDetail.class),
+                            examples = @ExampleObject(
+                                    name = "방 없음",
+                                    value = """
+                                            {
+                                                "type": "about:blank",
+                                                "title": "ROOM_NOT_FOUND",
+                                                "status": 404,
+                                                "detail": "방을 찾을 수 없습니다.",
+                                                "instance": "/api/v1/rooms/1/exit"
+                                            }
+                                            """
+                            )
+                    )
+            )
     })
     ResponseEntity<Void> exit(
             @Parameter(description = "방 ID")

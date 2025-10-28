@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
-import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.room.application.dto.request.RoomInvitationRequest;
@@ -16,7 +15,6 @@ import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import com.pickeat.backend.user.domain.User;
-import com.pickeat.backend.wish.domain.WishList;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -65,14 +63,13 @@ class RoomServiceTest {
     }
 
     @Nested
-    class 방_조회_케이스 {
+    class 방_단일_조회_케이스 {
 
         @Test
         void 방_단일_조회_성공() {
             // given
             User user = testEntityManager.persist(UserFixture.create());
             Room room = createRoom(user);
-            WishList wishList = testEntityManager.persist(WishListFixture.createPrivate(room.getId()));
             testEntityManager.flush();
             testEntityManager.clear();
 
@@ -83,7 +80,7 @@ class RoomServiceTest {
             assertAll(
                     () -> assertThat(response.id()).isEqualTo(room.getId()),
                     () -> assertThat(response.name()).isEqualTo(room.getName()),
-                    () -> assertThat(response.wishlistId()).isEqualTo(wishList.getId())
+                    () -> assertThat(response.userCount()).isEqualTo(1)
             );
         }
 
@@ -102,36 +99,24 @@ class RoomServiceTest {
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.ROOM_ACCESS_DENIED.getMessage());
         }
+    }
 
-        @Test
-        void 위시리스트가_없는_방_조회시_예외() {
-            // given
-            User user = testEntityManager.persist(UserFixture.create());
-            Room room = createRoom(user);
-
-            testEntityManager.flush();
-            testEntityManager.clear();
-
-            // when && then
-            assertThatThrownBy(() -> roomService.getRoom(room.getId(), user.getId()))
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.WISH_LIST_NOT_FOUND.getMessage());
-        }
+    @Nested
+    class 유저가_속한_방_조회_케이스 {
 
         @Test
         void 유저가_속한_방_조회() {
             // given
             User user = testEntityManager.persist(UserFixture.create());
-            User otherUser = testEntityManager.persist(UserFixture.create());
             Room room1 = createRoom(user);
             Room room2 = createRoom(user);
+
+            User otherUser = testEntityManager.persist(UserFixture.create());
             Room room3 = createRoom(otherUser);
-            WishList wishList1 = testEntityManager.persist(WishListFixture.createPrivate(room1.getId()));
-            WishList wishList2 = testEntityManager.persist(WishListFixture.createPrivate(room2.getId()));
-            WishList wishList3 = testEntityManager.persist(WishListFixture.createPrivate(room3.getId()));
 
             testEntityManager.flush();
             testEntityManager.clear();
+
             // when
             List<RoomResponse> response = roomService.getAllRoom(user.getId());
 
@@ -149,10 +134,9 @@ class RoomServiceTest {
             User user = testEntityManager.persist(UserFixture.create());
             User invitedUser1 = testEntityManager.persist(UserFixture.create());
             User invitedUser2 = testEntityManager.persist(UserFixture.create());
-            User invitedUser3 = testEntityManager.persist(UserFixture.create());
 
             Room room = createRoom(user);
-            List<Long> userIdsForInvitation = List.of(invitedUser1.getId(), invitedUser2.getId(), invitedUser3.getId());
+            List<Long> userIdsForInvitation = List.of(invitedUser1.getId(), invitedUser2.getId());
             RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
 
             testEntityManager.flush();
@@ -163,7 +147,7 @@ class RoomServiceTest {
 
             // then
             List<RoomUser> roomUsers = roomUserRepository.findAllByRoomId(room.getId());
-            assertThat(roomUsers).hasSize(4);
+            assertThat(roomUsers).hasSize(3);
         }
 
         @Test
@@ -174,8 +158,6 @@ class RoomServiceTest {
             User invitedUser2 = testEntityManager.persist(UserFixture.create());
 
             Room room = createRoom(user);
-
-            // invitedUser1의 id가 2번 들어감
             List<Long> userIdsForInvitation = List.of(invitedUser1.getId(), invitedUser1.getId(), invitedUser2.getId());
             RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
 
@@ -197,16 +179,15 @@ class RoomServiceTest {
             User invitedUser = testEntityManager.persist(UserFixture.create());
 
             Room room = createRoom(user);
-
             List<Long> userIdsForInvitation = List.of(invitedUser.getId());
             RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
+
+            roomService.inviteUsers(room.getId(), user.getId(), request);
 
             testEntityManager.flush();
             testEntityManager.clear();
 
             // when
-            // 2번 초대
-            roomService.inviteUsers(room.getId(), user.getId(), request);
             roomService.inviteUsers(room.getId(), user.getId(), request);
 
             // then
@@ -218,10 +199,11 @@ class RoomServiceTest {
         void 속하지_않은_방에_초대시_예외() {
             // given
             User user = testEntityManager.persist(UserFixture.create());
-            User otherUser = testEntityManager.persist(UserFixture.create());
             User invitedUser = testEntityManager.persist(UserFixture.create());
 
+            User otherUser = testEntityManager.persist(UserFixture.create());
             Room room = createRoom(otherUser);
+
             List<Long> userIdsForInvitation = List.of(invitedUser.getId());
             RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
 
@@ -246,7 +228,6 @@ class RoomServiceTest {
             User exitUser = testEntityManager.persist(UserFixture.create());
 
             Room room = createRoom(user);
-
             List<Long> userIdsForInvitation = List.of(exitUser.getId());
             RoomInvitationRequest request = new RoomInvitationRequest(userIdsForInvitation);
             roomService.inviteUsers(room.getId(), user.getId(), request);

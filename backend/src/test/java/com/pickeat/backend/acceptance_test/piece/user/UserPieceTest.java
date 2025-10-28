@@ -1,26 +1,47 @@
 package com.pickeat.backend.acceptance_test.piece.user;
 
-import static org.hamcrest.Matchers.notNullValue;
-
 import com.pickeat.backend.user.application.dto.UserResponse;
 import io.restassured.RestAssured;
-import java.util.Arrays;
+import io.restassured.common.mapper.TypeRef;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 
 public class UserPieceTest {
 
+    public static UserResponse 내_정보_조회(String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .get("/api/v2/users")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(UserResponse.class);
+    }
+
+    public static List<UserResponse> 방_유저_목록_조회(Long roomId) {
+        return RestAssured
+                .given().log().all()
+                .when()
+                .get("/api/v2/rooms/{roomId}/users", roomId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(new TypeRef<List<UserResponse>>() {
+                });
+    }
+
     public static List<UserResponse> 유저_검색(String nickname) {
-        UserResponse[] response = RestAssured
+        return RestAssured
                 .given().log().all()
                 .queryParam("nickname", nickname)
                 .when()
-                .get("/api/v1/users/search")
+                .get("/api/v2/users/search")
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .body("$", notNullValue())
                 .extract()
-                .as(UserResponse[].class);
-        return Arrays.asList(response);
+                .as(new TypeRef<List<UserResponse>>() {
+                });
     }
 }

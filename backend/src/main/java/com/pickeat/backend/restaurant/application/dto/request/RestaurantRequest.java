@@ -1,7 +1,10 @@
 package com.pickeat.backend.restaurant.application.dto.request;
 
 import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.restaurant.domain.Picture;
+import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
+import com.pickeat.backend.template.domain.TemplateWish;
 import com.pickeat.backend.wish.domain.Wish;
 
 public record RestaurantRequest(
@@ -16,17 +19,35 @@ public record RestaurantRequest(
         RestaurantType type
 ) {
 
-    public static RestaurantRequest fromWish(Wish wish, String pictureKey, String pictureUrl) {
+    public static RestaurantRequest fromWish(Wish wish) {
+        RestaurantInfo restaurantInfo = wish.getRestaurantInfo();
+        Picture picture = restaurantInfo.getPicture();
         return new RestaurantRequest(
-                wish.getName(),
-                wish.getFoodCategory(),
-                null,
-                wish.getRoadAddressName(),
-                wish.getPlaceUrl(),
-                wish.getTags(),
-                pictureKey,
-                pictureUrl,
+                restaurantInfo.getName(),
+                restaurantInfo.getFoodCategory(),
+                restaurantInfo.getDistance(),
+                restaurantInfo.getRoadAddressName(),
+                restaurantInfo.getPlaceUrl(),
+                restaurantInfo.getTags(),
+                picture == null ? null : picture.getPictureKey(),
+                picture == null ? null : picture.getPictureUrl(),
                 RestaurantType.WISH
+        );
+    }
+
+    public static RestaurantRequest fromTemplateWish(TemplateWish templateWish) {
+        RestaurantInfo restaurantInfo = templateWish.getRestaurantInfo();
+        Picture picture = restaurantInfo.getPicture();
+        return new RestaurantRequest(
+                restaurantInfo.getName(),
+                restaurantInfo.getFoodCategory(),
+                restaurantInfo.getDistance(),
+                restaurantInfo.getRoadAddressName(),
+                restaurantInfo.getPlaceUrl(),
+                restaurantInfo.getTags(),
+                picture == null ? null : picture.getPictureKey(),
+                picture == null ? null : picture.getPictureUrl(),
+                RestaurantType.TEMPLATE_WISH
         );
     }
 

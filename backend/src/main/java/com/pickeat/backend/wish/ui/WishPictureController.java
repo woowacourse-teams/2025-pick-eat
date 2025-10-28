@@ -5,7 +5,6 @@ import com.pickeat.backend.global.log.BusinessLogging;
 import com.pickeat.backend.wish.application.WishPictureService;
 import com.pickeat.backend.wish.application.dto.response.WishPictureResponse;
 import com.pickeat.backend.wish.ui.api.WishPictureApiSpec;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@Deprecated
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v2")
 @RequiredArgsConstructor
 public class WishPictureController implements WishPictureApiSpec {
 
@@ -29,14 +27,14 @@ public class WishPictureController implements WishPictureApiSpec {
     @Override
     @BusinessLogging("위시 사진 생성")
     @PostMapping(value = "/wish/{wishId}/wishpictures", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<WishPictureResponse>> createWishPictures(
+    public ResponseEntity<WishPictureResponse> createWishPictures(
             @PathVariable("wishId") Long wishId,
-            @RequestPart("wishPictures") List<MultipartFile> wishPictures,
+            @RequestPart("wishPictures") MultipartFile wishPicture,
             @LoginUserId Long userId
     ) {
-        List<WishPictureResponse> wishPictureResponses =
-                wishPictureService.createWishPicture(wishId, userId, wishPictures);
-        return ResponseEntity.status(HttpStatus.CREATED).body(wishPictureResponses);
+        WishPictureResponse wishPictureResponse =
+                wishPictureService.createWishPicture(wishId, userId, wishPicture);
+        return ResponseEntity.status(HttpStatus.CREATED).body(wishPictureResponse);
     }
 
     @Override

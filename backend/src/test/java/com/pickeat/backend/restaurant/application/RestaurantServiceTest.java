@@ -18,6 +18,7 @@ import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.RestaurantType;
+import com.pickeat.backend.restaurant.domain.repository.RestaurantBulkRepository;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -28,7 +29,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 
 @DataJpaTest
-@Import(value = {RestaurantService.class})
+@Import(value = {RestaurantService.class, RestaurantBulkRepository.class})
 class RestaurantServiceTest {
 
     @Autowired
@@ -53,12 +54,12 @@ class RestaurantServiceTest {
             restaurantService.create(restaurantRequests, pickeat.getCode().toString());
 
             // then
-            assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false)).hasSize(2);
+            assertThat(restaurantRepository.findAll()).hasSize(2);
         }
 
         private RestaurantRequest createRestaurantRequest() {
-            return new RestaurantRequest("테스트이름", FoodCategory.CHINESE, 300, "테스트도로명주소",
-                    "테스트url", "테스트태그", null, null, RestaurantType.LOCATION);
+            return new RestaurantRequest("테스트이름", FoodCategory.CHINESE, 300, "테스트도로명주소", "테스트url", "테스트태그", null, null,
+                    RestaurantType.LOCATION);
         }
     }
 

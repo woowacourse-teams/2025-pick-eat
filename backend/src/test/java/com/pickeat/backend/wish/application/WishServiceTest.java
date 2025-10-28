@@ -7,10 +7,10 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.pickeat.backend.fixture.RoomFixture;
 import com.pickeat.backend.fixture.UserFixture;
 import com.pickeat.backend.fixture.WishFixture;
-import com.pickeat.backend.fixture.WishListFixture;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
+import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import com.pickeat.backend.room.domain.Room;
 import com.pickeat.backend.room.domain.RoomUser;
 import com.pickeat.backend.user.domain.User;
@@ -18,7 +18,6 @@ import com.pickeat.backend.wish.application.dto.request.WishRequest;
 import com.pickeat.backend.wish.application.dto.request.WishUpdateRequest;
 import com.pickeat.backend.wish.application.dto.response.WishResponse;
 import com.pickeat.backend.wish.domain.Wish;
-import com.pickeat.backend.wish.domain.WishList;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
 import java.util.Comparator;
 import java.util.List;
@@ -42,7 +41,6 @@ class WishServiceTest {
     @Autowired
     private WishService wishService;
 
-
     @Nested
     class 위시_생성_케이스 {
 
@@ -51,17 +49,21 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
+            entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"),
-                    "https://place.map.kakao.com/505348601");
+            WishRequest wishRequest = new WishRequest(
+                    "위시1",
+                    "일식",
+                    "도로명주소1",
+                    List.of("태그1", "태그2"),
+                    "https://place.map.kakao.com/505348601"
+            );
 
             entityManager.flush();
             entityManager.clear();
 
             // when
-            WishResponse response = wishService.createWish(wishList.getId(), wishRequest, user.getId());
+            WishResponse response = wishService.createWish(room.getId(), wishRequest, user.getId());
 
             // then
             assertThat(entityManager.find(Wish.class, response.id())).isNotNull();
@@ -72,11 +74,15 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
+            entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            WishRequest wishRequest = new WishRequest("위시1", "일식", "도로명주소1", List.of("태그1", "태그2"),
-                    "https://place.map.kakao.com/505348601");
+            WishRequest wishRequest = new WishRequest(
+                    "위시1",
+                    "일식",
+                    "도로명주소1",
+                    List.of("태그1", "태그2"),
+                    "https://place.map.kakao.com/505348601"
+            );
 
             User otherUser = entityManager.persist(UserFixture.create());
 
@@ -84,7 +90,7 @@ class WishServiceTest {
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> wishService.createWish(wishList.getId(), wishRequest, otherUser.getId()))
+            assertThatThrownBy(() -> wishService.createWish(room.getId(), wishRequest, otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
         }
@@ -98,10 +104,9 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
+            entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            Wish wish = entityManager.persist(WishFixture.create(wishList));
+            Wish wish = entityManager.persist(WishFixture.create(room));
 
             entityManager.flush();
             entityManager.clear();
@@ -118,10 +123,9 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
+            entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            Wish wish = entityManager.persist(WishFixture.create(wishList));
+            Wish wish = entityManager.persist(WishFixture.create(room));
 
             User otherUser = entityManager.persist(UserFixture.create());
 
@@ -143,9 +147,8 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            Wish wish = entityManager.persist(WishFixture.create(wishList));
+            entityManager.persist(new RoomUser(room.getId(), user.getId()));
+            Wish wish = entityManager.persist(WishFixture.create(room));
 
             entityManager.flush();
             entityManager.clear();
@@ -154,8 +157,8 @@ class WishServiceTest {
                     "업데이트 위시",
                     "한식",
                     "업데이트 주소",
-                    List.of("업데이트 태그1", "업데이트 태그2")
-                    , "https://place.map.kakao.com/505348601"
+                    List.of("업데이트 태그1", "업데이트 태그2"),
+                    "업데이트 URL"
             );
 
             // when
@@ -163,12 +166,13 @@ class WishServiceTest {
 
             // then
             Wish updatedWish = entityManager.find(Wish.class, response.id());
+            RestaurantInfo updatedRestaurantInfo = updatedWish.getRestaurantInfo();
             assertAll(
-                    () -> assertThat(updatedWish.getName()).isEqualTo("업데이트 위시"),
-                    () -> assertThat(updatedWish.getFoodCategory()).isEqualTo(FoodCategory.KOREAN),
-                    () -> assertThat(updatedWish.getRoadAddressName()).isEqualTo("업데이트 주소"),
-                    () -> assertThat(updatedWish.getTags()).isEqualTo("업데이트 태그1,업데이트 태그2"),
-                    () -> assertThat(updatedWish.getPlaceUrl()).isEqualTo("https://place.map.kakao.com/505348601")
+                    () -> assertThat(updatedRestaurantInfo.getName()).isEqualTo("업데이트 위시"),
+                    () -> assertThat(updatedRestaurantInfo.getFoodCategory()).isEqualTo(FoodCategory.KOREAN),
+                    () -> assertThat(updatedRestaurantInfo.getRoadAddressName()).isEqualTo("업데이트 주소"),
+                    () -> assertThat(updatedRestaurantInfo.getTags()).isEqualTo("업데이트 태그1,업데이트 태그2"),
+                    () -> assertThat(updatedRestaurantInfo.getPlaceUrl()).isEqualTo("업데이트 URL")
             );
         }
 
@@ -177,9 +181,8 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            Wish wish = entityManager.persist(WishFixture.create(wishList));
+            entityManager.persist(new RoomUser(room.getId(), user.getId()));
+            Wish wish = entityManager.persist(WishFixture.create(room));
 
             User otherUser = entityManager.persist(UserFixture.create());
 
@@ -209,19 +212,18 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
+            entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             List<Wish> wishes = List.of(
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)));
+                    entityManager.persist(WishFixture.create(room)),
+                    entityManager.persist(WishFixture.create(room)),
+                    entityManager.persist(WishFixture.create(room)));
 
             entityManager.flush();
             entityManager.clear();
 
             // when
-            List<WishResponse> response = wishService.getWishes(wishList.getId(), user.getId());
+            List<WishResponse> response = wishService.getWishes(room.getId(), user.getId());
 
             // then
             List<Long> actualWishIds = wishes.stream().map(Wish::getId).toList();
@@ -235,19 +237,18 @@ class WishServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room room = entityManager.persist(RoomFixture.create());
-            RoomUser roomUser = entityManager.persist(new RoomUser(room.getId(), user.getId()));
+            entityManager.persist(new RoomUser(room.getId(), user.getId()));
 
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             List<Wish> wishes = List.of(
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)));
+                    entityManager.persist(WishFixture.create(room)),
+                    entityManager.persist(WishFixture.create(room)),
+                    entityManager.persist(WishFixture.create(room)));
 
             entityManager.flush();
             entityManager.clear();
 
             // when
-            List<WishResponse> response = wishService.getWishes(wishList.getId(), user.getId());
+            List<WishResponse> response = wishService.getWishes(room.getId(), user.getId());
 
             // then
             List<Long> sortedWishIds = wishes.stream()
@@ -262,11 +263,10 @@ class WishServiceTest {
         void 방에_참가한_회원이_아닌_경우_예외_발생() {
             // given
             Room room = entityManager.persist(RoomFixture.create());
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
             List<Wish> wishes = List.of(
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)));
+                    entityManager.persist(WishFixture.create(room)),
+                    entityManager.persist(WishFixture.create(room)),
+                    entityManager.persist(WishFixture.create(room)));
 
             User otherUser = entityManager.persist(UserFixture.create());
 
@@ -274,109 +274,9 @@ class WishServiceTest {
             entityManager.clear();
 
             // when & then
-            assertThatThrownBy(() -> wishService.getWishes(wishList.getId(), otherUser.getId()))
+            assertThatThrownBy(() -> wishService.getWishes(room.getId(), otherUser.getId()))
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.WISH_ACCESS_DENIED.getMessage());
-        }
-
-        @Test
-        void 공용_위시는_검증없이_조회() {
-            // given
-            User user = entityManager.persist(UserFixture.create());
-            Room room = entityManager.persist(RoomFixture.create());
-            WishList publicWishList = entityManager.persist(WishListFixture.createPublic(room.getId()));
-            List<Wish> wishes = List.of(
-                    entityManager.persist(WishFixture.create(publicWishList)),
-                    entityManager.persist(WishFixture.create(publicWishList)),
-                    entityManager.persist(WishFixture.create(publicWishList)));
-
-            entityManager.flush();
-            entityManager.clear();
-
-            // when
-            List<WishResponse> response = wishService.getWishes(publicWishList.getId(), user.getId());
-
-            // then
-            List<Long> actualWishIds = wishes.stream().map(Wish::getId).toList();
-            assertThat(response)
-                    .extracting(WishResponse::id)
-                    .containsExactlyInAnyOrderElementsOf(actualWishIds);
-        }
-    }
-
-    @Nested
-    class 공용_위시리스트의_위시_조회_케이스 {
-
-        @Test
-        void 위시리스트의_위시_조회_성공() {
-            // given
-            Room room = entityManager.persist(RoomFixture.create());
-            WishList wishList = entityManager.persist(WishListFixture.createPublic(room.getId()));
-            List<Wish> wishes = List.of(
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)));
-
-            entityManager.flush();
-            entityManager.clear();
-
-            // when
-            List<WishResponse> responses = wishService.getWishesFromTemplates(wishList.getId());
-
-            // then
-            List<Long> wishIds = wishes.stream().map(Wish::getId).toList();
-            assertThat(responses)
-                    .extracting(WishResponse::id)
-                    .containsExactlyInAnyOrderElementsOf(wishIds);
-        }
-
-        @Test
-        void 조회되는_위시는_기본적으로_생성순으로_정렬() {
-            // given
-            Room room = entityManager.persist(RoomFixture.create());
-            WishList wishList = entityManager.persist(WishListFixture.createPublic(room.getId()));
-            List<Wish> wishes = List.of(
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)),
-                    entityManager.persist(WishFixture.create(wishList)));
-
-            entityManager.flush();
-            entityManager.clear();
-
-            // when
-            List<WishResponse> responses = wishService.getWishesFromTemplates(wishList.getId());
-
-            // then
-            List<Long> sortedWishIds = wishes.stream()
-                    .sorted(Comparator.comparing(Wish::getCreatedAt).reversed())
-                    .map(Wish::getId).toList();
-            assertThat(responses)
-                    .extracting(WishResponse::id)
-                    .containsExactlyInAnyOrderElementsOf(sortedWishIds);
-        }
-
-        @Test
-        void 위시리스트가_존재하지_않는_경우_예외_발생() {
-            // when & then
-            assertThatThrownBy(() -> wishService.getWishesFromTemplates(1L))
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.WISH_LIST_NOT_FOUND.getMessage());
-        }
-
-        @Test
-        void 공용_위시리스트가_아닌_경우_예외_발생() {
-            // given
-            Room room = entityManager.persist(RoomFixture.create());
-            WishList wishList = entityManager.persist(WishListFixture.createPrivate(room.getId()));
-            List<Wish> wishes = List.of(entityManager.persist(WishFixture.create(wishList)));
-
-            entityManager.flush();
-            entityManager.clear();
-
-            // when & then
-            assertThatThrownBy(() -> wishService.getWishesFromTemplates(wishList.getId()))
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.NOT_PUBLIC_WISH_LIST.getMessage());
         }
     }
 }

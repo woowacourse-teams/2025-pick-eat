@@ -5,6 +5,7 @@ import com.pickeat.backend.restaurant.application.RestaurantSearchFacade;
 import com.pickeat.backend.restaurant.application.RestaurantService;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
+import com.pickeat.backend.restaurant.application.dto.request.TemplateRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
 import com.pickeat.backend.restaurant.ui.api.RestaurantApiSpec;
@@ -22,9 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Deprecated
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v2")
 @RequiredArgsConstructor
 public class RestaurantController implements RestaurantApiSpec {
 
@@ -37,7 +37,6 @@ public class RestaurantController implements RestaurantApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody LocationRestaurantRequest request) {
         restaurantSearchFacade.searchByLocation(request, pickeatCode);
-
         URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
         return ResponseEntity.created(location).build();
     }
@@ -48,7 +47,16 @@ public class RestaurantController implements RestaurantApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @Valid @RequestBody WishRestaurantRequest request) {
         restaurantSearchFacade.searchByWish(request, pickeatCode);
+        URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
+        return ResponseEntity.created(location).build();
+    }
 
+    @Override
+    @PostMapping("/pickeats/{pickeatCode}/restaurants/template")
+    public ResponseEntity<Void> createRestaurantsByTemplate(
+            @PathVariable("pickeatCode") String pickeatCode,
+            @Valid @RequestBody TemplateRestaurantRequest request) {
+        restaurantSearchFacade.searchByTemplate(request, pickeatCode);
         URI location = URI.create("/pickeats/" + pickeatCode + "/restaurants");
         return ResponseEntity.created(location).build();
     }

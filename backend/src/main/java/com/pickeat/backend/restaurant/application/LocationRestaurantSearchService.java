@@ -6,10 +6,12 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRe
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class LocationRestaurantSearchService {
 
     private static final int RESTAURANT_SEARCH_SIZE = 10;
