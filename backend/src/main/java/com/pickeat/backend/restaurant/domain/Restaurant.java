@@ -8,8 +8,6 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
@@ -30,10 +28,6 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
-    @Column()
-    @Enumerated(EnumType.STRING)
-    private RestaurantType type;
-
     @ManyToOne
     @JoinColumn(name = "pickeat_id", nullable = false)
     private Pickeat pickeat;
@@ -47,7 +41,6 @@ public class Restaurant extends BaseEntity {
             String tags,
             String pictureKey,
             String pictureUrls,
-            RestaurantType type,
             Pickeat pickeat
     ) {
         Picture picture = new Picture(pictureKey, pictureUrls);
@@ -59,7 +52,6 @@ public class Restaurant extends BaseEntity {
                 placeUrl,
                 tags,
                 picture);
-        this.type = type;
         this.pickeat = pickeat;
     }
 
