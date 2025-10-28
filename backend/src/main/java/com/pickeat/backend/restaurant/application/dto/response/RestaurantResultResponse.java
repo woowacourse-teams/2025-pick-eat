@@ -32,13 +32,10 @@ public record RestaurantResultResponse(
 
         //TODO: 컬렉션 제거  (2025-10-28, 화, 16:28)
         @Schema(description = "사진 url들")
-        List<String> pictureUrls,
-
-        @Schema(description = "동점 여부", example = "true")
-        boolean hasEqualLike
+        List<String> pictureUrls
 ) {
 
-    public static RestaurantResultResponse of(Restaurant restaurant, boolean hasEqualLike) {
+    public static RestaurantResultResponse of(Restaurant restaurant) {
         return new RestaurantResultResponse(
                 restaurant.getId(),
                 restaurant.getName(),
@@ -48,8 +45,7 @@ public record RestaurantResultResponse(
                 restaurant.getPlaceUrl(),
                 restaurant.getRoadAddressName(),
                 restaurant.getLikeCount(),
-                parsePictureUrls(restaurant.getPictureUrls()),
-                hasEqualLike);
+                parsePictureUrls(restaurant.getPictureUrls()));
     }
 
     private static List<String> parseTags(String tags) {
