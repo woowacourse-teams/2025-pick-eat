@@ -20,9 +20,6 @@ public class Pickeat extends BaseEntity {
     private String name;
 
     @Column(nullable = false)
-    private Integer participantCount = 0;
-
-    @Column(nullable = false)
     private Boolean isActive = true;
 
     private Long roomId;
@@ -39,10 +36,6 @@ public class Pickeat extends BaseEntity {
 
     public static Pickeat createWithRoom(String name, Long roomId) {
         return new Pickeat(name, roomId);
-    }
-
-    public void incrementParticipantCount() {
-        this.participantCount++;
     }
 
     public void deactivate() {
