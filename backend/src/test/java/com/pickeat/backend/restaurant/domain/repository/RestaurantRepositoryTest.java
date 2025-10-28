@@ -27,19 +27,19 @@ class RestaurantRepositoryTest {
     void 식당_조회() {
         // given
         Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
-        Restaurant restaurant1 = testEntityManager.persist(RestaurantFixture.create(pickeat));
-        Restaurant restaurant2 = testEntityManager.persist(RestaurantFixture.create(pickeat));
-        Restaurant restaurant3 = testEntityManager.persist(RestaurantFixture.create(pickeat));
+        Restaurant restaurant1 = testEntityManager.persist(RestaurantFixture.create(pickeat.getId()));
+        Restaurant restaurant2 = testEntityManager.persist(RestaurantFixture.create(pickeat.getId()));
+        Restaurant restaurant3 = testEntityManager.persist(RestaurantFixture.create(pickeat.getId()));
 
         restaurant2.exclude();
 
         // when & then
         assertAll(
-                () -> assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, true))
+                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(), true))
                         .hasSize(1),
-                () -> assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, false))
+                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(), false))
                         .hasSize(2),
-                () -> assertThat(restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, null))
+                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(), null))
                         .hasSize(3)
         );
     }
@@ -54,10 +54,10 @@ class RestaurantRepositoryTest {
             Pickeat pickeat2 = testEntityManager.persist(PickeatFixture.createWithoutRoom());
             Pickeat pickeat3 = testEntityManager.persist(PickeatFixture.createWithoutRoom());
 
-            testEntityManager.persist(RestaurantFixture.create(pickeat1, "삭제될 레스토랑1"));
-            testEntityManager.persist(RestaurantFixture.create(pickeat1, "삭제될 레스토랑1-2"));
-            testEntityManager.persist(RestaurantFixture.create(pickeat2, "삭제될 레스토랑2"));
-            testEntityManager.persist(RestaurantFixture.create(pickeat3, "유지될 레스토랑"));
+            testEntityManager.persist(RestaurantFixture.create(pickeat1.getId(), "삭제될 레스토랑1"));
+            testEntityManager.persist(RestaurantFixture.create(pickeat1.getId(), "삭제될 레스토랑1-2"));
+            testEntityManager.persist(RestaurantFixture.create(pickeat2.getId(), "삭제될 레스토랑2"));
+            testEntityManager.persist(RestaurantFixture.create(pickeat3.getId(), "유지될 레스토랑"));
 
             testEntityManager.flush();
             testEntityManager.clear();

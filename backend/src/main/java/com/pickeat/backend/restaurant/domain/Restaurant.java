@@ -2,14 +2,9 @@ package com.pickeat.backend.restaurant.domain;
 
 
 import com.pickeat.backend.global.BaseEntity;
-import com.pickeat.backend.global.exception.BusinessException;
-import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.pickeat.domain.Pickeat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +23,8 @@ public class Restaurant extends BaseEntity {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
-    @ManyToOne
-    @JoinColumn(name = "pickeat_id", nullable = false)
-    private Pickeat pickeat;
+    @Column(nullable = false)
+    private Long pickeatId;
 
     public Restaurant(
             String name,
@@ -41,7 +35,7 @@ public class Restaurant extends BaseEntity {
             String tags,
             String pictureKey,
             String pictureUrls,
-            Pickeat pickeat
+            Long pickeatId
     ) {
         Picture picture = new Picture(pictureKey, pictureUrls);
         this.restaurantInfo = new RestaurantInfo(
@@ -52,28 +46,19 @@ public class Restaurant extends BaseEntity {
                 placeUrl,
                 tags,
                 picture);
-        this.pickeat = pickeat;
+        this.pickeatId = pickeatId;
     }
 
     public void exclude() {
-        validatePickeatState();
         this.isExcluded = true;
     }
 
     public void like() {
-        validatePickeatState();
         this.likeCount++;
     }
 
     public void cancelLike() {
-        validatePickeatState();
         this.likeCount--;
-    }
-
-    private void validatePickeatState() {
-        if (!pickeat.getIsActive()) {
-            throw new BusinessException(ErrorCode.PICKEAT_ALREADY_INACTIVE);
-        }
     }
 
     public String getName() {

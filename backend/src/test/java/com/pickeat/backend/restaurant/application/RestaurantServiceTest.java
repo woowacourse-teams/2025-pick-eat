@@ -71,9 +71,9 @@ class RestaurantServiceTest {
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
 
-            List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
-                    entityManager.persist(RestaurantFixture.create(pickeat)),
-                    entityManager.persist(RestaurantFixture.create(pickeat)));
+            List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat.getId())),
+                    entityManager.persist(RestaurantFixture.create(pickeat.getId())),
+                    entityManager.persist(RestaurantFixture.create(pickeat.getId())));
             List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
 
             entityManager.flush();
@@ -93,8 +93,8 @@ class RestaurantServiceTest {
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
             Pickeat otherPickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
-                    entityManager.persist(RestaurantFixture.create(otherPickeat)));
+            List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat.getId())),
+                    entityManager.persist(RestaurantFixture.create(otherPickeat.getId())));
             List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
 
             entityManager.flush();
@@ -106,27 +106,6 @@ class RestaurantServiceTest {
                     .isInstanceOf(BusinessException.class)
                     .hasMessage(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN.getMessage());
         }
-
-        @Test
-        void 비활성화된_픽잇의_식당을_소거하려고_할_경우_예외() {
-            // given
-            Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
-            Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
-            List<Restaurant> restaurants = List.of(entityManager.persist(RestaurantFixture.create(pickeat)),
-                    entityManager.persist(RestaurantFixture.create(pickeat)));
-            pickeat.deactivate();
-
-            List<Long> restaurantIds = restaurants.stream().map(BaseEntity::getId).toList();
-
-            entityManager.flush();
-            entityManager.clear();
-
-            // when & then
-            assertThatThrownBy(
-                    () -> restaurantService.exclude(new RestaurantExcludeRequest(restaurantIds), participant.getId()))
-                    .isInstanceOf(BusinessException.class)
-                    .hasMessage(ErrorCode.PICKEAT_ALREADY_INACTIVE.getMessage());
-        }
     }
 
     @Nested
@@ -137,7 +116,7 @@ class RestaurantServiceTest {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat.getId()));
             Integer originCount = restaurant.getLikeCount();
 
             entityManager.flush();
@@ -156,7 +135,7 @@ class RestaurantServiceTest {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat.getId()));
             entityManager.flush();
             entityManager.clear();
 
@@ -177,7 +156,7 @@ class RestaurantServiceTest {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
-            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat));
+            Restaurant restaurant = entityManager.persist(RestaurantFixture.create(pickeat.getId()));
 
             entityManager.persist(new RestaurantLike(participant.getId(), restaurant.getId()));
             restaurant.like();
@@ -203,8 +182,8 @@ class RestaurantServiceTest {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
-            Restaurant restaurant1 = entityManager.persist(RestaurantFixture.create(pickeat));
-            Restaurant restaurant2 = entityManager.persist(RestaurantFixture.create(pickeat));
+            Restaurant restaurant1 = entityManager.persist(RestaurantFixture.create(pickeat.getId()));
+            Restaurant restaurant2 = entityManager.persist(RestaurantFixture.create(pickeat.getId()));
 
             entityManager.flush();
             entityManager.clear();
@@ -222,8 +201,8 @@ class RestaurantServiceTest {
             // given
             Pickeat pickeat = entityManager.persist(PickeatFixture.createWithoutRoom());
             Participant participant = entityManager.persist(ParticipantFixture.create(pickeat));
-            Restaurant restaurant1 = entityManager.persist(RestaurantFixture.create(pickeat));
-            Restaurant restaurant2 = entityManager.persist(RestaurantFixture.create(pickeat));
+            Restaurant restaurant1 = entityManager.persist(RestaurantFixture.create(pickeat.getId()));
+            Restaurant restaurant2 = entityManager.persist(RestaurantFixture.create(pickeat.getId()));
 
             entityManager.flush();
             entityManager.clear();

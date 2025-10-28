@@ -1,12 +1,11 @@
 package com.pickeat.backend.fixture;
 
-import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 
 public class RestaurantFixture {
 
-    public static Restaurant create(Pickeat pickeat) {
+    public static Restaurant create(Long pickeatId) {
         return new Restaurant(
                 "식당",
                 FoodCategory.KOREAN,
@@ -16,11 +15,11 @@ public class RestaurantFixture {
                 "태그1,태그2",
                 null,
                 null,
-                pickeat
+                pickeatId
         );
     }
 
-    public static Restaurant create(Pickeat pickeat, String name) {
+    public static Restaurant create(Long pickeatId, String name) {
         return new Restaurant(
                 name,
                 FoodCategory.KOREAN,
@@ -30,7 +29,7 @@ public class RestaurantFixture {
                 "태그1,태그2",
                 null,
                 null,
-                pickeat
+                pickeatId
         );
     }
 }

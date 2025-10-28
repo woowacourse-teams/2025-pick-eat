@@ -21,7 +21,7 @@ class RestaurantsTest {
         void 최고_선호도_식당이_단_한개일_경우_해당_식당_반환() {
             // given
             Pickeat pickeat = PickeatFixture.createWithoutRoom();
-            Restaurant restaurant = RestaurantFixture.create(pickeat);
+            Restaurant restaurant = RestaurantFixture.create(pickeat.getId());
             restaurant.like();
             Restaurants restaurants = new Restaurants(List.of(restaurant));
 
@@ -36,9 +36,9 @@ class RestaurantsTest {
         void 동점인_최고_선호도_식당들_중_하나를_랜덤_선택() {
             // given
             Pickeat pickeat = PickeatFixture.createWithoutRoom();
-            Restaurant restaurant1 = RestaurantFixture.create(pickeat, "백반집");
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat.getId(), "백반집");
             restaurant1.like();
-            Restaurant restaurant2 = RestaurantFixture.create(pickeat, "치킨집");
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat.getId(), "치킨집");
             restaurant2.like();
 
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
@@ -66,8 +66,8 @@ class RestaurantsTest {
         void 모든_식당이_0점일_때_전체에서_랜덤_선택() {
             // given
             Pickeat pickeat = PickeatFixture.createWithoutRoom();
-            Restaurant restaurant1 = RestaurantFixture.create(pickeat, "백반집");
-            Restaurant restaurant2 = RestaurantFixture.create(pickeat, "치킨집");
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat.getId(), "백반집");
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat.getId(), "치킨집");
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when
@@ -81,12 +81,12 @@ class RestaurantsTest {
         void 다양한_선호도_중_최고점만_선택() {
             // given
             Pickeat pickeat = PickeatFixture.createWithoutRoom();
-            Restaurant restaurant1 = RestaurantFixture.create(pickeat, "1점집");
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat.getId(), "1점집");
             restaurant1.like();
-            Restaurant restaurant2 = RestaurantFixture.create(pickeat, "2점집");
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat.getId(), "2점집");
             restaurant2.like();
             restaurant2.like();
-            Restaurant restaurant3 = RestaurantFixture.create(pickeat, "3점집");
+            Restaurant restaurant3 = RestaurantFixture.create(pickeat.getId(), "3점집");
             restaurant3.like();
             restaurant3.like();
             restaurant3.like();
@@ -108,9 +108,9 @@ class RestaurantsTest {
         void 최고_선호도_식당이_1개면_동점_아님() {
             // given
             Pickeat pickeat = PickeatFixture.createWithoutRoom();
-            Restaurant restaurant1 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat.getId());
             restaurant1.like();
-            Restaurant restaurant2 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat.getId());
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when
@@ -124,9 +124,9 @@ class RestaurantsTest {
         void 최고_선호도_식당이_여러개면_동점() {
             // given
             Pickeat pickeat = PickeatFixture.createWithoutRoom();
-            Restaurant restaurant1 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat.getId());
             restaurant1.like();
-            Restaurant restaurant2 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat.getId());
             restaurant2.like();
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
@@ -141,8 +141,8 @@ class RestaurantsTest {
         void 모든_식당이_0점이면_동점() {
             // given
             Pickeat pickeat = PickeatFixture.createWithoutRoom();
-            Restaurant restaurant1 = RestaurantFixture.create(pickeat);
-            Restaurant restaurant2 = RestaurantFixture.create(pickeat);
+            Restaurant restaurant1 = RestaurantFixture.create(pickeat.getId());
+            Restaurant restaurant2 = RestaurantFixture.create(pickeat.getId());
             Restaurants restaurants = new Restaurants(List.of(restaurant1, restaurant2));
 
             // when

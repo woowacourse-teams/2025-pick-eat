@@ -63,7 +63,7 @@ public class RestaurantBulkRepository {
 
                 ps.setBoolean(9, r.getIsExcluded());
                 ps.setInt(10, r.getLikeCount());
-                ps.setLong(11, r.getPickeat().getId());
+                ps.setLong(11, r.getPickeatId());
 
                 ps.setTimestamp(12, now);
                 ps.setTimestamp(13, now);

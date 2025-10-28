@@ -45,14 +45,15 @@ public class RestaurantService {
                         request.tags(),
                         request.pictureKey(),
                         request.pictureUrl(),
-                        pickeat))
+                        pickeat.getId()))
                 .toList();
         restaurantBulkRepository.batchInsert(restaurants);
     }
 
     public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded, Long participantId) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        List<Restaurant> restaurants = restaurantRepository.findByPickeatAndIsExcludedIfProvided(pickeat, isExcluded);
+        List<Restaurant> restaurants = restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(),
+                isExcluded);
         List<RestaurantResponse> response = new ArrayList<>();
 
         for (Restaurant restaurant : restaurants) {
@@ -64,7 +65,7 @@ public class RestaurantService {
 
     @Transactional
     public void exclude(RestaurantExcludeRequest request, Long participantId) {
-        //TODO: 입력된 식당 개수만큼 UPDATE 쿼리가 발생 -> BULK나 배치사이즈를 활용한 최적화 필요  (2025-07-18, 금, 16:35)
+        //TODO: 입력된 식당 개수만큼 UPDATE 쿼리가 발생 -> 배치사이즈를 활용한 최적화 필요  (2025-07-18, 금, 16:35)
         Participant participant = getParticipant(participantId);
 
         List<Restaurant> restaurants = restaurantRepository.findAllById(request.restaurantIds());
@@ -118,7 +119,7 @@ public class RestaurantService {
             return;
         }
 
-        if (restaurants.stream().anyMatch((r -> !r.getPickeat().equals(participant.getPickeat())))) {
+        if (restaurants.stream().anyMatch((r -> !r.getPickeatId().equals(participant.getPickeat().getId())))) {
             throw new BusinessException(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN);
         }
     }

@@ -42,7 +42,7 @@ public class PickeatResultServiceTest {
     }
 
     private Restaurant createRestaurantInPickeat(Pickeat pickeat, int likeCount) {
-        Restaurant restaurant = RestaurantFixture.create(pickeat);
+        Restaurant restaurant = RestaurantFixture.create(pickeat.getId());
         for (int i = 0; i < likeCount; i++) {
             restaurant.like();
         }
