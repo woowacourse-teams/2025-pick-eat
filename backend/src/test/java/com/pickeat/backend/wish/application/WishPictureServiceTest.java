@@ -61,6 +61,26 @@ class WishPictureServiceTest {
         wishPictureService = setupWishPictureService(imageUploadClient);
     }
 
+    WishPictureService setupWishPictureService(ImageUploadClient imageUploadClient) {
+        return new WishPictureService(
+                wishRepository,
+                roomUserRepository,
+                imageUploadClient
+        );
+    }
+
+    MultipartFile makeMockImageFile() {
+        MultipartFile mockFile = mock(MultipartFile.class);
+        when(mockFile.getContentType()).thenReturn("image/jpeg");
+        return mockFile;
+    }
+
+    RoomUser makeRoomUser() {
+        Room room = entityManager.persist(RoomFixture.create());
+        User user = entityManager.persist(UserFixture.create());
+        return entityManager.persist(new RoomUser(room.getId(), user.getId()));
+    }
+
     @Nested
     class 위시_사진_생성_케이스 {
 
@@ -69,7 +89,7 @@ class WishPictureServiceTest {
             // given
             RoomUser roomUser = makeRoomUser();
             Room room = roomRepository.getById(roomUser.getRoomId());
-            Wish wish = entityManager.persist(WishFixture.create(room));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId()));
             MultipartFile picture = makeMockImageFile();
 
             entityManager.flush();
@@ -98,7 +118,7 @@ class WishPictureServiceTest {
             // given
             RoomUser roomUser = makeRoomUser();
             Room room = roomRepository.getById(roomUser.getRoomId());
-            Wish wish = entityManager.persist(WishFixture.create(room));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId()));
 
             MultipartFile mockFile = mock(MultipartFile.class);
             when(mockFile.getContentType()).thenReturn("image/gif");
@@ -119,7 +139,7 @@ class WishPictureServiceTest {
             // given
             User user = entityManager.persist(UserFixture.create());
             Room otherRoom = entityManager.persist(RoomFixture.create());
-            Wish wishInOtherRoom = entityManager.persist(WishFixture.create(otherRoom));
+            Wish wishInOtherRoom = entityManager.persist(WishFixture.create(otherRoom.getId()));
 
             MultipartFile picture = makeMockImageFile();
 
@@ -144,7 +164,7 @@ class WishPictureServiceTest {
             RoomUser roomUser = makeRoomUser();
             Room room = roomRepository.getById(roomUser.getRoomId());
 
-            Wish wish = entityManager.persist(WishFixture.create(room));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId()));
             MultipartFile picture = makeMockImageFile();
 
             entityManager.flush();
@@ -167,7 +187,7 @@ class WishPictureServiceTest {
             RoomUser roomUser = makeRoomUser();
             Room room = roomRepository.getById(roomUser.getRoomId());
             Picture picture = new Picture(DEFAULT_IMAGE_KEY_PREFIX, DEFAULT_IMAGE_URL);
-            Wish wish = entityManager.persist(WishFixture.create(room, picture));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId(), picture));
 
             entityManager.flush();
             entityManager.clear();
@@ -187,7 +207,7 @@ class WishPictureServiceTest {
             Room room = roomRepository.getById(roomUser.getRoomId());
 
             Picture picture = new Picture(DEFAULT_IMAGE_KEY_PREFIX, DEFAULT_IMAGE_URL);
-            Wish wish = entityManager.persist(WishFixture.create(room, picture));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId(), picture));
 
             User otherUser = UserFixture.create();
 
@@ -211,7 +231,7 @@ class WishPictureServiceTest {
             Room room = roomRepository.getById(roomUser.getRoomId());
 
             Picture originPicture = new Picture("origin_key", "origin_download_url");
-            Wish wish = entityManager.persist(WishFixture.create(room, originPicture));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId(), originPicture));
 
             entityManager.flush();
             entityManager.clear();
@@ -243,7 +263,7 @@ class WishPictureServiceTest {
             Room room = roomRepository.getById(roomUser.getRoomId());
 
             Picture originPicture = new Picture("origin_key", "origin_download_url");
-            Wish wish = entityManager.persist(WishFixture.create(room, originPicture));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId(), originPicture));
 
             entityManager.flush();
             entityManager.clear();
@@ -264,7 +284,7 @@ class WishPictureServiceTest {
             RoomUser roomUser = makeRoomUser();
             Room room = roomRepository.getById(roomUser.getRoomId());
             Picture originPicture = new Picture("origin_key", "origin_download_url");
-            Wish wish = entityManager.persist(WishFixture.create(room, originPicture));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId(), originPicture));
 
             User otherUser = entityManager.persist(UserFixture.create());
 
@@ -291,7 +311,7 @@ class WishPictureServiceTest {
             RoomUser roomUser = makeRoomUser();
             Room room = roomRepository.getById(roomUser.getRoomId());
             Picture originPicture = new Picture("origin_key", "origin_download_url");
-            Wish wish = entityManager.persist(WishFixture.create(room, originPicture));
+            Wish wish = entityManager.persist(WishFixture.create(room.getId(), originPicture));
 
             MultipartFile newPicture = makeMockImageFile();
 
@@ -304,25 +324,5 @@ class WishPictureServiceTest {
                     .isInstanceOf(BusinessException.class)
                     .hasMessage("이미지 업로드 실패");
         }
-    }
-
-    WishPictureService setupWishPictureService(ImageUploadClient imageUploadClient) {
-        return new WishPictureService(
-                wishRepository,
-                roomUserRepository,
-                imageUploadClient
-        );
-    }
-
-    MultipartFile makeMockImageFile() {
-        MultipartFile mockFile = mock(MultipartFile.class);
-        when(mockFile.getContentType()).thenReturn("image/jpeg");
-        return mockFile;
-    }
-
-    RoomUser makeRoomUser() {
-        Room room = entityManager.persist(RoomFixture.create());
-        User user = entityManager.persist(UserFixture.create());
-        return entityManager.persist(new RoomUser(room.getId(), user.getId()));
     }
 }

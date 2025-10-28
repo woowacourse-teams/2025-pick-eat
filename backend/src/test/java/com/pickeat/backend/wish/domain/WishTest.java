@@ -21,7 +21,7 @@ class WishTest {
             // given
             Room room = RoomFixture.create();
             RestaurantInfo originRestaurantInfo = RestaurantInfoFixture.create("test_restaurant");
-            Wish wish = WishFixture.create(room, originRestaurantInfo);
+            Wish wish = WishFixture.create(room.getId(), originRestaurantInfo);
 
             RestaurantInfo newRestaurantInfo = RestaurantInfoFixture.create("test_new_restaurant");
 

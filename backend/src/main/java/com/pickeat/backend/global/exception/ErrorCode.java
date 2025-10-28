@@ -17,12 +17,6 @@ public enum ErrorCode {
     PARTICIPANT_NOT_FOUND(HttpStatus.NOT_FOUND, "참가자를 찾을 수 없습니다."),
     PARTICIPANT_ALREADY_ELIMINATED(HttpStatus.BAD_REQUEST, "이미 소거된 참가자입니다."),
 
-    // WishList 관련 에러
-    WISH_LIST_NOT_FOUND(HttpStatus.NOT_FOUND, "위시리스트를 찾을 수 없습니다."),
-    WISH_LIST_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 위시리스트에 접근할 권한이 없습니다."),
-    NOT_PUBLIC_WISH_LIST(HttpStatus.BAD_REQUEST, "공용 위시리스트가 아닙니다."),
-    WISH_LIST_HAS_NO_WISHES(HttpStatus.BAD_REQUEST, "위시리스트에 위시가 존재하지 않습니다."),
-
     // Wish 관련 에러
     WISH_NOT_FOUND(HttpStatus.NOT_FOUND, "위시를 찾을 수 없습니다."),
     WISH_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 위시에 접근할 권한이 없습니다."),
@@ -46,6 +40,7 @@ public enum ErrorCode {
     // Room 관련 에러
     ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "방을 찾을 없습니다."),
     ROOM_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 방에 접근할 권한이 없습니다."),
+    ROOM_HAS_NO_WISHES(HttpStatus.BAD_REQUEST, "벙애 위시가 존재하지 않습니다."),
 
     // Template 관련 에로
     TEMPLATE_NOT_FOUND(HttpStatus.NOT_FOUND, "템플릿을 찾을 수 없습니다."),
