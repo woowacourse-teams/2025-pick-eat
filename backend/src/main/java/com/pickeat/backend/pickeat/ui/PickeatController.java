@@ -137,7 +137,7 @@ public class PickeatController implements PickeatApiSpec {
             @ParticipantInPickeat(required = false) ParticipantPrincipal participantPrincipal
     ) {
         PickeatRejoinAvailableResponse rejoinAvailable =
-                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantPrincipal.id());
+                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantPrincipal);
         return ResponseEntity.ok(rejoinAvailable);
     }
 
@@ -155,7 +155,7 @@ public class PickeatController implements PickeatApiSpec {
     public ResponseEntity<PickeatResponse> getPickeatsByParticipant(
             @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        PickeatResponse pickeat = pickeatService.getPickeatsByParticipant(participantPrincipal.id());
+        PickeatResponse pickeat = pickeatService.getPickeat(participantPrincipal.pickeatCode());
         return ResponseEntity.ok().body(pickeat);
     }
 }

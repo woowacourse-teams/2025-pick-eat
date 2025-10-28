@@ -1,5 +1,6 @@
 package com.pickeat.backend.pickeat.application;
 
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
@@ -12,9 +13,9 @@ import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
 import com.pickeat.backend.pickeat.domain.repository.ParticipantRepository;
 import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
-import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.room.domain.repository.RoomUserRepository;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,6 @@ public class PickeatService {
     private final PickeatRepository pickeatRepository;
     private final ParticipantRepository participantRepository;
     private final RoomUserRepository roomUserRepository;
-    private final RoomRepository roomRepository;
 
     @Transactional
     public PickeatResponse createPickeatWithoutRoom(PickeatRequest request) {
@@ -56,7 +56,7 @@ public class PickeatService {
 
     public ParticipantStateResponse getParticipantStateSummary(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        List<Participant> participants = participantRepository.findByPickeat(pickeat);
+        List<Participant> participants = participantRepository.findByPickeatId(pickeat.getId());
         return ParticipantStateResponse.from(participants);
     }
 
@@ -82,13 +82,12 @@ public class PickeatService {
         return PickeatResponse.from(pickeats);
     }
 
-    public PickeatRejoinAvailableResponse getRejoinAvailableToPickeat(String pickeatCode, Long participantId) {
-        if (participantId == null) {
+    public PickeatRejoinAvailableResponse getRejoinAvailableToPickeat(String pickeatCode,
+                                                                      ParticipantPrincipal participantPrincipal) {
+        if (participantPrincipal == null) {
             return new PickeatRejoinAvailableResponse(false);
         }
-        Participant participant = getParticipant(participantId);
-        Pickeat pickeat = participant.getPickeat();
-        Boolean rejoinAvailable = pickeat.isEqualPickeatCode(pickeatCode);
+        boolean rejoinAvailable = Objects.equals(participantPrincipal.pickeatCode(), pickeatCode);
         return new PickeatRejoinAvailableResponse(rejoinAvailable);
     }
 
@@ -96,12 +95,6 @@ public class PickeatService {
         List<Long> allRoomIds = roomUserRepository.getAllRoomIdsByUserId(userId);
         List<Pickeat> roomPickeats = pickeatRepository.findByRoomIdIn(allRoomIds);
         return PickeatResponse.from(roomPickeats);
-    }
-
-    public PickeatResponse getPickeatsByParticipant(Long participantId) {
-        Participant participant = getParticipant(participantId);
-        Pickeat pickeat = participant.getPickeat();
-        return PickeatResponse.from(pickeat);
     }
 
     private void validateUserAccessToRoom(Long roomId, Long userId) {
@@ -113,14 +106,8 @@ public class PickeatService {
     private void validateParticipantAccessToPickeat(Long participantId, String pickeatCode) {
         Participant participant = getParticipant(participantId);
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        if (!participant.getPickeat().equals(pickeat)) {
+        if (!participant.getPickeatId().equals(pickeat.getId())) {
             throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
-        }
-    }
-
-    private void validateActivePickeat(Pickeat pickeat) {
-        if (!pickeat.getIsActive()) {
-            throw new BusinessException(ErrorCode.PICKEAT_ALREADY_INACTIVE);
         }
     }
 

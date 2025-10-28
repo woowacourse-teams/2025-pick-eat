@@ -119,7 +119,7 @@ public class RestaurantService {
             return;
         }
 
-        if (restaurants.stream().anyMatch((r -> !r.getPickeatId().equals(participant.getPickeat().getId())))) {
+        if (restaurants.stream().anyMatch(r -> !r.getPickeatId().equals(participant.getPickeatId()))) {
             throw new BusinessException(ErrorCode.RESTAURANT_ELIMINATION_FORBIDDEN);
         }
     }

@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RoomUser extends BaseEntity {
 
-    @Column(name = "room_id", nullable = false)
+    @Column(nullable = false)
     private Long roomId;
 
-    @Column(name = "user_id", nullable = false)
+    @Column(nullable = false)
     private Long userId;
 
     public RoomUser(Long roomId, Long userId) {

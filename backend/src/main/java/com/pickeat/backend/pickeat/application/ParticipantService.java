@@ -26,7 +26,7 @@ public class ParticipantService {
     public TokenResponse createParticipant(ParticipantRequest request) {
         Pickeat pickeat = findPickeatById(request.pickeatId());
 
-        Participant participant = new Participant(request.nickname(), pickeat);
+        Participant participant = new Participant(request.nickname(), pickeat.getId());
         participantRepository.save(participant);
 
         return participantTokenProvider.createToken(participant, pickeat);

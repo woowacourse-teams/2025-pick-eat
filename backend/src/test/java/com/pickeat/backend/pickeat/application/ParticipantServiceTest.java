@@ -42,14 +42,14 @@ class ParticipantServiceTest {
             testEntityManager.flush();
             testEntityManager.clear();
 
-            Integer origin = participantRepository.findByPickeat(pickeat).size();
+            Integer origin = participantRepository.findByPickeatId(pickeat.getId()).size();
             ParticipantRequest request = new ParticipantRequest("테스트유저", pickeat.getId());
 
             // when
             participantService.createParticipant(request);
 
             // then
-            Integer actual = participantRepository.findByPickeat(pickeat).size();
+            Integer actual = participantRepository.findByPickeatId(pickeat.getId()).size();
             assertThat(actual).isEqualTo(origin + 1);
         }
 
@@ -71,7 +71,7 @@ class ParticipantServiceTest {
         void 참가자_완료_표시_성공() {
             // given
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
-            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
             testEntityManager.flush();
             testEntityManager.clear();
 
@@ -87,7 +87,7 @@ class ParticipantServiceTest {
         void 참가자_미완료_표시_성공() {
             // given
             Pickeat pickeat = testEntityManager.persist(Pickeat.createWithoutRoom("테스트"));
-            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat));
+            Participant participant = testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
 
             // when
             participantService.updateCompletion(participant.getId(), false);

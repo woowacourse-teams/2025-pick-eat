@@ -37,7 +37,7 @@ public class PickeatResultServiceTest {
     }
 
     private Participant createParticipant(Pickeat pickeat) {
-        return testEntityManager.persist(ParticipantFixture.create(pickeat));
+        return testEntityManager.persist(ParticipantFixture.create(pickeat.getId()));
     }
 
     private Restaurant createRestaurantInPickeat(Pickeat pickeat, int likeCount) {
