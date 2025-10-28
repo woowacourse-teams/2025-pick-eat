@@ -1,6 +1,7 @@
 package com.pickeat.backend.global.auth;
 
-import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.global.auth.annotation.ParticipantInPickeat;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.pickeat.application.ParticipantTokenProvider;
@@ -14,23 +15,24 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
 @RequiredArgsConstructor
-public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResolver {
+public class ParticipantInPickeatArgumentResolver implements HandlerMethodArgumentResolver {
 
     private static final String PREFIX = "Bearer ";
     private final ParticipantTokenProvider participantTokenProvider;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(ParticipantId.class)
-                && parameter.getParameterType().equals(Long.class);
+        return parameter.hasParameterAnnotation(ParticipantInPickeat.class)
+                && parameter.getParameterType().equals(ParticipantPrincipal.class);
     }
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-            NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
 
-        ParticipantId participantIdAnnotation = parameter.getParameterAnnotation(ParticipantId.class);
-        boolean required = participantIdAnnotation.required();
+        ParticipantInPickeat participantInPickeatAnnotation = parameter.getParameterAnnotation(
+                ParticipantInPickeat.class);
+        boolean required = participantInPickeatAnnotation.required();
 
         String authHeader = webRequest.getHeader("Pickeat-Participant-Token");
 
@@ -41,15 +43,17 @@ public class ParticipantIdArgumentResolver implements HandlerMethodArgumentResol
             return null;
         }
 
-        return getParticipantIdByHeader(authHeader);
+        return getParticipantPrincipalByHeader(authHeader);
     }
 
     private boolean hasAuthToken(String authHeader) {
         return authHeader != null && authHeader.startsWith(PREFIX);
     }
 
-    private Long getParticipantIdByHeader(String authHeader) {
+    private ParticipantPrincipal getParticipantPrincipalByHeader(String authHeader) {
         String token = authHeader.substring(PREFIX.length());
-        return participantTokenProvider.getParticipantId(token);
+        Long id = participantTokenProvider.getParticipantId(token);
+        String pickeatCode = participantTokenProvider.getPickeatCode(token);
+        return new ParticipantPrincipal(id, pickeatCode);
     }
 }

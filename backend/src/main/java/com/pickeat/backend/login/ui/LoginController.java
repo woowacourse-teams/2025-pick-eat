@@ -1,9 +1,9 @@
 package com.pickeat.backend.login.ui;
 
-import com.pickeat.backend.global.auth.JwtProvider;
-import com.pickeat.backend.global.auth.ProviderInfo;
 import com.pickeat.backend.global.auth.annotation.Provider;
+import com.pickeat.backend.global.auth.principal.ProviderPrincipal;
 import com.pickeat.backend.login.application.LoginService;
+import com.pickeat.backend.login.application.ProviderTokenProvider;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
@@ -25,14 +25,14 @@ public class LoginController implements LoginApiSpec {
 
     private final LoginService loginService;
     private final UserService userService;
-    private final JwtProvider jwtProvider;
+    private final ProviderTokenProvider providerTokenProvider;
 
     @Override
     @PostMapping("/code")
     public ResponseEntity<TokenResponse> processCode(@Valid @RequestBody AuthCodeRequest request) {
         Long providerId = loginService.getProviderIdFromIdToken(request);
 
-        TokenResponse response = jwtProvider.createProviderToken(providerId, request.provider());
+        TokenResponse response = providerTokenProvider.createToken(providerId, request.provider());
 
         if (!userService.isUserExist(providerId, request.provider())) {
             return ResponseEntity
@@ -44,8 +44,8 @@ public class LoginController implements LoginApiSpec {
 
     @Override
     @PostMapping("/login")
-    public ResponseEntity<TokenResponse> login(@Provider ProviderInfo providerInfo) {
-        TokenResponse response = loginService.login(providerInfo);
+    public ResponseEntity<TokenResponse> login(@Provider ProviderPrincipal providerPrincipal) {
+        TokenResponse response = loginService.login(providerPrincipal);
 
         return ResponseEntity.ok().body(response);
     }
@@ -53,10 +53,10 @@ public class LoginController implements LoginApiSpec {
     @Override
     @PostMapping("/signup")
     public ResponseEntity<TokenResponse> signup(@Valid @RequestBody SignupRequest request,
-                                                @Provider ProviderInfo providerInfo) {
-        userService.createUser(request, providerInfo);
+                                                @Provider ProviderPrincipal providerPrincipal) {
+        userService.createUser(request, providerPrincipal);
 
-        TokenResponse response = loginService.login(providerInfo);
+        TokenResponse response = loginService.login(providerPrincipal);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

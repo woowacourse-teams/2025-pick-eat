@@ -1,7 +1,8 @@
 package com.pickeat.backend.pickeat.ui;
 
 import com.pickeat.backend.global.auth.annotation.LoginUserId;
-import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.global.auth.annotation.ParticipantInPickeat;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.global.log.BusinessLogging;
 import com.pickeat.backend.pickeat.application.PickeatResultService;
 import com.pickeat.backend.pickeat.application.PickeatService;
@@ -74,9 +75,10 @@ public class PickeatController implements PickeatApiSpec {
     @PostMapping("/pickeats/{pickeatCode}/result")
     public ResponseEntity<RestaurantResultResponse> createPickeatResult(
             @PathVariable("pickeatCode") String pickeatCode,
-            @ParticipantId Long participantId
+            @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(pickeatCode, participantId);
+        PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(pickeatCode,
+                participantPrincipal.id());
 
         HttpStatus status = response.isNewlyCreated() ? HttpStatus.CREATED : HttpStatus.OK;
         return ResponseEntity.status(status).body(response.result());
@@ -124,9 +126,9 @@ public class PickeatController implements PickeatApiSpec {
     @PatchMapping("/pickeats/{pickeatCode}/deactive")
     public ResponseEntity<Void> deactivatePickeat(
             @PathVariable("pickeatCode") String pickeatCode,
-            @ParticipantId Long participantId
+            @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        pickeatService.deactivatePickeat(pickeatCode, participantId);
+        pickeatService.deactivatePickeat(pickeatCode, participantPrincipal.id());
         return ResponseEntity.noContent().build();
     }
 
@@ -134,10 +136,10 @@ public class PickeatController implements PickeatApiSpec {
     @GetMapping("/pickeats/{pickeatCode}/rejoin-available")
     public ResponseEntity<PickeatRejoinAvailableResponse> getRejoinAvailableFromNoneUser(
             @PathVariable("pickeatCode") String pickeatCode,
-            @ParticipantId(required = false) Long participantId
+            @ParticipantInPickeat(required = false) ParticipantPrincipal participantPrincipal
     ) {
         PickeatRejoinAvailableResponse rejoinAvailable =
-                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantId);
+                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantPrincipal.id());
         return ResponseEntity.ok(rejoinAvailable);
     }
 
@@ -153,9 +155,9 @@ public class PickeatController implements PickeatApiSpec {
     @Override
     @GetMapping("/pickeats/participating")
     public ResponseEntity<PickeatResponse> getPickeatsByParticipant(
-            @ParticipantId Long participantId
+            @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        PickeatResponse pickeat = pickeatService.getPickeatsByParticipant(participantId);
+        PickeatResponse pickeat = pickeatService.getPickeatsByParticipant(participantPrincipal.id());
         return ResponseEntity.ok().body(pickeat);
     }
 }

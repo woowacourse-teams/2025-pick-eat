@@ -52,7 +52,6 @@ public class WishService {
     public void deleteWish(Long wishId, Long userId) {
         Wish wish = getWishWithAccessValidation(wishId, userId);
         wishRepository.delete(wish);
-        //TODO: 위시 삭제시 위시 이미지 제거  (2025-08-4, 월, 17:59)
     }
 
     @Transactional
