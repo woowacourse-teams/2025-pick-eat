@@ -1,7 +1,7 @@
 package com.pickeat.backend.global.config;
 
 import com.pickeat.backend.global.auth.LoginUserIdArgumentResolver;
-import com.pickeat.backend.global.auth.ParticipantIdArgumentResolver;
+import com.pickeat.backend.global.auth.ParticipantInPickeatArgumentResolver;
 import com.pickeat.backend.global.auth.ProviderArgumentResolver;
 import com.pickeat.backend.global.version.DeprecationInterceptor;
 import java.util.List;
@@ -18,7 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final LoginUserIdArgumentResolver loginUserIdArgumentResolver;
-    private final ParticipantIdArgumentResolver participantIdArgumentResolver;
+    private final ParticipantInPickeatArgumentResolver participantInPickeatArgumentResolver;
     private final ProviderArgumentResolver providerArgumentResolver;
     private final DeprecationInterceptor deprecationInterceptor;
 
@@ -38,7 +38,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(loginUserIdArgumentResolver);
-        resolvers.add(participantIdArgumentResolver);
+        resolvers.add(participantInPickeatArgumentResolver);
         resolvers.add(providerArgumentResolver);
     }
 

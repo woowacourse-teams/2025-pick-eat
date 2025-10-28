@@ -1,6 +1,7 @@
 package com.pickeat.backend.pickeat.ui.api;
 
-import com.pickeat.backend.global.auth.annotation.ParticipantId;
+import com.pickeat.backend.global.auth.annotation.ParticipantInPickeat;
+import com.pickeat.backend.global.auth.principal.ParticipantPrincipal;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
 import com.pickeat.backend.pickeat.application.dto.request.ParticipantRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantResponse;
@@ -117,7 +118,8 @@ public interface ParticipantApiSpec {
                     )
             )
     })
-    ResponseEntity<ParticipantResponse> getParticipant(@Parameter(hidden = true) @ParticipantId Long participantId);
+    ResponseEntity<ParticipantResponse> getParticipant(
+            @Parameter(hidden = true) @ParticipantInPickeat ParticipantPrincipal participantPrincipal);
 
     @Operation(
             summary = "선택 완료",
@@ -152,7 +154,8 @@ public interface ParticipantApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> markCompletion(@Parameter(hidden = true) @ParticipantId Long participantId);
+    ResponseEntity<Void> markCompletion(
+            @Parameter(hidden = true) @ParticipantInPickeat ParticipantPrincipal participantPrincipal);
 
     @Operation(
             summary = "선택 완료 취소",
@@ -187,5 +190,6 @@ public interface ParticipantApiSpec {
                     )
             )
     })
-    ResponseEntity<Void> unMarkCompletion(@Parameter(hidden = true) @ParticipantId Long participantId);
+    ResponseEntity<Void> unMarkCompletion(
+            @Parameter(hidden = true) @ParticipantInPickeat ParticipantPrincipal participantPrincipal);
 }

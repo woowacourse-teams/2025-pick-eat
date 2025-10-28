@@ -42,7 +42,6 @@ public class WishPictureService {
         Wish wish = getWish(wishId);
         validateUserAccessToWish(wish, userId);
         deleteWishPicture(wish);
-        //TODO: cascade로 함께 삭제되는 WishPicture에 해당하는 이미지를 S3에서 제거  (2025-08-12, 화, 13:3)
     }
 
     @Transactional

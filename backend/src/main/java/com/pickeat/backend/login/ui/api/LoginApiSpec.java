@@ -1,6 +1,6 @@
 package com.pickeat.backend.login.ui.api;
 
-import com.pickeat.backend.global.auth.ProviderInfo;
+import com.pickeat.backend.global.auth.principal.ProviderPrincipal;
 import com.pickeat.backend.login.application.dto.request.AuthCodeRequest;
 import com.pickeat.backend.login.application.dto.request.SignupRequest;
 import com.pickeat.backend.login.application.dto.response.TokenResponse;
@@ -68,7 +68,6 @@ public interface LoginApiSpec {
             operationId = "kakaoLogin",
             security = @io.swagger.v3.oas.annotations.security.SecurityRequirement(name = "UserAuth")
     )
-    //TODO: 현재 헤더를 통해서 JWT를 보내고 있으므로 명확한 API SPEC 수정 필요
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -101,7 +100,7 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<TokenResponse> login(@Parameter(hidden = true) ProviderInfo providerInfo);
+    ResponseEntity<TokenResponse> login(@Parameter(hidden = true) ProviderPrincipal providerPrincipal);
 
     @Operation(
             summary = "회원가입",
@@ -157,5 +156,6 @@ public interface LoginApiSpec {
                     )
             )
     })
-    ResponseEntity<TokenResponse> signup(SignupRequest request, @Parameter(hidden = true) ProviderInfo providerInfo);
+    ResponseEntity<TokenResponse> signup(SignupRequest request,
+                                         @Parameter(hidden = true) ProviderPrincipal providerPrincipal);
 }
