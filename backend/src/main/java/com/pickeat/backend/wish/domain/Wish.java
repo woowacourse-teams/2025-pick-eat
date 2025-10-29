@@ -5,7 +5,6 @@ import com.pickeat.backend.restaurant.domain.RestaurantInfo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Wish extends BaseEntity {
 
-    //TODO: 인덱스 만들어주기  (2025-10-28, 화, 15:52)
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     private Long roomId;
 
     @Column(nullable = false)
