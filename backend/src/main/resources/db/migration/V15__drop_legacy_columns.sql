@@ -18,7 +18,7 @@ FROM (
 
 PREPARE s1 FROM @sql_restaurant; EXECUTE s1; DEALLOCATE PREPARE s1;
 
--- 2) pickeat_result: hasEqualLike
+-- 2) pickeat_result: has_equal_like
 SELECT
     CASE
         WHEN drops IS NULL OR drops = '' THEN 'SELECT 1'
@@ -30,12 +30,12 @@ FROM (
          FROM information_schema.COLUMNS
          WHERE TABLE_SCHEMA = @schema
            AND TABLE_NAME   = 'pickeat_result'
-           AND COLUMN_NAME IN ('hasEqualLike')
+           AND COLUMN_NAME IN ('has_equal_like')
      ) AS t2;
 
 PREPARE s2 FROM @sql_pickeat_result; EXECUTE s2; DEALLOCATE PREPARE s2;
 
--- 3) pickeat: participantCount
+-- 3) pickeat: participant_count
 SELECT
     CASE
         WHEN drops IS NULL OR drops = '' THEN 'SELECT 1'
@@ -47,7 +47,7 @@ FROM (
          FROM information_schema.COLUMNS
          WHERE TABLE_SCHEMA = @schema
            AND TABLE_NAME   = 'pickeat'
-           AND COLUMN_NAME IN ('participantCount')
+           AND COLUMN_NAME IN ('participant_count')
      ) AS t3;
 
 PREPARE s3 FROM @sql_pickeat; EXECUTE s3; DEALLOCATE PREPARE s3;
