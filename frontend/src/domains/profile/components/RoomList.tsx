@@ -16,7 +16,7 @@ function RoomList() {
   const navigate = useNavigate();
   return (
     <S.ListWrapper>
-      {data?.length > 0 ? (
+      {data.length > 0 ? (
         data.map(room => (
           <S.List
             key={room.id}

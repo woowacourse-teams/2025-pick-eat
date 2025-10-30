@@ -457,10 +457,17 @@ export const pickeatQuery = {
       },
     });
   },
-  useGetParticipating: (pickeatCode: string) => {
+  useSuspenseGetParticipating: (pickeatCode: string) => {
     return useSuspenseQuery({
       queryKey: [BASE_PATH, 'participatingPickeat', pickeatCode],
-      queryFn: async () => pickeat.getParticipating(),
+      queryFn: async () => {
+        try {
+          return await pickeat.getParticipating();
+        } catch {
+          return null;
+        }
+      },
+      retry: 1,
     });
   },
   useGetParticipantState: (pickeatCode: string) => {

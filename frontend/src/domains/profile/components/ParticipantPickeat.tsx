@@ -1,19 +1,20 @@
 import ActivateCircle from '@components/assets/icons/ActivateCircle';
 import Enter from '@components/assets/icons/Enter';
 
-import { Participating } from '@apis/pickeat';
+import { pickeatQuery } from '@apis/pickeat';
 
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 
-type Props = {
-  participatingPickeatData: Participating | null;
-};
-
-function ParticipantPickeat({ participatingPickeatData }: Props) {
+function ParticipantPickeat() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const pickeatCode = searchParams.get('code') ?? '';
+
+  const { data: participatingPickeatData } =
+    pickeatQuery.useSuspenseGetParticipating(pickeatCode);
 
   return (
     <S.Container>
@@ -22,15 +23,15 @@ function ParticipantPickeat({ participatingPickeatData }: Props) {
           <S.TitleBox>
             <ActivateCircle
               size="xxs"
-              activate={participatingPickeatData?.isActive}
+              activate={participatingPickeatData.isActive}
             />
-            <S.Name>{participatingPickeatData?.name ?? '픽잇'}</S.Name>
+            <S.Name>{participatingPickeatData.name ?? '픽잇'}</S.Name>
           </S.TitleBox>
           <button
             onClick={() =>
               navigate(
                 generateRouterPath.pickeatDetail(
-                  participatingPickeatData?.code || ''
+                  participatingPickeatData.code || ''
                 )
               )
             }

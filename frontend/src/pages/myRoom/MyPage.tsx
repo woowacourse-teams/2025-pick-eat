@@ -8,21 +8,13 @@ import { useModal } from '@components/modal/useModal';
 
 import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
-import { pickeatQuery } from '@apis/pickeat';
-
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
-import { useSearchParams } from 'react-router';
 
 import CreateRoom from './components/CreateRoom';
 import Profile from './components/Profile';
 
 function MyPage() {
-  const [searchParams] = useSearchParams();
-  const pickeatCode = searchParams.get('code') ?? '';
-
-  const { data: participatingPickeatData } =
-    pickeatQuery.useGetParticipating(pickeatCode);
   const { opened, handleOpenModal, handleCloseModal } = useModal();
 
   return (
@@ -37,9 +29,7 @@ function MyPage() {
         <S.Section>
           <S.Title>참여 중인 픽잇</S.Title>
           <ErrorBoundary>
-            <ParticipantPickeat
-              participatingPickeatData={participatingPickeatData}
-            />
+            <ParticipantPickeat />
           </ErrorBoundary>
         </S.Section>
 
