@@ -8,6 +8,7 @@ import Thumbnail from '@components/assets/icons/Thumbnail';
 import { WishFormDataWithImage } from '@apis/wish';
 
 import styled from '@emotion/styled';
+import imageCompression from 'browser-image-compression';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 
 type Props = {
@@ -24,17 +25,25 @@ function RegisterForm({ formData, isLoading, onFormChange, onSubmit }: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      onFormChange('thumbnail', file);
-      const url = URL.createObjectURL(file);
-      setPreviewUrl(url);
+      const options = {
+        maxWidthOrHeight: 360,
+        initialQuality: 0.8,
+        fileType: 'image/webp',
+      };
+      try {
+        const compressedFile = await imageCompression(file, options);
+        onFormChange('thumbnail', compressedFile);
+      } catch (error) {
+        console.error('이미지 압축 실패:', error);
+      }
     }
   };
 
   useEffect(() => {
-    if (formData.thumbnail instanceof File) {
+    if (formData.thumbnail instanceof Blob) {
       setPreviewUrl(URL.createObjectURL(formData.thumbnail));
       return;
     }

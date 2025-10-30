@@ -1,4 +1,4 @@
-import RegisterForm from '@domains/wishlist/components/WishForm/RegisterFrom';
+import RegisterForm from '@domains/wishlist/components/WishForm/RegisterForm';
 
 import LineSearchBar from '@components/actions/SearchBar/LineSearchBar';
 import Arrow from '@components/assets/icons/Arrow';

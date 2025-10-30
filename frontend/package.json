@@ -33,6 +33,7 @@
     "@storybook/addon-docs": "^9.0.17",
     "@tanstack/react-query": "^5.90.5",
     "@types/jest": "^30.0.0",
+    "browser-image-compression": "^2.0.2",
     "css-minimizer-webpack-plugin": "^7.0.2",
     "dotenv": "^17.2.0",
     "eslint-import-resolver-typescript": "^4.4.4",
