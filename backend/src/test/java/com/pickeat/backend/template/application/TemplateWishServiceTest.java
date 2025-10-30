@@ -38,8 +38,8 @@ class TemplateWishServiceTest {
             // given
             Template template = entityManager.persist(TemplateFixture.create());
             List<TemplateWish> templateWishes = List.of(
-                    entityManager.persist(TemplateWishFixture.create(template)),
-                    entityManager.persist(TemplateWishFixture.create(template)));
+                    entityManager.persist(TemplateWishFixture.create(template.getId())),
+                    entityManager.persist(TemplateWishFixture.create(template.getId())));
             entityManager.flush();
             entityManager.clear();
 

@@ -2,7 +2,6 @@ package com.pickeat.backend.pickeat.application;
 
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
 import com.pickeat.backend.pickeat.domain.Participant;
 import com.pickeat.backend.pickeat.domain.Pickeat;
 import com.pickeat.backend.pickeat.domain.PickeatCode;
@@ -31,57 +30,57 @@ public class PickeatResultService {
     private final PickeatResultRepository pickeatResultRepository;
 
     @Transactional
-    public PickeatResultCreationResponse createPickeatResult(String pickeatCode, Long participantId) {
+    public RestaurantResultResponse createPickeatResult(String pickeatCode, Long participantId) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
         validateParticipantAccessToPickeat(participantId, pickeat);
 
-        return pickeatResultRepository.findByPickeat(pickeat)
-                .map(this::createExistingResultResponse)
+        return pickeatResultRepository.findByPickeatId(pickeat.getId())
+                .map(this::convertToResponse)
                 .orElseGet(() -> createNewResultWithConcurrencyHandling(pickeat));
     }
 
     public RestaurantResultResponse getPickeatResult(String pickeatCode) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        PickeatResult pickeatResult = getPickeatResult(pickeat);
+        PickeatResult pickeatResult = getPickeatResultByPickeat(pickeat);
 
-        return RestaurantResultResponse.of(pickeatResult.getRestaurant(), pickeatResult.isHasEqualLike());
+        return convertToResponse(pickeatResult);
     }
 
-    private PickeatResultCreationResponse createExistingResultResponse(PickeatResult existingResult) {
-        return new PickeatResultCreationResponse(convertToResponse(existingResult), false);
-    }
-
-    private PickeatResultCreationResponse createNewResultWithConcurrencyHandling(Pickeat pickeat) {
+    private RestaurantResultResponse createNewResultWithConcurrencyHandling(Pickeat pickeat) {
         try {
             pickeat.deactivate();
-            RestaurantResultResponse newResult = createNewPickeatResult(pickeat);
-            return new PickeatResultCreationResponse(newResult, true);
+            return createNewPickeatResult(pickeat);
         } catch (DataIntegrityViolationException e) {
             PickeatResult existingResult = getPickeatResultByPickeat(pickeat);
-            return createExistingResultResponse(existingResult);
+            return convertToResponse(existingResult);
         }
     }
 
     private RestaurantResultResponse createNewPickeatResult(Pickeat pickeat) {
         List<Restaurant> availableRestaurants =
-                restaurantRepository.findAllByPickeatAndIsExcluded(pickeat, false);
+                restaurantRepository.findAllByPickeatIdAndIsExcluded(pickeat.getId(), false);
 
         Restaurants restaurants = new Restaurants(availableRestaurants);
         Restaurant selectedRestaurant = restaurants.getRandomTopRatedRestaurant();
-        boolean hasEqualLike = restaurants.hasEqualLike();
 
-        PickeatResult newResult = new PickeatResult(pickeat, selectedRestaurant, hasEqualLike);
+        PickeatResult newResult = new PickeatResult(pickeat.getId(), selectedRestaurant.getId());
         PickeatResult savedResult = pickeatResultRepository.save(newResult);
 
         return convertToResponse(savedResult);
     }
 
     private RestaurantResultResponse convertToResponse(PickeatResult result) {
-        return RestaurantResultResponse.of(result.getRestaurant(), result.isHasEqualLike());
+        Restaurant restaurant = getRestaurant(result.getRestaurantId());
+        return RestaurantResultResponse.of(restaurant);
+    }
+
+    private Restaurant getRestaurant(Long restaurantId) {
+        return restaurantRepository.findById(restaurantId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.RESTAURANT_NOT_FOUND));
     }
 
     private PickeatResult getPickeatResultByPickeat(Pickeat pickeat) {
-        return pickeatResultRepository.findByPickeat(pickeat)
+        return pickeatResultRepository.findByPickeatId(pickeat.getId())
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
     }
 
@@ -91,14 +90,9 @@ public class PickeatResultService {
                 .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_NOT_FOUND));
     }
 
-    private PickeatResult getPickeatResult(Pickeat pickeat) {
-        return pickeatResultRepository.findByPickeat(pickeat)
-                .orElseThrow(() -> new BusinessException(ErrorCode.PICKEAT_RESULT_NOT_FOUND));
-    }
-
     private void validateParticipantAccessToPickeat(Long participantId, Pickeat pickeat) {
         Participant participant = getParticipant(participantId);
-        if (!participant.getPickeat().equals(pickeat)) {
+        if (!participant.getPickeatId().equals(pickeat.getId())) {
             throw new BusinessException(ErrorCode.PICKEAT_ACCESS_DENIED);
         }
     }

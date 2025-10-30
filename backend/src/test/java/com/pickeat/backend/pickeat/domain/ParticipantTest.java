@@ -18,15 +18,15 @@ class ParticipantTest {
             Pickeat pickeat = PickeatFixture.createWithoutRoom();
 
             // when
-            Participant participant = new Participant(nickname, pickeat);
+            Participant participant = new Participant(nickname, pickeat.getId());
 
             // then
             assertThat(participant)
                     .extracting(
                             Participant::getNickname,
-                            Participant::getPickeat,
+                            Participant::getPickeatId,
                             Participant::getIsCompleted)
-                    .containsExactly(nickname, pickeat, false);
+                    .containsExactly(nickname, pickeat.getId(), false);
         }
     }
 }

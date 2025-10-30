@@ -45,8 +45,8 @@ class RestaurantBulkRepositoryTest {
             testEntityManager.flush();
             testEntityManager.clear();
 
-            List<Restaurant> restaurants = List.of(RestaurantFixture.create(pickeat),
-                    RestaurantFixture.create(pickeat));
+            List<Restaurant> restaurants = List.of(RestaurantFixture.create(pickeat.getId()),
+                    RestaurantFixture.create(pickeat.getId()));
 
             //when
             restaurantBulkRepository.batchInsert(restaurants);

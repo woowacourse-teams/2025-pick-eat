@@ -43,7 +43,7 @@ public class WishService {
                 request.placeUrl(),
                 String.join(",", request.tags()),
                 null);
-        Wish wish = new Wish(room, restaurantInfo);
+        Wish wish = new Wish(room.getId(), restaurantInfo);
         Wish saved = wishRepository.save(wish);
         return WishResponse.from(saved);
     }
@@ -71,8 +71,7 @@ public class WishService {
 
     public List<WishResponse> getWishes(Long roomId, Long userId) {
         validateUserAccessToRoom(roomId, userId);
-        Room room = getRoom(roomId);
-        List<Wish> wishes = wishRepository.findAllByRoom(room);
+        List<Wish> wishes = wishRepository.findAllByRoomId(roomId);
         wishes.sort(Comparator.comparing(Wish::getCreatedAt).reversed());
         return WishResponse.from(wishes);
     }
@@ -84,8 +83,8 @@ public class WishService {
 
     private Wish getWishWithAccessValidation(Long wishId, Long userId) {
         Wish wish = getWish(wishId);
-        Room room = wish.getRoom();
-        validateUserAccessToRoom(room.getId(), userId);
+        Long roomId = wish.getRoomId();
+        validateUserAccessToRoom(roomId, userId);
         return wish;
     }
 

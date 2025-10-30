@@ -4,8 +4,6 @@ import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
-import com.pickeat.backend.room.domain.Room;
-import com.pickeat.backend.room.domain.repository.RoomRepository;
 import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
 import java.util.List;
@@ -19,12 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class WishRestaurantSearchService {
 
     private final WishRepository wishRepository;
-    private final RoomRepository roomRepository;
 
     public List<RestaurantRequest> searchByWish(WishRestaurantRequest request) {
-        Room room = getRoom(request);
-
-        List<Wish> wishes = wishRepository.findAllByRoom(room);
+        List<Wish> wishes = wishRepository.findAllByRoomId(request.roomId());
         validateWishExists(wishes);
 
         return wishes.stream()
@@ -32,14 +27,9 @@ public class WishRestaurantSearchService {
                 .toList();
     }
 
-    private Room getRoom(WishRestaurantRequest request) {
-        return roomRepository.findById(request.roomId())
-                .orElseThrow(() -> new BusinessException(ErrorCode.WISH_LIST_NOT_FOUND));
-    }
-
     private void validateWishExists(List<Wish> wishes) {
         if (wishes.isEmpty()) {
-            throw new BusinessException(ErrorCode.WISH_LIST_HAS_NO_WISHES);
+            throw new BusinessException(ErrorCode.ROOM_HAS_NO_WISHES);
         }
     }
 }

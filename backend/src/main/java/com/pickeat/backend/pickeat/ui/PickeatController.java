@@ -10,7 +10,6 @@ import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
-import com.pickeat.backend.pickeat.application.dto.response.PickeatResultCreationResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.pickeat.ui.api.PickeatApiSpec;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
@@ -77,11 +76,10 @@ public class PickeatController implements PickeatApiSpec {
             @PathVariable("pickeatCode") String pickeatCode,
             @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        PickeatResultCreationResponse response = pickeatResultService.createPickeatResult(pickeatCode,
+        RestaurantResultResponse response = pickeatResultService.createPickeatResult(pickeatCode,
                 participantPrincipal.id());
 
-        HttpStatus status = response.isNewlyCreated() ? HttpStatus.CREATED : HttpStatus.OK;
-        return ResponseEntity.status(status).body(response.result());
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @Override
@@ -139,7 +137,7 @@ public class PickeatController implements PickeatApiSpec {
             @ParticipantInPickeat(required = false) ParticipantPrincipal participantPrincipal
     ) {
         PickeatRejoinAvailableResponse rejoinAvailable =
-                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantPrincipal.id());
+                pickeatService.getRejoinAvailableToPickeat(pickeatCode, participantPrincipal);
         return ResponseEntity.ok(rejoinAvailable);
     }
 
@@ -157,7 +155,7 @@ public class PickeatController implements PickeatApiSpec {
     public ResponseEntity<PickeatResponse> getPickeatsByParticipant(
             @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        PickeatResponse pickeat = pickeatService.getPickeatsByParticipant(participantPrincipal.id());
+        PickeatResponse pickeat = pickeatService.getPickeat(participantPrincipal.pickeatCode());
         return ResponseEntity.ok().body(pickeat);
     }
 }

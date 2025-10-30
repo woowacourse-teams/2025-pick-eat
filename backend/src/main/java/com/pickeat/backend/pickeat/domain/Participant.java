@@ -3,8 +3,6 @@ package com.pickeat.backend.pickeat.domain;
 import com.pickeat.backend.global.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,13 +18,12 @@ public class Participant extends BaseEntity {
     @Column(nullable = false)
     private Boolean isCompleted = false;
 
-    @ManyToOne
-    @JoinColumn(name = "pickeat_id", nullable = false)
-    private Pickeat pickeat;
+    @Column(nullable = false)
+    private Long pickeatId;
 
-    public Participant(String nickname, Pickeat pickeat) {
+    public Participant(String nickname, Long pickeatId) {
         this.nickname = nickname;
-        this.pickeat = pickeat;
+        this.pickeatId = pickeatId;
     }
 
     public void updateCompletionAs(boolean isCompleted) {
