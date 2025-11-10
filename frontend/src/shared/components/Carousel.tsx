@@ -3,10 +3,11 @@ import { THEME } from '@styles/global';
 import styled from '@emotion/styled';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
+import VisuallyHidden from './accessibility/VisuallyHidden';
 import Arrow from './assets/icons/Arrow';
 
 type Props = {
-  contentArr: ReactNode[];
+  contentArr: { title: string; content: ReactNode }[];
   interval?: number;
   showArrows?: boolean;
   indicator?: boolean;
@@ -19,10 +20,12 @@ function Carousel({
   indicator = true,
 }: Props) {
   const [focusedIdx, setFocusedIdx] = useState(0);
+
   const focusedFirstIdx = focusedIdx === 0;
   const focusedLastIdx = focusedIdx === contentArr.length - 1;
   const isFocused = (idx: number) => focusedIdx === idx;
   const containerRef = useRef<HTMLDivElement>(null);
+  const [liveMessage, setLiveMessage] = useState(contentArr[0].title);
 
   const scrollToIndex = (index: number) => {
     const container = containerRef.current;
@@ -47,6 +50,12 @@ function Carousel({
     e.stopPropagation();
     e.preventDefault();
     changeFocus(idx);
+    setLiveMessage(`다음`);
+  };
+
+  const getAriaLabel = (i: number) => {
+    if (focusedIdx - 1 === i) return '이전';
+    if (focusedIdx + 1 === i) return '다음';
   };
 
   useEffect(() => {
@@ -83,6 +92,15 @@ function Carousel({
     return () => container.removeEventListener('scroll', onScroll);
   }, [contentArr.length]);
 
+  useEffect(() => {
+    const id = setTimeout(() => {
+      setLiveMessage(
+        `${contentArr.length}가지 중 ${focusedIdx + 1}번째 ${contentArr[focusedIdx].title}`
+      );
+    }, 200);
+    return () => clearTimeout(id);
+  }, [focusedIdx, contentArr]);
+
   return (
     <S.Container>
       <S.ContentWrapper ref={containerRef}>
@@ -91,11 +109,15 @@ function Carousel({
             key={i}
             focused={isFocused(i)}
             onClickCapture={e => handleContentClick(e, i)}
+            aria-label={getAriaLabel(i)}
+            role="button"
           >
-            {content}
+            <span aria-hidden="true">{content.content}</span>
           </S.Content>
         ))}
       </S.ContentWrapper>
+
+      <VisuallyHidden aria-live="polite">{liveMessage}</VisuallyHidden>
 
       {showArrows && (
         <>

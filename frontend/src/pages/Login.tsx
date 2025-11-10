@@ -35,15 +35,18 @@ const LOGIN_CONTENT = [
   },
 ];
 
-const CARD_CONTENT = LOGIN_CONTENT.map(item => (
-  <Card
-    id={item.id}
-    key={item.id}
-    title={item.title}
-    imgUrl={item.imgUrl}
-    description={item.description}
-  />
-));
+const CARD_CONTENT = LOGIN_CONTENT.map(item => ({
+  title: item.title,
+  content: (
+    <Card
+      id={item.id}
+      key={item.id}
+      title={item.title}
+      imgUrl={item.imgUrl}
+      description={item.description}
+    />
+  ),
+}));
 
 function Login() {
   const handleKakaoLoginClick = () => {

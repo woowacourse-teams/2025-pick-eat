@@ -50,12 +50,7 @@ function Card({
   } = useModal();
 
   return (
-    <S.Container
-      size={size}
-      onClick={onClick}
-      aria-label={`${title} 식당 투표하기`}
-      role="button"
-    >
+    <S.Container size={size} onClick={onClick} role="button">
       <S.Image src={imageUrl} alt="" />
       <S.TopWrapper>
         <S.TitleArea>
