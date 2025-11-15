@@ -30,11 +30,14 @@ function Carousel({
   const scrollToIndex = (index: number) => {
     const container = containerRef.current;
     if (!container) return;
-    const item = container.children[index] as HTMLElement;
-    item?.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'center',
+
+    requestAnimationFrame(() => {
+      const item = container.children[index] as HTMLElement;
+      item?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'center',
+      });
     });
   };
 
@@ -47,15 +50,16 @@ function Carousel({
     if (isFocused(idx)) {
       return;
     }
-    e.stopPropagation();
+
     e.preventDefault();
+    e.stopPropagation();
     changeFocus(idx);
-    setLiveMessage(`다음`);
   };
 
-  const getAriaLabel = (i: number) => {
+  const getAriaLabel = (i: number, title: string) => {
     if (focusedIdx - 1 === i) return '이전';
     if (focusedIdx + 1 === i) return '다음';
+    return title;
   };
 
   useEffect(() => {
@@ -95,7 +99,7 @@ function Carousel({
   useEffect(() => {
     const id = setTimeout(() => {
       setLiveMessage(
-        `${contentArr.length}가지 중 ${focusedIdx + 1}번째 ${contentArr[focusedIdx].title}`
+        `${contentArr[focusedIdx].title} ${contentArr.length}가지 중 ${focusedIdx + 1}번째 `
       );
     }, 200);
     return () => clearTimeout(id);
@@ -109,10 +113,10 @@ function Carousel({
             key={i}
             focused={isFocused(i)}
             onClickCapture={e => handleContentClick(e, i)}
-            aria-label={getAriaLabel(i)}
+            aria-label={getAriaLabel(i, content.title)}
             role="button"
           >
-            <span aria-hidden="true">{content.content}</span>
+            {content.content}
           </S.Content>
         ))}
       </S.ContentWrapper>

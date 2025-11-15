@@ -123,7 +123,7 @@ function Main() {
       </S.ImageWrapper>
       <S.BottomWrapper>
         <S.Description>다같이 갈 식당을 정해보세요!</S.Description>
-        <Carousel contentArr={getCardContent} showArrows />
+        <Carousel contentArr={getCardContent} />
       </S.BottomWrapper>
       <Footer />
     </S.Container>
