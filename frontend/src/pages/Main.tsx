@@ -25,9 +25,7 @@ type Content = {
 };
 
 function Main() {
-  console.log(
-    '안녕하세요! 픽잇을 사용해주셔서 감사합니다! 😊 좋은 하루되세요!'
-  );
+  console.log('픽잇을 사용해주셔서 감사합니다! 😊 좋은 하루되세요!');
   const navigate = useNavigate();
   const showToast = useShowToast();
   const [searchParams] = useSearchParams();
