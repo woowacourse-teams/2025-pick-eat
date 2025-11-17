@@ -33,13 +33,13 @@ function PreferRestaurantList() {
     });
   };
 
-  const { itemRefs } = useFlip(sortRestaurants(restaurantList));
+  const { displayList, itemRefs } = useFlip(restaurantList, sortRestaurants);
 
   return (
     <S.Container>
       {!restaurantList.length && <PickeatEndModal />}
 
-      {restaurantList.map((restaurant: Restaurant) => (
+      {displayList.map((restaurant: Restaurant) => (
         <S.ItemWrapper
           key={restaurant.id}
           ref={el => {
