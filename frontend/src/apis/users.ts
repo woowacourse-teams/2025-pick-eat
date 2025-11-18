@@ -1,8 +1,15 @@
+import { useAuth } from '@domains/login/context/AuthProvider';
+
+import { ROUTE_PATH } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
+
 import { createQueryString, joinAsPath } from '@utils/createUrl';
 
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 
-import { apiClient, BASE_URL_VERSION } from './apiClient';
+import { apiClient, ApiError, BASE_URL_VERSION } from './apiClient';
 
 export type UserResponse = {
   id: number;
@@ -35,13 +42,9 @@ const BASE_PATH = 'users';
 const users = {
   get: async (): Promise<User> => {
     const path = joinAsPath(BASE_URL_VERSION[2], BASE_PATH);
-    try {
-      const response = await apiClient.get<UserResponse>(path);
-      if (response) return convertResponseToUser(response);
-      throw new Error('유저를 찾을 수 없습니다.');
-    } catch {
-      throw new Error('유저를 찾을 수 없습니다.');
-    }
+    const response = await apiClient.get<UserResponse>(path);
+    if (response) return convertResponseToUser(response);
+    return { id: -1, nickname: '' };
   },
   getMembers: async (nickname: string): Promise<User[]> => {
     const url = joinAsPath(BASE_URL_VERSION[2], BASE_PATH, 'search');
@@ -54,12 +57,22 @@ const users = {
 
 export const usersQuery = {
   useSuspenseGet: () => {
+    const showToast = useShowToast();
+    const { logoutUser } = useAuth();
     return useSuspenseQuery({
       queryKey: [BASE_PATH],
       queryFn: async () => {
         try {
           return await users.get();
-        } catch {
+        } catch (e) {
+          if (e instanceof ApiError && e.status === 401) {
+            showToast({
+              mode: 'ERROR',
+              message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+            });
+            logoutUser();
+          }
+
           // TODO : 현재는 user 정보에 에러 처리를 따로 해주는 곳이 없어
           // 빈 객체로 처리하고 있는데, try catch 역할을 하는 에러바운더리를 만들 때
           // default nickname 을 넣어주는 로직을 에러바운더리로 옮기면 어떨까합니다.

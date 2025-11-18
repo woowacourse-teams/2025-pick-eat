@@ -1,3 +1,4 @@
+import { useAuth } from '@domains/login/context/AuthProvider';
 import { joinCode } from '@domains/pickeat/utils/joinStorage';
 import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
@@ -458,12 +459,24 @@ export const pickeatQuery = {
     });
   },
   useSuspenseGetParticipating: (pickeatCode: string) => {
+    const showToast = useShowToast();
+    const { logoutUser } = useAuth();
+    const navigate = useNavigate();
+
     return useSuspenseQuery({
       queryKey: [BASE_PATH, 'participatingPickeat', pickeatCode],
       queryFn: async () => {
         try {
           return await pickeat.getParticipating();
-        } catch {
+        } catch (e) {
+          if (e instanceof ApiError && e.status === 401) {
+            showToast({
+              mode: 'ERROR',
+              message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+            });
+            logoutUser();
+            navigate(ROUTE_PATH.LOGIN);
+          }
           return null;
         }
       },
