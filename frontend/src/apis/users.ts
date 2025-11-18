@@ -1,13 +1,10 @@
 import { useAuth } from '@domains/login/context/AuthProvider';
 
-import { ROUTE_PATH } from '@routes/routePath';
-
 import { useShowToast } from '@provider/ToastProvider';
 
 import { createQueryString, joinAsPath } from '@utils/createUrl';
 
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router';
 
 import { apiClient, ApiError, BASE_URL_VERSION } from './apiClient';
 
