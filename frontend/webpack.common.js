@@ -34,6 +34,10 @@ const config = {
     ],
   },
   plugins: [
+    new DotenvWebpackPlugin({
+      systemvars: true,
+      path: `./.env.${process.env.NODE_ENV || 'local'}`,
+    }),
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
@@ -48,13 +52,9 @@ const config = {
         },
       ],
     }),
-    new DotenvWebpackPlugin({
-      systemvars: true,
-      path: `./.env.${process.env.NODE_ENV || 'local'}`,
-    }),
     new CircularDependencyPlugin({
       exclude: /node_modules/,
-      failOnError: true, // 순환 의존성 발견 시 빌드 실패
+      failOnError: true,
       cwd: process.cwd(),
     }),
   ],
