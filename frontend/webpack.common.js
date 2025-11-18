@@ -1,6 +1,7 @@
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import CircularDependencyPlugin from 'circular-dependency-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import DotenvWebpackPlugin from 'dotenv-webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
@@ -50,6 +51,11 @@ const config = {
     new DotenvWebpackPlugin({
       systemvars: true,
       path: `./.env.${process.env.NODE_ENV || 'local'}`,
+    }),
+    new CircularDependencyPlugin({
+      exclude: /node_modules/,
+      failOnError: true, // 순환 의존성 발견 시 빌드 실패
+      cwd: process.cwd(),
     }),
   ],
 };

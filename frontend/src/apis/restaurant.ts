@@ -5,7 +5,8 @@ import { joinAsPath } from '@utils/createUrl';
 import { useMutation } from '@tanstack/react-query';
 
 import { apiClient, BASE_URL_VERSION } from './apiClient';
-import { RESTAURANTS_BASE_PATH } from './restaurants';
+
+const RESTAURANTS_BASE_PATH = 'restaurants';
 
 export type RestaurantResponse = {
   id: number;

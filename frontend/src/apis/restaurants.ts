@@ -26,7 +26,7 @@ type MutationOption = {
 
 const initialOption = {};
 
-export const RESTAURANTS_BASE_PATH = 'restaurants';
+const RESTAURANTS_BASE_PATH = 'restaurants';
 
 export const restaurants = {
   get: async (
