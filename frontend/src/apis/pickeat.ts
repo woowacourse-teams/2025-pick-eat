@@ -458,13 +458,13 @@ export const pickeatQuery = {
       },
     });
   },
-  useSuspenseGetParticipating: (pickeatCode: string) => {
+  useSuspenseGetParticipating: () => {
     const showToast = useShowToast();
     const { logoutUser } = useAuth();
     const navigate = useNavigate();
 
     return useSuspenseQuery({
-      queryKey: [BASE_PATH, 'participatingPickeat', pickeatCode],
+      queryKey: [BASE_PATH, 'participatingPickeat'],
       queryFn: async () => {
         try {
           return await pickeat.getParticipating();
