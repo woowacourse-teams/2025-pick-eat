@@ -459,24 +459,12 @@ export const pickeatQuery = {
     });
   },
   useSuspenseGetParticipating: () => {
-    const showToast = useShowToast();
-    const { logoutUser } = useAuth();
-    const navigate = useNavigate();
-
     return useSuspenseQuery({
       queryKey: [BASE_PATH, 'participatingPickeat'],
       queryFn: async () => {
         try {
           return await pickeat.getParticipating();
-        } catch (e) {
-          if (e instanceof ApiError && e.status === 401) {
-            showToast({
-              mode: 'ERROR',
-              message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
-            });
-            logoutUser();
-            navigate(ROUTE_PATH.LOGIN);
-          }
+        } catch {
           return null;
         }
       },
