@@ -46,11 +46,16 @@ export const roomsQuery = {
         } catch (e) {
           if (e instanceof ApiError && e.status === 401) {
             showToast({
-              mode: 'ERROR',
+              mode: 'WARN',
               message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
             });
             logoutUser();
             navigate(ROUTE_PATH.LOGIN);
+          } else {
+            showToast({
+              mode: 'WARN',
+              message: '로그인이 필요합니다.',
+            });
           }
           return [];
         }
