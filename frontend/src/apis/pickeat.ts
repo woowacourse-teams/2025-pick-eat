@@ -1,4 +1,3 @@
-import { useAuth } from '@domains/login/context/AuthProvider';
 import { joinCode } from '@domains/pickeat/utils/joinStorage';
 import { getLatLngByAddress } from '@domains/pickeat/utils/kakaoLocalAPI';
 
