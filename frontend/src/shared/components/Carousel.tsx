@@ -99,7 +99,7 @@ function Carousel({
   useEffect(() => {
     const id = setTimeout(() => {
       setLiveMessage(
-        `${contentArr[focusedIdx].title} ${contentArr.length}가지 중 ${focusedIdx + 1}번째 `
+        `${contentArr[focusedIdx].title}. ${contentArr.length}가지 중 ${focusedIdx + 1}번째 `
       );
     }, 200);
     return () => clearTimeout(id);

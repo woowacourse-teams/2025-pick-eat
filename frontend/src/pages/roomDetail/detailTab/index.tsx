@@ -109,7 +109,7 @@ function DetailTab() {
   ];
 
   const getCardContent = CONTENT.map(item => ({
-    title: `${item.name}에서 투표하기`,
+    title: `${item.name}에서 식당 투표하기`,
     content: (
       <Card
         key={item.id}
