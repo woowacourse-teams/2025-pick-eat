@@ -1,4 +1,7 @@
+import { useAuth } from '@domains/login/context/AuthProvider';
 import { accessToken } from '@domains/login/utils/authStorage';
+
+import { ROUTE_PATH } from '@routes/routePath';
 
 import { useShowToast } from '@provider/ToastProvider';
 
@@ -7,8 +10,9 @@ import { joinAsPath } from '@utils/createUrl';
 import { FoodCategory } from '@constants/foodCategory';
 
 import { useMutation, useSuspenseQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 
-import { apiClient, BASE_URL_VERSION } from './apiClient';
+import { apiClient, ApiError, BASE_URL_VERSION } from './apiClient';
 import { queryClient } from './queryClient';
 
 type Picture = {
@@ -158,6 +162,8 @@ export const wishQuery = {
   },
   useDelete: (roomId: number) => {
     const showToast = useShowToast();
+    const navigate = useNavigate();
+    const { logoutUser } = useAuth();
 
     return useMutation({
       mutationFn: (wishId: number) => wish.delete(wishId),
@@ -168,11 +174,21 @@ export const wishQuery = {
           message: '삭제 완료!',
         });
       },
-      onError() {
-        showToast({
-          mode: 'ERROR',
-          message: '삭제에 실패했습니다. 다시 시도해 주세요.',
-        });
+      onError(e) {
+        if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+          showToast({
+            mode: 'WARN',
+            message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+          });
+          logoutUser();
+          navigate(ROUTE_PATH.LOGIN);
+          return;
+        } else {
+          showToast({
+            mode: 'ERROR',
+            message: '삭제에 실패했습니다. 다시 시도해 주세요.',
+          });
+        }
       },
     });
   },

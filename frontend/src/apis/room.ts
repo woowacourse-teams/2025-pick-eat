@@ -1,3 +1,5 @@
+import { useAuth } from '@domains/login/context/AuthProvider';
+
 import { ROUTE_PATH } from '@routes/routePath';
 
 import { useShowToast } from '@provider/ToastProvider';
@@ -7,7 +9,7 @@ import { joinAsPath } from '@utils/createUrl';
 import { useMutation, useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
 
-import { apiClient, BASE_URL_VERSION } from './apiClient';
+import { apiClient, ApiError, BASE_URL_VERSION } from './apiClient';
 import { Pickeat, PickeatResponse } from './pickeat';
 import { queryClient } from './queryClient';
 import { convertResponseToUsers, User, UserResponse } from './users';
@@ -103,6 +105,7 @@ export const roomQuery = {
   useGet: (roomId: number) => {
     const showToast = useShowToast();
     const navigate = useNavigate();
+    const { logoutUser } = useAuth();
     return useQuery({
       queryKey: ['room', roomId],
       queryFn: async () => {
@@ -110,12 +113,22 @@ export const roomQuery = {
           const response = await room.get(roomId);
           if (!response) throw new Error('방 정보를 불러올 수 없습니다.');
           return response;
-        } catch {
-          showToast({
-            mode: 'ERROR',
-            message: '방 정보를 불러오는데 실패했습니다.',
-          });
-          navigate(ROUTE_PATH.MY_PAGE, { replace: true });
+        } catch (e) {
+          if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+            showToast({
+              mode: 'WARN',
+              message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+            });
+            logoutUser();
+            navigate(ROUTE_PATH.LOGIN);
+            return;
+          } else {
+            showToast({
+              mode: 'ERROR',
+              message: '방 정보를 불러오는데 실패했습니다.',
+            });
+            navigate(ROUTE_PATH.MY_PAGE, { replace: true });
+          }
         }
       },
       throwOnError: false,
@@ -123,6 +136,8 @@ export const roomQuery = {
   },
   usePost: (onCreate: () => void) => {
     const showToast = useShowToast();
+    const navigate = useNavigate();
+    const { logoutUser } = useAuth();
 
     return useMutation({
       mutationFn: async ({
@@ -137,35 +152,39 @@ export const roomQuery = {
       },
       onSuccess: async ({ roomId, userIds }) => {
         if (roomId && userIds.length > 0) {
-          try {
-            await room.postMember(roomId, userIds);
-          } catch {
-            showToast({
-              mode: 'WARN',
-              message: '방 생성은 완료 되었지만, 초대 중 문제가 발생했습니다.',
-            });
-            queryClient.invalidateQueries({ queryKey: ['rooms'] });
-            onCreate();
-            return;
-          }
+          await room.postMember(roomId, userIds);
+        } else {
+          showToast({
+            mode: 'WARN',
+            message: '방 생성은 완료 되었지만, 초대 중 문제가 발생했습니다.',
+          });
+          queryClient.invalidateQueries({ queryKey: ['rooms'] });
+          onCreate();
         }
-        queryClient.invalidateQueries({ queryKey: ['rooms'] });
-        showToast({
-          mode: 'SUCCESS',
-          message: '방 생성 완료!',
-        });
-        onCreate();
+        return;
       },
-      onError() {
-        showToast({
-          mode: 'ERROR',
-          message: '방 생성 중 문제가 발생했습니다.',
-        });
+      onError(e) {
+        if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+          showToast({
+            mode: 'WARN',
+            message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+          });
+          logoutUser();
+          navigate(ROUTE_PATH.LOGIN);
+          return;
+        } else {
+          showToast({
+            mode: 'ERROR',
+            message: '방 생성 중 문제가 발생했습니다.',
+          });
+        }
       },
     });
   },
   usePostMember: (roomId: number) => {
     const showToast = useShowToast();
+    const navigate = useNavigate();
+    const { logoutUser } = useAuth();
 
     return useMutation({
       mutationFn: ({ userIds }: { userIds: number[] }) =>
@@ -177,7 +196,16 @@ export const roomQuery = {
         });
         queryClient.invalidateQueries({ queryKey: ['includeMembers', roomId] });
       },
-      onError() {
+      onError(e) {
+        if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+          showToast({
+            mode: 'WARN',
+            message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+          });
+          logoutUser();
+          navigate(ROUTE_PATH.LOGIN);
+          return;
+        }
         showToast({
           mode: 'ERROR',
           message: '초대에 실패했습니다. 다시 시도해 주세요.',
@@ -200,6 +228,8 @@ export const roomQuery = {
   },
   useExitRoom: ({ onExit }: { onExit: () => void }) => {
     const showToast = useShowToast();
+    const navigate = useNavigate();
+    const { logoutUser } = useAuth();
 
     return useMutation({
       mutationFn: async (roomId: number) => room.exitRoom(roomId),
@@ -212,11 +242,21 @@ export const roomQuery = {
         // rooms api 의 쿼리를 이렇게 상수화 안해도 되는걸까?
         queryClient.invalidateQueries({ queryKey: ['rooms'] });
       },
-      onError() {
-        showToast({
-          mode: 'ERROR',
-          message: '방 나가기 중 문제가 발생했습니다.',
-        });
+      onError(e) {
+        if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
+          showToast({
+            mode: 'WARN',
+            message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+          });
+          logoutUser();
+          navigate(ROUTE_PATH.LOGIN);
+          return;
+        } else {
+          showToast({
+            mode: 'ERROR',
+            message: '방 나가기 중 문제가 발생했습니다.',
+          });
+        }
       },
     });
   },
