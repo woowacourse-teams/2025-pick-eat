@@ -6,15 +6,13 @@ import { pickeatQuery } from '@apis/pickeat';
 import { generateRouterPath } from '@routes/routePath';
 
 import styled from '@emotion/styled';
-import { useNavigate, useSearchParams } from 'react-router';
+import { useNavigate } from 'react-router';
 
 function ParticipantPickeat() {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const pickeatCode = searchParams.get('code') ?? '';
 
   const { data: participatingPickeatData } =
-    pickeatQuery.useSuspenseGetParticipating(pickeatCode);
+    pickeatQuery.useSuspenseGetParticipating();
 
   return (
     <S.Container>

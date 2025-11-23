@@ -457,9 +457,9 @@ export const pickeatQuery = {
       },
     });
   },
-  useSuspenseGetParticipating: (pickeatCode: string) => {
+  useSuspenseGetParticipating: () => {
     return useSuspenseQuery({
-      queryKey: [BASE_PATH, 'participatingPickeat', pickeatCode],
+      queryKey: [BASE_PATH, 'participatingPickeat'],
       queryFn: async () => {
         try {
           return await pickeat.getParticipating();

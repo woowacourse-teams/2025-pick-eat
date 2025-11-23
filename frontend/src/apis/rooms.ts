@@ -1,8 +1,15 @@
+import { useAuth } from '@domains/login/context/AuthProvider';
+
+import { ROUTE_PATH } from '@routes/routePath';
+
+import { useShowToast } from '@provider/ToastProvider';
+
 import { joinAsPath } from '@utils/createUrl';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 
-import { apiClient, BASE_URL_VERSION } from './apiClient';
+import { apiClient, ApiError, BASE_URL_VERSION } from './apiClient';
 import { Room, RoomResponse } from './room';
 
 const convertResponseToRooms = (data: RoomResponse[]) => {
@@ -27,12 +34,29 @@ export const rooms = {
 
 export const roomsQuery = {
   useSuspenseGet: () => {
+    const showToast = useShowToast();
+    const { logoutUser } = useAuth();
+    const navigate = useNavigate();
+
     return useSuspenseQuery({
       queryKey: [BASE_PATH],
       queryFn: async () => {
         try {
           return await rooms.get();
-        } catch {
+        } catch (e) {
+          if (e instanceof ApiError && e.status === 401) {
+            showToast({
+              mode: 'WARN',
+              message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
+            });
+            logoutUser();
+            navigate(ROUTE_PATH.LOGIN);
+          } else {
+            showToast({
+              mode: 'WARN',
+              message: '로그인이 필요합니다.',
+            });
+          }
           return [];
         }
       },
