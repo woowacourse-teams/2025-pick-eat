@@ -108,17 +108,20 @@ function DetailTab() {
     },
   ];
 
-  const getCardContent = CONTENT.map(item => (
-    <Card
-      key={item.id}
-      itemId={item.id}
-      isWish={item.isTemplate}
-      title={item.name}
-      imageUrl={item.imageUrl}
-      onClick={item.onClick}
-      size="sm"
-    />
-  ));
+  const getCardContent = CONTENT.map(item => ({
+    title: `${item.name}에서 식당 투표하기`,
+    content: (
+      <Card
+        key={item.id}
+        itemId={item.id}
+        isWish={item.isTemplate}
+        title={item.name}
+        imageUrl={item.imageUrl}
+        onClick={item.onClick}
+        size="sm"
+      />
+    ),
+  }));
 
   return (
     <S.Container>

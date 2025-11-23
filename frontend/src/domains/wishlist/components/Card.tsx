@@ -50,12 +50,7 @@ function Card({
   } = useModal();
 
   return (
-    <S.Container
-      size={size}
-      onClick={onClick}
-      aria-label={`${title} 식당 투표하기`}
-      role="button"
-    >
+    <S.Container size={size} onClick={onClick}>
       <S.Image src={imageUrl} alt="" />
       <S.TopWrapper>
         <S.TitleArea>
@@ -70,6 +65,7 @@ function Card({
           e.stopPropagation();
           handleOpenModal();
         }}
+        role="button"
       >
         {isWish && <Info size="sm" color={THEME.PALETTE.gray[30]} />}
       </S.InfoButton>
@@ -89,11 +85,13 @@ function Card({
 export default Card;
 
 const S = {
-  Container: styled.div<{ size: 'sm' | 'lg' }>`
+  Container: styled.button<{ size: 'sm' | 'lg' }>`
     width: ${({ size }) => CARD_SIZE.size[size]}px;
     height: ${({ size }) => CARD_SIZE.size[size]}px;
     overflow: hidden;
     position: relative;
+    display: flex;
+    color: ${({ theme }) => theme.PALETTE.gray[100]};
 
     padding: ${({ size }) => CARD_SIZE.padding[size]};
 
@@ -120,12 +118,14 @@ const S = {
     z-index: 1;
   `,
   Title: styled.span<{ size: 'sm' | 'lg' }>`
+    width: fit-content;
     font: ${({ size }) => CARD_SIZE.titleFont[size]};
   `,
   Description: styled.span<{ size: 'sm' | 'lg' }>`
+    width: fit-content;
     font: ${({ size }) => CARD_SIZE.descriptionFont[size]};
   `,
-  InfoButton: styled.button`
+  InfoButton: styled.div`
     position: absolute;
     top: 90px;
     z-index: 1;

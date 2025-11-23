@@ -72,24 +72,26 @@ function Main() {
     },
     {
       id: 3,
-      name: '내 위치에서',
+      name: '내 위치',
       imageUrl: '/images/carousel/map_thumbnail.png',
       isTemplate: false,
       onClick: () => handleLocationCardClick(),
     },
   ];
 
-  const getCardContent = CONTENT.map(item => (
-    <Card
-      key={item.id}
-      itemId={item.id}
-      isWish={item.isTemplate}
-      title={item.name}
-      imageUrl={item.imageUrl}
-      onClick={item.onClick}
-      size="lg"
-    />
-  ));
+  const getCardContent = CONTENT.map(item => ({
+    title: `${item.name}에서 식당 투표하기`,
+    content: (
+      <Card
+        itemId={item.id}
+        isWish={item.isTemplate}
+        title={item.name}
+        imageUrl={item.imageUrl}
+        onClick={item.onClick}
+        size="lg"
+      />
+    ),
+  }));
 
   return (
     <S.Container>

@@ -24,9 +24,15 @@ export const Default: Story = {
     ];
     return (
       <Carousel
-        contentArr={WISHLIST_MOCK_DATA.map(item => (
-          <div key={item.id}>{item.name}</div>
-        ))}
+        contentArr={WISHLIST_MOCK_DATA.map(item => ({
+          title: item.name,
+          content: (
+            <div key={item.id} style={{ width: '50px' }}>
+              {item.name}
+            </div>
+          ),
+        }))}
+        showArrows
       />
     );
   },
