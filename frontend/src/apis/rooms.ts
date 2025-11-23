@@ -44,7 +44,7 @@ export const roomsQuery = {
         try {
           return await rooms.get();
         } catch (e) {
-          if (e instanceof ApiError && e.status === 401) {
+          if (e instanceof ApiError && (e.status === 401 || e.status === 403)) {
             showToast({
               mode: 'WARN',
               message: '로그인이 만료되었습니다. 다시 로그인해주세요.',
