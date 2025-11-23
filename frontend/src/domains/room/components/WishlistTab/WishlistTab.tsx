@@ -6,6 +6,7 @@ import { wishQuery } from '@apis/wish';
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
+import { Activity } from 'react';
 import { useSearchParams } from 'react-router';
 
 import RegisterWishModal from './RegisterWishModal';
@@ -32,7 +33,9 @@ function WishlistTab() {
           ))}
       </S.Wishlist>
 
-      {opened && <RegisterWishModal onClose={handleCloseModal} />}
+      <Activity mode={opened ? 'visible' : 'hidden'}>
+        <RegisterWishModal onClose={handleCloseModal} />
+      </Activity>
     </S.Container>
   );
 }
