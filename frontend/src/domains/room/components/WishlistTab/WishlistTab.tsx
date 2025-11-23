@@ -13,7 +13,13 @@ import RegisterWishModal from './RegisterWishModal';
 import WishRestaurantCard from './WishRestaurantCard';
 
 function WishlistTab() {
-  const { opened, handleCloseModal, handleOpenModal } = useModal();
+  const {
+    opened,
+    mounted,
+    handleCloseModal,
+    handleOpenModal,
+    handleUnmountModal,
+  } = useModal();
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
 
@@ -33,9 +39,14 @@ function WishlistTab() {
           ))}
       </S.Wishlist>
 
-      <Activity mode={opened ? 'visible' : 'hidden'}>
-        <RegisterWishModal onClose={handleCloseModal} />
-      </Activity>
+      {mounted && (
+        <Activity mode={opened ? 'visible' : 'hidden'}>
+          <RegisterWishModal
+            onClose={handleCloseModal}
+            onUnmount={handleUnmountModal}
+          />
+        </Activity>
+      )}
     </S.Container>
   );
 }

@@ -15,9 +15,10 @@ import SearchRestaurant from './SearchRestaurant';
 
 type Props = {
   onClose: () => void;
+  onUnmount: () => void;
 };
 
-function RegisterWishModal({ onClose }: Props) {
+function RegisterWishModal({ onClose, onUnmount }: Props) {
   const { opened, handleCloseModal, handleOpenModal } = useModal();
   const modalRoot = document.querySelector('#modal') as HTMLElement;
 
@@ -28,7 +29,7 @@ function RegisterWishModal({ onClose }: Props) {
     handleCreateWish,
     isPending,
   } = useCreateWish({
-    onCreate: onClose,
+    onCreate: onUnmount,
     onCloseBottomSheet: handleCloseModal,
   });
 
