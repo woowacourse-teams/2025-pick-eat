@@ -27,6 +27,7 @@ function RegisterWishModal({ onClose, onUnmount }: Props) {
     handleFormData,
     initialWishFormData,
     handleCreateWish,
+    handleResetFormData,
     isPending,
   } = useCreateWish({
     onCreate: onUnmount,
@@ -61,6 +62,7 @@ function RegisterWishModal({ onClose, onUnmount }: Props) {
           onFormChange={handleFormData}
           onSubmit={handleCreateWish}
           isLoading={isPending}
+          onResetFormData={handleResetFormData}
         />
       </S.SearchWrapper>
 

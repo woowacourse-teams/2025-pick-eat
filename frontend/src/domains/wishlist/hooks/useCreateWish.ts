@@ -41,6 +41,10 @@ export const useCreateWish = ({ onCreate, onCloseBottomSheet }: Props) => {
     setFormData(prev => (prev ? { ...prev, [key]: value } : prev));
   };
 
+  const handleResetFormData = () => {
+    setFormData(DEFAULT_FORM_DATA);
+  };
+
   const handleCreateWish = async () => {
     try {
       validateWishForm(formData);
@@ -53,6 +57,7 @@ export const useCreateWish = ({ onCreate, onCloseBottomSheet }: Props) => {
   return {
     formData,
     handleFormData,
+    handleResetFormData,
     initialWishFormData,
     handleCreateWish,
     isPending,
