@@ -64,14 +64,14 @@ jobs:
 
       - name: Copy Docker Compose
         run: |
-          sudo cp ./backend/docker/docker-compose.prod.yml /home/ubuntu/application/docker-compose.yml
+          sudo cp ./backend/docker/docker-compose.prod.yml /home/ubuntu/pickeat-prod/application/docker-compose.yml
 
       - name: Run Blue-Green Deploy
         run: |
           if [ -f "/home/ubuntu/deploy.sh" ]; then
             echo "🚀 Running deploy script..."
-            sudo chmod +x /home/ubuntu/deploy.sh
-            sudo /home/ubuntu/deploy.sh
+            sudo chmod +x /home/ubuntu/pickeat-prod/deploy.sh
+            sudo /home/ubuntu/pickeat-prod/deploy.sh
           else
             echo "❌ deploy.sh not found!"
             exit 1
