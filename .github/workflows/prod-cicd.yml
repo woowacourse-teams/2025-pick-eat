@@ -66,7 +66,7 @@ jobs:
 
       - name: Run Blue-Green Deploy
         run: |
-          if [ -f "/home/ubuntu/deploy.sh" ]; then
+          if [ -f "/home/ubuntu/pickeat-prod/deploy.sh" ]; then
             echo "🚀 Running deploy script..."
             sudo chmod +x /home/ubuntu/pickeat-prod/deploy.sh
             sudo /home/ubuntu/pickeat-prod/deploy.sh
