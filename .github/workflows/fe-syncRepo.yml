@@ -2,7 +2,6 @@ name: 팀 프론트엔드 변경 자동 동기화
 
 on:
   push:
-    push:
     branches:
       - front/dev
     paths:
