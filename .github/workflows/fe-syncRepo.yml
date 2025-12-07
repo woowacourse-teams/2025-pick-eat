@@ -2,6 +2,9 @@ name: 팀 프론트엔드 변경 자동 동기화
 
 on:
   push:
+    push:
+    branches:
+      - front/dev
     paths:
       - 'frontend/**' # frontend에 변경이 있을 때만 실행
 
