@@ -1,0 +1,33 @@
+name: 팀 프론트엔드 변경 자동 동기화
+
+on:
+  push:
+    paths:
+      - 'frontend/**' # frontend에 변경이 있을 때만 실행
+
+jobs:
+  sync-frontend:
+    name: 프론트엔드 동기화 작업
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 팀 레포 체크아웃
+        uses: actions/checkout@v3
+
+      - name: 프론트엔드 폴더 복사
+        run: |
+          mkdir sync
+          cp -R frontend/* sync/
+
+      - name: 개인 레포에 프론트엔드 동기화
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.MY_TOKEN }}
+        with:
+          source-directory: 'sync'
+          destination-github-username: 'minji2219'
+          destination-repository-name: '2025-pick-eat'
+          user-email: ${{ secrets.EMAIL }}
+          commit-message: 'sync: 팀 repo → 개인 repo 프론트엔드 변경 반영 (${{ github.sha }})'
+          target-branch: main
+          target-directory: 'frontend' # 개인 레포의 frontend 폴더에 덮어쓰기
