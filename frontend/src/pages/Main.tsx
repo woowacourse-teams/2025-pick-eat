@@ -25,7 +25,7 @@ type Content = {
 };
 
 function Main() {
-  // console.log('vercel 배포 테스트');
+  console.log('vercel cd 테스트');
   const navigate = useNavigate();
   const showToast = useShowToast();
   const [searchParams] = useSearchParams();
