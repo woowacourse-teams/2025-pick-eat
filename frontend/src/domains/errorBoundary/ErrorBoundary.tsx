@@ -1,26 +1,40 @@
 import Button from '@components/actions/Button';
 
+import { ApiError } from '@apis/apiClient';
+
 import styled from '@emotion/styled';
 import React from 'react';
 
-type Props = { children: React.ReactNode };
-type State = { hasError: boolean };
+import { getErrorMessageByCode } from './parsingError';
+
+type Props = { children: React.ReactNode; onReset: () => void };
+type State = { hasError: boolean; error: ApiError | null };
 
 class ErrorBoundary extends React.Component<Props, State> {
-  state: State = { hasError: false };
+  state: State = { hasError: false, error: null };
 
-  static getDerivedStateFromError() {
-    return { hasError: true };
+  static getDerivedStateFromError(error: ApiError) {
+    return { hasError: true, error };
   }
 
+  reset = () => {
+    // 1) ErrorBoundary 상태 초기화
+    this.setState({ hasError: false, error: null });
+    console.log('error', this.state.error?.status, this.state.error?.body);
+    // 2) React Query에도 reset 신호 전달
+    this.props.onReset?.();
+  };
+
   render() {
-    if (this.state.hasError) {
+    if (this.state.hasError && this.state.error) {
+      const { code, message } = getErrorMessageByCode(this.state.error);
       return (
         <S.Container>
           <S.Wrapper>
             <S.Title>😱오류가 발생했습니다.😵</S.Title>
-            <S.Description>죄송합니다. 다시 시도해 주세요.</S.Description>
-            <Button text="새로고침" onClick={() => window.location.reload()} />
+            <S.SubTitle>{code}</S.SubTitle>
+            <S.Description>{message}</S.Description>
+            <Button text="새로고침" onClick={this.reset} />
           </S.Wrapper>
         </S.Container>
       );
@@ -51,6 +65,9 @@ const S = {
   `,
   Title: styled.h1`
     font: ${({ theme }) => theme.FONTS.heading.medium};
+  `,
+  SubTitle: styled.h2`
+    font: ${({ theme }) => theme.FONTS.heading.small};
   `,
   Description: styled.p``,
 };
