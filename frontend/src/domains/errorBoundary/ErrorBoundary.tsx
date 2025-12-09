@@ -5,7 +5,7 @@ import { ApiError } from '@apis/apiClient';
 import styled from '@emotion/styled';
 import React from 'react';
 
-import { getErrorMessageByCode } from './parsingError';
+import { getErrorMessageByCode } from '../../shared/utils/errorMapper';
 
 type Props = { children: React.ReactNode; onReset: () => void };
 type State = { hasError: boolean; error: ApiError | null };
