@@ -20,7 +20,6 @@ class ErrorBoundary extends React.Component<Props, State> {
   reset = () => {
     // 1) ErrorBoundary 상태 초기화
     this.setState({ hasError: false, error: null });
-    console.log('error', this.state.error?.status, this.state.error?.body);
     // 2) React Query에도 reset 신호 전달
     this.props.onReset?.();
   };
