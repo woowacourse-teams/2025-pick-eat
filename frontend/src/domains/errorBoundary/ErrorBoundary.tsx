@@ -7,7 +7,7 @@ import React from 'react';
 
 import { getErrorMessageByCode } from '../../shared/utils/errorMapper';
 
-type Props = { children: React.ReactNode; onReset: () => void };
+type Props = { children: React.ReactNode; onReset?: () => void };
 type State = { hasError: boolean; error: ApiError | null };
 
 class ErrorBoundary extends React.Component<Props, State> {
