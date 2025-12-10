@@ -9,6 +9,7 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeR
 import com.pickeat.backend.restaurant.application.dto.request.TemplateRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.ui.api.RestaurantApiSpec;
 import jakarta.validation.Valid;
 import java.net.URI;
@@ -98,9 +99,13 @@ public class RestaurantController implements RestaurantApiSpec {
     public ResponseEntity<List<RestaurantResponse>> getPickeatRestaurants(
             @PathVariable("pickeatCode") String pickeatCode,
             @RequestParam(required = false) Boolean isExcluded,
+            @RequestParam(required = false) FoodCategory foodCategory,
             @ParticipantInPickeat ParticipantPrincipal participantPrincipal
     ) {
-        List<RestaurantResponse> response = restaurantService.getPickeatRestaurants(pickeatCode, isExcluded,
+        List<RestaurantResponse> response = restaurantService.getPickeatRestaurants(
+                pickeatCode,
+                isExcluded,
+                foodCategory,
                 participantPrincipal.id());
         return ResponseEntity.ok().body(response);
     }

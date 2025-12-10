@@ -32,4 +32,18 @@ public class RestaurantFixture {
                 pickeatId
         );
     }
+
+    public static Restaurant create(Long pickeatId, FoodCategory foodCategory) {
+        return new Restaurant(
+                "식당",
+                foodCategory,
+                10,
+                "도로명 주소",
+                "URL",
+                "태그1,태그2",
+                null,
+                null,
+                pickeatId
+        );
+    }
 }

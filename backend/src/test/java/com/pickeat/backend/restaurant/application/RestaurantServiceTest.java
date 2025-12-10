@@ -190,7 +190,7 @@ class RestaurantServiceTest {
 
             // when
             List<RestaurantResponse> restaurants = restaurantService.getPickeatRestaurants(
-                    pickeat.getCode().toString(), false, participant.getId());
+                    pickeat.getCode().toString(), false, null, participant.getId());
 
             // then
             assertThat(restaurants).hasSize(2);
@@ -210,7 +210,7 @@ class RestaurantServiceTest {
             // when
             restaurantService.like(restaurant1.getId(), participant.getId());
             List<RestaurantResponse> restaurants = restaurantService.getPickeatRestaurants(
-                    pickeat.getCode().toString(), false, participant.getId());
+                    pickeat.getCode().toString(), false, null, participant.getId());
 
             // then
             assertThat(restaurants.getFirst().isLiked()).isTrue();

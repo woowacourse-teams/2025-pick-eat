@@ -10,6 +10,7 @@ import com.pickeat.backend.pickeat.domain.repository.PickeatRepository;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import com.pickeat.backend.restaurant.domain.RestaurantLike;
 import com.pickeat.backend.restaurant.domain.repository.RestaurantBulkRepository;
@@ -50,10 +51,17 @@ public class RestaurantService {
         restaurantBulkRepository.batchInsert(restaurants);
     }
 
-    public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode, Boolean isExcluded, Long participantId) {
+    public List<RestaurantResponse> getPickeatRestaurants(String pickeatCode,
+                                                          Boolean isExcluded,
+                                                          FoodCategory foodCategory,
+                                                          Long participantId
+    ) {
         Pickeat pickeat = getPickeatByCode(pickeatCode);
-        List<Restaurant> restaurants = restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(),
-                isExcluded);
+        List<Restaurant> restaurants = restaurantRepository.findByPickeatIdAndIsExcludedAndFoodCategoryIfProvided(
+                pickeat.getId(),
+                isExcluded,
+                foodCategory
+        );
         List<RestaurantResponse> response = new ArrayList<>();
 
         for (Restaurant restaurant : restaurants) {
