@@ -23,12 +23,9 @@ function PreferRestaurantList() {
     }
   );
 
-  const sortRestaurants = (restaurantList: Restaurant[]) => {
-    return restaurantList.sort((a, b) => {
-      if (b.likeCount !== a.likeCount) {
-        return b.likeCount - a.likeCount;
-      }
-
+  const sortRestaurants = (list: Restaurant[]) => {
+    return [...list].sort((a, b) => {
+      if (b.likeCount !== a.likeCount) return b.likeCount - a.likeCount;
       return a.name.localeCompare(b.name, 'ko');
     });
   };
