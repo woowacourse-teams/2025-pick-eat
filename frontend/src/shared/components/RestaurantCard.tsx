@@ -1,6 +1,7 @@
 import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
+import React from 'react';
 
 import Chip from './labels/Chip';
 
@@ -65,7 +66,7 @@ function RestaurantCard({ restaurantData }: Props) {
   );
 }
 
-export default RestaurantCard;
+export default React.memo(RestaurantCard);
 
 const S = {
   Container: styled.div`
