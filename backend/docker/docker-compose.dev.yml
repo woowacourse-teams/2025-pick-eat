@@ -3,7 +3,7 @@ services:
   backend-blue:
     image: pickeat/pickeat:latest
     container_name: backend-blue
-    restart: always
+    restart: unless-stopped
     ports:
       - "8080:8080"
     volumes:
@@ -16,7 +16,7 @@ services:
   backend-green:
     image: pickeat/pickeat:latest
     container_name: backend-green
-    restart: always
+    restart: unless-stopped
     ports:
       - "8081:8080"
     volumes:
@@ -45,14 +45,15 @@ services:
   alloy:
     image: grafana/alloy:latest
     container_name: alloy
+    restart: unless-stopped
     ports:
       - "12345:12345"
     volumes:
       - ./data/springboot/logs/blue:/var/log/spring/blue
       - ./data/springboot/logs/green:/var/log/spring/green
-      - ./data/alloy/config.alloy:/etc/alloy/config.alloy
       - ../proxy/nginx/logs:/var/log/nginx
-
+      - ./data/alloy/config.alloy:/etc/alloy/config.alloy
+      - ./data/alloy/state:/var/lib/alloy
     environment:
       - ALLOY_ENV=dev
     networks:
