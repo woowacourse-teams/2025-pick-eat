@@ -15,8 +15,8 @@ public class StressRestaurantSearchClient implements RestaurantSearchClient {
         List<RestaurantRequest> restaurants = new ArrayList<>();
         for (int i = 0; i < request.size(); i++) {
             restaurants.add(RestaurantRequest.fromLocation(
-                    request.query() + "음식" + i,
-                    FoodCategory.getCategoryNameBy(request.query()),
+                    request.restaurantCategory().getKoreanName() + "음식" + i,
+                    FoodCategory.getCategoryNameBy(request.restaurantCategory().getKoreanName()),
                     ThreadLocalRandom.current().nextInt(0, request.radius() + 1),
                     "도로명 주소" + i,
                     "식당 URL" + i,
