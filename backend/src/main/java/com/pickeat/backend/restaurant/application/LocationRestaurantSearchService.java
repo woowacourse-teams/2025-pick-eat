@@ -3,6 +3,7 @@ package com.pickeat.backend.restaurant.application;
 import com.pickeat.backend.restaurant.application.dto.request.LocationRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
+import com.pickeat.backend.restaurant.domain.RestaurantCategory;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -25,21 +26,21 @@ public class LocationRestaurantSearchService {
 
         List<RestaurantRequest> requests = new ArrayList<>();
         requests.addAll(restaurantSearchClient.getRestaurants(
-                new RestaurantSearchRequest("한식", x, y, radius, RESTAURANT_SEARCH_SIZE)));
+                new RestaurantSearchRequest(RestaurantCategory.KOREAN, x, y, radius, RESTAURANT_SEARCH_SIZE)));
         requests.addAll(restaurantSearchClient.getRestaurants(
-                new RestaurantSearchRequest("양식", x, y, radius, RESTAURANT_SEARCH_SIZE)));
+                new RestaurantSearchRequest(RestaurantCategory.WESTERN, x, y, radius, RESTAURANT_SEARCH_SIZE)));
         requests.addAll(restaurantSearchClient.getRestaurants(
-                new RestaurantSearchRequest("중식", x, y, radius, RESTAURANT_SEARCH_SIZE)));
+                new RestaurantSearchRequest(RestaurantCategory.CHINESE, x, y, radius, RESTAURANT_SEARCH_SIZE)));
         requests.addAll(restaurantSearchClient.getRestaurants(
-                new RestaurantSearchRequest("일식", x, y, radius, RESTAURANT_SEARCH_SIZE)));
+                new RestaurantSearchRequest(RestaurantCategory.JAPANESE, x, y, radius, RESTAURANT_SEARCH_SIZE)));
         requests.addAll(restaurantSearchClient.getRestaurants(
-                new RestaurantSearchRequest("패스트푸드", x, y, radius, RESTAURANT_SEARCH_SIZE)));
+                new RestaurantSearchRequest(RestaurantCategory.FASTFOOD, x, y, radius, RESTAURANT_SEARCH_SIZE)));
         requests.addAll(restaurantSearchClient.getRestaurants(
-                new RestaurantSearchRequest("아시안음식", x, y, radius, RESTAURANT_SEARCH_SIZE)));
+                new RestaurantSearchRequest(RestaurantCategory.ASIANFOOD, x, y, radius, RESTAURANT_SEARCH_SIZE)));
         requests.addAll(restaurantSearchClient.getRestaurants(
-                new RestaurantSearchRequest("도시락", x, y, radius, RESTAURANT_SEARCH_SIZE)));
+                new RestaurantSearchRequest(RestaurantCategory.LUNCHBOX, x, y, radius, RESTAURANT_SEARCH_SIZE)));
         requests.addAll(restaurantSearchClient.getRestaurants(
-                new RestaurantSearchRequest("분식", x, y, radius, RESTAURANT_SEARCH_SIZE)));
+                new RestaurantSearchRequest(RestaurantCategory.STREETFOOD, x, y, radius, RESTAURANT_SEARCH_SIZE)));
 
         return requests;
     }

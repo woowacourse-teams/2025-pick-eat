@@ -47,6 +47,19 @@ public record RestaurantRequest(
         );
     }
 
+    public static RestaurantRequest fromLocation(String name, String placeUrl, String tags) {
+        return new RestaurantRequest(
+                name,
+                null,
+                null,
+                null,
+                placeUrl,
+                tags,
+                null,
+                null
+        );
+    }
+
     private static RestaurantRequest createRestaurantRequest(RestaurantInfo restaurantInfo) {
         Picture picture = restaurantInfo.getPicture();
         return new RestaurantRequest(
