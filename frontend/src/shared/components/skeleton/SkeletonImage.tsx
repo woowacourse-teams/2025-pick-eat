@@ -9,7 +9,7 @@ type Props = {
   borderRadius?: string;
 } & ComponentProps<'img'>;
 
-function ThumbnailSkeleton({
+function SkeletonImage({
   width = '100%',
   height = '100%',
   borderRadius = THEME.RADIUS.medium,
@@ -28,7 +28,7 @@ function ThumbnailSkeleton({
   );
 }
 
-export default ThumbnailSkeleton;
+export default SkeletonImage;
 
 const S = {
   Skeleton: styled.div<{

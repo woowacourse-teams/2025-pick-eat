@@ -3,7 +3,7 @@ import { Restaurant } from '@apis/restaurant';
 import styled from '@emotion/styled';
 
 import Chip from './labels/Chip';
-import ThumbnailSkeleton from './skeleton/ThumbnailSkeleton';
+import SkeletonImage from './skeleton/SkeletonImage';
 
 export type RestaurantCardData = Pick<
   Restaurant,
@@ -28,7 +28,7 @@ function RestaurantCard({ restaurantData }: Props) {
 
   return (
     <S.Container aria-label={`${name} ${tags.join('')} 메뉴가 있습니다.`}>
-      <ThumbnailSkeleton
+      <SkeletonImage
         width="90px"
         height="90px"
         aria-hidden="true"
