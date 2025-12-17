@@ -49,6 +49,8 @@ dependencies {
     implementation platform('software.amazon.awssdk:bom:2.27.21')
     implementation 'software.amazon.awssdk:s3'
 
+    implementation 'io.github.resilience4j:resilience4j-spring-boot3:2.2.0'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:5.4.0'  // 버전 통일: 5.4.0 사용
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
