@@ -6,6 +6,7 @@ import com.pickeat.backend.restaurant.application.dto.request.RestaurantExcludeR
 import com.pickeat.backend.restaurant.application.dto.request.TemplateRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.WishRestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResponse;
+import com.pickeat.backend.restaurant.domain.FoodCategory;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -433,6 +434,10 @@ public interface RestaurantApiSpec {
 
             @Parameter(description = "소거 여부 필터 ( --: 전체 식당 조회, true: 소거된 식당만, false: 소거되지 않은 식당만)")
             @RequestParam(required = false) Boolean isExcluded,
+
+            @Parameter(description = "음식 카테고리 필터 (지정하지 않으면 전체 카테고리 조회)")
+            @RequestParam(required = false) FoodCategory foodCategory,
+
             @Parameter(hidden = true) ParticipantPrincipal participantPrincipal
     );
 }

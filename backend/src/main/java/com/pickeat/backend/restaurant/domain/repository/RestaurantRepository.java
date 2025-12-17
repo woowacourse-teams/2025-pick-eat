@@ -1,5 +1,6 @@
 package com.pickeat.backend.restaurant.domain.repository;
 
+import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import java.util.Collection;
 import java.util.List;
@@ -14,11 +15,14 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
 
     @Query("""
             select r from Restaurant r
-            where (r.pickeatId = :pickeatId)
+            where r.pickeatId = :pickeatId
                 and (:isExcluded IS NULL OR r.isExcluded = :isExcluded)
+                and (:foodCategory IS NULL OR r.restaurantInfo.foodCategory = :foodCategory)
             """)
-    List<Restaurant> findByPickeatIdAndIsExcludedIfProvided(@Param("pickeatId") Long pickeatId,
-                                                            @Param("isExcluded") Boolean isExcluded);
+    List<Restaurant> findByPickeatIdAndIsExcludedAndFoodCategoryIfProvided(
+            @Param("pickeatId") Long pickeatId,
+            @Param("isExcluded") Boolean isExcluded,
+            @Param("foodCategory") FoodCategory foodCategory);
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query(value = "UPDATE restaurant SET deleted = true WHERE pickeat_id IN (:pickeatIds)", nativeQuery = true)
