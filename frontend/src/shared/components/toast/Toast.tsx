@@ -50,19 +50,8 @@ const S = {
 
     font: ${({ theme }) => theme.FONTS.body.small};
 
-    animation: fade-animation 0.5s ease-out;
     border-radius: ${({ theme }) => theme.RADIUS.small};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level4};
-
-    @keyframes fade-animation {
-      0% {
-        opacity: 0;
-      }
-
-      100% {
-        opacity: 1;
-      }
-    }
   `,
 
   ProgressBar: styled.div<{

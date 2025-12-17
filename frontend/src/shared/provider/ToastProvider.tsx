@@ -30,14 +30,17 @@ function ToastProvider({ children }: { children: ReactNode }) {
   const showToast = useCallback(
     (toast: ToastType, timeSet: number = DEFAULT_TIME) => {
       const id: `${string}-${string}` = `${generateRandomNumber(10000, 4)}-${generateRandomNumber(10000, 4)}`;
-
-      setToasts(prev => [{ ...toast, id: id, timeSet: timeSet }, ...prev]);
+      document.startViewTransition(() => {
+        setToasts(prev => [{ ...toast, id: id, timeSet: timeSet }, ...prev]);
+      });
     },
     []
   );
 
   const removeToast = (toastId: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== toastId));
+    document.startViewTransition(() => {
+      setToasts(prev => prev.filter(toast => toast.id !== toastId));
+    });
   };
 
   return (
