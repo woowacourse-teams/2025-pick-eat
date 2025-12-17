@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
+import com.pickeat.backend.restaurant.domain.RestaurantCategory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +38,7 @@ class KakaoClientConnectionTest {
 
         // when
         assertThatCode(() -> client.getRestaurants(
-                new RestaurantSearchRequest("패스트푸드", 127.103068896795, 37.5152535228382, 200, 10)))
+                new RestaurantSearchRequest(RestaurantCategory.FASTFOOD, 127.103068896795, 37.5152535228382, 200, 10)))
                 .doesNotThrowAnyException();
     }
 }
