@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 
-@Profile("!test")
+@Profile({"local", "prod", "dev"})
 @Primary
 @Slf4j
 @Component
