@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResourceAccessException;
 
-@Profile({"local", "prod", "dev"})
+@Profile({"local", "prod", "dev", "stress"})
 @Primary
 @Slf4j
 @Component
@@ -38,6 +38,7 @@ public class FailoverRestaurantSearchClient implements RestaurantSearchClient {
                 .tag("from", "kakao")
                 .tag("to", "google")
                 .register(meterRegistry);
+        log.info("FailoverRestaurantSearchClient created");
     }
 
     @Override

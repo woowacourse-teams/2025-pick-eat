@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
-@Profile({"local", "dev", "prod"})
+@Profile({"local", "dev", "prod", "stress"})
 @Configuration
 @RequiredArgsConstructor
 public class KakaoLoginConfig {

@@ -6,6 +6,7 @@ import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.wish.application.ImageUploadClient;
 import com.pickeat.backend.wish.application.dto.request.ImageRequest;
 import java.util.UUID;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.exception.SdkClientException;
@@ -15,6 +16,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.S3Exception;
 
+@Slf4j
 public class S3ImageUploadClient implements ImageUploadClient {
 
     private final S3Client s3Client;
@@ -32,6 +34,7 @@ public class S3ImageUploadClient implements ImageUploadClient {
         this.bucketName = bucketName;
         this.region = region;
         this.keyPrefix = keyPrefix;
+        log.info("S3ImageUploadClient created");
     }
 
     @Override

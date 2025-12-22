@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
-@Profile({"prod", "dev", "local"})
+@Profile({"prod", "dev", "local", "stress"})
 @Configuration
 @RequiredArgsConstructor
 public class GoogleMapClientConfig {
