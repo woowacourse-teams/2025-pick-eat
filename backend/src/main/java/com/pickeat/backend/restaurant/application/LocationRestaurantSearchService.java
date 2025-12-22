@@ -7,9 +7,11 @@ import com.pickeat.backend.restaurant.domain.RestaurantCategory;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,6 +25,15 @@ public class LocationRestaurantSearchService {
         Double x = request.x();
         Double y = request.y();
         int radius = request.radius();
+
+        // TEMP: 임시 시간 측정 코드
+        long start = System.currentTimeMillis();
+        try {
+            restaurantSearchClient.getRestaurants(
+                    new RestaurantSearchRequest(RestaurantCategory.KOREAN, x, y, radius, RESTAURANT_SEARCH_SIZE));
+        } finally {
+            log.info("RestaurantSearchClient Total Time={}", System.currentTimeMillis() - start);
+        }
 
         List<RestaurantRequest> requests = new ArrayList<>();
         requests.addAll(restaurantSearchClient.getRestaurants(

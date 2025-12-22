@@ -11,10 +11,12 @@ import com.pickeat.backend.wish.domain.Wish;
 import com.pickeat.backend.wish.domain.repository.WishRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -51,6 +53,15 @@ public class WishPictureService {
         validateUserAccessToWish(wish, userId);
 
         deleteWishPicture(wish);
+
+        // TEMP: 임시 시간 측정 코드
+        long start = System.currentTimeMillis();
+        try {
+            ImageRequest uploadedResult = uploadWishPictures(picture);
+        } finally {
+            log.info("S3ImageUploadClient Total Time={}", System.currentTimeMillis() - start);
+        }
+
         ImageRequest uploadedResult = uploadWishPictures(picture);
         changeWishPicture(wish, uploadedResult);
         return WishPictureResponse.from(wish);
