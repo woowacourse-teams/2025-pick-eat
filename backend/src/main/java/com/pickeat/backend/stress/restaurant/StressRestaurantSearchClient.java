@@ -7,11 +7,17 @@ import com.pickeat.backend.restaurant.domain.FoodCategory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class StressRestaurantSearchClient implements RestaurantSearchClient {
 
+    private static final int GENERAL_PROCESSING_TIME = 70;
+
     @Override
     public List<RestaurantRequest> getRestaurants(RestaurantSearchRequest request) {
+
+        long startTime = System.nanoTime();
+
         List<RestaurantRequest> restaurants = new ArrayList<>();
         for (int i = 0; i < request.size(); i++) {
             restaurants.add(RestaurantRequest.fromLocation(
@@ -23,6 +29,18 @@ public class StressRestaurantSearchClient implements RestaurantSearchClient {
                     "태그" + i
             ));
         }
+
+        long endTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
+        long remainingTime = GENERAL_PROCESSING_TIME - endTime;
+
+        if (remainingTime > 0) {
+            try {
+                Thread.sleep(remainingTime);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
         return restaurants;
     }
 }
