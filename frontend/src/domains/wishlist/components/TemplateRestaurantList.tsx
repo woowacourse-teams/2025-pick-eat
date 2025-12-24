@@ -1,4 +1,3 @@
-import LoadingSpinner from '@components/assets/LoadingSpinner';
 import RestaurantCard from '@components/RestaurantCard';
 
 import { templateQuery } from '@apis/template';
@@ -11,7 +10,7 @@ type Props = {
 };
 
 function TemplateRestaurantList({ title, templateId }: Props) {
-  const { data, isLoading } = templateQuery.useGetTemplate(templateId);
+  const { data } = templateQuery.useSuspenseGetTemplate(templateId);
   return (
     <S.Container>
       <S.TitleSection>
@@ -21,15 +20,11 @@ function TemplateRestaurantList({ title, templateId }: Props) {
         </S.Description>
       </S.TitleSection>
 
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <S.RestaurantWrapper>
-          {data?.map(item => (
-            <RestaurantCard key={item.id} restaurantData={item} />
-          ))}
-        </S.RestaurantWrapper>
-      )}
+      <S.RestaurantWrapper>
+        {data?.map(item => (
+          <RestaurantCard key={item.id} restaurantData={item} />
+        ))}
+      </S.RestaurantWrapper>
     </S.Container>
   );
 }
