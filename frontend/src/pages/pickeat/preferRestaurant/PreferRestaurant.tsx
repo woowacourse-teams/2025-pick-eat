@@ -4,7 +4,7 @@ import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWit
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import ErrorBoundary from '@components/errors/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
 

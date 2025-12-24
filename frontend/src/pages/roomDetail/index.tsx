@@ -4,7 +4,7 @@ import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import TabMenu from '@components/tabMenus/TabMenu';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import ErrorBoundary from '@components/errors/ErrorBoundary';
 
 import { roomQuery } from '@apis/room';
 

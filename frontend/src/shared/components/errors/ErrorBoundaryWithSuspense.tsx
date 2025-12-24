@@ -11,7 +11,7 @@ type Props = {
   fallback?: ReactNode;
 };
 
-function QueryErrorBoundary({
+function ErrorBoundaryWithSuspense({
   children,
   isSuspense = true,
   fallback = <LoadingSpinner />,
@@ -29,4 +29,4 @@ function QueryErrorBoundary({
   );
 }
 
-export default QueryErrorBoundary;
+export default ErrorBoundaryWithSuspense;

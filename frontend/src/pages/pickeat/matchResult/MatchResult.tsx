@@ -2,7 +2,7 @@ import ResultContent from '@domains/pickeat/matchResult/components/ResultContent
 
 import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import ErrorBoundary from '@components/errors/ErrorBoundary';
 
 import { usePreventGoBack } from '@hooks/usePreventGoBack';
 

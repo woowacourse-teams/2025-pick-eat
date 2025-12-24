@@ -3,7 +3,7 @@ import Info from '@components/assets/icons/Info';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import ErrorBoundary from '@components/errors/ErrorBoundary';
 
 import { THEME } from '@styles/global';
 

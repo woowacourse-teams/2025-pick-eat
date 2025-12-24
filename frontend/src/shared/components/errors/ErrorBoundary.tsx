@@ -3,14 +3,14 @@ import Button from '@components/actions/Button';
 import { ApiError } from '@apis/apiClient';
 
 import styled from '@emotion/styled';
-import React from 'react';
+import { Component, ReactNode } from 'react';
 
-import { getErrorMessageByCode } from '../../shared/utils/errorMapper';
+import { getErrorMessageByCode } from '../../utils/errorMapper';
 
-type Props = { children: React.ReactNode; onReset?: () => void };
+type Props = { children: ReactNode; onReset?: () => void };
 type State = { hasError: boolean; error: ApiError | null };
 
-class ErrorBoundary extends React.Component<Props, State> {
+class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, error: null };
 
   static getDerivedStateFromError(error: ApiError) {
@@ -18,9 +18,7 @@ class ErrorBoundary extends React.Component<Props, State> {
   }
 
   reset = () => {
-    // 1) ErrorBoundary 상태 초기화
     this.setState({ hasError: false, error: null });
-    // 2) React Query에도 reset 신호 전달
     this.props.onReset?.();
   };
 
@@ -62,10 +60,10 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level4};
   `,
-  Title: styled.h1`
+  Title: styled.p`
     font: ${({ theme }) => theme.FONTS.heading.medium};
   `,
-  SubTitle: styled.h2`
+  SubTitle: styled.p`
     font: ${({ theme }) => theme.FONTS.heading.small};
   `,
   Description: styled.p``,

@@ -6,7 +6,7 @@ import Card from '@domains/wishlist/components/Card';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Carousel from '@components/Carousel';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import ErrorBoundary from '@components/errors/ErrorBoundary';
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
 import { pickeatQuery } from '@apis/pickeat';

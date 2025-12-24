@@ -40,16 +40,11 @@ export const getErrorMessageByCode = (error: ApiError | TypeError) => {
     return ERROR_CODE.NETWORK_ERROR;
   }
 
-  // 2. 서버 커스텀 detail 메시지가 있으면 그것을 우선 사용
-  // if (error?.body?.detail) {
-  //   return { message: error.body.detail as string, code: 'ERROR' };
-  // }
-
-  // 3. 에러 코드에 따른 메시지 매핑
+  // 2. 에러 코드에 따른 메시지 매핑
   if (error?.status && ERROR_CODE[error.status]) {
     return ERROR_CODE[error.status];
   }
 
-  // 4. 그 외 알 수 없는 오류
+  // 3. 그 외 알 수 없는 오류
   return ERROR_CODE.UNKNOWN;
 };

@@ -2,7 +2,7 @@ import PickeatInfo from '@domains/pickeat/components/PickeatInfo';
 
 import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import ErrorBoundary from '@components/errors/ErrorBoundary';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
