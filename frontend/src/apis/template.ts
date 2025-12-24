@@ -2,7 +2,7 @@ import { joinAsPath } from '@utils/createUrl';
 
 import { FoodCategory } from '@constants/foodCategory';
 
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 
 import { apiClient, BASE_URL_VERSION } from './apiClient';
 
@@ -58,8 +58,8 @@ const template = {
 };
 
 export const templateQuery = {
-  useSuspenseGetTemplate: (templateId: number) => {
-    return useSuspenseQuery<TemplateList[]>({
+  useGetTemplate: (templateId: number) => {
+    return useQuery<TemplateList[]>({
       queryKey: ['templates', templateId],
       queryFn: () => template.getTemplate(templateId),
       staleTime: Infinity,

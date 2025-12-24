@@ -74,7 +74,7 @@ function Card({
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <ErrorBoundaryWithSuspense>
+        <ErrorBoundaryWithSuspense isSuspense={false}>
           <TemplateRestaurantList title={title} templateId={itemId} />
         </ErrorBoundaryWithSuspense>
       </Modal>
