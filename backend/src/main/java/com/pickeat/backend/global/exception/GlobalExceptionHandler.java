@@ -139,6 +139,17 @@ public class GlobalExceptionHandler {
         return problemDetail;
     }
 
+    @ExceptionHandler(ExternalApiConnectionException.class)
+    public ProblemDetail handleExternalApiConnectionException(ExternalApiConnectionException e) {
+        logExternalConnectionError(e);
+
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.SERVICE_UNAVAILABLE);
+        problemDetail.setTitle(HttpStatus.SERVICE_UNAVAILABLE.name());
+        problemDetail.setDetail("외부 서비스와의 연결에 실패했습니다. 조금 뒤 다시 시도해주세요.");
+
+        return problemDetail;
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneralException(Exception e) {
         logServerError(e);
@@ -155,6 +166,10 @@ public class GlobalExceptionHandler {
 
     private void logExternalError(ExternalApiException e, HttpStatus status) {
         logSafe(ErrorLog.createExternalErrorLog(status.value(), e, e.getPlatformName()), LogLevel.ERROR);
+    }
+
+    private void logExternalConnectionError(ExternalApiConnectionException e) {
+        logSafe(ErrorLog.createExternalErrorLog(500, e, e.getPlatformName()), LogLevel.ERROR);
     }
 
     private void logInfo(Exception e, String customCode) {

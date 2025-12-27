@@ -1,10 +1,10 @@
 package com.pickeat.backend.restaurant.infrastructure;
 
+import com.pickeat.backend.global.exception.ExternalApiConnectionException;
 import com.pickeat.backend.global.exception.ExternalApiException;
 import io.github.resilience4j.common.retry.configuration.RetryConfigCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.ResourceAccessException;
 
 @Configuration
 public class ResiliencePolicyConfig {
@@ -13,7 +13,7 @@ public class ResiliencePolicyConfig {
     public RetryConfigCustomizer kakaoSearchRetryCustomizer() {
         return RetryConfigCustomizer.of("kakaoSearch", builder -> builder
                 .retryOnException(ex -> {
-                    if (ex instanceof ResourceAccessException) {
+                    if (ex instanceof ExternalApiConnectionException) {
                         return true;
                     }
                     if (ex instanceof ExternalApiException e) {

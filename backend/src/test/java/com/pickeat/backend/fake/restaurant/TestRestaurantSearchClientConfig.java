@@ -1,7 +1,7 @@
 package com.pickeat.backend.fake.restaurant;
 
 import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
-import com.pickeat.backend.restaurant.infrastructure.FailoverRestaurantSearchClient;
+import com.pickeat.backend.restaurant.infrastructure.FailoverRestaurantSearchClientGateway;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -14,13 +14,13 @@ import org.springframework.context.annotation.Profile;
 public class TestRestaurantSearchClientConfig {
 
     @Bean(name = "kakaoRestaurantSearchClient")
-    public FakeRestaurantSearchClient kakaoRestaurantSearchClient() {
-        return new FakeRestaurantSearchClient();
+    public FakeRestaurantSearchClientGateway kakaoRestaurantSearchClient() {
+        return new FakeRestaurantSearchClientGateway();
     }
 
     @Bean(name = "googleRestaurantSearchClient")
-    public FakeRestaurantSearchClient googleRestaurantSearchClient() {
-        return new FakeRestaurantSearchClient();
+    public FakeRestaurantSearchClientGateway googleRestaurantSearchClient() {
+        return new FakeRestaurantSearchClientGateway();
     }
 
     @Bean
@@ -30,6 +30,6 @@ public class TestRestaurantSearchClientConfig {
             @Qualifier("googleRestaurantSearchClient") RestaurantSearchClient secondary,
             MeterRegistry meterRegistry
     ) {
-        return new FailoverRestaurantSearchClient(primary, secondary, meterRegistry);
+        return new FailoverRestaurantSearchClientGateway(primary, secondary, meterRegistry);
     }
 }

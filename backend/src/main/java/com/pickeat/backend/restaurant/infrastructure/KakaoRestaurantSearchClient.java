@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.global.exception.BusinessException;
 import com.pickeat.backend.global.exception.ErrorCode;
+import com.pickeat.backend.global.exception.ExternalApiConnectionException;
 import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
@@ -37,7 +38,7 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
         try {
             return callApi(request);
         } catch (ResourceAccessException e) {
-            throw e;
+            throw new ExternalApiConnectionException(e.getMessage(), PLATFORM_NAME);
         } catch (RestClientException e) {
             throw new ExternalApiException(e.getMessage(), PLATFORM_NAME, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -65,7 +66,8 @@ public class KakaoRestaurantSearchClient implements RestaurantSearchClient {
         try {
             JsonNode errorRoot = objectMapper.readTree(response.getBody());
             String kakaoErrorMessage = objectMapper.writeValueAsString(errorRoot);
-            throw new ExternalApiException(kakaoErrorMessage, PLATFORM_NAME, response.getStatusCode().value());
+            HttpStatus status = HttpStatus.valueOf(response.getStatusCode().value());
+            throw new ExternalApiException(kakaoErrorMessage, PLATFORM_NAME, status);
         } catch (IOException e) {
             throw new BusinessException(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage());
         }
