@@ -95,7 +95,8 @@ public class GoogleRestaurantSearchClient implements RestaurantSearchClient {
                 continue;
             }
 
-            restaurantRequests.add(RestaurantRequest.fromLocation(name, mapsUri, restaurantCategory.getKoreanName()));
+            restaurantRequests.add(RestaurantRequest.fromLocation(name, null, null, null, mapsUri,
+                    restaurantCategory.getKoreanName()));
         }
 
         return restaurantRequests;
