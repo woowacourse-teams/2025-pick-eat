@@ -4,6 +4,7 @@ public enum LogType {
     SERVER_ERROR,
     EXTERNAL_ERROR,
     CLIENT_ERROR,
+    INFO,
     BUSINESS,
     REQUEST,
     RESPONSE
