@@ -1,5 +1,6 @@
 package com.pickeat.backend.restaurant.infrastructure;
 
+import com.pickeat.backend.global.exception.ExternalApiConnectionException;
 import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
@@ -15,19 +16,18 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.ResourceAccessException;
 
 @Profile({"local", "prod", "dev"})
 @Primary
 @Slf4j
 @Component
-public class FailoverRestaurantSearchClient implements RestaurantSearchClient {
+public class FailoverRestaurantSearchClientGateway implements RestaurantSearchClient {
 
     private final RestaurantSearchClient primaryClient;
     private final RestaurantSearchClient secondaryClient;
     private final Counter fallbackCounter;
 
-    public FailoverRestaurantSearchClient(
+    public FailoverRestaurantSearchClientGateway(
             @Qualifier("kakaoRestaurantSearchClient") RestaurantSearchClient primaryClient,
             @Qualifier("googleRestaurantSearchClient") RestaurantSearchClient secondaryClient,
             MeterRegistry meterRegistry) {
@@ -78,7 +78,7 @@ public class FailoverRestaurantSearchClient implements RestaurantSearchClient {
         throw e;
     }
 
-    private List<RestaurantRequest> fallback(RestaurantSearchRequest request, ResourceAccessException e) {
+    private List<RestaurantRequest> fallback(RestaurantSearchRequest request, ExternalApiConnectionException e) {
         log.warn("[RestaurantSearch] primary timeout -> fallback to secondary. request={}", request, e);
 
         fallbackCounter.increment();

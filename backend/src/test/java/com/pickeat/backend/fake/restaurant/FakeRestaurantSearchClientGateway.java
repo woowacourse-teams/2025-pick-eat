@@ -10,11 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
-public class FakeRestaurantSearchClient implements RestaurantSearchClient {
+public class FakeRestaurantSearchClientGateway implements RestaurantSearchClient {
 
     private final AtomicInteger called = new AtomicInteger(0);
 
-    private volatile Function<RestaurantSearchRequest, List<RestaurantRequest>> behavior = this::defaultBehavior;
+    private Function<RestaurantSearchRequest, List<RestaurantRequest>> behavior = this::defaultBehavior;
 
     @Override
     public List<RestaurantRequest> getRestaurants(RestaurantSearchRequest request) {
