@@ -45,6 +45,22 @@ otelcol.receiver.otlp "default" {
   }
 
   output {
+    traces = [otelcol.processor.transform.add_peer_service.input]
+  }
+}
+
+otelcol.processor.transform "add_peer_service" {
+  error_mode = "ignore"
+
+  trace_statements {
+    context = "span"
+    statements = [
+      "set(attributes[\"peer.service\"], \"kakao-api\") where kind == SPAN_KIND_CLIENT and attributes[\"server.address\"] != nil and IsMatch(attributes[\"server.address\"], \".*kakao.*\")",
+      "set(attributes[\"peer.service\"], \"mysql-db\") where kind == SPAN_KIND_CLIENT and attributes[\"server.address\"] == \"mysqldb\"",
+    ]
+  }
+
+  output {
     traces = [otelcol.processor.filter.business_only.input]
   }
 }
