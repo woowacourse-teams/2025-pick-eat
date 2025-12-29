@@ -41,7 +41,7 @@ class TemplateServiceTest {
             entityManager.clear();
 
             // when
-            List<TemplateResponse> response = templateService.getTemplates();
+            List<TemplateResponse> response = templateService.getTemplates(0L, 100);
 
             // then
             List<Long> templateIds = templates.stream()
