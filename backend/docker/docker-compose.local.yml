@@ -1,5 +1,21 @@
 version: '3.8'
 services:
+
+  backend:
+    container_name: backend
+    build:
+      context: ..
+      dockerfile: Dockerfile_with_build
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_ACTIVE_PROFILE: local
+    networks:
+      - app-tier
+    restart: always
+    depends_on:
+      - mysqldb
+
   mysqldb:
     image: mysql:latest
     environment:
@@ -15,8 +31,23 @@ services:
     networks:
       - app-tier
 
+  dbeaver:
+    image: dbeaver/cloudbeaver:latest
+    container_name: cloudbeaver
+    restart: always
+    ports:
+      - '8978:8978'
+    volumes:
+      - cloudbeaver-data:/opt/cloudbeaver/workspace
+    networks:
+      - app-tier
+    depends_on:
+      - mysqldb
+
 volumes:
   mysqldb-data:
+    driver: local
+  cloudbeaver-data:
     driver: local
 
 networks:
