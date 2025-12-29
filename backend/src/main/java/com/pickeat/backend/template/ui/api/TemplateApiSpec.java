@@ -30,7 +30,7 @@ public interface TemplateApiSpec {
             )
     })
     ResponseEntity<List<TemplateResponse>> getTemplates(
-            @Parameter(description = "시작 ID", example = "0")
+            @Parameter(description = "시작 ID (시작 ID 다음 것부터 조회됨)", example = "0")
             @PathVariable("startId") Long startId,
             @Parameter(description = "조회 개수", example = "30")
             @PathVariable("size") Integer size

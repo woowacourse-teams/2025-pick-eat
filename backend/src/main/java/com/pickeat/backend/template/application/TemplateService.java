@@ -20,8 +20,8 @@ public class TemplateService {
     private final TemplateRepository templateRepository;
 
     public List<TemplateResponse> getTemplates(Long startId, Integer size) {
-        Pageable pageable = PageRequest.of(0, size, Sort.by("id").descending());
-        Slice<Template> templateWishList = templateRepository.findByIdGreaterThan(startId, pageable);
-        return TemplateResponse.from(templateWishList.toList());
+        Pageable pageable = PageRequest.of(0, size, Sort.by("id").ascending());
+        Slice<Template> templates = templateRepository.findByIdGreaterThan(startId, pageable);
+        return TemplateResponse.from(templates.toList());
     }
 }
