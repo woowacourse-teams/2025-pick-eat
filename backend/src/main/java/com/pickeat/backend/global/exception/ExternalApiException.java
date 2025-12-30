@@ -16,4 +16,8 @@ public class ExternalApiException extends RuntimeException {
         this.platformName = platformName;
         this.httpStatus = httpStatus;
     }
+
+    public int getStatusCode() {
+        return httpStatus.value();
+    }
 }

@@ -15,29 +15,28 @@ import org.springframework.web.client.RestClient;
 
 @Disabled("외부 네트워크 요청이 일어나므로 비활성화")
 @SpringBootTest(webEnvironment = WebEnvironment.NONE)
-class KakaoClientConnectionTest {
+public class GoogleClientConnectionTest {
 
-    @Value("${external.kakao.map.restApiKey}")
-    private String kakaoApiKey;
+    @Value("${external.google.map.restApiKey}")
+    private String googleApiKey;
 
     @Test
-    void 실제_카카오_API_연동_테스트() {
-        // given
-        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
-        factory.setConnectTimeout(3000);
-        factory.setReadTimeout(10000);
-        KakaoRestaurantSearchClient client = new KakaoRestaurantSearchClient(
+    void 실제_구글_API_연동_테스트() {
+        SimpleClientHttpRequestFactory simpleClientHttpRequestFactory = new SimpleClientHttpRequestFactory();
+        simpleClientHttpRequestFactory.setConnectTimeout(3000);
+        simpleClientHttpRequestFactory.setReadTimeout(10000);
+
+        GoogleRestaurantSearchClient googleRestaurantSearchClient = new GoogleRestaurantSearchClient(
                 RestClient.builder()
-                        .requestFactory(factory)
-                        .baseUrl("https://dapi.kakao.com")
-                        .defaultHeader("Authorization", "KakaoAK " + kakaoApiKey)
+                        .requestFactory(simpleClientHttpRequestFactory)
+                        .baseUrl("https://places.googleapis.com")
+                        .defaultHeader("X-Goog-Api-Key", googleApiKey)
                         .defaultHeader("Content-Type", "application/json")
                         .build(),
                 new ObjectMapper()
         );
 
-        // when
-        assertThatCode(() -> client.getRestaurants(
+        assertThatCode(() -> googleRestaurantSearchClient.getRestaurants(
                 new RestaurantSearchRequest(RestaurantCategory.FASTFOOD, 127.103068896795, 37.5152535228382, 200, 10)))
                 .doesNotThrowAnyException();
     }
