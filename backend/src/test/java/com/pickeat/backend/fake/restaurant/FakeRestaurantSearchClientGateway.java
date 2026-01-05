@@ -1,4 +1,4 @@
-package com.pickeat.backend.stress.restaurant;
+package com.pickeat.backend.fake.restaurant;
 
 import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
@@ -7,11 +7,41 @@ import com.pickeat.backend.restaurant.domain.FoodCategory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
-public class StressRestaurantSearchClient implements RestaurantSearchClient {
+public class FakeRestaurantSearchClientGateway implements RestaurantSearchClient {
+
+    private final AtomicInteger called = new AtomicInteger(0);
+
+    private Function<RestaurantSearchRequest, List<RestaurantRequest>> behavior = this::defaultBehavior;
 
     @Override
     public List<RestaurantRequest> getRestaurants(RestaurantSearchRequest request) {
+        called.incrementAndGet();
+        return behavior.apply(request);
+    }
+
+    public int called() {
+        return called.get();
+    }
+
+    public void willReturn(List<RestaurantRequest> value) {
+        this.behavior = req -> value;
+    }
+
+    public void willThrow(RuntimeException e) {
+        this.behavior = req -> {
+            throw e;
+        };
+    }
+
+    public void reset() {
+        called.set(0);
+        behavior = this::defaultBehavior;
+    }
+
+    private List<RestaurantRequest> defaultBehavior(RestaurantSearchRequest request) {
         List<RestaurantRequest> restaurants = new ArrayList<>();
         for (int i = 0; i < request.size(); i++) {
             restaurants.add(RestaurantRequest.fromLocation(

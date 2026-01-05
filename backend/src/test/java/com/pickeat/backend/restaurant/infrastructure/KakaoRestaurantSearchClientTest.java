@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pickeat.backend.global.exception.ExternalApiException;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantRequest;
 import com.pickeat.backend.restaurant.application.dto.request.RestaurantSearchRequest;
+import com.pickeat.backend.restaurant.domain.RestaurantCategory;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -85,7 +86,7 @@ class KakaoRestaurantSearchClientTest {
 
             // when
             List<RestaurantRequest> response = kakaoRestaurantSearchClient.getRestaurants(
-                    new RestaurantSearchRequest("패스트푸드", 127.1234874512, 26.1395871235, 200, 2));
+                    new RestaurantSearchRequest(RestaurantCategory.FASTFOOD, 127.1234874512, 26.1395871235, 200, 2));
 
             // then
             assertThat(response).hasSize(2);
@@ -133,7 +134,7 @@ class KakaoRestaurantSearchClientTest {
 
             // when & then
             assertThatThrownBy(() -> kakaoRestaurantSearchClient.getRestaurants(
-                    new RestaurantSearchRequest("패스트푸드", 127.1234874512, 26.1395871235, 200, 2))
+                    new RestaurantSearchRequest(RestaurantCategory.FASTFOOD, 127.1234874512, 26.1395871235, 200, 2))
             )
                     .isInstanceOf(ExternalApiException.class);
         }

@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import com.pickeat.backend.fixture.PickeatFixture;
 import com.pickeat.backend.fixture.RestaurantFixture;
 import com.pickeat.backend.pickeat.domain.Pickeat;
+import com.pickeat.backend.restaurant.domain.FoodCategory;
 import com.pickeat.backend.restaurant.domain.Restaurant;
 import java.util.List;
 import org.junit.jupiter.api.Nested;
@@ -27,19 +28,32 @@ class RestaurantRepositoryTest {
     void 식당_조회() {
         // given
         Pickeat pickeat = testEntityManager.persist(PickeatFixture.createWithoutRoom());
-        Restaurant restaurant1 = testEntityManager.persist(RestaurantFixture.create(pickeat.getId()));
-        Restaurant restaurant2 = testEntityManager.persist(RestaurantFixture.create(pickeat.getId()));
-        Restaurant restaurant3 = testEntityManager.persist(RestaurantFixture.create(pickeat.getId()));
+        Restaurant restaurant1 = testEntityManager.persist(
+                RestaurantFixture.create(pickeat.getId(), FoodCategory.KOREAN));
+        Restaurant restaurant2 = testEntityManager.persist(
+                RestaurantFixture.create(pickeat.getId(), FoodCategory.KOREAN));
+        Restaurant restaurant3 = testEntityManager.persist(
+                RestaurantFixture.create(pickeat.getId(), FoodCategory.OTHERS));
 
         restaurant2.exclude();
 
         // when & then
         assertAll(
-                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(), true))
+                () -> assertThat(
+                        restaurantRepository.findByPickeatIdAndIsExcludedAndFoodCategoryIfProvided(pickeat.getId(),
+                                true, null))
                         .hasSize(1),
-                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(), false))
+                () -> assertThat(
+                        restaurantRepository.findByPickeatIdAndIsExcludedAndFoodCategoryIfProvided(pickeat.getId(),
+                                false, null))
                         .hasSize(2),
-                () -> assertThat(restaurantRepository.findByPickeatIdAndIsExcludedIfProvided(pickeat.getId(), null))
+                () -> assertThat(
+                        restaurantRepository.findByPickeatIdAndIsExcludedAndFoodCategoryIfProvided(pickeat.getId(),
+                                null, FoodCategory.KOREAN))
+                        .hasSize(2),
+                () -> assertThat(
+                        restaurantRepository.findByPickeatIdAndIsExcludedAndFoodCategoryIfProvided(pickeat.getId(),
+                                null, null))
                         .hasSize(3)
         );
     }
