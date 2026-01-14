@@ -1,7 +1,7 @@
 name: Back-Dev Build and Deploy
 
 on:
-  pull_request:
+  push:
     branches: [ "back/dev" ]
 
 jobs:
