@@ -1,9 +1,8 @@
 name: Back-Dev Build and Deploy
 
 on:
-  push:
+  pull_request:
     branches: [ "back/dev" ]
-  workflow_dispatch:
 
 jobs:
   ci:
