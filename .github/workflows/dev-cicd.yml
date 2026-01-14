@@ -3,6 +3,7 @@ name: Back-Dev Build and Deploy
 on:
   push:
     branches: [ "back/dev" ]
+  workflow_dispatch:
 
 jobs:
   ci:

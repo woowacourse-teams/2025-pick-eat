@@ -33,7 +33,7 @@ services:
     env_file:
       - ./config/otel.env
     volumes:
-      - ./data/springboot/logs/blue:/var/logs
+      - ./data/springboot/logs/green:/var/logs
     environment:
       <<: *common-env
       OTEL_SERVICE_NAME: pickeat-backend-green
