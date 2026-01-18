@@ -18,4 +18,6 @@ public interface PickeatRepository extends JpaRepository<Pickeat, Long> {
     List<Pickeat> findByRoomIdIn(List<Long> roodIds);
 
     List<Pickeat> findByUpdatedAtBetween(LocalDateTime startOfDay, LocalDateTime endOfDay);
+
+    String findCodeById(Long id);
 }
