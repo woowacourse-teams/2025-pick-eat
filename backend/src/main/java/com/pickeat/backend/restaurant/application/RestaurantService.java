@@ -19,6 +19,7 @@ import com.pickeat.backend.restaurant.domain.repository.RestaurantRepository;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +33,7 @@ public class RestaurantService {
     private final PickeatRepository pickeatRepository;
     private final ParticipantRepository participantRepository;
     private final RestaurantLikeRepository restaurantLikeRepository;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public void create(List<RestaurantRequest> restaurantRequests, String pickeatCode) {
@@ -79,6 +81,8 @@ public class RestaurantService {
         List<Restaurant> restaurants = restaurantRepository.findAllById(request.restaurantIds());
         validateParticipantAccessToRestaurants(restaurants, participant);
         restaurants.forEach(Restaurant::exclude);
+
+        applicationEventPublisher.publishEvent(new RestaurantUpdatedEvent(participant.getPickeatId()));
     }
 
     @Transactional
@@ -92,6 +96,8 @@ public class RestaurantService {
         validateParticipantAccessToRestaurants(List.of(restaurant), participant);
         restaurantLikeRepository.save(new RestaurantLike(participantId, restaurantId));
         restaurant.like();
+
+        applicationEventPublisher.publishEvent(new RestaurantUpdatedEvent(restaurant.getPickeatId()));
     }
 
     @Transactional
@@ -104,6 +110,8 @@ public class RestaurantService {
 
         Restaurant restaurant = getRestaurantById(restaurantId);
         restaurant.cancelLike();
+
+        applicationEventPublisher.publishEvent(new RestaurantUpdatedEvent(restaurant.getPickeatId()));
     }
 
     private Participant getParticipant(Long participantId) {
