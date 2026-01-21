@@ -3,6 +3,7 @@ logging {
   format = "logfmt"
 }
 
+// Loki
 local.file_match "spring_logs" {
   path_targets = [{ __path__ = "/var/log/spring/*.log" }]
 }
@@ -34,5 +35,76 @@ loki.write "grafana_loki" {
     tenant_id = "pickeat-prod"
     batch_wait = "1s"
     batch_size = "1MB"
+  }
+}
+
+// Tempo
+otelcol.receiver.otlp "default" {
+  grpc {
+    endpoint = "0.0.0.0:4317"
+  }
+
+  output {
+    traces = [otelcol.processor.transform.add_peer_service.input]
+  }
+}
+
+otelcol.processor.transform "add_peer_service" {
+  error_mode = "ignore"
+
+  trace_statements {
+    context = "span"
+    statements = [
+      "set(attributes[\"peer.service\"], \"kakao-api\") where kind == SPAN_KIND_CLIENT and attributes[\"server.address\"] != nil and IsMatch(attributes[\"server.address\"], \".*kakao.*\")",
+      "set(attributes[\"peer.service\"], \"mysql-db\") where kind == SPAN_KIND_CLIENT and attributes[\"server.address\"] == \"mysqldb\"",
+    ]
+  }
+
+  output {
+    traces = [otelcol.processor.filter.business_only.input]
+  }
+}
+
+otelcol.processor.filter "business_only" {
+  error_mode = "ignore"
+
+  traces {
+    span = [
+      "name == \"SELECT pickeat_db\"",
+      "name == \"pickeat_db\"",
+
+      "IsMatch(name, \"(?i).*(swagger|api-docs).*\")",
+      "name == \"GET /**\"",
+
+      "IsMatch(attributes[\"db.statement\"], \"(?i).*(information_schema|performance_schema|flyway|schemata).*\")",
+
+      "IsMatch(attributes[\"db.statement\"], \"(?i)^SELECT\\\\s+(@@|1|VERSION|DATABASE|USER)\")",
+
+      "IsMatch(attributes[\"db.statement\"], \"(?i).*(SET |SHOW ).*\")",
+
+      "IsMatch(name, \"GET /actuator.*\")",
+    ]
+  }
+
+  output {
+    traces = [otelcol.processor.batch.default.input]
+  }
+}
+
+otelcol.processor.batch "default" {
+  timeout = "10s"
+  send_batch_size = 1024
+
+  output {
+    traces = [otelcol.exporter.otlp.tempo.input]
+  }
+}
+
+otelcol.exporter.otlp "tempo" {
+  client {
+    endpoint = "tempo:4317"
+    tls {
+      insecure = true
+    }
   }
 }

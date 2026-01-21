@@ -1,4 +1,10 @@
 version: '3.8'
+
+x-common-env: &common-env
+  SPRING_ACTIVE_PROFILE: dev
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://alloy:4317
+  OTEL_RESOURCE_ATTRIBUTES: "environment=dev"
+
 services:
   backend-blue:
     image: pickeat/pickeat:latest
@@ -6,10 +12,15 @@ services:
     restart: unless-stopped
     ports:
       - "8080:8080"
+    env_file:
+      - ./config/otel.env
     volumes:
       - ./data/springboot/logs/blue:/var/logs
     environment:
-      SPRING_ACTIVE_PROFILE: dev
+      <<: *common-env
+      OTEL_SERVICE_NAME: pickeat-backend-blue
+    depends_on:
+      - mysqldb
     networks:
       - app-tier
 
@@ -19,10 +30,16 @@ services:
     restart: unless-stopped
     ports:
       - "8081:8080"
+    env_file:
+      - ./config/otel.env
     volumes:
       - ./data/springboot/logs/green:/var/logs
     environment:
-      SPRING_ACTIVE_PROFILE: dev
+      <<: *common-env
+      OTEL_SERVICE_NAME: pickeat-backend-green
+
+    depends_on:
+      - mysqldb
     networks:
       - app-tier
 
@@ -48,6 +65,7 @@ services:
     restart: unless-stopped
     ports:
       - "12345:12345"
+      - "5317:4317"
     volumes:
       - ./data/springboot/logs/blue:/var/log/spring/blue
       - ./data/springboot/logs/green:/var/log/spring/green
@@ -56,6 +74,13 @@ services:
       - ./data/alloy/state:/var/lib/alloy
     environment:
       - ALLOY_ENV=dev
+      - TZ=Asia/Seoul
+      - TEMPO_ENDPOINT=10.0.1.28:4317
+    command:
+      - run
+      - /etc/alloy/config.alloy
+      - --server.http.listen-addr=0.0.0.0:12345
+      - --storage.path=/var/lib/alloy/data
     networks:
       - app-tier
 
