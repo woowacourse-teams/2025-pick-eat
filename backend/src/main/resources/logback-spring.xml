@@ -9,7 +9,7 @@
   </springProfile>
 
   <springProfile name="stress">
-    <include resource="logback-local.xml"/>
+    <include resource="logback-stress.xml"/>
   </springProfile>
 
   <springProfile name="dev">
