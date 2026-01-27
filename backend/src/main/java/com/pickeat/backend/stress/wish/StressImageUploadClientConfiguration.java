@@ -17,7 +17,7 @@ public class StressImageUploadClientConfiguration {
             @Value("${default.wish.image.url}") String defaultImageUrl,
             @Value("${external.s3.wish.image.key.prefix}") String keyPrefix
     ) {
-        log.info("stress - StressImageUploadClient 활성화");
+        log.warn("stress - StressImageUploadClient 활성화");
         return new StressImageUploadClient(defaultImageUrl, keyPrefix);
     }
 }
