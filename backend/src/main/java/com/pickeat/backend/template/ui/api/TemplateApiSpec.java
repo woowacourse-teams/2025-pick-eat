@@ -2,6 +2,7 @@ package com.pickeat.backend.template.ui.api;
 
 import com.pickeat.backend.template.application.dto.response.TemplateResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "템플릿", description = "템플릿 관련 API")
 public interface TemplateApiSpec {
@@ -27,5 +29,11 @@ public interface TemplateApiSpec {
                             array = @ArraySchema(schema = @Schema(implementation = TemplateResponse.class)))
             )
     })
-    ResponseEntity<List<TemplateResponse>> getTemplates();
+    ResponseEntity<List<TemplateResponse>> getTemplates(
+            @Parameter(description = "시작 ID (시작 ID 다음 것부터 조회됨)", example = "0")
+            @PathVariable("startId") Long startId,
+            @Parameter(description = "조회 개수", example = "30")
+            @PathVariable("size") Integer size
+
+    );
 }

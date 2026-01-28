@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,8 +20,11 @@ public class TemplateController implements TemplateApiSpec {
 
     @Override
     @GetMapping("/templates")
-    public ResponseEntity<List<TemplateResponse>> getTemplates() {
-        List<TemplateResponse> templates = templateService.getTemplates();
+    public ResponseEntity<List<TemplateResponse>> getTemplates(
+            @RequestParam(value = "startId", defaultValue = "0") Long startId,
+            @RequestParam(value = "size", defaultValue = "30") Integer size
+    ) {
+        List<TemplateResponse> templates = templateService.getTemplates(startId, size);
         return ResponseEntity.ok(templates);
     }
 }
