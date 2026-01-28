@@ -1,6 +1,6 @@
 package com.pickeat.backend.stress.restaurant;
 
-import com.pickeat.backend.restaurant.application.RestaurantSearchClient;
+import com.pickeat.backend.restaurant.application.SseServerClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -11,11 +11,11 @@ import org.springframework.context.annotation.Profile;
 @Profile({"stress"})
 @Configuration
 @RequiredArgsConstructor
-public class StressRestaurantSearchClientConfiguration {
+public class StressRestaurantSseServerClientConfiguration {
 
     @Bean
-    public RestaurantSearchClient kakaoRestaurantSearchClient() {
-        log.warn("stress - StressRestaurantSearchClientConfiguration - 활성화");
-        return new StressRestaurantSearchClient();
+    public SseServerClient restaurantSseServerClient() {
+        log.warn("stress - StressRestaurantSseServerClientConfiguration 활성화");
+        return new StressRestaurantSseServerClient();
     }
 }

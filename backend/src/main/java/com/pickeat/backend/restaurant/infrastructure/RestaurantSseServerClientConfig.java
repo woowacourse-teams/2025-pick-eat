@@ -2,9 +2,11 @@ package com.pickeat.backend.restaurant.infrastructure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
+@Profile({"local", "dev", "prod"})
 @Configuration
 public class RestaurantSseServerClientConfig {
 
