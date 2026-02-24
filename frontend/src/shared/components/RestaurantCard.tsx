@@ -1,5 +1,7 @@
 import { Restaurant } from '@apis/restaurant';
 
+import { getThumbnailByTag } from '@utils/getThumbnailByTag';
+
 import styled from '@emotion/styled';
 
 import Chip from './labels/Chip';
@@ -26,16 +28,21 @@ function RestaurantCard({ restaurantData }: Props) {
     restaurantData;
   const menuUrl = `${placeUrl}#menuInfo`;
 
+  // 디폴트 이미지 결정: pictureUrls[0] 없으면 태그 첫 글자 기준 썸네일, 없으면 기본
+  const defaultImage = getThumbnailByTag(tags[0] || category);
+  console.log(defaultImage);
+
   return (
     <S.Container aria-label={`${name} ${tags.join('')} 메뉴가 있습니다.`}>
       <SkeletonImage
         width="90px"
         height="90px"
         aria-hidden="true"
-        src={pictureUrls[0] || './images/restaurant.png'}
+        src={pictureUrls[0] || defaultImage}
         onError={e => {
-          e.currentTarget.onerror = null;
-          e.currentTarget.src = './images/restaurant.png';
+          // TODO : onError 처리 왜 이미지가 없을 때 무한 에러 나지?
+          // e.currentTarget.onerror = null;
+          // e.currentTarget.src = defaultImage;
         }}
         alt={name}
         loading="lazy"
