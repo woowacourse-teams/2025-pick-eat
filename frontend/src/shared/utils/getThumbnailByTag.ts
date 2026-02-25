@@ -20,9 +20,13 @@ export const getThumbnailByTag = (tag: string | undefined): string => {
     kr_meat_bossam: { regexp: /보쌈/i, file: 'korea/kr-meat-bossam.png' },
     kr_meat_dakgalbi: { regexp: /닭갈비/i, file: 'korea/kr-meat-dakgalbi.png' },
     kr_noodle_cold: { regexp: /냉면/i, file: 'korea/kr-noodle-cold.png' },
-    kr_noodle_cal: { regexp: /칼국수/i, file: 'korea/kr-noodle-cal.png' },
+    kr_noodle_cal: { regexp: /칼국수|국수/i, file: 'korea/kr-noodle-cal.png' },
+    kr_fish: {
+      regexp: /생선|해물/i,
+      file: 'korea/kr-fish.png',
+    },
     kr_fish_grilled: {
-      regexp: /생선구이|회/i,
+      regexp: /생선구이/i,
       file: 'korea/kr-fish-grilled.png',
     },
     kr_special: { regexp: /한정식|한식/i, file: 'korea/kr-special.png' },
@@ -46,7 +50,7 @@ export const getThumbnailByTag = (tag: string | undefined): string => {
     jp_soup_ramen: { regexp: /라멘/i, file: 'japanese/jp-soup-ramen.png' },
     jp_noodle_udon: { regexp: /우동/i, file: 'japanese/jp-noodle-udon.png' },
     jp_fish_shushi: {
-      regexp: /초밥|스시/i,
+      regexp: /초밥|스시|참치회|회/i,
       file: 'japanese/jp-fish-shushi.png',
     },
 
@@ -54,6 +58,10 @@ export const getThumbnailByTag = (tag: string | undefined): string => {
     west_default: { regexp: /양식/i, file: 'western/west-default.png' },
     west_pizza: { regexp: /피자/i, file: 'western/west-pizza.png' },
     west_meat: { regexp: /스테이크|고기/i, file: 'western/west-meat.png' },
+    west_italian: {
+      regexp: /파스타|이탈리안/i,
+      file: 'western/west-italian.png',
+    },
 
     // etc 기타
     etc_buffet: { regexp: /뷔페/i, file: 'etc/etc-buffet.png' },
@@ -77,6 +85,7 @@ export const getThumbnailByTag = (tag: string | undefined): string => {
     },
     etc_bar: { regexp: /술집|바|호프/i, file: 'etc/etc-bar.png' },
     etc_mexican: { regexp: /멕시칸|멕시코/i, file: 'etc/etc-mexican.png' },
+    etc_salad: { regexp: /샐러드/i, file: 'etc/etc-salad.png' },
   };
 
   for (const { regexp, file } of Object.values(mapping)) {
