@@ -66,7 +66,7 @@ function RestaurantCard({ restaurantData }: Props) {
   );
 }
 
-export default React.memo(RestaurantCard);
+export default RestaurantCard;
 
 const S = {
   Container: styled.div`
