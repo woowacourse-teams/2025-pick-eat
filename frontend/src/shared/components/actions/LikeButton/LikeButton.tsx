@@ -57,7 +57,7 @@ function LikeButton({ id, count, liked, name }: Props) {
           mutateUnlike(id);
           handleCloseModal();
         }}
-        onCancel={() => handleCloseModal()}
+        onCancel={handleCloseModal}
         message="정말 취소하시겠습니까?"
       />
     </S.Container>
