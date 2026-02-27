@@ -5,7 +5,7 @@ export const useFlip = <T extends { id: number }>(
   sortFn: (list: T[]) => T[],
   delay: number = 1000
 ) => {
-  const [displayList, setDisplayList] = useState<T[]>(sortFn(sourceList));
+  const [displayList, setDisplayList] = useState<T[]>(() => sortFn(sourceList));
   const itemRefs = useRef(new Map<number, HTMLDivElement>());
   const prevRects = useRef(new Map<number, DOMRect>());
   const sortTimeoutRef = useRef<NodeJS.Timeout | null>(null);
