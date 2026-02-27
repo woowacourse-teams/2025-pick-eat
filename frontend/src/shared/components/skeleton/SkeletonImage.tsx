@@ -21,6 +21,12 @@ function SkeletonImage({
       width={width}
       height={height}
       borderRadius={borderRadius}
+      onError={e => {
+        e.currentTarget.outerHTML = `
+      <div style="width:${width};height:${height};border-radius:${borderRadius};background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:12px">
+        No Image
+      </div>`;
+      }}
       {...props}
     >
       <S.Image {...props} />

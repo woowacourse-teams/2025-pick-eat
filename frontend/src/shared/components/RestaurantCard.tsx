@@ -39,11 +39,6 @@ function RestaurantCard({ restaurantData }: Props) {
         height="90px"
         aria-hidden="true"
         src={pictureUrls[0] || defaultImage}
-        onError={e => {
-          // TODO : onError 처리 왜 이미지가 없을 때 무한 에러 나지?
-          // e.currentTarget.onerror = null;
-          // e.currentTarget.src = defaultImage;
-        }}
         alt={name}
         loading="lazy"
       />
