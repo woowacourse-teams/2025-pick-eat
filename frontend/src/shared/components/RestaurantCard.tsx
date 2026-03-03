@@ -1,6 +1,6 @@
 import { Restaurant } from '@apis/restaurant';
 
-import { getThumbnailByTag } from '@utils/getThumbnailByTag';
+import { restaurantThumbnail } from '@utils/getThumbnailByTag';
 
 import styled from '@emotion/styled';
 
@@ -28,9 +28,7 @@ function RestaurantCard({ restaurantData }: Props) {
     restaurantData;
   const menuUrl = `${placeUrl}#menuInfo`;
 
-  // 디폴트 이미지 결정: pictureUrls[0] 없으면 태그 첫 글자 기준 썸네일, 없으면 기본
-  const defaultImage = getThumbnailByTag(tags[0] || category);
-  console.log(defaultImage);
+  const defaultImage = restaurantThumbnail(category).get(tags[0]);
 
   return (
     <S.Container aria-label={`${name} ${tags.join('')} 메뉴가 있습니다.`}>
