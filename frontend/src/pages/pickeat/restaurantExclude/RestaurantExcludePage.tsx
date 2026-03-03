@@ -2,17 +2,15 @@ import PickeatEndModal from '@domains/pickeat/matchResult/components/PickeatEndM
 import RestaurantExclude from '@domains/pickeat/restaurantExclude/components/RestaurantExclude';
 
 import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
-import LoadingSpinner from '@components/assets/LoadingSpinner';
+import ErrorBoundaryWithSuspense from '@components/errors/ErrorBoundaryWithSuspense';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
 
 import { usePreventGoBack } from '@hooks/usePreventGoBack';
 
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
 import TitleSection from '../components/TitleSection';
@@ -38,11 +36,9 @@ function RestaurantExcludePage() {
         <TitleSection>
           <Title />
         </TitleSection>
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingSpinner />}>
-            <RestaurantExclude />
-          </Suspense>
-        </ErrorBoundary>
+        <ErrorBoundaryWithSuspense>
+          <RestaurantExclude />
+        </ErrorBoundaryWithSuspense>
       </S.Container>
     </ParticipantsProvider>
   );

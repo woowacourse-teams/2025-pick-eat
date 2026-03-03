@@ -4,9 +4,8 @@ import RoomList from '@domains/profile/components/RoomList';
 import NewButton from '@components/actions/NewButton';
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import BottomSheet from '@components/BottomSheet';
+import ErrorBoundaryWithSuspense from '@components/errors/ErrorBoundaryWithSuspense';
 import { useModal } from '@components/modal/useModal';
-
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import styled from '@emotion/styled';
 import { Suspense } from 'react';
@@ -21,16 +20,16 @@ function MyPage() {
     <S.Container>
       <Suspense fallback={<LoadingSpinner />}>
         <S.ProfileSection>
-          <ErrorBoundary>
+          <ErrorBoundaryWithSuspense isSuspense={false}>
             <Profile />
-          </ErrorBoundary>
+          </ErrorBoundaryWithSuspense>
         </S.ProfileSection>
 
         <S.Section>
           <S.Title>참여 중인 픽잇</S.Title>
-          <ErrorBoundary>
+          <ErrorBoundaryWithSuspense isSuspense={false}>
             <ParticipantPickeat />
-          </ErrorBoundary>
+          </ErrorBoundaryWithSuspense>
         </S.Section>
 
         <S.Section>
@@ -45,16 +44,16 @@ function MyPage() {
               <NewButton onClick={handleOpenModal}>방 만들기 +</NewButton>
             </S.ButtonBox>
           </S.TitleWrapper>
-          <ErrorBoundary>
+          <ErrorBoundaryWithSuspense isSuspense={false}>
             <RoomList />
-          </ErrorBoundary>
+          </ErrorBoundaryWithSuspense>
         </S.Section>
       </Suspense>
       {/* TODO: 바톰시트 언마운트 처리 */}
       <BottomSheet opened={opened} onClose={handleCloseModal}>
-        <ErrorBoundary>
+        <ErrorBoundaryWithSuspense isSuspense={false}>
           <CreateRoom opened={opened} onCreate={handleCloseModal} />
-        </ErrorBoundary>
+        </ErrorBoundaryWithSuspense>
       </BottomSheet>
     </S.Container>
   );

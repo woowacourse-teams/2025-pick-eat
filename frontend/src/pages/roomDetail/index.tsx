@@ -1,15 +1,12 @@
 import MoreMenuButton from '@domains/room/components/MoreMenuButton';
 import WishlistTab from '@domains/room/components/WishlistTab/WishlistTab';
 
-import LoadingSpinner from '@components/assets/LoadingSpinner';
+import ErrorBoundaryWithSuspense from '@components/errors/ErrorBoundaryWithSuspense';
 import TabMenu from '@components/tabMenus/TabMenu';
-
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { roomQuery } from '@apis/room';
 
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
 import { useSearchParams } from 'react-router';
 
 import DetailTab from './detailTab';
@@ -40,11 +37,9 @@ function RoomDetail() {
             tab: '방 상세',
             content: (
               <S.TabWrapper>
-                <ErrorBoundary>
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <DetailTab />
-                  </Suspense>
-                </ErrorBoundary>
+                <ErrorBoundaryWithSuspense>
+                  <DetailTab />
+                </ErrorBoundaryWithSuspense>
               </S.TabWrapper>
             ),
           },
@@ -52,11 +47,9 @@ function RoomDetail() {
             tab: '식당 즐겨찾기',
             content: (
               <S.TabWrapper>
-                <ErrorBoundary>
-                  <Suspense fallback={<LoadingSpinner />}>
-                    <WishlistTab />
-                  </Suspense>
-                </ErrorBoundary>
+                <ErrorBoundaryWithSuspense>
+                  <WishlistTab />
+                </ErrorBoundaryWithSuspense>
               </S.TabWrapper>
             ),
           },

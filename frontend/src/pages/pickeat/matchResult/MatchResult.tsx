@@ -1,13 +1,11 @@
 import ResultContent from '@domains/pickeat/matchResult/components/ResultContent';
 
 import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
-
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import ErrorBoundaryWithSuspense from '@components/errors/ErrorBoundaryWithSuspense';
 
 import { usePreventGoBack } from '@hooks/usePreventGoBack';
 
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
 
 import PendingResultScreen from './components/PendingResultScreen';
 
@@ -16,11 +14,9 @@ function MatchResult() {
   return (
     <S.Container>
       <VisuallyHiddenWithFocus>결과보기 페이지 입니다.</VisuallyHiddenWithFocus>
-      <ErrorBoundary>
-        <Suspense fallback={<PendingResultScreen />}>
-          <ResultContent />
-        </Suspense>
-      </ErrorBoundary>
+      <ErrorBoundaryWithSuspense fallback={<PendingResultScreen />}>
+        <ResultContent />
+      </ErrorBoundaryWithSuspense>
     </S.Container>
   );
 }

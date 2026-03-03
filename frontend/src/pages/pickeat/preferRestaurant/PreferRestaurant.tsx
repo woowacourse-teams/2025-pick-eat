@@ -1,15 +1,14 @@
 import PreferRestaurantList from '@domains/pickeat/preferRestaurant/components/PreferRestaurantList';
 
 import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
-import LoadingSpinner from '@components/assets/LoadingSpinner';
+import ErrorBoundaryWithSuspense from '@components/errors/ErrorBoundaryWithSuspense';
 import ProgressBar from '@components/progressBar/ProgressBar';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { usePickeatStateChecker } from '@domains/pickeat/matchResult/hooks/usePickeatEndCheck';
 import ParticipantsProvider from '@domains/pickeat/provider/ParticipantsProvider';
 
 import styled from '@emotion/styled';
-import { Suspense, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import TitleSection from '../components/TitleSection';
@@ -44,13 +43,11 @@ function PreferRestaurant() {
           <Title />
         </TitleSection>
 
-        <ErrorBoundary>
-          <Suspense fallback={<LoadingSpinner />}>
-            <S.RestaurantListContainer>
-              <PreferRestaurantList />
-            </S.RestaurantListContainer>
-          </Suspense>
-        </ErrorBoundary>
+        <ErrorBoundaryWithSuspense>
+          <S.RestaurantListContainer>
+            <PreferRestaurantList />
+          </S.RestaurantListContainer>
+        </ErrorBoundaryWithSuspense>
 
         <PickeatEndTriggerButton />
       </S.Container>

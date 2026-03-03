@@ -5,8 +5,8 @@ import Card from '@domains/wishlist/components/Card';
 
 import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Carousel from '@components/Carousel';
+import ErrorBoundaryWithSuspense from '@components/errors/ErrorBoundaryWithSuspense';
 
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 import { makePickeatName } from '@domains/pickeat/utils/makePickeatName';
 
 import { pickeatQuery } from '@apis/pickeat';
@@ -134,14 +134,14 @@ function DetailTab() {
           <Carousel contentArr={getCardContent} />
         </S.ContentSection>
         <S.ContentSection>
-          <ErrorBoundary>
+          <ErrorBoundaryWithSuspense isSuspense={false}>
             <IncludeMemberList />
-          </ErrorBoundary>
+          </ErrorBoundaryWithSuspense>
         </S.ContentSection>
         <S.ContentSection>
-          <ErrorBoundary>
+          <ErrorBoundaryWithSuspense isSuspense={false}>
             <ProgressPickeat />
-          </ErrorBoundary>
+          </ErrorBoundaryWithSuspense>
         </S.ContentSection>
       </Suspense>
     </S.Container>

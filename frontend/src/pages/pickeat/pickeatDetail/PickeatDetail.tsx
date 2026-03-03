@@ -1,21 +1,17 @@
 import PickeatInfo from '@domains/pickeat/components/PickeatInfo';
 
 import VisuallyHiddenWithFocus from '@components/accessibility/VisuallyHiddenWithFocus';
-
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
+import ErrorBoundaryWithSuspense from '@components/errors/ErrorBoundaryWithSuspense';
 
 import styled from '@emotion/styled';
-import { Suspense } from 'react';
 
 function PickeatDetail() {
   return (
     <S.Container>
       <VisuallyHiddenWithFocus>입장 페이지 입니다.</VisuallyHiddenWithFocus>
-      <ErrorBoundary>
-        <Suspense>
-          <PickeatInfo />
-        </Suspense>
-      </ErrorBoundary>
+      <ErrorBoundaryWithSuspense>
+        <PickeatInfo />
+      </ErrorBoundaryWithSuspense>
     </S.Container>
   );
 }

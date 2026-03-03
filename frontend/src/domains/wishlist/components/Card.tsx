@@ -1,9 +1,8 @@
 import Arrow from '@components/assets/icons/Arrow';
 import Info from '@components/assets/icons/Info';
+import ErrorBoundaryWithSuspense from '@components/errors/ErrorBoundaryWithSuspense';
 import Modal from '@components/modal/Modal';
 import { useModal } from '@components/modal/useModal';
-
-import ErrorBoundary from '@domains/errorBoundary/ErrorBoundary';
 
 import { THEME } from '@styles/global';
 
@@ -75,9 +74,9 @@ function Card({
         onUnmount={handleUnmountModal}
         onClose={handleCloseModal}
       >
-        <ErrorBoundary>
+        <ErrorBoundaryWithSuspense isSuspense={false}>
           <TemplateRestaurantList title={title} templateId={itemId} />
-        </ErrorBoundary>
+        </ErrorBoundaryWithSuspense>
       </Modal>
     </S.Container>
   );
