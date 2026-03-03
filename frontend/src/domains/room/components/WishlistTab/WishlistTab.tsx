@@ -6,13 +6,20 @@ import { wishQuery } from '@apis/wish';
 import { THEME } from '@styles/global';
 
 import styled from '@emotion/styled';
+import { Activity } from 'react';
 import { useSearchParams } from 'react-router';
 
 import RegisterWishModal from './RegisterWishModal';
 import WishRestaurantCard from './WishRestaurantCard';
 
 function WishlistTab() {
-  const { opened, handleCloseModal, handleOpenModal } = useModal();
+  const {
+    opened,
+    mounted,
+    handleCloseModal,
+    handleOpenModal,
+    handleUnmountModal,
+  } = useModal();
   const [searchParams] = useSearchParams();
   const roomId = Number(searchParams.get('roomId')) ?? '';
 
@@ -32,7 +39,14 @@ function WishlistTab() {
           ))}
       </S.Wishlist>
 
-      {opened && <RegisterWishModal onClose={handleCloseModal} />}
+      {mounted && (
+        <Activity mode={opened ? 'visible' : 'hidden'}>
+          <RegisterWishModal
+            onClose={handleCloseModal}
+            onUnmount={handleUnmountModal}
+          />
+        </Activity>
+      )}
     </S.Container>
   );
 }

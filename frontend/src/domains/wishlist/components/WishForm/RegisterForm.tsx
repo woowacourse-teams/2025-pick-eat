@@ -3,7 +3,10 @@ import TagSection from '@domains/wishlist/components/WishForm/TagSection';
 
 import FillInput from '@components/actions/Input/FillInput';
 import NewButton from '@components/actions/NewButton';
+import Revert from '@components/assets/icons/Revert';
 import Thumbnail from '@components/assets/icons/Thumbnail';
+import ConfirmModal from '@components/modal/ConfirmModal';
+import { useModal } from '@components/modal/useModal';
 
 import { WishFormDataWithImage } from '@apis/wish';
 
@@ -19,11 +22,19 @@ type Props = {
     value: WishFormDataWithImage[K]
   ) => void;
   onSubmit: () => void;
+  onResetFormData: () => void;
 };
 
-function RegisterForm({ formData, isLoading, onFormChange, onSubmit }: Props) {
+function RegisterForm({
+  formData,
+  isLoading,
+  onFormChange,
+  onSubmit,
+  onResetFormData,
+}: Props) {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { mounted, handleUnmountModal, handleOpenModal } = useModal();
 
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -40,6 +51,11 @@ function RegisterForm({ formData, isLoading, onFormChange, onSubmit }: Props) {
         console.error('이미지 압축 실패:', error);
       }
     }
+  };
+
+  const handleResetFormData = () => {
+    onResetFormData();
+    handleUnmountModal();
   };
 
   useEffect(() => {
@@ -60,23 +76,35 @@ function RegisterForm({ formData, isLoading, onFormChange, onSubmit }: Props) {
 
   return (
     <S.Form onSubmit={submitForm}>
-      <S.ImageArea htmlFor="thumbnail" previewUrl={previewUrl}>
-        <input
-          id="thumbnail"
-          type="file"
-          accept="image/*"
-          name="thumbnail"
-          onChange={handleImageChange}
-          style={{ display: 'none' }}
-          ref={fileInputRef}
+      <S.ImageSection>
+        <S.ImageArea htmlFor="thumbnail" previewUrl={previewUrl}>
+          <input
+            id="thumbnail"
+            type="file"
+            accept="image/*"
+            name="thumbnail"
+            onChange={handleImageChange}
+            style={{ display: 'none' }}
+            ref={fileInputRef}
+          />
+          {previewUrl ? null : (
+            <>
+              <Thumbnail />
+              <S.Description>이 곳을 눌러 썸네일 등록</S.Description>
+            </>
+          )}
+        </S.ImageArea>
+        <S.RevertButton type="button" onClick={handleOpenModal}>
+          <Revert />
+        </S.RevertButton>
+        <ConfirmModal
+          opened={mounted}
+          mounted={mounted}
+          onCancel={handleUnmountModal}
+          onConfirm={handleResetFormData}
+          message="정말로 초기화하시겠습니까?"
         />
-        {previewUrl ? null : (
-          <>
-            <Thumbnail />
-            <S.Description>이 곳을 눌러 썸네일 등록</S.Description>
-          </>
-        )}
-      </S.ImageArea>
+      </S.ImageSection>
 
       <S.InputArea>
         <CategorySection
@@ -131,6 +159,12 @@ const S = {
     align-items: center;
     gap: ${({ theme }) => theme.GAP.level5};
   `,
+  ImageSection: styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  `,
   ImageArea: styled.label<{ previewUrl: string | null }>`
     width: 200px;
     height: 200px;
@@ -148,6 +182,11 @@ const S = {
 
     border-radius: ${({ theme }) => theme.RADIUS.medium};
     cursor: pointer;
+  `,
+  RevertButton: styled.button`
+    position: absolute;
+    right: ${({ theme }) => theme.PADDING.p3};
+    bottom: 0;
   `,
   Description: styled.span`
     color: ${({ theme }) => theme.PALETTE.gray[40]};

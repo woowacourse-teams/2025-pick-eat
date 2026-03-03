@@ -87,12 +87,13 @@ const S = {
   Container: styled.button<{ size: 'sm' | 'lg' }>`
     width: ${({ size }) => CARD_SIZE.size[size]}px;
     height: ${({ size }) => CARD_SIZE.size[size]}px;
+    display: flex;
     overflow: hidden;
     position: relative;
-    display: flex;
-    color: ${({ theme }) => theme.PALETTE.gray[100]};
 
     padding: ${({ size }) => CARD_SIZE.padding[size]};
+
+    color: ${({ theme }) => theme.PALETTE.gray[100]};
 
     border-radius: ${({ theme }) => theme.RADIUS.xlarge};
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level1};
@@ -118,10 +119,12 @@ const S = {
   `,
   Title: styled.span<{ size: 'sm' | 'lg' }>`
     width: fit-content;
+
     font: ${({ size }) => CARD_SIZE.titleFont[size]};
   `,
   Description: styled.span<{ size: 'sm' | 'lg' }>`
     width: fit-content;
+
     font: ${({ size }) => CARD_SIZE.descriptionFont[size]};
   `,
   InfoButton: styled.div`
