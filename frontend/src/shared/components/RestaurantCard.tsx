@@ -1,6 +1,7 @@
 import { Restaurant } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
+import React from 'react';
 
 import Chip from './labels/Chip';
 

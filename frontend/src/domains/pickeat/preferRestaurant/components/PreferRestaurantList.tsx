@@ -23,23 +23,20 @@ function PreferRestaurantList() {
     }
   );
 
-  const sortRestaurants = (restaurantList: Restaurant[]) => {
-    return restaurantList.sort((a, b) => {
-      if (b.likeCount !== a.likeCount) {
-        return b.likeCount - a.likeCount;
-      }
-
+  const sortRestaurants = (list: Restaurant[]) => {
+    return [...list].sort((a, b) => {
+      if (b.likeCount !== a.likeCount) return b.likeCount - a.likeCount;
       return a.name.localeCompare(b.name, 'ko');
     });
   };
 
-  const { itemRefs } = useFlip(sortRestaurants(restaurantList));
+  const { displayList, itemRefs } = useFlip(restaurantList, sortRestaurants);
 
   return (
     <S.Container>
       {!restaurantList.length && <PickeatEndModal />}
 
-      {restaurantList.map((restaurant: Restaurant) => (
+      {displayList.map((restaurant: Restaurant) => (
         <S.ItemWrapper
           key={restaurant.id}
           ref={el => {

@@ -1,3 +1,6 @@
+import ConfirmModal from '@components/modal/ConfirmModal';
+import { useModal } from '@components/modal/useModal';
+
 import { restaurantQuery } from '@apis/restaurant';
 
 import styled from '@emotion/styled';
@@ -21,13 +24,18 @@ function LikeButton({ id, count, liked, name }: Props) {
 
   const { explosionRef, trigger, removeAnimation } = useExplosion();
 
+  const { opened, mounted, handleCloseModal, handleOpenModal } = useModal();
+
   const handleClick = () => {
-    removeAnimation();
     if (liked) {
-      mutateUnlike(id);
+      handleOpenModal();
     } else {
       trigger();
       mutateLike(id);
+
+      setTimeout(() => {
+        removeAnimation();
+      }, 1500);
     }
   };
 
@@ -42,6 +50,16 @@ function LikeButton({ id, count, liked, name }: Props) {
         </S.Explosion>
       </S.HeartWrapper>
       <S.Count>{count}</S.Count>
+      <ConfirmModal
+        opened={opened}
+        mounted={mounted}
+        onConfirm={() => {
+          mutateUnlike(id);
+          handleCloseModal();
+        }}
+        onCancel={handleCloseModal}
+        message="정말 취소하시겠습니까?"
+      />
     </S.Container>
   );
 }
