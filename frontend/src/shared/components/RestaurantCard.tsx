@@ -1,9 +1,12 @@
 import { Restaurant } from '@apis/restaurant';
 
+import { restaurantThumbnail } from '@utils/getThumbnailByTag';
+
 import styled from '@emotion/styled';
 import React from 'react';
 
 import Chip from './labels/Chip';
+import SkeletonImage from './skeleton/SkeletonImage';
 
 export type RestaurantCardData = Pick<
   Restaurant,
@@ -26,18 +29,18 @@ function RestaurantCard({ restaurantData }: Props) {
     restaurantData;
   const menuUrl = `${placeUrl}#menuInfo`;
 
+  const defaultImage = restaurantThumbnail(category).get(tags[0]);
+
   return (
     <S.Container aria-label={`${name} ${tags.join('')} 메뉴가 있습니다.`}>
-      <S.Image
+      <SkeletonImage
+        width="90px"
+        height="90px"
         aria-hidden="true"
-        src={pictureUrls[0] || './images/restaurant.png'}
-        onError={e => {
-          e.currentTarget.onerror = null;
-          e.currentTarget.src = './images/restaurant.png';
-        }}
+        src={pictureUrls[0] || defaultImage}
         alt={name}
+        loading="lazy"
       />
-
       <S.Info aria-hidden="true">
         <S.Top>
           <S.TagBox>
@@ -83,12 +86,6 @@ const S = {
     background-color: ${({ theme }) => theme.PALETTE.gray[0]};
     border-radius: 20px;
     box-shadow: ${({ theme }) => theme.BOX_SHADOW.level3};
-  `,
-  Image: styled.img`
-    width: 90px;
-    height: 90px;
-    border-radius: ${({ theme }) => theme.RADIUS.medium};
-    object-fit: cover;
   `,
   Info: styled.div`
     width: 162px;

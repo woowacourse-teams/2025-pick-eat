@@ -12,18 +12,24 @@ export const useModal = (options: ModalOptions = {}) => {
 
   const handleCloseModal = (e?: MouseEvent) => {
     e?.stopPropagation();
-    setOpened(false);
+    document.startViewTransition(() => {
+      setOpened(false);
+    });
   };
 
   const handleOpenModal = () => {
-    setOpened(true);
-    setMounted(true);
+    document.startViewTransition(() => {
+      setOpened(true);
+      setMounted(true);
+    });
   };
 
   const handleUnmountModal = (e?: MouseEvent) => {
     e?.stopPropagation();
-    setOpened(false);
-    setMounted(false);
+    document.startViewTransition(() => {
+      setOpened(false);
+      setMounted(false);
+    });
   };
 
   return {
