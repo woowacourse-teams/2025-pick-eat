@@ -1,6 +1,6 @@
 import { ApiError } from '@apis/apiClient';
 
-export const ERROR_CODE: Record<
+const ERROR_CODE: Record<
   number | string,
   { message: string; code: string }
 > = {
@@ -19,6 +19,10 @@ export const ERROR_CODE: Record<
   404: {
     message: '요청하신 리소스를 찾을 수 없습니다.',
     code: 'NOT_FOUND',
+  },
+  429: {
+    message: '요청이 너무 많습니다. 몇 분 후에 다시 시도해 주세요.',
+    code: 'TOO_MANY_REQUESTS',
   },
   500: {
     message: '서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.',
@@ -42,6 +46,10 @@ export const getErrorMessageByCode = (error: ApiError | TypeError) => {
 
   // 2. 에러 코드에 따른 메시지 매핑
   if (error?.status && ERROR_CODE[error.status]) {
+    // 429는 서버에서 내려준 메시지(몇 분 후 재시도 등)를 우선 사용
+    if (error.status === 429 && error instanceof ApiError && error.message) {
+      return { message: error.message, code: 'TOO_MANY_REQUESTS' };
+    }
     return ERROR_CODE[error.status];
   }
 
