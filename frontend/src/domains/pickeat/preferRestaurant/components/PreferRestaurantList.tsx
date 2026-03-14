@@ -17,10 +17,7 @@ function PreferRestaurantList() {
 
   const { data: restaurantList } = restaurantsQuery.useSuspenseGet(
     pickeatCode,
-    {
-      isExcluded: 'false',
-      pollingInterval: 3000,
-    }
+    { isExcluded: 'false' }
   );
 
   const sortRestaurants = (list: Restaurant[]) => {

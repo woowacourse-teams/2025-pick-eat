@@ -15,9 +15,7 @@ type GetApiOption = {
   isExcluded?: 'true' | 'false';
 };
 
-type QueryOption = {
-  pollingInterval?: number;
-} & GetApiOption;
+type QueryOption = GetApiOption;
 
 type MutationOption = {
   onSuccess?: () => void;
@@ -65,12 +63,11 @@ export const restaurants = {
 export const restaurantsQuery = {
   useGet: (pickeatCode: string, option?: QueryOption) => {
     const showToast = useShowToast();
-    const { pollingInterval = 0, ...restOption } = option ?? {};
     return useQuery({
-      queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, restOption],
+      queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, option ?? {}],
       queryFn: async () => {
         try {
-          return restaurants.get(pickeatCode, restOption);
+          return restaurants.get(pickeatCode, option);
         } catch {
           showToast({
             mode: 'ERROR',
@@ -78,27 +75,20 @@ export const restaurantsQuery = {
           });
         }
       },
-      refetchInterval: pollingInterval,
       throwOnError: false,
     });
   },
   useSuspenseGet: (pickeatCode: string, option?: QueryOption) => {
-    const { pollingInterval = 0, ...restOption } = option ?? {};
     return useSuspenseQuery({
-      // TODO : isExcluded 에 따라 관리하는 캐시를 분리해야해서 restOption 을 키로 포함시켰는데 더 나은 방법 있을지 고민
-      queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, restOption],
-      queryFn: async () => restaurants.get(pickeatCode, restOption),
-      refetchInterval: pollingInterval,
+      queryKey: [RESTAURANTS_BASE_PATH, pickeatCode, option ?? {}],
+      queryFn: async () => restaurants.get(pickeatCode, option),
     });
   },
-  // TODO : api 에 필요한 값 제외하고 query 옵션은 다 option 객체로 받는 건 어떤지 제안
   usePatch: (restaurantsIds: number[], option?: MutationOption) => {
     const showToast = useShowToast();
     return useMutation({
       mutationFn: async () => restaurants.patch(restaurantsIds),
       onSuccess: () => {
-        // TODO : [RESTAURANTS_BASE_PATH, pickeatCode, restOption] 키를 가진 캐시의 무효화는
-        // 각 Get 에서의 책임이라고 판단.
         option?.onSuccess?.();
       },
       onError: () => {

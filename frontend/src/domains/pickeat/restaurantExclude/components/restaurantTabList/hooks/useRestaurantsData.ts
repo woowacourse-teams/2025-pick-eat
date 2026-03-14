@@ -4,12 +4,7 @@ export function useRestaurantsData() {
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
 
-  const { data: restaurantsData } = restaurantsQuery.useSuspenseGet(
-    code ?? '',
-    {
-      pollingInterval: 3000,
-    }
-  );
+  const { data: restaurantsData } = restaurantsQuery.useSuspenseGet(code ?? '');
 
   return restaurantsData;
 }

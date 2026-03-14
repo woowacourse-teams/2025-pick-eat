@@ -16,6 +16,8 @@ import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 import { pickeatQuery } from '@apis/pickeat';
 import { queryClient } from '@apis/queryClient';
 
+import { usePickeatSSE } from '@domains/pickeat/hooks/usePickeatSSE';
+
 import { useGA } from '@hooks/useGA';
 
 import { ROUTE_PATH } from '@routes/routePath';
@@ -95,6 +97,7 @@ function ProtectedPickeat() {
   const [searchParams] = useSearchParams();
   const pickeatCode = searchParams.get('code') ?? '';
   const { isLoading } = pickeatQuery.usePostRejoin(pickeatCode);
+  usePickeatSSE(pickeatCode);
   if (isLoading) return null;
   return <Outlet />;
 }
