@@ -2,7 +2,7 @@ import { useShowToast } from '@provider/ToastProvider';
 
 import { joinAsPath } from '@utils/createUrl';
 
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { apiClient, BASE_URL_VERSION } from './apiClient';
 
@@ -92,10 +92,11 @@ const restaurant = {
 export const restaurantQuery = {
   usePatchLike: (pickeatCode: string) => {
     const showToast = useShowToast();
+    const queryClient = useQueryClient();
     return useMutation({
       mutationFn: async (id: number) => await restaurant.patchLike(id),
-      onMutate: async (id: number, context) => {
-        context.client.setQueryData(
+      onMutate: async (id: number) => {
+        queryClient.setQueryData(
           [RESTAURANTS_BASE_PATH, pickeatCode, { isExcluded: 'false' }],
           (oldData: Restaurant[] | undefined) => {
             return [
@@ -113,7 +114,6 @@ export const restaurantQuery = {
           }
         );
       },
-
       onError: () => {
         showToast({
           mode: 'ERROR',
@@ -124,10 +124,11 @@ export const restaurantQuery = {
   },
   usePatchUnlike: (pickeatCode: string) => {
     const showToast = useShowToast();
+    const queryClient = useQueryClient();
     return useMutation({
       mutationFn: async (id: number) => restaurant.patchUnlike(id),
-      onMutate: async (id: number, context) => {
-        context.client.setQueryData(
+      onMutate: async (id: number) => {
+        queryClient.setQueryData(
           [RESTAURANTS_BASE_PATH, pickeatCode, { isExcluded: 'false' }],
           (oldData: Restaurant[] | undefined) => {
             return [

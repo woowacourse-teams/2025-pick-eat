@@ -10,7 +10,6 @@ export function usePickeatStateChecker(pickeatCode: string) {
   const [hasRestaurants, setHasRestaurants] = useState(true);
   const { data: restaurants } = restaurantsQuery.useGet(pickeatCode, {
     isExcluded: 'false',
-    pollingInterval: 3000,
   });
   const { data: pickeatState } = pickeatQuery.useGetPickeatState(pickeatCode);
   const { mutate: patchDeactive } = pickeatQuery.usePatchDeactive();
