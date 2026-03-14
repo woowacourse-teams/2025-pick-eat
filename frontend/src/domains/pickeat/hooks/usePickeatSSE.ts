@@ -2,13 +2,10 @@ import { accessToken } from '@domains/login/utils/authStorage';
 import { joinCode } from '@domains/pickeat/utils/joinStorage';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 export const usePickeatSSE = (pickeatCode: string) => {
   const queryClient = useQueryClient();
-  const [connectionStatus, setConnectionStatus] = useState<
-    'CONNECTING' | 'OPEN' | 'CLOSED'
-  >('CLOSED');
 
   useEffect(() => {
     if (!pickeatCode) return;
@@ -23,8 +20,6 @@ export const usePickeatSSE = (pickeatCode: string) => {
 
     const url = `${baseUrl}/sse/pickeat/${pickeatCode}?${params.toString()}`;
 
-    setConnectionStatus('CONNECTING');
-
     const eventSource = new EventSource(url);
 
     const refetch = () => {
@@ -33,26 +28,11 @@ export const usePickeatSSE = (pickeatCode: string) => {
       });
     };
 
-    const handlePickeatUpdated = () => {
-      refetch();
-    };
-
-    eventSource.onopen = () => {
-      setConnectionStatus('OPEN');
-    };
-
-    eventSource.addEventListener('PICKEAT_UPDATED', handlePickeatUpdated);
-
-    eventSource.onerror = () => {
-      setConnectionStatus('CLOSED');
-    };
+    eventSource.addEventListener('PICKEAT_UPDATED', refetch);
 
     return () => {
-      eventSource.removeEventListener('PICKEAT_UPDATED', handlePickeatUpdated);
+      eventSource.removeEventListener('PICKEAT_UPDATED', refetch);
       eventSource.close();
-      setConnectionStatus('CLOSED');
     };
   }, [pickeatCode, queryClient]);
-
-  return connectionStatus;
 };
