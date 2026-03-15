@@ -1,6 +1,4 @@
 import {
-  RATE_LIMIT_MAX_COUNT,
-  RATE_LIMIT_WINDOW_MS,
   appendTimestamp,
   isWithinLimit,
 } from './slidingWindow';
@@ -9,6 +7,9 @@ export type RateLimitMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
 export type RateLimitRequestOptions = { skipRateLimit?: boolean };
 
+const RATE_LIMIT_WINDOW_MS = 1000;
+const RATE_LIMIT_MAX_COUNT = 10;
+
 const RATE_LIMIT_ENABLED_BY_METHOD: Record<RateLimitMethod, boolean> = {
   GET: true,
   POST: true,
@@ -16,7 +17,6 @@ const RATE_LIMIT_ENABLED_BY_METHOD: Record<RateLimitMethod, boolean> = {
   DELETE: true,
 };
 
-/** rate limit 적용 제외 path. endPoint가 여기 포함되면 check/record 생략 */
 const SKIP_LIST: ((endPoint: string) => boolean)[] = [];
 
 const shouldApplyRateLimit = (
@@ -62,6 +62,7 @@ const tryAcquire = (
   options?: RateLimitRequestOptions,
   now: number = Date.now()
 ): boolean => {
+  console.log('store: ->', store);
   if (!shouldApplyRateLimit(method, endPoint, options)) return true;
   const key = buildKey(method, endPoint);
   if (!check(key, now)) return false;

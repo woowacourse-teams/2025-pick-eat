@@ -1,5 +1,4 @@
-export const RATE_LIMIT_WINDOW_MS = 1000;
-export const RATE_LIMIT_MAX_COUNT = 10;
+
 
 /**
  * 타임스탬프 배열에서 윈도우 밖(now - windowMs 이전) 항목을 제거한 새 배열 반환.
