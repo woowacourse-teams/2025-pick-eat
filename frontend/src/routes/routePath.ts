@@ -10,6 +10,7 @@ export const ROUTE_PATH = {
   OAUTH_CALLBACK: '/oauth/callback',
   MY_PAGE: '/my-page',
   ROOM_DETAIL: '/room-detail',
+  TOO_MANY_REQUESTS: '/error/too-many-requests',
 };
 
 export const generateRouterPath = {

@@ -1,4 +1,4 @@
-import { ApiError } from '@apis/apiClient';
+import { ApiError, ClientRateLimitError } from '@apis/apiClient';
 
 const ERROR_CODE: Record<
   number | string,
@@ -38,13 +38,20 @@ const ERROR_CODE: Record<
   },
 } as const;
 
-export const getErrorMessageByCode = (error: ApiError | TypeError) => {
+export const getErrorMessageByCode = (
+  error: ApiError | TypeError | ClientRateLimitError
+) => {
   // 1. 네트워크 오류
   if (error instanceof TypeError) {
     return ERROR_CODE.NETWORK_ERROR;
   }
 
-  // 2. 에러 코드에 따른 메시지 매핑
+  // 2. 클라이언트 rate limit (서버 429와 동일 메시지)
+  if (error instanceof ClientRateLimitError) {
+    return { message: error.message, code: 'TOO_MANY_REQUESTS' };
+  }
+
+  // 3. 에러 코드에 따른 메시지 매핑
   if (error?.status && ERROR_CODE[error.status]) {
     // 429는 서버에서 내려준 메시지(몇 분 후 재시도 등)를 우선 사용
     if (error.status === 429 && error instanceof ApiError && error.message) {
@@ -53,6 +60,6 @@ export const getErrorMessageByCode = (error: ApiError | TypeError) => {
     return ERROR_CODE[error.status];
   }
 
-  // 3. 그 외 알 수 없는 오류
+  // 4. 그 외 알 수 없는 오류
   return ERROR_CODE.UNKNOWN;
 };

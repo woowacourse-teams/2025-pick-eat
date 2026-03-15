@@ -10,6 +10,7 @@ import PickeatDetail from '@pages/pickeat/pickeatDetail/PickeatDetail';
 import PreferRestaurant from '@pages/pickeat/preferRestaurant/PreferRestaurant';
 import RestaurantExcludePage from '@pages/pickeat/restaurantExclude/RestaurantExcludePage';
 import ProfileInit from '@pages/ProfileInit';
+import TooManyRequestErrorPage from '@components/errors/TooManyRequestErrorPage';
 
 import { AuthProvider, useAuth } from '@domains/login/context/AuthProvider';
 
@@ -119,6 +120,10 @@ const routes = createBrowserRouter([
         ],
       },
       { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
+      {
+        path: ROUTE_PATH.TOO_MANY_REQUESTS,
+        Component: TooManyRequestErrorPage,
+      },
       {
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
         Component: CreatePickeatWithLocation,
