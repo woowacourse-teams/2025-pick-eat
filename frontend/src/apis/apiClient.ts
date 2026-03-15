@@ -3,6 +3,8 @@ import { joinCode } from '@domains/pickeat/utils/joinStorage';
 
 import { ROUTE_PATH } from '@routes/routePath';
 
+import * as Sentry from '@sentry/react';
+
 import { rateLimiter } from './rateLimit/rateLimiter';
 
 export type ApiHeaders = Record<string, string>;
@@ -46,6 +48,19 @@ const requestApi = async <TResponse = unknown>(
   options?: ApiRequestOptions
 ): Promise<TResponse | null> => {
   if (!rateLimiter.tryAcquire(method, endPoint, options)) {
+    Sentry.withScope(scope => {
+      scope.setTag('rate_limit_source', 'client');
+      scope.setExtra('page', window.location.pathname + window.location.search);
+      scope.setExtra('api_method', method);
+      scope.setExtra('api_endpoint', endPoint);
+      const timestamps = rateLimiter.getSnapshotForReporting(method, endPoint);
+      scope.setExtra('rate_limit_timestamps', timestamps);
+      scope.setExtra('rate_limit_request_count', timestamps.length);
+      Sentry.captureMessage(
+        'Client rate limit exceeded (possible infinite loop)',
+        'warning'
+      );
+    });
     window.location.replace(ROUTE_PATH.TOO_MANY_REQUESTS);
     return new Promise(() => {}) as Promise<TResponse | null>;
   }
@@ -66,7 +81,19 @@ const requestApi = async <TResponse = unknown>(
 
   const text = await response.text();
   if (!response.ok) {
-    const body = text === '' ? undefined : JSON.parse(text);
+    const body = text === '' ? undefined : (JSON.parse(text) as ApiBody);
+    if (response.status === 429) {
+      Sentry.withScope(scope => {
+        scope.setTag('rate_limit_source', 'server');
+        scope.setExtra('page', window.location.pathname + window.location.search);
+        scope.setExtra('api_method', method);
+        scope.setExtra('api_endpoint', endPoint);
+        if (body?.message && typeof body.message === 'string') {
+          scope.setExtra('server_message', body.message);
+        }
+        Sentry.captureMessage('Server 429 Too Many Requests', 'warning');
+      });
+    }
     throw new ApiError('요청 실패', response.status, body);
   }
   if (response.status === 204) return null;

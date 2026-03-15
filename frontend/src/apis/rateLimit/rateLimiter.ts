@@ -7,8 +7,8 @@ export type RateLimitMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
 export type RateLimitRequestOptions = { skipRateLimit?: boolean };
 
-const RATE_LIMIT_WINDOW_MS = 1000;
-const RATE_LIMIT_MAX_COUNT = 10;
+const RATE_LIMIT_WINDOW_MS = 10000;
+const RATE_LIMIT_MAX_COUNT = 2;
 
 const RATE_LIMIT_ENABLED_BY_METHOD: Record<RateLimitMethod, boolean> = {
   GET: true,
@@ -62,7 +62,6 @@ const tryAcquire = (
   options?: RateLimitRequestOptions,
   now: number = Date.now()
 ): boolean => {
-  console.log('store: ->', store);
   if (!shouldApplyRateLimit(method, endPoint, options)) return true;
   const key = buildKey(method, endPoint);
   if (!check(key, now)) return false;
@@ -70,4 +69,16 @@ const tryAcquire = (
   return true;
 };
 
-export const rateLimiter = { tryAcquire };
+/**
+ * Sentry 등 보고용. 해당 key의 현재 타임스탬프 배열 복사본을 반환한다.
+ */
+const getSnapshotForReporting = (
+  method: RateLimitMethod,
+  endPoint: string
+): number[] => {
+  const key = buildKey(method, endPoint);
+  const timestamps = getTimestamps(key);
+  return [...timestamps];
+};
+
+export const rateLimiter = { tryAcquire, getSnapshotForReporting };

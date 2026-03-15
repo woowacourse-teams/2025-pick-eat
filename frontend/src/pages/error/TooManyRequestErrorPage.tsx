@@ -5,20 +5,20 @@ import { useShowToast } from '@provider/ToastProvider';
 import * as Sentry from '@sentry/react';
 import styled from '@emotion/styled';
 import { useEffect } from 'react';
-
-const MESSAGE =
-  '요청이 너무 많습니다. 몇 분 후에 다시 시도해 주세요.';
+import { ROUTE_PATH } from '@routes/routePath';
+import { useNavigate } from 'react-router';
+import NewButton from '@components/actions/NewButton';
 
 type Props = {
   error?: Error;
-  onRefresh?: () => void;
 };
 
-function TooManyRequestErrorPage({ error, onRefresh }: Props) {
+function TooManyRequestErrorPage({ error }: Props) {
   const showToast = useShowToast();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    showToast({ mode: 'ERROR', message: MESSAGE });
+    showToast({ mode: 'ERROR', message: '잠시 후 다시 시도해주세요.' });
   }, [showToast]);
 
   useEffect(() => {
@@ -27,20 +27,16 @@ function TooManyRequestErrorPage({ error, onRefresh }: Props) {
     }
   }, [error]);
 
-  const handleRefresh = () => {
-    if (onRefresh) {
-      onRefresh();
-    } else {
-      window.location.reload();
-    }
+  const goToMain = () => {
+    navigate(ROUTE_PATH.MAIN);
   };
 
   return (
     <S.Container>
       <S.Wrapper>
-        <S.Title>요청이 너무 잦습니다</S.Title>
-        <S.Description>{MESSAGE}</S.Description>
-        <Button text="새로고침" onClick={handleRefresh} />
+        <S.Title>너무 많은 요청이 왔어요!</S.Title>
+        <S.Description>원활한 서비스 이용을 위해 잠시 접속을 제한하고 있어요. 잠시 후 다시 시도해 주세요.</S.Description>
+        <NewButton onClick={goToMain}>메인으로 돌아가기</NewButton>
         <S.SupportText>문제 지속 시 지원팀 문의</S.SupportText>
       </S.Wrapper>
     </S.Container>

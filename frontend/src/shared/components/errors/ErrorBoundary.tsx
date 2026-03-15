@@ -6,7 +6,7 @@ import styled from '@emotion/styled';
 import { Component, ReactNode } from 'react';
 
 import { getErrorMessageByCode } from '../../utils/errorMapper';
-import TooManyRequestErrorPage from './TooManyRequestErrorPage';
+import TooManyRequestErrorPage from '@pages/error/TooManyRequestErrorPage';
 
 type Props = { children: ReactNode; onReset?: () => void };
 type State = {
@@ -36,7 +36,6 @@ class ErrorBoundary extends Component<Props, State> {
         return (
           <TooManyRequestErrorPage
             error={this.state.error}
-            onRefresh={this.reset}
           />
         );
       }
