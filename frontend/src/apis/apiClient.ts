@@ -11,31 +11,6 @@ export type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
 export type ApiRequestOptions = { skipRateLimit?: boolean };
 
-const RATE_LIMIT_ENABLED_BY_METHOD: Record<Method, boolean> = {
-  GET: true,
-  POST: true,
-  PATCH: false,
-  DELETE: true,
-};
-
-/** rate limit 적용 제외 path. endPoint가 여기 포함되면 check/record 생략 */
-const SKIP_LIST: ((endPoint: string) => boolean)[] = [];
-
-function shouldApplyRateLimit(
-  method: Method,
-  endPoint: string,
-  options?: ApiRequestOptions
-): boolean {
-  if (options?.skipRateLimit) return false;
-  if (!RATE_LIMIT_ENABLED_BY_METHOD[method]) return false;
-  if (SKIP_LIST.some(fn => fn(endPoint))) return false;
-  return true;
-}
-
-function buildRateLimitKey(method: Method, endPoint: string): string {
-  return `${method}\n${endPoint}`;
-}
-
 export class ApiError extends Error {
   status: number;
   body?: ApiBody;
@@ -70,13 +45,9 @@ const requestApi = async <TResponse = unknown>(
   headers?: ApiHeaders,
   options?: ApiRequestOptions
 ): Promise<TResponse | null> => {
-  if (shouldApplyRateLimit(method, endPoint, options)) {
-    const key = buildRateLimitKey(method, endPoint);
-    if (!rateLimiter.check(key)) {
-      window.location.replace(ROUTE_PATH.TOO_MANY_REQUESTS);
-      return new Promise(() => {}) as Promise<TResponse | null>;
-    }
-    rateLimiter.record(key);
+  if (!rateLimiter.tryAcquire(method, endPoint, options)) {
+    window.location.replace(ROUTE_PATH.TOO_MANY_REQUESTS);
+    return new Promise(() => {}) as Promise<TResponse | null>;
   }
 
   const code = joinCode.get();
