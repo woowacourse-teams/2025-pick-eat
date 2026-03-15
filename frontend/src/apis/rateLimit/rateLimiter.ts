@@ -7,14 +7,14 @@ export type RateLimitMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
 export type RateLimitRequestOptions = { skipRateLimit?: boolean };
 
-const RATE_LIMIT_WINDOW_MS = 10000;
-const RATE_LIMIT_MAX_COUNT = 2;
+const RATE_LIMIT_WINDOW_MS = 5000;
+const RATE_LIMIT_MAX_COUNT = 20;
 
 const RATE_LIMIT_ENABLED_BY_METHOD: Record<RateLimitMethod, boolean> = {
   GET: true,
-  POST: true,
+  POST: false,
   PATCH: false,
-  DELETE: true,
+  DELETE: false,
 };
 
 const SKIP_LIST: ((endPoint: string) => boolean)[] = [];
@@ -69,9 +69,6 @@ const tryAcquire = (
   return true;
 };
 
-/**
- * Sentry 등 보고용. 해당 key의 현재 타임스탬프 배열 복사본을 반환한다.
- */
 const getSnapshotForReporting = (
   method: RateLimitMethod,
   endPoint: string
