@@ -4,7 +4,7 @@ import { joinCode } from '@domains/pickeat/utils/joinStorage';
 import { ROUTE_PATH } from '@routes/routePath';
 
 
-import { monitor } from '@utils/sentry';
+import { monitor } from '@utils/monitor';
 
 import { rateLimiter } from './rateLimit/rateLimiter';
 

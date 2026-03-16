@@ -7,8 +7,8 @@ export type RateLimitMethod = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
 export type RateLimitRequestOptions = { skipRateLimit?: boolean };
 
-const RATE_LIMIT_WINDOW_MS = 5000;
-const RATE_LIMIT_MAX_COUNT = 20;
+export const RATE_LIMIT_WINDOW_MS = 5000;
+export const RATE_LIMIT_MAX_COUNT = 20;
 
 const RATE_LIMIT_ENABLED_BY_METHOD: Record<RateLimitMethod, boolean> = {
   GET: true,

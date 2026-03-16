@@ -4,11 +4,12 @@ import { ROUTE_PATH } from '@routes/routePath';
 
 import { useShowToast } from '@provider/ToastProvider';
 
+import { monitor } from '@utils/monitor';
+
 import styled from '@emotion/styled';
 import * as Sentry from '@sentry/react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
-import { monitor } from '@utils/monitor';
 
 
 type Props = {
@@ -73,13 +74,16 @@ const S = {
     text-align: center;
   `,
   SupportButton: styled.button`
-    background: none;
-    border: none;
     padding: 0;
-    cursor: pointer;
+    border: none;
+
+    background: none;
+
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font-size: 0.875rem;
     text-decoration: underline;
+    cursor: pointer;
+
     &:hover {
       color: ${({ theme }) => theme.PALETTE.gray[60]};
     }
