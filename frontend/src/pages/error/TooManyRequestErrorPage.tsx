@@ -8,6 +8,7 @@ import styled from '@emotion/styled';
 import * as Sentry from '@sentry/react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { monitor } from '@utils/monitor';
 
 
 type Props = {
@@ -32,13 +33,16 @@ function TooManyRequestErrorPage({ error }: Props) {
     navigate(ROUTE_PATH.MAIN);
   };
 
+
   return (
     <S.Container>
       <S.Wrapper>
         <S.Title>너무 많은 요청이 왔어요!</S.Title>
         <S.Description>원활한 서비스 이용을 위해 잠시 접속을 제한하고 있어요. 잠시 후 다시 시도해 주세요.</S.Description>
         <NewButton onClick={goToMain}>메인으로 돌아가기</NewButton>
-        <S.SupportText>문제 지속 시 지원팀 문의</S.SupportText>
+        <S.SupportButton type="button" onClick={monitor.openReportForm}>
+          문제 지속 시 지원팀 문의
+        </S.SupportButton>
       </S.Wrapper>
     </S.Container>
   );
@@ -68,8 +72,16 @@ const S = {
   Description: styled.p`
     text-align: center;
   `,
-  SupportText: styled.p`
+  SupportButton: styled.button`
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
     color: ${({ theme }) => theme.PALETTE.gray[40]};
     font-size: 0.875rem;
+    text-decoration: underline;
+    &:hover {
+      color: ${({ theme }) => theme.PALETTE.gray[60]};
+    }
   `,
 };

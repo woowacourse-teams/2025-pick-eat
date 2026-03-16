@@ -1,8 +1,17 @@
 import * as Sentry from '@sentry/react';
 
-function getCurrentPage(): string {
+const getCurrentPage = (): string => {
     return window.location.pathname + window.location.search;
 }
+
+const openReportForm = async () => {
+    const feedback = Sentry.getFeedback();
+    const form = await feedback?.createForm();
+    if (form) {
+        form.appendToDom();
+        form.open();
+    }
+};
 
 const reportClientRateLimitError = (
     method: string,
@@ -41,6 +50,7 @@ const reportServerTooManyRequest = (
 }
 
 export const monitor = {
+    openReportForm,
     reportClientRateLimitError,
     reportServerTooManyRequest,
 };
