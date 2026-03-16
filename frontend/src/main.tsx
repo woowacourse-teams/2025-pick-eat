@@ -14,6 +14,11 @@ if (!window.location.href.includes('localhost')) {
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
   environment: 'production',
+  integrations: [
+    Sentry.feedbackIntegration({
+      autoInject: false,
+    }),
+  ],
 });
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

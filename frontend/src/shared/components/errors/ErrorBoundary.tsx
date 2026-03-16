@@ -1,6 +1,8 @@
 import Button from '@components/actions/Button';
 
-import { ApiError } from '@apis/apiClient';
+import TooManyRequestErrorPage from '@pages/error/TooManyRequestErrorPage';
+
+import { ApiError, ClientRateLimitError } from '@apis/apiClient';
 
 import styled from '@emotion/styled';
 import { Component, ReactNode } from 'react';
@@ -8,23 +10,39 @@ import { Component, ReactNode } from 'react';
 import { getErrorMessageByCode } from '../../utils/errorMapper';
 
 type Props = { children: ReactNode; onReset?: () => void };
-type State = { hasError: boolean; error: ApiError | null };
+type State = {
+  hasError: boolean;
+  error: Error | null;
+  errorType?: 'clientRateLimit';
+};
 
 class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, error: null };
 
-  static getDerivedStateFromError(error: ApiError) {
+  static getDerivedStateFromError(error: Error): State {
+    if (error instanceof ClientRateLimitError) {
+      return { hasError: true, error, errorType: 'clientRateLimit' };
+    }
     return { hasError: true, error };
   }
 
   reset = () => {
-    this.setState({ hasError: false, error: null });
+    this.setState({ hasError: false, error: null, errorType: undefined });
     this.props.onReset?.();
   };
 
   render() {
     if (this.state.hasError && this.state.error) {
-      const { code, message } = getErrorMessageByCode(this.state.error);
+      if (this.state.errorType === 'clientRateLimit') {
+        return (
+          <TooManyRequestErrorPage
+            error={this.state.error}
+          />
+        );
+      }
+      const { code, message } = getErrorMessageByCode(
+        this.state.error as ApiError
+      );
       return (
         <S.Container>
           <S.Wrapper>

@@ -6,3 +6,4 @@ storybook-static
 .env.local
 .env.development
 .env.production
+coverage

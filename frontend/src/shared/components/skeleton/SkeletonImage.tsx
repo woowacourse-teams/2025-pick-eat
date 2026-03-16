@@ -44,9 +44,9 @@ const S = {
   }>`
     width: ${({ width }) => width};
     height: ${({ height }) => height};
-    border-radius: ${({ borderRadius }) => borderRadius};
     overflow: hidden;
     position: relative;
+
     background: linear-gradient(
       90deg,
       ${({ theme }) => theme.PALETTE.gray[10]} 25%,
@@ -54,7 +54,9 @@ const S = {
       ${({ theme }) => theme.PALETTE.gray[10]} 75%
     );
     background-size: 200% 100%;
+
     animation: loading 1.5s ease-in-out infinite;
+    border-radius: ${({ borderRadius }) => borderRadius};
 
     img {
       width: 100%;
@@ -66,6 +68,7 @@ const S = {
       0% {
         background-position: 200% 0;
       }
+
       100% {
         background-position: -200% 0;
       }

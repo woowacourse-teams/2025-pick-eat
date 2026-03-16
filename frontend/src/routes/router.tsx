@@ -2,6 +2,7 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Layout from '@components/layouts/Layout';
 
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
+import TooManyRequestErrorPage from '@pages/error/TooManyRequestErrorPage';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
 import OauthCallback from '@pages/OauthCallback';
@@ -119,6 +120,10 @@ const routes = createBrowserRouter([
         ],
       },
       { path: ROUTE_PATH.OAUTH_CALLBACK, Component: OauthCallback },
+      {
+        path: ROUTE_PATH.TOO_MANY_REQUESTS,
+        Component: TooManyRequestErrorPage,
+      },
       {
         path: ROUTE_PATH.PICKEAT_WITH_LOCATION,
         Component: CreatePickeatWithLocation,
