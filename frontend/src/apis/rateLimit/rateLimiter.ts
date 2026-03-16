@@ -19,6 +19,8 @@ const RATE_LIMIT_ENABLED_BY_METHOD: Record<RateLimitMethod, boolean> = {
 
 const SKIP_LIST: ((endPoint: string) => boolean)[] = [];
 
+const store = new Map<string, number[]>();
+
 const shouldApplyRateLimit = (
   method: RateLimitMethod,
   endPoint: string,
@@ -34,7 +36,6 @@ const buildKey = (method: RateLimitMethod, endPoint: string): string => {
   return `${method}\n${endPoint}`;
 };
 
-const store = new Map<string, number[]>();
 
 const getTimestamps = (key: string): number[] => {
   return store.get(key) ?? [];

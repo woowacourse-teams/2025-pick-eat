@@ -2,6 +2,7 @@ import LoadingSpinner from '@components/assets/LoadingSpinner';
 import Layout from '@components/layouts/Layout';
 
 import CreatePickeatWithLocation from '@pages/CreatePickeatWithLocation';
+import TooManyRequestErrorPage from '@pages/error/TooManyRequestErrorPage';
 import Login from '@pages/Login';
 import Main from '@pages/Main';
 import OauthCallback from '@pages/OauthCallback';
@@ -36,7 +37,6 @@ import {
   useLocation,
   useSearchParams,
 } from 'react-router';
-import TooManyRequestErrorPage from '@pages/error/TooManyRequestErrorPage';
 
 const MyPage = lazy(() => import('@pages/myRoom/MyPage'));
 const RoomDetail = lazy(() => import('@pages/roomDetail'));

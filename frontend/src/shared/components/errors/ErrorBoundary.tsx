@@ -1,12 +1,13 @@
 import Button from '@components/actions/Button';
 
+import TooManyRequestErrorPage from '@pages/error/TooManyRequestErrorPage';
+
 import { ApiError, ClientRateLimitError } from '@apis/apiClient';
 
 import styled from '@emotion/styled';
 import { Component, ReactNode } from 'react';
 
 import { getErrorMessageByCode } from '../../utils/errorMapper';
-import TooManyRequestErrorPage from '@pages/error/TooManyRequestErrorPage';
 
 type Props = { children: ReactNode; onReset?: () => void };
 type State = {

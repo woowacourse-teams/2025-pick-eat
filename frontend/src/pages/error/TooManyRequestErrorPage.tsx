@@ -1,13 +1,14 @@
-import Button from '@components/actions/Button';
+import NewButton from '@components/actions/NewButton';
+
+import { ROUTE_PATH } from '@routes/routePath';
 
 import { useShowToast } from '@provider/ToastProvider';
 
-import * as Sentry from '@sentry/react';
 import styled from '@emotion/styled';
+import * as Sentry from '@sentry/react';
 import { useEffect } from 'react';
-import { ROUTE_PATH } from '@routes/routePath';
 import { useNavigate } from 'react-router';
-import NewButton from '@components/actions/NewButton';
+
 
 type Props = {
   error?: Error;
@@ -68,7 +69,7 @@ const S = {
     text-align: center;
   `,
   SupportText: styled.p`
-    font-size: 0.875rem;
     color: ${({ theme }) => theme.PALETTE.gray[40]};
+    font-size: 0.875rem;
   `,
 };
