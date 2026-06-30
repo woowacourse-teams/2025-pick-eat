@@ -68,7 +68,7 @@ jacoco {
 }
 
 jacocoTestReport {
-    dependsOn test
+    dependsOn test, 'compileJava', 'processResources'
     reports {
         html.required = true   // 시각적인 HTML 리포트 생성
         xml.required = true    // XML 리포트 생성 (CI 도구 연동용)
