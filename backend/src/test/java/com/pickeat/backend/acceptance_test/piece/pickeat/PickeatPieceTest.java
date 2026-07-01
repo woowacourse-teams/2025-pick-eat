@@ -6,11 +6,14 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import com.pickeat.backend.pickeat.application.dto.request.PickeatRequest;
 import com.pickeat.backend.pickeat.application.dto.response.ParticipantStateResponse;
+import com.pickeat.backend.pickeat.application.dto.response.PickeatRejoinAvailableResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatResponse;
 import com.pickeat.backend.pickeat.application.dto.response.PickeatStateResponse;
 import com.pickeat.backend.restaurant.application.dto.response.RestaurantResultResponse;
 import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 
 public class PickeatPieceTest {
@@ -112,5 +115,67 @@ public class PickeatPieceTest {
                 .statusCode(HttpStatus.CREATED.value())
                 .extract()
                 .as(PickeatResponse.class);
+    }
+
+    public static List<PickeatResponse> 방의_픽잇_목록_조회(Long roomId, String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .get("/api/v1/room/{roomId}/pickeats", roomId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(new TypeRef<List<PickeatResponse>>() {
+                });
+    }
+
+    public static List<PickeatResponse> 방의_활성_픽잇_목록_조회(Long roomId, String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .get("/api/v1/room/{roomId}/pickeats/active", roomId)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(new TypeRef<List<PickeatResponse>>() {
+                });
+    }
+
+    public static List<PickeatResponse> 유저가_속한_픽잇_목록_조회(String accessToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Authorization", "Bearer " + accessToken)
+                .when()
+                .get("/api/v1/rooms/pickeats")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(new TypeRef<List<PickeatResponse>>() {
+                });
+    }
+
+    public static PickeatResponse 참가중인_픽잇_조회(String participantToken) {
+        return RestAssured
+                .given().log().all()
+                .header("Pickeat-Participant-Token", "Bearer " + participantToken)
+                .when()
+                .get("/api/v1/pickeats/participating")
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(PickeatResponse.class);
+    }
+
+    public static PickeatRejoinAvailableResponse 픽잇_재참여_가능_여부_조회(String pickeatCode) {
+        return RestAssured
+                .given().log().all()
+                .when()
+                .get("/api/v1/pickeats/{pickeatCode}/rejoin-available", pickeatCode)
+                .then().log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(PickeatRejoinAvailableResponse.class);
     }
 }
